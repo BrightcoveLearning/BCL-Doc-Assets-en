@@ -1,33 +1,33 @@
 var BCLS = ( function (window, document) {
-        var fragment = document.createDocumentFragment(),
-        // account stuff
-        accountId,
-        clientId,
-        clientSecret,
-        // api stuff
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
-        baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-        sort,
-        sortDirection = "",
-        search,
-        limit = 25,
-        totalVideos = 0,
-        totalCalls = 0,
-        callNumber = 0,
-        videosArray = [],
-        // elements
-        account_id = document.getElementById('account_id'),
-        client_id = document.getElementById('client_id'),
-        client_secret = document.getElementById('client_secret'),
-        numberSelect = document.getElementById('numberSelect'),
-        searchStr = document.getElementById('searchStr'),
-        sortSelect = document.getElementById('sortSelect'),
-        directionSelect = document.getElementById('directionSelect'),
-        makeLinks = document.getElementById('makeLinks'),
-        logger = document.getElementById('logger'),
-        apiRequest = document.getElementById('apiRequest'),
-        linksDisplay = document.getElementById('linksDisplay'),
-        allButtons = document.getElementsByName('button');
+    var fragment = document.createDocumentFragment(),
+    // account stuff
+    accountId,
+    clientId,
+    clientSecret,
+    // api stuff
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
+    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
+    sort,
+    sortDirection = "",
+    search,
+    limit = 25,
+    totalVideos = 0,
+    totalCalls = 0,
+    callNumber = 0,
+    videosArray = [],
+    // elements
+    account_id = document.getElementById('account_id'),
+    client_id = document.getElementById('client_id'),
+    client_secret = document.getElementById('client_secret'),
+    numberSelect = document.getElementById('numberSelect'),
+    searchStr = document.getElementById('searchStr'),
+    sortSelect = document.getElementById('sortSelect'),
+    directionSelect = document.getElementById('directionSelect'),
+    makeLinks = document.getElementById('makeLinks'),
+    logger = document.getElementById('logger'),
+    apiRequest = document.getElementById('apiRequest'),
+    linksDisplay = document.getElementById('linksDisplay'),
+    allButtons = document.getElementsByName('button');
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -58,6 +58,7 @@ var BCLS = ( function (window, document) {
             iMax = allButtons.length;
         for (i = 0; i < iMax; i++) {
             allButtons[i].setAttribute('disabled', 'disabled');
+            allButtons[i].setAttribute('style', 'cursor:not-allowed;');
         }
     }
 
@@ -69,6 +70,7 @@ var BCLS = ( function (window, document) {
         iMax = allButtons.length;
         for (i = 0; i < iMax; i++) {
             allButtons[i].removeAttribute('disabled');
+            allButtons[i].setAttribute('style', 'cursor:pointer;');
         }
     }
 
@@ -186,7 +188,7 @@ var BCLS = ( function (window, document) {
                 linkBody.appendChild(linkTr);
             }
         }
-        logger.textContent = 'Finished!'
+        logger.textContent = 'Finished!';
         linksDisplay.appendChild(fragment);
         enableButtons();
     }
@@ -223,7 +225,7 @@ var BCLS = ( function (window, document) {
             break;
             case 'getVideoSources':
                 var i,
-                    iMax = videosArray.length
+                    iMax = videosArray.length;
                     callback = function(sources) {
                         if (sources.length > 0) {
                             // get the best MP4 rendition
