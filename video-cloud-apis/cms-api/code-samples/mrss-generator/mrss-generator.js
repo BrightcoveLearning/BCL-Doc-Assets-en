@@ -183,7 +183,7 @@ var BCLS = ( function (window, document) {
             }
         }
         mrssStr += eChannel + '</rss>';
-        logger.textContent = 'Finished!'
+        logger.textContent = 'Finished!';
         feedDisplay.textContent = vkbeautify.xml(mrssStr);
         enableButtons();
     }
@@ -220,7 +220,7 @@ var BCLS = ( function (window, document) {
             break;
             case 'getVideoSources':
                 var i,
-                    iMax = videosArray.length
+                    iMax = videosArray.length;
                     callback = function(sources) {
                         if (sources.length > 0) {
                             // get the best MP4 rendition
