@@ -113,7 +113,7 @@ function cmsSearchModel() {
                 if (self.haveSearchState()) {
                     str += self.selectedSearchField() + ":" + self.selectedSearchState();
                 } else if (self.haveSearchTerms()) {
-                    var termsArray = self.searchTerms().split(" ");
+                    termsArray = self.searchTerms().split(" ");
                     imax = termsArray.length;
                     if (self.exactMatch()) {
                         for (i = 0; i < iMax; i++) {
