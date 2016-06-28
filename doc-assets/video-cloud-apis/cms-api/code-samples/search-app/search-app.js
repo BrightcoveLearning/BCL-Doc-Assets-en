@@ -51,7 +51,6 @@ function cmsSearchModel() {
         });
         self.havePlayable = ko.computed(function() {
             if (self.selectedSearchField() === "playable") {
-                console.log('playable');
                 return true;
             } else {
                 return false;
