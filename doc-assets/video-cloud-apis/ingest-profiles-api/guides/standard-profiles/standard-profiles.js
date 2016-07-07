@@ -117,7 +117,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     }
     function createInPageNav() {
         var navObj = {},
-            divsections = document.querySelector("section.bcls-section"),
+            divsections = document.querySelectorAll(".bcls-section"),
             i, index,
             iMax = divsections.length;
         // set initial visibilities
@@ -132,6 +132,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 navLabel.push(navObj);
             }
         }
+        bclslog('navLabel', navLabel);
         // only create the nav widget if there is more than one item
         if (navLabel.length > 1) {
             // create in-page nav menu
