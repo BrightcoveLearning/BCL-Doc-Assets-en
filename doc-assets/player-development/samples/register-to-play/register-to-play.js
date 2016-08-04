@@ -1,5 +1,5 @@
 // videojs("myPlayerId").ready(function() {
-plugin('registerToPlay', function(options) {
+videojs.plugin('registerToPlay', function(options) {
     var myPlayer = this,
         // for handling the registration form
         // user info
