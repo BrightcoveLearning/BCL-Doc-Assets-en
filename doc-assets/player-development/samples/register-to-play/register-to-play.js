@@ -1,5 +1,5 @@
 // .plugin('registerToPlay', function(options) {
-videojs("myPlayer").ready(function() {
+videojs("myPlayerId").ready(function() {
     var myPlayer = this,
         // for handling the registration form
         // user info
@@ -8,7 +8,7 @@ videojs("myPlayer").ready(function() {
         emailAddress,
         registered = false,
         // html for the registration form
-        overlayContent = '<div id="regForm" class="registration-form"><h1 class="registration-form">To view the video, please register or login.</h1><p class="registration-form">First name: <input id="fname" type="text" size="30"></p><p>Last name: <input id="lname" type="text" size="30"></p><p class="registration-form">Email: <input id="email" type="text" size="35"></p><p class="registration-form"><button id="reg" class="registration-form">Register</button><button id="login">Login</button><button id="noThanks">No thanks</button></p></div><div id="regPass" class="registration-form" style="display:none;"><p class="registration-form">Choose a password: <input type="password" id="regPassword"></p><p class="registration-form"><button id="submitRegPassword" class="registration-form">Submit</button></p></div><div id="loginPass" class="registration-form" style="display:none;"><p class="registration-form">Enter your password: <input type="password" id="loginPassword"></p><p><button id="submitLoginPassword" class="registration-form">Submit</button></p></div><div id="noThanksMessage" style="display:none;"><p class="registration-form"><strong>Thanks for dropping by anyway!</strong></p></div>';
+        overlayContent = '<div id="regForm" class="registration-form"><h1 class="registration-form">To view the video, please register or login.</h1><p class="registration-form">First name: <input id="fname" type="text" size="30"></p><p>Last name: <input id="lname" type="text" size="30"></p><p class="registration-form">Email: <input id="email" type="text" size="35"></p><p class="registration-form"><button id="reg" class="registration-form">Register</button><button id="login" class="registration-form">Login</button><button id="noThanks" class="registration-form">No thanks</button></p></div><div id="regPass" class="registration-form" style="display:none;"><p class="registration-form">Choose a password: <input type="password" id="regPassword"></p><p class="registration-form"><button id="submitRegPassword" class="registration-form">Submit</button></p></div><div id="loginPass" class="registration-form" style="display:none;"><p class="registration-form">Enter your password: <input type="password" id="loginPassword"></p><p><button id="submitLoginPassword" class="registration-form">Submit</button></p></div><div id="noThanksMessage" style="display:none;"><p class="registration-form"><strong>Thanks for dropping by anyway!</strong></p></div>';
 
 
         // add the overlay content
@@ -17,13 +17,14 @@ videojs("myPlayer").ready(function() {
             overlays: [
                 {
                     align: 'top',
-                    content: overlayContent
+                    content: overlayContent,
+                    start: 'play'
                 }
             ]
         });
 
         // get element references
-        fname = document.getElementById('fname'),
+        var fname = document.getElementById('fname'),
         lname = document.getElementById('lname'),
         email = document.getElementById('email'),
         reg = document.getElementById('reg'),
@@ -37,6 +38,11 @@ videojs("myPlayer").ready(function() {
         loginPass = document.getElementById('loginPass'),
         loginPassword = document.getElementById('loginPassword'),
         submitLoginPassword = document.getElementById('submitLoginPassword');
+
+    // listen for one timeupdate event
+    myPlayer.one('timeupdate', function() {
+        myPlayer.pause();
+    });
 
     /**
      * hides the overlay, unhides the controls, and plays the video
