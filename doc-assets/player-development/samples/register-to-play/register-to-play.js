@@ -1,5 +1,5 @@
-// .plugin('registerToPlay', function(options) {
-videojs("myPlayerId").ready(function() {
+// videojs("myPlayerId").ready(function() {
+plugin('registerToPlay', function(options) {
     var myPlayer = this,
         // for handling the registration form
         // user info
@@ -56,8 +56,7 @@ videojs("myPlayerId").ready(function() {
         myPlayer.play();
     };
 
-    // initially hide the controls and show the overlay
-    myPlayer.removeClass('hide-overlay');
+    // initially hide the controls
     myPlayer.addClass('hide-controls');
 
     // everything below is for handling the registration form
