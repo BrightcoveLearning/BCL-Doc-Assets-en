@@ -1,3 +1,4 @@
+var codeBlocks;
 var BCLS = ( function (window, document, bclsProfiles_cached) {
     var  mainSection = document.getElementById("main"),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
@@ -336,9 +337,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             text = document.createTextNode('Note: if you copy and paste the JSON to make a new profile, you will need to replace the null value for "account_id" with your own account id.');
             sectionJsonP.appendChild(text);
             sectionTableHeading = createEl("h6");
-            profilePre = createEl("pre", {class: 'line-numbers'});
-            profileCode = createEl("code", {class: 'language-json'});
-            profilePre.appendChild(profileCode);
+            profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
             section.appendChild(sectionTableHeading);
@@ -352,7 +351,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
 
             section.appendChild(sectionJsonHeading);
             section.appendChild(sectionJsonP);
-            section.appendChild(profilePre);
+            section.appendChild(profileCode);
             text = document.createTextNode(JSON.stringify(profile, false, "  "));
             profileCode.appendChild(text);
             fragment.appendChild(section);
@@ -405,7 +404,23 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         }
         mainSection.appendChild(fragment);
         bclslog("content built");
+        // get reference to codeBlocks
+        setCodeBlocks();
         createInPageNav();
+    }
+
+    function setCodeBlocks () {
+        var i,
+            iMax;
+        codeBlocks = document.getElementsByClassName('bcls-code');
+        function selectCode() {
+            this.select();
+        }
+
+        iMax = codeBlocks.length;
+        for (i = 0; i < iMax; i++) {
+            codeBlocks[i].addEventListener('click', selectCode);
+        }
     }
     function getProfileData() {
         var httpRequest = new XMLHttpRequest(),
@@ -463,6 +478,5 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         httpRequest.send(requestData);
     }
     getProfileData();
-
     // BCLSmain.createInPageNav();
     })(window, document, bclsProfiles_cached);
