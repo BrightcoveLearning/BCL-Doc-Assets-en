@@ -5,6 +5,8 @@ var BCLS = (function (window, document) {
         totalVideos = null,
         firstRun = true,
         videoCount = 0,
+        totalVideoCalls = 0,
+        videoCallNumber = 0,
         pageNumber = 0,
         params = {},
         // aapi stuff
@@ -15,8 +17,8 @@ var BCLS = (function (window, document) {
         account_id = "20318290001",
         $client_id = document.getElementById('client_id'),
         $client_secret = document.getElementById('client_secret'),
-        client_id,
-        client_secret,
+        client_id = null,
+        client_secret = null,
         $totalVideos = document.getElementById('totalVideos'),
         // $limitText = $("#limitText"),
         // $offset = $("#offset"),
@@ -132,8 +134,18 @@ var BCLS = (function (window, document) {
         }
     }
     // construct the request
-    function buildRequest() {
-        // build the request
+    function buildRequest(type) {
+        switch (type) {
+            case 'getCount':
+
+                break;
+            case 'getVideos':
+
+                break;
+            case 'getAnalytics':
+
+                break;
+        }
         totalAnalyticsCalls = Math.ceil(totalVideos / limit);
         account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
         minViews = $includeVideos.value;
@@ -323,12 +335,6 @@ var BCLS = (function (window, document) {
             useMyAccount.innerHTML = "Use My Account Instead";
         }
     });
-    $mapitoken.addEventListener("change", function () {
-        videoData = {};
-        // getVideos();
-        // $submitButton.html("Getting video data...please wait...");
-        // $submitButton.off("click", getData);
-    });
     // listener for videos request
     $requestInputs.addEventListener("change", buildRequest);
     // listener for change in from months
@@ -346,10 +352,18 @@ var BCLS = (function (window, document) {
     });
     // send request
     $submitButton.addEventListener("click", function () {
-        // make the Media API calls
-        getVideos();
+        // get input values
+        if (isDefined($client_id.value)) {
+            client_id = $client_id.value;
+        }
+        if (isDefined($client_secret.value)) {
+            client_secret = $client_secret.value;
+        }
+        from = now.valueOf() - ($fromMonths.value * mMonth);
+        oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth);
+        minViews = $includeVideos.value;
         // generate initial request
-        buildRequest();
+        buildRequest('getCount');
         getData();
     });
     // handler for totalVideos change
