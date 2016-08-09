@@ -1,9 +1,6 @@
-var BCLS = (function ($, window, BCMAPI, Handlebars) {
+var BCLS = (function (window, document) {
     "use strict";
-    var // media api stuff
-        $mapitoken = $("#mapitoken"),
-        $readApiLocation = $("#readApiLocation"),
-        videoData = {},
+    var videoData = {},
         itemsArray = [],
         totalVideos = null,
         firstRun = true,
@@ -11,26 +8,26 @@ var BCLS = (function ($, window, BCMAPI, Handlebars) {
         pageNumber = 0,
         params = {},
         // aapi stuff
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/non-performing-videos-proxy.php",
         useMyAccount = document.getElementById("useMyAccount"),
         basicInfo = document.getElementById("basicInfo"),
-        $accountID = $("#accountID"),
+        accountID = document.getElementById('accountID'),
         account_id = "20318290001",
-        $client_id = $("#client_id"),
-        $client_secret = $("#client_secret"),
-        client_id = "742d6440-58d1-49ed-b2fb-f60d33bf02ae",
-        client_secret = "xs3vuzzKPz5fWHInsON26SXOL54X1GObFW70KylVqdVuIHdkqwqlCs9yVSCRF3i5u_0NcNb7MrzntCLaveZmeQ",
-        $totalVideos = $("#totalVideos"),
+        $client_id = document.getElementById('client_id'),
+        $client_secret = document.getElementById('client_secret'),
+        client_id,
+        client_secret,
+        $totalVideos = document.getElementById('totalVideos'),
         // $limitText = $("#limitText"),
         // $offset = $("#offset"),
         // $offsetText = $("#offsetText"),
-        limit = 100,
-        $fromMonths = $("#fromMonths"),
-        $excludeMonths = $("#excludeMonths"),
-        $includeVideos = $("#includeVideos"),
-        $request = $("#request"),
-        $submitButton = $("#submitButton"),
-        $csvButton = $("#csvButton"),
+        limit = 25,
+        $fromMonths = document.getElementById('fromMonths'),
+        $excludeMonths = document.getElementById('excludeMonths'),
+        $includeVideos = document.getElementById('includeVideos'),
+        $request = document.getElementById('request'),
+        $submitButton = document.getElementById('submitButton'),
+        $csvButton = document.getElementById('csvButton'),
         $selectData = $("#selectData"),
         $required = $(".required"),
         $requestInputs = $(".aapi-request"),
@@ -179,7 +176,7 @@ var BCLS = (function ($, window, BCMAPI, Handlebars) {
     function buildRequest() {
         // build the request
         totalAnalyticsCalls = Math.ceil(totalVideos / limit);
-        account_id = (isDefined($accountID.val())) ? $accountID.val() : account_id;
+        account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
         minViews = $includeVideos.val();
         requestURL = "https://analytics.api.brightcove.com/v1";
         requestURL += "/data?accounts=" + account_id + "&dimensions=video";
@@ -349,4 +346,4 @@ var BCLS = (function ($, window, BCMAPI, Handlebars) {
         buildRequest: buildRequest,
         onGetVideos: onGetVideos
     };
-})($, window, BCMAPI, Handlebars);
+})(window, document);
