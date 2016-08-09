@@ -44,46 +44,6 @@ var BCLS = (function (window, document) {
         i,
         len,
         minViews = $includeVideos.value;
-    // implement array forEach method in older browsers
-    if (!Array.prototype.forEach) {
-        Array.prototype.forEach = function (fn, scope) {
-            for (i = 0, len = this.length; i < len; ++i) {
-                fn.call(scope || this, this[i], i, this);
-            }
-        };
-    }
-    /*************************
-    logging
-    *************************/
-    function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
-            console.log(context, message);
-        }
-    }
-
-    // implement array indexOf method for older browsers
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function (searchElement, fromIndex) {
-            var pivot = (fromIndex) ? fromIndex : 0,
-                length;
-            if (!this) {
-                throw new TypeError();
-            }
-            length = this.length;
-            if (length === 0 || pivot >= length) {
-                return -1;
-            }
-            if (pivot < 0) {
-                pivot = length - Math.abs(pivot);
-            }
-            for (i = pivot; i < length; i++) {
-                if (this[i] === searchElement) {
-                    return i;
-                }
-            }
-            return -1;
-        };
-    }
     // more robust test for strings "not defined"
     function isDefined(v) {
         if (v === "" || v === null || v === undefined) {
@@ -272,6 +232,68 @@ var BCLS = (function (window, document) {
             }
         });
     }
+
+    /**
+     * send API request to the proxy
+     * @param  {Object} requestData options for the request
+     * @param  {String} requestID the type of request = id of the button
+     * @param  {Function} callback the callback function to invoke
+     */
+    function getMediaData(options, requestID, callback) {
+        var httpRequest = new XMLHttpRequest(),
+            responseRaw,
+            parsedData,
+            requestParams,
+            dataString,
+            // response handler
+            getResponse = function() {
+                try {
+                  if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {
+                      console.log(httpRequest.responseText);
+                      // add/remove folder video return no data
+                      if (requestID === 'cms' || requestID === 'removeVideoFromFolder') {
+                        responseData.textContent = 'This request returns 204 No Content';
+                      } else {
+                        responseRaw = httpRequest.responseText;
+                        responseData.textContent = responseRaw;
+                        parsedData = JSON.parse(responseRaw);
+                        // save new ids on create requests
+                        if (requestID === 'createVideo') {
+                            newVideo_id = parsedData.id;
+                        } else if (requestID === 'createPlaylist') {
+                            newPlaylist_id = parsedData.id;
+                        }
+                        responseData.textContent = JSON.stringify(parsedData, null, '  ');
+                      }
+                      // re-enable the buttons
+                      enableButtons();
+                    } else {
+                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                    }
+                  }
+                } catch (e) {
+                  alert('Caught Exception: ' + e);
+                }
+            };
+            // set up request data
+        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        if (options.requestBody) {
+            dataString = JSON.stringify(options.requestBody);
+            requestParams += "&requestBody=" + encodeURIComponent(dataString);
+        }
+        console.log(requestParams);
+
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open('POST', proxyURL);
+        // set headers
+        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // open and send request
+        httpRequest.send(requestParams);
+    }
+
     // convert data to CSV
     function jsonToCSV() {
         // templates are built dynamically to allow for additional fields added later
