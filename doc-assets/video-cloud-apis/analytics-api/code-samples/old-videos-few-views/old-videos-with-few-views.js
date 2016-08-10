@@ -1,11 +1,11 @@
 var BCLS = (function (window, document) {
     "use strict";
-    var videoData = {},
+    var videoData = [],
         itemsArray = [],
         totalVideos = null,
         videoCount = 0,
         totalVideoCalls = 0,
-        videoCallNumber = 0,
+        callNumber = 0,
         pageNumber = 0,
         params = {},
         // aapi stuff
@@ -88,7 +88,7 @@ var BCLS = (function (window, document) {
     }
     // construct the request
     function buildRequest(type) {
-        var requestOptions = {};
+        var requestOptions = {}, i, iMax;
         // add credentials if submitted
         if (isDefined(client_id) && isDefined(client_secret)) {
             requestOptions.client_id = client_id;
@@ -105,7 +105,21 @@ var BCLS = (function (window, document) {
                 break;
             case 'getVideos':
                 totalVideoCalls = Math.ceil(totalVideos / limit);
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?limit=' + limit + '&offset=' +
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?limit=' + limit + '&offset=' + (limit * callNumber);
+                getData(requestOptions, type, function(response) {
+                    videoData = videoData.concat(response);
+                    callNumber++;
+                    if (callNumber < totalVideoCalls) {
+                        buildRequest('getVideos');
+                    } else {
+                        videoData.forEach(function(video, index, videoData) {
+                            video.video_view = 0;
+                            video.engagement_score = 0;
+                            video.video_percent_viewed = 0;
+                        });
+                        buildRequest('getAnalytics');
+                    }
+                });
                 break;
             case 'getAnalytics':
                 totalAnalyticsCalls = Math.ceil(totalVideos / limit);
