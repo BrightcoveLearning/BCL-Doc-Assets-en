@@ -1,12 +1,11 @@
 var BCLS = (function (window, document) {
     "use strict";
-    var videoData = {},
+    var videoData = [],
         itemsArray = [],
         totalVideos = null,
-        firstRun = true,
         videoCount = 0,
         totalVideoCalls = 0,
-        videoCallNumber = 0,
+        callNumber = 0,
         pageNumber = 0,
         params = {},
         // aapi stuff
@@ -14,15 +13,12 @@ var BCLS = (function (window, document) {
         useMyAccount = document.getElementById("useMyAccount"),
         basicInfo = document.getElementById("basicInfo"),
         accountID = document.getElementById('accountID'),
-        account_id = "20318290001",
+        account_id = "1752604059001",
         $client_id = document.getElementById('client_id'),
         $client_secret = document.getElementById('client_secret'),
         client_id = null,
         client_secret = null,
         $totalVideos = document.getElementById('totalVideos'),
-        // $limitText = $("#limitText"),
-        // $offset = $("#offset"),
-        // $offsetText = $("#offsetText"),
         limit = 25,
         $fromMonths = document.getElementById('fromMonths'),
         $excludeMonths = document.getElementById('excludeMonths'),
@@ -31,8 +27,6 @@ var BCLS = (function (window, document) {
         $submitButton = document.getElementById('submitButton'),
         $csvButton = document.getElementById('csvButton'),
         $selectData = document.getElementById('selectData'),
-        $required = document.getElementsByClassName('required'),
-        $requestInputs = document.getElementsByClassName('aapi-request'),
         $responseFrame = document.getElementById('responseFrame'),
         mMonth = 2592000000,
         now = new Date(),
@@ -46,68 +40,27 @@ var BCLS = (function (window, document) {
         i,
         len,
         minViews = $includeVideos.value;
+
+    /**
+     * Logging function - safe for IE
+     * @param  {string} context - description of the data
+     * @param  {*} message - the data to be logged by the console
+     * @return {}
+     */
+    function bclslog(context, message) {
+        if (window["console"] && console["log"]) {
+          console.log(context, message);
+        }
+        return;
+    };
+
+
     // more robust test for strings "not defined"
     function isDefined(v) {
-        if (v === "" || v === null || v === undefined) {
+        if (v === "" || v === null || v === undefined || v === NaN) {
             return false;
         }
         return true;
-    }
-    // get videos via MAPI
-    function getVideos() {
-        bclslog('$totalVideos', $totalVideos.value);
-        BCMAPI.url = isDefined($readApiLocation.value) ? $readApiLocation.value : 'http://api.brightcove.com/services/library';
-        BCMAPI.callback = "BCLS.addEventListenerGetVideos";
-        BCMAPI.token = isDefined($mapitoken.value) ? $mapitoken.value : 'v87kWelIdjUwVm7_Rzv09k-KqtLz-ty8ONbMxVYAI7-Q0eOilegqqg..';
-        params.page_number = pageNumber;
-        params.page_size = 25;
-        params.sort_by = "PUBLISH_DATE:ASC";
-        params.video_fields = "id,referenceId,name,publishedDate";
-        if (firstRun) {
-            params.get_item_count = true;
-        }
-
-        bclslog('params', params);
-        BCMAPI.search(params);
-
-    }
-    // handler for MAPI call
-    function onGetVideos(JSONdata) {
-        var itemsMax, item;
-        bclslog("jsonData", JSONdata);
-        if (isDefined(JSONdata.items)) {
-            itemsMax = JSONdata.items.length;
-        } else {
-            itemsMax = 0;
-        }
-        videoCount += itemsMax;
-        bclslog('videoCount', videoCount);
-        for (i = 0; i < itemsMax; i++) {
-            item = JSONdata.items[i];
-            item.publishedDate = parseInt(item.publishedDate);
-            videoData[item.id] = item;
-        }
-        bclslog('total_count', JSONdata.total_count);
-        // for first run
-        if (firstRun) {
-            firstRun = false;
-            if ($totalVideos.value === 'all') {
-                totalVideos = JSONdata.total_count;
-            } else {
-                totalVideos = parseInt($totalVideos.value);
-            }
-            bclslog('totalVideos', totalVideos);
-        }
-        if (videoCount < totalVideos) {
-            pageNumber++;
-            bclslog('pageNumber', pageNumber);
-            getVideos();
-        } else {
-            // $limitText.val(videoCount);
-            // $submitButton.html("Generate Report");
-            // $submitButton.addEventListener("click", getData);
-            buildRequest();
-        }
     }
 
     function removeSpaces(str) {
@@ -135,41 +88,57 @@ var BCLS = (function (window, document) {
     }
     // construct the request
     function buildRequest(type) {
+        var requestOptions = {}, i, iMax;
+        // add credentials if submitted
+        if (isDefined(client_id) && isDefined(client_secret)) {
+            requestOptions.client_id = client_id;
+            requestOptions.client_secret = client_secret;
+        }
         switch (type) {
             case 'getCount':
-
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos';
+                $request.textContent = requestOptions.url;
+                getData(requestOptions, type, function(response) {
+                    totalVideos = response.count;
+                    buildRequest('getVideos');
+                });
                 break;
             case 'getVideos':
-
+                totalVideoCalls = Math.ceil(totalVideos / limit);
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?limit=' + limit + '&offset=' + (limit * callNumber);
+                getData(requestOptions, type, function(response) {
+                    videoData = videoData.concat(response);
+                    callNumber++;
+                    if (callNumber < totalVideoCalls) {
+                        buildRequest('getVideos');
+                    } else {
+                        videoData.forEach(function(video, index, videoData) {
+                            video.video_view = 0;
+                            video.engagement_score = 0;
+                            video.video_percent_viewed = 0;
+                        });
+                        buildRequest('getAnalytics');
+                    }
+                });
                 break;
             case 'getAnalytics':
-
+                totalAnalyticsCalls = Math.ceil(totalVideos / limit);
+                account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
+                minViews = $includeVideos.value;
+                requestURL = "https://analytics.api.brightcove.com/v1";
+                requestURL += "/data?accounts=" + account_id + "&dimensions=video";
+                requestURL += "&from=" + from;
+                // add fields
+                requestURL += "&fields=video,engagement_score,video_view,video_percent_viewed";
+                $request.textContent = requestURL;
+                $request.setAttribute("value", requestURL);
+                getData();
                 break;
         }
-        totalAnalyticsCalls = Math.ceil(totalVideos / limit);
-        account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
-        minViews = $includeVideos.value;
-        requestURL = "https://analytics.api.brightcove.com/v1";
-        requestURL += "/data?accounts=" + account_id + "&dimensions=video";
-        requestURL += "&from=" + from;
-        // check for limit and offset
-        if ($totalVideos.value !== "") {
-            requestURL += "&limit=" + limit + '&offset=' + limit * analyticsCallNumber;
-        }
-        // if ($offsetText.value !== "") {
-        //     requestURL += "&offset=" + removeSpaces($offsetText.value);
-        // } else if ($offset.value !== "") {
-        //     requestURL += "offset=" + $offset.value;
-        // }
-        // add fields
-        requestURL += "&fields=video,engagement_score,video_view,video_percent_viewed";
-        // strip trailing ? or & and replace &&s
-        $request.html(requestURL);
-        $request.attr("value", requestURL);
-        getData();
+
     }
     // submit request
-    function getData() {
+    function oldgetData() {
         var itemsMax, item, video, options = {}, data;
         // clear the results frame
         $responseFrame.html("Loading...");
@@ -251,9 +220,8 @@ var BCLS = (function (window, document) {
      * @param  {String} requestID the type of request = id of the button
      * @param  {Function} callback the callback function to invoke
      */
-    function getMediaData(options, requestID, callback) {
+    function getData(options, type, callback) {
         var httpRequest = new XMLHttpRequest(),
-            responseRaw,
             parsedData,
             requestParams,
             dataString,
@@ -262,24 +230,18 @@ var BCLS = (function (window, document) {
                 try {
                   if (httpRequest.readyState === 4) {
                     if (httpRequest.status === 200) {
-                      console.log(httpRequest.responseText);
-                      // add/remove folder video return no data
-                      if (requestID === 'cms' || requestID === 'removeVideoFromFolder') {
-                        responseData.textContent = 'This request returns 204 No Content';
-                      } else {
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        // save new ids on create requests
-                        if (requestID === 'createVideo') {
-                            newVideo_id = parsedData.id;
-                        } else if (requestID === 'createPlaylist') {
-                            newPlaylist_id = parsedData.id;
-                        }
-                        responseData.textContent = JSON.stringify(parsedData, null, '  ');
+                      bclslog('httpRequest.responseText', httpRequest.responseText);
+                      switch (type) {
+                          case 'getCount':
+                              parsedData = JSON.parse(httpRequest.responseText);
+                              callback(parsedData);
+                              break;
+                          case 'getVideos':
+
+                              break;
+                          case 'getAnalytics':
+
                       }
-                      // re-enable the buttons
-                      enableButtons();
                     } else {
                       alert('There was a problem with the request. Request returned ' + httpRequest.status);
                     }
@@ -289,12 +251,11 @@ var BCLS = (function (window, document) {
                 }
             };
             // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        if (options.requestBody) {
-            dataString = JSON.stringify(options.requestBody);
-            requestParams += "&requestBody=" + encodeURIComponent(dataString);
+        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=GET";
+        if (options.client_id && options.client_secret) {
+            requestParams += "&client_id=" + options.client_id + '&client_secret=' + options.client_secret;
         }
-        console.log(requestParams);
+        bclslog('requestParams', requestParams);
 
         // set response handler
         httpRequest.onreadystatechange = getResponse;
@@ -335,21 +296,6 @@ var BCLS = (function (window, document) {
             useMyAccount.innerHTML = "Use My Account Instead";
         }
     });
-    // listener for videos request
-    $requestInputs.addEventListener("change", buildRequest);
-    // listener for change in from months
-    $fromMonths.addEventListener("change", function () {
-        from = now.valueOf() - ($fromMonths.value * mMonth);
-        buildRequest();
-    });
-    // listener for change in exclude months
-    $excludeMonths.addEventListener("change", function () {
-        oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth);
-    });
-    // listener for change in minimum views threshhold
-    $includeVideos.addEventListener("change", function () {
-        minViews = $includeVideos.value;
-    });
     // send request
     $submitButton.addEventListener("click", function () {
         // get input values
@@ -359,15 +305,21 @@ var BCLS = (function (window, document) {
         if (isDefined($client_secret.value)) {
             client_secret = $client_secret.value;
         }
+        if (isDefined(accountID.value)) {
+            account_id = accountID.value;
+        }
         from = now.valueOf() - ($fromMonths.value * mMonth);
         oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth);
         minViews = $includeVideos.value;
         // generate initial request
-        buildRequest('getCount');
-        getData();
+        // if total videos not defined, get count
+        if ($totalVideos.value !== 'all') {
+            totalVideos = $totalVideos.value;
+            buildRequest('getVideos');
+        } else {
+            buildRequest('getCount');
+        }
     });
-    // handler for totalVideos change
-    $totalVideos.addEventListener('click', getVideos);
     // convert to csv
     $csvButton.addEventListener("click", jsonToCSV);
     // select all the data
