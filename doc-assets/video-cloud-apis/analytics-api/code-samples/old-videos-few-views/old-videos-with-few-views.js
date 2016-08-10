@@ -13,7 +13,7 @@ var BCLS = (function (window, document) {
         useMyAccount = document.getElementById("useMyAccount"),
         basicInfo = document.getElementById("basicInfo"),
         accountID = document.getElementById('accountID'),
-        account_id = "20318290001",
+        account_id = "1752604059001",
         $client_id = document.getElementById('client_id'),
         $client_secret = document.getElementById('client_secret'),
         client_id = null,
@@ -27,8 +27,6 @@ var BCLS = (function (window, document) {
         $submitButton = document.getElementById('submitButton'),
         $csvButton = document.getElementById('csvButton'),
         $selectData = document.getElementById('selectData'),
-        $required = document.getElementsByClassName('required'),
-        $requestInputs = document.getElementsByClassName('aapi-request'),
         $responseFrame = document.getElementById('responseFrame'),
         mMonth = 2592000000,
         now = new Date(),
@@ -42,6 +40,21 @@ var BCLS = (function (window, document) {
         i,
         len,
         minViews = $includeVideos.value;
+
+    /**
+     * Logging function - safe for IE
+     * @param  {string} context - description of the data
+     * @param  {*} message - the data to be logged by the console
+     * @return {}
+     */
+    function bclslog(context, message) {
+        if (window["console"] && console["log"]) {
+          console.log(context, message);
+        }
+        return;
+    };
+
+
     // more robust test for strings "not defined"
     function isDefined(v) {
         if (v === "" || v === null || v === undefined || v === NaN) {
@@ -76,20 +89,23 @@ var BCLS = (function (window, document) {
     // construct the request
     function buildRequest(type) {
         var requestOptions = {};
+        // add credentials if submitted
+        if (isDefined(client_id) && isDefined(client_secret)) {
+            requestOptions.client_id = client_id;
+            requestOptions.client_secret = client_secret;
+        }
         switch (type) {
             case 'getCount':
                 requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos';
-                if (isDefined(client_id) && isDefined(client_secret)) {
-                    requestOptions.client_id = client_id;
-                    requestOptions.client_secret = client_secret;
-                }
+                $request.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     totalVideos = response.count;
-                    bclslog('totalVideos', totalVideos);
+                    buildRequest('getVideos');
                 });
                 break;
             case 'getVideos':
-
+                totalVideoCalls = Math.ceil(totalVideos / limit);
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?limit=' + limit + '&offset=' +
                 break;
             case 'getAnalytics':
                 totalAnalyticsCalls = Math.ceil(totalVideos / limit);
@@ -190,9 +206,8 @@ var BCLS = (function (window, document) {
      * @param  {String} requestID the type of request = id of the button
      * @param  {Function} callback the callback function to invoke
      */
-    function getData(options, requestID, callback) {
+    function getData(options, type, callback) {
         var httpRequest = new XMLHttpRequest(),
-            responseRaw,
             parsedData,
             requestParams,
             dataString,
@@ -201,24 +216,18 @@ var BCLS = (function (window, document) {
                 try {
                   if (httpRequest.readyState === 4) {
                     if (httpRequest.status === 200) {
-                      console.log(httpRequest.responseText);
-                      // add/remove folder video return no data
-                      if (requestID === 'cms' || requestID === 'removeVideoFromFolder') {
-                        responseData.textContent = 'This request returns 204 No Content';
-                      } else {
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        // save new ids on create requests
-                        if (requestID === 'createVideo') {
-                            newVideo_id = parsedData.id;
-                        } else if (requestID === 'createPlaylist') {
-                            newPlaylist_id = parsedData.id;
-                        }
-                        responseData.textContent = JSON.stringify(parsedData, null, '  ');
+                      bclslog('httpRequest.responseText', httpRequest.responseText);
+                      switch (type) {
+                          case 'getCount':
+                              parsedData = JSON.parse(httpRequest.responseText);
+                              callback(parsedData);
+                              break;
+                          case 'getVideos':
+
+                              break;
+                          case 'getAnalytics':
+
                       }
-                      // re-enable the buttons
-                      enableButtons();
                     } else {
                       alert('There was a problem with the request. Request returned ' + httpRequest.status);
                     }
@@ -228,12 +237,11 @@ var BCLS = (function (window, document) {
                 }
             };
             // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        if (options.requestBody) {
-            dataString = JSON.stringify(options.requestBody);
-            requestParams += "&requestBody=" + encodeURIComponent(dataString);
+        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=GET";
+        if (options.client_id && options.client_secret) {
+            requestParams += "&client_id=" + options.client_id + '&client_secret=' + options.client_secret;
         }
-        console.log(requestParams);
+        bclslog('requestParams', requestParams);
 
         // set response handler
         httpRequest.onreadystatechange = getResponse;
