@@ -2,6 +2,7 @@ var BCLS = (function (window, document) {
     "use strict";
     var videoData = [],
         itemsArray = [],
+        lastPublishedDate,
         totalVideos = null,
         videoCount = 0,
         totalVideoCalls = 0,
@@ -96,7 +97,7 @@ var BCLS = (function (window, document) {
         }
         switch (type) {
             case 'getCount':
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos';
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos?q=created_at:' + encodeURI(lastPublishedDate);
                 $request.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     totalVideos = response.count;
@@ -310,6 +311,8 @@ var BCLS = (function (window, document) {
         }
         from = now.valueOf() - ($fromMonths.value * mMonth);
         oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth);
+        lastPublishedDate = new Date(oldestPubDate).toISOString();
+        bclslog('lastPublishedDate', lastPublishedDate);
         minViews = $includeVideos.value;
         // generate initial request
         // if total videos not defined, get count
