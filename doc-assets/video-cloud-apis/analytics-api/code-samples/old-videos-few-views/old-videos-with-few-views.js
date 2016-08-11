@@ -1,160 +1,73 @@
-var BCLS = (function ($, window, BCMAPI, Handlebars) {
-    "use strict";
-    var // media api stuff
-        $mapitoken = $("#mapitoken"),
-        $readApiLocation = $("#readApiLocation"),
-        videoData = {},
-        itemsArray = [],
+var BCLS = (function (window, document) {
+    'use strict';
+    var videoData = [],
+        analyticsData = [],
+        videoIdsArray = [],
+        lastPublishedDate,
         totalVideos = null,
-        firstRun = true,
         videoCount = 0,
+        totalVideoCalls = 0,
+        callNumber = 0,
         pageNumber = 0,
         params = {},
         // aapi stuff
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        useMyAccount = document.getElementById("useMyAccount"),
-        basicInfo = document.getElementById("basicInfo"),
-        $accountID = $("#accountID"),
-        account_id = "20318290001",
-        $client_id = $("#client_id"),
-        $client_secret = $("#client_secret"),
-        client_id = "742d6440-58d1-49ed-b2fb-f60d33bf02ae",
-        client_secret = "xs3vuzzKPz5fWHInsON26SXOL54X1GObFW70KylVqdVuIHdkqwqlCs9yVSCRF3i5u_0NcNb7MrzntCLaveZmeQ",
-        $totalVideos = $("#totalVideos"),
-        // $limitText = $("#limitText"),
-        // $offset = $("#offset"),
-        // $offsetText = $("#offsetText"),
-        limit = 100,
-        $fromMonths = $("#fromMonths"),
-        $excludeMonths = $("#excludeMonths"),
-        $includeVideos = $("#includeVideos"),
-        $request = $("#request"),
-        $submitButton = $("#submitButton"),
-        $csvButton = $("#csvButton"),
-        $selectData = $("#selectData"),
-        $required = $(".required"),
-        $requestInputs = $(".aapi-request"),
-        $responseFrame = $("#responseFrame"),
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/non-performing-videos-proxy.php',
+        useMyAccount = document.getElementById('useMyAccount'),
+        basicInfo = document.getElementById('basicInfo'),
+        accountID = document.getElementById('accountID'),
+        account_id = '1752604059001',
+        $client_id = document.getElementById('client_id'),
+        $client_secret = document.getElementById('client_secret'),
+        client_id = null,
+        client_secret = null,
+        $totalVideos = document.getElementById('totalVideos'),
+        limit = 25,
+        $fromMonths = document.getElementById('fromMonths'),
+        $excludeMonths = document.getElementById('excludeMonths'),
+        $includeVideos = document.getElementById('includeVideos'),
+        $request = document.getElementById('request'),
+        $submitButton = document.getElementById('submitButton'),
+        $csvButton = document.getElementById('csvButton'),
+        $selectData = document.getElementById('selectData'),
+        $responseFrame = document.getElementById('responseFrame'),
         mMonth = 2592000000,
         now = new Date(),
         from,
-        oldestPubDate = now.valueOf() - ($excludeMonths.val() * mMonth),
-        $this,
+        oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth),
         requestTrimmed = false,
-        lastChar = "",
-        requestURL = "",
+        lastChar = '',
+        requestURL = '',
         totalAnalyticsCalls = 0,
         analyticsCallNumber = 0,
         i,
         len,
-        minViews = $includeVideos.val();
-    // implement array forEach method in older browsers
-    if (!Array.prototype.forEach) {
-        Array.prototype.forEach = function (fn, scope) {
-            for (i = 0, len = this.length; i < len; ++i) {
-                fn.call(scope || this, this[i], i, this);
-            }
-        };
-    }
-    /*************************
-    logging
-    *************************/
+        minViews = $includeVideos.value;
+
+    /**
+     * Logging function - safe for IE
+     * @param  {string} context - description of the data
+     * @param  {*} message - the data to be logged by the console
+     * @return {}
+     */
     function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
-            console.log(context, message);
+        if (window['console'] && console['log']) {
+          console.log(context, message);
         }
+        return;
     }
 
-    // implement array indexOf method for older browsers
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function (searchElement, fromIndex) {
-            var pivot = (fromIndex) ? fromIndex : 0,
-                length;
-            if (!this) {
-                throw new TypeError();
-            }
-            length = this.length;
-            if (length === 0 || pivot >= length) {
-                return -1;
-            }
-            if (pivot < 0) {
-                pivot = length - Math.abs(pivot);
-            }
-            for (i = pivot; i < length; i++) {
-                if (this[i] === searchElement) {
-                    return i;
-                }
-            }
-            return -1;
-        };
-    }
-    // more robust test for strings "not defined"
+
+    // more robust test for strings 'not defined'
     function isDefined(v) {
-        if (v === "" || v === null || v === undefined) {
+        if (v === '' || v === null || v === undefined || v === NaN) {
             return false;
         }
         return true;
     }
-    // get videos via MAPI
-    function getVideos() {
-        bclslog('$totalVideos', $totalVideos.val());
-        BCMAPI.url = isDefined($readApiLocation.val()) ? $readApiLocation.val() : 'http://api.brightcove.com/services/library';
-        BCMAPI.callback = "BCLS.onGetVideos";
-        BCMAPI.token = isDefined($mapitoken.val()) ? $mapitoken.val() : 'v87kWelIdjUwVm7_Rzv09k-KqtLz-ty8ONbMxVYAI7-Q0eOilegqqg..';
-        params.page_number = pageNumber;
-        params.page_size = 25;
-        params.sort_by = "PUBLISH_DATE:ASC";
-        params.video_fields = "id,referenceId,name,publishedDate";
-        if (firstRun) {
-            params.get_item_count = true;
-        }
-
-        bclslog('params', params);
-        BCMAPI.search(params);
-
-    }
-    // handler for MAPI call
-    function onGetVideos(JSONdata) {
-        var itemsMax, item;
-        bclslog("jsonData", JSONdata);
-        if (isDefined(JSONdata.items)) {
-            itemsMax = JSONdata.items.length;
-        } else {
-            itemsMax = 0;
-        }
-        videoCount += itemsMax;
-        bclslog('videoCount', videoCount);
-        for (i = 0; i < itemsMax; i++) {
-            item = JSONdata.items[i];
-            item.publishedDate = parseInt(item.publishedDate);
-            videoData[item.id] = item;
-        }
-        bclslog('total_count', JSONdata.total_count);
-        // for first run
-        if (firstRun) {
-            firstRun = false;
-            if ($totalVideos.val() === 'all') {
-                totalVideos = JSONdata.total_count;
-            } else {
-                totalVideos = parseInt($totalVideos.val());
-            }
-            bclslog('totalVideos', totalVideos);
-        }
-        if (videoCount < totalVideos) {
-            pageNumber++;
-            bclslog('pageNumber', pageNumber);
-            getVideos();
-        } else {
-            // $limitText.val(videoCount);
-            // $submitButton.html("Generate Report");
-            // $submitButton.on("click", getData);
-            buildRequest();
-        }
-    }
 
     function removeSpaces(str) {
         if (isDefined(str)) {
-            str = str.replace(/\s+/g, "");
+            str = str.replace(/\s+/g, '');
             return str;
         }
     }
@@ -162,191 +75,264 @@ var BCLS = (function ($, window, BCMAPI, Handlebars) {
     function trimRequest() {
         if (!requestTrimmed) {
             lastChar = requestURL.charAt((requestURL.length - 1));
-            if (lastChar === "?" || lastChar === "&" || lastChar === ";") {
+            if (lastChar === '?' || lastChar === '&' || lastChar === ';') {
                 requestURL = requestURL.substring(0, (requestURL.length - 1));
                 // recall this function until trim finished
                 trimRequest(requestURL);
-            } else if (requestURL.indexOf("&&") > -1) {
-                requestURL = requestURL.replace("&&", "&");
-            } else if (requestURL.indexOf("?&") > -1) {
-                requestURL = requestURL.replace("?&", "?");
+            } else if (requestURL.indexOf('&&') > -1) {
+                requestURL = requestURL.replace('&&', '&');
+            } else if (requestURL.indexOf('?&') > -1) {
+                requestURL = requestURL.replace('?&', '?');
             } else {
                 requestTrimmed = true;
             }
         }
     }
-    // construct the request
-    function buildRequest() {
-        // build the request
-        totalAnalyticsCalls = Math.ceil(totalVideos / limit);
-        account_id = (isDefined($accountID.val())) ? $accountID.val() : account_id;
-        minViews = $includeVideos.val();
-        requestURL = "https://analytics.api.brightcove.com/v1";
-        requestURL += "/data?accounts=" + account_id + "&dimensions=video";
-        requestURL += "&from=" + from;
-        // check for limit and offset
-        if ($totalVideos.val() !== "") {
-            requestURL += "&limit=" + limit + '&offset=' + limit * analyticsCallNumber;
-        }
-        // if ($offsetText.val() !== "") {
-        //     requestURL += "&offset=" + removeSpaces($offsetText.val());
-        // } else if ($offset.val() !== "") {
-        //     requestURL += "offset=" + $offset.val();
-        // }
-        // add fields
-        requestURL += "&fields=video,engagement_score,video_view,video_percent_viewed";
-        // strip trailing ? or & and replace &&s
-        $request.html(requestURL);
-        $request.attr("value", requestURL);
-        getData();
-    }
-    // submit request
-    function getData() {
-        var itemsMax, item, video, options = {}, data;
-        // clear the results frame
-        $responseFrame.html("Loading...");
-        options.client_id = (isDefined($client_id.val())) ? $client_id.val() : client_id;
-        options.client_secret = (isDefined($client_secret.val())) ? $client_secret.val() : client_secret;
-        options.url = $request.val();
-        options.requestType = "GET";
-        options.requestBody = null;
-        bclslog("options", options);
-        $.ajax({
-            url: proxyURL,
-            type: "POST",
-            data: options,
-            success: function (jsondata) {
-                bclslog("aapi call complete");
-                try {
-                  data = JSON.parse(jsondata);
-                } catch (e) {
-                  alert('invalid json');
-                }
-                minViews = $includeVideos.val();
-                itemsMax = data.items.length;
-                // add analytics data to video data
-                for (i = 0; i < itemsMax; i++) {
-                    item = data.items[i];
-                    if (isDefined(videoData[parseInt(item.video)])) {
-                        videoData[item.video].engagement_score = item.engagement_score;
-                        videoData[item.video].video_view = item.video_view;
-                        videoData[item.video].average_percent_viewed = item.video_percent_viewed / item.video_view;
-                    }
-                }
-                // convert it to a simple array to make conversion to CSV easier
-                for (video in videoData) {
-                    itemsArray.push(videoData[video]);
-                }
-                analyticsCallNumber++;
-                if (analyticsCallNumber < totalAnalyticsCalls) {
-                    buildRequest();
-                } else {
-                    itemsMax = itemsArray.length;
-                    // assume videos not returned in analytics data had 0 views
-                    for (i = 0; i < itemsMax; i++) {
-                        video = itemsArray[i];
-                        if (!video.hasOwnProperty("video_view")) {
-                            video.engagement_score = 0;
-                            video.video_view = 0;
-                            video.average_percent_viewed = 0;
-                        }
-                    }
-                    // remove videos above the views minimum
-                    i = itemsArray.length;
-                    while (i--) {
-                        video = itemsArray[i];
-                        if (video.video_view > minViews) {
-                            itemsArray.splice(i, 1);
-                        }
-                    }
-                    // remove items if the published date is too new
-                    i = itemsArray.length;
-                    while (i--) {
-                        video = itemsArray[i];
-                        if (video.publishedDate > oldestPubDate) {
-                            itemsArray.splice(i, 1);
-                        }
-                    }
-                    $responseFrame.html(JSON.stringify(itemsArray, null, '  '));
-                }
 
-            },
-            error : function (XMLHttpRequest, textStatus, errorThrown) {
-                $responseFrame.html("Sorry, your request was not successful. Here's what the server sent back: " + errorThrown);
+    /**
+     * find index of an object in array of objects
+     * based on some property value
+     *
+     * @param {array} targetArray array to search
+     * @param {string} objProperty object property to search
+     * @param {string} value of the property to search for
+     * @return {integer} index of first instance if found, otherwise returns -1
+    */
+    function findObjectInArray(targetArray, objProperty, value) {
+        var i, totalItems = targetArray.length, objFound = false;
+        for (i = 0; i < totalItems; i++) {
+            if (targetArray[i][objProperty] === value) {
+                objFound = true;
+                return i;
             }
-        });
+        }
+        if (objFound === false) {
+            return -1;
+        }
     }
+
+    /**
+     * Builds the API requests and handles responses
+     * @param {String} type the request type (getCount | getVideos | getAnalytics)
+     */
+    function buildRequest(type) {
+        var requestOptions = {},
+            tmpArray,
+            newVideoItem = {},
+            currentIndex,
+            videoItem,
+            i;
+        // add credentials if submitted
+        if (isDefined(client_id) && isDefined(client_secret)) {
+            requestOptions.client_id = client_id;
+            requestOptions.client_secret = client_secret;
+        }
+        switch (type) {
+            case 'getCount':
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos?q=published_at:..' + lastPublishedDate;
+                $request.textContent = requestOptions.url;
+                getData(requestOptions, type, function(response) {
+                    totalVideos = response.count;
+                    buildRequest('getVideos');
+                });
+                break;
+            case 'getVideos':
+                totalVideoCalls = Math.ceil(totalVideos / limit);
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&limit=' + limit + '&offset=' + (limit * callNumber) + '&sort=published_at';
+                getData(requestOptions, type, function(response) {
+                    // add the current item array to overall one
+                    response.forEach(function(video, index, response){
+                        newVideoItem = {};
+                        newVideoItem.id = video.id;
+                        newVideoItem.name = video.name;
+                        newVideoItem.published_at = video.published_at;
+                        newVideoItem.video_view = 0;
+                        newVideoItem.engagement_score = 0;
+                        newVideoItem.video_percent_viewed = 0;
+                        videoData.push(newVideoItem);
+                        // add the video id to the video ids array
+                        videoIdsArray.push(video.id);
+                    });
+                    callNumber++;
+                    if (callNumber < totalVideoCalls) {
+                        // still have more videos to get
+                        buildRequest('getVideos');
+                    } else {
+                        // reset callNumber
+                        callNumber = 0;
+                        buildRequest('getAnalytics');
+                    }
+                });
+                break;
+            case 'getAnalytics':
+                // because of URL length restrictions, we can get up to 150 videos at a time
+                totalAnalyticsCalls = Math.ceil(videoIdsArray.length / 150);
+                tmpArray = videoIdsArray.slice((callNumber * 150), ((callNumber * 150) + 150));
+                account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
+                minViews = parseInt($includeVideos.value);
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1';
+                requestOptions.url += '/data?accounts=' + account_id + '&dimensions=video&limit=150';
+                // add where filter
+                requestOptions.url += '&where=video==' + tmpArray.join(',');
+                // add from date
+                requestURL += '&from=' + from;
+                // add fields
+                requestURL += '&fields=video,engagement_score,video_view,video_percent_viewed';
+                $request.textContent = requestOptions.url;
+                $request.setAttribute('value', requestURL);
+                getData(requestOptions, type, function(response) {
+                    analyticsData = analyticsData.concat(response.items);
+                    callNumber++;
+                    if (callNumber < totalAnalyticsCalls) {
+                        buildRequest('getAnalytics');
+                    } else {
+                        // remove items with more than the minimum views
+                        i = analyticsData.length;
+                        while (i > 0) {
+                            i--;
+                            if (analyticsData[i].video_view > minViews) {
+                                analyticsData.splice(i, 1);
+                            }
+                        }
+                        // update analytics properties in the video data
+                        analyticsData.forEach(function(item, index, analyticsData) {
+                            currentIndex = findObjectInArray(videoData, 'id', item.video);
+                            videoItem = videoData[currentIndex];
+                            videoItem.video_view = item.video_view;
+                            // engagement score and percent viewed may be undefined
+                            videoItem.engagement_score = (isDefined(videoItem.engagement_score)) ? item.engagement_score : 0;
+                            videoItem.video_percent_viewed = (isDefined(videoItem.video_percent_viewed)) ? item.video_percent_viewed : 0;
+                        });
+                        // if video items did not show up in analytics results, engagement score and percent viewed may be undefined
+                        videoData.forEach(function(video, index, videoData) {
+                            if (!isDefined(video.engagement_score)) {
+                                video.engagement_score = 0;
+                            }
+                            if (!isDefined(video.video_percent_viewed)) {
+                                video.video_percent_viewed = 0;
+                            }
+                        });
+                        $responseFrame.textContent = JSON.stringify(videoData, null, "  ");
+                    }
+                });
+                break;
+        }
+
+    }
+    /**
+     * send API request to the proxy
+     * @param  {Object} requestData options for the request
+     * @param  {String} requestID the type of request = id of the button
+     * @param  {Function} callback the callback function to invoke
+     */
+    function getData(options, type, callback) {
+        var httpRequest = new XMLHttpRequest(),
+            parsedData,
+            requestParams,
+            dataString,
+            // response handler
+            getResponse = function() {
+                try {
+                  if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {
+                      parsedData = JSON.parse(httpRequest.responseText);
+                      callback(parsedData);
+                    } else {
+                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                    }
+                  }
+                } catch (e) {
+                  alert('Caught Exception: ' + e);
+                }
+            };
+            // set up request data
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+        if (options.client_id && options.client_secret) {
+            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        }
+
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open('POST', proxyURL);
+        // set headers
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // open and send request
+        httpRequest.send(requestParams);
+    }
+
     // convert data to CSV
     function jsonToCSV() {
         // templates are built dynamically to allow for additional fields added later
-        var headersRow = "", rowTemplate = "{{#items}}", property, template, results, str = "", obj = {};
-        obj.items = itemsArray;
-        $responseFrame.html("Loading CSV data...");
-        for (property in obj.items[0]) {
-            headersRow += "\"" + property + "\",";
-            rowTemplate += "\"{{" + property + "}}\",";
+        var headersRow = '',
+            textRows = '',
+            tmpArray = [],
+            prop,
+            i,
+            iMax,
+            video,
+            str;
+        $responseFrame.textContent = 'Loading CSV data...';
+        // build header row
+        headersRow = '"ID","Name","Published Date","Video Views","Engagement Score","Video Percent Viewed" \n';
+        // build rows
+        tmpArray = [];
+        iMax = videoData.length;
+        for (i = 0; i < iMax; i++) {
+            video = videoData[i];
+            tmpArray = [video.id, video.name, video.published_at,video.video_view,video.engagement_score,video.video_percent_viewed];
+            textRows += tmpArray.join(',') + '\n';
         }
-        headersRow += " \r";
-        rowTemplate += "\r{{/items}}";
-        str = headersRow;
-        template = Handlebars.compile(rowTemplate);
-        results = template(obj);
-        str += results;
-        $responseFrame.html(str);
+        str = headersRow + textRows;
+        $responseFrame.textContent = str;
     }
 
     // set event listeners
-    useMyAccount.addEventListener("click", function () {
-        if (basicInfo.getAttribute('style') === "display:none;") {
+    useMyAccount.addEventListener('click', function () {
+        if (basicInfo.getAttribute('style') === 'display:none;') {
             basicInfo.setAttribute('style', 'display:block;');
-            useMyAccount.innerHTML = "Use Sample Account";
+            useMyAccount.innerHTML = 'Use Sample Account';
         } else {
             basicInfo.setAttribute('style', 'display:none;');
-            useMyAccount.innerHTML = "Use My Account Instead";
+            useMyAccount.innerHTML = 'Use My Account Instead';
         }
     });
-    $mapitoken.on("change", function () {
-        videoData = {};
-        // getVideos();
-        // $submitButton.html("Getting video data...please wait...");
-        // $submitButton.off("click", getData);
-    });
-    // listener for videos request
-    $requestInputs.on("change", buildRequest);
-    // listener for change in from months
-    $fromMonths.on("change", function () {
-        from = now.valueOf() - ($fromMonths.val() * mMonth);
-        buildRequest();
-    });
-    // listener for change in exclude months
-    $excludeMonths.on("change", function () {
-        oldestPubDate = now.valueOf() - ($excludeMonths.val() * mMonth);
-    });
-    // listener for change in minimum views threshhold
-    $includeVideos.on("change", function () {
-        minViews = $includeVideos.val();
-    });
     // send request
-    $submitButton.on("click", function () {
-        // make the Media API calls
-        getVideos();
+    $submitButton.addEventListener('click', function () {
+        // get input values
+        if (isDefined($client_id.value)) {
+            client_id = $client_id.value;
+        }
+        if (isDefined($client_secret.value)) {
+            client_secret = $client_secret.value;
+        }
+        if (isDefined(accountID.value)) {
+            account_id = accountID.value;
+        }
+        from = now.valueOf() - ($fromMonths.value * mMonth);
+        oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth);
+        lastPublishedDate = new Date(oldestPubDate).toISOString();
+        bclslog('lastPublishedDate', lastPublishedDate);
+        minViews = $includeVideos.value;
         // generate initial request
-        buildRequest();
-        getData();
+        // if total videos not defined, get count
+        if ($totalVideos.value !== 'all') {
+            totalVideos = $totalVideos.value;
+            buildRequest('getVideos');
+        } else {
+            buildRequest('getCount');
+        }
     });
-    // handler for totalVideos change
-    $totalVideos.on('click', getVideos);
     // convert to csv
-    $csvButton.on("click", jsonToCSV);
+    $csvButton.addEventListener('click', jsonToCSV);
     // select all the data
-    $selectData.on("click", function () {
-        document.getElementById("responseFrame").select();
+    $selectData.addEventListener('click', function () {
+        document.getElementById('responseFrame').select();
     });
     // set initial value of from
     from = now.valueOf() - mMonth;
 
     return {
-        buildRequest: buildRequest,
-        onGetVideos: onGetVideos
+        buildRequest: buildRequest
     };
-})($, window, BCMAPI, Handlebars);
+})(window, document);
