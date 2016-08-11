@@ -54,7 +54,7 @@ var BCLS = (function (window, document) {
           console.log(context, message);
         }
         return;
-    };
+    }
 
 
     // more robust test for strings 'not defined'
@@ -116,7 +116,12 @@ var BCLS = (function (window, document) {
      * @param {String} type the request type (getCount | getVideos | getAnalytics)
      */
     function buildRequest(type) {
-        var requestOptions = {}, tmpArray;
+        var requestOptions = {},
+            tmpArray,
+            newVideoItem = {},
+            currentIndex,
+            videoItem,
+            i;
         // add credentials if submitted
         if (isDefined(client_id) && isDefined(client_secret)) {
             requestOptions.client_id = client_id;
@@ -136,20 +141,23 @@ var BCLS = (function (window, document) {
                 requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&limit=' + limit + '&offset=' + (limit * callNumber) + '&sort=published_at';
                 getData(requestOptions, type, function(response) {
                     // add the current item array to overall one
-                    videoData = videoData.concat(response);
+                    response.forEach(function(video, index, response){
+                        newVideoItem = {};
+                        newVideoItem.id = video.id;
+                        newVideoItem.name = video.name;
+                        newVideoItem.published_at = video.published_at;
+                        newVideoItem.video_view = 0;
+                        newVideoItem.engagement_score = 0;
+                        newVideoItem.video_percent_viewed = 0;
+                        videoData.push(newVideoItem);
+                        // add the video id to the video ids array
+                        videoIdsArray.push(video.id);
+                    });
                     callNumber++;
                     if (callNumber < totalVideoCalls) {
                         // still have more videos to get
                         buildRequest('getVideos');
                     } else {
-                        videoData.forEach(function(video, index, videoData) {
-                            // initialize the analytics data for each video
-                            video.video_view = 0;
-                            video.engagement_score = 0;
-                            video.video_percent_viewed = 0;
-                            // add the video id to the video ids array
-                            videoIdsArray.push(video.id);
-                        });
                         // reset callNumber
                         callNumber = 0;
                         buildRequest('getAnalytics');
@@ -161,9 +169,9 @@ var BCLS = (function (window, document) {
                 totalAnalyticsCalls = Math.ceil(videoIdsArray.length / 150);
                 tmpArray = videoIdsArray.slice((callNumber * 150), ((callNumber * 150) + 150));
                 account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
-                minViews = $includeVideos.value;
+                minViews = parseInt($includeVideos.value);
                 requestOptions.url = 'https://analytics.api.brightcove.com/v1';
-                requestOptions.url += '/data?accounts=' + account_id + '&dimensions=video';
+                requestOptions.url += '/data?accounts=' + account_id + '&dimensions=video&limit=150';
                 // add where filter
                 requestOptions.url += '&where=video==' + tmpArray.join(',');
                 // add from date
@@ -178,7 +186,33 @@ var BCLS = (function (window, document) {
                     if (callNumber < totalAnalyticsCalls) {
                         buildRequest('getAnalytics');
                     } else {
-                        bclslog('analyticsData', analyticsData);
+                        // remove items with more than the minimum views
+                        i = analyticsData.length;
+                        while (i > 0) {
+                            i--;
+                            if (analyticsData[i].video_view > minViews) {
+                                analyticsData.splice(i, 1);
+                            }
+                        }
+                        // update analytics properties in the video data
+                        analyticsData.forEach(function(item, index, analyticsData) {
+                            currentIndex = findObjectInArray(videoData, 'id', item.video);
+                            videoItem = videoData[currentIndex];
+                            videoItem.video_view = item.video_view;
+                            // engagement score and percent viewed may be undefined
+                            videoItem.engagement_score = (isDefined(videoItem.engagement_score)) ? item.engagement_score : 0;
+                            videoItem.video_percent_viewed = (isDefined(videoItem.video_percent_viewed)) ? item.video_percent_viewed : 0;
+                        });
+                        // if video items did not show up in analytics results, engagement score and percent viewed may be undefined
+                        videoData.forEach(function(video, index, videoData) {
+                            if (!isDefined(video.engagement_score)) {
+                                video.engagement_score = 0;
+                            }
+                            if (!isDefined(video.video_percent_viewed)) {
+                                video.video_percent_viewed = 0;
+                            }
+                        });
+                        $responseFrame.textContent = JSON.stringify(videoData, null, "  ");
                     }
                 });
                 break;
@@ -201,7 +235,6 @@ var BCLS = (function (window, document) {
                 try {
                   if (httpRequest.readyState === 4) {
                     if (httpRequest.status === 200) {
-                      bclslog('httpRequest.responseText', httpRequest.responseText);
                       parsedData = JSON.parse(httpRequest.responseText);
                       callback(parsedData);
                     } else {
@@ -217,7 +250,6 @@ var BCLS = (function (window, document) {
         if (options.client_id && options.client_secret) {
             requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
         }
-        bclslog('requestParams', requestParams);
 
         // set response handler
         httpRequest.onreadystatechange = getResponse;
@@ -232,8 +264,26 @@ var BCLS = (function (window, document) {
     // convert data to CSV
     function jsonToCSV() {
         // templates are built dynamically to allow for additional fields added later
-        var headersRow = '';
+        var headersRow = '',
+            textRows = '',
+            tmpArray = [],
+            prop,
+            i,
+            iMax,
+            video,
+            str;
         $responseFrame.textContent = 'Loading CSV data...';
+        // build header row
+        headersRow = '"ID","Name","Published Date","Video Views","Engagement Score","Video Percent Viewed" \n';
+        // build rows
+        tmpArray = [];
+        iMax = videoData.length;
+        for (i = 0; i < iMax; i++) {
+            video = videoData[i];
+            tmpArray = [video.id, video.name, video.published_at,video.video_view,video.engagement_score,video.video_percent_viewed];
+            textRows += tmpArray.join(',') + '\n';
+        }
+        str = headersRow + textRows;
         $responseFrame.textContent = str;
     }
 
