@@ -1,57 +1,60 @@
-var BCLS = (function (window, document, $, Handlebars, datepickr) {
-    "use strict";
-    var proxyURL = "http://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        useMyAccount = document.getElementById("useMyAccount"),
-        basicInfo = document.getElementById("basicInfo"),
-        $accountID = $("#accountID"),
-        accountID = "20318290001",
-        $client_id = $("#client_id"),
-        $client_secret = $("#client_secret"),
-        client_id = "742d6440-58d1-49ed-b2fb-f60d33bf02ae",
-        client_secret = "xs3vuzzKPz5fWHInsON26SXOL54X1GObFW70KylVqdVuIHdkqwqlCs9yVSCRF3i5u_0NcNb7MrzntCLaveZmeQ",
-        $videoSelector = $("#videoSelector"),
-        $geoSelector = $("#geoSelector"),
-        $reportTableBody = $("#reportTableBody"),
-        $fromDate = $("#fromDatePicker"),
+var BCLS = (function (window, document, datepickr) {
+    'use strict';
+    var proxyURL = 'http://solutions.brightcove.com/bcls/bcls-proxy/geo-report-proxy.php',
+        useMyAccount = document.getElementById('useMyAccount'),
+        basicInfo = document.getElementById('basicInfo'),
+        $accountID = document.getElementById('accountID'),
+        account_id = '1752604059001',
+        $client_id = $('#client_id'),
+        $client_secret = $('#client_secret'),
+        client_id = '',
+        client_secret = '',
+        $videoSelector = document.getElementById('videoSelector'),
+        $geoSelector = document.getElementById('geoSelector'),
+        $reportTableBody = document.getElementById('reportTableBody'),
         fromDatePickr = document.getElementById('fromDatePicker'),
         toDatePickr = document.getElementById('toDatePicker'),
-        $toDate = $("#toDatePicker"),
-        $getData = $("#getData"),
-        $gettingDataDisplay = $("#gettingDataDisplay"),
-        $video_player_info = $("#video_player_info"),
-        $requestURL = $("#requestURL"),
+        $getData = document.getElementById('getData'),
+        $gettingDataDisplay = document.getElementById('gettingDataDisplay'),
+        $video_player_info = document.getElementById('video_player_info'),
+        $requestURL = document.getElementById('requestURL'),
         currentVideo,
         analyticsData = {},
         chartData = [],
-        dataDisplayBodyTemplate = "{{#items}}<tr><td>{{country_name}}</td><td>{{region_name}}</td><td>{{city}}</td><td>{{video_view}}</td><td>{{average_seconds_viewed}}</td></tr>{{/items}}",
-        videoSelectTemplate = '<option value="">Select a video</option>{{#items}}<option value="{{video}}">{{video_name}}</options>{{/items}}',
-        callType,
+        callType;
         /**
          * Logging function - safe for IE
          * @param  {string} context description of the data
          * @param  {*} message the data to be logged by the console
          * @return {}
          */
-        bclslog = function (context, message) {
-            if (window["console"] && console["log"]) {
+        function bclslog(context, message) {
+            if (window['console'] && console['log']) {
               console.log(context, message);
-            };
-            return;
-        },
-        // more robust test for strings "not defined"
-        isDefined =  function (v) {
-            if(v === "" || v === null || v === "undefined") {
-                return false;
-            } else {
-                return true;
             }
-        },
-        displayData = function () {
+            return;
+        }
+        // more robust test for strings 'not defined'
+        /**
+         * tests for all the ways a variable might be undefined or not have a value
+         * @param {*} x the variable to test
+         * @return {Boolean} true if variable is defined and has a value
+         */
+        function isDefined(x) {
+            if ( x === '' || x === null || x === undefined || x === NaN) {
+                return false;
+            }
+            return true;
+        }
+        /**
+         * builds the data display
+         */
+        function displayData() {
             var displayStr, template, results;
-            currentVideo = $videoSelector.filter(":selected").text();
-            displayStr = "";
-            if (currentVideo !== "") {
-                displayStr += "Video: " + currentVideo;
+            currentVideo = $videoSelector.filter(':selected').text();
+            displayStr = '';
+            if (currentVideo !== '') {
+                displayStr += 'Video: ' + currentVideo;
             }
             $video_player_info.html(displayStr);
             // table
@@ -59,132 +62,180 @@ var BCLS = (function (window, document, $, Handlebars, datepickr) {
             results = template(analyticsData);
             $reportTableBody.html(results);
             // chart
-            $.plot("#chartView", [ chartData] , {
+            $.plot('#chartView', [ chartData] , {
                 series: {
                     bars: {
                         show: true,
                         barWidth: 0.6,
-                        align: "center"
+                        align: 'center'
                     }
                 },
                 xaxis: {
-                    mode: "categories",
+                    mode: 'categories',
                     tickLength: 0
                 }
             });
-        },
-        makeAnalyticsCall = function (callURL, callType) {
-            var options = {};
-            // clear chart data
-            chartData = [];
-            // set up options
-            options.url = callURL;
-            options.requestType = "GET";
-            options.client_id = (isDefined($client_id.val())) ? $client_id.val() : client_id;
-            options.client_secret = (isDefined($client_secret.val())) ? $client_secret.val() : client_secret;
-            options.requestBody = null;
-            bclslog("options", options);
-            $.ajax({
-                url: proxyURL,
-                type: "POST",
-                data: options,
-                success : function (data) {
-                    var template, data, i, itemsmax, item, selectedGeo = $geoSelector.val();
-                    try {
-                       data = JSON.parse(data);
-                    } catch (e) {
-                       alert('invalid json');
-                    }
-                    switch (callType) {
-                        case "videos":
-                            // populate the video selector
-                            template = Handlebars.compile(videoSelectTemplate);
-                            $videoSelector.html(template(data));
-                            $gettingDataDisplay.text("Video data retrieved");
-                            break;
-                        case "analytics":
-                            console.log('data', data);
-                            itemsmax = data.items.length;
-                            for (i = 0; i < itemsmax; i++) {
-                                item = data.items[i];
-                                item.avgSecondsViewed = item.video_seconds_viewed / item.video_view;
-                                chartData.push([item[selectedGeo], item.video_view]);
-                            }
-                            analyticsData = data;
-                            $gettingDataDisplay.text("Data retrieved");
-                            displayData();
-                            break;
-                }
-            },
-            error : function (XMLHttpRequest, textStatus, errorThrown)
-                {
-                    $gettingDataDisplay.text("Sorry, your request was not successful. Here's what the server sent back: " + errorThrown);
-                }
-            });
-        },
-        // get the analytics data for the videos
-        getAnalyticsData = function () {
-            var callURL;
-            accountID = (isDefined($accountID.val())) ? $accountID.val() : accountID;
-            $gettingDataDisplay.text("Getting analytics data...");
-            callType = "analytics";
-            currentVideo = $videoSelector.val();
-            callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + accountID + "&dimensions=" + $geoSelector.val() + "&limit=all&fields=country,country_name,video_view,video_seconds_viewed";
-            if (isDefined($fromDate.val())) {
-                callURL += "&from=" + $fromDate.val();
+        }
+
+        /**
+         * Builds the API requests and handles responses
+         * @param {String} type the request type (getCount | getVideos | getAnalytics)
+         */
+        function buildRequest(type) {
+            var requestOptions = {},
+                tmpArray,
+                newVideoItem = {},
+                currentIndex,
+                videoItem,
+                i,
+                frag = new DocumentFragment();
+            // add credentials if submitted
+            if (isDefined(client_id) && isDefined(client_secret)) {
+                requestOptions.client_id = client_id;
+                requestOptions.client_secret = client_secret;
             }
-            if (isDefined($toDate.val())) {
-                callURL += "&to=" + $toDate.val();
+            switch (type) {
+                case 'getVideos':
+                callURL = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view';
+                $requestURL.text(callURL);
+                makeAnalyticsCall(callURL, callType);
+                    break;
+                case 'getVideos':
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + accountID + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value;
+                    getData(requestOptions, type, function(response) {
+                        // add the current item array to overall one
+                        response.forEach(function(video, index, response){
+                            newVideoItem = {};
+                            newVideoItem.id = video.id;
+                            newVideoItem.name = video.name;
+                            newVideoItem.published_at = video.published_at;
+                            newVideoItem.video_view = 0;
+                            newVideoItem.engagement_score = 0;
+                            newVideoItem.video_percent_viewed = 0;
+                            videoData.push(newVideoItem);
+                            // add the video id to the video ids array
+                            videoIdsArray.push(video.id);
+                        });
+                        callNumber++;
+                        if (callNumber < totalVideoCalls) {
+                            // still have more videos to get
+                            buildRequest('getVideos');
+                        } else {
+                            // reset callNumber
+                            callNumber = 0;
+                            buildRequest('getAnalytics');
+                        }
+                    });
+                    break;
+                case 'getAnalytics':
+                    break;
+            }
+
+        /**
+         * send API request to the proxy
+         * @param  {Object} requestData options for the request
+         * @param  {String} requestID the type of request = id of the button
+         * @param  {Function} callback the callback function to invoke
+         */
+        function getData(options, type, callback) {
+            var httpRequest = new XMLHttpRequest(),
+                parsedData,
+                requestParams,
+                dataString,
+                // response handler
+                getResponse = function() {
+                    try {
+                      if (httpRequest.readyState === 4) {
+                        if (httpRequest.status === 200) {
+                          parsedData = JSON.parse(httpRequest.responseText);
+                          callback(parsedData);
+                        } else {
+                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                        }
+                      }
+                    } catch (e) {
+                      alert('Caught Exception: ' + e);
+                    }
+                };
+                // set up request data
+            requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+            if (options.client_id && options.client_secret) {
+                requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+            }
+
+            // set response handler
+            httpRequest.onreadystatechange = getResponse;
+            // open the request
+            httpRequest.open('POST', proxyURL);
+            // set headers
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            // open and send request
+            httpRequest.send(requestParams);
+        }
+
+
+        // get the analytics data for the videos
+        function getAnalyticsData() {
+            var callURL;
+            accountID = (isDefined($accountID.value)) ? $accountID.value : accountID;
+            $gettingDataDisplay.text('Getting analytics data...');
+            callType = 'analytics';
+            currentVideo = $videoSelector.value;
+            callURL = 'https://analytics.api.brightcove.com/v1/data?accounts=' + accountID + '&dimensions=' + $geoSelector.value + '&limit=all&fields=country,country_name,video_view,video_seconds_viewed';
+            if (isDefined($fromDate.value)) {
+                callURL += '&from=' + $fromDate.value;
+            }
+            if (isDefined($toDate.value)) {
+                callURL += '&to=' + $toDate.value;
             }
             if (isDefined(currentVideo)) {
-                callURL += "&where=video==" + currentVideo;
+                callURL += '&where=video==' + currentVideo;
             }
             $requestURL.text(callURL);
             makeAnalyticsCall(callURL, callType);
 
-        },
+        }
         /** get the videos for the time period
         * note the limit of 200 videos - to get more simply
         * change that value, or you could provide an additional field
         * to let the user decide how many to retrieve
         */
-        getVideoData = function () {
-            var callURL = "";
-            accountID = (isDefined($accountID.val())) ? $accountID.val() : accountID;
-            $gettingDataDisplay.text("Getting video data...");
-            callType = "videos";
-            callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + accountID + "&dimensions=video&limit=all&fields=video,video_name&sort=video_view";
+        function getVideoData() {
+            var callURL = '';
+            account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
+            $gettingDataDisplay.text('Getting video data...');
+            callType = 'videos';
+
             $requestURL.text(callURL);
             makeAnalyticsCall(callURL, callType);
-        };
+        }
     // add date pickers to the date input fields
     datepickr (fromDatePickr, {
         'dateFormat': 'Y-m-d'
     });
     datepickr (toDatePickr, {
-        "dateFormat": "Y-m-d"
+        'dateFormat': 'Y-m-d'
     });
 
     // set event listeners
-    useMyAccount.addEventListener("click", function () {
+    useMyAccount.addEventListener('click', function () {
         if (basicInfo.getAttribute('style') === 'display:none') {
             basicInfo.setAttribute('style', 'display:block');
-            useMyAccount.innerHTML = "Use Sample Account";
+            useMyAccount.textContent = 'Use Sample Account';
         } else {
             basicInfo.setAttribute('style', 'display:none');
-            useMyAccount.innerHTML = "Use My Account Instead";
+            useMyAccount.textContent = 'Use My Account Instead';
         }
 
     });
-    $videoSelector.on("change", function () {
-        getAnalyticsData();
+    $videoSelector.addEventListener('change', function () {
+        buildRequest('getAnalytics');
     });
-    $getData.on("click", getAnalyticsData);
-    $client_secret.on("blur", function () {
-        // refetch player and video data
-        getVideoData();
+    $getData.addEventListener('click', function() {
+        account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
+        $gettingDataDisplay.text('Getting video data...');
+        buildRequest('getVideos');
     });
-    // get initial players and video data
-    getVideoData();
+
     return {};
-})(window, document, $, Handlebars, datepickr);
+})(window, document, datepickr);
