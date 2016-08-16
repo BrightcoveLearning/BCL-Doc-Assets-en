@@ -46,6 +46,21 @@ var BCLS = (function (window, document, datepickr) {
             }
             return true;
         }
+
+        /**
+         * get selected value for single select element
+         * @param {htmlElement} e the select element
+         * @return {Object} object containing the `value` and selected `index`
+         */
+        function getSelectedValue(e) {
+            var val = e.options[e.selectedIndex].value,
+                idx = e.selectedIndex;
+            return {
+                value: val,
+                index: idx
+            };
+        }
+
         /**
          * builds the data display
          */
@@ -56,11 +71,9 @@ var BCLS = (function (window, document, datepickr) {
             if (currentVideo !== '') {
                 displayStr += 'Video: ' + currentVideo;
             }
-            $video_player_info.html(displayStr);
+            $video_player_info.textContent = displayStr;
             // table
-            template = Handlebars.compile(dataDisplayBodyTemplate);
-            results = template(analyticsData);
-            $reportTableBody.html(results);
+            $reportTableBody.innerHTML = results;
             // chart
             $.plot('#chartView', [ chartData] , {
                 series: {
@@ -87,6 +100,7 @@ var BCLS = (function (window, document, datepickr) {
                 newVideoItem = {},
                 currentIndex,
                 videoItem,
+                newEl,
                 i,
                 frag = new DocumentFragment();
             // add credentials if submitted
@@ -96,9 +110,13 @@ var BCLS = (function (window, document, datepickr) {
             }
             switch (type) {
                 case 'getVideos':
-                callURL = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view';
-                $requestURL.text(callURL);
-                makeAnalyticsCall(callURL, callType);
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view';
+                $requestURL.textContent = requestOptions.url;
+                getData(requestOptions, type, function(response) {
+                    response.items.forEach(function(item, index, response.items) {
+                        newEl = document.createElement('option');
+                    });
+                });
                     break;
                 case 'getVideos':
                     requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + accountID + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value;
