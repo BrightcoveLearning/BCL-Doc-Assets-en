@@ -12,8 +12,8 @@ var BCLS = (function (window, document, datepickr) {
         $videoSelector = document.getElementById('videoSelector'),
         $geoSelector = document.getElementById('geoSelector'),
         $reportTableBody = document.getElementById('reportTableBody'),
-        fromDatePickr = document.getElementById('fromDatePicker'),
-        toDatePickr = document.getElementById('toDatePicker'),
+        fromDatePicker = document.getElementById('fromDatePicker'),
+        toDatePicker = document.getElementById('toDatePicker'),
         $getData = document.getElementById('getData'),
         $gettingDataDisplay = document.getElementById('gettingDataDisplay'),
         $video_player_info = document.getElementById('video_player_info'),
@@ -22,7 +22,12 @@ var BCLS = (function (window, document, datepickr) {
         currentVideoObj,
         analyticsData = {},
         chartData = [],
-        callType;
+        callType
+        now = new Date(),
+        nowMS = now.valueOf(),
+        then = new Date(nowMS - (1000 * 60 * 24 * 30)), // 30 days ago in milliseconds
+        nowISO = now.toISOString();
+
         /**
          * Logging function - safe for IE
          * @param  {string} context description of the data
@@ -35,6 +40,7 @@ var BCLS = (function (window, document, datepickr) {
             }
             return;
         }
+
         // more robust test for strings 'not defined'
         /**
          * tests for all the ways a variable might be undefined or not have a value
@@ -51,7 +57,7 @@ var BCLS = (function (window, document, datepickr) {
         /**
          * get selected value for single select element
          * @param {htmlElement} e the select element
-         * @return {Object} object containing the `value` and selected `index`
+         * @return {Object} object containing the `value` and selected `index`, and the option text
          */
         function getSelectedValue(e) {
             var val = e.options[e.selectedIndex].value,
@@ -61,7 +67,7 @@ var BCLS = (function (window, document, datepickr) {
                 value: val,
                 text: txt,
                 index: idx
-            }
+            };
         }
 
         /**
@@ -101,7 +107,7 @@ var BCLS = (function (window, document, datepickr) {
             }
             switch (type) {
                 case 'getVideos':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=video_view&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value;
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=video_view&from=' + fromDatePicker.value + '&to=' + toDatePicker.value;
                 $requestURL.text(requestOptions.url);
                 getData(requestOptions, type, function(response) {
                     // create the video selector items from the response items
@@ -121,7 +127,7 @@ var BCLS = (function (window, document, datepickr) {
                 case 'getAnalytics':
                     currentVideoObj = getSelectedValue($videoSelector);
                     currentVideo = currentVideoObj.value;
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=' + $geoSelector.value + '&limit=all&fields=country,country_name,video_view,video_seconds_viewed&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value + '&where=video==' + currentVideo;
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=' + $geoSelector.value + '&limit=all&fields=country,country_name,video_view,video_seconds_viewed&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
                     $requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // add the current item array to overall one
@@ -129,6 +135,7 @@ var BCLS = (function (window, document, datepickr) {
                     });
                     break;
             }
+        }
 
         /**
          * send API request to the proxy
@@ -174,10 +181,10 @@ var BCLS = (function (window, document, datepickr) {
 
 
     // add date pickers to the date input fields
-    datepickr (fromDatePickr, {
+    datepickr (fromDatePicker, {
         'dateFormat': 'Y-m-d'
     });
-    datepickr (toDatePickr, {
+    datepickr (toDatePicker, {
         'dateFormat': 'Y-m-d'
     });
 
@@ -197,7 +204,7 @@ var BCLS = (function (window, document, datepickr) {
     });
     $getData.addEventListener('click', function() {
         account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
-        $gettingDataDisplay.text('Getting video data...');
+        $gettingDataDisplay.textContent = 'Getting video data...';
         buildRequest('getVideos');
     });
 
