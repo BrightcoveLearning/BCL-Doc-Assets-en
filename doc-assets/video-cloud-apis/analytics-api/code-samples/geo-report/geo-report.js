@@ -22,12 +22,14 @@ var BCLS = (function (window, document, datepickr) {
         currentVideoObj,
         analyticsData = {},
         chartData = [],
-        callType
+        callType,
         now = new Date(),
         nowMS = now.valueOf(),
         then = new Date(nowMS - (1000 * 60 * 24 * 30)), // 30 days ago in milliseconds
-        nowISO = now.toISOString();
-
+        nowISO = now.toISOString().substr(0, 10), // get the date part of the date-time string
+        thenISO = then.toISOString().substr(0, 10); // get the date part of the date-time string
+bclslog('now', nowMS);
+bclslog('then', nowMS - (1000 * 60 * 24 * 30));
         /**
          * Logging function - safe for IE
          * @param  {string} context description of the data
@@ -187,6 +189,9 @@ var BCLS = (function (window, document, datepickr) {
     datepickr (toDatePicker, {
         'dateFormat': 'Y-m-d'
     });
+    // set initial from/to values
+    fromDatePicker.value = thenISO;
+    toDatePicker.value = nowISO;
 
     // set event listeners
     useMyAccount.addEventListener('click', function () {
