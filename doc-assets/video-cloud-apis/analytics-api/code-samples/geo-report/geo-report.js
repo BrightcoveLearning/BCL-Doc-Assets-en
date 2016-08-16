@@ -5,8 +5,8 @@ var BCLS = (function (window, document, datepickr) {
         basicInfo = document.getElementById('basicInfo'),
         $accountID = document.getElementById('accountID'),
         account_id = '1752604059001',
-        $client_id = $('#client_id'),
-        $client_secret = $('#client_secret'),
+        $client_id = document.getElementById('client_id'),
+        $client_secret = document.getElementById('client_secret'),
         client_id = '',
         client_secret = '',
         $videoSelector = document.getElementById('videoSelector'),
@@ -19,6 +19,7 @@ var BCLS = (function (window, document, datepickr) {
         $video_player_info = document.getElementById('video_player_info'),
         $requestURL = document.getElementById('requestURL'),
         currentVideo,
+        currentVideoObj,
         analyticsData = {},
         chartData = [],
         callType;
@@ -54,40 +55,28 @@ var BCLS = (function (window, document, datepickr) {
          */
         function getSelectedValue(e) {
             var val = e.options[e.selectedIndex].value,
+                txt = e.options[e.selectedValue].textContent;
                 idx = e.selectedIndex;
             return {
                 value: val,
+                text: txt,
                 index: idx
-            };
+            }
         }
 
         /**
          * builds the data display
          */
         function displayData() {
-            var displayStr, template, results;
+            var displayStr, results = new DocumentFragment();
             currentVideo = $videoSelector.filter(':selected').text();
             displayStr = '';
             if (currentVideo !== '') {
-                displayStr += 'Video: ' + currentVideo;
+                displayStr += 'Video: ' + currentVideoObj.value + ' ' + currentVideoObj.text;
             }
             $video_player_info.textContent = displayStr;
             // table
-            $reportTableBody.innerHTML = results;
-            // chart
-            $.plot('#chartView', [ chartData] , {
-                series: {
-                    bars: {
-                        show: true,
-                        barWidth: 0.6,
-                        align: 'center'
-                    }
-                },
-                xaxis: {
-                    mode: 'categories',
-                    tickLength: 0
-                }
-            });
+            $reportTableBody.html(results);
         }
 
         /**
@@ -98,10 +87,12 @@ var BCLS = (function (window, document, datepickr) {
             var requestOptions = {},
                 tmpArray,
                 newVideoItem = {},
-                currentIndex,
                 videoItem,
                 newEl,
+                txt,
                 i,
+                iMax,
+                item,
                 frag = new DocumentFragment();
             // add credentials if submitted
             if (isDefined(client_id) && isDefined(client_secret)) {
@@ -110,42 +101,32 @@ var BCLS = (function (window, document, datepickr) {
             }
             switch (type) {
                 case 'getVideos':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view';
-                $requestURL.textContent = requestOptions.url;
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=video_view&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value;
+                $requestURL.text(requestOptions.url);
                 getData(requestOptions, type, function(response) {
-                    response.items.forEach(function(item, index, response.items) {
+                    // create the video selector items from the response items
+                    iMax = response.items.length;
+                    for (i = 0; i < iMax; i++) {
+                        item = response.items[i];
                         newEl = document.createElement('option');
-                    });
+                        newEl.setAttribute('value', item.video);
+                        txt = document.createTextNode(item[video.name]);
+                        newEl.appendChild(txt);
+                        frag.appendChild(newEl);
+                    }
+                    // append the options to the video selector
+                    $videoSelector.appendChild(frag);
                 });
                     break;
-                case 'getVideos':
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + accountID + '&dimensions=video&limit=all&fields=video,video_name&sort=video_view&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value;
+                case 'getAnalytics':
+                    currentVideoObj = getSelectedValue($videoSelector);
+                    currentVideo = currentVideoObj.value;
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=' + $geoSelector.value + '&limit=all&fields=country,country_name,video_view,video_seconds_viewed&from=' + $fromDatePickr.value + '&to=' + $toDatePickr.value + '&where=video==' + currentVideo;
+                    $requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // add the current item array to overall one
-                        response.forEach(function(video, index, response){
-                            newVideoItem = {};
-                            newVideoItem.id = video.id;
-                            newVideoItem.name = video.name;
-                            newVideoItem.published_at = video.published_at;
-                            newVideoItem.video_view = 0;
-                            newVideoItem.engagement_score = 0;
-                            newVideoItem.video_percent_viewed = 0;
-                            videoData.push(newVideoItem);
-                            // add the video id to the video ids array
-                            videoIdsArray.push(video.id);
-                        });
-                        callNumber++;
-                        if (callNumber < totalVideoCalls) {
-                            // still have more videos to get
-                            buildRequest('getVideos');
-                        } else {
-                            // reset callNumber
-                            callNumber = 0;
-                            buildRequest('getAnalytics');
-                        }
+                        bclslog('analytics response', response);
                     });
-                    break;
-                case 'getAnalytics':
                     break;
             }
 
@@ -192,41 +173,6 @@ var BCLS = (function (window, document, datepickr) {
         }
 
 
-        // get the analytics data for the videos
-        function getAnalyticsData() {
-            var callURL;
-            accountID = (isDefined($accountID.value)) ? $accountID.value : accountID;
-            $gettingDataDisplay.text('Getting analytics data...');
-            callType = 'analytics';
-            currentVideo = $videoSelector.value;
-            callURL = 'https://analytics.api.brightcove.com/v1/data?accounts=' + accountID + '&dimensions=' + $geoSelector.value + '&limit=all&fields=country,country_name,video_view,video_seconds_viewed';
-            if (isDefined($fromDate.value)) {
-                callURL += '&from=' + $fromDate.value;
-            }
-            if (isDefined($toDate.value)) {
-                callURL += '&to=' + $toDate.value;
-            }
-            if (isDefined(currentVideo)) {
-                callURL += '&where=video==' + currentVideo;
-            }
-            $requestURL.text(callURL);
-            makeAnalyticsCall(callURL, callType);
-
-        }
-        /** get the videos for the time period
-        * note the limit of 200 videos - to get more simply
-        * change that value, or you could provide an additional field
-        * to let the user decide how many to retrieve
-        */
-        function getVideoData() {
-            var callURL = '';
-            account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
-            $gettingDataDisplay.text('Getting video data...');
-            callType = 'videos';
-
-            $requestURL.text(callURL);
-            makeAnalyticsCall(callURL, callType);
-        }
     // add date pickers to the date input fields
     datepickr (fromDatePickr, {
         'dateFormat': 'Y-m-d'
