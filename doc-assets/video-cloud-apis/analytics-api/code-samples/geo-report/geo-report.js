@@ -1,6 +1,6 @@
 var BCLS = (function (window, document, datepickr) {
     'use strict';
-    var proxyURL = 'http://solutions.brightcove.com/bcls/bcls-proxy/geo-report-proxy.php',
+    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/geo-report-proxy.php',
         useMyAccount = document.getElementById('useMyAccount'),
         basicInfo = document.getElementById('basicInfo'),
         $accountID = document.getElementById('accountID'),
@@ -20,16 +20,15 @@ var BCLS = (function (window, document, datepickr) {
         $requestURL = document.getElementById('requestURL'),
         currentVideo,
         currentVideoObj,
+        geoObj,
         analyticsData = {},
         chartData = [],
         callType,
         now = new Date(),
         nowMS = now.valueOf(),
-        then = new Date(nowMS - (1000 * 60 * 24 * 30)), // 30 days ago in milliseconds
+        then = new Date(nowMS - (1000 * 60 * 60 * 24 * 30)), // 30 days ago in milliseconds
         nowISO = now.toISOString().substr(0, 10), // get the date part of the date-time string
         thenISO = then.toISOString().substr(0, 10); // get the date part of the date-time string
-bclslog('now', nowMS);
-bclslog('then', nowMS - (1000 * 60 * 24 * 30));
         /**
          * Logging function - safe for IE
          * @param  {string} context description of the data
@@ -63,7 +62,7 @@ bclslog('then', nowMS - (1000 * 60 * 24 * 30));
          */
         function getSelectedValue(e) {
             var val = e.options[e.selectedIndex].value,
-                txt = e.options[e.selectedValue].textContent;
+                txt = e.options[e.selectedIndex].textContent,
                 idx = e.selectedIndex;
             return {
                 value: val,
@@ -101,6 +100,7 @@ bclslog('then', nowMS - (1000 * 60 * 24 * 30));
                 i,
                 iMax,
                 item,
+                fields,
                 frag = new DocumentFragment();
             // add credentials if submitted
             if (isDefined(client_id) && isDefined(client_secret)) {
@@ -109,16 +109,22 @@ bclslog('then', nowMS - (1000 * 60 * 24 * 30));
             }
             switch (type) {
                 case 'getVideos':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=video_view&from=' + fromDatePicker.value + '&to=' + toDatePicker.value;
-                $requestURL.text(requestOptions.url);
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=-video_view&from=' + fromDatePicker.value + '&to=' + toDatePicker.value;
+                $requestURL.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     // create the video selector items from the response items
+                    newEl = document.createElement('option');
+                    newEl.setAttribute('value', '');
+                    txt = document.createTextNode('Select a video');
+                    newEl.appendChild(txt);
+                    frag.appendChild(newEl);
                     iMax = response.items.length;
                     for (i = 0; i < iMax; i++) {
                         item = response.items[i];
+                        bclslog('item', item);
                         newEl = document.createElement('option');
                         newEl.setAttribute('value', item.video);
-                        txt = document.createTextNode(item[video.name]);
+                        txt = document.createTextNode(item['video.name']);
                         newEl.appendChild(txt);
                         frag.appendChild(newEl);
                     }
@@ -127,9 +133,17 @@ bclslog('then', nowMS - (1000 * 60 * 24 * 30));
                 });
                     break;
                 case 'getAnalytics':
-                    currentVideoObj = getSelectedValue($videoSelector);
                     currentVideo = currentVideoObj.value;
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=' + $geoSelector.value + '&limit=all&fields=country,country_name,video_view,video_seconds_viewed&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
+                    // set fields according to geo selection
+                    if (geoObj.value === 'country') {
+                        fields = 'country,country_name,video_view,video_seconds_viewed';
+                    } else if (geoObj.value === 'region') {
+                        fields = 'region,region_name,video_view,video_seconds_viewed';
+                    } else {
+                        fields = 'city,video_view,video_seconds_viewed';
+
+                    }
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=' + $geoSelector.value + '&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
                     $requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // add the current item array to overall one
@@ -156,6 +170,7 @@ bclslog('then', nowMS - (1000 * 60 * 24 * 30));
                       if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200) {
                           parsedData = JSON.parse(httpRequest.responseText);
+                          bclslog('parsedData', parsedData);
                           callback(parsedData);
                         } else {
                           alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -205,6 +220,9 @@ bclslog('then', nowMS - (1000 * 60 * 24 * 30));
 
     });
     $videoSelector.addEventListener('change', function () {
+        // get video and geo selections
+        currentVideoObj = getSelectedValue($videoSelector);
+        geoObj = getSelectedValue($geoSelector);
         buildRequest('getAnalytics');
     });
     $getData.addEventListener('click', function() {
