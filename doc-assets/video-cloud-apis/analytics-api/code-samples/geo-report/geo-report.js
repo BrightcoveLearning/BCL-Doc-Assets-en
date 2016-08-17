@@ -10,17 +10,15 @@ var BCLS = (function (window, document, datepickr) {
         client_id = '',
         client_secret = '',
         $videoSelector = document.getElementById('videoSelector'),
-        $geoSelector = document.getElementById('geoSelector'),
         $reportTableBody = document.getElementById('reportTableBody'),
         fromDatePicker = document.getElementById('fromDatePicker'),
         toDatePicker = document.getElementById('toDatePicker'),
         $getData = document.getElementById('getData'),
         $gettingDataDisplay = document.getElementById('gettingDataDisplay'),
-        $video_player_info = document.getElementById('video_player_info'),
+        video_info = document.getElementById('video_info'),
         $requestURL = document.getElementById('requestURL'),
         currentVideo,
         currentVideoObj,
-        geoObj,
         analyticsData = {},
         chartData = [],
         callType,
@@ -73,17 +71,32 @@ var BCLS = (function (window, document, datepickr) {
 
         /**
          * builds the data display
+         * @param {Object[]} array of analytics items
          */
-        function displayData() {
-            var displayStr, results = new DocumentFragment();
-            currentVideo = $videoSelector.filter(':selected').text();
-            displayStr = '';
-            if (currentVideo !== '') {
-                displayStr += 'Video: ' + currentVideoObj.value + ' ' + currentVideoObj.text;
-            }
-            $video_player_info.textContent = displayStr;
-            // table
-            $reportTableBody.html(results);
+        function displayData(items) {
+            var newTr,
+                newTd,
+                txt,
+                results = new DocumentFragment();
+            // display the video info
+            video_info.textContent = 'Video: ' + currentVideoObj.text + ' (' + currentVideoObj.value + ')';
+            items.forEach(function(item, index, items) {
+                newTr = document.createElement('tr');
+                newTd = document.createElement('td');
+                txt = document.createTextNode(item.country_name);
+                newTd.appendChild(txt);
+                newTr.appendChild(newTd);
+                newTd = document.createElement('td');
+                txt = document.createTextNode(item.video_view);
+                newTd.appendChild(txt);
+                newTr.appendChild(newTd);
+                newTd = document.createElement('td');
+                txt = document.createTextNode(item.video_seconds_viewed);
+                newTd.appendChild(txt);
+                newTr.appendChild(newTd);
+                results.appendChild(newTr);
+            });
+            $reportTableBody.appendChild(results);
         }
 
         /**
@@ -121,7 +134,6 @@ var BCLS = (function (window, document, datepickr) {
                     iMax = response.items.length;
                     for (i = 0; i < iMax; i++) {
                         item = response.items[i];
-                        bclslog('item', item);
                         newEl = document.createElement('option');
                         newEl.setAttribute('value', item.video);
                         txt = document.createTextNode(item['video.name']);
@@ -134,20 +146,13 @@ var BCLS = (function (window, document, datepickr) {
                     break;
                 case 'getAnalytics':
                     currentVideo = currentVideoObj.value;
-                    // set fields according to geo selection
-                    if (geoObj.value === 'country') {
-                        fields = 'country,country_name,video_view,video_seconds_viewed';
-                    } else if (geoObj.value === 'region') {
-                        fields = 'region,region_name,video_view,video_seconds_viewed';
-                    } else {
-                        fields = 'city,video_view,video_seconds_viewed';
-
-                    }
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=' + $geoSelector.value + '&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
+                    // fields to return
+                    fields = 'country,country_name,video_view,video_seconds_viewed';
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
                     $requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
-                        // add the current item array to overall one
-                        bclslog('analytics response', response);
+                        // display the data
+                        displayData(response.items);
                     });
                     break;
             }
@@ -170,7 +175,6 @@ var BCLS = (function (window, document, datepickr) {
                       if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200) {
                           parsedData = JSON.parse(httpRequest.responseText);
-                          bclslog('parsedData', parsedData);
                           callback(parsedData);
                         } else {
                           alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -222,7 +226,6 @@ var BCLS = (function (window, document, datepickr) {
     $videoSelector.addEventListener('change', function () {
         // get video and geo selections
         currentVideoObj = getSelectedValue($videoSelector);
-        geoObj = getSelectedValue($geoSelector);
         buildRequest('getAnalytics');
     });
     $getData.addEventListener('click', function() {
