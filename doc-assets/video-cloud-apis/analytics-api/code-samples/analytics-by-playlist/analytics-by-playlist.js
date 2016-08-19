@@ -1,343 +1,356 @@
-var BCLS = (function ($, window, Pikaday) {
-    "use strict";
+var BCLS = (function (window, document, Pikaday) {
+    'use strict';
     var // media api stuff
         getPlaylists,
-        page_size = 25,
-        page_number = 0,
-        total_pages = 0,
+        limit = 25,
+        offset = 0,
         playlistData = [],
         analyticsData = {},
-        useMyAccount = document.getElementById("useMyAccount"),
-        basicInfo = document.getElementById("basicInfo"),
-        $accountInputs = $("#accountInputs"),
-        $playlistInfo = $("#playlistInfo"),
-        $mapitoken = $("#mapitoken"),
-        $readApiLocation = $("#readApiLocation"),
-        params = {},
-        videoOptionTemplate = "{{#items}}<option value=\"{{id}}\">{{name}}</option>{{/items}}",
-        // aapi stuff
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        $serviceURL = $("#serviceURL"),
-        account_id = "20318290001",
-        $client_id = $("#client_id"),
-        $client_secret = $("#client_secret"),
+        useMyAccount = document.getElementById('useMyAccount'),
+        basicInfo = document.getElementById('basicInfo'),
+        $accountInputs = document.getElementById('accountInputs'),
+        $playlistInfo = document.getElementById('playlistInfo'),
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analytics-by-playlist.php',
+        account_id = '1752604059001',
+        $client_id = document.getElementById('client_id'),
+        $client_secret = document.getElementById('client_secret'),
         client_id,
         client_secret,
-        default_client_id = "742d6440-58d1-49ed-b2fb-f60d33bf02ae",
-        default_client_secret = "xs3vuzzKPz5fWHInsON26SXOL54X1GObFW70KylVqdVuIHdkqwqlCs9yVSCRF3i5u_0NcNb7MrzntCLaveZmeQ",
-        $APIrequestType = $("#aapiRequestType"),
+        $APIrequestType = document.getElementById('aapiRequestType'),
         requestType,
-        $accountID = $("#accountID"),
-        $dimension = $("#dimension"),
+        $accountID = document.getElementById('accountID'),
+        $dimension = document.getElementById('dimension'),
         fromPicker,
         toPicker,
-        to = document.getElementById("to"),
-        from = document.getElementById("from"),
-        $whereInputs = $(".where-input"),
-        $player = $("#player"),
-        $requestButton = $("#requestButton"),
-        $request = $("#request"),
-        $requestForm = $("#requestForm"),
-        $aapiParams = $("#aapiParams"),
-        $requestSubmitter = $("#requestSubmitter"),
-        $submitButton = $("#submitButton"),
-        $required = $(".required"),
-        $format = $("#format"),
-        $requestInputs = $(".aapi-request"),
-        $directVideoInput = $("#directVideoInput"),
-        $responseFrame = $("#responseFrame"),
-        $this,
-        separator = "",
+        to = document.getElementById('to'),
+        from = document.getElementById('from'),
+        $player = document.getElementById('player'),
+        $requestButton = document.getElementById('requestButton'),
+        $request = document.getElementById('request'),
+        $requestForm = document.getElementById('requestForm'),
+        $aapiParams = document.getElementById('aapiParams'),
+        $requestSubmitter = document.getElementById('requestSubmitter'),
+        $submitButton = document.getElementById('submitButton'),
+        $format = document.getElementById('format'),
+        $directVideoInput = document.getElementById('directVideoInput'),
+        $responseFrame = document.getElementById('responseFrame'),
+        separator = '',
         requestTrimmed = false,
-        lastChar = "",
-        requestURL = "",
-        authorization = "",
-        endDate = "",
-        startDate = "",
-        $getPlaylists = $("#getPlaylists"),
-        handleBarsTemplate = "<option>Select a Playlist</option>{{#items}}<option value=\"{{id}}\">{{name}}</option>{{/items}}",
-        $playlistSelectWrapper = $("#playlistSelectWrapper"),
-        $playlistSelector = $("#playlistSelector"),
-        playlistSelector = document.getElementById("playlistSelector"),
+        lastChar = '',
+        requestURL = '',
+        endDate = '',
+        startDate = '',
+        $getPlaylists = document.getElementById('getPlaylists'),
+        $playlistSelectWrapper = document.getElementById('playlistSelectWrapper'),
+        $playlistSelector = document.getElementById('playlistSelector'),
+        playlistSelector = document.getElementById('playlistSelector'),
         videoIds = [],
-        currentVideoIndex = 0,
-        failNumber = 0,
-        aapiFailNumber = 0,
-        requestOptions = {},
-        // functions
-        reset,
-        bclslog,
-        firstRun = true,
-        onPlaylistSelect,
-        onMAPIresponse,
-        addArrayItems,
-        analyticsRequestNumber = 0,
-        totalVideos = 0,
-        trimRequest,
-        removeSpaces,
-        buildRequest,
-        isDefined,
-        getData,
+        searchString,
+        playlistLimit,
+        playlistSort,
+        totalPlaylists = 0,
+        totalPlaylistCalls = 0,
+        callNumber = 0,
         gettingData = false,
         now = new Date(),
         nowMS = now.valueOf(),
         fromMS = nowMS - (30 * 24 * 60 * 60 * 1000),
         fromDate = new Date(fromMS),
-        nowISO = now.toISOString(),
-        fromISO = fromDate.toISOString();
+        nowISO = now.toISOString().substr(0, 10),
+        fromISO = fromDate.toISOString().substr(0, 10);
     // utilities
-    bclslog = function (context, message) {
+    function bclslog(context, message) {
         if (console) {
             console.log(context, message);
         }
-    };
-    // more robust test for strings "not defined"
-    isDefined =  function (v) {
-        if (v !== "" && v !== null && v !== "undefined" && v!== undefined) {
-            return true;
-        }
-        else {
+    }
+    // more robust test for strings 'not defined'
+    function isDefined(v) {
+        if (v === '' || v === null || v === 'undefined' || v === undefined) {
             return false;
         }
-    };
-    // reset everything
-    reset = function () {
-        firstRun = true;
-        $playlistSelectWrapper.attr("class", "bcls-hidden");
-        $playlistSelector.html("");
-        $getPlaylists.html("Get playlists");
-        $getPlaylists.attr("class", "run-button");
-        $getPlaylists.on("click", getPlaylists);
-        to.value = nowISO;
-        from.value = fromISO;
-        page_number = 0;
-    };
-    onMAPIresponse = function(jsonData) {
-        bclslog("jsonData", jsonData);
-        bclslog("page_number", page_number);
-        // merge the data into the html template using Handlebars
-        var template = Handlebars.compile(handleBarsTemplate),
-            data,
-            dataObj = {},
-            result,
-            i,
-            iMax;
+        return true;
+    }
 
-        // if first run change the button text
-        if (firstRun) {
-            // display the selector and get analytics button
-            $playlistSelectWrapper.attr("class", "bcls-shown");
-            $getPlaylists.html("Getting playlists...please wait...");
-            // add event listener
-            $playlistSelector.on("change", BCLS.onPlaylistSelect);
-            // get total pages
-            total_pages = Math.ceil(jsonData.total_count / page_size);
-            // bclslog("total_pages", total_pages);
-            // turn off firstRun flag
-            firstRun = false;
-            getPlaylists();
-        } else {
-            if (isDefined(jsonData.items)) {
-                // save the items
-                iMax = jsonData.items.length;
-                for (i = 0; i < iMax; i++) {
-                    playlistData.push(jsonData.items[i]);
-                }
-                // check to see if there are more playlists to fetch
-                if (page_number === (total_pages - 1)) {
-                    $getPlaylists.html("No more playlists");
-                    $getPlaylists.attr("style", "opacity:.5;cursor:not-allowed;");
-                    dataObj.items = playlistData;
-                    // bclslog("dataObj", dataObj);
-                    // populate the playlist selector
-                    data = dataObj;
-                    result = template(data);
-                    $playlistSelector.html(result);
-                } else {
-                    // increment page_number
-                    page_number++;
-                    getPlaylists();
-                }
-            } else {
-                // bad MAPI response, retry up to 5 times
-                if (failNumber < 6) {
-                    failNumber++;
-                    getPlaylists();
-                }
-            }
+    /**
+     * get selected value for single select element
+     * @param {htmlElement} e the select element
+     * @return {Object} object containing the `value` and selected `index` and 'data-playlist-index'
+     */
+    function getSelectedPlaylist(e) {
+        var val = e.options[e.selectedIndex].value,
+            playlistIndex = parseInt(e.options[e.selectedIndex].getAttribute('data-playlist-index')),
+            idx = e.selectedIndex;
+        return {
+            value: val,
+            playlistIndex: playlistIndex,
+            index: idx
+        };
+    }
 
+    /**
+     * get selected value for single select element
+     * @param {htmlElement} e the select element
+     * @return {Object} object containing the `value` and selected `index`
+     */
+    function getSelectedValue(e) {
+        var val = e.options[e.selectedIndex].value,
+            idx = e.selectedIndex;
+        return {
+            value: val,
+            index: idx
+        };
+    }
+
+    /**
+     * handler for playlist selection
+     * get the videos from the playlist metadata or the search criteria
+     * and then invokes the Analytics API request
+     */
+    function onPlaylistSelect() {
+        bclslog('playlist selected');
+        var selectedPlaylistObj = getSelectedPlaylist(playlistSelector),
+            selectedPlaylist = playlistData[selectedPlaylistObj.playlistIndex];
+
+        switch (selectedPlaylist.type) {
+            case 'EXPLICIT':
+                videoIds = selectedPlaylist.video_ids;
+                break;
+            case 'ACTIVATED_OLDEST_TO_NEWEST':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = 'published_at';
+                buildRequest('getVideos');
+                break;
+            case 'ACTIVATED_NEWEST_TO_OLDEST':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = encodeURI('-published_at');
+                buildRequest('getVideos');
+                break;
+            case 'ALPHABETICAL':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = 'name';
+                buildRequest('getVideos');
+                break;
+            case 'PLAYS_TOTAL':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = encodeURI('-plays_total');
+                buildRequest('getVideos');
+                break;
+            case 'PLAYS_TRAILING_WEEK':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = 'plays_trailing_week';
+                buildRequest('getVideos');
+                break;
+            case 'START_DATE_OLDEST_TO_NEWEST':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = 'schedule_starts_at';
+                buildRequest('getVideos');
+                break;
+            case 'START_DATE_NEWEST_TO_OLDEST':
+                searchString = selectedPlaylist.search;
+                playlistLimit = selectedPlaylist.limit;
+                playlistSort = encodeURI('-schedule_starts_at');
+                buildRequest('getVideos');
+                break;
         }
-    };
-    onPlaylistSelect = function () {
-        var selectedPlaylist = playlistData[(playlistSelector.selectedIndex - 1)];
-        videoIds = selectedPlaylist.videoIds;
-        bclslog("videoIds", videoIds);
-        totalVideos = videoIds.length - 1;
-        bclslog("totalVideos", totalVideos);
         // undim param input fields
-        $aapiParams.attr("style", "opacity:1;cursor:pointer;");
-        $requestSubmitter.attr("style", "opacity:1;cursor:pointer;");
+        $aapiParams.setAttribute('style', 'opacity:1;cursor:pointer;');
+        $requestSubmitter.setAttribute('style', 'opacity:1;cursor:pointer;');
         buildRequest();
-    };
-    removeSpaces = function (str) {
+    }
+
+    /**
+     * removes spaces from a String
+     * @param i{String} str the string to process
+     */
+    function removeSpaces(str) {
         if (isDefined(str)) {
             str = str.replace(/\s+/g, '');
         return str;
         }
-    };
+    }
 
-    trimRequest = function () {
-        if (!requestTrimmed) {
-            lastChar = requestURL.charAt((requestURL.length - 1));
-            if (lastChar === "?" || lastChar === "&" || lastChar === ";") {
-                requestURL = requestURL.substring(0, (requestURL.length - 1));
-                // recall this function until trim finished
-                trimRequest(requestURL);
-            } else if (requestURL.indexOf("&&") > -1) {
-                requestURL = requestURL.replace("&&", "&");
-            } else if (requestURL.indexOf("?&") > -1) {
-                requestURL = requestURL.replace("?&", "?");
-            } else {
-                requestTrimmed = true;
-            }
-        }
-    };
+    /**
+     * builds the various API requests,
+     * submits them,
+     * and handles the responses
+     * @param {String} type the request type
+     */
+    function buildRequest(type) {
+        var requestOptions = {},
+        tmpArray,
+        newOption,
+        txt,
+        frag = new DocumentFragment(),
+        currentIndex,
+        i;
 
-    buildRequest = function () {
-        // reset requestTrimmed to false in case of regenerate request
-        account_id = isDefined($accountID.val()) ? removeSpaces($accountID.val()) : account_id;
-        requestTrimmed = false;
-        requestURL = "https://analytics.api.brightcove.com/v1/data";
-        requestURL += "?accounts=" + account_id;
-        // report dimensions
-        requestURL += "&dimensions=video";
-        // add video filter
-        requestURL += "&where=video==" + videoIds.join();
-        // check for player filter
-        if ($player.val() !== "") {
-            requestURL += ";player==" + $player.val();
+        // add credentials if submitted
+        if (isDefined(client_id) && isDefined(client_secret)) {
+            requestOptions.client_id = client_id;
+            requestOptions.client_secret = client_secret;
         }
-        requestURL += "&format=" + $format.val();
-        // check for time filters
-        startDate = from.value;
-        if (startDate !== " ") {
-            requestURL += "&from=" + startDate;
-        }
-        endDate = to.value;
-        if (endDate !== " ") {
-            requestURL += "&to=" + endDate;
-        }
-        // add limit and fields
-        requestURL += "&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view";
-
-        // strip trailing ? or & and replace &&s
-        trimRequest();
-        $request.html(requestURL);
-        $request.attr("value", requestURL);
-        // if getting data initiated, get data
-        if (gettingData) {
-            getData();
-        }
-    };
-    // submit request
-    getData = function () {
-        bclslog("requestURL", requestURL);
-        $responseFrame.html("Loading...");
-        requestOptions.url = requestURL;
-        requestOptions.client_id = (isDefined($client_id.val())) ? $client_id.val() : default_client_id;
-        requestOptions.client_secret = (isDefined($client_secret.val())) ? $client_secret.val() : default_client_secret;
-        requestOptions.requestType = "GET";
-        bclslog("requestOptions", requestOptions);
-        $.ajax({
-            url: proxyURL,
-            type: "POST",
-            data: requestOptions,
-            success : function(data) {
-                try {
-                   var data = JSON.parse(data);
-                } catch (e) {
-                   alert('invalid json');
+        switch (type) {
+            case 'getPlaylistsCount':
+            requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/playlists';
+            $request.textContent = requestOptions.url;
+            getData(requestOptions, type, function(response) {
+                totalPlaylists = response.count;
+                buildRequest('getPlaylists');
+            });
+                break;
+            case 'getPlaylists':
+            totalPlaylistCalls = Math.ceil(totalPlaylists / limit);
+            requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/playlists?limit=' + limit + '&offset=' + (limit * callNumber);
+            $request.textContent = requestOptions.url;
+            getData(requestOptions, type, function(response) {
+                // add the current items array to overall one
+                playlistData = playlistData.concat(response);
+                callNumber++;
+                if (callNumber < totalPlaylistCalls) {
+                    // still have more videos to get
+                    buildRequest('getPlaylists');
+                } else {
+                    // build the playlist selector
+                    newOption = document.createElement('option');
+                    txt = document.createTextNode('Select a Playlist');
+                    newOption.appendChild(txt);
+                    frag.appendChild(newOption);
+                    playlistData.forEach(function(playlist, index, playlistData) {
+                        newOption = document.createElement('option');
+                        newOption.setAttribute('value', playlist.id);
+                        newOption.setAttribute('data-playlist-index', index);
+                        txt = document.createTextNode(playlist.name);
+                        newOption.appendChild(txt);
+                        frag.appendChild(newOption);
+                    });
+                    // add the options to the playlist selector
+                    $playlistSelector.appendChild(frag);
+                    // reset callNumber
+                    callNumber = 0;
                 }
-                $responseFrame.html(JSON.stringify(data, null, '  '));
-            },
-            error : function (XMLHttpRequest, textStatus, errorThrown) {
-                $responseFrame.html("Sorry, your request was not successful. Here is what the server sent back: " + errorThrown);
-            }
-        });
-    };
-
-    // get a playlist collection
-    getPlaylists = function () {
-        // set up the Media API call, using data from the Analytics API call
-        bclslog("firstRun", firstRun);
-        BCMAPI.url = $readApiLocation.val();
-        BCMAPI.token = $mapitoken.val();
-        bclslog("mapi token", BCMAPI.token);
-        BCMAPI.callback = "BCLS.onMAPIresponse";
-
-        if (firstRun === true) {
-            // remove the button event listener
-            $getPlaylists.off("click", getPlaylists);
-            params.get_item_count = true;
-            params.page_size = 1;
-            params.video_fields = "id";
-        } else {
-            params.video_fields = "id,name,thumbnailURL";
-            params.page_size = page_size;
-            params.page_number = page_number;
-            params.sort_by = "MODIFIED_DATE";
-            params.sort_order = "DESC";
+            });
+                break;
+            case 'getVideos':
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + 'videos?q=' + searchString + '&limit=' + playlistLimit + '&sort=' + playlistSort;
+                $request.textContent = requestOptions.url;
+                getData(requestOptions, type, function(response) {
+                    response.forEach(function(video, index, response) {
+                        videoIds.push(video.id);
+                    });
+                });
+                break;
+            case 'getAnalytics':
+                var formatObj = getSelectedValue($format),
+                    format = formatObj.value;
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&where=video==' + videoIds.join(',') + '&from=' + from.value + '&to=' + to.value + '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view' + '&format=' + format;
+                $request.textContent = requestOptions.url;
+                getData(requestOptions, type, function(response) {
+                    if (format === 'json') {
+                        response = JSON.parse(response);
+                        $responseFrame.textContent = JSON.stringify(response, null, '  ');
+                    } else {
+                        $responseFrame.textContent = response;
+                    }
+                });
+                break;
         }
-        BCMAPI.find("find_all_playlists", params);
-    };
+    }
+
+    /**
+     * send API request to the proxy
+     * @param  {Object} requestData options for the request
+     * @param  {String} requestID the type of request = id of the button
+     * @param  {Function} callback the callback function to invoke
+     */
+    function getData(options, type, callback) {
+        var httpRequest = new XMLHttpRequest(),
+            parsedData,
+            requestParams,
+            dataString,
+            // response handler
+            getResponse = function() {
+                try {
+                  if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {
+                        bclslog('responseText', httpRequest.responseText);
+                        if (type === 'getAnalytics') {
+                            callback(httpRequest.responseText);
+                        } else {
+                            parsedData = JSON.parse(httpRequest.responseText);
+                            callback(parsedData);
+                        }
+                    } else {
+                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                    }
+                  }
+                } catch (e) {
+                  alert('Caught Exception: ' + e);
+                }
+            };
+            // set up request data
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+        if (options.client_id && options.client_secret) {
+            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        }
+
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open('POST', proxyURL);
+        // set headers
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // open and send request
+        httpRequest.send(requestParams);
+    }
+
 
     // add date pickers to the date input fields
     fromPicker = new Pikaday({
-        field: document.getElementById("from"),
+        field: document.getElementById('from'),
         format: 'YYYY-MM-DD',
         onSelect: buildRequest
     });
     toPicker = new Pikaday({
-        field: document.getElementById("to"),
+        field: document.getElementById('to'),
         format: 'YYYY-MM-DD',
         onSelect: buildRequest
     });
     // populate to/from fields with default values
-    nowISO = nowISO.substring(0, nowISO.indexOf("T"));
-    fromISO = fromISO.substring(0, fromISO.indexOf("T"));
     to.value = nowISO;
     from.value = fromISO;
 
     // set event listeners
-    useMyAccount.addEventListener("click", function () {
-        if (basicInfo.getAttribute('style') === "display:none;") {
+    useMyAccount.addEventListener('click', function () {
+        bclslog('use account switch');
+        if (basicInfo.getAttribute('style') === 'display:none;') {
             basicInfo.setAttribute('style', 'display:block;');
-            useMyAccount.innerHTML = "Use Sample Account";
+            useMyAccount.textContent = 'Use Sample Account';
         } else {
             basicInfo.setAttribute('style', 'display:none;');
-            useMyAccount.innerHTML = "Use My Account Instead";
+            useMyAccount.textContent = 'Use My Account Instead';
         }
     });
 
-    $getPlaylists.on("click", getPlaylists);
-    // set listener for form fields
-    $requestInputs.on("change", function () {
-        // reset();
-        buildRequest();
-    });
-    // send request
-    $submitButton.on("click", function () {
-        // reset current video index
-        currentVideoIndex = 0;
-        // make sure request data is current
-        buildRequest();
-        getData();
+    // event listeners
+    $getPlaylists.addEventListener('click', function() {
+        buildRequest('getPlaylists');
     });
 
-    // generate initial request
-    buildRequest();
+    playlistSelector.addEventListener('change', onPlaylistSelect);
+
+    // send request
+    $submitButton.addEventListener('click', function () {
+        buildRequest('getAnalytics');
+    });
+
     return {
-        onMAPIresponse : onMAPIresponse,
         onPlaylistSelect : onPlaylistSelect
     };
-})($, window, Pikaday);
+})(window, document, Pikaday);
