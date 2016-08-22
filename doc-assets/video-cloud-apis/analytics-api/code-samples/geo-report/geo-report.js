@@ -161,7 +161,7 @@ var BCLS = (function (window, document, datepickr) {
         /**
          * send API request to the proxy
          * @param  {Object} requestData options for the request
-         * @param  {String} requestID the type of request = id of the button
+         * @param  {String} requestID the type of request
          * @param  {Function} callback the callback function to invoke
          */
         function getData(options, type, callback) {
