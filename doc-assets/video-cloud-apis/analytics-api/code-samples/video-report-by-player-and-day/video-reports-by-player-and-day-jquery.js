@@ -10,7 +10,7 @@ var BCLS = (function (window, document, datepickr) {
         videoSelector = document.getElementById("videoSelector"),
         reportTableBody = document.getElementById("reportTableBody"),
         csvDisplay = document.getElementById('csvDisplay'),
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/analyitcs-by-player-day-proxy.php",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         currentPlayerIndex = 0,
         currentVideoIndex = 0,
         currentDayIndex = 0,
@@ -38,6 +38,8 @@ var BCLS = (function (window, document, datepickr) {
         gettingDataDisplay = document.getElementById("gettingDataDisplay"),
         today = new Date(),
         monthAgo = new Date(today - (30 * 24 * 60 * 60 * 1000)),
+        dataDisplayBodyTemplate = "<td>{{video_name}}</td><td>Totals</td><td>{{totalPlays}}</td><td>{{totalAvgSecondsViewed}}</td><td>{{totalSecondsViewed}}</td></tr>{{#items}}<tr><td></td><td></td><td>{{date}}</td><td>{{video_view}}</td><td>{{avgSecondsViewed}}</td><td>{{totalSecondsViewed}}</td></tr>{{/items}}",
+        dataCSVTemplate = '"{{video_name}}","Totals","{{totalPlays}}","{{totalAvgSecondsViewed}}","{{totalSecondsViewed}}" \n {{#items}}"{{date}}","{{video_view}}","{{avgSecondsViewed}}","{{totalSecondsViewed}}" \n {{/items}}',
         playerSelectTemplate = "{{#items}}<option value=\"{{player}}\">{{player_name}}</options>{{/items}}",
         videoSelectTemplate = "{{#items}}<option value=\"{{video}}\">{{video_name}}</options>{{/items}}",
         callType;
@@ -60,10 +62,6 @@ var BCLS = (function (window, document, datepickr) {
             }
             return true;
         }
-        /**
-         * get the 3-letter name for a month
-         * @param {number} month 0-based number of the month
-         */
          function getMonthName(month) {
             var name;
             switch (parseInt(month)) {
@@ -107,7 +105,7 @@ var BCLS = (function (window, document, datepickr) {
             return name;
         }
         function displayData() {
-            var displayStr, csvDisplayString = '', playerObject, videoObject, template, i, iMax, item;
+            var displayStr, csvDisplayString = '', playerObject, videoObject, template;
             currentPlayer = playerSelector.options[playerSelector.selectedIndex].value;
             currentVideoIndex = videoSelector.selectedIndex;
             playerObject = analyticsData[currentPlayer];
@@ -117,14 +115,10 @@ var BCLS = (function (window, document, datepickr) {
             bclslog('videoObject', videoObject);
             displayStr = "<tr style=\"background-color:#64AAB2;color:#FFF;\"><th>" + playerObject.player_name + "</th>";
             cvsDisplayString = '"Video Name","","Total Plays","Total Average Seconds Viewed","Total Seconds Viewed" \n';
-            displayStr += '<tr><td>' + videoObject.video_name + '</td><td>Totals</td><td>' + videoObject.totalPlays + '</td><td>' + videoObject.totalAvgSecondsViewed + '</td><td>' + videoObject.totalSecondsViewed + '</td></tr>';
-            csvDisplayString += '"' + videoObject.video_name + '","Totals","' + videoObject.totalPlays + '","' + videoObject.totalAvgSecondsViewed + '","' + videoObject.totalSecondsViewed + '" \n';
-            iMax = videoObject.items.length;
-            for (i = 0; i < iMax; i++) {
-                item = videoObject.items[i];
-                displayStr += '<tr><td>' + item.date + '</td><td>' + item.video_view + '</td><td>' + item.avgSecondsViewed + '</td><td>' + item.totalSecondsViewed + '</td></tr>';
-                csvDisplayString += '"' + item.video_view + '","' + item.avgSecondsViewed + '","' + item.totalSecondsViewed + '" \n';
-            }
+            template = Handlebars.compile(dataDisplayBodyTemplate);
+            csvTemplate = Handlebars.compile(dataCSVTemplate);
+            displayStr += template(videoObject);
+            csvDisplayString += csvTemplate(videoObject);
             csvDisplay.value = csvDisplayString;
             reportTableBody.innerHTML = displayStr;
         }
@@ -183,22 +177,13 @@ var BCLS = (function (window, document, datepickr) {
                 }
                 switch (callType) {
                     case "players":
-                        var newEl,
-                        txt,
-                            frag = new DocumentFragment();
                         callNumber++;
                         // save the data for getting the analytics
                         playerData = data;
                         // bclslog("player data", data);
-                        newEl = document.createElement('option');
-                        txt = document.createTextNode('Select a Player');
-                        newEl.appendChild(txt);
-                        frag.appendChild(newEl);
                         playerMax = playerData.items.length;
-
                         // add players to the analytics data object
                         for (i = 0; i < playerData.items.length; i++) {
-
                             playerData.items[i].player = (isDefined(playerData.items[i].player)) ? playerData.items[i].player : "noPlayerId";
                             if (playerData.items[i].player !== "noPlayerId") {
                                 playersArray.push(playerData.items[i].player);
@@ -276,7 +261,7 @@ var BCLS = (function (window, document, datepickr) {
             },
             error : function (XMLHttpRequest, textStatus, errorThrown)
                 {
-                    gettingDataDisplay.innerHTML = "Sorry, your request was not successful. Here is what the server sent back: " + errorThrown;
+                    gettingDataDisplay.innerHTML = "Sorry, your request was not successful. Here's what the server sent back: " + errorThrown;
                 }
             });
         }
@@ -318,11 +303,7 @@ var BCLS = (function (window, document, datepickr) {
     datepickr(toDate, {
         'dateFormat': 'Y-m-d'
     });
-    /**
-     * return ISO 8601 date string (YYYY-MM-DD) for JS date
-     * @param {Date} date a Date object
-     * @return {String} the date in ISO format (date part only)
-     */
+    // return ISO 8601 date string (YYYY-MM-DD) for JS date
     function dateToISO(date) {
         var y = date.getFullYear(),
             m = date.getMonth(),
