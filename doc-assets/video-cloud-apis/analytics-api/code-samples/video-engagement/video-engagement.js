@@ -1,39 +1,34 @@
-var BCLS = (function ($, window) {
-    "use strict";
+var BCLS = (function (window, document) {
+    'use strict';
     var // aapi stuff
-        useMyAccount = document.getElementById("useMyAccount"),
-        basicInfo = document.getElementById("basicInfo"),
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        $accountID = $("#accountID"),
-        account_id = "20318290001",
-        $client_id = $("#client_id"),
-        client_id = "742d6440-58d1-49ed-b2fb-f60d33bf02ae",
-        $client_secret = $("#client_secret"),
-        client_secret = "xs3vuzzKPz5fWHInsON26SXOL54X1GObFW70KylVqdVuIHdkqwqlCs9yVSCRF3i5u_0NcNb7MrzntCLaveZmeQ",
-        $scopeSelect = $("#scopeSelect"),
-        scope = "account",
-        $playerID = $("#playerID"),
-        player_id = "baf68072-fb1a-4461-a00c-72b8a7f4cb10",
-        $videoID = $("#videoID"),
-        video_id = "821141023001",
-        $pid = $("#pid"),
-        $vid = $("#vid"),
-        $requestButton = $("#requestButton"),
-        $request = $("#request"),
-        $submitButton = $("#submitButton"),
-        $required = $(".required"),
-        $requestInputs = $(".aapi-request"),
-        $responseFrame = $("#responseFrame"),
-        $this,
-        requestURL = "",
-        chartEngagement = "#chartEngagement",
+        useMyAccount = document.getElementById('useMyAccount'),
+        basicInfo = document.getElementById('basicInfo'),
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/engagement-report-proxy.php',
+        $accountID = document.getElementById('accountID'),
+        account_id = '1752604059001',
+        $client_id = document.getElementById('client_id'),
+        client_id = null,
+        $client_secret = document.getElementById('client_secret'),
+        client_secret = null,
+        $scopeSelect = document.getElementById('scopeSelect'),
+        scope = 'account',
+        $playerID = document.getElementById('playerID'),
+        player_id = '2fc88f47-3e0f-45bc-9a11-97d9d2f22392_default',
+        $videoID = document.getElementById('videoID'),
+        video_id = '4093643993001',
+        $pid = document.getElementById('pid'),
+        $vid = document.getElementById('vid'),
+        $requestButton = document.getElementById('requestButton'),
+        $request = document.getElementById('request'),
+        $submitButton = document.getElementById('submitButton'),
+        $requestInputs = document.getElementsByClassName('.aapi-request'),
+        responseFrame = document.getElementById('responseFrame'),
+        requestOptions = {},
+        requestURL = '',
+        chartEngagement = '#chartEngagement',
         responseData,
-        // functions
-        isDefined,
-        makeEngagementGraph,
-        buildRequest,
-        getData,
-        bclslog;
+        i,
+        iMax;
 
     /**
      * Logging function - safe for IE
@@ -41,29 +36,21 @@ var BCLS = (function ($, window) {
      * @param  {*} message the data to be logged by the console
      * @return {}
      */
-    bclslog = function (context, message) {
-        if (window["console"] && console["log"]) {
+    function bclslog(context, message) {
+        if (window['console'] && console['log']) {
           console.log(context, message);
         }
         return;
-    };
-
-    // allow array forEach method in older browsers
-    if (!Array.prototype.forEach) {
-        Array.prototype.forEach = function (fn, scope) {
-            for (var i = 0, len = this.length; i < len; ++i) {
-                fn.call(scope || this, this[i], i, this);
-            }
-        };
     }
-    // more robust test for strings "not defined"
-    isDefined =  function (v) {
-        if(v !== "" && v !== null && v !== "undefined") { return true; }
+
+    // more robust test for strings 'not defined'
+    function isDefined(v) {
+        if(v !== '' && v !== null && v !== 'undefined') { return true; }
         else { return false; }
-    };
+    }
 
     // create graph
-    makeEngagementGraph = function(jsonObject) {
+    function makeEngagementGraph(jsonObject) {
         var options = {pointDot : false},
             chartData = {},
             labels = [],
@@ -75,11 +62,11 @@ var BCLS = (function ($, window) {
             ctx,
             myNewChart;
         // process response data
-        video_engagement.forEach( function (element, index, array) {
+        video_engagement.forEach( function (element, index, video_engagement) {
             if ((index) % 10 === 0) {
-                labels[index] = index + "%";
+                labels[index] = index + '%';
             } else {
-                labels[index] = "";
+                labels[index] = '';
             }
 
             data[index] = element;
@@ -89,91 +76,121 @@ var BCLS = (function ($, window) {
             labels : labels,
             datasets : [
                 {
-                    fillColor : "rgba(151,187,205,0.5)",
-                    strokeColor : "rgba(151,187,205,1)",
-                    pointColor : "rgba(151,187,205,1)",
-                    pointStrokeColor : "#fff",
+                    fillColor : 'rgba(151,187,205,0.5)',
+                    strokeColor : 'rgba(151,187,205,1)',
+                    pointColor : 'rgba(151,187,205,1)',
+                    pointStrokeColor : '#fff',
                     data : data
                 }
             ]
         };
         //Get the context of the canvas element we want to select
-        ctx = document.getElementById("chartEngagement").getContext("2d");
+        ctx = document.getElementById('chartEngagement').getContext('2d');
         myNewChart = new Chart(ctx).Line(chartData, options);
-    };
+    }
 
-    buildRequest = function () {
-        var account = (isDefined($accountID.val())) ? $accountID.val() : account_id,
-            player = (isDefined($playerID.val())) ? $playerID.val() : player_id,
-            video = (isDefined($videoID.val())) ? $videoID.val() : video_id;
+    function buildRequest() {
+        player_id = (isDefined($playerID.value)) ? $playerID.value : player_id;
+        video_id = (isDefined($videoID.value)) ? $videoID.value : video_id;
+        account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
+        // add client credentials if any
+        if (isDefined($client_id.value)) {
+            requestOptions.client_id = $client_id.value;
+        }
+        if (isDefined($client_secret.value)) {
+            requestOptions.client_secret = $client_secret.value;
+        }
 
         // build the request
-        requestURL = "https://analytics.api.brightcove.com/v1";
-        requestURL += "/engagement/accounts/" + account;
-        if (scope === "players") {
-            requestURL += "/players/" + player;
-        } else if (scope === "videos") {
-            requestURL+= "/videos/" + video;
+        requestOptions.url = 'https://analytics.api.brightcove.com/v1';
+        requestOptions.url += '/engagement/accounts/' + account_id;
+        if (scope === 'players') {
+            requestOptions.url += '/players/' + player_id;
+        } else if (scope === 'videos') {
+            requestOptions.url+= '/videos/' + video_id;
         }
-        $request.html(requestURL);
-        $request.attr("value", requestURL);
-    };
-    // submit request
-    getData = function () {
-        var options = {};
-        options.client_id = (isDefined($client_id.val())) ? $client_id.val() : client_id;
-        options.client_secret = (isDefined($client_secret.val())) ? $client_secret.val() : client_secret;
-        options.url = $request.val();
-        options.requestType = "GET";
-        options.requestBody = null;
-        bclslog("options", options);
-        $.ajax({
-            url: proxyURL,
-            method: "POST",
-            data: options,
-            success : function (data) {
+        $request.textContent = requestOptions.url;
+        $request.setAttribute('value', requestOptions.url);
+    }
+    /**
+     * send API request to the proxy
+     * @param  {Object} requestData options for the request
+     * @param  {Function} callback the callback function to invoke
+     */
+    function getData(options, callback) {
+        var httpRequest = new XMLHttpRequest(),
+            parsedData,
+            requestParams,
+            dataString,
+            // response handler
+            getResponse = function() {
                 try {
-                   data = JSON.parse(data);
+                  if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {
+                      parsedData = JSON.parse(httpRequest.responseText);
+                      callback(parsedData);
+                    } else {
+                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                    }
+                  }
                 } catch (e) {
-                   alert('invalid json');
+                  alert('Caught Exception: ' + e);
                 }
+            };
+            // set up request data
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+        if (options.client_id && options.client_secret) {
+            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        }
 
-                $responseFrame.html(JSON.stringify(data, null, '  '));
-                makeEngagementGraph(data);
-            }
-        });
-    };
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open('POST', proxyURL);
+        // set headers
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // open and send request
+        httpRequest.send(requestParams);
+    }
     // set event listeners
-    useMyAccount.addEventListener("click", function () {
-        if (basicInfo.getAttribute('style') === "display:none;") {
+    useMyAccount.addEventListener('click', function () {
+        if (basicInfo.getAttribute('style') === 'display:none;') {
             basicInfo.setAttribute('style', 'display:block;');
-            useMyAccount.innerHTML = "Use Sample Account";
+            useMyAccount.innerHTML = 'Use Sample Account';
         } else {
             basicInfo.setAttribute('style', 'display:none;');
-            useMyAccount.innerHTML = "Use My Account Instead";
+            useMyAccount.innerHTML = 'Use My Account Instead';
         }
     });
     // listener for videos request
-    $requestInputs.on("change", buildRequest);
+    iMax = $requestInputs.length;
+    for (i = 0; i < iMax; i++) {
+        $requestInputs[i].addEventListener('change', buildRequest);
+    }
     // rebuild request when scope selector changes
-    $scopeSelect.on("change", function (evt) {
-        scope = $scopeSelect.val();
-        if (scope === "account") {
-            $vid.hide();
-            $pid.hide();
-        } else if (scope === "players") {
-            $vid.hide();
-        } else if (scope === "videos") {
-            $pid.hide();
+    $scopeSelect.addEventListener('change', function (evt) {
+        scope = $scopeSelect.value;
+        if (scope === 'account') {
+            $vid.setAttribute('style', 'display:none;');
+            $pid.setAttribute('style', 'display:none;');
+        } else if (scope === 'players') {
+            $pid.setAttribute('style', 'display:block;');
+            $vid.setAttribute('style', 'display:none;');
+        } else if (scope === 'videos') {
+            $pid.setAttribute('style', 'display:none;');
+            $vid.setAttribute('style', 'display:block;');
         }
         buildRequest();
     });
-    // send request
-    $submitButton.on("click", getData);
+    // submit request
+    $submitButton.addEventListener('click', function(){
+        getData(requestOptions, function(response) {
+            bclslog('response', response);
+            responseFrame.textContent = JSON.stringify(response, null, '  ');
+            makeEngagementGraph(response);
+        });
+    });
 
     // generate initial request
     buildRequest();
-    return {
-        buildRequest: buildRequest
-    };
-})($, window);
+})(window, document);
