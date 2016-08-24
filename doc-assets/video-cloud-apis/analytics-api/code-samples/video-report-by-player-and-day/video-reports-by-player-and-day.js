@@ -110,21 +110,23 @@ var BCLS = (function (window, document, datepickr) {
         function displayData() {
             var displayStr, csvDisplayString = '', playerObject, videoObject, template, i, iMax, item;
             currentPlayer = playerSelector.options[playerSelector.selectedIndex].value;
+            // bclslog('currentPlayer', currentPlayer);
             currentVideoIndex = videoSelector.selectedIndex;
             playerObject = analyticsData[currentPlayer];
-            bclslog('currentVideoIndex', currentVideoIndex);
-            bclslog('playerObject.items[currentVideoIndex]', playerObject.items[currentVideoIndex]);
+            // bclslog('analyticsData[currentPlayer]', analyticsData[currentPlayer]);
+            // bclslog('currentVideoIndex', currentVideoIndex);
+            // bclslog('playerObject.items[currentVideoIndex]', playerObject.items[currentVideoIndex]);
             videoObject = playerObject.items[currentVideoIndex];
-            bclslog('videoObject', videoObject);
-            displayStr = "<tr style=\"background-color:#64AAB2;color:#FFF;\"><th>" + playerObject.player_name + "</th>";
+            // bclslog('videoObject', videoObject);
+            displayStr = "<tr style=\"background-color:#64AAB2;color:#FFF;\"><th colspan=\"6\">" + playerObject.player_name + "</th></tr>";
             cvsDisplayString = '"Video Name","","Total Plays","Total Average Seconds Viewed","Total Seconds Viewed" \n';
-            displayStr += '<tr><td>' + videoObject.video_name + '</td><td>Totals</td><td>' + videoObject.totalPlays + '</td><td>' + videoObject.totalAvgSecondsViewed + '</td><td>' + videoObject.totalSecondsViewed + '</td></tr>';
-            csvDisplayString += '"' + videoObject.video_name + '","Totals","' + videoObject.totalPlays + '","' + videoObject.totalAvgSecondsViewed + '","' + videoObject.totalSecondsViewed + '" \n';
+            displayStr += '<tr><td></td><td>' + videoObject.video_name + '</td><td>Totals</td><td>' + videoObject.totalPlays + '</td><td>' + videoObject.totalAvgSecondsViewed + '</td><td>' + videoObject.totalSecondsViewed + '</td></tr>';
+            csvDisplayString += '"' + videoObject.video_name + '","Totals","' + videoObject.totalPlays + '","' + videoObject.totalAvgSecondsViewed + '","' + videoObject.totalSecondsViewed + '" \n' + '"Date","Views","Avg Viewed Seconds","Total Viewed Seconds" \n';
             iMax = videoObject.items.length;
             for (i = 0; i < iMax; i++) {
                 item = videoObject.items[i];
-                displayStr += '<tr><td>' + item.date + '</td><td>' + item.video_view + '</td><td>' + item.avgSecondsViewed + '</td><td>' + item.totalSecondsViewed + '</td></tr>';
-                csvDisplayString += '"' + item.video_view + '","' + item.avgSecondsViewed + '","' + item.totalSecondsViewed + '" \n';
+                displayStr += '<tr><td colspan=\"2\"></td><td>' + item.date + '</td><td>' + item.video_view + '</td><td>' + item.avgSecondsViewed + '</td><td>' + item.totalSecondsViewed + '</td></tr>';
+                csvDisplayString += '"' + item.date + '","' + item.video_view + '","' + item.avgSecondsViewed + '","' + item.totalSecondsViewed + '" \n';
             }
             csvDisplay.value = csvDisplayString;
             reportTableBody.innerHTML = displayStr;
@@ -133,7 +135,6 @@ var BCLS = (function (window, document, datepickr) {
             var player, video, i, iMax, j, jMax, item, date, thisVideo;
             for (player in analyticsData) {
                 jMax = analyticsData[player].items.length;
-                bclslog('jMax', jMax);
                 for (j = 0; j < jMax; j++) {
                     thisVideo = analyticsData[player].items[j];
                     iMax = thisVideo.items.length;
@@ -142,10 +143,8 @@ var BCLS = (function (window, document, datepickr) {
                     thisVideo.totalCompletedViews = 0;
                     for (i = 0; i < iMax; i++) {
                         item = thisVideo.items[i];
-                        bclslog('item.date', item.date);
                         if (isDefined(item.date)) {
                             date = new Date(item.date);
-                            bclslog('month', date.getMonth());
                             item.date = dateToISO(date);
                             thisVideo.totalPlays += item.video_view;
                             thisVideo.totalSecondsViewed += item.totalSecondsViewed;
@@ -155,9 +154,12 @@ var BCLS = (function (window, document, datepickr) {
 
 
                     }
-                    thisVideo.totalAvgSecondsViewed = thisVideo.totalSecondsViewed / thisVideo.totalPlays;
                     if (thisVideo.totalPlays > 0) {
+                        thisVideo.totalAvgSecondsViewed = thisVideo.totalSecondsViewed / thisVideo.totalPlays;
                         thisVideo.totalCompletedViews = thisVideo.totalCompletedViews / thisVideo.totalPlays;
+                    } else {
+                        thisVideo.totalAvgSecondsViewed = 0;
+                        thisVideo.totalCompletedViews = 0;
                     }
                     gettingDataDisplay.textContent = 'Data processing complete';
                 }
@@ -172,9 +174,7 @@ var BCLS = (function (window, document, datepickr) {
                 newEl,
                 txt,
                 getResponse = function () {
-                    var template,
-                        results,
-                        i,
+                    var i,
                         j,
                         k,
                         player,
@@ -184,115 +184,123 @@ var BCLS = (function (window, document, datepickr) {
                         item,
                         newItem = {},
                         thisVideo;
-                    if (httpRequest.readyState === 4) {
-                      if (httpRequest.status === 200) {
-                        data = JSON.parse(httpRequest.responseText);
-                        } else {
-                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                    try {
+                        if (httpRequest.readyState === 4) {
+                              if (httpRequest.status === 200) {
+                                data = JSON.parse(httpRequest.responseText);
+                                bclslog('data', data);
+                            } else {
+                              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                            }
                         }
+                    } catch (e) {
+                        bclslog('e', e);
                     }
-                    switch (callType) {
-                        case "players":
-                        frag = new DocumentFragment();
-                        callNumber++;
-                        // save the data for getting the analytics
-                        bclslog('player data', data);
-                        playerData = data;
-                        // bclslog("player data", data);
-                        newEl = document.createElement('option');
-                        txt = document.createTextNode('Select a Player');
-                        newEl.appendChild(txt);
-                        frag.appendChild(newEl);
-                        playerMax = playerData.items.length;
-
-                        // add players to the analytics data object
-                        for (i = 0; i < playerData.items.length; i++) {
-
-                            playerData.items[i].player = (isDefined(playerData.items[i].player)) ? playerData.items[i].player : "noPlayerId";
-                            if (playerData.items[i].player !== "noPlayerId") {
-                                playersArray.push(playerData.items[i].player);
-                            }
-                            playerData.items[i].player_name = (isDefined(playerData.items[i].player_name)) ? playerData.items[i].player_name : "noPlayerName";
-                            if (isDefined(playerData.items[i].player)) {
-                                analyticsData[playerData.items[i].player] = {};
-                                analyticsData[playerData.items[i].player].player_name = playerData.items[i].player_name;
-                                analyticsData[playerData.items[i].player].items = [];
-                            }
+                    if (isDefined(data)) {
+                        switch (callType) {
+                            case "players":
+                            frag = new DocumentFragment();
+                            callNumber++;
+                            // save the data for getting the analytics
+                            playerData = data;
                             newEl = document.createElement('option');
-                            txt = document.createTextNode(playerData.items[i].player_name);
+                            txt = document.createTextNode('Select a Player');
                             newEl.appendChild(txt);
-                            newEl.setAttribute('id', playerData.items[i].player);
                             frag.appendChild(newEl);
-                        }
-                        // populate the player selector
-                        playerSelector.appendChild(frag);
-                        playerSelector.options[0].setAttribute("selected", "selected");
-                        getVideoData();
-                        break;
-                        case "videos":
-                        frag = new DocumentFragment();
-                        callNumber++;
-                        // save the data for getting the analytics
-                        videoData = data;
-                        newEl = document.createElement('option');
-                        txt = document.createTextNode('Select a Video');
-                        newEl.appendChild(txt);
-                        frag.appendChild(newEl);
-                        // add videos to the analytics data object
-                        videoMax = videoData.items.length;
-                        for (player in analyticsData) {
-                            for (j = 0; j < videoMax; j++) {
-                                video = videoData.items[j];
-                                analyticsData[player].items[j] = {};
-                                analyticsData[player].items[j].id = video.video;
-                                analyticsData[player].items[j].video_name = (isDefined(video.video_name)) ? video.video_name : "name undefined";
-                                analyticsData[player].items[j].items = [];
+                            playerMax = playerData.items.length;
+
+                            // add players to the analytics data object
+                            for (i = 0; i < playerData.items.length; i++) {
+
+                                playerData.items[i].player = (isDefined(playerData.items[i].player)) ? playerData.items[i].player : "noPlayerId";
+                                if (playerData.items[i].player !== "noPlayerId") {
+                                    playersArray.push(playerData.items[i].player);
+                                }
+                                playerData.items[i].player_name = (isDefined(playerData.items[i].player_name)) ? playerData.items[i].player_name : "noPlayerName";
+                                if (isDefined(playerData.items[i].player)) {
+                                    analyticsData[playerData.items[i].player] = {};
+                                    analyticsData[playerData.items[i].player].player_name = playerData.items[i].player_name;
+                                    analyticsData[playerData.items[i].player].items = [];
+                                }
                                 newEl = document.createElement('option');
-                                txt = document.createTextNode(videoData.items[i].player_name);
+                                txt = document.createTextNode(playerData.items[i].player_name);
                                 newEl.appendChild(txt);
-                                newEl.setAttribute('id', playerData.items[i].video);
+                                newEl.setAttribute('value', playerData.items[i].player);
                                 frag.appendChild(newEl);
                             }
-                        }
-                        // populate the video selector
-                        videoSelector.appendChild(frag);
-                        videoSelector.options[0].setAttribute("selected", "selected");
-                        getAnalyticsData();
-                        break;
-                        case "analytics":
-                        callNumber++;
-                        itemsmax = data.items.length;
-                        // bclslog('data',data);
-                        videoMax = analyticsData[currentPlayer].items.length;
-                        for (k = 0; k < videoMax; k++) {
-                            thisVideo = analyticsData[currentPlayer].items[k];
-                            newItem = {};
-                            newItem.video_view = 0;
-                            newItem.avgSecondsViewed = 0;
-                            newItem.totalSecondsViewed = 0;
-                            newItem.date = currentDay.from;
-                            for (i = 0; i < itemsmax; i++) {
-                                if (data.items[i].video === thisVideo.id) {
-                                    item = data.items[i];
-                                    newItem.video_view = item.video_view;
-                                    newItem.avgSecondsViewed = item.video_seconds_viewed / item.video_view;
-                                    newItem.totalSecondsViewed = item.video_seconds_viewed;
+                            // populate the player selector
+                            playerSelector.appendChild(frag);
+                            playerSelector.options[0].setAttribute("selected", "selected");
+                            getVideoData();
+                            break;
+                            case "videos":
+                            frag = new DocumentFragment();
+                            callNumber++;
+                            // save the data for getting the analytics
+                            videoData = data;
+                            newEl = document.createElement('option');
+                            txt = document.createTextNode('Select a Video');
+                            newEl.appendChild(txt);
+                            frag.appendChild(newEl);
+                            // add videos to the analytics data object
+                            videoMax = videoData.items.length;
+                            for (player in analyticsData) {
+                                for (j = 0; j < videoMax; j++) {
+                                    video = videoData.items[j];
+                                    video.video_name = (isDefined(video.video_name)) ? video.video_name : "unknown";
+                                    video.video = (isDefined(video.video)) ? video.video : "unknown";
+                                    analyticsData[player].items[j] = {};
+                                    analyticsData[player].items[j].id = video.video;
+                                    analyticsData[player].items[j].video_name = video.video_name;
+                                    analyticsData[player].items[j].items = [];
+                                    newEl = document.createElement('option');
+                                    txt = document.createTextNode(video.video_name);
+                                    newEl.appendChild(txt);
+                                    newEl.setAttribute('value', video.video);
+                                    frag.appendChild(newEl);
                                 }
                             }
-                            analyticsData[currentPlayer].items[k].items.push(newItem);
-                        }
-                        if (currentDayIndex < dayMax - 1) {
-                            currentDayIndex++;
+                            // populate the video selector
+                            videoSelector.appendChild(frag);
+                            videoSelector.options[0].setAttribute("selected", "selected");
                             getAnalyticsData();
-                        } else if (currentPlayerIndex < playerMax - 1) {
-                            currentDayIndex = 0;
-                            currentVideoIndex = 0;
-                            currentPlayerIndex++;
-                            getAnalyticsData();
-                        } else {
-                            gettingDataDisplay.textContent = "Data retrieved - " + callNumber + " API calls made - processing data...";
-                            bclslog("analyticsData", analyticsData);
-                            getTotals();
+                            break;
+                            case "analytics":
+                            callNumber++;
+                            itemsmax = data.items.length;
+                            // bclslog('data',data);
+                            videoMax = analyticsData[currentPlayer].items.length;
+                            for (k = 0; k < videoMax; k++) {
+                                thisVideo = analyticsData[currentPlayer].items[k];
+                                newItem = {};
+                                newItem.video_view = 0;
+                                newItem.avgSecondsViewed = 0;
+                                newItem.totalSecondsViewed = 0;
+                                newItem.date = currentDay.from;
+                                for (i = 0; i < itemsmax; i++) {
+                                    if (data.items[i].video === thisVideo.id) {
+                                        item = data.items[i];
+                                        newItem.video_view = item.video_view;
+                                        newItem.avgSecondsViewed = item.video_seconds_viewed / item.video_view;
+                                        newItem.totalSecondsViewed = item.video_seconds_viewed;
+                                    }
+                                }
+                                analyticsData[currentPlayer].items[k].items.push(newItem);
+                            }
+                            if (currentDayIndex < dayMax - 1) {
+                                currentDayIndex++;
+                                getAnalyticsData();
+                            } else if (currentPlayerIndex < playerMax - 1) {
+                                currentDayIndex = 0;
+                                currentVideoIndex = 0;
+                                currentPlayerIndex++;
+                                getAnalyticsData();
+                            } else {
+                                gettingDataDisplay.textContent = "Data retrieved - " + callNumber + " API calls made - processing data...";
+                                // bclslog("analyticsData", analyticsData);
+                                getTotals();
+                            }
+                            break;
                         }
                     }
                 };
@@ -310,7 +318,6 @@ var BCLS = (function (window, document, datepickr) {
             if (options.client_id && options.client_secret) {
                 requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
             }
-            bclslog('requestParams', requestParams);
             // set response handler
             httpRequest.onreadystatechange = getResponse;
             // open the request
@@ -318,6 +325,7 @@ var BCLS = (function (window, document, datepickr) {
             // set headers
             httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             // open and send request
+            bclslog('requestParams', requestParams);
             httpRequest.send(requestParams);
         }
         // get the analytics data for the videos
@@ -407,7 +415,10 @@ var BCLS = (function (window, document, datepickr) {
         getPlayersData();
     });
     videoSelector.addEventListener("change", displayData);
-    playerSelector.addEventListener("change", displayData);
+    playerSelector.addEventListener("change", function() {
+        videoSelector.setAttribute('style', '');
+        displayData();
+    });
     useMyAccount.addEventListener("click", function () {
         if (basicInfo.getAttribute('style') === "display:none;") {
             basicInfo.setAttribute('style', 'display:block;');
