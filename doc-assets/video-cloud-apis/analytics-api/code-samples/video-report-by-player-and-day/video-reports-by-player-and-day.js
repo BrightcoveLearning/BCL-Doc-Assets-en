@@ -35,6 +35,7 @@ var BCLS = (function (window, document, datepickr) {
         fromDate = document.getElementById("fromDatePicker"),
         toDate = document.getElementById("toDatePicker"),
         getData = document.getElementById("getData"),
+        requestDisplay = document.getElementById('requestDisplay'),
         gettingDataDisplay = document.getElementById("gettingDataDisplay"),
         today = new Date(),
         monthAgo = new Date(today - (30 * 24 * 60 * 60 * 1000)),
@@ -163,31 +164,39 @@ var BCLS = (function (window, document, datepickr) {
             }
         }
         function makeAnalyticsCall(callURL) {
-            var options = {}, newItem = {};
-            options.client_id = (isDefined(client_id.value)) ? client_id.value : "0cabdedf-1588-4b1b-b34b-483bc5abef6f";
-            options.client_secret = (isDefined(client_secret.value)) ? client_secret.value : "OceNhwbegXYiSIRnDw57j55GCD6pL5g86SGu5UoNWbQmj63Jns72CNaJFpYtAxlw7p5as-g9G8nJnDnFgigPgg";
-            options.url = callURL;
-            options.requestMethod = "GET";
-            options.requestData = null;
-
-            $.ajax({
-            url: proxyURL,
-            type: "POST",
-            data: options,
-            success : function (data) {
-                var template, results, i, j, k, player, video, itemsmax, analytics, item, newItem = {}, thisVideo;
-                try {
-                    var data = JSON.parse(data);
-                } catch (e) {
-                    alert('invalid json');
-                }
-                switch (callType) {
-                    case "players":
-                        var newEl,
-                        txt,
-                            frag = new DocumentFragment();
+            var httpRequest = new XMLHttpRequest(),
+                options = {},
+                newItem = {},
+                data,
+                requestParams,
+                newEl,
+                txt,
+                getResponse = function () {
+                    var template,
+                        results,
+                        i,
+                        j,
+                        k,
+                        player,
+                        video,
+                        itemsmax,
+                        analytics,
+                        item,
+                        newItem = {},
+                        thisVideo;
+                    if (httpRequest.readyState === 4) {
+                      if (httpRequest.status === 200) {
+                        data = JSON.parse(httpRequest.responseText);
+                        } else {
+                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                        }
+                    }
+                    switch (callType) {
+                        case "players":
+                        frag = new DocumentFragment();
                         callNumber++;
                         // save the data for getting the analytics
+                        bclslog('player data', data);
                         playerData = data;
                         // bclslog("player data", data);
                         newEl = document.createElement('option');
@@ -207,21 +216,30 @@ var BCLS = (function (window, document, datepickr) {
                             if (isDefined(playerData.items[i].player)) {
                                 analyticsData[playerData.items[i].player] = {};
                                 analyticsData[playerData.items[i].player].player_name = playerData.items[i].player_name;
-                            analyticsData[playerData.items[i].player].items = [];
+                                analyticsData[playerData.items[i].player].items = [];
                             }
+                            newEl = document.createElement('option');
+                            txt = document.createTextNode(playerData.items[i].player_name);
+                            newEl.appendChild(txt);
+                            newEl.setAttribute('id', playerData.items[i].player);
+                            frag.appendChild(newEl);
                         }
                         // populate the player selector
-                        template = Handlebars.compile(playerSelectTemplate);
-                        playerSelector.innerHTML = template(data);
+                        playerSelector.appendChild(frag);
                         playerSelector.options[0].setAttribute("selected", "selected");
                         getVideoData();
                         break;
-                    case "videos":
+                        case "videos":
+                        frag = new DocumentFragment();
                         callNumber++;
                         // save the data for getting the analytics
                         videoData = data;
-                        videoMax = videoData.items.length;
+                        newEl = document.createElement('option');
+                        txt = document.createTextNode('Select a Video');
+                        newEl.appendChild(txt);
+                        frag.appendChild(newEl);
                         // add videos to the analytics data object
+                        videoMax = videoData.items.length;
                         for (player in analyticsData) {
                             for (j = 0; j < videoMax; j++) {
                                 video = videoData.items[j];
@@ -229,15 +247,19 @@ var BCLS = (function (window, document, datepickr) {
                                 analyticsData[player].items[j].id = video.video;
                                 analyticsData[player].items[j].video_name = (isDefined(video.video_name)) ? video.video_name : "name undefined";
                                 analyticsData[player].items[j].items = [];
+                                newEl = document.createElement('option');
+                                txt = document.createTextNode(videoData.items[i].player_name);
+                                newEl.appendChild(txt);
+                                newEl.setAttribute('id', playerData.items[i].video);
+                                frag.appendChild(newEl);
                             }
                         }
                         // populate the video selector
-                        template = Handlebars.compile(videoSelectTemplate);
-                        videoSelector.innerHTML = template(data);
+                        videoSelector.appendChild(frag);
                         videoSelector.options[0].setAttribute("selected", "selected");
                         getAnalyticsData();
                         break;
-                    case "analytics":
+                        case "analytics":
                         callNumber++;
                         itemsmax = data.items.length;
                         // bclslog('data',data);
@@ -268,17 +290,35 @@ var BCLS = (function (window, document, datepickr) {
                             currentPlayerIndex++;
                             getAnalyticsData();
                         } else {
-                            gettingDataDisplay.innerHTML = "Data retrieved - " + callNumber + " API calls made - processing data...";
+                            gettingDataDisplay.textContent = "Data retrieved - " + callNumber + " API calls made - processing data...";
                             bclslog("analyticsData", analyticsData);
                             getTotals();
                         }
-                }
-            },
-            error : function (XMLHttpRequest, textStatus, errorThrown)
-                {
-                    gettingDataDisplay.innerHTML = "Sorry, your request was not successful. Here is what the server sent back: " + errorThrown;
-                }
-            });
+                    }
+                };
+            if (isDefined(client_id.value)) {
+                options.client_id = client_id.value;
+            }
+            if (isDefined(client_secret.value)) {
+                options.client_secret =  client_secret.value;
+            }
+            options.url = callURL;
+            options.requestMethod = "GET";
+            options.requestData = null;
+            // set up request data
+            requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+            if (options.client_id && options.client_secret) {
+                requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+            }
+            bclslog('requestParams', requestParams);
+            // set response handler
+            httpRequest.onreadystatechange = getResponse;
+            // open the request
+            httpRequest.open('POST', proxyURL);
+            // set headers
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            // open and send request
+            httpRequest.send(requestParams);
         }
         // get the analytics data for the videos
         function getAnalyticsData() {
@@ -290,25 +330,28 @@ var BCLS = (function (window, document, datepickr) {
             // currentVideo = videoData.items[currentVideoIndex].video;
             currentDay = daysArray[currentDayIndex];
             callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + account_id + "&dimensions=video&from=" + currentDay.from + "&to=" + currentDay.to + "&where=player==" + currentPlayer + "&fields=video_view,video_seconds_viewed,video";
+            requestDisplay.textContent = callURL;
             makeAnalyticsCall(callURL);
 
         }
         // get the video analytics data
         function getVideoData() {
             var callURL = "";
-            account_id = (isDefined(accountID.value)) ? accountID.value : "1752604059001",
+            account_id = (isDefined(accountID.value)) ? accountID.value : "1752604059001";
             gettingDataDisplay.innerHTML = "Getting video data...";
             callType = "videos";
             callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + account_id + "&dimensions=video&limit=10&fields=video,video_name&sort=-video_view&from=" + dateFromMS + "&to=" + dateToMS;
+            requestDisplay.textContent = callURL;
             makeAnalyticsCall(callURL);
         }
         // get all players for the selected time period
         function getPlayersData() {
             var callURL = "";
-            account_id = (isDefined(accountID.value)) ? accountID.value : "1752604059001",
+            account_id = (isDefined(accountID.value)) ? accountID.value : "1752604059001";
             gettingDataDisplay.innerHTML = "Getting player data...";
             callType = "players";
             callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + account_id + "&dimensions=player&limit=5&fields=player,player_name&sort=-video_view&from=" + dateFromMS + "&to=" + dateToMS;
+            requestDisplay.textContent = callURL;
             makeAnalyticsCall(callURL);
         }
     // add date pickers to the date input fields
