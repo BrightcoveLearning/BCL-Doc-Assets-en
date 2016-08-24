@@ -137,7 +137,7 @@ var BCLS = (function (window, document) {
                   alert('Caught Exception: ' + e);
                 }
             };
-            // set up request data
+        // set up request data
         requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
         if (options.client_id && options.client_secret) {
             requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
