@@ -132,20 +132,23 @@ var BCLS = (function (window, document, datepickr) {
          * populate the display table
          */
         function displayData() {
-            var displayStr, template, tempObj = {}, barChartData, chart, day, i, item, thisDay, totalItems, selectedDate, selectedCountry;
+            var displayStr, template, tempObj = {}, barChartData, chart, day, i, iMax, item, thisDay, totalItems, selectedDate, selectedCountry;
             bclslog("analyticsData", analyticsData);
             // clear the table body
             reportTableBody.innerHTML = '';
             //         dataDisplayBodyTemplate = "<tr><th colspan=\"2\">{{date}}</th></tr>{{#items}}<tr><td>{{country_name}}</td><td>{{video_view}}</td></tr>{{/items}}";
-
-            reportTableBody.innerHTML = '<tr><th colspan="2">' + analyticsData.date + '</th></tr>';
-
-            template = Handlebars.compile(dataDisplayBodyTemplate);
             if (getSelectValue(dateSelector) === "all") {
                 if (getSelectValue(countrySelector) === "all") {
                     for (day in analyticsData) {
-                        reportTableBody.innerHTML += template(analyticsData[day]);
+                        bclslog('day', analyticsData[day]);
+                        displayStr += '<tr><th colspan="2">' + analyticsData[day].date + '</th></tr>';
+                        iMax = analyticsData[day].items.length;
+                        for (i = 0; i < iMax; i++) {
+                            item = analyticsData[day].items[i];
+                            displayStr += '<tr><td>' + item.country_name + '</td><td>' + video_view + '</td></tr>';
+                        }
                     }
+                    reportTableBody.innerHTML = displayStr;
                 } else {
                     // we have a selected country
                     selectedCountry = getSelectValue(countrySelector);
@@ -163,7 +166,11 @@ var BCLS = (function (window, document, datepickr) {
                         }
                     }
                     for (day in tempObj) {
-                        reportTableBody.innerHTML += template(tempObj[day]);
+                        iMax = analyticsData[day].items.length;
+                        for (i = 0; i < iMax; i++) {
+                            item = analyticsData[day].items[i];
+                            displayStr += '<tr><td>' + item.country_name + '</td><td>' + video_view + '</td></tr>';
+                        }
                     }
                 }
             } else if (getSelectValue(countrySelector) === "all") {
@@ -206,7 +213,8 @@ var BCLS = (function (window, document, datepickr) {
                         k,
                         player,
                         video,
-                        itemsmax,
+                        itemsMax,
+                        str,
                         analytics,
                         item,
                         newItem = {},
@@ -227,6 +235,7 @@ var BCLS = (function (window, document, datepickr) {
                         switch (callType) {
                             case "countries":
                             str = "";
+                            itemsMax = data.items.length;
                             for (i = 0; i < itemsMax; i++) {
                                 item = data.items[i];
                                 str += "<option value=\"" + item.country + "\">" + item.country_name + "</option>";
