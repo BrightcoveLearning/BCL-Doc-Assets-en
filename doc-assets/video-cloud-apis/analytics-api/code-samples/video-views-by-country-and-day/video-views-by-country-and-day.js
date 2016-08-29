@@ -1,6 +1,6 @@
-var BCLS = (function ($, window, document, datepickr) {
+var BCLS = (function (window, document, datepickr) {
     "use strict";
-    var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+    var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/analyitcs-by-player-day-proxy.php",
         callNumber = 0,
         callType = "",
         // call limit will be reset once we know how many countries have data for the period
@@ -12,7 +12,7 @@ var BCLS = (function ($, window, document, datepickr) {
         client_secret = document.getElementById("client_secret"),
         dateSelector = document.getElementById("dateSelector"),
         reportTableBody = document.getElementById("reportTableBody"),
-        account_id,
+        account_id = '1752604059001',
         currentDayIndex = 0,
         currentDay,
         dayMax,
@@ -28,40 +28,34 @@ var BCLS = (function ($, window, document, datepickr) {
         getData = document.getElementById("getData"),
         gettingDataDisplay = document.getElementById("gettingDataDisplay"),
         today = new Date(),
-        weekAgo = new Date(today - 604800000),
+        weekAgo = new Date(today.valueOf() - 604800000),
         countryDisplayTemplate = "{{#items}}<option value=\"{{country}}\">{{country_name}}</option>{{/items}}",
-        dateDisplayTemplate = "{{#items}}<option value=\"{{date}}\">{{date}}</option>{{/items}}",
-        dataDisplayBodyTemplate = "<tr><th colspan=\"2\">{{date}}</th></tr>{{#items}}<tr><td>{{country_name}}</td><td>{{video_view}}</td></tr>{{/items}}",
-        /**
-         * tests for all the ways a variable might be undefined or not have a value
-         * @param {*} x the variable to test
-         * @return {Boolean} true if variable is defined and has a value
-         */
-        isDefined = function(x){
-            if( x !== "" && x !== null && x !== undefined && x !== NaN && x !== {} && x !== []){
-                return true;
-            } else{
-                return false;
-            }
-        },
+        dateDisplayTemplate = "{{#items}}<option value=\"{{date}}\">{{date}}</option>{{/items}}";
         /**
          * Logging function - safe for IE
          * @param  {string} context description of the data
          * @param  {*} message the data to be logged by the console
          * @return {}
          */
-        bclslog = function (context, message) {
+        function bclslog(context, message) {
             if (window["console"] && console["log"]) {
               console.log(context, message);
-            }
+            };
             return;
-        },
+        }
+        // more robust test for strings "not defined"
+        function isDefined (v) {
+            if (v === "" || v === null || v === undefined || v === NaN) {
+              return false;
+            }
+            return true;
+        }
         /**
          * function that returns iso date for JS date object
          * @param {date} date the date object
          * @return {string} iso date string
          */
-        dateToISO = function (date) {
+        function dateToISO(date) {
             var y = date.getFullYear(),
                 m = date.getMonth(),
                 d = date.getDate(),
@@ -80,12 +74,19 @@ var BCLS = (function ($, window, document, datepickr) {
             }
             isoDate = y + "-" + m + "-" + d;
             return isoDate;
-        },
-        getSelectValue = function (e) {
+        }
+        /**
+         * get value for selected item
+         * @param {HTMLElement} e the selector element
+         */
+        function getSelectValue(e) {
             return e.options[e.selectedIndex].value;
-        },
-
-        getMonthName = function (month) {
+        }
+        /**
+         * Get the English name for a month
+         * @param {Number} month 0-based number of the month
+         */
+        function getMonthName(month) {
             var name;
             switch (month) {
                 case 1:
@@ -126,12 +127,19 @@ var BCLS = (function ($, window, document, datepickr) {
                 break;
             }
             return name;
-        },
-        displayData = function () {
+        }
+        /**
+         * populate the display table
+         */
+        function displayData() {
             var displayStr, template, tempObj = {}, barChartData, chart, day, i, item, thisDay, totalItems, selectedDate, selectedCountry;
             bclslog("analyticsData", analyticsData);
             // clear the table body
-            reportTableBody.innerHTML = "";
+            reportTableBody.innerHTML = '';
+            //         dataDisplayBodyTemplate = "<tr><th colspan=\"2\">{{date}}</th></tr>{{#items}}<tr><td>{{country_name}}</td><td>{{video_view}}</td></tr>{{/items}}";
+
+            reportTableBody.innerHTML = '<tr><th colspan="2">' + analyticsData.date + '</th></tr>';
+
             template = Handlebars.compile(dataDisplayBodyTemplate);
             if (getSelectValue(dateSelector) === "all") {
                 if (getSelectValue(countrySelector) === "all") {
@@ -179,81 +187,118 @@ var BCLS = (function ($, window, document, datepickr) {
                     }
                 }
             }
-        },
-        makeAnalyticsCall = function (callURL) {
-            var newItem = {}, options = {};
-            options.client_id = (isDefined(client_id.value)) ? client_id.value : "742d6440-58d1-49ed-b2fb-f60d33bf02ae";
-            options.client_secret = (isDefined(client_secret.value)) ? client_secret.value : "xs3vuzzKPz5fWHInsON26SXOL54X1GObFW70KylVqdVuIHdkqwqlCs9yVSCRF3i5u_0NcNb7MrzntCLaveZmeQ";
-            options.url = callURL;
-            options.requestMethod = "GET";
-            options.requestData = null;
-
-            $.ajax({
-                url: proxyURL,
-                type: "POST",
-                data: options,
-                success : function (data) {
-                    var template, results, i, player, video, analytics, item, itemsMax, newItem = {}, str = "", thisVideo;
+        }
+        /**
+         * make API calls
+         * @param {String} callURL the full URL for the API request
+         */
+        function makeAnalyticsCall(callURL) {
+            var httpRequest = new XMLHttpRequest(),
+                options = {},
+                newItem = {},
+                data,
+                requestParams,
+                newEl,
+                txt,
+                getResponse = function () {
+                    var i,
+                        j,
+                        k,
+                        player,
+                        video,
+                        itemsmax,
+                        analytics,
+                        item,
+                        newItem = {},
+                        thisVideo;
                     try {
-                      var data = JSON.parse(data);
+                        if (httpRequest.readyState === 4) {
+                              if (httpRequest.status === 200) {
+                                data = JSON.parse(httpRequest.responseText);
+                                bclslog('data', data);
+                            } else {
+                              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                            }
+                        }
                     } catch (e) {
-                      alert('invalid json');
+                        bclslog('e', e);
                     }
-                    callNumber++;
-                    itemsMax = data.items.length;
-                    switch (callType) {
-                        case "countries":
-                        str = "";
-                        for (i = 0; i < itemsMax; i++) {
-                            item = data.items[i];
-                            str += "<option value=\"" + item.country + "\">" + item.country_name + "</option>";
-                        }
-                        countrySelector.innerHTML = "<option value=\"all\" selected=\"selected\">All</option>" + str;
-                        gettingDataDisplay.innerHTML = "Country data retrieved!";
-                        getData.innerHTML = "Get Analytics Data";
-                        getAnalyticsData();
-                        callLimit = itemsMax;
-                        break;
-                        case "analytics":
-                        analyticsData[currentDay] = {};
-                        analyticsData[currentDay].date = currentDay;
-                        analyticsData[currentDay].items = [];
-                        for (i = 0; i < itemsMax; i++) {
-                            newItem = {};
-                            item = data.items[i];
-                            newItem.video_view = item.video_view;
-                            newItem.country = item.country;
-                            newItem.country_name = item.country_name;
-                            analyticsData[currentDay].items.push(newItem);
-                        }
-                        if (currentDayIndex < dayMax - 1) {
-                            currentDayIndex++;
+                    if (isDefined(data)) {
+                        switch (callType) {
+                            case "countries":
+                            str = "";
+                            for (i = 0; i < itemsMax; i++) {
+                                item = data.items[i];
+                                str += "<option value=\"" + item.country + "\">" + item.country_name + "</option>";
+                            }
+                            countrySelector.innerHTML = "<option value=\"all\" selected=\"selected\">All</option>" + str;
+                            gettingDataDisplay.innerHTML = "Country data retrieved!";
+                            getData.innerHTML = "Get Analytics Data";
                             getAnalyticsData();
-                        } else {
-                            gettingDataDisplay.innerHTML = "Data retrieved - " + callNumber + " API calls made. See and filter your data below.";
-                            displayData();
+                            callLimit = itemsMax;
+                            break;
+                            case "analytics":
+                            analyticsData[currentDay] = {};
+                            analyticsData[currentDay].date = currentDay;
+                            analyticsData[currentDay].items = [];
+                            for (i = 0; i < itemsMax; i++) {
+                                newItem = {};
+                                item = data.items[i];
+                                newItem.video_view = item.video_view;
+                                newItem.country = item.country;
+                                newItem.country_name = item.country_name;
+                                analyticsData[currentDay].items.push(newItem);
+                            }
+                            if (currentDayIndex < dayMax - 1) {
+                                currentDayIndex++;
+                                getAnalyticsData();
+                            } else {
+                                gettingDataDisplay.innerHTML = "Data retrieved - " + callNumber + " API calls made. See and filter your data below.";
+                                displayData();
+                            }
                         }
                     }
-                },
-                error : function (XMLHttpRequest, textStatus, errorThrown)
-                    {
-                        if (window.console) {
-                            console.log("Request was not successful. Here's what the server sent back: " + errorThrown);
-                        }
-                    }
-                });
-        },
-        // get country data
-        getCountryData = function () {
+                };
+                if (isDefined(client_id.value)) {
+                    options.client_id = client_id.value;
+                }
+                if (isDefined(client_secret.value)) {
+                    options.client_secret =  client_secret.value;
+                }
+                options.url = callURL;
+                options.requestMethod = "GET";
+                options.requestData = null;
+                // set up request data
+                requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+                if (options.client_id && options.client_secret) {
+                    requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+                }
+                // set response handler
+                httpRequest.onreadystatechange = getResponse;
+                // open the request
+                httpRequest.open('POST', proxyURL);
+                // set headers
+                httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                // open and send request
+                bclslog('requestParams', requestParams);
+                httpRequest.send(requestParams);
+        }
+
+        /**
+         * Set up the API requests for country data
+         */
+        function getCountryData() {
             var callURL;
-            account_id = (isDefined(accountID.value)) ? accountID.value : "20318290001";
+            account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
             gettingDataDisplay.textContent = "Getting country data...";
             callType = "countries";
             callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + account_id + "&dimensions=country&from=" + daysArray[0] + "&to=" + daysArray[daysArray.length - 1] + "&fields=country,country_name&sort=country_name&format=json&limit=" + callLimit;
             makeAnalyticsCall(callURL);
-        },
-        // get the analytics data for the videos
-        getAnalyticsData = function () {
+        }
+        /**
+         * Set up the API requests for video data
+         */
+        function getAnalyticsData() {
             var callURL;
             account_id = (isDefined(accountID.value)) ? accountID.value : "20318290001";
             gettingDataDisplay.textContent = "Getting analytics data...";
@@ -263,8 +308,11 @@ var BCLS = (function ($, window, document, datepickr) {
             callURL = "https://analytics.api.brightcove.com/v1/data?accounts=" + account_id + "&dimensions=country&from=" + currentDay + "&to=" + currentDay + "&fields=video_view,country,country_name&sort=country_name&format=json&limit=" + callLimit;
             makeAnalyticsCall(callURL);
 
-        },
-        initializeData = function () {
+        }
+        /**
+         * Initialize the app
+         */
+        function initializeData() {
         var totalDays,
             i,
             item,
@@ -290,15 +338,16 @@ var BCLS = (function ($, window, document, datepickr) {
         currentDayIndex = 0;
         currentDay = daysArray[0];
         getCountryData();
-    };
+    }
+
     // add date pickers to the date input fields
     new datepickr('fromDatePicker', {
         'fullCurrentMonth': false,
-        'dateFormat': 'F j, Y'
+        'dateFormat': 'Y-m-d'
     });
     new datepickr('toDatePicker', {
         'fullCurrentMonth': false,
-        'dateFormat': 'F j, Y'
+        'dateFormat': 'Y-m-d'
     });
     // default date range values
     toDate.value = today.toDateString();
@@ -316,4 +365,4 @@ var BCLS = (function ($, window, document, datepickr) {
             useMyAccount.innerHTML = "Use My Account Instead";
         }
     });
-})($, window, document, datepickr);
+})(window, document, datepickr);
