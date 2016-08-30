@@ -326,7 +326,6 @@ var BCLS = (function (window, document, datepickr) {
             httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             // open and send request
             bclslog('requestParams', requestParams);
-            httpRequest.send(requestParams);
         }
         // get the analytics data for the videos
         function getAnalyticsData() {
