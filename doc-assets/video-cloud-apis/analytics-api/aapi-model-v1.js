@@ -25,38 +25,55 @@ var aapi_model = {
     }],
     dimensions: [{
         name: 'account',
+        description: 'The account dimension is used to retrieve overall analytics data for the account.',
         fields: ['account', 'account.name', 'active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['a single account id']
+        filter_values: ['The account dimension is not used as a filter.'],
+        samples: [
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account'},
+            {filter: 'Not applicable'}
+        ]
     }, {
         name: 'city',
+        description: 'The city dimension returns analytics data by city.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'city', 'dma', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['comma-delimited list of city names - e.g. Seattle,Boston']
+        filter_values: ['A comma-delimited list of city names - e.g. Seattle,Boston'],
+        samples: [
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country&where=city==London,Boston,San%20Francisco&fields=city'}
+        ]
     }, {
         name: 'country',
+        description: 'The country dimension returns analytics data by country.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'country', 'country_name', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['comma-delimited list of ISO-3611-1 country codes - e.g.: KO,US']
+        filter_values: ['A comma-delimited list of ISO-3611-1 country codes - e.g.: KO,US']
     }, {
         name: 'date',
+        description: 'The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate report report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['none']
+        filter_values: ['The date dimension is not used as a filter.']
     }, {
         name: 'date_hour',
+        description: 'The date_hour dimension provides analytics data in hourly segments. The user can specify the from and to parameters in yyyy-MM-dd or epoch time in milliseconds format. To report over a span of hours, you will need to use the milliseconds format, with to and from values falling within the start and end hours that you want to query on. Any date range specified by the user will be interpreted to the current timezone for the account. date_hour reports are only valid for ranges within the past 32 days. If the from value is more than 32 days ago, an error will be returned.',
         fields: ['active_media', 'bytes_delivered', 'ad_mode_begin', 'ad_mode_complete', 'daily_unique_viewers', 'date_hour', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['none']
+        filter_values: ['The date_hour dimension is not used as a filter.']
     }, {
         name: 'destination_domain',
+        description: 'The destination_domain dimension provides the domain where video views occurred.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_domain', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['comma-delimited list of domains - e.g. brightcove.com']
+        filter_values: ['A comma-delimited list of domains - e.g. brightcove.com']
     }, {
         name: 'destination_path',
+        description: 'The destination_path dimension provides the path where video views occurred. It is generally used together with the destination_domain dimension',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['comma-delimited list of paths - e.g. /en/video-cloud/docs/editing-settings-players-plug-ins-tab']
+        filter_values: ['A comma-delimited list of paths - e.g. /en/video-cloud/docs/editing-settings-players-plug-ins-tab']
     }, {
         name: 'device_os',
+        description: 'The device_os dimension provides information about the operating system of the device that videos were viewed on.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'device_os', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['android', 'bada', 'ios', 'rim', 'symbian', 'web_os', 'windows', 'os_x', 'mac', 'linux', 'other'],
     }, {
         name: 'device_type',
+        description: 'The device_type dimension provides information about the type of the device that videos were viewed on.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'device_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['mobile', 'tablet', 'tv', 'desktop', 'other']
     }, {
