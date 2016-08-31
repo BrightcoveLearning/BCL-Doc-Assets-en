@@ -23,123 +23,6 @@ var aapi_model = {
             methods: ['GET']
         }]
     }],
-    dimensions: [{
-        name: 'account',
-        description: 'The account dimension is used to retrieve overall analytics data for the account.',
-        fields: ['account', 'account.name', 'active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['The account dimension is not used as a filter.'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account'},
-            {filter: 'Not applicable'}
-        ]
-    }, {
-        name: 'city',
-        description: 'The city dimension returns analytics data by city.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'city', 'dma', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['A comma-delimited list of city names - e.g. Seattle,Boston'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country&where=city==London,Boston,San%20Francisco&fields=city'}
-        ]
-    }, {
-        name: 'country',
-        description: 'The country dimension returns analytics data by country.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'country', 'country_name', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['A comma-delimited list of ISO-3611-1 country codes - e.g.: KO,US'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city&where=country==US,GB,JA,KO&fields=country_name'}
-        ]
-    }, {
-        name: 'date',
-        description: 'The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate report report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['The date dimension is not used as a filter.'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'},
-            {filter: 'Not applicable'}
-        ]
-    }, {
-        name: 'date_hour',
-        description: 'The date_hour dimension provides analytics data in hourly segments. The user can specify the from and to parameters in yyyy-MM-dd or epoch time in milliseconds format. To report over a span of hours, you will need to use the milliseconds format, with to and from values falling within the start and end hours that you want to query on. Any date range specified by the user will be interpreted to the current timezone for the account. date_hour reports are only valid for ranges within the past 32 days. If the from value is more than 32 days ago, an error will be returned.',
-        fields: ['active_media', 'bytes_delivered', 'ad_mode_begin', 'ad_mode_complete', 'daily_unique_viewers', 'date_hour', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['The date_hour dimension is not used as a filter.'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date_hour&from=-6h'},
-            {filter: 'Not applicable'}
-        ]
-    }, {
-        name: 'destination_domain',
-        description: 'The destination_domain dimension provides the domain where video views occurred.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_domain', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['A comma-delimited list of domains - e.g. brightcove.com'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain,destination_path&where=destanation_domain==support.brightcove.com,docs.brightcove.com'}
-        ]
-    }, {
-        name: 'destination_path',
-        description: 'The destination_path dimension provides the path where video views occurred. It is generally used together with the destination_domain dimension',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['A comma-delimited list of paths - e.g. /en/video-cloud/docs/editing-settings-players-plug-ins-tab'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_path'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain,destination_path&where=destanation_path==/training-videos'}
-        ]
-    }, {
-        name: 'device_os',
-        description: 'The device_os dimension provides information about the operating system of the device that videos were viewed on.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'device_os', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['android', 'bada', 'ios', 'rim', 'symbian', 'web_os', 'windows', 'os_x', 'mac', 'linux', 'other'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_os'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_os==os_x,mac,ios'}
-        ]
-    }, {
-        name: 'device_type',
-        description: 'The device_type dimension provides information about the type of the device that videos were viewed on.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'device_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['mobile', 'tablet', 'tv', 'desktop', 'other'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_type==mobile,tablet'}
-        ]
-    }, {
-        name: 'player',
-        description: 'The player dimension provides analytics for video players.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['player ids as a comma-delimited list'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=player==BJdk8Ms5,45dcbbdf-2807-4422-8fc7-5a1eb04d3f38,NkPHaVb2l'}
-        ]
-    }, {
-        name: 'referrer_domain',
-        description: 'The referrer_domain dimension is the top private domain of the referrer URL on a page where events are collected for analytics.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['comma-delimited list of domains - e.g. brightcove.net']
-    }, {
-        name: 'region',
-        description: 'The region domain provides information about where videos were viewed. It returns ISO-3611-2 region codes (example: US-WA). How regions are defined varies by country.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'region', 'region_name', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['comma-delimited list of the ISO-3611-2 region code - e.g. "US-WA"']
-    }, {
-        name: 'search_terms',
-        description: 'The search_terms dimension is the keywords used if the traffic source that resulted in events being collected for activity metrics was a search engine, and the keywords are detectable.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['URI-encoded, comma-delimited list of search terms - e.g. players,videos']
-    }, {
-        name: 'source_type',
-        description: 'The source_type is the type of traffic source that resulted in events being collected for analytics.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'source_type', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['direct', 'referral', 'organic_search', 'paid_search', 'secure_search']
-    }, {
-        name: 'video',
-        description: 'The video dimension provides analytics by video.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name'],
-        filter_values: ['video ids as a comma-delimited list or video.q=={video field}:{value}']
-    }],
-    filters: ['video', 'video.q', 'player', 'destination_domain', 'destination_path', 'country', 'city', 'region', 'referrer_domain', 'source_type', 'search_terms', 'device_type', 'device_os'],
     params: [{
         name: 'account',
         required: true,
@@ -201,41 +84,66 @@ var aapi_model = {
         values: 'an ISO 8601 date (MM-DD-YYYY), epoch time in milliseconds, the string now, or relative data (+7d)',
         default: 'now'
     }],
-    combinations: {
+    dimensions: {
         account: {
             dimensions: ['account'],
+            description: 'The account dimension is used to retrieve overall analytics data for the account.',
             from: '2011-01-01',
             fields: ['account', 'account.name', 'active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['a single account id'],
-            incompatible_dimensions: ['date', 'date_hour']
+            filter_values: ['The account dimension is not used as a filter.'],
+            incompatible_dimensions: ['date', 'date_hour'],
+            samples: [
+                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account'},
+                {filter: 'Not applicable'}
+            ]
         },
         city: {
             dimensions: ['city'],
+            description: 'The city dimension returns analytics data by city.',
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'city', 'dma', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['comma-delimited list of city names - e.g. Seattle,Boston'],
-            incompatible_dimensions: ['date', 'date_hour']
+            filter_values: ['A comma-delimited list of city names - e.g. Seattle,Boston,San%20Francisco'],
+            incompatible_dimensions: ['date', 'date_hour'],
+            samples: [
+                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city'},
+                {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country&where=city==London,Boston,San%20Francisco&fields=city'}
+            ]
         },
         country: {
             dimensions: ['country'],
+            description: 'The country dimension returns analytics data by country.',
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'country', 'country_name', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['comma-delimited list of ISO-3611-1 country codes - e.g.: KO,US'],
-            incompatible_dimensions: ['date', 'date_hour']
+            incompatible_dimensions: ['date', 'date_hour'],
+            samples: [
+                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country'},
+                {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city&where=country==US,GB,JA,KO&fields=country_name'}
+            ]
         },
         date: {
             dimensions: ['date'],
+            description: 'The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate report report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['none'],
-            incompatible_dimensions: ['account', 'ad_mode_begin', 'ad_mode_complete', 'city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video']
+            filter_values: ['The date dimension is not used as a filter.'],
+            incompatible_dimensions: ['account', 'ad_mode_begin', 'ad_mode_complete', 'city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+            samples: [
+                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'},
+                {filter: 'Not applicable'}
+            ]
         },
         date_hour: {
             dimensions: ['date_hour'],
+            description: 'The date_hour dimension provides analytics data in hourly segments. The user can specify the from and to parameters in yyyy-MM-dd or epoch time in milliseconds format. To report over a span of hours, you will need to use the milliseconds format, with to and from values falling within the start and end hours that you want to query on. Any date range specified by the user will be interpreted to the current timezone for the account. date_hour reports are only valid for ranges within the past 32 days. If the from value is more than 32 days ago, an error will be returned.',
             from: '2011-01-01',
             fields: ['active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'date_hour', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['none'],
-            incompatible_dimensions: ['account', 'city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video']
+            filter_values: ['The date_hour dimension is not used as a filter.'],
+            incompatible_dimensions: ['account', 'city', 'country', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+            samples: [
+                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date_hour&from=-6h'},
+                {filter: 'Not applicable'}
+            ]
         },
         destination_domain: {
             dimensions: ['destination_domain'],
