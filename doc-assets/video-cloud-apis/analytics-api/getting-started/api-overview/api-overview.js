@@ -17,6 +17,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
         returnFields            = document.getElementById('returnFields'),
         fieldsButton            = document.getElementById('fieldsButton'),
         deselectFieldsButton    = document.getElementById('deselectFieldsButton'),
+        dimensionsListCol1      = document.getElementById('dimensionsListCol1'),
+        dimensionsListCol2      = document.getElementById('dimensionsListCol2'),
         dimensionsCol1          = document.getElementById('dimensionsCol1'),
         dimensionsCol2          = document.getElementById('dimensionsCol2'),
         fieldsCol1              = document.getElementById('fieldsCol1'),
@@ -55,29 +57,6 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
                 str += "<tr><td>" + thisParam.name + "</td><td>" + thisParam.required + "</td><td>" + thisParam.description + "</td><td>" + thisParam.values + "</td><td>" + thisParam.default + "</td></tr>";
             }
             paramTable.innerHTML = str;
-    }
-    /**
-     * built filter values
-     */
-    function buildFilterValueTable() {
-        var thisDimension,
-            thisValues,
-            j,
-            d,
-            jMax,
-            str = "";
-        for (d in aapi_model.dimensions) {
-            thisDimension = aapi_model.dimensions[d];
-            bclslog('thisDimension', thisDimension);
-            thisValues = thisDimension.filter_values;
-            str += "<tr><td>" + thisDimension.name + "</td><td><ul>";
-            jMax = thisValues.length;
-            for (j = 0; j < jMax; j++) {
-                str += "<li>" + thisValues[j] + "</li>";
-            }
-            str += "</td></tr>";
-        }
-        filterAllowableValues.innerHTML = str;
     }
     /**
     * tests for all the ways a variable (string or number) might be undefined or not have a value
@@ -222,6 +201,60 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             allButtons[i].removeAttribute('style');
         }
         return;
+    }
+
+    /**
+     * build list of dimensions with links to the guides
+     */
+    function buildDimensionsList() {
+        var i,
+            iMax = aapi_model.dimensionsArray.length,
+            half = Math.ceil(iMax / 2),
+            ul1 = document.createElement('ul'),
+            ul2 = document.createElement('ul'),
+            li,
+            a,
+            txt,
+            thisDimension;
+        for (i = 0; i < iMax; i++) {
+            thisDimension = aapi_model.dimensionsArray[i];
+            li = document.createElement('li');
+            a = document.createElement('a');
+            a.setAttribute('href', '//docs.brightcove.com/en/video-cloud/analytics-api/guides/' + thisDimension + '.html');
+            txt = document.createTextNode(thisDimension);
+            a.appendChild(txt);
+            li.appendChild(a);
+            if (i < half) {
+                ul1.appendChild(li);
+            } else {
+                ul2.appendChild(li);
+            }
+        }
+        dimensionsListCol1.appendChild(ul1);
+        dimensionsListCol2.appendChild(ul2);
+    }
+    /**
+     * built filter values
+     */
+    function buildFilterValueTable() {
+        var thisDimension,
+            thisValues,
+            j,
+            d,
+            jMax,
+            str = "";
+        for (d in aapi_model.dimensions) {
+            thisDimension = aapi_model.dimensions[d];
+            bclslog('thisDimension', thisDimension);
+            thisValues = thisDimension.filter_values;
+            str += "<tr><td>" + thisDimension.name + "</td><td><ul>";
+            jMax = thisValues.length;
+            for (j = 0; j < jMax; j++) {
+                str += "<li>" + thisValues[j] + "</li>";
+            }
+            str += "</td></tr>";
+        }
+        filterAllowableValues.innerHTML = str;
     }
 
     /**
@@ -431,6 +464,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     function init() {
         buildParamTable();
         buildFilterValueTable();
+        // create dimensions list
+        buildDimensionsList();
         // set up dimensions
         addDimensionOptions();
         // initially disable buttons
