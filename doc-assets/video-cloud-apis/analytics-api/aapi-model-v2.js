@@ -228,12 +228,12 @@ var aapi_model = {
             description: 'The destination_domain dimension provides the domain where video views occurred.',
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_domain', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['comma-delimited list of domains - e.g. brightcove.com'],
+            filter_values: ['The destination_domain dimension is not used as a filter.'],
             incompatible_dimensions: ['ad_mode_begin', 'ad_mode_complete', 'city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'referrer_domain', 'region', 'search_terms', 'source_type'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain,destination_path&where=destanation_domain==support.brightcove.com,docs.brightcove.com'
+                filter: 'Not applicable'
             }]
         },
         destination_path: {
@@ -241,12 +241,12 @@ var aapi_model = {
             description: 'The destination_path dimension provides the path where video views occurred. It is generally used together with the destination_domain dimension',
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['comma-delimited list of paths - e.g. /en/video-cloud/docs/editing-settings-players-plug-ins-tab'],
+            filter_values: ['The destination_path dimension is not used as a filter.'],
             incompatible_dimensions: ['ad_mode_begin', 'ad_mode_complete', 'city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_path'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain,destination_path&where=destanation_path==/training-videos'
+                filter: 'Not applicable'
             }]
         },
         device_os: {
@@ -259,7 +259,7 @@ var aapi_model = {
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_os',
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_os==os_x,mac,ios'
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=device_os==os_x,mac,ios'
             }]
         },
         device_manufacturer: {
@@ -284,7 +284,7 @@ var aapi_model = {
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_type==mobile,tablet'
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=device_type==mobile,tablet'
             }]
         },
         player: {
@@ -297,7 +297,7 @@ var aapi_model = {
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player',
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=player==BJdk8Ms5,45dcbbdf-2807-4422-8fc7-5a1eb04d3f38,NkPHaVb2l'
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=player==1925363807001'
             }]
         },
         referrer_domain: {
@@ -308,7 +308,7 @@ var aapi_model = {
             incompatible_dimensions: ['city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'region'],
             filter_values: ['A comma-delimited list of domains; e.g. brightcove.com,docs.brightcove.com'],
             samples: [{
-                dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=referreferrer_domain'
+                dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=referrer_domain'
             }, {
                 filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=referrer_domain==brightcove.com,docs.brightcove.com'
             }]
@@ -336,7 +336,7 @@ var aapi_model = {
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=search_terms'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=search_terms==brightcove'
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account&where=search_terms==brightcove'
             }]
         },
         source_type: {

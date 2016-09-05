@@ -1,5 +1,5 @@
 var BCLS = (function(window, document, aapi_model) {
-    var dimension = 'account',
+    var dimension = 'region',
         description = document.getElementById('description'),
         paramTableBody = document.getElementById('paramTableBody'),
         fields = document.getElementById('fields'),
