@@ -336,7 +336,7 @@ var aapi_model = {
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=search_terms'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account&where=search_terms==brightcove'
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account&where=search_terms==video+src+change'
             }]
         },
         source_type: {
