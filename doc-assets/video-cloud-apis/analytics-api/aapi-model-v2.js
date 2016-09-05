@@ -765,7 +765,7 @@ var aapi_model = {
         destination_domain__player: {
             dimensions: ['player', 'destination_domain'],
             from: '2014-03-03',
-            fields: ['bytes_delivered', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'destination_domain']
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'destination_domain']
         },
         account__destination_domain__player: {
             dimensions: ['account', 'player', 'destination_domain'],
