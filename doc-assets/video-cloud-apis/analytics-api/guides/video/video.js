@@ -12,6 +12,28 @@ var BCLS = (function(window, document, aapi_model) {
         dimensionObj = aapi_model.dimensions[dimension],
         proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/dimension-guides-proxy.php';
 
+    /**
+     * determines whether specified item is in an array
+     *
+     * @param {array} array to check
+     * @param {string} item to check for
+     * @return {boolean} true if item is in the array, else false
+     */
+    function arrayContains(arr, item) {
+        var i,
+            iMax = arr.length;
+        for (i = 0; i < iMax; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * disable a field or control
+     * @param {HTMLelement} e the element to disable
+     */
     function disable(e) {
         e.setAttribute('style', 'opacity:.5;cursor:not-allowed;');
     }
@@ -34,25 +56,35 @@ var BCLS = (function(window, document, aapi_model) {
             txt,
             frag = new DocumentFragment();
         for (param in aapi_model.urlparams) {
-            thisParam = aapi_model.urlparams[param];
-            tr = document.createElement('tr');
-            td = document.createElement('td');
-            txt = document.createTextNode(param);
-            tr.appendChild(td);
-            td.appendChild(txt);
-            td = document.createElement('td');
-            txt = document.createTextNode(thisParam.description);
-            tr.appendChild(td);
-            td.appendChild(txt);
-            td = document.createElement('td');
-            txt = document.createTextNode(thisParam.values);
-            tr.appendChild(td);
-            td.appendChild(txt);
-            td = document.createElement('td');
-            txt = document.createTextNode(thisParam.default);
-            tr.appendChild(td);
-            td.appendChild(txt);
-            frag.appendChild(tr);
+            if (arrayContains(dimensionObj.urlparams, param)) {
+                thisParam = aapi_model.urlparams[param];
+                tr = document.createElement('tr');
+                td = document.createElement('td');
+                txt = document.createTextNode(param);
+                tr.appendChild(td);
+                td.appendChild(txt);
+                td = document.createElement('td');
+                txt = document.createTextNode(thisParam.description);
+                tr.appendChild(td);
+                td.appendChild(txt);
+                td = document.createElement('td');
+                if (thisParam.required) {
+                    txt = document.createTextNode('yes');
+                } else {
+                    txt = document.createTextNode('no');
+                }
+                tr.appendChild(td);
+                td.appendChild(txt);
+                td = document.createElement('td');
+                txt = document.createTextNode(thisParam.values);
+                tr.appendChild(td);
+                td.appendChild(txt);
+                td = document.createElement('td');
+                txt = document.createTextNode(thisParam.default);
+                tr.appendChild(td);
+                td.appendChild(txt);
+                frag.appendChild(tr);
+            }
         }
         paramTableBody.appendChild(frag);
     }
