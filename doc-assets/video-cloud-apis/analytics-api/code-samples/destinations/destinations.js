@@ -108,7 +108,7 @@ var BCLS = (function (window, document) {
                 case 'getPlayerDomains':
                     // fields to return
                     fields = 'player,player_name,destination_domain,video_view,';
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=player,destination_domain&limit=all&fields=' + fields  + '&sort=destination_domain';
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=player,destination_domain&limit=all&fields=' + fields  + '&sort=player';
                     requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // display the data
