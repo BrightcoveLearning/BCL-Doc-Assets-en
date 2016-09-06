@@ -10,10 +10,12 @@ var BCLS = (function (window, document) {
         client_id = null,
         client_secret = null,
         videoSelector = document.getElementById('videoSelector'),
-        reportTableBody = document.getElementById('reportTableBody'),
+        destinationReportTableBody = document.getElementById('destinationReportTableBody'),
+        destinationCSV = document.getElementById('destinationCSV'),
+        playerReportTableBody = document.getElementById('playerReportTableBody'),
+        playerDomainCSV = document.getElementById('playerDomainCSV'),
         getDataButton = document.getElementById('getData'),
         gettingDataDisplay = document.getElementById('gettingDataDisplay'),
-        video_info = document.getElementById('video_info'),
         requestURL = document.getElementById('requestURL'),
         currentVideo,
         currentVideoObj,
@@ -47,52 +49,6 @@ var BCLS = (function (window, document) {
         }
 
         /**
-         * get selected value for single select element
-         * @param {htmlElement} e the select element
-         * @return {Object} object containing the `value` and selected `index`, and the option text
-         */
-        function getSelectedValue(e) {
-            var val = e.options[e.selectedIndex].value,
-                txt = e.options[e.selectedIndex].textContent,
-                idx = e.selectedIndex;
-            return {
-                value: val,
-                text: txt,
-                index: idx
-            };
-        }
-
-        /**
-         * builds the data display
-         * @param {Object[]} array of analytics items
-         */
-        function displayData(items) {
-            var newTr,
-                newTd,
-                txt,
-                results = new DocumentFragment();
-            // display the video info
-            video_info.textContent = 'Video: ' + currentVideoObj.text + ' (' + currentVideoObj.value + ')';
-            items.forEach(function(item, index, items) {
-                newTr = document.createElement('tr');
-                newTd = document.createElement('td');
-                txt = document.createTextNode(item.country_name);
-                newTd.appendChild(txt);
-                newTr.appendChild(newTd);
-                newTd = document.createElement('td');
-                txt = document.createTextNode(item.video_view);
-                newTd.appendChild(txt);
-                newTr.appendChild(newTd);
-                newTd = document.createElement('td');
-                txt = document.createTextNode(item.video_seconds_viewed);
-                newTd.appendChild(txt);
-                newTr.appendChild(newTd);
-                results.appendChild(newTr);
-            });
-            reportTableBody.appendChild(results);
-        }
-
-        /**
          * Builds the API requests and handles responses
          * @param {String} type the request type (getCount | getVideos | getAnalytics)
          */
@@ -102,13 +58,13 @@ var BCLS = (function (window, document) {
                 newVideoItem = {},
                 videoItem,
                 newEl,
-                csvStr = '"URL","Video Views"\n',
+                csvStr,
                 txt,
                 i,
                 iMax,
                 item,
                 fields,
-                frag = new DocumentFragment();
+                frag;
             // add credentials if submitted
             if (isDefined(clientId.value) && isDefined(clientSecret.value)) {
                 requestOptions.client_id = clientId.value;
@@ -120,33 +76,71 @@ var BCLS = (function (window, document) {
                 requestURL.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     // create the video selector items from the response items
-                    newEl = document.createElement('option');
-                    newEl.setAttribute('value', '');
-                    txt = document.createTextNode('Select a video');
-                    newEl.appendChild(txt);
-                    frag.appendChild(newEl);
+                    frag = new DocumentFragment();
+                    csvStr = '"URL","Video Views"\n';
                     iMax = response.items.length;
                     for (i = 0; i < iMax; i++) {
                         item = response.items[i];
-                        newEl = document.createElement('option');
-                        newEl.setAttribute('value', item.video);
-                        txt = document.createTextNode(item['video.name']);
+                        newEl = document.createElement('tr');
+                        frag.appendChild(newEl);
+                        newEl = document.createElement('td');
+                        frag.appendChild(newEl);
+                        newEl = document.createElement('a');
+                        txt = document.createTextNode(item.destination_domain + destination_path);
+                        csvStr += '"//' + txt + '",';
+                        newEl.setAttribute(href, '//' + txt);
                         newEl.appendChild(txt);
                         frag.appendChild(newEl);
+                        newEl = document.createElement('td');
+                        frag.appendChild(newEl);
+                        txt = document.createTextNode(item.video_view);
+                        newEl.appendChild(txt);
+                        csvStr += '"' + txt + '"\n';
                     }
                     // append the options to the video selector
-                    videoSelector.appendChild(frag);
+                    destinationReportTableBody.appendChild(frag);
+                    destinationCSV.textContent = csvStr;
+                    buildRequest('getPlayerDomains');
                 });
                     break;
-                case 'getAnalytics':
-                    currentVideo = currentVideoObj.value;
+                case 'getPlayerDomains':
                     // fields to return
-                    fields = 'country,country_name,video_view,video_seconds_viewed';
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
+                    fields = 'player,player_name,destination_domain,video_view,';
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&sort=destination_domain';
                     requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // display the data
-                        displayData(response.items);
+                        frag = new DocumentFragment();
+                        csvStr = '"Domain","Player ID","Player Name","Video Views"\n';
+                        iMax = response.items.length;
+                        for (i = 0; i < iMax; i++) {
+                            item = response.items[i];
+                            newEl = document.createElement('tr');
+                            frag.appendChild(newEl);
+                            newEl = document.createElement('td');
+                            frag.appendChild(newEl);
+                            txt = document.createTextNode(item.destination_domain);
+                            csvStr += '"' + txt + '",';
+                            newEl.appendChild(txt);
+                            frag.appendChild(newEl);
+                            newEl = document.createElement('td');
+                            frag.appendChild(newEl);
+                            txt = document.createTextNode(item.player);
+                            newEl.appendChild(txt);
+                            csvStr += '"' + txt + '",';
+                            newEl = document.createElement('td');
+                            frag.appendChild(newEl);
+                            txt = document.createTextNode(item.player_name);
+                            newEl.appendChild(txt);
+                            csvStr += '"' + txt + '",';
+                            newEl = document.createElement('td');
+                            frag.appendChild(newEl);
+                            txt = document.createTextNode(item.video_view);
+                            newEl.appendChild(txt);
+                            csvStr += '"' + txt + '"\n';
+                        }
+                        playerReportTableBody.appendChild(frag);
+                        playerDomainCSV.textContent = csvStr;
                     });
                     break;
             }
@@ -208,7 +202,7 @@ var BCLS = (function (window, document) {
     getDataButton.addEventListener('click', function() {
         account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
         gettingDataDisplay.textContent = 'Getting video data...';
-        buildRequest('getVideos');
+        buildRequest('getDesinations');
     });
 
     return {};
