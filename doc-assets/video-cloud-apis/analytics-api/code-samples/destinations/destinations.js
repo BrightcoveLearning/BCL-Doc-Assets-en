@@ -58,6 +58,7 @@ var BCLS = (function (window, document) {
                 newVideoItem = {},
                 videoItem,
                 newEl,
+                a,
                 csvStr,
                 txt,
                 i,
@@ -70,9 +71,10 @@ var BCLS = (function (window, document) {
                 requestOptions.client_id = clientId.value;
                 requestOptions.client_secret = clientSecret.value;
             }
+            gettingDataDisplay.textContent = 'Getting data, please wait....';
             switch (type) {
                 case 'getDesinations':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=desination_domain,destination_path&limit=all&sort=-video_view&from=alltime';
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=destination_domain,destination_path&limit=all&fields=destination_domain,destination_path,video_view&sort=destination_domain&from=alltime';
                 requestURL.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     // create the video selector items from the response items
@@ -85,17 +87,17 @@ var BCLS = (function (window, document) {
                         frag.appendChild(newEl);
                         newEl = document.createElement('td');
                         frag.appendChild(newEl);
-                        newEl = document.createElement('a');
-                        txt = document.createTextNode(item.destination_domain + destination_path);
-                        csvStr += '"//' + txt + '",';
-                        newEl.setAttribute(href, '//' + txt);
-                        newEl.appendChild(txt);
-                        frag.appendChild(newEl);
+                        a = document.createElement('a');
+                        newEl.appendChild(a);
+                        txt = document.createTextNode(item.destination_domain + item.destination_path);
+                        csvStr += '"//' + item.destination_domain + item.destination_path + '",';
+                        a.setAttribute('href', '//' + item.destination_domain + item.destination_path);
+                        a.appendChild(txt);
                         newEl = document.createElement('td');
-                        frag.appendChild(newEl);
                         txt = document.createTextNode(item.video_view);
                         newEl.appendChild(txt);
-                        csvStr += '"' + txt + '"\n';
+                        frag.appendChild(newEl);
+                        csvStr += '"' + item.video_view + '"\n';
                     }
                     // append the options to the video selector
                     destinationReportTableBody.appendChild(frag);
@@ -106,7 +108,7 @@ var BCLS = (function (window, document) {
                 case 'getPlayerDomains':
                     // fields to return
                     fields = 'player,player_name,destination_domain,video_view,';
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&sort=destination_domain';
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=player,destination_domain&limit=all&fields=' + fields  + '&sort=destination_domain';
                     requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // display the data
@@ -120,28 +122,29 @@ var BCLS = (function (window, document) {
                             newEl = document.createElement('td');
                             frag.appendChild(newEl);
                             txt = document.createTextNode(item.destination_domain);
-                            csvStr += '"' + txt + '",';
+                            csvStr += '"' + item.destination_domain + '",';
                             newEl.appendChild(txt);
                             frag.appendChild(newEl);
                             newEl = document.createElement('td');
                             frag.appendChild(newEl);
                             txt = document.createTextNode(item.player);
                             newEl.appendChild(txt);
-                            csvStr += '"' + txt + '",';
+                            csvStr += '"' + item.player + '",';
                             newEl = document.createElement('td');
                             frag.appendChild(newEl);
                             txt = document.createTextNode(item.player_name);
                             newEl.appendChild(txt);
-                            csvStr += '"' + txt + '",';
+                            csvStr += '"' + item.player_name + '",';
                             newEl = document.createElement('td');
                             frag.appendChild(newEl);
                             txt = document.createTextNode(item.video_view);
                             newEl.appendChild(txt);
-                            csvStr += '"' + txt + '"\n';
+                            csvStr += '"' + item.video_view + '"\n';
                         }
                         playerReportTableBody.appendChild(frag);
                         playerDomainCSV.textContent = csvStr;
                     });
+                    gettingDataDisplay.textContent = 'Finished!';
                     break;
             }
         }
@@ -163,6 +166,7 @@ var BCLS = (function (window, document) {
                       if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200) {
                           parsedData = JSON.parse(httpRequest.responseText);
+                          bclslog('response', parsedData);
                           callback(parsedData);
                         } else {
                           alert('There was a problem with the request. Request returned ' + httpRequest.status);

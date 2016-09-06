@@ -17,6 +17,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
         returnFields            = document.getElementById('returnFields'),
         fieldsButton            = document.getElementById('fieldsButton'),
         deselectFieldsButton    = document.getElementById('deselectFieldsButton'),
+        dimensionsListCol1      = document.getElementById('dimensionsListCol1'),
+        dimensionsListCol2      = document.getElementById('dimensionsListCol2'),
         dimensionsCol1          = document.getElementById('dimensionsCol1'),
         dimensionsCol2          = document.getElementById('dimensionsCol2'),
         fieldsCol1              = document.getElementById('fieldsCol1'),
@@ -49,36 +51,12 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     function buildParamTable() {
         var thisParam,
             str = "",
-            i,
-            iMax = aapi_model.params.length;
-            for (i = 0; i < iMax; i++) {
-                thisParam = aapi_model.params[i];
+            param;
+            for (param in aapi_model.urlparams) {
+                thisParam = aapi_model.urlparams[param];
                 str += "<tr><td>" + thisParam.name + "</td><td>" + thisParam.required + "</td><td>" + thisParam.description + "</td><td>" + thisParam.values + "</td><td>" + thisParam.default + "</td></tr>";
             }
             paramTable.innerHTML = str;
-    }
-    /**
-     * built filter values
-     */
-    function buildFilterValueTable() {
-        var thisDimension,
-            thisValues,
-            i,
-            iMax = aapi_model.dimensions.length,
-            j,
-            jMax,
-            str = "";
-        for (i = 0; i < iMax; i++) {
-            thisDimension = aapi_model.dimensions[i];
-            thisValues = thisDimension.filter_values;
-            str += "<tr><td>" + thisDimension.name + "</td><td><ul>";
-            jMax = thisValues.length;
-            for (j = 0; j < jMax; j++) {
-                str += "<li>" + thisValues[j] + "</li>";
-            }
-            str += "</td></tr>";
-        }
-        filterAllowableValues.innerHTML = str;
     }
     /**
     * tests for all the ways a variable (string or number) might be undefined or not have a value
@@ -167,6 +145,22 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     }
 
     /**
+     * Determines if two simple arrays contain identical elements
+     * @param {Array} arr1 array to compare
+     * @param {Array} arr2 array to compare
+     * @return {Boolean}
+     */
+    function arraysEqual(arr1, arr2) {
+        bclslog('arr1', arr1.sort().toString());
+        bclslog('arr2', arr2.sort().toString());
+
+        if (arr1.sort().toString() === arr2.sort().toString()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * getSelectedCheckboxes returns an array of the values
      * of checked checkboxes
      * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
@@ -210,6 +204,60 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     }
 
     /**
+     * build list of dimensions with links to the guides
+     */
+    function buildDimensionsList() {
+        var i,
+            iMax = aapi_model.dimensionsArray.length,
+            half = Math.ceil(iMax / 2),
+            ul1 = document.createElement('ul'),
+            ul2 = document.createElement('ul'),
+            li,
+            a,
+            txt,
+            thisDimension;
+        for (i = 0; i < iMax; i++) {
+            thisDimension = aapi_model.dimensionsArray[i];
+            li = document.createElement('li');
+            a = document.createElement('a');
+            a.setAttribute('href', '//docs.brightcove.com/en/video-cloud/analytics-api/guides/' + thisDimension + '.html');
+            txt = document.createTextNode(thisDimension);
+            a.appendChild(txt);
+            li.appendChild(a);
+            if (i < half) {
+                ul1.appendChild(li);
+            } else {
+                ul2.appendChild(li);
+            }
+        }
+        dimensionsListCol1.appendChild(ul1);
+        dimensionsListCol2.appendChild(ul2);
+    }
+    /**
+     * built filter values
+     */
+    function buildFilterValueTable() {
+        var thisDimension,
+            thisValues,
+            j,
+            d,
+            jMax,
+            str = "";
+        for (d in aapi_model.dimensions) {
+            thisDimension = aapi_model.dimensions[d];
+            bclslog('thisDimension', thisDimension);
+            thisValues = thisDimension.filter_values;
+            str += "<tr><td>" + thisDimension.name + "</td><td><ul>";
+            jMax = thisValues.length;
+            for (j = 0; j < jMax; j++) {
+                str += "<li>" + thisValues[j] + "</li>";
+            }
+            str += "</td></tr>";
+        }
+        filterAllowableValues.innerHTML = str;
+    }
+
+    /**
      * updateRequestDisplay - gets the selected checkboxes and update the fields list display
      */
     function updateRequestDisplay() {
@@ -234,46 +282,44 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             input,
             text,
             label,
+            d,
+            thisDimension,
+            count = 0,
             br,
-            half;
+            half,
+            frag1 = new DocumentFragment(),
+            frag2 = new DocumentFragment();
         // clear existing dimension checkboxes
         dimensionsCol1.innerHTML = '';
         dimensionsCol2.innerHTML = '';
         // add the return field options
-        iMax = aapi_model.dimensions.length;
+        iMax = aapi_model.dimensionsArray.length;
         half = Math.ceil(iMax / 2);
-        for (i = 0; i < half; i += 1) {
+        for (d in aapi_model.dimensions) {
+            thisDimension = aapi_model.dimensions[d];
             input = document.createElement('input');
             label = document.createElement('label');
             input.setAttribute('name', 'dimensionsChk');
-            input.setAttribute('id', 'dim' + aapi_model.dimensions[i].name);
-            input.setAttribute('data-index', i);
+            input.setAttribute('id', 'dim' + thisDimension.name);
             input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', aapi_model.dimensions[i].name);
-            label.setAttribute('for', 'dim' + aapi_model.dimensions[i].name);
-            text = document.createTextNode(' ' + aapi_model.dimensions[i].name);
+            input.setAttribute('value', thisDimension.name);
+            label.setAttribute('for', 'dim' + thisDimension.name);
+            text = document.createTextNode(' ' + thisDimension.name);
             br = document.createElement('br');
-            dimensionsCol1.appendChild(input);
-            dimensionsCol1.appendChild(label);
             label.appendChild(text);
-            dimensionsCol1.appendChild(br);
+            if (count < half) {
+                frag1.appendChild(input);
+                frag1.appendChild(label);
+                frag1.appendChild(br);
+            } else {
+                frag2.appendChild(input);
+                frag2.appendChild(label);
+                frag2.appendChild(br);
+            }
+            count++;
         }
-        for (i = half; i < iMax; i += 1) {
-            input = document.createElement('input');
-            label = document.createElement('label');
-            input.setAttribute('name', 'dimensionsChk');
-            input.setAttribute('id', 'dim' + aapi_model.dimensions[i].name);
-            input.setAttribute('data-index', 'i');
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', aapi_model.dimensions[i].name);
-            label.setAttribute('for', 'dim' + aapi_model.dimensions[i].name);
-            text = document.createTextNode(' ' + aapi_model.dimensions[i].name);
-            br = document.createElement('br');
-            dimensionsCol2.appendChild(input);
-            dimensionsCol2.appendChild(label);
-            label.appendChild(text);
-            dimensionsCol2.appendChild(br);
-        }
+        dimensionsCol1.appendChild(frag1);
+        dimensionsCol2.appendChild(frag2);
         // get a reference to the checkbox collection
         dimensionCheckboxes = document.getElementsByName('dimensionsChk');
     }
@@ -282,7 +328,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
      * addFieldOptions generates checkboxes for each field
      * available for the selected dimensions
      */
-    function addFieldOptions() {
+    function addFieldOptions(selection) {
         var fieldsArray = [],
             dimensionName,
             dimensionIndex,
@@ -299,9 +345,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
         // clear existing field checkboxes
         fieldsCol1.innerHTML = '';
         fieldsCol2.innerHTML = '';
-        dimensionName = selectedDimensions.join('__');
-        // dimensionIndex = findObjectInArray(aapi_model.dimensions, 'name', dimensionName);
-        fieldsArray = aapi_model.combinations[dimensionName].fields;
+        fieldsArray = selection.fields;
         // add the return field options
         iMax = fieldsArray.length;
         half = Math.ceil(iMax / 2);
@@ -420,6 +464,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     function init() {
         buildParamTable();
         buildFilterValueTable();
+        // create dimensions list
+        buildDimensionsList();
         // set up dimensions
         addDimensionOptions();
         // initially disable buttons
@@ -447,42 +493,59 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             setRequestData('getAnalytics');
         });
 
-        // dimensions
+        function dimensionSelected() {
+            var dateArray = [],
+            thisDimension,
+            idx,
+            combo,
+            combination,
+            combinationDimensions,
+            selectedDimension;
+            // empty selected dimensions arrays
+            selectedDimensions = [];
+            selectedDimensions = getSelectedCheckboxes(dimensionCheckboxes, selectedDimensions);
+            bclslog('selectedDimensions', selectedDimensions);
+            // check for single selected dimension
+            if (selectedDimensions.length === 1) {
+                selectedDimension = aapi_model.dimensions[selectedDimensions[0]];
+                bclslog('selectedDimension', selectedDimension);
+            } else {
+                for (combo in aapi_model.combinations) {
+                    combinationDimensions = aapi_model.combinations[combo].dimensions;
+                    if (selectedDimensions.length === combinationDimensions.length) {
+                        if (arraysEqual(selectedDimensions, combinationDimensions)) {
+                            // valid combination
+                            combination = aapi_model.combinations[combo];
+                            // there's only one match, bail out
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (isDefined(combination)) {
+                addFieldOptions(combination);
+                fromDate = combination.from;
+                // display earliest data
+                fromDisplay.textContent = fromDate;
+                enableButtons();
+            } else if (isDefined(selectedDimension)) {
+                addFieldOptions(selectedDimension);
+                fromDate = selectedDimension.from;
+                // display earliest data
+                fromDisplay.textContent = fromDate;
+                enableButtons();
+            } else {
+                fieldsCol1.innerHTML = '<strong>The dimension combination is not valid</strong>';
+                fieldsCol2.innerHTML = '';
+                disableButtons();
+            }
+        }
+
+        // add dimensions checkboxes event listeners
         iMax = dimensionCheckboxes.length;
         for (i = 0; i < iMax; i += 1) {
-            dimensionCheckboxes[i].addEventListener('click', function() {
-                var dateArray = [],
-                j,
-                jMax,
-                thisDimension,
-                idx;
-                // empty selected dimensions arrays
-                selectedDimensions = [];
-                selectedDimensions = getSelectedCheckboxes(dimensionCheckboxes, selectedDimensions);
-                if (aapi_model.combinations.hasOwnProperty(selectedDimensions.join('__'))) {
-                    addFieldOptions();
-                    // get earliest date === latest date for selected dimensions
-                    jMax = selectedDimensions.length;
-                    for (j = 0; j < jMax; j += 1) {
-                        dateArray = dateArray.concat(aapi_model.combinations[selectedDimensions[j]].from);
-                    }
-                    dateArray.sort();
-                    fromDate = dateArray[dateArray.length - 1];
-                    // display earliest data
-                    fromDisplay.textContent = fromDate;
-                } else {
-                    fieldsCol1.innerHTML = '<strong>The dimension combination is not valid</strong>';
-                    fieldsCol2.innerHTML = '';
-                }
-                if (selectedDimensions.length > 0) {
-                    // enable buttons
-                    enableButtons();
-                } else {
-                    disableButtons();
-                }
-
-
-            });
+            dimensionCheckboxes[i].addEventListener('click', dimensionSelected);
         }
 
         fieldsButton.addEventListener('click', function() {

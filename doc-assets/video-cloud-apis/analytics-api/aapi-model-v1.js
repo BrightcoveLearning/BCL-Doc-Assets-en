@@ -33,15 +33,6 @@ var aapi_model = {
             {filter: 'Not applicable'}
         ]
     }, {
-        name: 'browser_type',
-        description: 'The browser_type dimension returns information about the browser that was used in viewing the player. Browsers are not broken down by device_type, but you can combine with with the device_type dimension, or use device_type as a filter.',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'browser_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-        filter_values: ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari', 'other'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'}
-        ]
-    }, {
         name: 'city',
         description: 'The city dimension returns analytics data by city.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'city', 'dma', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -104,16 +95,7 @@ var aapi_model = {
             {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_os'},
             {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_os==os_x,mac,ios'}
         ]
-    }, {
-        name: 'device_manufacturer',
-        description: 'The device_manufacturer dimension provides information about the manufacturer of the device that videos were viewed on. Note for these values: blackberry (inlude RIM); lenova (includes Motorola); microsoft (includes Nokia); sony (includes Ericsson)',
-        fields: ['ad_mode_begin', 'ad_mode_complete', 'device_manufacturer', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video_seconds_viewed'],
-        filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huwawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
-        samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'}
-        ]
-    }, {
+    },{
         name: 'device_type',
         description: 'The device_type dimension provides information about the type of the device that videos were viewed on.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'device_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -227,13 +209,6 @@ var aapi_model = {
             filter_values: ['a single account id'],
             incompatible_dimensions: ['date', 'date_hour']
         },
-        browser_type: {
-            dimensions: ['browser_type'],
-            from: '2016-08-30',
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'browser_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari', 'other'],
-            incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type']
-        },
         city: {
             dimensions: ['city'],
             from: '2011-01-01',
@@ -281,13 +256,6 @@ var aapi_model = {
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_os', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['android', 'bada', 'ios', 'rim', 'symbian', 'web_os', 'windows', 'os_x', 'mac', 'linux', 'other'],
-            incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type']
-        },
-        device_manufacturer: {
-            dimensions: ['device_manufacturer'],
-            from: '2016-08-30',
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'device_manufacturer', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huwawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
             incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type']
         },
         device_type: {
