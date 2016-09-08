@@ -1,0 +1,100 @@
+<style>
+    body {
+        padding: 2em;
+        font-family: sans-serif;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.6em;
+    }
+    p, dt, dd, strong, pre>code {
+        font-size: 1em;
+    }
+    code {
+        font-size: 1em;
+    }
+</style>
+
+<body class="f-topbar-fixed">
+    <!-- header navbar -->
+    <!-- breadcrumbs -->
+    <!-- search -->
+    <!-- content -->
+    <!-- content -->
+    <div class="row">
+            <!-- <div id="sidenav" class="side-nav"></div> -->
+        <div id="main" class="large-10 small-12 columns">
+      <header id="bcls_header" class="bcls-header">
+        <h1 style="color:#dd712e">Quality of Playback Metrics</h1>
+        <p>
+            Quality of playback metrics are included in most dimension reports, and help you see the quality of the playback experience for your users.
+        </p>
+      </div>
+      <div class="bcls-section" id="qosFields">
+          <h2 style="color:#dd712e">Available fields</h2>
+          <p>The following quality of playback fields are currently available:</p>
+          <dl>
+              <dt><code>load_time_ms</code></dt>
+              <dd>The total amount of time, in milliseconds, that the users waited for the player to become interactive. This metric is the measured time between the first initiation of the player and the first video_impression event for that player. It is only collected for players which implement protocol version 2 of the Data Collection API.</dd>
+              <dt><code>load_time_ms_count</code></dt>
+              <dd>The number of load time measurements that were successfully taken. Many players do not implement the load_time measurement, this count exists to indicate what subset of the total were configured to measure load time.</dd>
+              <dt><code>start_time_ms</code></dt>
+              <dd>The total amount of time, in milliseconds, that users waited for video to start after playback was initiated. This measurement does not include any advertising time caused by <code>pre-roll</code> ads. The measurement begins either due to an <code>autoStart</code> setting or an explicit play request. This metric is the sum of the measured time between the <code>play_request</code> event and the <code>video_view</code> event, minus any duration between ad_start and ad_end events. It is only collected for players which implement protocol version 2 of the Data Collection API.</dd>
+              <dt><code>start_time_ms_count</code></dt>
+              <dd>The number of start time measurements that were successfully taken. Many players do not implement the <code>start_time_ms</code> measurement, this count exists to indicate what subset of the total were configured to measure start time.</dd>
+          </dl>
+          <p>The average load time is the ratio of <code>load_time_ms</code> to <code>load_time_ms_count</code> and the average start time is the ratio of <code>start_time_ms</code> to <code>start_time_ms_count</code>.</p>
+      </div>
+
+      <div class="bcls-section" id="examples">
+        <h2 style="color:#dd712e">Example</h2>
+            <p>
+                To return the quality of playback fields, simply include them in the <code>field</code> parameter list:
+            </p>
+<pre><code class="hljs apache"><span class="hljs-keyword">https</span>://analytics.api.brightcove.com/v1/data?accounts=30307617966202
+    &amp;dimensions=account,video
+    &amp;fields=start_time_ms,start_time_ms_count,load_time_ms,load_time_ms_count</span></code></pre>
+            <p>
+                <strong>Response</strong>
+            </p>
+<pre><code class="hljs json">{
+  "<span class="hljs-attribute">item_count</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+  "<span class="hljs-attribute">items</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">video</span>": <span class="hljs-value"><span class="hljs-string">"123"</span></span>,
+      "<span class="hljs-attribute">account</span>": <span class="hljs-value"><span class="hljs-string">"30307617966202"</span></span>,
+      "<span class="hljs-attribute">video_view</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+      "<span class="hljs-attribute">start_time_ms</span>": <span class="hljs-value"><span class="hljs-number">15</span></span>,
+      "<span class="hljs-attribute">start_time_ms_count</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+      "<span class="hljs-attribute">load_time_ms</span>": <span class="hljs-value"><span class="hljs-number">26</span></span>,
+      "<span class="hljs-attribute">load_time_ms_count</span>": <span class="hljs-value"><span class="hljs-number">2</span>
+    </span>}
+  ]</span>,
+  "<span class="hljs-attribute">summary</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">load_time_ms_count</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">start_time_ms</span>": <span class="hljs-value"><span class="hljs-number">15</span></span>,
+    "<span class="hljs-attribute">start_time_ms_count</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">load_time_ms</span>": <span class="hljs-value"><span class="hljs-number">26</span></span>,
+    "<span class="hljs-attribute">video_view</span>": <span class="hljs-value"><span class="hljs-number">2</span>
+  </span>}
+</span>}</code></pre>
+      </div>
+    </div>
+  </div>
+  <!-- bcl scripts -->
+
+
+
+<table class="gstl_50 gssb_c" style="width: 2px; display: none; top: 3px; position: absolute; left: -1px;" cellpadding="0" cellspacing="0"><tbody class="bcls-table__body"><tr><td class="gssb_f"></td><td style="width: 100%;" class="gssb_e"></td></tr></tbody></table><div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+
+<br><br>
+<div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
