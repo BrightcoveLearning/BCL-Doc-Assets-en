@@ -148,7 +148,7 @@ var aapi_model = {
     dimensions: {
         account: {
             name: 'account',
-            description: 'The account dimension is used to retrieve overall analytics data for the account.',
+            description: 'In this topic, you will learn about the Analytics API account dimension. The account dimension is used to retrieve overall analytics data for the account.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['account', 'account.name', 'active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -162,7 +162,7 @@ var aapi_model = {
         },
         browser_type: {
             name: 'browser_type',
-            description: 'The browser_type dimension returns information about the browser that was used in viewing the player. Browsers are not broken down by device_type, but you can combine with with the device_type dimension, or use device_type as a filter.',
+            description: 'In this topic, you will learn about the Analytics API browser_type dimension. The browser_type dimension returns information about the browser that was used in viewing the player. Browsers are not broken down by device_type, but you can combine with with the device_type dimension, or use device_type as a filter.',
             from: '2016-08-30',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'browser_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -175,7 +175,7 @@ var aapi_model = {
         },
         city: {
             name: 'city',
-            description: 'The city dimension returns analytics data by city.',
+            description: 'In this topic, you will learn about the Analytics API city dimension. The city dimension returns analytics data by city.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'city', 'dma', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -189,7 +189,7 @@ var aapi_model = {
         },
         country: {
             name: 'country',
-            description: 'The country dimension returns analytics data by country.',
+            description: 'In this topic, you will learn about the Analytics API country dimension. The country dimension returns analytics data by country.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'country', 'country_name', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -203,7 +203,7 @@ var aapi_model = {
         },
         date: {
             name: 'date',
-            description: 'The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate report report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
+            description: 'In this topic, you will learn about the Analytics API date dimension. The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate report report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -217,7 +217,7 @@ var aapi_model = {
         },
         date_hour: {
             name: 'date_hour',
-            description: 'The date_hour dimension provides analytics data in hourly segments. The user can specify the from and to parameters in yyyy-MM-dd or epoch time in milliseconds format. To report over a span of hours, you will need to use the milliseconds format, with to and from values falling within the start and end hours that you want to query on. Any date range specified by the user will be interpreted to the current timezone for the account. date_hour reports are only valid for ranges within the past 32 days. If the from value is more than 32 days ago, an error will be returned.',
+            description: 'In this topic, you will learn about the Analytics API date_hour dimension. The date_hour dimension provides analytics data in hourly segments. The user can specify the from and to parameters in yyyy-MM-dd or epoch time in milliseconds format. To report over a span of hours, you will need to use the milliseconds format, with to and from values falling within the start and end hours that you want to query on. Any date range specified by the user will be interpreted to the current timezone for the account. date_hour reports are only valid for ranges within the past 32 days. If the from value is more than 32 days ago, an error will be returned.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'date_hour', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -231,7 +231,7 @@ var aapi_model = {
         },
         destination_domain: {
             name: 'destination_domain',
-            description: 'The destination_domain dimension provides the domain where video views occurred.',
+            description: 'In this topic, you will learn about the Analytics API destination_domain dimension. The destination_domain dimension provides the domain where video views occurred.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_domain', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -245,7 +245,7 @@ var aapi_model = {
         },
         destination_path: {
             name: 'destination_path',
-            description: 'The destination_path dimension provides the path where video views occurred. It is generally used together with the destination_domain dimension',
+            description: 'In this topic, you will learn about the Analytics API destination_path dimension. The destination_path dimension provides the path where video views occurred. It is generally used together with the destination_domain dimension',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -259,7 +259,7 @@ var aapi_model = {
         },
         device_os: {
             name: 'device_os',
-            description: 'The device_os dimension provides information about the operating system of the device that videos were viewed on.',
+            description: 'In this topic, you will learn about the Analytics API device_os dimension. The device_os dimension provides information about the operating system of the device that videos were viewed on.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_os', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -273,7 +273,7 @@ var aapi_model = {
         },
         device_manufacturer: {
             name: 'device_manufacturer',
-            description: 'The device_manufacturer dimension provides information about the manufacturer of the device that videos were viewed on. Note for these values: blackberry (inlude RIM); lenova (includes Motorola); microsoft (includes Nokia); sony (includes Ericsson)',
+            description: 'In this topic, you will learn about the Analytics API device_manufacturer dimension. The device_manufacturer dimension provides information about the manufacturer of the device that videos were viewed on. Note for these values: blackberry (inlude RIM); lenova (includes Motorola); microsoft (includes Nokia); sony (includes Ericsson)',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_manufacturer', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video_seconds_viewed'],
@@ -286,7 +286,7 @@ var aapi_model = {
         },
         device_type: {
             name: 'device_type',
-            description: 'The device_type dimension provides information about the type of the device that videos were viewed on.',
+            description: 'In this topic, you will learn about the Analytics API device_type dimension. The device_type dimension provides information about the type of the device that videos were viewed on.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -300,7 +300,7 @@ var aapi_model = {
         },
         player: {
             name: 'player',
-            description: 'The player dimension provides analytics for video players.',
+            description: 'In this topic, you will learn about the Analytics API player dimension. The player dimension provides analytics for video players.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -314,7 +314,7 @@ var aapi_model = {
         },
         referrer_domain: {
             name: 'referrer_domain',
-            description: 'The referrer_domain dimension is the top private domain of the referrer URL on a page where events are collected for analytics.',
+            description: 'In this topic, you will learn about the Analytics API referrer_domain dimension. The referrer_domain dimension is the top private domain of the referrer URL on a page where events are collected for analytics.',
             from: '2012-10-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -328,7 +328,7 @@ var aapi_model = {
         },
         region: {
             name: 'region',
-            description: 'The region domain provides information about where videos were viewed. It returns ISO-3611-2 region codes (example: US-WA). How regions are defined varies by country.',
+            description: 'In this topic, you will learn about the Analytics API region dimension. The region domain provides information about where videos were viewed. It returns ISO-3611-2 region codes (example: US-WA). How regions are defined varies by country.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'region', 'region_name', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -342,7 +342,7 @@ var aapi_model = {
         },
         search_terms: {
             name: 'search_terms',
-            description: 'The search_terms dimension is the keywords used if the traffic source that resulted in events being collected for activity metrics was a search engine, and the keywords are detectable.',
+            description: 'In this topic, you will learn about the Analytics API search_terms dimension. The search_terms dimension is the keywords used if the traffic source that resulted in events being collected for activity metrics was a search engine, and the keywords are detectable.',
             from: '2012-10-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -356,7 +356,7 @@ var aapi_model = {
         },
         source_type: {
             name: 'source_type',
-            description: 'The source_type is the type of traffic source that resulted in events being collected for analytics.',
+            description: 'In this topic, you will learn about the Analytics API source_type dimension. The source_type is the type of traffic source that resulted in events being collected for analytics.',
             from: '2012-10-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'source_type', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -370,7 +370,7 @@ var aapi_model = {
         },
         video: {
             name: 'video',
-            description: 'The video dimension provides analytics by video.',
+            description: 'In this topic, you will learn about the Analytics API videos dimension. The video dimension provides analytics by video.',
             from: '2011-01-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name'],
