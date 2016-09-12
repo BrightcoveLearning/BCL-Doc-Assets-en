@@ -51,7 +51,7 @@ var BCLS = (function (window, document, datepickr) {
         function bclslog(context, message) {
             if (window["console"] && console["log"]) {
               console.log(context, message);
-            };
+            }
             return;
         }
         // more robust test for strings "not defined"
@@ -325,7 +325,7 @@ var BCLS = (function (window, document, datepickr) {
             // set headers
             httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             // open and send request
-            bclslog('requestParams', requestParams);
+            httpRequest.send(requestParams);
         }
         // get the analytics data for the videos
         function getAnalyticsData() {
