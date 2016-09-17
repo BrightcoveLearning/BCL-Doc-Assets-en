@@ -1,4 +1,4 @@
-var BCLS = (function (window, document, datepickr) {
+var BCLS = (function (window, document, Pikaday) {
 "use strict";
 var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by-reference-id-proxy.php",
     useMyAccount = document.getElementById("useMyAccount"),
@@ -15,6 +15,8 @@ var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by
     now = new Date(),
     nowMS = now.valueOf(),
     fromMS = nowMS - (30 * 24 * 60 * 60 * 1000),
+    fromPicker,
+    toPicker,
     fromDate = new Date(fromMS),
     nowISO = now.toISOString(),
     fromISO = fromDate.toISOString(),
@@ -24,7 +26,6 @@ var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by
     requestInputs = document.getElementsByClassName('aapi-request'),
     submitButton = document.getElementById('submitButton'),
     $selectData = document.getElementById('selectData'),
-    $required = $(".required"),
     responseFrame = document.getElementById('responseFrame'),
     endDate = '',
     startDate = '',
@@ -142,11 +143,15 @@ function getData(options, callback) {
 }
 
 // add date pickers to the date input fields
-datepickr(to, {
-    'dateFormat': 'Y-m-d'
+fromPicker = new Pikaday({
+  field: from,
+  format: 'YYYY-MM-DD',
+  onSelect: buildRequest
 });
-datepickr(from, {
-    'dateFormat': 'Y-m-d'
+toPicker = new Pikaday({
+  field: to,
+  format: 'YYYY-MM-DD',
+  onSelect: buildRequest
 });
 
 to.addEventListener('change', buildRequest);
@@ -186,4 +191,4 @@ $selectData.addEventListener("click", function() {
 // generate initial request
 bclslog('building request');
 buildRequest();
-})(window, document, datepickr);
+})(window, document, Pikaday);

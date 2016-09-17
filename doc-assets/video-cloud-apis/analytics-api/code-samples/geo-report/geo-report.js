@@ -1,4 +1,4 @@
-var BCLS = (function (window, document, datepickr) {
+var BCLS = (function (window, document, Pikaday) {
     'use strict';
     var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/geo-report-proxy.php',
         useMyAccount = document.getElementById('useMyAccount'),
@@ -22,6 +22,8 @@ var BCLS = (function (window, document, datepickr) {
         analyticsData = {},
         chartData = [],
         callType,
+        fromPicker,
+        toPicker,
         now = new Date(),
         nowMS = now.valueOf(),
         then = new Date(nowMS - (1000 * 60 * 60 * 24 * 30)), // 30 days ago in milliseconds
@@ -202,11 +204,13 @@ var BCLS = (function (window, document, datepickr) {
 
 
     // add date pickers to the date input fields
-    datepickr (fromDatePicker, {
-        'dateFormat': 'Y-m-d'
+    fromPicker = new Pikaday({
+      field: fromDatePicker,
+      format: 'YYYY-MM-DD'
     });
-    datepickr (toDatePicker, {
-        'dateFormat': 'Y-m-d'
+    toPicker = new Pikaday({
+      field: toDatePicker,
+      format: 'YYYY-MM-DD'
     });
     // set initial from/to values
     fromDatePicker.value = thenISO;
@@ -235,4 +239,4 @@ var BCLS = (function (window, document, datepickr) {
     });
 
     return {};
-})(window, document, datepickr);
+})(window, document, Pikaday);

@@ -1,4 +1,4 @@
-var BCLS = (function (window, document, datepickr) {
+var BCLS = (function (window, document, Pikaday) {
     'use strict';
     var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analyitcs-by-player-day-proxy.php',
         callNumber = 0,
@@ -20,6 +20,8 @@ var BCLS = (function (window, document, datepickr) {
         daysArray = [],
         dateToMS,
         dateFromMS,
+        fromPicker,
+        toPicker,
         analyticsData = {},
         dayMS,
         fromDate = document.getElementById('fromDatePicker'),
@@ -364,11 +366,13 @@ var BCLS = (function (window, document, datepickr) {
     }
 
     // add date pickers to the date input fields
-    new datepickr('#fromDatePicker', {
-        'dateFormat': 'Y-m-d'
+    fromPicker = new Pikaday({
+      field: fromDate,
+      format: 'YYYY-MM-DD'
     });
-    new datepickr('#toDatePicker', {
-        'dateFormat': 'Y-m-d'
+    toPicker = new Pikaday({
+      field: toDate,
+      format: 'YYYY-MM-DD'
     });
     // default date range values
     toDate.value = dateToISO(today);
@@ -386,4 +390,4 @@ var BCLS = (function (window, document, datepickr) {
             useMyAccount.innerHTML = 'Use My Account Instead';
         }
     });
-})(window, document, datepickr);
+})(window, document, Pikaday);
