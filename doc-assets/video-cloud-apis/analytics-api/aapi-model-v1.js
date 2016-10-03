@@ -129,6 +129,11 @@ var aapi_model = {
         fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['URI-encoded, comma-delimited list of search terms - e.g. players,videos']
     }, {
+        name: 'social_platform',
+        description: 'In this topic, you will learn about the Analytics API social_platform dimension. The social_platform dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud Radius module.',
+        fields: ['account', 'channel_id', 'destination_id', 'distribution_group', 'event', 'page_id', 'remote_media_id', 'socail_life_views', 'social_avg_seconds_viewed', 'social_avg_view_percent', 'social_comments', 'social_dislikes', 'social_lifetime_avg_seconds_viewed', 'social_lifetime_comments', 'social_lifetime_dislikes', 'social_lifetime_favorites', 'social_lifetime_likes', 'social_lifetime_retention_rate', 'social_lifetime_retweets', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_likes', 'social_platform', 'social_retention_rate', 'social_seconds_viewed', 'social_shares', 'social_video_duration', 'social_views', 'time', 'video', 'youtube_user_id'],
+        filter_values: ['facebook', 'twitter', 'youtube']
+    }, {
         name: 'source_type',
         description: 'The source_type is the type of traffic source that resulted in events being collected for analytics.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'source_type', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
@@ -285,11 +290,11 @@ var aapi_model = {
             filter_values: ['comma-delimited list of the ISO-3611-2 region code - e.g. "US-WA"'],
             incompatible_dimensions: ['date', 'date_hour', 'destination_path', 'player', 'referrer_domain', 'search_terms']
         },
-        source_type: {
-            dimensions: ['source_type'],
-            from: '2012-10-01',
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'source_type', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['direct', 'referral', 'organic_search', 'paid_search', 'secure_search'],
+        social_platform: {
+            dimensions: ['social_platform'],
+            from: '2016-07-01',
+            fields: ['account', 'channel_id', 'destination_id', 'distribution_group', 'event', 'page_id', 'remote_media_id', 'socail_life_views', 'social_avg_seconds_viewed', 'social_avg_view_percent', 'social_comments', 'social_dislikes', 'social_lifetime_avg_seconds_viewed', 'social_lifetime_comments', 'social_lifetime_dislikes', 'social_lifetime_favorites', 'social_lifetime_likes', 'social_lifetime_retention_rate', 'social_lifetime_retweets', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_likes', 'social_platform', 'social_retention_rate', 'social_seconds_viewed', 'social_shares', 'social_video_duration', 'social_views', 'time', 'video', 'youtube_user_id'],
+            filter_values: ['facebook', 'twitter', 'youtube'],
             incompatible_dimensions: ['date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_type']
         },
         search_terms: {
@@ -299,6 +304,13 @@ var aapi_model = {
             filter_values: ['URI-encoded, comma-delimited list of search terms - e.g. players,videos'],
             incompatible_dimensions: ['date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'video']
 
+        },
+        source_type: {
+            dimensions: ['source_type'],
+            from: '2012-10-01',
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'source_type', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
+            filter_values: ['direct', 'referral', 'organic_search', 'paid_search', 'secure_search'],
+            incompatible_dimensions: ['date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_type']
         },
         video: {
             dimensions: ['video'],

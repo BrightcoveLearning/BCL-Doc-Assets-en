@@ -1,6 +1,6 @@
 var aapi_model = {
     baseURL: 'https://analytics.api.brightcove.com/v1',
-    dimensionsArray: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+    dimensionsArray: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'social_platform', 'source_type', 'video'],
     endpointGroups: {
         report: {
             name: 'report',
@@ -352,6 +352,20 @@ var aapi_model = {
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=search_terms'
             }, {
                 filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account&where=search_terms==video+src+change'
+            }]
+        },
+        social_platform: {
+            name: 'social_platform',
+            description: 'In this topic, you will learn about the Analytics API social_platform dimension. The social_platform dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud Radius module.',
+            from: '2016-07-01',
+            urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
+            fields: ['account', 'channel_id', 'destination_id', 'distribution_group', 'event', 'page_id', 'remote_media_id', 'socail_life_views', 'social_avg_seconds_viewed', 'social_avg_view_percent', 'social_comments', 'social_dislikes', 'social_lifetime_avg_seconds_viewed', 'social_lifetime_comments', 'social_lifetime_dislikes', 'social_lifetime_favorites', 'social_lifetime_likes', 'social_lifetime_retention_rate', 'social_lifetime_retweets', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_likes', 'social_platform', 'social_retention_rate', 'social_seconds_viewed', 'social_shares', 'social_video_duration', 'social_views', 'time', 'video', 'youtube_user_id'],
+            filter_values: ['facebook', 'twitter', 'youtube'],
+            incompatible_dimensions: ['date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'video'],
+            samples: [{
+                dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=social_platform'
+            }, {
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account&where=social_platform==twitter'
             }]
         },
         source_type: {
