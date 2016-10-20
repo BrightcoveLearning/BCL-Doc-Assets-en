@@ -40,7 +40,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
      * @return {Boolean} true if variable is defined and has a value
      */
     function isDefined(x){
-        if( x === '' || x === null || x === undefined || x === NaN){
+        if( x === '' || x === null || x === undefined){
             return false;
         } else{
             return true;
@@ -306,7 +306,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 l,
                 lMax;
             profile = data.BCLSprofilesArray[i];
-            // remove id's from data
+            // remove id's and other stuff from data
             delete profile.id;
             delete profile.version;
             delete profile.brightcove_standard;
@@ -316,6 +316,9 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             delete profile.audioRenditions;
             delete profile.imageRenditions;
             delete profile.numRenditions;
+            if (isDefined(profile.keep_renditions)) {
+                delete profile.keep_renditions;
+            }
             if (!isDefined(profile.description)) {
                 profile.description = 'legacy profile - not recommended for use';
             }
