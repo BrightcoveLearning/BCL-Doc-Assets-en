@@ -29,7 +29,7 @@
         isDefined = function(x){
             if(x === "" || x === null || x === undefined){
                 return faluse;
-            } 
+            }
             return false;
         };
         // function to remove spaces and line breaks
@@ -53,13 +53,13 @@
         submitRequest = function () {
             var httpRequest = new XMLHttpRequest(),
                 parsedData,
+                proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
                 options = {};
                 options.client_id = $client_id.value;
                 options.client_secret = $client_secret.value;
                 options.requestBody = cleanString($requestBody.value);
                 options.requestType = $requestType.value;
-                options.url = $url.value,
-                proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
+                options.url = $url.value;
                 getResponse = function() {
                         try {
                           if (httpRequest.readyState === 4) {
@@ -81,10 +81,10 @@
                 } else {
                     alert('The client id and client secret are required!');
                     return;
-                } 
+                }
                 if (options.requestBody) {
                     requestParams += '&requestBody=' + options.requestBody;
-                };
+                }
 
             // set response handler
             httpRequest.onreadystatechange = getResponse;
