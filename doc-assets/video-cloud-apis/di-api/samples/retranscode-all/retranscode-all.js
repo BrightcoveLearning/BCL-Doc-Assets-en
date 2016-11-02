@@ -58,20 +58,20 @@ var BCLS = ( function (window, document) {
         options.client_id = client_id;
         options.client_secret = client_secret;
         di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
-        options.requestBody = '{'master':{'use_archived_master': true },'profile':'' + ingest_profile + ''}';
+        options.requestBody = '{"master":{"use_archived_master": true },"profile":"' + ingest_profile + '"}';
         options.requestType = 'POST';
         options.url = di_url_display.value;
         bclslog('options', options);
         // now submit the request
         submitRequest(options, diURL, 'di');
-    };
+    }
     // function to set the request
-    logResponse = function (type, data) {
+    function logResponse(type, data) {
         response.textContent += type + ': ' + data + ',\n';
-    };
+    }
 
     // function to submit Request
-    submitRequest = function (options, proxyURL, type) {
+    function submitRequest(options, proxyURL, type) {
         var httpRequest = new XMLHttpRequest(),
             requestData,
             responseData,
@@ -129,7 +129,7 @@ var BCLS = ( function (window, document) {
         httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         // open and send request
         httpRequest.send(requestData);
-    };
+    }
     di_submit_display.addEventListener('click', function () {
         bclslog('in button handler', videoDataDisplay.value);
         videoData = JSON.parse(videoDataDisplay.value);
