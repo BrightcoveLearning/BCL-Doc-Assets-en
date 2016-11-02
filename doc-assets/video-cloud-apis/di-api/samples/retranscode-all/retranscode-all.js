@@ -22,7 +22,7 @@ var BCLS = ( function (window, document) {
         t2,
         totalIngested = 0,
         // profiles that shouldn't be used
-        deprecatedProfiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'high-bandwidth-devices'];
+        excludeedProfiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'high-bandwidth-devices', 'screencast', 'videocloud-default-trial', 'Live - Standard', 'Live - Premium HD', 'Live - HD'];
 
     /**
      * Logging function - safe for IE
