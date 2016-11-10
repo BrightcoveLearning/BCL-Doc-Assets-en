@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+    <!-- change title to match the h1 heading -->
+    <title>Getting Started with Brightcove Once</title>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+    <script src="//use.edgefonts.net/source-code-pro.js"></script>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/en/styles/bcls-doc-site.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/atelier-forest.light.min.css">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/font-hack/2.015/css/hack-extended.min.css">
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2728311-29', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+  </head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+    <!-- content -->
+    <div class="row">
+        <div class="sidebar large-2 columns show-for-large-up">
+            <div id="sidenav" class="side-nav"></div>
+        </div>
+        <div id="main" class="large-10 small-12 columns">
+            <!-- begin drupal content -->
+<header id="bcls_header" class="bcls-header">
+                <h1>Getting Started with Brightcove Once</h1>
+            </div>
+            <div class="bcls-section" id="assetIngest">
+                <h2>Asset ingest</h2>
+                <h3>API Content Ingest</h3>
+                <p>By utilizing Brightcove Media REST API services, either the encoded video itself or a URL designating its download location, can be included in the HTTP <code>POST</code> data.</p>
+                <h4>Process</h4>
+                <p>The instant a file is fully ingested; an integrated transcode process will begin and render the profiles necessary for delivery through Once VOD<sup class="smaller">TM</sup> technology. Upon a successful transcode request POST, the system creates the media item and any necessary publication rules in the database and determines a workflow priority. A <code>Normal</code> priority workflow processes media transcoding based on your Brightcove Media account configuration.</p>
+                <h4>Sample Transcode Requests</h4>
+                <p><code>DomainName</code>, <code>CatalogGUID</code> and <code>ChannelGUID</code> values can be obtained from Client Services.</p>
+                <p class="text-warning">NOTE: <code>&lt;ForeignKey&gt;</code> is a required field. <code>&lt;StartDate&gt;</code> and <code>&lt;EndDate&gt;</code> must be in Unix time format (Epoch time in seconds).</p>
+                <h5>Minimal XML</h5>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;TranscodeRequestxmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+    &lt;UserName&gt;{UserName}&lt;/UserName&gt;
+    &lt;Password&gt;{Password}&lt;/Password&gt;
+    &lt;DomainName&gt;{DomainName}&lt;/DomainName&gt;
+    &lt;MediaItem&gt;
+        &lt;Title&gt;{MediaItemTitle}&lt;/Title&gt;
+        &lt;Description/&gt;
+        &lt;Keywords/&gt;
+        &lt;LinkBackUrl/&gt;
+        &lt;ExternalURL/&gt;
+        &lt;CatalogGUID&gt;{GUID}&lt;/CatalogGUID&gt;
+        &lt;ForeignKey&gt;{VideoID}&lt;/ForeignKey&gt;
+    &lt;/MediaItem&gt;
+    &lt;NotificationURL&gt;http://tempuri.org/notification/&lt;/NotificationURL&gt;
+    &lt;File&gt;{Base64EncodedFileData}&lt;/File&gt;
+    &lt;DownloadURL&gt;>http://tempuri.org/download.mp4&lt;/DownloadURL&gt;
+    &lt;Priority&gt;{Int}&lt;/Priority&gt;
+&lt;/TranscodeRequest&gt;</code></pre>
+                <h5>Full XML</h5>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;TranscodeRequestxmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+    &lt;UserName&gt;{UserName}&lt;/UserName&gt;
+    &lt;Password&gt;{Password}&lt;/Password&gt;
+    &lt;DomainName&gt;{DomainName}&lt;/DomainName&gt;
+    &lt;MediaItem&gt;
+        &lt;Title&gt;{MediaItemTitle}&lt;/Title&gt;
+        &lt;Description/&gt;
+        &lt;Keywords/&gt;
+        &lt;LinkBackUrl/&gt;
+        &lt;ExternalURL/&gt;
+        &lt;CatalogGUID&gt;{GUID}&lt;/CatalogGUID&gt;
+        &lt;ForeignKey&gt;{VideoID}&lt;/ForeignKey&gt;
+        &lt;MediaItemTypeID&gt;[1=video,2=audio(must set if used]&lt;/MediaItemTypeID&gt;
+    &lt;/MediaItem&gt;
+    &lt;PublicationRules&gt;
+        &lt;PublicationRule&gt;
+            &lt;ChannelGUID&gt;{GUID}&lt;/ChannelGUID&gt;
+            &lt;StartDate&gt;1344557144&lt;/StartDate&gt;
+            &lt;EndDate&gt;1345161944&lt;/EndDate&gt;
+        &lt;/PublicationRule&gt;
+    &lt;/PublicationRules&gt;
+    &lt;NotificationURL&gt;http://tempuri.org/notification/&lt;/NotificationURL&gt;
+    &lt;File&gt;{Base64EncodedFileData}&lt;/File&gt;
+    &lt;DownloadURL&gt;http://tempuri.org/download.mp4&lt;/DownloadURL&gt;
+    &lt;Priority&gt;{Int}&lt;/Priority&gt;
+&lt;/TranscodeRequest&gt;</code></pre>
+                <h4>Transcode Complete Notification</h4>
+                <p>You will receive a notification in the form of a URL when all transcoded items are ready to deliver. This URL contains a &lt;StartTime&gt; parameter, which is the time in GMT at which the asset began transcoding on a Once VOD<sup class="smaller">TM</sup> server.</p>
+                <h5>URL Notification Template:</h5>
+                <textarea class="code-area">[notificationURL]?Provider=Brightcove+Media&amp;Catalog=[CatalogName]&amp;Filename=[Media ItemTitle]&amp;MediaItemGUID=[MediaItemGUID]&amp;MediaItemForeignKey=[MediaItemForeign Key]&amp;Duration=[Duration]&amp;StartTime=[StartTime]</textarea>
+                <p>URL Notification Example:</p>
+                <textarea class="code-area">http://tempuri.org/notify</a>?Provider=Brightcove+Media&amp;Catalog=Catalog+Name&amp;FilenameMedia+Item+Title&amp;MediaItemGUID=a43680-29fc-468c-75b&amp;MediaItemForeignKey=876dc-4676-8426ecf6&amp;Duration=30&amp;StartTime=8%2F22%2F2012+1%3A08%3A59+PM</textarea>
+            </div>
+            <div class="bcls-section" id="advertisingConfiguration">
+                <h2>Ad configuration</h2>
+                <p>Brightcove Media accommodates your monetization needs through Brightcove Once<sup class="smaller">TM</sup> with dynamic ad server integration allowing you to work with the ad servers and networks of your choice. Each ad provider carries a unique URL, which is used to provide ad inventory to your website via a URL request. Ad providers can be mixed and matched at the Channel level as well as at the Application level.</p>
+                <h3>Process</h3>
+                <p>In order to deliver ads via Brightcove Once<sup class="smaller">TM</sup> and integrate with any ad server, we will need a VAST- compatible Ad Tag or well-formed XML (VAST-like) in the form of a URL. This Ad Tag URL delivers a VAST XML response to our platform containing: Impression, Tracking Event and Media File URLs. This response must also contain a Unique ID (normal value) of some sort that signifies each unique video ad that is being delivered from the Ad Network.
+                    <br/>You can also append a Brightcove Once<sup class="smaller">TM</sup> URL with dynamic ad parameters as actual values to play your ads in a customized way. We can send across dynamic or any custom data points, such as site to Ad Server with a key value appended to the end of a Once<sup class="smaller">TM</sup> URL.</p>
+                <h3>Requirements</h3>
+                <p>In order to set up VAST compatible advertising, you must first ensure the following are available:</p>
+                <ul>
+                    <li>An <em>Ad Network or VAST 2.0 Compliant Ad Server</em> with content available</li>
+                    <li><em>Ad Provider</em></li>
+                    <li>Samples of any <em>Ad Server tags</em> that may be used</li>
+                    <li>Any <em>unique ad tag parameters</em> that need to be considered</li>
+                    <li><em>Ad Schema</em> built by Brightcove Media Client Support and assigned to the proper domain</li>
+                    <li>A <em>Base URL</em> (VAST Ad tag URL) supplied by the Ad Provider that specifies a URL for the Ad Server and responds with a VAST Standardized XML document containing VAST ad definitions</li>
+                </ul>
+                <p>Once you have the VAST Ad Tag URL, we will create the appropriate Ad schema mapping and add it to your Domain. This will be used for converting the VAST XML response into a usable format for our platform, which lets us to use any properly formatted XML response to deliver your ads.</p>
+                <p>This is a list of the available dynamic parameters you can append to the Once<sup class="smaller">TM</sup> URL.</p>
+                <table class="bcls-table">
+                    <thead class="bcls-table__head">
+                        <tr>
+                            <th>Available Dynamic Parameters</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bcls-table__body">
+                        <tr>
+                            <td><code>{{mediaitem.title}}</code>
+                            </td>
+                            <td>String value of mediaitem.title</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.keywords}}</code>
+                            </td>
+                            <td>String value of mediaitem.keywords</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.categories}}</code>
+                            </td>
+                            <td>Comma separated list of the string values of categories</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.Language}}</code>
+                            </td>
+                            <td>The string language value for mediaitem</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.rating}}</code>
+                            </td>
+                            <td>The string rating value of mediaitem</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.guid}}</code>
+                            </td>
+                            <td>String value of mediaitemguid</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.foreignkey}}</code>
+                            </td>
+                            <td>String value of mediaitemforeignkey</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{catalogguid}}</code>
+                            </td>
+                            <td>Catalogguid where mediaitem is located</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{catalogname}}</code>
+                            </td>
+                            <td>String value of catalog name</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{catalog.categories}}</code>
+                            </td>
+                            <td>Comma separated list of the string values of categories</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{applicationguid}}</code>
+                            </td>
+                            <td>Player application guid</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{applicationname}}</code>
+                            </td>
+                            <td>Player application name</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{mediaitem.adposition}}</code>
+                            </td>
+                            <td>Integer value for the ad position (1, 2, 3 for pre, mid, post, respectively)</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{randomnumber32}}</code>
+                            </td>
+                            <td>A unit random number</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{timestamputc}}</code>
+                            </td>
+                            <td>A 32 bit representation of the servers current time in unix time</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{useragent}}</code>
+                            </td>
+                            <td>String of the useragent of the client</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{ipaddress}}</code>
+                            </td>
+                            <td>User's IP address</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{referringHost}}</code>
+                            </td>
+                            <td>String of the referring host</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{countrycode}}</code>
+                            </td>
+                            <td>String of the ISO country code for this user</td>
+                        </tr>
+                        <tr>
+                            <td><code>{{postalcode}}</code>
+                            </td>
+                            <td>String of the user's postal code (if available)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Example Base URL (sample only - not for use): </h3>
+                <textarea class="code-area">http://vid.ProviderName.com/vast/2.00/72770?VMaxd=30&amp;ses_id=1&amp;amp;amp;amp;content_page_url=http://sample.umedia.com/ProviderName.html</textarea>
+                <h3>Ad Schema Configuration</h3>
+                <h4>Inbound</h4>
+                <p>We will set up an Inbound Schema that defines how the Ad Request is sent; either through our server or your web site. The key-value pair mappings will be separated according to the query string delimiter set by your ad provider. This process generates
+                    a Campaign GUID, and other required data automatically.</p>
+                <h4>Outbound</h4>
+                <p>Brightcove Media will build an Outbound Schema to give to your Ad Provider in order to configure the ads it will send back in response to requests for ads from your website. You can add custom variables in the form of <strong>Key-Value Pairs</strong> to
+                    the Outbound Schema for greater control over your advertising content.
+                    <br/>
+            </div>
+            <div class="bcls-section" id="notificationOptions">
+                <h2>Notifications</h2>
+                <h3>Option 1: Syndication (RSS) Feeds</h3>
+                <h4>Description</h4>
+                <p>Syndication feeds let you define content included in the feed and control what assets are delivered through that feed; i.e. catalog, playlist or channel. To make your content publicly available, you have to configure a Syndication Feed to send your
+                    media items to your websites and partners.</p>
+                <h4>Process</h4>
+                <p>Generally in our customer configurations, we use Publication Feeds to allow your CMS to ingest the feed from us; marrying our Once<sup class="smaller">TM</sup> URL to your unique ID and the metadata you already have in your system. By setting up a
+                    feed from you that we ingest into our Content Synchronization service with a Publication Feed going back to you, your CMS is automated without having to do anything on the Brightcove side.</p>
+                <h4>Requirements</h4>
+                <ul>
+                    <li>A configured Channel</li>
+                    <li>A Syndication Partner</li>
+                    <li>A Catalog with Assets</li>
+                </ul>
+                <h4>Example Syndication Feed URLs</h4>
+                <p>Below are two example feeds. The first feed is a general MRSS template and the second is a minimal feed.</p>
+                <ul>
+                    <li>MRSS - http://r.Brightcovemedia.com/feed/GetFeed?guid=b94d19b6-c120-4e15-9246-ea56ab3e95dd</li>
+                    <li><em>Minimal</em> - http://r.Brightcovemedia.com/feed/GetFeed?guid=65d7bb33-89db-4f72-bd6b-39733c32cb57</li>
+                </ul>
+                <p>Use the following table as a guide to map <strong>Custom XML Metadata </strong>properties:</p>
+                <table class="bcls-table">
+                    <thead class="bcls-table__head">
+                        <tr>
+                            <th>Custom XML Properties</th>
+                            <th>Feed Map</th>
+                            <th>Description, Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bcls-table__body">
+                        <tr>
+                            <td>Custom Property</td>
+                            <td><code>Media.CustomProperty</code>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Enter the XPath into the textbox</li>
+                                    <li>Outputs node from custom property to output feed</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Multiple images</td>
+                            <td><code>Media.DefaultImage</code>
+                                <br /><code>Media.ThumbnailImage</code>
+                                <br /><code>Media.SmallImage</code>
+                                <br /><code>Media.LargeImage</code>
+                                <br /><code>Media.CoverArtImage</code>
+                                <br /><code>Media.MidsizedImage</code>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Labels you assign to images you want to associate with an asset</li>
+                                    <li>In the attributes for the node you have the options <code>Image.URL</code>, <code>Image.Width</code> and <code>Image.Height</code> to map</li>
+                                    <li>Outputs the image to the output node using the attribute mappings</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Captions</td>
+                            <td><code>Media.Caption</code>
+                                <br />
+                                <br />Select a format and language filter or <code>all</code> for no filter</td>
+                            <td>
+                                <ul>
+                                    <li>In the attributes for the node you'll now have the options <code>Caption.URL</code>, <code>Caption.Language</code>, <code>Caption.Format</code> to map to attributes</li>
+                                    <li>Outputs all the caption data to the output node using the attribute mappings that matches the filters provided using the mapped node as a template</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Option 2: Profile Notification - HTTP POST</h3>
+                <p>We notify you when your media items are ready for publishing as each Profile is published by using a Gateway Notification Service configured to make HTTP <code>POST</code> calls to any site of your choosing. We provide information upon completion of
+                    processing for your assets as well as some metadata around the item that you can use for publication within your platform.</p>
+                <h4>Process</h4>
+                <p>This service will send a notification (in a URL encoded format) on each of our Delivery Profiles, which are the conditioned versions that we create for the Once<sup class="smaller">TM</sup> platform. In total, there will be the same number of notifications
+                    as base Once<sup class="smaller">TM</sup> profiles you have configured. These notifications will need to be verified to consider an asset complete and ready to serve. Your UM client services representative can provide this list of values, and their
+                    associated GUIDs.</p>
+                <h4>Requirements</h4>
+                <p>Responses can be sent via email or automated post to a URL of your choosing. Brightcove Media will then send these responses, in real time, allowing for your CMS or other publication platform to publish your content in the shortest possible time frame.</p>
+                <h4>Encoded Profile Notification Response Example</h4>
+                <textarea class="code-area" rows="7">XML=%3Cvideo%3E%20%20%20%3Citem%20key=%22provider%22%3EBrightcove%20Media%3C/item%3E%20%20%20%3Citem%20key=%22catalog%22%3EAPI%20Notification%20Testing%3C/item%3E%20%20%20%3Citem%20key=%22filename%22%3EFalgrante_increibe_4.wmv%3C/item%3E%20%20%20%3Citem%20key=%22mediaItemGuid%22%3Ed6d0c8ec-37d3-41bb-8022-aa2ce0472%3C/item%3E%2020%3Citem%20key=%22mediaItemForeignKey%22%3E%3C/item%3Citem%20key=%22profileGuid%22%3Ed0cf4520-b138-4356-9395-a7477cf6144%3C/item%3E%20%3Citem%20key=%22duration%22%3E11%3C/item%3E%20%20%20%3Citem%20key=%22filesize%22%3E31%3C/item%3E%20%20%20%3Citem%20key=%22
+                    profileName%22%3EiPhone%20320kbps%20256%20x%20144%3C/item%3E%3C/video%3E</textarea>
+                <h4>Decoded and Formatted Profile Notification Response Example</h4>
+<pre><code>&lt;video&gt;
+    &lt;item key=&quot;provider&quot;&gt;Brightcove Media&lt;/item&gt;
+    &lt;item key=&quot;catalog&quot;&gt;Transcode Testing 7/31&lt;/item&gt;
+    &lt;item key=&quot;filename&quot;&gt;ad1.flv&lt;/item&gt;
+    &lt;item key=&quot;mediaItemGuid&quot;&gt;26868bb9-92ff-49e2-8dad-f6d7ec97d9&lt;/item&gt;
+    &lt;item key=&quot;mediaItemForeignKey&quot;&gt;&lt;/item&gt;
+    &lt;item key=&quot;profileGuid&quot;&gt;ec44b899-8a22-4912-8e4f-12f4638a7d2a&lt;/item&gt;
+    &lt;item key=&quot;duration&quot;&gt;30&lt;/item&gt;
+    &lt;item key=&quot;filesize&quot;&gt;11467648&lt;/item&gt;
+    &lt;item key=&quot;profileName&quot;&gt;Once 3200&lt;/item&gt;
+&lt;/video&gt;</code></pre>
+                <h3>Option 3: Item Notification - HTTP POST, GET or PUT</h3>
+                <p>As soon as all profiles for a specified Media Item are transcode complete and replicated, the Gateway Notification Service will notify you that your media items are ready for publishing. The service can be configured to make HTTP <code>POST</code>, <code>GET</code> or <code>PUT</code> calls
+                    to any URL you choose at Domain or Catalog level.</p>
+                <h4>Process</h4>
+                <p>When the service detects that all the profiles configured for the media item are transcode complete and the media item is ready to publish, it will send a notification (in a URL encoded format) to the URL preconfigured with the following properties:</p>
+                <h4>Requirements</h4>
+                <p>Notifications can be sent via email or automated post-back to a URL of your choosing. Brightcove Media will then send these responses, in real time, allowing for your CMS or other publication platform to publish your content in the shortest possible
+                    time frame. The table below provides the minimum information necessary for Customer Service to set up your notifications. A client services representative can provide a list of values and their associated GUIDs.</p>
+                <table class="bcls-table">
+                    <thead class="bcls-table__head">
+                        <tr>
+                            <th>Property</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bcls-table__body">
+                        <tr>
+                            <td><code>DomainGUID</code>
+                            </td>
+                            <td>The unique identifier for the domain</td>
+                        </tr>
+                        <tr>
+                            <td><code>CatalogGUID</code>
+                            </td>
+                            <td>The unique identifier for the catalog (optional)</td>
+                        </tr>
+                        <tr>
+                            <td><code>NotificationURL</code>
+                            </td>
+                            <td>The default notification URL to use</td>
+                        </tr>
+                        <tr>
+                            <td>Request Method</td>
+                            <td>Your preferred HTTP request verb (<code>POST</code>, <code>GET</code>, <code>PUT</code>)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Item Notification URL Example</h4>
+                <p>This information in the table below is delivered via a RESTful syntax URL.</p>
+                <table class="bcls-table">
+                    <thead class="bcls-table__head">
+                        <tr>
+                            <th>
+                                <p>Property</p>
+                            </th>
+                            <th>
+                                <p>Description</p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bcls-table__body">
+                        <tr>
+                            <td><code>NotificationURL</code>
+                            </td>
+                            <td>The default notification URL to use</td>
+                        </tr>
+                        <tr>
+                            <td><code>Catalog</code>
+                            </td>
+                            <td>The name assigned to the Catalog</td>
+                        </tr>
+                        <tr>
+                            <td><code>Filename</code>
+                            </td>
+                            <td>The title assigned to the Media Item file</td>
+                        </tr>
+                        <tr>
+                            <td><code>MediaItemGUID</code>
+                            </td>
+                            <td>The unique identifier for the Media Item</td>
+                        </tr>
+                        <tr>
+                            <td><code>MediaItemForeignKey</code>
+                            </td>
+                            <td>The unique identifier for the Media Item Foreign Key</td>
+                        </tr>
+                        <tr>
+                            <td><code>Duration</code>
+                            </td>
+                            <td>The length in seconds of the binary asset</td>
+                        </tr>
+                        <tr>
+                            <td><code>StartTime</code>
+                            </td>
+                            <td>Time in GMT at which the asset began transcoding</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>URL Template:</p>
+                <textarea class="code-area" rows="4">[notificationURL]?Provider=Brightcove+Media&amp;Catalog=[CatalogName]&amp;Filename=[MediaItemTitle]&amp;MediaItemGUID=[MediaItemGUID]&amp;MediaItemForeignKey=[Me diaItemForeignKey]&amp;Duration=[Duration]&amp;StartTime=[StartTime]URL Example: http://tempuri.org/notify?Provider=Brightcove+Media&amp;Catalog=Catalog+Name&amp;Filename=Media+Item+Title&amp;MediaItemGUID=26868bb9-92ff-49e2-8dad-f6d7ec97 d9&amp;MediaItemForeignKey=876dc-4676-8426-ecf6&amp;Duration=30&amp;StartTime=8%2F22%2F2012+ 1%3A08%3A59+PM</textarea>
+                <p>This URL contains a <code>&lt;StartTime&gt;</code> parameter, which is the time in GMT at which the asset began transcoding on a OnceEXPRESS<sup class="smaller">TM</sup> server.
+                    <p class="text-warning">NOTE: <em>Brightcove Media assumes you have an internal system capable of receiving a query string encoded notification. Brightcove has no control over the receipt and handling of notifications.</em>
+                    </p>
+            </div>
+            <div class="bcls-section" id="onceURL">
+                <h2>Once URL</h2>
+                <p>Brightcove Once<sup class="smaller">TM</sup> facilitates progressive ad insertion on a per-stream and/or per request basis using a URL syntax constructed with a programmatic URL generation method called <code>GetNowAsset</code>.</p>
+                <textarea class="code-area">Host/Service/DeliveryType/RequestedFileType/DomainGUID/ApplicationGUID/MediaItemGUID/VirtualFileName?AdParams&amp;Params</textarea>
+                <h3>Process</h3>
+                <p>We will add an AdCache URL to a new Content Sync element in your account. The URL structure looks as follows with your own Domain GUID within the URL:</p>
+                <textarea class="code-area">http://adcache.Brightcovemedia.com/AdFeed.aspx?DomainGUID</textarea>
+                <p>When setup is complete, the system will automatically ingest any ads that are delivered to any viewers of your Once<sup class="smaller">TM</sup> content based on the availability of the ad in our system. If attempts are made to insert an ad into Once
+                    <sup
+                    class="smaller">TM</sup>content that is not available in the UM system, the ad will be inserted into the AdCache (RSS) feed for ingestion and not played in the content until it is ingested into the chosen catalog.</p>
+                <h3>Requirements</h3>
+                <p>Several pieces of information are needed to take advantage of the Once<sup class="smaller">TM</sup> URL construct including:
+                    <p>
+                        <ul>
+                            <li>The Brightcove Once<sup class="smaller">TM</sup> URL <em><strong>Host Name</strong></em> of once.unicornmedia.com or a CNAME pointing to the host name</li>
+                            <li>Choose your <em><strong>Requested File Type</strong></em><strong> </strong>from <code>mp4</code>, <code>m3u8</code> or <code>auto</code> which determines delivery method according to client capabilities</li>
+                            <li>Decide what your <em>Ad Parameters</em> will be with regard to ad position, placement and the Ad GUID – <em>NOTE: This is only necessary if you are delivering ads directly from Brightcove Media and not using a third party ad decision engine</em>
+                                <ul>
+                                    <li>The Ad Position represents the number of seconds into the base asset at which to place the ad position. (Ex: 0 seconds)</li>
+                                    <li>The Ad Placement parameter represents the order of the Ad in the content if there is more than 1 Ad to be run at the time
+                                        <ul>
+                                            <li>It is set as a 0-based index; first element is 0, second is 1, etc.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Ad GUID represents how the asset being requested will be delivered to the device requesting it</li>
+                                </ul>
+                            </li>
+                            <li>Determine your <em><strong>Query String Parameters</strong></em>by:
+                                <ul>
+                                    <li>Choosing a URL and assigning it to a JPEG encoded image that will be used for the start time parameter</li>
+                                    <li>Deciding on a buffer amount to add for start time acceleration</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h3>Example Once<sup class="smaller">TM</sup> URL:</h3>
+                        <textarea class="code-area">http://once.unicornmedia.com/now/od/auto/DomainGUID/ApplicationGUID/ProfileGUID/MediaItemGUID/Version/StartTime/EndTime/VirtualFileName?AdParams</textarea>
+                        <h4>Example RSS Feed with Once<sup class="smaller">TM</sup> URL</h4>
+<pre><code>&lt;rss xmlns:media=&quot;http://search.yahoo.com/mrss&quot; version=&quot;2.0&quot;&gt;
+    &lt;channel&gt;
+        &lt;item&gt;
+            &lt;adid&gt;preroll-1&lt;/adid&gt;
+            &lt;adurl&gt;http://once.unicornmedia.com/now/od/auto/b7r4db01- d63d-460f-a2de-2f1d9d516/85238aec-06e6-4b96-9741-05d22b9e/52a77446- d2f1-44ac-bf82-c44716e05/Brightcove.once&lt;/adurl&gt;
+            &lt;companionurl /&gt;
+            &lt;pubDate&gt;Sun, 28 Jan 2012 03:13:00&lt;/pubDate&gt;
+            &lt;playlength&gt;15&lt;/playlength&gt;
+            &lt;clickthroughurl /&gt;
+        &lt;/item&gt;
+    &lt;/channel&gt;
+&lt;/rss&gt;</code></pre>
+                        <p>For detailed instructions and implementation processes please refer to the <em>Once VOD_ImplementationGuide</em>
+                        </p>
+            </div>
+        </div>
+    </div>
+        <div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or Comments?</a></div>
+
+    <!-- bcl scripts -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+<script src="/en/scripts/docs-nav-data.min.js"></script>
+<script src="/en/scripts/bcls-doc-site-v0.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
+<script>
+    $(document).foundation();
+</script>
+    <script type="text/javascript">
+        /******** Any scripts specific to page samples should go here *********/
+    </script>
+<div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+<div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+
+</html>

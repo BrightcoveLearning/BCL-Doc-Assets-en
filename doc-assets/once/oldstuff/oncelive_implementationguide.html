@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+	<!-- change title to match the h1 heading -->
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+<script src="//use.edgefonts.net/source-code-pro.js"></script>
+<link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
+<link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
+<link rel="stylesheet" href="/en/styles/foundation-fixes.css">
+
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-2728311-29', 'auto');
+    ga('send', 'pageview');
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+  </head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+    <!-- content -->
+    <div class="row">
+        <div class="sidebar large-2 columns show-for-large-up">
+            <div id="sidenav" class="side-nav"></div>
+        </div>
+        <div id="main" class="large-10 small-12 columns">
+			<!-- begin drupal content -->
+<header id="bcls_header" class="bcls-header">
+				<h1>Brightcove OnceLIVE Implementation Guide</h1>
+				<p>VERSION: 2.0</p>
+				<p>Last Revision Date: 4/2014</p>
+				<p>Brightcove OnceLIVE<sup class="smaller">TM</sup> Implementation Guide</p>
+				<p>Information in this document, including URL and other Internet Web site references, is subject to change without notice. Unless otherwise noted, the example companies, organizations, products, domain names, e-mail addresses, logos, people, locations, and events depicted herein are fictitious, and no association with any real company, organization, product, domain name, e-mail address, logo, person, location or event is intended or should be inferred. Complying with all applicable copyright laws is the responsibility of the user.</p>
+			</div>
+			<div class="bcls-section" id="overview">
+				<h2>Overview</h2>
+				<p>This guide provides the necessary information to implement Brightcove OnceLIVE<sup class="smaller">TM</sup> optimization technology with your live streaming workflow. Some of the functionality described in this document is only available to clients who have the API feature enabled. Please contact your Brightcove representative if you are experiencing any difficulty getting started.</p>
+			</div>
+			<div class="bcls-section" id="prerequisites">
+				<h2>Prerequisites</h2>
+				<p>This document assumes prior general knowledge of API architecture and XML language. Under that assumption, it was written for Brightcove customers and their internal developers and integrators.</p>
+			</div>
+			<div class="bcls-section" id="glossary">
+				<h2>Glossary of terms</h2>
+				<dl> <dt>CNAME</dt>
+					<dd>Short for <strong>C</strong>anonical <strong>NAME</strong> - A record in a DNS database that indicates the true host name of a computer that its aliases are associated with</dd> 
+					<dt>Domain</dt>
+					<dd>The top level administrative designation for clients within the Brightcove Platform
+						<ul>
+							<li>Clients can have multiple domains, but can only access one domain per login session</li>
+							<li>Domains contain the client Analytics, Channels, Catalogs, Users, Ad Providers, Category Lists, Publication Rules and Rights</li>
+						</ul>
+					</dd> 
+					<dt>GUID</dt>
+					<dd><strong>G</strong>lobally <strong>U</strong>nique <strong>Id</strong>entifier - A unique 128-bit number that is produced by the REST API to identify a particular component, application, file, database entry and/or user</dd> 
+					<dt>m3u8</dt>
+					<dd>A file format that stores multimedia playlists specific to Apple HTTP Live Streaming (HLS)</dd> 
+					<dt>Web Syndication</dt>
+					<dd>A form of syndication where online material is made available to multiple online sites and devices. For the purposes of this document, web syndication refers to making web feeds available from a client site in order to provide an end viewer with a summary of the website&#39;s recently updated or added content</dd> 
+					<dt>Foreign Key</dt>
+					<dd>A referential value that matches a field value in one database table to a field value in another table - Used to cross-reference tables for proper asset delivery</dd> 
+					<dt>Channel</dt>
+					<dd>Channels are a mechanism used to maintain the publishing rules for displaying your content. They allow for publication rules to be assigned to assets, playlists, players and syndication feeds</dd> 
+					<dt>Commercial Ad Break</dt>
+					<dd>A predetermined point in an asset stream where the main content is paused for a marketing message of a certain length</dd> 
+					<dt>Cue-tones</dt>
+					<dd>A message consisting of sub-audible digital tones, used to prompt insertion of an ad break</dd> 
+					<dt>Cue-markers</dt>
+					<dd>A digital, programmatic event marker used to signal an ad break at a specific time</dd> 
+					<dt>Cue-out/in</dt>
+					<dd>Digital markers that prompt specific action(s) – ad begins/ad completes - at specific points in a stream</dd>
+				</dl>
+			</div>
+			<div class="bcls-section" id="features">
+				<h2>Features</h2>
+				<p>OnceLIVE<sup class="smaller">TM</sup> enables monetization capabilities within a live video streaming environment. The service allows for the ability to deliver targeted ads, inserted in the stream, from the cloud, with no client-side SDK or plug-in required. Devices such as iPhone, iPad, Android, Blackberry, Roku, Boxee, TiVO, Windows Mobile 7, game consoles and connected TVs are a sampling of the devices that can be targeted.
+					<br/>OnceLIVE<sup class="smaller">TM</sup> easily integrates with 3rd-party ad servers and in-house ad solutions without requiring complex APIs or any additional client-side code. The product provides real-time analytics on video and ad performance as well as business intelligence that enables agile ad operations and supports mid-roll ad insertion in long-form content making it possible for ad operations to deliver custom ads to users based on current inventory on any device.</p>
+				<p class="text-warning">Brightcove OnceLIVE<sup class="smaller">TM</sup> relies on Brightcove Platform technology and therefore requires that customers have an account setup. If you are unsure of your account status, please contact <a href="mailto:oncesupport@brightcove.com">oncesupport@brightcove.com</a>.</p>
+				<h3>HLS pull ingest</h3>
+				<p>Accepts:</p>
+				<ul>
+					<li>in-manifest break metadata (cue out, cue in)</li>
+					<li>single 'mezzanine' stream source</li>
+					<li>non-encrypted source</li>
+				</ul>
+				<h3>HLS playback</h3>
+				<ul>
+					<li>non-encrypted</li>
+					<li>adaptive</li>
+					<li>ctadaptive</li>
+				</ul>
+				<h3>Automatic Device Detection</h3>
+				<p>Brightcove OnceLIVE<sup class="smaller">TM</sup> automatically detects the type of device your consumer is using while taking advantage of your IP-based geo-location and network statistics to deliver the appropriate version of your published content to their device. This allows you to publish your content, confident in the knowledge that it will reach any device in the proper format every time, without using your internal resources.</p>
+				<p>In addition:</p>
+				<ul>
+					<li>HLS manifest and profiles are paired to the requesting device</li>
+					<li>drives behaviors like:
+						<ul>
+							<li>which rendition profiles are added to manifest</li>
+							<li>which HLS playback mode - adaptive (iOS) or ctadaptive (Android) - is used</li>
+						</ul>
+					</li>
+				</ul>
+				<h3>Dynamic Ad Insertion</h3>
+				<p>Brightcove OnceLIVE<sup class="smaller">TM</sup> facilitates ad insertion on a per viewer stream basis using in-stream ad markers. This extremely powerful technology enables you to associate and publish an ad campaign with an arbitrary set of ads at ad break points within the associated content stream on a per viewer basis. The permutations of ads associated with content and dynamically displayed are limitless, and business rules pertaining to ad placement, frequency and targeting are controlled by your ad server.</p>
+				<h4>Commercial break replacement</h4>
+				<p>With:</p>
+				<ul>
+					<li>HLS manifest cue-out plus duration message</li>
+					<li>Ad creative fill:
+						<ul>
+							<li>if break duration is greater than ad creative(s) available, fill with you provided video list</li>
+							<li>if the creative(s) duration is greater than the break duration, dump the creatives to the live stream at cue in</li>
+						</ul>
+					</li>
+				</ul>
+				<h3>Closed captions</h3>
+				<p><a href="http://en.wikipedia.org/wiki/EIA-608">EIA-608 closed captions</a> are supported, embedded in input and output.</p>
+				<h3>Transcoding</h3>
+				<p>Brightcove Media provides real-time transcoding in a one-to-many ratio to provide true syndication capability for any video content on IP-connected, video-capable devices. Your video stream is transcoded into multiple profiles to support a variety of devices then deliver to them through OnceLIVE<sup class="smaller">TM</sup> system.</p>
+				<h4>Profiles</h4>
+				<p>The following OnceLIVE<sup class="smaller">TM</sup> profiles will be used for your channel:</p>
+				<table class="bcls-table">
+					<caption>Table 1: Transcode Profiles</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Profile</th>
+							<th>GUID</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td>Once 200</td>
+							<td><code>1500a936-6f3b-4a5d-bdee-c16d51b73896</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Once 400</td>
+							<td><code>681f29c5-81eb-4229-9801-ebe21531a57c</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Once 600</td>
+							<td><code>f8de0ae7-aab1-4005-bf4a-71346bd47921</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Once 800</td>
+							<td><code>8c913e59-c00a-4d37-925b-27b6ed698fcc</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Once.SD 1200 480p</td>
+							<td><code>3a41c6e4-93a3-4108-8995-64ffca7b9106</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Once.HD 2500 720p</td>
+							<td><code>e9c723f9-c1c0-49cc-8c7a-b686f49b76d8</code>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="bcls-section" id="construct">
+				<h2>Construct guide</h2>
+				<p>Brightcove OnceLIVE<sup class="smaller">TM</sup> utilizes a proprietary URL syntax. You configure this URL through a programmatic URL generation method that you customize for your particular business needs. This URL employs the Brightcove Once<sup class="smaller">TM</sup>engine to detect viewer devices, distribute content and insert and target ads according to your specifications.</p>
+				<textarea class="code-area">Host/Service/DeliveryType/RequestedFileType/DomainGUID/ApplicationGUID/MediaItemGUID/VirtualFileName?Params</textarea>
+				<h3 id="informationGathering">Information Gathering</h3>
+				<p>Several pieces of information are needed to take advantage of the OnceLIVE<sup class="smaller">TM</sup> URL construct including:</p>
+				<ul>
+					<li>OnceLIVE<sup class="smaller">TM</sup> URL <strong>Host Name</strong> (oncelive.brightcove.com) or a CNAME pointing to the host name</li>
+					<li><strong>Service and Delivery Type</strong>will remain static as .../now/live/...</li>
+					<li>Choose your <strong>Requested File Type</strong>from 'adaptive', which forces HTTP Live Streaming or 'auto', which determines delivery method according to client capabilities</li>
+					<li>Obtain your Domain GUID, Application GUID and MediaItem GUID by contacting Brightcove at <a href="mailto:oncesupport@brightcove.com">oncesupport@brightcove.com</a>
+					</li>
+					<li>Select a Virtual File Name with a file extension representing the requested file type (<code>auto=.once</code>, <code>adaptive=.m3u8</code>)</li>
+					<li>Determine which <strong>Query String Parameters</strong>you'll need to obtain desired asset behavior from the choices explained in this document (see the <a href="#quickReferenceTable">Quick Reference Table</a> for a full list)</li>
+				</ul>
+			</div>
+			<div class="bcls-section" id="URLmapping">
+				<h2>Url mapping</h2>
+				<p>The OnceLIVE<sup class="smaller">TM</sup> URL is constructed by using a programmatic URL generation method called GetNowAsset.</p>
+				<p>Base URL Map:</p>
+				<p><strong><span class="once-blue-gray">Host</span>/<span class="once-maroon">Service</span>/<span class="once-olive">DeliveryType</span>/<span class="once-orange">RequestedFileType</span>/<span class="once-blue">DomainGUID</span>/<span class="once-green">ApplicationGUID</span>/<span class="once-purple">MediaItemGUID</span>/<span class="once-red">VirtualFileName</span>?<span class="once-light-orange">Parameters</span></strong>
+				</p>
+				<p>
+					<img src="/en/once/guides/images/live-baseURLmap.png" width="800" height="271" alt="URL Mapping Construct">
+				</p>
+			</div>
+			<div class="bcls-section" id="segmentVariables">
+				<h2>Segment variables</h2>
+				<h3>Location and Service Variables</h3>
+				<textarea class="code-area">URL Map: Host/Service/live</textarea>
+				<p>Example: http://oncelive.brightcove.com/now/live...</p>
+				<table class="bcls-table">
+					<caption>Table 2: Location and Service Variables</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>Host</code></td>
+							<td>String</td>
+							<td><code>oncelive.brightcove.com</code>
+								<br />CNAME pointing to <code>oncelive.brightcove.com</code></td>
+						</tr>
+						<tr>
+							<td><code>Service</code></td>
+							<td>String</td>
+							<td><code>now</code> specifies we will use our dynamic permutation layer (DPL) to service requests
+								<ul><li>This is the only variable currently available</li></ul>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3>Serving Content File Type Variables</h3>
+				<p>File Delivery/File Type combinations are <em>live/adaptive</em> or <em>live/auto</em>. However, you can force video to play through certain profiles by using the <code>UMOPROFILES</code> query string parameter.</p>
+				<textarea class="code-area">URL Map: Host/Service/<strong>DeliveryType/RequestedFileType</strong>/DomainGUID/ApplicationGUID/...</textarea>
+				<table class="bcls-table">
+					<caption>Table 3: Once VOD<sup class="smaller">TM</sup> URL Content Type Syntax</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>DeliveryType/FileType</th>
+							<th>Function</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>live/auto</code></td>
+							<td>Uses Device Detection to determine proper delivery and file type for the requesting client device</td>
+						</tr>
+						<tr>
+							<td><code>live/adaptive</code></td>
+							<td>Forces HLS delivery type and uses Device Detection to determine proper HLS profiles for the requesting client device</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-warning">NOTE: Currently the "auto" or "adaptive" values are inherently equivalent. Future versions of OnceLIVE<sup class="smaller">TM</sup> may include additional options.</p>
+				<h4>Auto Delivery</h4>
+				<p>The combination for auto delivery is <code>live/auto</code>. Using <code>live/auto</code> will allow the system to determine the appropriate profiles to include within the .m3u8 playlist. (See <a href="#specifyProfilesForDelivery">Specify Profiles for Delivery</a>)</p>
+				<textarea class="code-area">URL Map: Host/Service/<strong>DeliveryType/RequestedFileType</strong>/DomainGUID/ApplicationGUID/...</textarea>
+				<textarea class="code-area">Example: http://.../live/auto/4989f8db-9187-49ca-86ff-e2cd53429cd4/35217a08- d9db-469f-aec0-7c88406a0c60/63598604-cb88-44f8-bc47-d207af3b7b4a/...</textarea>
+				<table class="bcls-table">
+					<caption>Table 4: Auto Delivery Parameters</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>DeliveryType</code></td>
+							<td>String</td>
+							<td>Value is <code>live</code></td>
+						</tr>
+						<tr>
+							<td><code>RequestedFileType</code></td>
+							<td>String</td>
+							<td>Value is <code>auto</code>
+								<ul>
+									<li><code>auto</code> means the delivery method will be determined depending on the capabilities of the client, i.e., different file types, profiles, etc.</li>
+								</ul>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+					<h4>HLS Delivery</h4>
+					<p>The combination for HLS delivery is <em>live/adaptive</em>. You can force a playlist to include certain profiles by using this combination in conjunction with the 'umoprofiles' query string parameter. <em>Live/adaptive </em>will work exactly like <em>live/auto </em>if no query string parameters are utilized to force playlist creation behavior. (See <a href="#specifyProfilesForDelivery">Specify Profiles for Delivery</a>)</p>
+					<textarea class="code-area">URL Map: Host/Service/<strong>DeliveryType/RequestedFileType</strong>/DomainGUID/ApplicationGUID/...</textarea>
+					<textarea class="code-area">Example: http://.../live/adaptive/4989f8db-9187-49ca-86ff-e2cd53429cd4/35217a08- d9db-469f-aec0-7c88406a0c60/63598604-cb88-44f8-bc47-d207af3b7b4a/...</textarea>
+					<table class="bcls-table">
+						<caption>Table 5: HLS Delivery Parameters</caption>
+						<thead class="bcls-table__head">
+							<tr>
+								<th>Parameter</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody class="bcls-table__body">
+							<tr>
+								<td><code>DeliveryType</code></td>
+								<td>String</td>
+								<td>Value is <strong>live</strong></td>
+							</tr>
+							<tr>
+								<td><code>RequestedFileType</code></td>
+								<td>String</td>
+								<td>Value is <code>adaptive</code>
+									<ul>
+										<li>Content is delivered via HTTP Live Streaming</li>
+										<li>Used for devices that support HLS</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<h4 id="specifyProfilesForDelivery">Specify Profiles for Delivery</h4>
+					<p>You can force specific profiles or temporarily override existing profiles with the <code>UMOPROFILES</code> parameter. When the query string is appended with <code>umoprofiles={profileGUID}</code>, the associated profile will be dynamically inserted in the m3u8 to temporarily override the standard profile list for adaptive playback of an asset.</p>
+					<textarea class="code-area">URL Map: /.../MediaItemGUID/VirtualFileName?<strong>umoprofiles=PROFILEGUID1,PROFILEGUID2,...,PROFILEGUIDX</strong></textarea>
+					<textarea class="code-area">Example: http://...63598604-cb88-44f8-bc47-d207af3b7b4a/content.m3u8? umoprofiles=c2364425-2267-4eaa-b800-ef544bdd3da3,27e71340-af9c-468d-96c3- ebac95dd884d,...</textarea>
+					<div class="text-warning">
+						<p>Be aware that:</p>
+						<ul>
+							<li>The Requested File Type <strong>MUST</strong> be <code>adaptive</code></li>
+							<li>The GUID order in the URL path MUST be <code>DomainGUID</code>, <code>PlayerGUID</code>, <code>MediaItemGUID</code></li>
+							<li>The Virtual File Name<strong> MUST </strong>have the <strong>.m3u8</strong> extension</li>
+						</ul>
+					</div>
+					<table class="bcls-table">
+						<caption>Table 6: Parameters for Specifying Delivery Profiles</caption>
+						<thead class="bcls-table__head">
+							<tr>
+								<th>Parameter</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody class="bcls-table__body">
+							<tr>
+								<td><code>umoprofiles</code></td>
+								<td>String</td>
+								<td>
+									<ul>
+										<li>Overrides the standard profile list so that only the specified profile will be delivered in the m3u8</li>
+										<li>Multiple profiles are entered as a comma-separated list of profile GUIDs</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<h3>GUID Variables</h3>
+					<p>These GUIDs are obtained through Brightcove support at <a href="mailto:oncesupport@brightcove.com"></a>oncesupport@brightcove.com.</p>
+					<textarea class="code-area">URL Map: /.../DomainGUID/ApplicationGUID/MediaItemGUID</textarea>
+					<textarea class="code-area">URL Map: /.../DomainGUID/ApplicationGUID/ForeignKey</textarea>
+					<textarea class="code-area">Example: http://.../4989f8db-9187-49ca-86ff-e2cd53429cd4/35217a08-d9db-469f-aec0-7c88406a0c60/63598604-cb88-44f8-bc47-d207af3b7b4a/...</textarea>
+					<table class="bcls-table">
+						<caption>Table 7: Parameters for GUID Variables</caption>
+						<thead class="bcls-table__head">
+							<tr>
+								<th>Parameter</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody class="bcls-table__body">
+							<tr>
+								<td><code>DomainGUID</code></td>
+								<td>String</td>
+								<td>The GUID of the Customer Domain in the Brightcove system.</td>
+							</tr>
+							<tr>
+								<td><code>ApplicationGUID</code></td>
+								<td>String</td>
+								<td>The Player GUID for the application in which to record metrics and enforce business rules obtained through Media Room REST API.</td>
+							</tr>
+							<tr>
+								<td><code>MediaItemGUID</code>
+									or <code>ForeignKey</code>
+								</td>
+								<td>String</td>
+								<td>
+									<ul>
+										<li>The MediaItem GUID or Foreign Key for the base asset being requested (the MediaItemGUID and ForeignKey parameters are interchangeable)</li>
+										<li>This GUID will not appear if the RequestedFileType parameter is set to 'Auto'</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<h3>Virtual File Name Variables</h3>
+					<p>The Brightcove REST API can automatically detect that a player has an Ad Campaign associated with it. The <code>VirtualFileName</code> parameter value is an arbitrary file name; however the extension should accurately represent the requested file type to ensure that the file is compatible with the requesting device.</p>
+					<textarea class="code-area">URL Map: /.../MediaItemGUID/VirtualFileName?umoprofiles=ProfileGUID1,ProfileGUID2,...</textarea>
+					<textarea class="code-area">Example: http://...63598604-cb88-44f8-bc47-d207af3b7b4a/content.m3u8?umoprofiles=c2364425-2267-4eaa-b800-ef544bdd3da3,27e71340-af9c-468d-96c3-ebac95dd884d,...</textarea>
+					<p class="text-warning"><strong>NOTE: </strong>The <code>umoprofiles</code> parameter in this example is further explained previously in the <a href="#specifyProfilesForDelivery">Specify Profiles for Delivery</a> section of this document.</p>
+					<table class="bcls-table">
+						<caption>Table 8: Virtual File Name Parameters</caption>
+						<thead class="bcls-table__head">
+							<tr>
+								<th>Parameter</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody class="bcls-table__body">
+							<tr>
+								<td><code>VirtualFileName</code></td>
+								<td>String</td>
+								<td>
+									<p>Arbitrary file name for the request.</p>
+									<ul>
+										<li>Regardless of the file type, the system will return a media file</li>
+										<li>May help you identify the delivery format and play back properly</li>
+									</ul>
+									<p>Extensions Include:</p>
+									<ul>
+										<li><code>content.<strong>once</strong></code>
+											<ul>
+												<li>The only acceptable <code>RequestedFileType</code> for <code>.once</code> is <code>auto</code></li>
+											</ul>
+										</li>
+										<li><code>content.<strong>m3u8</strong></code></li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			</div>
+			<div class="bcls-section" id="advertisingOptions">
+				<h2>Advertising options</h2>
+				<h3 id="adServing">Ad Serving</h3>
+				<p>OnceLIVE<sup class="smaller">TM</sup> serves up and distributes ads through ad campaigns associated with your Application GUID. Advertising calls are made server-side on behalf of the client to the ad server configured within your Brightcove account. Brightcove supports nearly any VAST-like XML, Doubleclick for Publishers – including Premium and FreeWheel SMART XML. Contact Brightcove Client Services and provide your VAST ad tag or FreeWheel URL for integration.</p>
+				<h4>Serving Ads through Query String Dynamic Ad Parameter (DAP) Variables</h4>
+				<p>You can set a value in the query string and map it to an available DAP to have the actual value set at run time by appending the URL with dynamic ad parameters as actual values. When the OnceLIVE<sup class="smaller">TM</sup> system perceives a double curly bracket ( <code>{{</code> ) in the key name, it will pull the known client-related value from the runtime database and include that data as part of the ad targeting parameters expected by the ad server. View the table in the <a href="#quickReference">Quick Reference Tables section</a> for all available Ad Parameters and their use.</p>
+				<h5>For Example:</h5>
+				<ul>
+					<li><code>Key={{UserAgent}}</code>: the string value of the useragent will be obtained from the database</li>
+					<li><code>Key={{referringURL}}</code>:the full referring URL will be appended to the OnceLIVE<sup class="smaller">TM</sup> URL</li>
+				</ul>
+				<h4>Serving Ads through an Ad Campaign</h4>
+				<p>OnceLIVE<sup class="smaller">TM</sup> uses an Ad ID to dynamically pull an Ad asset from your account automatically.</p>
+				<ul>
+					<li>If you intend to serve Ads through an Ad Campaign, there are no Ad Parameters required for the URL. The system will automatically detect that the player has an Ad Campaign associated with it according to the ApplicationGUID within the URL path.</li>
+					<li>If the Ad Campaign, tied to that ApplicationGUID, has an associated Ad Server, OnceLIVE<sup class="smaller">TM</sup> will send a request to the Ad Server to retrieve the Ad unit(s). The Ad Server will return XML containing data that is used to ingest and cache the ad unit within your Brightcove account. When the same ad unit is encountered for subsequent consumers, the system will utilize the cached ad video along with the unique impression and tracking events for that request.</li>
+				</ul>
+				<h3>Third Party Ad Tracking</h3>
+				<p>Third party ad tracking can be utilized through the use of beaconing parameters.</p>
+				<h4>Independent Tracking with umxbeacon</h4>
+				<p>This method lets you set up a beacon in the OnceLIVE<sup class="smaller">TM</sup> URL to track plays independent of UM analytics. When the query string is appended with <code>umxbeacon={encoded URL}</code>, OnceLIVE<sup class="smaller">TM</sup> will strip out the encoded parameter, decode it and beacon to that decoded URL.</p>
+				<div class="text-warning">
+					<p>The URL in the beacon:</p>
+					<ul>
+						<li>MUST be URL encoded</li>
+						<li>MUST be the last UM query string parameter in the URL</li>
+					</ul>
+				</div>
+				<textarea class="code-area">URL Map: /.../MediaItemGUID/VirtualFileName?umxbeacon=encodedURL</textarea>
+				<textarea class="code-area">Example: http://...63598604-cb88-44f8-bc47-d207af3b7b4a/content.once?umxbeacon=http%3A%5F%2Fumrss.com%3Fkeyone=111</textarea>
+				<table class="bcls-table">
+					<caption>Table 9: Third Party Ad Tracking</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>umxbeacon</code></td>
+							<td>String</td>
+							<td>Decodes the encoded URL value set in the <code>umxbeacon</code> parameter and redirects to the next handler</td>
+						</tr>
+					</tbody>
+				</table>
+				<h4>UMBEPARAM</h4>
+				<p>The OnceLIVE<sup class="smaller">TM</sup> URL provides for server side beaconing through URLs that are specified and associate to an Application GUID within the UM database. The beacon fires when playback starts, either by "play" or some other playback event.</p>
+				<h5>Beacon Template URL:</h5>
+				<textarea class="code-area">http://.../test.html?Localadid=adValue&amp;uniqueid=$uniqueid&amp;Country=[c ountry]&amp;State=[state]&amp;City1=[city name]&amp;City2=[city name]</textarea>
+				<p>The above example depicts several variables in a standard beaconing URL. Through appending a OnceLIVE<sup class="smaller">TM</sup> URL with the <code>UMBEPARAM</code> query string parameter, each variable value can be specified according to preferences and passed dynamically to the beacon call.</p>
+				<textarea class="code-area">http://.../Brightcove.once?UMBEPARAMLocaladid=adValue</textarea>
+				<p>The variables can be specified and then evaluated two possible ways:</p>
+				<ol>
+					<li>Through metadata as with curly bracket syntax (see <a href="#adServing">Ad Serving</a>)
+						<ul>
+							<li><code>Key={{UserAgent}}</code>: the actual string value of the useragent will be obtained from the database</li>
+							<li><code>Key={{referringURL}}</code>: the full referring URL will be appended to the OnceLIVE<sup class="smaller">TM</sup> URL</li>
+						</ul>
+					</li>
+					<li>Through dynamic insertion of values in the query string
+						<textarea class="code-area">http://.../test.html?Localadid=adValue&amp;uniqueid=$uniqueid&amp;Country= USA&amp;State=AZ&amp;City1=Phoenix&amp;City2=Tuscon</textarea>
+					</li>
+				</ol>
+				<p>The beacons fire at the same instance the 'Play' metric is recorded with safeguards to prevent multiple 'play' events skewing analytics. Beaconing URLs are always fired, but the URL they fire to is dependent on what is set in the database.</p>
+				<ul>
+					<li>The static key/value pairs in the database provide values that can be replaced by <code>UMBEPARAM</code>. If the values are not passed in via the <code>UMBEPARAM</code>, the values will be pulled from the database.</li>
+					<li>Beaconing URLs do not require additional variables. However, the variables must be included if you want to use the <code>UMBEPARAM</code> query string parameter. You may also have multiple beaconing URLs per application.</li>
+				</ul>
+				<p class="text-warning"><strong>NOTE:</strong>Each Key/Value pair specified in the <code>UMBEPARAM</code> must be present in the database and assigned to an application.</p>
+				<h3>Ad Caching</h3>
+				<p>The Brightcove OnceLIVE<sup class="smaller">TM</sup> AdCache component will recognize if an ad being served to your customer is currently present in your account on our system. If the ad is not in our system, OnceLIVE<sup class="smaller">TM</sup> automatically ingests and caches it. This ingest can cause a slight delay of the live playback.
+					<br/>
+					<p class="text-warning"><strong>NOTE:</strong>It is a best practice and highly recommended that the ad creative exist in the Brightcove Media database before the live stream begins to prevent ad start delay during a live stream.</p>
+					<p>Ad Caching allows us to inject the ads into your live stream content automatically. In this way, we eliminate the need for you to manually ingest the ads you plan on serving into the Brightcove system.</p>
+					<h4>Implementation Essentials</h4>
+					<p>The following information is necessary for Client Services to implement Ad Caching in your account:</p>
+					<ul>
+						<li>Existing Ad Provider</li>
+						<li>Existing Ad Campaign</li>
+						<li>OnceLIVE<sup class="smaller">TM</sup> URL (see <a href="#informationGathering">Information Gathering</a>)
+							<ul>
+								<li><code>oncelive.brightcove.com</code> or a CNAME pointing to it</li>
+								<li>Delivery Type (<code>live</code> for HTTP , <code>auto</code> for auto links)</li>
+								<li>Requested File Type of "adaptive<code> or </code>auto'</li>
+								<li>Domain GUID, Application GUID (Player GUID) and MediaItem GUID provided by Client Services</li>
+							</ul>
+						</li>
+						<li>Virtual File Name with <strong>.once</strong> or <strong>.m3u8</strong> a file extension</li>
+						<li>Query String Parameters</li>
+						<li>Brightcove AdCache configured by Brightcove Client Services</li>
+						<li>An advertising Catalog (new or existing) to house items from the RSS feed</li>
+					</ul>
+					<h4>Ad Caching Considerations</h4>
+					<p>We will add an AdCache URL to a new Content Sync element in your account. The URL structure looks as follows with your own Domain GUID within the URL:</p>
+					<textarea class="code-area">http://adcache.brightcove.com/AdFeed.aspx?DomainGUID</textarea>
+					<p>When setup is complete, the system will automatically ingest any ads that are delivered to any viewers of your  Once VOD<sup class="smaller">TM</sup> content that is not available in the UM system, the ad will be inserted into the AdCache (RSS) feed for ingestion and not played in the content until it is ingested into the chosen catalog.</p>
+					<h5>Example OnceLIVE<sup class="smaller">TM</sup> URL</h5>
+					<textarea class="code-area">http://oncelive.brightcove.com/now/od/auto/DomainGUID/ApplicationGUID/ ProfileGUID/MediaItemGUID/Version/VirtualFileName?Params</textarea>
+			</div>
+			<div class="bcls-section" id="queryStringParameterOptions">
+				<h2>Additional options</h2>
+				<h3>UMADPARAM</h3>
+				<p><code>UMADPARAM{Key}={Value}</code>
+				</p>
+				<p>Use this parameter to have your ad provider serve back ads according to your requirements. The parameter value will be passed along to the ad call.</p>
+				<h5>Example Key/Value pairs:</h5>
+				<p><code>cc=US</code>
+				</p>
+				<p><code>state=Arizona</code>
+				</p>
+				<h5>URL Created by Customer:</h5>
+				<textarea class="code-area">/.../umedia.com/content.m3u8?UMADPARAMcc=US&amp;UMADPARAMstate=Arizona</textarea>
+				<p>Brightcove Media consumes this OnceLIVE<sup class="smaller">TM</sup> URL, strips off the key and serves the value to the ad provider who in turn will serve up only the ads that were requested by the certain value.</p>
+				<h5>URL Sent by UM to ad provider:</h5>
+				<textarea class="code-area">http://.../adprovider.com/content.m3u8?cc=US&amp;state=Arizona</textarea>
+				<p>The OnceLIVE<sup class="smaller">TM</sup> URL example above would make the ad call and return ads specific to the country and state values provided.</p>
+				<h3>UMPTPARAM</h3>
+				<p><code>UMPTPARAM{Key}={Value}</code>
+				</p>
+				<p>This is used to pass key/value pairs into the call to the ad server when the value should not be URL decoded by the service. In contrast to UMADPARAM, this parameter lets you pass a string directly through the system without manipulation by Brightcove. For example, you have the ability to pass a string value of comma delimited key-value pairs that require URL Encoding.</p>
+				<h5>Example Key/Value pairs:</h5>
+				<textarea class="code-area">Cust_params=Denver%Android_4_0%2tile%Video&amp;<strong>Video_param=26iu%3D%252F7646</strong>
+				</textarea>
+				<p>URL Created by Customer:</p>
+				<textarea class="code-area">http://.../VirtualFileName?&amp;UMPTPARAMCust_Params=Denver%Android_4_0%2til e%Video&amp;UMPTPARAMVideo_param=26iu%3D%252F7646</textarea>
+				<p>The above example depicts the parameter variables in a URL with ad targeting. Through appending a OnceLIVE<sup class="smaller">TM</sup> URL with the UMPTPARAM query string parameter, the encoded string value can be specified and passed through without manipulation.
+					<br/>Below is a sample of the call that Brightcove will be expected to make to ad providers in order to retrieve an Ad asset. The response to the Video Ad will be in in the form of a VAST XML.</p>
+				<p>URL Sent by UM to ad provider:</p>
+				<textarea class="code-area">http://ad.provider.url/content.m3u8?Cust_Params=Denver%Android_4_0%2 tile%Video&amp;Video_param=26iu%3D%252F7646</textarea>
+				<h3>ForceMute</h3>
+				<p><code>Forcemute={string}</code></p>
+				<p>This parameter is used when you would like to have the entire stream stripped of audio streams.</p>
+				<ul>
+					<li><code>Forcemute=true</code>
+					</li>
+					<li>This parameter is either on (true) or not used. By default, Brightcove includes audio streams. If the parameter is set, it will disable the audio stream for the client session.</li>
+				</ul>
+				<h3>UMProfileOrder</h3>
+				<p><code>Umprofileorder={integer}</code>/p>
+				<p>This key/value pair allows the ordering of the profile bit rates in the manifests file. The options include:</p>
+				<ul>
+					<li><code>Ascending=1</code>
+					</li>
+					<li><code>Descending=2</code>
+					</li>
+					<li>By default Brightcove uses the target bit rate- as determined by UM device detection- and sorts in descending order with the audio profile at the bottom of the list.</li>
+				</ul>
+			</div>
+			<div class="bcls-section" id="quickReferenceTables">
+				<h2>Quick reference</h2>
+				<h3>URL Parameters</h3>
+				<table class="bcls-table">
+					<caption>Table 10: URL Parameters</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>Host</code></td>
+							<td>String</td>
+							<td><code>oncelive.brightcove.com</code> or CNAME pointing to it</td>
+						</tr>
+						<tr>
+							<td><code>Service</code></td>
+							<td>String</td>
+							<td>
+								<ul>
+									<li><code>now</code> specifies that we will be using our dynamic permutation layer (DPL) to service your request</li>
+									<li>This is the only variable currently available</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><code>DeliveryType</code></td>
+							<td>String</td>
+							<td>Value is <code>live</code>
+								<ul>
+									<li>Delivery will be determined by the client hitting the URL</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><code>RequestedFileType</code></td>
+							<td>String</td>
+							<td>Possible values include <code>auto</code> or <code>adaptive</code>
+								<ul>
+									<li>These values are inherently equivalent because regardless of the requesting device, the delivery will be adaptive</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><code>DomainGUID</code>
+							</td>
+							<td>String</td>
+							<td>The GUID of the Customer Domain in the Brightcove system obtained through support at <a href="mailto:oncesupport@brightcove.com">oncesupport@brightcove.com</a>
+							</td>
+						</tr>
+						<tr>
+							<td><code>ApplicationGUID</code>
+							</td>
+							<td>String</td>
+							<td>Player GUID for the application in which to record metrics and enforce business rules obtained through support at <a href="mailto:oncesupport@brightcove.com">oncesupport@brightcove.com</a>
+							</td>
+						</tr>
+						<tr>
+							<td><code>MediaItemGUID</code> or <code>ForeignKey</code>
+							</td>
+							<td>String</td>
+							<td>The Media Item GUID or Foreign Key for the base asset being requested obtained through support at <a href="mailto:oncesupport@brightcove.com">oncesupport@brightcove.com</a>
+								<ul>
+									<li>GUID will not appear if the <code>RequestedFileType</code> param is set to <code>Auto</code>
+									</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><code>VirtualFileName</code>
+							</td>
+							<td>String</td>
+							<td>
+								<p>Arbitrary file name for the request</p>
+								<ul>
+									<li>The value is a preference; however the file extension should accurately represent the requested file type</li>
+									<li>Regardless of the file type, the system will return a media file</li>
+									<li>May help you identify the delivery format and play back properly</li>
+								</ul>
+								<p>Extensions Include:</p>
+								<ul>
+									<li><code>content.<strong>once</strong></code>
+										<ul>
+											<li>to The only acceptable Delivery Type for <code>.once</code> is <code>auto</code></li>
+										</ul>
+									</li>
+									<li><code>content.<strong>m3u8</strong></code></li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><code>umoprofiles</code>
+							</td>
+							<td>String</td>
+							<td>
+								<ul>
+									<li>Overrides the standard profile list so that only the specified profile will be delivered in the m3u8</li>
+									<li>Multiple profiles are entered as a comma-separated list of GUIDs</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><code>umxbeacon</code>
+							</td>
+							<td>String</td>
+							<td>Decodes the encoded URL value set in the <code>umxbeacon</code> parameter and redirects to the next handler</td>
+						</tr>
+						<tr>
+							<td><code>UMADPARAM</code>
+							</td>
+							<td>String</td>
+							<td>Adds ad-related data to the OnceLIVE<sup class="smaller">TM</sup> URL so that ad providers serve back appropriate ads according to requirements</td>
+						</tr>
+						<tr>
+							<td><code>UMBEPARAM</code>
+							</td>
+							<td>String</td>
+							<td>Appends a OnceLIVE<sup class="smaller">TM</sup> URL where each variable value can be specified according to preferences and passed dynamically to the beacon call</td>
+						</tr>
+						<tr>
+							<td><code>UMPTPARAM</code>
+							</td>
+							<td>String</td>
+							<td>Appends custom parameters to an ad request allowing a string to be passed directly through the system without manipulation by Brightcove.</td>
+						</tr>
+						<tr>
+							<td><code>umsessionkey</code>
+							</td>
+							<td>String</td>
+							<td>Used in frequency capping when cookies are not utilized to override behavior</td>
+						</tr>
+						<tr>
+							<td><code>Forcemute</code>
+							</td>
+							<td>String</td>
+							<td>Used to have the entire stream stripped of audio streams</td>
+						</tr>
+						<tr>
+							<td><code>UMProfileOrder</code>
+							</td>
+							<td>Integer</td>
+							<td>Allows the ordering of the profile bit rates in the manifests file</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3>Dynamic Ad Parameters</h3>
+				<table class="bcls-table">
+					<caption>Table 11: Available Dynamic Ad Parameters</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Available Dynamic Parameters</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>{{mediaitem.title}}</code>
+							</td>
+							<td>String value of <code>mediaitem.title</code></td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.tremor.title}}</code>
+							</td>
+							<td>String value of <code>mediaitem.tremor.title</code> - this parameter is required when using Tremor as the ad network</td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.keywords}}</code>
+							</td>
+							<td>String value of <code>mediaitem.keywords</code></td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.categories}}</code>
+							</td>
+							<td>Comma separated list of the string values of categories</td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.language}}</code>
+							</td>
+							<td>The string language value for <code>mediaitem</code></td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.rating}}</code>
+							</td>
+							<td>The string rating value of <code>mediaitem</code></td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.guid}}</code>
+							</td>
+							<td>String value of <code>mediaitemguid</code></td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.foreignkey}}</code>
+							</td>
+							<td>String value of <code>mediaitemforeignkey</code></td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.duration}}</code>
+							</td>
+							<td>Content file duration in seconds based on the total length of content</td>
+						</tr>
+						<tr>
+							<td><code>{{catalogguid}}</code>
+							</td>
+							<td><code>Catalogguid</code> where <code>mediaitem</code> is located</td>
+						</tr>
+						<tr>
+							<td><code>{{catalogname}}</code>
+							</td>
+							<td>String value of catalog name</td>
+						</tr>
+						<tr>
+							<td><code>{{catalog.categories}}</code>
+							</td>
+							<td>Comma separated list of the string values of categories</td>
+						</tr>
+						<tr>
+							<td><code>{{applicationguid}}</code>
+							</td>
+							<td>Player application GUID</td>
+						</tr>
+						<tr>
+							<td><code>{{applicationname}}</code>
+							</td>
+							<td>Player application name</td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.adposition}}</code>
+							</td>
+							<td>Integer value for the ad position, e.g., 1, 2, 3 for pre, mid, post</td>
+						</tr>
+						<tr>
+							<td><code>{{mediaitem.adpositiontime}}</code>
+							</td>
+							<td>Time in seconds where ad is being played</td>
+						</tr>
+						<tr>
+							<td><code>{{randomnumber32}}</code>
+							</td>
+							<td>A unit random number</td>
+						</tr>
+						<tr>
+							<td><code>{{timestamputc}}</code>
+							</td>
+							<td>A 32 bit representation of the servers current time in unix Epoch time</td>
+						</tr>
+						<tr>
+							<td><code>{{useragent}}</code>
+							</td>
+							<td>String of the <code>useragent</code> of the client</td>
+						</tr>
+						<tr>
+							<td><code>{{ipaddress}}</code>
+							</td>
+							<td>User's IP address</td>
+						</tr>
+						<tr>
+							<td><code>{{referringHost}}</code>
+							</td>
+							<td>String of the referring host</td>
+						</tr>
+						<tr>
+							<td><code>{{referringURL}}</code>
+							</td>
+							<td>URL Encoded representation of HTTP Header Referer</td>
+						</tr>
+						<tr>
+							<td><code>{{countrycode}}</code>
+							</td>
+							<td>String of the ISO country code for this user</td>
+						</tr>
+						<tr>
+							<td><code>{{postalcode}}</code>
+							</td>
+							<td>String of the user's postal code (if available)</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- bcl scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+	<script src="/en/scripts/log.js"></script>
+	<script src="/en/scripts/docs-nav-data.min.js"></script>
+    <script src="/en/scripts/bcls-doc-site.js"></script>
+    <script src="/en/scripts/bc-mapi.js"></script>
+    <script>
+        $(document).foundation();
+    </script>
+<div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+<div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+
+</html>

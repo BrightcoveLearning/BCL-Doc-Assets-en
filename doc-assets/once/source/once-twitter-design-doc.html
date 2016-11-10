@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+  <!-- change title to match the h1 heading -->
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+<script src="//use.edgefonts.net/source-code-pro.js"></script>
+<link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
+<link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
+<link rel="stylesheet" href="/en/styles/foundation-fixes.css">
+
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-2728311-29', 'auto');
+    ga('send', 'pageview');
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+  </head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+    <!-- content -->
+    <div class="row">
+        <div class="sidebar large-2 columns show-for-large-up">
+            <div id="sidenav" class="side-nav"></div>
+        </div>
+        <div id="main" class="large-10 small-12 columns">
+      <!-- begin drupal content -->
+<header id="bcls_header" class="bcls-header">
+        <h1 id="TwitterAmplifyVMAPDesignDocument(Draft)-TwitterAmplifyVMAPDesignDocument">Twitter Amplify VMAP&nbsp;Design Document</h1>
+<p><em>Jeffrey Young, Jesse Michael</em>
+</p>
+<h2 id="TwitterAmplifyVMAPDesignDocument(Draft)-Introduction">Introduction</h2>
+<p>The Twitter Amplify VMAP (TAV) is an extension to the Once UX product that will create a new VMAP format that Twitter is prepared to consume in their Twitter client. A Once UX request from the Twitter Amplify Player (TAP), or when specifically requesting
+	the Amplify VMAP, must return an Amplify VMAP response. The system will be able to follow the correct business logic for a single Once URL to conform to either a TAV VMAP response or the standard Brightcove VMAP. Project specification and requirements
+	can be found in more detail at&nbsp;<a href="/display/OAS/Twitter+Amplify+VMAP+1.0">Twitter Amplify VMAP 1.0</a>
+</p>
+<h2 id="TwitterAmplifyVMAPDesignDocument(Draft)-Requirements">Requirements</h2>
+<p><span class="confluence-anchor-link" id="TwitterAmplifyVMAPDesignDocument(Draft)-Requirements"></span>Brightcove and Twitter have been working closely together to break ground on the design of this product. Twitter Amplify VMAP 1.0 must include the follow
+	product requirements.</p>
+<ul>
+	<li>Extend the Once UX API feature set to include output of Twitter Amplify VMAP 1.0 (TAV 1.0) consumable content and ad creative metadata.</li>
+	<li>Detect a client making a request for content via the Twitter Amplify Player (TAP) to ensure a TAV 1.0 compatible response.</li>
+	<li>Creative and tracking VAST metadata to be included in the VMAP ad break elements per the VMAP specification.</li>
+	<li>External tracking beacons configured within the Once system to be passed back in the TAV within the applicable Twitter extension elements, with the client electing to fire all tracking URLs, not the Once system.</li>
+	<li>The TAV must return the Twitter Owner ID from the Once Customer and the Twitter Brand ID of the Ads if present.</li>
+</ul>
+<h2 id="TwitterAmplifyVMAPDesignDocument(Draft)-Features">Features</h2>
+<p><span class="confluence-anchor-link" id="TwitterAmplifyVMAPDesignDocument(Draft)-Features"></span>The Twitter Amplify VMAP requirements will be met by implementing the following features:</p>
+<ul>
+	<li>The Once Ad Service (OAS) VMAP Handler will look for the TAP Http header or a specified query string parameter to determine if it needs to build a TAV instead of a Brightcove VMAP.</li>
+	<li>The TAV will be built by the OAS VMAP Handler to meet Twitter's specified XML format.</li>
+	<li>Twitter Amplify VMAP will expose external beacons in the response that the TAP will consume and will not be consumed server side.&nbsp;
+		<br>
+		<br>
+	</li>
+</ul>
+<h2 id="TwitterAmplifyVMAPDesignDocument(Draft)-Architecture">Architecture</h2>
+<p><span class="confluence-anchor-link" id="TwitterAmplifyVMAPDesignDocument(Draft)-Architecture"></span>The Twitter Amplify VMAP product will be an extension of the existing Once Ad Service product. TAV requests will be formatted the same as current VMAP
+	requests. The VMAP Handler will be responsible for determining if the VMAP response will be a TAV or Brightcove VMAP and then build the appropriate VMAP response.&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+<span id="gliffy-container-46071829-1398" class="gliffy-container " data-fullwidth="1187" data-ceoid="45776906" data-filename="ContentPlayRequest">
+
+
+<span class="gliffy-chrome-container">
+
+    <span class="gliffy-chrome ">
+
+        <span class="gliffy-item gliffy-first">
+            <img class="gliffy-logo" src="/download/resources/com.gliffy.integration.confluence/icons/logo_16x16.png" title="Gliffy" alt="Gliffy">
+                     Gliffy         </span>
+	<span class="gliffy-item gliffy-zoom gliffy-end-button gliffy-start-button">
+            <a href="/download/attachments/45776906/ContentPlayRequest.png?version=20&amp;modificationDate=1395437090000&amp;api=v2" target="_self">
+                <span>
+                    <img src="/download/resources/com.gliffy.integration.confluence/icons/gliffy_macro_icon_zoom.png" class="gliffy-icon-full" alt="Zoom" title="Zoom">
+                     Zoom                 </span>
+	</a>
+	</span>
+	</span>
+	</span>
+	<map id="gliffy-map-46071829-9858" name="gliffy-map-46071829-9858"></map>
+	<iframe class="gliffy-html5-container gliffy-image-border" id="gliffy-html5-46071829-1398" src="/plugins/gliffy/viewer.action" width="800" height="377" data-id="46071829" data-version="20" data-scale="0.67396796" frameborder="0" style="visibility: visible; position: relative; left: 0px; overflow: hidden; background-color: rgb(255, 255, 255); height: 380px; width: 804px; background-position: initial initial; background-repeat: initial initial;"></iframe>
+	<img id="gliffy-image-46071829-1398" class="gliffy-image gliffy-image-border" width="800" height="377" data-full-width="1187" data-full-height="560" src="/download/attachments/45776906/ContentPlayRequest.png?version=20&amp;modificationDate=1395437090000&amp;api=v2"
+	alt="ContentPlayRequest" usemap="#gliffy-map-46071829-9858" style="display: none;">
+	<map id="gliffy-dynamic-map-46071829-1398" class="gliffy-dynamic" name="gliffy-dynamic-map-46071829-1398"></map>
+	</span>
+	<script language="JavaScript" type="text/javascript">
+		AJS.toInit(function ($) { //basically this function will fire when the Atlassian object AJS has been built
+			//wrap this in an anon function so you don't leak into window scope
+			var interval = setInterval(function () {
+				if (window.tinyMCE) {
+					GLIFFY.initViewerAnalytics("", "46071829", "COMMERCIAL", "500");
+					clearInterval(interval);
+				}
+			}, 200);
+		});
+	</script>
+</p>
+<h2 id="TwitterAmplifyVMAPDesignDocument(Draft)-Components">Components</h2>
+<p><span class="confluence-anchor-link" id="TwitterAmplifyVMAPDesignDocument(Draft)-Components"></span>
+</p>
+<h3 id="TwitterAmplifyVMAPDesignDocument(Draft)-VMAPHandler">VMAP Handler</h3>
+<p>The VMAP Handler will be responsible for looking at the HTTP headers and checking the query string for a TAV request, then redirecting to the appropriate builder for either a TAV or a Brightcove VMAP. The HTTP header will look for the string value of
+	" <strong>___</strong> ". The query string that the VMAP Handler will look for will be "<strong>forcetav</strong>". Once UX will also need to be updated to accept SSL requests, while keeping the mandatory SSL feature intact. If mandatory SSL is enabled,
+	we should reject any request to the VMAP response with a 403 that is not secure.</p>
+<p><strong>VMAP Builder&nbsp;</strong>
+</p>
+<p>The existing VMAP builder will need to be updated to be inherited by the Twitter Amplify VMAP Builder. This will also allow the flexibility of the VMAP to be used for future client side applications.</p>
+<p><strong>Twitter Amplify VMAP Builder</strong>
+</p>
+<p>The twitter Amplify VMAP builder will construct the Twitter Amplify VMAP response with specific twitter extensions and namespace declarations.</p>
+<ul>
+	<li>The TAV requires a &lt;tw:content&gt; &nbsp;attribute of "ownerId" specific to the client. The Twitter Content Owner ID is the numeric ID associated with the twitter username that owns the content. This value must be configurable between various items
+		within the same domain. This value should be set as a query string parameter, that overrides a content Extended Metadata value, that overrides an application config using the key "<strong>twownerid</strong>". The desired use case would be for the owner
+		ID to be sent as extended metadata of the asset and other options for the purpose of failover and testing. If a content owner ID is not found we will, by default, send an empty string and proceed.</li>
+	<li>The TAV requires a &lt;tw:content&gt; attribute of "contentId" that will be the foreign key of the content being requested.&nbsp;</li>
+	<li>The TAV requires a &lt;tw:content attribute of "stitched" to determine if the content has the ads stitched into it. This will be forced to true for any Once link.</li>
+	<li>The TAV requires a media file similar to the content URI derived from the standard VMAP Builder. This will be the Once URL constructed by the VMAP Builder that contains all AD definitions in the OAS Id and has a TTL of 600 before they expire. A bool
+		value specifying that the request originally came from the TAP will be stored in memcache and use the visit guid as a key. The ONCE API should be checking memcache using the visit guid key to disable server side beacons and ad impressions from being
+		fired on the server side.</li>
+	<li>The &lt;MediaFile&gt; tag will have 2 attributes, Content Length and Payload Length. Content length will be floating point duration of the content itself, and payload length will be the floating point duration of the stream with an aggregated duration
+		of the ads and content. These values should be controlled through the domain configs to allow either integer values or floating point values with configurable decimal accuracy.</li>
+	<li>Twitter VMAP expects external analytic tracking client beacons&nbsp;similar to that of VAST to be fired by the Twitter Amplify client.&nbsp;
+		<ul>
+			<li>New client beacon types will be created that will be beacons sent to the Twitter VMAP TAV. In compliance with VAST, the beacontemplate names will need to be converted to the standardized convention of "Start", "FirstQuartile", etc.
+				<ul>
+					<li>ClientStart</li>
+					<li>ClientFirstQuartile</li>
+					<li>ClientMidpoint</li>
+					<li>ClientThirdQuartile</li>
+					<li>ClientComplete</li>
+					<li>ClientQuartile</li>
+					<li>ClientPause</li>
+					<li>ClientResume</li>
+					<li>ClientRewind</li>
+				</ul>
+			</li>
+			<li>The ClientPause, ClientResume, and ClientRewind should be treated as VAST impression beacons that should always be ignored by the API unless the VMAP builder is requesting them.</li>
+			<li>By default, the request from the TAP should not fire the beacon types specified as content quartiles. The decision to not fire regular content quartiles (If from Twitter) can be overridden by a query string parameter of "<strong>umbp</strong>" or application
+				config of "<strong>ForceServerBeacons</strong>". 0 or false will keep the beacons disabled server side, 1 or true will allow the beacons to fire anyway.</li>
+		</ul>
+	</li>
+	<li>Since Twitter does not plan on supporting Smart XML in V 1.0, but our clients use it, the slot and video view impressions should be converted to content start beacons to allow the Twitter client to consume them for customer MRM tracking.</li>
+	<li>Since we are expecting the Twitter client to fire off all of the ad tracking and ad impression urls, these tracking event will not fire from the Once API by default (If from Twitter). This can be overridded by&nbsp;the existing query string parameter
+		of "<strong>umtp</strong>" or application config of "<strong>is_impression_firing_enabled</strong>". 0 or false will keep the ad impressions disabled server side, 1 or true will allow the ad impressions to fire anyway.</li>
+	<li>Twitter Amplify VMAP also requires the VMAP:AdBreak to be formatted in accordance to the VAST 3.0 xsd. The only exception in this case is the &lt;MediaFile&gt; in which we should not output. Modifications to the VMAP:AdBreak should use the exisiting
+		workflow of XSLT's to manipulate the desired output of the ad response.</li>
+	<li>Twitter Amplify VMAP can also explicitly be converted to JSON or JSONP via the query string if a lighter response is desired or future implementations of client side JSON parsing.
+		<br>
+		<br>
+	</li>
+</ul>
+<div class="code panel pdl" style="border-width: 1px;">
+	<div class="codeHeader panelHeader pdl" style="border-bottom-width: 1px;"><b>TAV VMAP</b>
+	</div>
+	<div class="codeContent panelContent pdl">
+		<div>
+			<div id="highlighter_657215" class="syntaxhighlighter  xml">
+				<div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span>
+				</div>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tbody class="bcls-table__body">
+						<tr>
+							<td class="gutter">
+								<div class="line number1 index0 alt2">1</div>
+								<div class="line number2 index1 alt1">2</div>
+								<div class="line number3 index2 alt2">3</div>
+								<div class="line number4 index3 alt1">4</div>
+								<div class="line number5 index4 alt2">5</div>
+								<div class="line number6 index5 alt1">6</div>
+								<div class="line number7 index6 alt2">7</div>
+								<div class="line number8 index7 alt1">8</div>
+								<div class="line number9 index8 alt2">9</div>
+								<div class="line number10 index9 alt1">10</div>
+								<div class="line number11 index10 alt2">11</div>
+								<div class="line number12 index11 alt1">12</div>
+								<div class="line number13 index12 alt2">13</div>
+								<div class="line number14 index13 alt1">14</div>
+								<div class="line number15 index14 alt2">15</div>
+								<div class="line number16 index15 alt1">16</div>
+								<div class="line number17 index16 alt2">17</div>
+								<div class="line number18 index17 alt1">18</div>
+								<div class="line number19 index18 alt2">19</div>
+								<div class="line number20 index19 alt1">20</div>
+								<div class="line number21 index20 alt2">21</div>
+								<div class="line number22 index21 alt1">22</div>
+								<div class="line number23 index22 alt2">23</div>
+								<div class="line number24 index23 alt1">24</div>
+								<div class="line number25 index24 alt2">25</div>
+								<div class="line number26 index25 alt1">26</div>
+								<div class="line number27 index26 alt2">27</div>
+								<div class="line number28 index27 alt1">28</div>
+								<div class="line number29 index28 alt2">29</div>
+								<div class="line number30 index29 alt1">30</div>
+								<div class="line number31 index30 alt2">31</div>
+								<div class="line number32 index31 alt1">32</div>
+								<div class="line number33 index32 alt2">33</div>
+								<div class="line number34 index33 alt1">34</div>
+								<div class="line number35 index34 alt2">35</div>
+								<div class="line number36 index35 alt1">36</div>
+								<div class="line number37 index36 alt2">37</div>
+								<div class="line number38 index37 alt1">38</div>
+								<div class="line number39 index38 alt2">39</div>
+								<div class="line number40 index39 alt1">40</div>
+								<div class="line number41 index40 alt2">41</div>
+								<div class="line number42 index41 alt1">42</div>
+								<div class="line number43 index42 alt2">43</div>
+								<div class="line number44 index43 alt1">44</div>
+								<div class="line number45 index44 alt2">45</div>
+								<div class="line number46 index45 alt1">46</div>
+								<div class="line number47 index46 alt2">47</div>
+								<div class="line number48 index47 alt1">48</div>
+								<div class="line number49 index48 alt2">49</div>
+								<div class="line number50 index49 alt1">50</div>
+								<div class="line number51 index50 alt2">51</div>
+								<div class="line number52 index51 alt1">52</div>
+								<div class="line number53 index52 alt2">53</div>
+								<div class="line number54 index53 alt1">54</div>
+								<div class="line number55 index54 alt2">55</div>
+								<div class="line number56 index55 alt1">56</div>
+								<div class="line number57 index56 alt2">57</div>
+								<div class="line number58 index57 alt1">58</div>
+								<div class="line number59 index58 alt2">59</div>
+								<div class="line number60 index59 alt1">60</div>
+								<div class="line number61 index60 alt2">61</div>
+								<div class="line number62 index61 alt1">62</div>
+								<div class="line number63 index62 alt2">63</div>
+								<div class="line number64 index63 alt1">64</div>
+								<div class="line number65 index64 alt2">65</div>
+								<div class="line number66 index65 alt1">66</div>
+								<div class="line number67 index66 alt2">67</div>
+								<div class="line number68 index67 alt1">68</div>
+								<div class="line number69 index68 alt2">69</div>
+								<div class="line number70 index69 alt1">70</div>
+								<div class="line number71 index70 alt2">71</div>
+								<div class="line number72 index71 alt1">72</div>
+								<div class="line number73 index72 alt2">73</div>
+								<div class="line number74 index73 alt1">74</div>
+								<div class="line number75 index74 alt2">75</div>
+								<div class="line number76 index75 alt1">76</div>
+								<div class="line number77 index76 alt2">77</div>
+								<div class="line number78 index77 alt1">78</div>
+								<div class="line number79 index78 alt2">79</div>
+								<div class="line number80 index79 alt1">80</div>
+								<div class="line number81 index80 alt2">81</div>
+								<div class="line number82 index81 alt1">82</div>
+								<div class="line number83 index82 alt2">83</div>
+								<div class="line number84 index83 alt1">84</div>
+								<div class="line number85 index84 alt2">85</div>
+								<div class="line number86 index85 alt1">86</div>
+								<div class="line number87 index86 alt2">87</div>
+								<div class="line number88 index87 alt1">88</div>
+								<div class="line number89 index88 alt2">89</div>
+								<div class="line number90 index89 alt1">90</div>
+								<div class="line number91 index90 alt2">91</div>
+								<div class="line number92 index91 alt1">92</div>
+								<div class="line number93 index92 alt2">93</div>
+								<div class="line number94 index93 alt1">94</div>
+								<div class="line number95 index94 alt2">95</div>
+							</td>
+							<td class="code">
+								<div class="container" title="Hint: double-click to select code">
+									<div class="line number1 index0 alt2"><code class="xml plain">&lt;</code><code class="xml keyword">vmap:VMAP</code>  <code class="xml color1">version</code><code class="xml plain">=</code><code class="xml string">"1.0"</code>  <code class="xml color1">xmlns:tw</code><code class="xml plain">=</code>
+										<code
+										class="xml string">"
+											<a href="http://twitter.com/schema/amplify" "=" ">http://twitter.com/schema/amplify"</a>
+												</code> <code class="xml color1">xmlns:vmap</code><code class="xml plain">=</code><code class="xml string">"<a href="http://www.iab.net/vmap-1.0" "="">http://www.iab.net/vmap-1.0"</a></code>  <code class="xml color1">xmlns:xsi</code><code class="xml plain">=</code>
+												<code
+												class="xml string">"
+													<a href="http://www.w3.org/2001/XMLSchema-instance" "=" ">http://www.w3.org/2001/XMLSchema-instance"</a>
+														</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number2 index1 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">vmap:Extensions</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number3 index2 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:amplify</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number4 index3 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:content</code>  <code class="xml color1">ownerId</code><code class="xml plain">=</code>
+										<code
+										class="xml string">"12345"</code> <code class="xml color1">contentId</code><code class="xml plain">=</code><code class="xml string">"TA_01"</code>  <code class="xml color1">stitched</code><code class="xml plain">=</code><code class="xml string">"true"</code>
+											<code
+											class="xml plain">&gt;</code>
+									</div>
+									<div class="line number5 index4 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">MediaFiles</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number6 index5 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">MediaFile</code>  <code class="xml color1">contentlength</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"99.9"</code>  <code class="xml color1">payloadlength</code><code class="xml plain">=</code><code class="xml string">"129.933"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number7 index6 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://onceapi0-qa.unicornmedia.com/now/ctadaptive/m3u8/96c78eda-0f69-4904-a312-74178d053a73/6c87826b-606e-44cd-8aa7-003f3d2fb58c/3a41c6e4-93a3-4108-8995-64ffca7b9106/b2271e23-f0d0-4d3d-bde5-b3b0171618e7/content.m3u8">http://onceapi0-qa.unicornmedia.com/now/ctadaptive/m3u8/96c78eda-0f69-4904-a312-74178d053a73/6c87826b-606e-44cd-8aa7-003f3d2fb58c/3a41c6e4-93a3-4108-8995-64ffca7b9106/b2271e23-f0d0-4d3d-bde5-b3b0171618e7/content.m3u8</a> ]]&gt;</code>
+									</div>
+									<div class="line number8 index7 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">MediaFile</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number9 index8 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">MediaFiles</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number10 index9 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">tw:content</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number11 index10 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:ContentImpressions</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number12 index11 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:ContentImpression</code><code class="xml plain">&gt;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/Impression1">http://umrss.com/Impression1</a> ]]&gt;</code><code class="xml plain">&lt;/</code><code class="xml keyword">tw:ContentImpression</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number13 index12 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:ContentImpression</code><code class="xml plain">&gt; </code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/Impression2">http://umrss.com/Impression2</a> ]]&gt;</code><code class="xml plain">&lt;/</code><code class="xml keyword">tw:ContentImpression</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number14 index13 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">tw:ContentImpressions</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number15 index14 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:TrackingEvents</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number16 index15 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"firstQuartile"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number17 index16 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/firstquartile/content">http://umrss.com/firstquartile/content</a> ]]&gt;</code>
+									</div>
+									<div class="line number18 index17 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number19 index18 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"midpoint"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number20 index19 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/midpoint/content ">http://umrss.com/midpoint/content&nbsp;</a> ]]&gt;</code>
+									</div>
+									<div class="line number21 index20 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number22 index21 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"thirdQuartile"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number23 index22 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/thirdquartile/content ">http://umrss.com/thirdquartile/content&nbsp;</a> ]]&gt;</code>
+									</div>
+									<div class="line number24 index23 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number25 index24 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"complete"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number26 index25 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/complete/content ">http://umrss.com/complete/content&nbsp;</a> ]]&gt;</code>
+									</div>
+									<div class="line number27 index26 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number28 index27 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"rewind"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number29 index28 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/rewind/content ">http://umrss.com/rewind/content&nbsp;</a> ]]&gt;</code>
+									</div>
+									<div class="line number30 index29 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number31 index30 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"pause"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number32 index31 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/pause/content ">http://umrss.com/pause/content&nbsp;</a> ]]&gt;</code>
+									</div>
+									<div class="line number33 index32 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number34 index33 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"resume"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number35 index34 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/resume/content ">http://umrss.com/resume/content&nbsp;</a> ]]&gt;</code>
+									</div>
+									<div class="line number36 index35 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number37 index36 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">tw:TrackingEvents</code><code class="xml plain">&gt; </code>
+									</div>
+									<div class="line number38 index37 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">tw:amplify</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number39 index38 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">vmap:Extensions</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number40 index39 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">vmap:AdBreak</code>  <code class="xml color1">breakType</code><code class="xml plain">=</code><code class="xml string">"linear"</code>
+										<code
+										class="xml color1">breakId</code><code class="xml plain">=</code><code class="xml string">"Preroll_0_0"</code>  <code class="xml color1">timeOffset</code><code class="xml plain">=</code><code class="xml string">"start"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number41 index40 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">vmap:AdSource</code>  <code class="xml color1">allowMultipleAds</code><code class="xml plain">=</code>
+										<code
+										class="xml string">"false"</code> <code class="xml color1">followRedirects</code><code class="xml plain">=</code><code class="xml string">"false"</code>  <code class="xml color1">id</code><code class="xml plain">=</code><code class="xml string">"0"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number42 index41 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">vmap:VASTData</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number43 index42 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml comments">&lt;!-- Everything below here can be modified on the fly, no need for a code change --&gt;</code>
+									</div>
+									<div class="line number44 index43 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">VAST</code>  <code class="xml color1">xmlns:xsd</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"<a href="http://www.w3.org/2001/XMLSchema" "="">http://www.w3.org/2001/XMLSchema"</a></code>  <code class="xml color1">xmlns:xsi</code><code class="xml plain">=</code><code class="xml string">"<a href="http://www.w3.org/2001/XMLSchema-instance" "="">http://www.w3.org/2001/XMLSchema-instance"</a></code>
+											<code
+											class="xml plain">&gt;</code>
+									</div>
+									<div class="line number45 index44 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Ad</code>  <code class="xml color1">id</code>
+										<code
+										class="xml plain">=</code><code class="xml string">"OV-118FK_0"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number46 index45 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">InLine</code>
+										<code
+										class="xml plain">&gt;</code>
+									</div>
+									<div class="line number47 index46 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">AdSystem</code>
+										<code
+										class="xml plain">&gt;FW&lt;/</code><code class="xml keyword">AdSystem</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number48 index47 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">AdTitle</code>
+										<code
+										class="xml plain">&gt;smart&lt;/</code><code class="xml keyword">AdTitle</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number49 index48 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Description</code>
+										<code
+										class="xml plain">/&gt;</code>
+									</div>
+									<div class="line number50 index49 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Impression</code>
+										<code
+										class="xml color1">id</code><code class="xml plain">=</code><code class="xml string">"QC"</code><code class="xml plain">&gt;<a href="http://umrss.com/Impression1">http://umrss.com/Impression1</a>&lt;/</code><code class="xml keyword">Impression</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number51 index50 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Impression</code>
+										<code
+										class="xml plain">&gt;<a href="http://umrss.com/Impression2">http://umrss.com/Impression2</a>&lt;/</code><code class="xml keyword">Impression</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number52 index51 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Creatives</code>
+										<code
+										class="xml plain">&gt;</code>
+									</div>
+									<div class="line number53 index52 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code>
+										<code
+										class="xml keyword">Creative</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number54 index53 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Linear</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number55 index54 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Duration</code><code class="xml plain">&gt;00:00:14.9333333+00:00&lt;/</code><code class="xml keyword">Duration</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number56 index55 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">TrackingEvents</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number57 index56 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"firstQuartile"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number58 index57 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/firstquartile/ad">http://umrss.com/firstquartile/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number59 index58 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number60 index59 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"midpoint"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number61 index60 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/midpoint/ad">http://umrss.com/midpoint/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number62 index61 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number63 index62 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"thirdQuartile"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number64 index63 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/thirdquartile/ad">http://umrss.com/thirdquartile/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number65 index64 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number66 index65 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"complete"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number67 index66 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/complete/ad">http://umrss.com/complete/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number68 index67 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number69 index68 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"rewind"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number70 index69 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/rewind/ad">http://umrss.com/rewind/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number71 index70 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number72 index71 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"pause"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number73 index72 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/pause/ad">http://umrss.com/pause/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number74 index73 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number75 index74 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">Tracking</code>  <code class="xml color1">event</code><code class="xml plain">=</code><code class="xml string">"resume"</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number76 index75 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/resume/ad">http://umrss.com/resume/ad</a> ]]&gt;</code>
+									</div>
+									<div class="line number77 index76 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Tracking</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number78 index77 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">TrackingEvents</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number79 index78 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">VideoClicks</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number80 index79 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">ClickThrough</code>  <code class="xml color1">id</code><code class="xml plain">=</code><code class="xml string">""</code><code class="xml plain">&gt; </code><code class="xml color2">&lt;![CDATA[ <a href="http://umrss.com/clickthrough">http://umrss.com/clickthrough</a> ]]&gt;</code>
+											<code
+											class="xml plain">&lt;/</code><code class="xml keyword">ClickThrough</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number81 index80 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">VideoClicks</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number82 index81 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;</code><code class="xml keyword">MediaFiles</code>  <code class="xml plain">/&gt;</code>
+									</div>
+									<div class="line number83 index82 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
+										<code
+										class="xml plain">&lt;/</code><code class="xml keyword">Linear</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number84 index83 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code>
+										<code
+										class="xml keyword">Creative</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number85 index84 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code>
+										<code
+										class="xml keyword">Creatives</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number86 index85 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">InLine</code>
+										<code
+										class="xml plain">&gt;</code>
+									</div>
+									<div class="line number87 index86 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">Extensions</code>
+										<code
+										class="xml plain">&gt;</code>
+									</div>
+									<div class="line number88 index87 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;</code><code class="xml keyword">tw:ad</code>
+										<code
+										class="xml color1">ownerId</code><code class="xml plain">=</code><code class="xml string">"54321"</code>  <code class="xml color1">adId</code><code class="xml plain">=</code><code class="xml string">"OV-118FK_0"</code>  <code class="xml plain">/&gt;</code>
+									</div>
+									<div class="line number89 index88 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Extensions</code>
+										<code
+										class="xml plain">&gt;</code>
+									</div>
+									<div class="line number90 index89 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">Ad</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number91 index90 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">VAST</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number92 index91 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">vmap:VASTData</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number93 index92 alt2"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">vmap:AdSource</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number94 index93 alt1"><code class="xml spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="xml plain">&lt;/</code><code class="xml keyword">vmap:AdBreak</code><code class="xml plain">&gt;</code>
+									</div>
+									<div class="line number95 index94 alt2"><code class="xml plain">&lt;/</code><code class="xml keyword">vmap:VMAP</code><code class="xml plain">&gt;</code>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<h3 id="TwitterAmplifyVMAPDesignDocument(Draft)-OnceAPI">Once API</h3>
+<p>The Once API will need to be updated to not fire specific Content Beacons types or Ad Impressions if the request came from a TAV. The Once API will acknowledge that the request came from a TAV from the key stored in memcache.&nbsp;The default workflow
+	of leaving the beacons and ad tracking to be fired by the client can be overridden by query string parameters or application configs (See&nbsp;Twitter Amplify VMAP Builder component)&nbsp;.</p>
+<h3 id="TwitterAmplifyVMAPDesignDocument(Draft)-WOPR">WOPR</h3>
+<p>A WOPR tool for creating Beacon Templates should be created to easily create and configure beacons.</p>
+<p>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+</p>
+<p>&nbsp;</p>
+<p>Link to JIRA issue for&nbsp;Twitter Amplify VMAP Design: &nbsp;</p>
+</div>
+</div>
+    </div>
+  </div>
+  <!-- bcl scripts -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+  <script src="/en/scripts/log.js"></script>
+    <script src="/en/scripts/docs-nav-data.min.js"></script>
+    <script src="/en/scripts/bcls-doc-site.js"></script>
+    <script src="/en/scripts/bc-mapi.js"></script>
+    <script>
+        $(document).foundation();
+    </script>
+    <script type="text/javascript">
+    /******** Any scripts specific to page samples should go here *********/
+  </script>
+<div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+<div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+
+</html>

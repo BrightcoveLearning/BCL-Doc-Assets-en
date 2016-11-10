@@ -1,0 +1,381 @@
+
+<h1>Job Status API</h1>
+<p>Visibility into our back-end system has been a long running pain point for most of our customers. They rely heavily on a notification of job success, but have no indication of errors/failures between submission to notification. The goal is to provide
+	the customers visibility into the back end system and provide milestone updates that can be queried. This brings value to the product by</p>
+<ul>
+	<li>Enhancing the customer engagement and tracking into the current once system.</li>
+	<li>Building confidence in customers by allowing visibility and assurance their content is being processed.</li>
+	<li>Reduces the requests made to support.</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+	<li>Job Status per step (PENDING, PROCESSING, ERROR, COMPLETE)</li>
+	<li>Response in JSON</li>
+	<li>Requests to the API by Query String parameters</li>
+	<li>Domain login to reduce opportunity for customers to query data outside of their own.</li>
+	<li>Caching API requests and/or rate limiting</li>
+</ul>
+<h3>Query by MediaItemGuid</h3>
+<p>Allow the user to query a specific domain by the mediaitemguid. The mediaitemguid should be anything from:</p>
+<ul>
+	<li>Caption</li>
+	<li>Thumbnail</li>
+	<li>Mediaitem</li>
+	<li>MMI</li>
+</ul>
+<h3>Query by ForeignKey</h3>
+<p>Allows the user to query a specific domain by the foreignkey. If duplicate foreign keys are returned both should be returned in the status. These foreignkeys should be everything from:</p>
+<ul>
+	<li>Caption</li>
+	<li>Thumbnail</li>
+	<li>Mediaitem</li>
+	<li> MMI</li>
+</ul>
+<h3>Query by CatalogGuid</h3>
+<p>Allows the user to query a specific domain by a catalog guid to return a collection of summarized outputs of media items created in order of newest to oldest . The user can define an item count and a page number to return media item results that is less
+	than the default item count as defined in the application config (Currently set to 50 as the max number of items). </p>
+<h3>Query by Domain</h3>
+<p>Allows the user to query all items within a domain to return a collection of summarized outputs of media items created in order of newest to oldest .  The user can define an item count and a page number to return media item results that is less than the
+	default item count as defined in the application config (Currently set to 50 as the max number of items). </p>
+<h3>Example Output Media Item Data:</h3>
+<p>Foreignkey</p>
+<p>Title</p>
+<p>CatalogGuid</p>
+<p>CreateDate</p>
+<p>UpdateDate</p>
+<p>Source URL</p>
+<p>Source FPS</p>
+<p>Status (overall)</p>
+<ul>
+	<ul>
+		<li>PENDING</li>
+		<ul>
+			<li>No jobs have been created to start work</li>
+		</ul>
+		<li>PROCESSING</li>
+	</ul>
+	<ul>
+		<ul>
+			<li>1 or more jobs have begun processing</li>
+		</ul>
+		<li>ERROR</li>
+	</ul>
+	<ul>
+		<ul>
+			<li>A job has failed</li>
+		</ul>
+	</ul>
+	<ul>
+		<li>COMPLETE</li>
+		<li>Content is ready to deliver</li>
+	</ul>
+</ul>
+<p>jobDetails:</p>
+<p>Asset Ingest</p>
+<ul>
+	<ul>
+		<li>startTime</li>
+		<li>completeTime</li>
+		<li>Status</li>
+	</ul>
+</ul>
+<p>AvFileDownload</p>
+<ul>
+	<ul>
+		<li>startTime</li>
+		<li>completeTime</li>
+		<li>Status:</li>
+	</ul>
+</ul>
+<p>Collection Caption Creation </p>
+<ul>
+	<ul>
+		<li>Per Caption</li>
+		<ul>
+			<li>Language</li>
+			<li>Start Time</li>
+			<li>CompleteTime</li>
+			<li>Source Url</li>
+			<li>Status</li>
+		</ul>
+	</ul>
+</ul>
+<p>Transcoding/External Transcoding</p>
+<ul>
+	<ul>
+		<li>Per Profile:</li>
+		<ul>
+			<li>profile name / guid</li>
+			<li>startTime</li>
+			<li>completeTime</li>
+			<li>Status</li>
+		</ul>
+	</ul>
+</ul>
+<p>Collection  File Replication</p>
+<ul>
+	<ul>
+		<li>Per profile</li>
+		<ul>
+			<li>Profile name /guid</li>
+			<li>startTime</li>
+			<li>completeTime</li>
+			<li>Status</li>
+		</ul>
+	</ul>
+</ul>
+<p>ItemNotification</p>
+<ul>
+	<ul>
+		<li>startTime</li>
+		<li>completeTime</li>
+		<li>Notification URL</li>
+		<li>Status</li>
+	</ul>
+</ul>
+<h3>Example Output Meta Media Item Data:</h3>
+<p>Foreignkey</p>
+<p>Title</p>
+<p>Catalog</p>
+<p>CreateDate</p>
+<p>UpdateDate</p>
+<p>Status:</p>
+<ul>
+	<ul>
+		<li>PENDING</li>
+		<ul>
+			<li>Request sitting in a queue OR</li>
+			<li>1 or more segments are in a PENDING state</li>
+		</ul>
+		<li>PROCESSING</li>
+	</ul>
+	<ul>
+		<ul>
+			<li>1 or more segments are in a PROCESSING state</li>
+		</ul>
+		<li>ERROR</li>
+	</ul>
+	<ul>
+		<ul>
+			<li>If any segments error out the MMI should error as well</li>
+			<li>If framerates do not match with all segments we should return an error state</li>
+		</ul>
+	</ul>
+	<ul>
+		<li>COMPLETE</li>
+		<li>MMI is ready to deliver</li>
+	</ul>
+</ul>
+<p>Notification</p>
+<ul>
+	<ul>
+		<li>Metadata:</li>
+		<ul>
+			<li>startTime</li>
+			<li>completeTime</li>
+			<li>Notification URL</li>
+		</ul>
+		<li>Status</li>
+	</ul>
+	<ul>
+		<ul>
+			<li>ERROR</li>
+			<li>COMPLETE</li>
+		</ul>
+	</ul>
+</ul>
+<p>The overall status of each segment</p>
+<ul>
+	<ul>
+		<li>Metadata</li>
+		<ul>
+			<li>FPS</li>
+			<li>startTime</li>
+			<li>completeTime</li>
+		</ul>
+		<li>Status</li>
+	</ul>
+	<ul>
+		<ul>
+			<li>PENDING</li>
+			<li>PROCESSING</li>
+			<li>ERROR</li>
+			<li>COMPLETE</li>
+		</ul>
+	</ul>
+</ul>
+<h3>Example Output Captions Media Item Data:</h3>
+<p>Language Code</p>
+<p>Metadata</p>
+<p>Foreignkey</p>
+<p>Title</p>
+<p>Source URL</p>
+<p>CreateDate</p>
+<p>UpdateDate</p>
+<p>Status</p>
+<ul>
+	<ul>
+		<li>PENDING</li>
+		<li>PROCESSING</li>
+		<li>ERROR</li>
+		<li>COMPLETE</li>
+	</ul>
+</ul>
+<h3>Example Output Image Media Item Data:</h3>
+<p>Foreignkey</p>
+<p>Source URL</p>
+<p>CreateDate</p>
+<p>UpdateDate</p>
+<p>Status</p>
+<ul>
+	<ul>
+		<li>PENDING</li>
+		<li>PROCESSING</li>
+		<li>ERROR</li>
+		<li>COMPLETE</li>
+	</ul>
+</ul>
+<h2>Architecture</h2>
+<p>
+	<img src="file:///logo_16x16.png" alt="logo_16x16.png">
+	<a href="http://confluence.vidmark.local/plugins/gliffy/editor.action?name=Skynet%20Job%20Status%20API&amp;ceoid=48575676&amp;key=SKYN&amp;lastPage=%2Fpages%2Fviewpage.action%3FpageId%3D48575676&amp;pageId=48575676&amp;inline=false">
+		<img src="file:///gliffy_macro_icon_edit.png" alt="gliffy_macro_icon_edit.png">
+	</a>
+	<a href="http://confluence.vidmark.local/download/attachments/48575676/Skynet%20Job%20Status%20API.png?version=6&amp;modificationDate=1412138895000&amp;api=v2">
+		<img src="file:///gliffy_macro_icon_zoom.png" alt="gliffy_macro_icon_zoom.png">
+	</a>
+</p>
+<p></p>
+<h3>Rate Limiting</h3>
+<p>The API will check the couchbase server for the number of request made versus the amount made within a time window defined in the application config. If the limit is exceeded the api will return no content with a status code of 429 (too many request)
+	along with the limit, request remaining, and the time when the limit will reset in the response header. If content is returned the request made value associated with the domain guid will be incremented.</p>
+<p>Values returned in the response header.</p>
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Header</td>
+			<td>Value</td>
+		</tr>
+		<tr>
+			<td>X-Rate-Remaining</td>
+			<td>The number of requests left for the time window defined in the application config</td>
+		</tr>
+		<tr>
+			<td>X-Retry-After </td>
+			<td>The remaining window before the rate limit resets in seconds</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Login Credentials</h3>
+<p>Login Credentials are passed via an apikey constructed by base64 encoding the login credentials.</p>
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Header</td>
+			<td>Value</td>
+		</tr>
+		<tr>
+			<td>X-BC-ONCE-API-KEY</td>
+			<td>Apikey is made up of the login credentials seperated by a colon and base64 encoded.</p>
+				<p>Plaint Text Format: user@email.<a href="http://compassworddomainname/">com:password:domainName</a>
+				</p>
+				<p>Base64 Encoded: dXNlckBlbWFpbC5jb206cGFzc3dvcmQ6ZG9tYWluTmFtZQ==</td>
+		</tr>
+	</tbody>
+</table>
+<h3>
+REST API</h3>
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Argument</td>
+			<td>Type</td>
+			<td>Description</td>
+		</tr>
+		<tr>
+			<td>mediaItemGUID</td>
+			<td>string</td>
+			<td>Unique Identifier for a media item with in the Once system</td>
+		</tr>
+		<tr>
+			<td>catalogGUID</td>
+			<td>string</td>
+			<td>Unique Identifier for a catalog with in the Once system</td>
+		</tr>
+		<tr>
+			<td>foreignKey</td>
+			<td>string</td>
+			<td>Unique Identifier for a media item that was provided by the customer.</td>
+		</tr>
+		<tr>
+			<td>itemCount</td>
+			<td>int</td>
+			<td>Number of items that are returned in the request. (Max limit defined in app.config)</td>
+		</tr>
+		<tr>
+			<td>pageNumber</td>
+			<td>int</td>
+			<td>page number of the items defined by item count. If item count is 10 and page number is 3, the result will be items 30 to 39 of media items by create date newest to oldest.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>RESTful syntax:</h3>
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Verb</td>
+			<td>Syntax</td>
+			<td>Description</td>
+		</tr>
+		<tr>
+			<td>GET</td>
+			<td>api/Status/Job?mediaItemGUID={mediaItemGUID}</td>
+			<td>Returns the Job details of a specified media item.</td>
+		</tr>
+		<tr>
+			<td>GET</td>
+			<td>api/Status/Job?catalogGUID={catalogGUID}&amp;foreignKey={foreignKey}</td>
+			<td>Returns the Job details of a specified media item.</td>
+		</tr>
+		<tr>
+			<td>GET</td>
+			<td>api/Status/Job?itemCount={itemCount}&amp;pageNumber={pageNumber}</td>
+			<td>Returns a list of summarized job details for the domain specified in the login credentials.</td>
+		</tr>
+		<tr>
+			<td>GET</td>
+			<td>api/Status/Job?catalogGUID={catalogGUID}&amp;itemCount={itemCount}&amp;pageNumber={pageNumber}</td>
+			<td>Returns a list of summarized job details for a given catalog.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Deployment</h3>
+<p>Web API</p>
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Enviroment</td>
+			<td>IP Address</td>
+			<td>Host Name</td>
+			<td>Machine name</td>
+		</tr>
+		<tr>
+			<td>QA</td>
+			<td>199.30.108.219 </td>
+			<td>statusapi-qa.unicornmedia.com</td>
+			<td>QA-SN-Job-Sta01</td>
+		</tr>
+		<tr>
+			<td>Production</td>
+			<td>199.30.108.189</td>
+			<td>statusapi.unicornmedia.com</td>
+			<td>SN-Job-Status01</td>
+		</tr>
+		<tr>
+			<td>Production</td>
+			<td>192.33.167.252</td>
+			<td>statusapi.unicornmedia.com</td>
+			<td>SN-Job-Status02</td>
+		</tr>
+	</tbody>
+</table>

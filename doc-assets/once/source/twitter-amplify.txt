@@ -1,0 +1,107 @@
+Twitter Amplify Implementation Guide
+
+Assumptions:
+ New or existing customers should have ad logic configured in our system
+Customer is adding Twitter Amplify as another distribution channel for their short form content
+Customer should follow Twitter’s Developer guidelines to create the Twitter Amplify Video Card.
+Customer should be using an Ad Partner that can adhere to the unique response requirements, to fulfill Twitter requirements for the “brandid”
+Customer must provide their Twitter OwnerId to be associated with all content delivered through Twitter Amplify
+All ad and beacon tracking will be exposed to the client which will be responsible for firing all impressions, tracking events and other callbacks presented via Brightcove OnceUX VMAP response.
+
+REST API Request
+
+The method only accepts a HTTP GET verb
+Requests must be made via SSL (Twitter restriction)
+
+Auto Request (detection of device based on server):
+https://onceux.unicornmedia.com/now/ads/vmap/od/auto/{domainGUID}/{applicationGUID}/{mediaItemGUID}/[?forcetav=true][&param1=value]]
+Argument
+Description
+domainGUID
+Unique identifier for the domain
+applicationGUID
+Unique identifier for the application
+mediaitemGUID or foreignKey
+Unique identifier for the media item
+Forcetav=true
+Explicit parameter to generate a VMAP with Twitter extensions (required)
+Parameter values
+Dynamic or static key/value pairs used to pass information to the ad server (optional)
+
+Forced rendition:
+https://onceux.unicornmedia.com/now/ads/vmap/{deliveryType}/{requestedFileType}/{domainGUID}/{applicationGUID}/{mediaItemGUID}/[?forcetav=true][&param1=value]]
+Argument
+Description
+deliveryType
+Method of delivery type (adaptive|stitched)
+Forcetav=true
+Explicit parameter to generate a VMAP with Twitter extensions (required)
+requestedFileType
+Type of file being returned (m3u8|mp4)
+
+Configuration
+
+Twitter card excerpt:
+
+	<meta name="twitter:amplify:vmap" content="https://onceux.unicornmedia.com/now/ads/vmap/od/auto/a2df377d-7f81-4be2-92c2-f07dc272064a/d92617d4-b9bb-4df2-935f-d75a009bd4fd/d482b365-1a4f-4464-af2a-43d0b322211a?forcetav=true" />
+
+
+ONCE Twitter Amplify VMAP
+
+Twitter Owner Id (required)
+The Owner Id MUST be a numeric ID associated with the Twitter account content where the content will be served. The ID can be retrieved from Twitter (see {placeholder}). This value SHOULD be passed as extended metadata on ingest for the video content into the ONCE system:
+Example:
+                            	<ExtendedMetadata>
+                                            	<twownerid> 123</twownerid>
+                            	</ExtendedMetadata>
+
+OPTIONS for Owner Id retrieval:
+Configured for the entire domain
+Should only be done if multiple Twitter accounts are not associated to the same domain.
+Configured for the application
+Could be used for existing customers with content already in our system.
+Provides granularity in case a single domain delivers to multiple Twitter accounts.
+An application configuration will overwrite any existing domain configuration.
+Set via Query String
+Could be set explicity on the query string of the ONCE UX request.
+Example: “?twownerid=ownerid” or “&twownerid=ownerid”
+A query string value will overwrite any application and domain configurations.
+
+Content Id
+
+The Content Id is used by Twitter to determine the content being viewed. The “Foreign Key” within the ONCE system is used to pass into the Twitter Amplify VMAP response. If items within the ONCE system are not configured with a foreign key then then an empty string will be passed back to Twitter that could impact metric gathering.
+
+Brand Id
+
+The Twitter Brand Id should be pulled from the ad server that adheres to the unique Twitter requirements. The value of Brand Id must be a numeric value and must be associated with Twitter (see {placeholder}). The ONCE system will pull the Brand Id based from an initial response template from the customer ADS and followed thereafter.
+
+Changes to the ADS should be notified to BC support.
+OPTIONS for Brand Id (if not supported for Twitter)
+Set via Query String
+In the case that the ADS does not respond with a Brand Id, the appropriate Brand Id can be retrieved from Twitter and passed on the ONCE UX request
+Example: “?twbrandid=brandid” or “&twbrandid=brandid”
+
+Content Tracking and Ad beaconing
+
+Content and Ad tracking are both configurable by the ONCE system to expose to the Twitter Amplify Player to request the pingbacks on the appropriate intervals. These supported beacons include:
+
+start
+firstQuartile
+midpoint
+thirdQuartile
+complete
+pause
+rewind
+resume
+
+Content tracking MUST be configured by BC with the appropriate third party tracking URLs ahead of time. These beacons are configurable per application. They can also be configured to pass dynamic or static metadata values, but must be configured by BC (see {placeholder}).
+
+
+Ad Content
+
+Ad content from the ADS do not need to be pre-loaded into the ONCE system. Adcache will be configured by BC to automatically ingest any new ad campaigns into the ONCE system to prepare for delivery (see {placeholder}).
+
+
+---- INTERNAL ----
+
+I left out a lot of content that I didn’t feel needs to be customer facing, but feel free to review: http://confluence.vidmark.local/display/OAS/Twitter+Amplify+VMAP+Design+Document and pull in any additional information as necessary. Also feel free to restructure the whole document as it’s just a draft for critical component for setup.

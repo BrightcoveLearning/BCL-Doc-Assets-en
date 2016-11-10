@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+	<!-- change title to match the h1 heading -->
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+<script src="//use.edgefonts.net/source-code-pro.js"></script>
+<link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
+<link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
+<link rel="stylesheet" href="/en/styles/foundation-fixes.css">
+
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-2728311-29', 'auto');
+    ga('send', 'pageview');
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+  </head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+    <!-- content -->
+    <div class="row">
+        <div class="sidebar large-2 columns show-for-large-up">
+            <div id="sidenav" class="side-nav"></div>
+        </div>
+        <div id="main" class="large-10 small-12 columns">
+			<!-- begin drupal content -->
+<header id="bcls_header" class="bcls-header">
+				<h1>Brightcove OnceEXPRESS Implementation Guide</h1>
+				<p>VERSION: 1.2</p>
+				<p>Last Revision Date: 03/2014</p>
+			</div>
+			<div class="bcls-section" id="overview">
+				<h2>Overview</h2>
+				<p>This guide provides the necessary information to implement Brightcove OnceEXPRESS<sup class="smaller">TM</sup> upload and transcode technology with your video on demand workflow. Some of the functionality described in this document is only available
+					to clients who have the API feature enabled.</p>
+			</div>
+			<div class="bcls-section" id="prerequisites">
+				<h2>Prerequisites</h2>
+				<p>This document assumes prior general knowledge of API architecture and XML language. Under that assumption, it was written for Brightcove Media customers and their internal developers and integrators.</p>
+			</div>
+			<div class="bcls-section" id="description">
+				<h2>Description</h2>
+				<p>Layered on our patented Brightcove Once<sup class="smaller">TM</sup> platform technology, OnceEXPRESS<sup class="smaller">TM</sup> is an integrated, easy to use upload and transcode process that enhances the method by which you can efficiently ingest
+					content into the Brightcove Media platform. This service layer permits you to ingest a media file and metadata to Brightcove&#39;s cloud where it is processed and transcoded. When paired with dedicated transcode servers, your asset will go from 'upload
+					complete' to 'ready-to-publish' in no longer than twice the duration of the asset, with the potential to be as fast as a 1:1 transcode time to content duration ratio. Therefore, content is ready to publish in the same amount of time as the content
+					is long, allowing you to maintain current post-production workflows and easily migrate highly perishable content to Brightcove Media.
+					<br/>
+					<p>OnceEXPRESS<sup class="smaller">TM</sup> relies on Brightcove Media Platform technology, which requires customers to have an account setup. If you're unsure of your account status, please contact <a href="mailto:oncesupport@brightcove.com">oncesupport@brightcove.com</a>.</p>
+					<h3>Express Ingest and Transcode Integration</h3>
+					<p>Our platform delivers real-time transcoding, through our content synchronization engine, in a one-to- many ratio providing true syndication capability for any video content on IP-connected, video capable devices. Your video stream is transcoded into
+						multiple profiles for a wide variety of devices then delivered to those devices via Once VOD<sup class="smaller">TM</sup>.
+						<br/>With the implementation of OnceEXPRESS<sup class="smaller">TM</sup>, either the encoded video itself or a URL designating its download location, can be included in the HTTP POST data. Subsequently, the instant the file is delivered, an integrated
+						transcode process that is linked to the upload destination will deliver the core profiles necessary for delivery through Once VOD<sup class="smaller">TM</sup> technology.</p>
+					<h3>OnceEXPRESS<sup class="smaller">TM</sup> Procedural Overview</h3>
+					<ol>
+						<li>The transcode XML request for OnceEXPRESS<sup class="smaller">TM</sup> has a <code>&lt;File&gt;&lt;/File&gt;</code> node containing binary data encoded using base-64. This XML also includes a parameter called <code>&lt;DownloadURL&gt;</code> that provides
+							an alternative “pull” based methodology for ingesting the content.</li>
+						<li>The file size limit for upload within the <code>POST</code> data is 256MB. For ingest of files larger than 256MB, the &lt;DownloadURL&gt; parameter should be used.</li>
+						<li>After this XML has been constructed, it should be sent to the following URL via a POST request stream:</li>
+						<ul>
+							<li>http://express-upload.Brightcovemedia.com/api/transcode/</li>
+						</ul>
+						<li>Upon successful POST, a media item will be created in the system and transcode will begin automatically. A notification is sent in the form of a URL postback when all transcodes are complete and the item is ready for publishing.</li>
+						<<p class="text-warning">NOTE: Brightcove Media assumes customers have an internal system capable of receiving a query string encoded notification. Receipt and handling of notifications is the customer's responsibility.</p>
+			</div>
+			<div class="bcls-section" id="transcodeProcedures">
+				<h2>Transcoding</h2>
+				<h3>Initiate a Transcode Request</h3>
+				<p>Each express upload is initiated by a transcode request from the customer. The request includes:</p>
+				<table class="bcls-table">
+					<caption>Table 1: Transcode Properties</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th colspan="2">Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td colspan="2"><code>UserName</code>
+							</td>
+							<td>string</td>
+							<td>Once username (usually an email address)</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>Password</code>
+							</td>
+							<td>string</td>
+							<td>Brightcove password</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>DomainName</code>
+							</td>
+							<td>string</td>
+							<td>Domain name</td>
+						</tr>
+						<tr>
+							<td rowspan="8"><code>MediaItem</code>
+							</td>
+							<td><code>Title</code>
+							</td>
+							<td>string</td>
+							<td>Media item title</td>
+						</tr>
+						<tr>
+							<td><code>Description</code>
+							</td>
+							<td>string</td>
+							<td>Media item description</td>
+						</tr>
+						<tr>
+							<td><code>Keywords</code>
+							</td>
+							<td>string</td>
+							<td>Searchable Keywords</td>
+						</tr>
+						<tr>
+							<td><code>LinkBackURL</code>
+							</td>
+							<td>string</td>
+							<td>Referencing URL hyperlink</td>
+						</tr>
+						<tr>
+							<td><code>ExternalURL</code>
+							</td>
+							<td>string</td>
+							<td>URL on your channel leading to your content</td>
+						</tr>
+						<tr>
+							<td><code>CatalogGUID</code>
+							</td>
+							<td>string</td>
+							<td>Catalog Unique Identifier</td>
+						</tr>
+						<tr>
+							<td><code>ForeignKey</code>
+							</td>
+							<td>string</td>
+							<td>Database referencing value - <strong>REQUIRED</strong>
+							</td>
+						</tr>
+						<tr>
+							<td><code>MediaItemTypeID</code>
+							</td>
+							<td>Int</td>
+							<td>1= Video, 2= Audio
+								<ul>
+									<li>Must be defined if present or throws error</li>
+									<li>Not present = default to '1'</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td rowspan="4"><code>PublicationRules</code>
+							</td>
+							<td><code>PublicationRule</code>
+							</td>
+							<td>list</td>
+							<td>List of publication rules (optional)</td>
+						</tr>
+						<tr>
+							<td><code>ChannelGUID</code>
+							</td>
+							<td>string</td>
+							<td>Channel Unique Identifier</td>
+						</tr>
+						<tr>
+							<td><code>StartDate</code>
+							</td>
+							<td>Int</td>
+							<td>Date publication begins</td>
+						</tr>
+						<tr>
+							<td><code>EndDate</code>
+							</td>
+							<td>Int</td>
+							<td>Date publication ends</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>NotificationURL</code>
+							</td>
+							<td>string</td>
+							<td>URL used to notify you when transcodes complete</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>FileExtension</code>
+							</td>
+							<td>string</td>
+							<td>Extension of the file being uploaded</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>File</code>
+							</td>
+							<td>byte[]</td>
+							<td>Bytes of file, no larger than 256 MB (optional)</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>DownloadURL</code>
+							</td>
+							<td>string</td>
+							<td>URL from which to fetch the file (optional)</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>IsSynchronous</code>
+							</td>
+							<td>boolean</td>
+							<td>Whether to wait until all profiles are complete before responding to the request</td>
+						</tr>
+						<tr>
+							<td colspan="2"><code>Priority</code>
+							</td>
+							<td>string</td>
+							<td>Normal or High</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-warning">NOTE: <code>MediaItem.ForeignKey</code>  <em>is required for a transcode request</em>. Although both File and DownloadURL properties are optional, one or the other must be present. A sample request is provided in the Samples section.</p>
+				<h3>Transcode Workflow</h3>
+				<ul>
+					<li>OnceEXRESS<sup class="smaller">TM</sup> services the Transcode Request, creates the media item and any necessary publication rules in the database and determines workflow priority.</li>
+					<li><strong>High Priority Workflow - </strong>processes transcoding via dedicated transcode servers purchased with OnceEXPRESS<sup class="smaller">TM</sup>
+					</li>
+					<li><strong>Normal Priority Workflow - </strong>processes media transcoding based on your Brightcove Media account configuration, either by dedicated transcode instances in the form of overrides or standard transcoding. The chosen option must be pre-configured
+						on the account domain by Client Services.</li>
+					<li>If you do not have a dedicated transcode server, but have files you would like to send with normal priority the <code>&lt;priority&gt;</code> node is required from the full spec.</li>
+				</ul>
+				<h4>Sample Transcode Requests</h4>
+				<p><code>DomainName</code>, <code>CatalogGUID</code> and <code>ChannelGUID</code> values can be obtained from Client Services.</p>
+				<h4>Full XML</h4>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;TranscodeRequestxmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance</a>&quot; xmlns:xsd=&quot;</a>http://www.w3.org/2001/XMLSchema&quot;&gt;
+    &lt;UserName&gt;{UserName}&lt;/UserName&gt;
+    &lt;Password&gt;{Password}&lt;/Password&gt;
+    &lt;DomainName&gt;{DomainName}&lt;/DomainName&gt;
+    &lt;MediaItem&gt;
+        &lt;Title&gt;{MediaItemTitle}&lt;/Title&gt;
+        &lt;Description/&gt;
+        &lt;Keywords/&gt;
+        &lt;LinkBackUrl/&gt;
+        &lt;ExternalURL/&gt;
+        &lt;CatalogGUID&gt;{GUID}&lt;/CatalogGUID&gt;
+        &lt;ForeignKey&gt;{VideoID}&lt;/ForeignKey&gt;
+        &lt;MediaItemTypeID&gt;[1(MUST ADHERE TO RULE IN TABLE ABOVE)]&lt;/MediaItemTypeID&gt;
+    &lt;/MediaItem&gt;
+    &lt;PublicationRules&gt;
+        &lt;PublicationRule&gt;
+            &lt;ChannelGUID&gt;{GUID}&lt;/ChannelGUID&gt;
+            &lt;StartDate&gt;1344557144&lt;/StartDate&gt;
+            &lt;EndDate&gt;1345161944&lt;/EndDate&gt;
+        &lt;/PublicationRule&gt;
+    &lt;/PublicationRules&gt;
+    &lt;NotificationURL&gt;</a>http://tempuri.org/notification/&lt;/NotificationURL&gt;
+    &lt;File&gt;{Base64EncodedFileData}&lt;/File&gt;
+    &lt;DownloadURL&gt;http://tempuri.org/download.mp4&lt;/DownloadURL&gt;
+    &lt;Priority&gt;{string}&lt;/Priority&gt;
+&lt;/TranscodeRequest&gt;</code></pre>
+				<h4>Minimal XML</h4>
+				<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;TranscodeRequestxmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+    &lt;UserName&gt;{UserName}&lt;/UserName&gt;
+    &lt;Password&gt;{Password}&lt;/Password&gt;
+    &lt;DomainName&gt;{DomainName}&lt;/DomainName&gt;
+    &lt;MediaItem&gt;
+        &lt;Title&gt;{MediaItemTitle}&lt;/Title&gt;
+        &lt;Description/&gt;
+        &lt;Keywords/&gt;
+        &lt;LinkBackUrl/&gt;
+        &lt;ExternalURL/&gt;
+        &lt;CatalogGUID&gt;{GUID}&lt;/CatalogGUID&gt;
+        &lt;ForeignKey&gt;{VideoID}&lt;/ForeignKey&gt;
+    &lt;/MediaItem&gt;
+    &lt;NotificationURL&gt;http://tempuri.org/notification/&lt;/NotificationURL&gt;
+    &lt;File&gt;{Base64EncodedFileData}&lt;/File&gt;
+    &lt;DownloadURL&gt;http://tempuri.org/download.mp4&lt;/DownloadURL&gt;
+    &lt;Priority&gt;{string}&lt;/Priority&gt;
+&lt;/TranscodeRequest&gt;</code></pre>
+				<h3>Transcode Complete Notification - HTTP <code>POST</code>, <code>GET</code> or <code>PUT</code></h3>
+				<p>As soon as all profiles for a specified Media Item are transcode complete and replicated, the Gateway Notification Service will notify you that your media items are ready for publishing. The service can be configured to make HTTP <code>POST</code>, <code>GET</code> or <code>PUT</code> calls
+					to any URL you choose at Domain or Catalog level.</p>
+				<h4>Process</h4>
+				<p>When the service detects that all the profiles configured for the media item are transcode complete and the media item is ready to publish, it will send a notification (in a URL encoded format) to the URL preconfigured with the following properties
+					shown below</p>
+				<h4>Requirements</h4>
+				<p>Notifications can be sent via email or automated post-back to a URL of your choosing. Brightcove Media will then send these responses, in real time, allowing for your CMS or other publication platform to publish your content in the shortest possible
+					time frame. The table below provides the minimum information necessary for Customer Service to set up your notifications. A client services representative can provide a list of values and their associated GUIDs.</p>
+				<table class="bcls-table">
+					<caption>Table 2: Item Notification Required Properties</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Property</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>DomainGUID</code>
+							</td>
+							<td>The unique identifier for the domain</td>
+						</tr>
+						<tr>
+							<td><code>CatalogGUID</code>
+							</td>
+							<td>The unique identifier for the catalog (optional)</td>
+						</tr>
+						<tr>
+							<td><code>NotificationURL</code>
+							</td>
+							<td>The default notification URL to use</td>
+						</tr>
+						<tr>
+							<td>Request Method</td>
+							<td>Your preferred HTTP request verb (GET, POST, PUT)</td>
+						</tr>
+					</tbody>
+				</table>
+				<h4>Item Notification URL Example</h4>
+				<p>This information in the table below is delivered via a RESTful syntax URL.</p>
+				<table class="bcls-table">
+					<caption>Table 3: Item Notification URL Elements</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Property</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code>NotificationURL</code>
+							</td>
+							<td>The default notification URL to use</td>
+						</tr>
+						<tr>
+							<td><code>Catalog</code>
+							</td>
+							<td>The name assigned to the Catalog</td>
+						</tr>
+						<tr>
+							<td><code>Filename</code>
+							</td>
+							<td>The title assigned to the Media Item file</td>
+						</tr>
+						<tr>
+							<td><code>MediaItemGUID</code>
+							</td>
+							<td>The unique identifier for the Media Item</td>
+						</tr>
+						<tr>
+							<td><code>MediaItemForeignKey</code>
+							</td>
+							<td>The unique identifier for the Media Item Foreign Key</td>
+						</tr>
+						<tr>
+							<td><code>Duration</code>
+							</td>
+							<td>The length in seconds of the binary asset</td>
+						</tr>
+						<tr>
+							<td><code>StartTime</code>
+							</td>
+							<td>Time in GMT at which the asset began transcoding</td>
+						</tr>
+					</tbody>
+				</table>
+				<h4>URL Notification Template:</h4>
+				<textarea class="code-area">[notificationURL]?Provider=Brightcove+Media&amp;Catalog=[CatalogName]&amp;Filename=[MediaItemTitle]&amp;MediaItemGUID=[MediaItemGUID]&amp;MediaItemForeignKey=[MediaItemForeignKey]&amp;Duration=[Duration]&amp;StartTime=[StartTime]</textarea>
+				<h4>URL Notification Example:</h4>
+				<textarea class="code-area">http://tempuri.org/notify?Provider=Brightcove+Media&amp;Catalog=Catalog+Name&amp;Filename=Media+Item+Title&amp;MediaItemGUID=26868bb9-92ff-49e2-8dad-f6d7ec97d9&amp;MediaItemForeignKey=876dc-4676-8426-ecf6&amp;Duration=30&amp;StartTime=8%2F22%2F2012+1%3A08%3A59+PM</textarea>
+				<p>This URL contains a <code>&lt;StartTime&gt;</code> parameter, which is the time in GMT at which the asset began transcoding on a OnceEXPRESS<sup class="smaller">TM</sup> server.</p>
+				<p class="text-warning" g>NOTE: Brightcove Media assumes customers have an internal system capable of receiving a query string encoded notification. We are not responsible for the receipt and handling of notifications.</p>
+			</div>
+			<div class="bcls-section" id="profilesReference">
+				<h2>Profiles reference</h2>
+				<p>See the table below for a list of Once VOD<sup class="smaller">TM</sup> profiles for your channel.</p>
+				<table class="bcls-table">
+					<caption>Table 4: Available Once VOD<sup class="smaller">TM</sup> Profiles</caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th>Profile</th>
+							<th>Profile GUID</th>
+							<th>HLS</th>
+							<th>PDL</th>
+						</tr>
+						<tbody class="bcls-table__body">
+							<tr>
+								<td>Once.Audio40</td>
+								<td>27e71340-af9c-468d-96c3-ebac95dd884d</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once 110</td>
+								<td>25245ee1-3061-4b5e-b86f-d297249a1704</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once 200</td>
+								<td>1500a936-6f3b-4a5d-bdee-c16d51b73896</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once 300</td>
+								<td>7d9ebac9-8315-4aba-b422-832ebf12f21d</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once 400</td>
+								<td>681f29c5-81eb-4229-9801-ebe21531a57c</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once 600</td>
+								<td>f8de0ae7-aab1-4005-bf4a-71346bd47921</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once 800</td>
+								<td>8c913e59-c00a-4d37-925b-27b6ed698fcc</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.SD 1200 480p</td>
+								<td>3a41c6e4-93a3-4108-8995-64ffca7b9106</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.SD 1800 480p</td>
+								<td>b2f1ecaa-1190-4b1e-b0a7-859c39986bfb</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.HD 2500 720p</td>
+								<td>e9c723f9-c1c0-49cc-8c7a-b686f49b76d8</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.HD 3200 720p</td>
+								<td>ec44b899-8a22-4912-8e4f-12f4638a7d2a</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.HD 4500 1080p</td>
+								<td>1bc47d0d-fd08-4b85-b26c-4829a98a24e8</td>
+								<td class="text-align-center bcl-red"><strong>O</strong>
+								</td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.3GP H263 128</td>
+								<td>89f1217b-fe2f-4b5e-8076-a134bba9442f</td>
+								<td class="text-align-center"></td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.3GP H263 384</td>
+								<td>bea6d4b0-0dbe-4f60-94bc-2e3cd2ca381d</td>
+								<td class="text-align-center"></td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.3GP H264 144</td>
+								<td>db7022a2-59a6-11e1-be60-332d47dc7dde</td>
+								<td class="text-align-center"></td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.3GP H264 320</td>
+								<td>c93d8088-8546-408f-bfd0-84985747fc72</td>
+								<td class="text-align-center"></td>
+								<td class="text-align-center">x</td>
+							</tr>
+							<tr>
+								<td>Once.iPhone3 512</td>
+								<td>a07db314-1579-44ce-93cd-ee9c63cfc294</td>
+								<td class="text-align-center">x</td>
+								<td class="text-align-center"></td>
+							</tr>
+						</tbody>
+					</thead>
+				</table>
+				<p class="text-warning">NOTE: <strong class="bcl-red">O</strong> - The <strong>Once.HD 4500 1080p </strong>profile is not included in the default profile list for HLS. If you need to use it for HLS, it is only available via the 'umo' and 'uma' query string parameters that you
+					can include in the Once VOD<sup class="smaller">TM</sup> URL. See the Once VOD<sup class="smaller">TM</sup> Implementation Guide for more information.</p>
+			</div>
+		</div>
+	</div>
+	<!-- bcl scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+	<script src="/en/scripts/log.js"></script>
+	<script src="/en/scripts/docs-nav-data.min.js"></script>
+    <script src="/en/scripts/bcls-doc-site.js"></script>
+    <script src="/en/scripts/bc-mapi.js"></script>
+    <script>
+        $(document).foundation();
+    </script>
+<div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+<div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+
+</html>

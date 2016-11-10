@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+	<!-- change title to match the h1 heading -->
+	<title>Meta Media Item Implementation Guide</title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+<script src="//use.edgefonts.net/source-code-pro.js"></script>
+<link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
+<link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
+<link rel="stylesheet" href="/en/styles/foundation-fixes.css">
+
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-2728311-29', 'auto');
+    ga('send', 'pageview');
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+  </head>
+
+<body>
+	<!-- header navbar -->
+	<div id="navWrapper" class="fixed"></div>
+	<!-- breadcrumbs -->
+	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+	<!-- search -->
+	<div id="searchModal" class="reveal-modal" data-reveal></div>
+	<!-- content -->
+    <!-- content -->
+    <div class="row">
+        <div class="sidebar large-2 columns show-for-large-up">
+            <div id="sidenav" class="side-nav"></div>
+        </div>
+        <div id="main" class="large-10 small-12 columns">
+			<!-- begin drupal content -->
+<header id="bcls_header" class="bcls-header">
+				<h1>Meta Media Item Implementation Guide</h1>
+				<p>The Meta Media Item feature allows you would like to concatenate a number of independent pieces of content, thus creating a new item representing the sum of the parts. This allows individual media items (episodic segments, clips, program parts) to
+					be used together as a single content stream.</p>
+				<p>A Meta Media Item is constructed by submitting an API Ingest Request with an IngestItemType of ‘MetaMediaItem.’  In this request, an array of “ChildMediaItems” is specified, detailing the media items to concatenate as well as the order in which they
+					should be displayed in-stream. The parent media media item has its own metadata that may be used in downstream systems such as ad servers or analytics services. <b>An important note is that all media items that will represent the parts of the meta media item </b><b>must be submitted prior</b><b> to sending a meta media item ingest request. </b>If
+					one or more media items have not yet been created upon a Meta Media Item request, an error stating that some media item parts are missing.</p>
+				<p><i>API Ingest relies on Brightcove Platform technology, which requires customers to have an account setup. If you’re unsure of your account status, please contact support@unicornmedia.com </i></p>
+			</div>
+			<div class="bcls-section" id="ingestRequest">
+				<h2>Ingest Request</h2>
+				<p>The meta media item is a feature of the Brightcove API Ingest service.  To create a meta media item, the various media items to be contained in the array must have been sent to the Brightcove system prior to sending the meta media item request. 
+					After this, you may submit an API Ingest request with a specified IngestItemType of ‘MetaMediaItem’. The following attributes are unique to the Meta Media Item feature.</p>
+				<p>The following example details a full API Ingest request to create a meta media item containing three child media items. Please see the Brightcove API Ingest Implementation guide for more information on this ingest service.  Note: you will use
+					a different endpoint than the normal API Ingest endpoints:</p>
+				<p>Meta Media Item URI End Points:</p>
+<pre><code>US - http://apiingest.unicornmedia.com/api/metamediaitem </code></pre>
+<pre><code>EU - http://apiingest-eu.unicornmedia.com/api/metamediaitem </code></pre>
+				<h3>Sample XML API Ingest POST</h3>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;APIMMIIngestRequest xmlns:i=”http://www.w3.org/2001/XMLSchema-instance"&gt;
+   &lt;UserName&gt;meta@umedia.com&lt;/UserName&gt;
+   &lt;Password&gt;p4ssw0rd&lt;/Password&gt;
+   &lt;DomainName&gt;unicorn1&lt;/DomainName&gt;
+   &lt;MetaMediaItem&gt;
+      &lt;Title&gt;How I Met Your Mother S4 EP11&lt;/Title&gt;
+      &lt;Keywords&gt;Keywords&lt;/Keywords&gt;
+      &lt;Description&gt;Description&lt;/Description&gt;
+      &lt;CatalogGUID&gt;e15b4ce9-a3d0-4851-ba57-6d4dba711057&lt;/CatalogGUID&gt;
+      &lt;ForeignKey&gt;HIMYMS4EP11&lt;/ForeignKey&gt;
+      &lt;IngestSourceGUID /&gt;
+      &lt;MediaItemGUID /&gt;
+      &lt;IngestItemType&gt;MetaMediaItem&lt;/IngestItemType&gt;
+      &lt;ChildMediaItems&gt;
+         &lt;MediaItem&gt;
+            &lt;GUID /&gt;
+            &lt;ForeignKey&gt;HIMYMS4EP11P1&lt;/ForeignKey&gt;
+            &lt;Position&gt;0&lt;/Position&gt;
+         &lt;/MediaItem&gt;
+         &lt;MediaItem&gt;
+            &lt;GUID /&gt;
+            &lt;ForeignKey&gt;HIMYMS4EP11P2&lt;/ForeignKey&gt;
+            &lt;Position&gt;1&lt;/Position&gt;
+         &lt;/MediaItem&gt;
+         &lt;MediaItem&gt;
+            &lt;GUID /&gt;
+            &lt;ForeignKey&gt;HIMYMS4EP11P3&lt;/ForeignKey&gt;
+            &lt;Position&gt;2&lt;/Position&gt;
+         &lt;/MediaItem&gt;
+      &lt;/ChildMediaItems&gt;
+      &lt;ExtendedMetadata&gt;
+         &lt;testkey&gt;foo&lt;/testkey&gt;
+         &lt;testkey2&gt;bar&lt;/testkey2&gt;
+      &lt;/ExtendedMetadata&gt;
+      &lt;Images&gt;
+         &lt;Image&gt;
+            &lt;CatalogGUID&gt;e15b4ce9-a3d0-4851-ba57-6d4dba711057&lt;/CatalogGUID&gt;
+            &lt;ForeignKey&gt;HIMYMS4EP11&lt;/ForeignKey&gt;
+            &lt;IngestSourceGUID /&gt;
+            &lt;MediaItemGUID /&gt;
+            &lt;IngestItemType&gt;Image&lt;/IngestItemType&gt;
+            &lt;IngestInfo&gt;
+               &lt;DownloadURL&gt;http://umrss.com/media/r8.jpg&lt;/DownloadURL&gt;
+               &lt;FileData /&gt;
+               &lt;FileExtension /&gt;
+            &lt;/IngestInfo&gt;
+            &lt;GUID /&gt;
+            &lt;ImageType&gt;Default&lt;/ImageType&gt;
+         &lt;/Image&gt;
+      &lt;/Images&gt;
+      &lt;PublicationRules&gt;
+         &lt;PublicationRule&gt;
+            &lt;Flags /&gt;
+            &lt;ChannelGUID&gt;b4b7a18b-1815-422a-8601-62986fa0b079&lt;/ChannelGUID&gt;
+            &lt;StartDate&gt;1373180827&lt;/StartDate&gt;
+            &lt;EndDate&gt;1688713627&lt;/EndDate&gt;
+            &lt;ClientFilters&gt;
+               &lt;ClientFilter&gt;
+                  &lt;VariableName&gt;IPAddress&lt;/VariableName&gt;
+                  &lt;Value&gt;199.30.108.18&lt;/Value&gt;
+                  &lt;FilterType&gt;EQUALS&lt;/FilterType&gt;
+                  &lt;IsDenied&gt;false&lt;/IsDenied&gt;
+               &lt;/ClientFilter&gt;
+            &lt;/ClientFilters&gt;
+            &lt;Countries&gt;
+               &lt;Country&gt;
+                  &lt;CountryCode&gt;US&lt;/CountryCode&gt;
+                  &lt;IsDenied&gt;false&lt;/IsDenied&gt;
+               &lt;/Country&gt;
+            &lt;/Countries&gt;
+            &amp;gt;
+         &lt;/PublicationRule&gt;
+      &lt;/PublicationRules&gt;
+   &lt;/MetaMediaItem&gt;
+   &lt;NotificationURL&gt;http://notification.qa.unicornapp.com/Notify&lt;/NotificationURL&gt;
+   &lt;NotificationRequestMethod&gt;POST&lt;/NotificationRequestMethod&gt;
+   &lt;Priority&gt;0&lt;/Priority&gt;
+&lt;/APIMMIIngestRequest&gt;</code></pre>
+				<p class="text-warning">NOTE: The following scenarios will cause an error and will fail the ingest of the MetaMediaItem:
+					<ul>
+						<li><i>Position attribute is missing from the MediaItem node.</i>
+						</li>
+						<li><i>The MediaItem array does not contain a position attribute starting with “0”.</i>
+						</li>
+						<li><i>Both MediaItem and ForeignKey are missing from the MediaItem node.</i>
+						</li>
+						<li><i>Multiple MediaItems contain a position of the same value.</i>
+						</li>
+					</ul>
+				</p>
+			</div>
+			<div class="bcls-section" id="playback">
+				<h2>Playback of a Meta Media Item</h2>
+				<p>Playback of a Meta Media Item will follow all principles of normal Once VOD playback including the same URL structure.  All applicable ONCE link parameters may be used with the Meta Media Item, and device detection and profile handling will determinethe optimal playback experience for delivery to a given device. Please see the <i>Brightcove Once VOD™ Implementation Guide </i>for more information on playback and delivery of ONCE assets.</p>
+			</div>
+		</div>
+	</div>
+	<!-- bcl scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+	<script src="/en/scripts/log.js"></script>
+	<script src="/en/scripts/docs-nav-data.min.js"></script>
+    <script src="/en/scripts/bcls-doc-site.js"></script>
+    <script src="/en/scripts/bc-mapi.js"></script>
+    <script>
+        $(document).foundation();
+    </script>
+<div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+<div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+
+</html>
