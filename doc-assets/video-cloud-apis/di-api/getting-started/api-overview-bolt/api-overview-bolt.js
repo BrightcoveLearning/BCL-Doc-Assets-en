@@ -27,9 +27,6 @@ var BCLS                = (function(window, document) {
         }
     }
 
-    console.log('audioRenditions', audioRenditions);
-    console.log('videoRenditions', videoRenditions);
-
     /**
      * Builds a table body
      * @param {Array} dataSet array of rendition settings
@@ -41,12 +38,11 @@ var BCLS                = (function(window, document) {
             tr,
             td,
             txt,
-            j = 0,
+            j,
             jMax;
         iMax = dataSet.length;
         for (i = 0; i < iMax; i++) {
             rendition = dataSet[i];
-            console.log('rendition', rendition);
             // create row
             tr = document.createElement('tr');
             // create id cell
@@ -61,11 +57,13 @@ var BCLS                = (function(window, document) {
             td.appendChild(txt);
             // add the encoding_settings
             jMax = fields.length;
-            for (j; j < jMax; j++) {
+            for (j = 0; j < jMax; j++) {
                 td = document.createElement('td');
-                txt = document.createTextNode(rendition.encoding_settings[fields[j]]);
+                if (rendition.encoding_settings[fields[j]]) {
+                    txt = document.createTextNode(rendition.encoding_settings[fields[j]]);
+                    td.appendChild(txt);
+                }
                 tr.appendChild(td);
-                td.appendChild(txt);
             }
             // add the tr to the doc fragment
             frag.appendChild(tr);
