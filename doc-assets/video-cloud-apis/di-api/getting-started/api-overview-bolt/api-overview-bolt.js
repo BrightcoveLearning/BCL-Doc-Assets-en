@@ -11,7 +11,7 @@ var BCLS                = (function(window, document) {
         iMax,
         jMax,
         audioFields     = ['audio_bitrate', 'audio_channels', 'audio_codec', 'forced_keyframe_rate', 'fragment_duration', 'fragment_track_timescale', 'segment_seconds'],
-        videoFields     = ['aspect_mode', 'decoder_bitrate_cap', 'decoder_buffer_size', 'forced_keyframe_rate', 'fragment_duration', 'h264_bframes', 'h264_profile', 'height', 'segment_seconds', 'speed', 'upscale', 'video_bitrate', 'video_codec'],
+        videoFields     = ['video_bitrate', 'height', 'aspect_mode', 'decoder_bitrate_cap', 'decoder_buffer_size', 'forced_keyframe_rate', 'fragment_duration', 'h264_bframes', 'h264_profile', 'segment_seconds', 'speed',  'video_codec'],
         audioTableBody  = document.getElementById('audioTableBody'),
         videoTableBody  = document.getElementById('videoTableBody'),
         frag,
