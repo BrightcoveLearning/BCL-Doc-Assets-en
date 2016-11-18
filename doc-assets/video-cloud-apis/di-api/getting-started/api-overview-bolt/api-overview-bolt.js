@@ -8,6 +8,7 @@ var BCLS                = (function(window, document) {
         txt,
         i,
         j,
+        x,
         iMax,
         jMax,
         audioFields     = ['audio_bitrate', 'audio_channels', 'audio_codec', 'forced_keyframe_rate', 'fragment_duration', 'fragment_track_timescale', 'segment_seconds'],
@@ -17,14 +18,32 @@ var BCLS                = (function(window, document) {
         frag,
         rendition;
 
-    // separate out audio and video renditions
-    iMax = renditionData.renditions.length;
-    for (i = 0; i < iMax; i++) {
-        if (renditionData.renditions[i].kind === 'video') {
-            videoRenditions.push(renditionData.renditions[i]);
-        } else {
-            audioRenditions.push(renditionData.renditions[i]);
-        }
+    /**
+     * sort an array of objects based on an object property
+     * @param {array} targetArray - array to be sorted
+     * @param {string|number} objProperty - object property to sort on
+     * @return sorted array
+     */
+    function sortArray(targetArray, objProperty) {
+        targetArray.sort(function (a, b) {
+            var propA, propB;
+            if (typeof(targetArray[0][objProperty]) === 'string') {
+                propA = a[objProperty].toLowerCase();
+                propB = b[objProperty].toLowerCase();
+            } else {
+                propA = a[objProperty];
+                propB = b[objProperty];
+            }
+            // sort ascending; reverse propA and propB to sort descending
+            if (propA < propB) {
+                 return -1;
+            } else if (propA > propB) {
+                 return 1;
+            } else {
+                 return 0;
+            }
+        });
+        return targetArray;
     }
 
     /**
@@ -45,11 +64,6 @@ var BCLS                = (function(window, document) {
             rendition = dataSet[i];
             // create row
             tr = document.createElement('tr');
-            // create id cell
-            td = document.createElement('td');
-            txt = document.createTextNode(rendition.id);
-            tr.appendChild(td);
-            td.appendChild(txt);
             // create name cell
             td = document.createElement('td');
             txt = document.createTextNode(rendition.name);
@@ -71,6 +85,23 @@ var BCLS                = (function(window, document) {
         // add the doc fragment to the element
         el.appendChild(frag);
     }
+
+    // separate out audio and video renditions
+    iMax = renditionData.renditions.length;
+    for (i = 0; i < iMax; i++) {
+        if (renditionData.renditions[i].kind === 'video') {
+            videoRenditions.push(renditionData.renditions[i]);
+        } else {
+            audioRenditions.push(renditionData.renditions[i]);
+        }
+    }
+
+    // sort the data sets by height and then bitrate
+    videoRenditions.sort(function(a, b) {
+        x = a.encoding_settings.height - b.encoding_settings.height;
+        return x === 0? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
+    });
+    console.log('videoRenditions', videoRenditions);
 
     // build the table bodies
     buildTable(audioRenditions, audioFields, audioTableBody);
