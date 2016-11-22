@@ -1,0 +1,48 @@
+{
+    "live_stream": true,
+    "region": "us-east-1",
+    "reconnect_time": 20,
+    "notifications": [
+        "http://solutions.brightcove.com/bcls/live/live-callbacks.php",
+        {
+            "url": "http://solutions.brightcove.com/bcls/live/live-callbacks.php",
+            "event": "first_segment_uploaded"
+        },
+        {
+            "url": "http://solutions.brightcove.com/bcls/live/live-callbacks.php",
+            "event": "output_finished"
+        }
+    ],
+    "outputs": [
+        {
+            "label": "hls720p",
+            "live_stream": true,
+            "height": 720,
+            "video_bitrate": 2000,
+            "segment_seconds": 6,
+            "video_codec": "h264",
+            "h264_profile": "high",
+            "segment_seconds": 6
+        },
+        {
+            "label": "hls360p",
+            "live_stream": true,
+            "height": 360,
+            "video_bitrate": 650,
+            "segment_seconds": 6
+        },
+        {
+            "url": "s3://learning-services-media.brightcove.com/live/live-vod1.mp4",
+            "credentials": "BCLS-S3",
+            "notifications": [
+                {
+                    "url": "http://solutions.brightcove.com/bcls/live/live-callbacks.php"
+                },
+                {
+                    "url": "http://solutions.brightcove.com/bcls/live/live-callbacks.php",
+                    "event": "output_finished"
+                }
+            ]
+        }
+    ]
+}

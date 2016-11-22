@@ -357,9 +357,9 @@ var aapi_model = {
         social_platform: {
             name: 'social_platform',
             description: 'In this topic, you will learn about the Analytics API social_platform dimension. The social_platform dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud Radius module.',
-            from: '2016-07-01',
+            from: '2016-11-01',
             urlparams: ['account', 'dimenaions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
-            fields: ['account', 'channel_id', 'destination_id', 'distribution_group', 'event', 'page_id', 'remote_media_id', 'socail_life_views', 'social_avg_seconds_viewed', 'social_avg_view_percent', 'social_comments', 'social_dislikes', 'social_lifetime_avg_seconds_viewed', 'social_lifetime_comments', 'social_lifetime_dislikes', 'social_lifetime_favorites', 'social_lifetime_likes', 'social_lifetime_retention_rate', 'social_lifetime_retweets', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_likes', 'social_platform', 'social_retention_rate', 'social_seconds_viewed', 'social_shares', 'social_video_duration', 'social_views', 'time', 'video', 'youtube_user_id'],
+            fields: ['account', 'distribution_group', 'event', 'page_id', 'remote_media_id', 'socail_life_views', 'social_avg_seconds_viewed', 'social_avg_view_percent', 'social_comments', 'social_dislikes', 'social_lifetime_avg_seconds_viewed', 'social_lifetime_comments', 'social_lifetime_dislikes', 'social_lifetime_favorites', 'social_lifetime_likes', 'social_lifetime_retention_rate', 'social_lifetime_retweets', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_likes', 'social_platform', 'social_retention_rate', 'social_seconds_viewed', 'social_shares', 'social_video_duration', 'social_views', 'time', 'video', 'youtube_user_id'],
             filter_values: ['facebook', 'twitter', 'youtube'],
             incompatible_dimensions: ['date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'video'],
             samples: [{
