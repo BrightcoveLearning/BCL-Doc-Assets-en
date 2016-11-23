@@ -130,7 +130,7 @@ var aapi_model = {
         filter_values: ['URI-encoded, comma-delimited list of search terms - e.g. players,videos']
     }, {
         name: 'social_platform',
-        description: 'In this topic, you will learn about the Analytics API social_platform dimension. The social_platform dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud Radius module.',
+        description: 'In this topic, you will learn about the Analytics API social_platform dimension. The social_platform dimension provides analytics for social platforms such as Twitter, Facebook, and YouTube, if you distributed your videos to those platforms using the Video Cloud social_platform module.',
         fields: ['social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_platform', 'social_seconds_viewed', 'social_views'],
         filter_values: ['facebook', 'twitter', 'youtube']
     }, {
