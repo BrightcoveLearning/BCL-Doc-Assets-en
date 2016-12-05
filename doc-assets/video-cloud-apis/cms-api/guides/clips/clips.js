@@ -1,14 +1,22 @@
 var BCLS = (function (window, document) {
-    var account_id    = document.getElementById('account_id'),
-        client_id     = document.getElementById('client_id'),
-        client_secret = document.getElementById('client_secret'),
-        videoCount = 0,
-        totalCalls = 0,
-        callNumber = 0;
+    var account_id      = document.getElementById('account_id'),
+        client_id       = document.getElementById('client_id'),
+        client_secret   = document.getElementById('client_secret'),
+        videoCount      = 0,
+        totalCalls      = 0,
+        callNumber      = 0,
+        rendiitonNumber = 0,
+        posterNumber    = 0,
+        thumbnailNumber = 0,
+        videoData       = [],
+        renditionData   = [],
+        posterData      = [],
+        thumbnailData   = [];
 
     function setUpRequest(type) {
         var baseURL = 'https://cms.api.brightcove.com/v1/accounts',
             endpoint,
+            limit   = 25,
             options = {};
         options.client_id = client_id.value;
         options.client_secret = client_secret.value;
@@ -17,11 +25,47 @@ var BCLS = (function (window, document) {
             case 'getCount':
                 endpoint = '/' + account_id.value + '/counts/videos/q=%2Bis_clip:true';
                 options.url = baseURL + endpoint;
+                options.requestType = 'GET';
                 break;
             case 'getVideoClips':
-                endpoint = '/' + account_id.value + '/videos/q=%2Bis_clip:true';
+                endpoint = '/' + account_id.value + '/videos/q=%2Bis_clip:true&limit=' + limit + '&offset=' + (limit * callNumber);
                 options.url = baseURL + endpoint;
+                options.requestType = 'GET';
                 break;
+            case 'getRenditions':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions';
+                options.url = baseURL + endpoint;
+                options.requestType = 'GET';
+                break;
+            case 'deleteRendition':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions/' + renditionData[rendiitonNumber];
+                options.url = baseURL + endpoint;
+                options.requestType = 'DELETE';
+                break;
+            case 'getPosters':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/poster';
+                options.url = baseURL + endpoint;
+                options.requestType = 'GET';
+                break;
+            case 'deletePoster':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/poster/' + posterData[posterNumber];
+                options.url = baseURL + endpoint;
+                options.requestType = 'DELETE';
+                break;
+            case 'getThumbnails':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/thumbnail';
+                options.url = baseURL + endpoint;
+                options.requestType = 'GET';
+                break;
+            case 'deletePoster':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/thumbnail/' + thumbnailData[thumbnailNumber];
+                options.url = baseURL + endpoint;
+                options.requestType = 'DELETE';
+                break;
+            default:
+                if (window && window.console) {
+                    console.log('default case: we should not be here');
+                }
         }
     }
 
@@ -33,22 +77,18 @@ var BCLS = (function (window, document) {
     function getMediaData(options, callback) {
         var httpRequest = new XMLHttpRequest(),
             response,
-            parsedData,
             requestParams,
             dataString,
-            renditions,
-            i = 0,
-            iMax,
             // response handler
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200 || httpRequest.status === 204) {
                             response = httpRequest.responseText;
-
-                            } else {
-                                alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                            }
+                            // return the response
+                            callback(response);
+                        } else {
+                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
                         }
                     }
                 } catch (e) {
