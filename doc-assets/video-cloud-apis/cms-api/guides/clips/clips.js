@@ -2,6 +2,7 @@ var BCLS = (function (window, document) {
     var account_id      = document.getElementById('account_id'),
         client_id       = document.getElementById('client_id'),
         client_secret   = document.getElementById('client_secret'),
+        status          = document.getElementById('status'),
         videoCount      = 0,
         totalCalls      = 0,
         callNumber      = 0,
@@ -13,29 +14,64 @@ var BCLS = (function (window, document) {
         posterData      = [],
         thumbnailData   = [];
 
+
     function setUpRequest(type) {
         var baseURL = 'https://cms.api.brightcove.com/v1/accounts',
             endpoint,
+            responseDecoded,
             limit   = 25,
             options = {};
         options.client_id = client_id.value;
         options.client_secret = client_secret.value;
 
         switch (type) {
+            // get a count of clips
             case 'getCount':
                 endpoint = '/' + account_id.value + '/counts/videos/q=%2Bis_clip:true';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    if (response) {
+                        responseDecoded = JSON.parse(response);
+                        videoCount = responseDecoded.count;
+                        // calculate total calls needed to get the video clips
+                        totalCalls = MATH.ceil(videoCount / limit);
+                        setUpRequest('getVideoClips');
+                    }
+                });
                 break;
+            // retrieve the clips
             case 'getVideoClips':
                 endpoint = '/' + account_id.value + '/videos/q=%2Bis_clip:true&limit=' + limit + '&offset=' + (limit * callNumber);
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    if (response) {
+                        responseDecoded = JSON.parse(response);
+                        // add new clips to videoData array
+                        videoData.push.apply(videoData, responseDecoded);
+                    }
+                    // increment the call number
+                    callNumber++;
+                    // are we done?
+                    if (callNumber < totalCalls) {
+                        // get the next batch
+                        setUpRequest('getVideoClips');
+                    } else {
+                        // got all the clips
+                        // reset the callNumber
+                        callNumber = 0;
+                        setUpRequest('getRenditions');
+                    }
+                });
                 break;
             case 'getRenditions':
                 endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
+                makeRequest(options, function(response) {
+
+                });
                 break;
             case 'deleteRendition':
                 endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions/' + renditionData[rendiitonNumber];
@@ -74,7 +110,7 @@ var BCLS = (function (window, document) {
      * @param  {Object} requestData options for the request
      * @param  {Function} [callback] callback function
      */
-    function getMediaData(options, callback) {
+    function makeRequest(options, callback) {
         var httpRequest = new XMLHttpRequest(),
             response,
             requestParams,
