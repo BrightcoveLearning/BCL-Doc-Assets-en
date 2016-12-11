@@ -1,12 +1,15 @@
 var BCLS = (function (window, document) {
+    // this scripts assumes that HTML elements with ids shown in the following assignments exist in
+    // the page that calls this script
     var account_id      = document.getElementById('account_id'),
         client_id       = document.getElementById('client_id'),
         client_secret   = document.getElementById('client_secret'),
         status          = document.getElementById('status'),
+        goBtn           = document.getElementById('goBtn'),
         videoCount      = 0,
         totalCalls      = 0,
         callNumber      = 0,
-        rendiitonNumber = 0,
+        renditionNumber = 0,
         posterNumber    = 0,
         thumbnailNumber = 0,
         videoData       = [],
@@ -15,10 +18,15 @@ var BCLS = (function (window, document) {
         thumbnailData   = [];
 
 
+    /**
+     * sets up all API requests and handles the responses
+     * @param {String} type the request type
+     */
     function setUpRequest(type) {
         var baseURL = 'https://cms.api.brightcove.com/v1/accounts',
             endpoint,
             responseDecoded,
+            // recommended limit value for best performance with CMS API
             limit   = 25,
             options = {};
         options.client_id = client_id.value;
@@ -59,6 +67,8 @@ var BCLS = (function (window, document) {
                         setUpRequest('getVideoClips');
                     } else {
                         // got all the clips
+                        // update status
+                        status.textContent =+ videoData.length + ' video clips found \n';
                         // reset the callNumber
                         callNumber = 0;
                         setUpRequest('getRenditions');
@@ -69,14 +79,29 @@ var BCLS = (function (window, document) {
                 endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
+                // update status
+                status.textContent =+ 'fetching renditions for clip number ' + callNumber + ' \n';
                 makeRequest(options, function(response) {
-
+                    if (response) {
+                        responseDecoded = JSON.parse(response);
+                        renditionData = responseDecoded;
+                        // update status
+                        status.textContent =+ renditionData.length + ' renditions found for clip number ' + callNumber + ' \n';
+                        setUpRequest('deleteRendition');
+                    } else {
+                        // no renditions
+                        status.textContent =+ 'no renditions found for clip number ' + callNumber + ' \n';
+                        setUpRequest('getPosters');
+                    }
                 });
                 break;
             case 'deleteRendition':
                 endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions/' + renditionData[rendiitonNumber];
                 options.url = baseURL + endpoint;
                 options.requestType = 'DELETE';
+                makeRequest(options, function(response) {
+                    // there should be no response unless there was an error
+                });
                 break;
             case 'getPosters':
                 endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/poster';
@@ -115,6 +140,7 @@ var BCLS = (function (window, document) {
             response,
             requestParams,
             dataString,
+            proxyURL = 'https://solutions.brightcove.com//mnt/data/html/bcls/bcls-proxy/clips-proxy.php',
             // response handler
             getResponse = function() {
                 try {
