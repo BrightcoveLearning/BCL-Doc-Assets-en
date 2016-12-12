@@ -172,7 +172,7 @@ var BCLS = (function (window, document) {
                             setUpRequest('getRenditions');
                         } else {
                             // done
-                            status.textContent += 'Finished!'
+                            status.textContent += 'Finished!';
                         }
                     }
                 })
@@ -191,6 +191,7 @@ var BCLS = (function (window, document) {
                             setUpRequest('getRenditions');
                         } else {
                             // done
+                            status.textContent += 'Finished!';
                         }
                     }
                 });
@@ -252,5 +253,8 @@ var BCLS = (function (window, document) {
         // open and send request
         httpRequest.send(requestParams);
     }
+
+    // set up event listener for button
+    goBtn.addEventListener('click', setUpRequest('getVideoClips'));
 
 })(window, document);
