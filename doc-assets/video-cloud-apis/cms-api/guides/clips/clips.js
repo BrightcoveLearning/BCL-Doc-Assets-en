@@ -1,22 +1,26 @@
 var BCLS = (function (window, document) {
-    // this scripts assumes that HTML elements with ids shown in the following assignments exist in
-    // the page that calls this script
+    /**
+     * this scripts assumes that HTML elements with ids shown
+     * in the following assignments exist in the page that
+     * calls this script.
+     * Alternatively, store the client_id and client_secret
+     * in the proxy (NOT in a client-side script!)
+     * and the account_id value here
+     */
     var account_id      = document.getElementById('account_id'),
         client_id       = document.getElementById('client_id'),
         client_secret   = document.getElementById('client_secret'),
         status          = document.getElementById('status'),
         goBtn           = document.getElementById('goBtn'),
         videoCount      = 0,
+        videoNumber     = 0,
         totalCalls      = 0,
         callNumber      = 0,
         renditionNumber = 0,
-        posterNumber    = 0,
-        thumbnailNumber = 0,
         videoData       = [],
         renditionData   = [],
-        posterData      = [],
-        thumbnailData   = [];
-
+        posterData      = {},
+        thumbnailData   = {};
 
     /**
      * sets up all API requests and handles the responses
@@ -29,8 +33,8 @@ var BCLS = (function (window, document) {
             // recommended limit value for best performance with CMS API
             limit   = 25,
             options = {};
-        options.client_id = client_id.value;
-        options.client_secret = client_secret.value;
+        options.client_id = (client_id.value) ? client_id.value : null;
+        options.client_secret = (client_secret.value) ? client_secret.value : null;
 
         switch (type) {
             // get a count of clips
@@ -76,7 +80,7 @@ var BCLS = (function (window, document) {
                 });
                 break;
             case 'getRenditions':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions';
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/renditions';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
                 // update status
@@ -91,40 +95,108 @@ var BCLS = (function (window, document) {
                     } else {
                         // no renditions
                         status.textContent =+ 'no renditions found for clip number ' + callNumber + ' \n';
-                        setUpRequest('getPosters');
+                        setUpRequest('getPoster');
                     }
                 });
                 break;
             case 'deleteRendition':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/renditions/' + renditionData[rendiitonNumber];
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/renditions/' + renditionData[renditionNumber].id;
                 options.url = baseURL + endpoint;
                 options.requestType = 'DELETE';
                 makeRequest(options, function(response) {
                     // there should be no response unless there was an error
+                    if (response) {
+                        status.textContent += 'Delete rendition response: ' + response + ' \n';
+                        // keep going anyway
+                        renditionNumber++;
+                        if (renditionNumber < renditionData.length) {
+                            setUpRequest('deleteRendition');
+                        } else {
+                            // done with renditions, do poster
+                            setUpRequest('getPoster');
+                        }
+                    } else {
+                        renditionNumber++;
+                        // check to see if there are more renditions
+                        if (renditionNumber < renditionData.length) {
+                            setUpRequest('deleteRendition');
+                        } else {
+                            // do the poster
+                            setUpRequest('getPoster');
+                        }
+                    }
                 });
                 break;
-            case 'getPosters':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/poster';
+            case 'getPoster':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/poster';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    if (response) {
+                        posterData = JSON.parse(response);
+                        setUpRequest('deletePoster');
+                    } else {
+                        // no poster, do the thumbail
+                        setUpRequest('getThumbnail');
+                    }
+                });
                 break;
             case 'deletePoster':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/poster/' + posterData[posterNumber];
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/poster/' + posterData.id;
                 options.url = baseURL + endpoint;
                 options.requestType = 'DELETE';
+                makeRequest(options, function(response) {
+                    // no response unless something went wront
+                    if (response) {
+                        status.textContent += 'Delete poster response: ' + response + ' \n';
+                        // try thumbnail anyway
+                        setUpRequest('getThumbnail');
+                    } else {
+                        // success; do thumbnail
+                        setUpRequest('getThumbnail');
+                    }
+                 });
                 break;
-            case 'getThumbnails':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/thumbnail';
+            case 'getThumbnail':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/thumbnail';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
+                makeRequest('options', function(response) {
+                    if (response) {
+                        thumbnailData = JSON.parse(response);
+                        setUpRequest('deleteThumbnail');
+                    } else {
+                        // if no thumbnail, go on
+                        videoNumber++;
+                        if (videoNumber < videoCount) {
+                            setUpRequest('getRenditions');
+                        } else {
+                            // done
+                            status.textContent += 'Finished!'
+                        }
+                    }
+                })
                 break;
-            case 'deletePoster':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber] + '/assets/thumbnail/' + thumbnailData[thumbnailNumber];
+            case 'deleteThumbnail':
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/thumbnail/' + thumbnailData[thumbnailNumber];
                 options.url = baseURL + endpoint;
                 options.requestType = 'DELETE';
+                makeRequest(options, function(response) {
+                    // no response unless something went wrong
+                    if (response) {
+                        status.textContent += 'Delete thumbnail response: ' + response + ' \n';
+                        // do next video if anyway
+                        videoNumber++;
+                        if (videoNumber < videoCount) {
+                            setUpRequest('getRenditions');
+                        } else {
+                            // done
+                        }
+                    }
+                });
                 break;
             default:
-                if (window && window.console) {
+                if (console) {
                     console.log('default case: we should not be here');
                 }
         }
@@ -157,7 +229,14 @@ var BCLS = (function (window, document) {
                     alert('Caught Exception: ' + e);
                 }
             };
-        // set up request data
+        /**
+         * set up request data
+         * the proxy used here takes the following params:
+         * url - the full API request (required)
+         * requestType - the HTTP request type (default: GET)
+         * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
+         * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
+         */
         requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
         // only add client id and secret if both were submitted
         if (isDefined(clientId) && isDefined(clientSecret)) {
