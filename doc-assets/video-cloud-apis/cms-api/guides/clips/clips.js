@@ -39,22 +39,22 @@ var BCLS = (function (window, document) {
         switch (type) {
             // get a count of clips
             case 'getCount':
-                endpoint = '/' + account_id.value + '/counts/videos/q=%2Bis_clip:true';
+                endpoint = '/' + account_id.value + '/counts/videos?q=%2Bis_clip:true';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest(options, function(response) {
                     if (response) {
                         responseDecoded = JSON.parse(response);
-                        videoCount = responseDecoded.count;
+                        videoCount = parseInt(responseDecoded.count);
                         // calculate total calls needed to get the video clips
-                        totalCalls = MATH.ceil(videoCount / limit);
+                        totalCalls = Math.ceil(videoCount / limit);
                         setUpRequest('getVideoClips');
                     }
                 });
                 break;
             // retrieve the clips
             case 'getVideoClips':
-                endpoint = '/' + account_id.value + '/videos/q=%2Bis_clip:true&limit=' + limit + '&offset=' + (limit * callNumber);
+                endpoint = '/' + account_id.value + '/videos?q=%2Bis_clip:true&limit=' + limit + '&offset=' + (limit * callNumber);
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest(options, function(response) {
@@ -84,17 +84,21 @@ var BCLS = (function (window, document) {
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
                 // update status
-                status.textContent =+ 'fetching renditions for clip number ' + callNumber + ' \n';
+                status.textContent =+ 'fetching renditions for clip ' + videoData[callNumber].name + ' \n';
                 makeRequest(options, function(response) {
                     if (response) {
                         responseDecoded = JSON.parse(response);
                         renditionData = responseDecoded;
                         // update status
-                        status.textContent =+ renditionData.length + ' renditions found for clip number ' + callNumber + ' \n';
-                        setUpRequest('deleteRendition');
+                        status.textContent =+ renditionData.length + ' renditions found for clip ' + videoData[callNumber].name + ' \n';
+                        if (renditionData.length > 0) {
+                            setUpRequest('deleteRendition');
+                        } else {
+                            setUpRequest('getPoster');
+                        }
                     } else {
                         // no renditions
-                        status.textContent =+ 'no renditions found for clip number ' + callNumber + ' \n';
+                        status.textContent =+ 'no renditions found for clip number ' + videoData[callNumber].name + ' \n';
                         setUpRequest('getPoster');
                     }
                 });
@@ -116,6 +120,7 @@ var BCLS = (function (window, document) {
                             setUpRequest('getPoster');
                         }
                     } else {
+                        status.textContent += 'Rendition deleted for ' + videoData[callNumber].name + '\n';
                         renditionNumber++;
                         // check to see if there are more renditions
                         if (renditionNumber < renditionData.length) {
@@ -153,12 +158,13 @@ var BCLS = (function (window, document) {
                         setUpRequest('getThumbnail');
                     } else {
                         // success; do thumbnail
+                        status.textContent += 'Poster deleted for ' + videoData[callNumber].name + ' \n';
                         setUpRequest('getThumbnail');
                     }
                  });
                 break;
             case 'getThumbnail':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/thumbnail';
+                endpoint = '/' + account_id.value + '/videos/' + videoData[callNumber].id + '/assets/thumbnail';
                 options.url = baseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest('options', function(response) {
@@ -178,14 +184,25 @@ var BCLS = (function (window, document) {
                 });
                 break;
             case 'deleteThumbnail':
-                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/thumbnail/' + thumbnailData[thumbnailNumber];
+                endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/thumbnail/' + thumbnailData.id;
                 options.url = baseURL + endpoint;
                 options.requestType = 'DELETE';
                 makeRequest(options, function(response) {
                     // no response unless something went wrong
                     if (response) {
                         status.textContent += 'Delete thumbnail response: ' + response + ' \n';
-                        // do next video if anyway
+                        // do next video anyway if any
+                        videoNumber++;
+                        if (videoNumber < videoCount) {
+                            setUpRequest('getRenditions');
+                        } else {
+                            // done
+                            status.textContent += 'Finished!';
+                        }
+                    } else {
+                        // success
+                        status.textContent += 'Thumbnail deleted for ' + videoData[callNumber].name + ' \n';
+                        // do next video if any
                         videoNumber++;
                         if (videoNumber < videoCount) {
                             setUpRequest('getRenditions');
@@ -213,13 +230,16 @@ var BCLS = (function (window, document) {
             response,
             requestParams,
             dataString,
-            proxyURL = 'https://solutions.brightcove.com//mnt/data/html/bcls/bcls-proxy/clips-proxy.php',
+            proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/clips-proxy.php',
             // response handler
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200 || httpRequest.status === 204) {
                             response = httpRequest.responseText;
+                            if (response === '{null}') {
+                                response = null;
+                            }
                             // return the response
                             callback(response);
                         } else {
@@ -255,6 +275,12 @@ var BCLS = (function (window, document) {
     }
 
     // set up event listener for button
-    goBtn.addEventListener('click', setUpRequest('getVideoClips'));
+    goBtn.addEventListener('click', function() {
+        if (account_id.value) {
+            setUpRequest('getCount');
+        } else {
+            alert('no account id submitted');
+        }
+    });
 
 })(window, document);
