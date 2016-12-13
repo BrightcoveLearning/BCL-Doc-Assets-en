@@ -175,7 +175,7 @@ var BCLS = (function (window, document) {
                             status.textContent += 'Finished!';
                         }
                     }
-                })
+                });
                 break;
             case 'deleteThumbnail':
                 endpoint = '/' + account_id.value + '/videos/' + videoData[videoNumber].id + '/assets/thumbnail/' + thumbnailData[thumbnailNumber];
@@ -240,7 +240,7 @@ var BCLS = (function (window, document) {
          */
         requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
+        if (client_id.value && client_secret.value) {
             requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
         }
 
