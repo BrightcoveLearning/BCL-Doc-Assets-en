@@ -694,6 +694,11 @@ var aapi_model = {
             from: '2012-10-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'source_type']
         },
+        social_platform__video: {
+            dimensions: ['video', 'social_platform'],
+            from: '2016-11-01',
+            fields: ['engagement_score', 'play_rate', 'video', 'video_duration', 'video_name', 'video.name', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_platform', 'social_seconds_viewed', 'social_views']
+        },
         player__referrer_domain__source_type: {
             dimensions: ['player', 'referrer_domain', 'source_type'],
             from: '2012-10-01',
