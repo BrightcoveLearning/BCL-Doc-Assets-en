@@ -223,7 +223,11 @@ var BCLS = (function (window, document) {
     /**
      * send API request to the proxy
      * @param  {Object} requestData options for the request
-     * @param  {Function} [callback] callback function
+     * @param  {String} requestData options.url the full API request URL
+     * @param  {Object} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {Object} requestData [options.client_id] client id for the account (default is in the proxy)
+     * @param  {Object} requestData [options.client_secret] client secret for the account (default is in the proxy)
+     * @param  {Function} [callback] callback function that will process the response
      */
     function makeRequest(options, callback) {
         var httpRequest = new XMLHttpRequest(),
@@ -237,6 +241,7 @@ var BCLS = (function (window, document) {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200 || httpRequest.status === 204) {
                             response = httpRequest.responseText;
+                            // some API requests return '{null}' for empty responses - breaks JSON.parse
                             if (response === '{null}') {
                                 response = null;
                             }
