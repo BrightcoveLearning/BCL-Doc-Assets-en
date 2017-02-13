@@ -274,7 +274,7 @@ var aapi_model = {
         device_manufacturer: {
             name: 'device_manufacturer',
             description: 'In this topic, you will learn about the Analytics API device_manufacturer dimension. The device_manufacturer dimension provides information about the manufacturer of the device that videos were viewed on.',
-            from: '2011-01-01',
+            from: '2016-08-30',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_manufacturer', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video_seconds_viewed'],
             filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
