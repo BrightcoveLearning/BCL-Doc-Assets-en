@@ -5,5 +5,6 @@ videojs('myPlayer').ready(function() {
         var source = player.src(),
             srcWithoutProcol = source.substring(source.indexOf('//'));
         player.src(protocol + srcWithoutProcol);
+        console.log('src', player.src());
     });
 });
