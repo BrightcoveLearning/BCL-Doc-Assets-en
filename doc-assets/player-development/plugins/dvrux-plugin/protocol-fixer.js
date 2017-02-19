@@ -1,4 +1,4 @@
-videojs.plugin('pluginDev', function() {
+videojs.plugin('protocolFixer', function() {
     var player = this,
         protocol = window.location.protocol;
         player.on('loadedmetadata', function() {
