@@ -73,7 +73,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
      * @return {}
      */
     function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
+        if (window.console && console.log) {
             console.log(context, message);
         }
         return;
@@ -124,7 +124,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         // set initial visibilities
         for (i = 0; i < iMax; i++) {
             index = i;
-            bclslog("index", index);
+            // bclslog("index", index);
             if (index > 0) {
                 $this = divsections[i];
                 navObj = {};
@@ -194,7 +194,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             }
 
         }
-        newSectionNode.setAttribute("id", "summaryTableSection");
+        newSectionNode.setAttribute("id", "Summary_Table");
         newSectionNode.setAttribute("class", "bcls-section");
         sectionHeadingNode.setAttribute("id", "summaryTableHeading");
         sectionIntroNode.setAttribute("id", "summarySectionIntro");
@@ -289,6 +289,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             tr,
             th,
             td,
+            ul,
+            li,
             link,
             profilePre,
             profileCode,
@@ -397,9 +399,24 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 rendition = profile.renditions[j];
                 for (l = 0; l < lMax; l++) {
                     td = createEl("td");
-                    str = isDefined(rendition[headersArray[l]]) ? rendition[headersArray[l]] : "";
-                    text = document.createTextNode(str);
-                    td.appendChild(text);
+                    if (headersArray[l] === 'skip') {
+                        var key,
+                            skip = rendition[headersArray[l]];
+                        ul = document.createElement('ul');
+                        for (key in skip) {
+                            if (skip.hasOwnProperty(key)) {
+                                li = document.createElement('li');
+                                text = document.createTextNode(key + ': ' + skip[key]);
+                                li.appendChild(text);
+                                ul.appendChild(li);
+                            }
+                        }
+                        td.appendChild(ul);
+                    } else {
+                        str = isDefined(rendition[headersArray[l]]) ? rendition[headersArray[l]] : "";
+                        text = document.createTextNode(str);
+                        td.appendChild(text);
+                    }
                     tr.appendChild(td);
                 }
                 renditiontbody.appendChild(tr);
