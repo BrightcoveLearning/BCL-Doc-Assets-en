@@ -25,9 +25,9 @@ var BCLS = (function ($, window, document) {
         profileDataStr = "",
         updateData,
         updateDataStr = "",
-        defaultData = {"account_id":57838016001,"profile_id":"screencast"},
+        defaultData = {"account_id":57838016001,"profile_id":"screencast-1280"},
         defaultDataStr = "",
-        updateDefaultData = {"id":"","account_id":57838016001,"default_profile_id":"balanced-high-definition"},
+        updateDefaultData = {"id":"","account_id":57838016001,"default_profile_id":"videocloud-default-v1"},
         updateDefaultDataStr = "",
         config_id = "",
         profile_id = "",
@@ -72,7 +72,7 @@ var BCLS = (function ($, window, document) {
          * @return {Boolean} true if variable is defined and has a value
          */
         isDefined = function(x){
-            if ( x !== "" && x !== null && x !== undefined && x !== NaN && x !== {} && x !== []) {
+            if ( x !== "" && x !== null && x !== undefined) {
                 return true;
             } else {
                 return false;
@@ -85,7 +85,7 @@ var BCLS = (function ($, window, document) {
          * @return {}
          */
         bclslog = function (context, message) {
-            if (window["console"] && console["log"]) {
+            if (window.console && console.log) {
               console.log(context, message);
             }
             return;
@@ -111,16 +111,17 @@ var BCLS = (function ($, window, document) {
          * set up values for exercises
          */
         setupExercises = function () {
+            var d = new Date();
             profileData = copyObj(sampleProfile);
-            profileData["account_id"] = defaults.account_id;
-            profileData["name"] += new Date().toISOString();
+            profileData.account_id = defaults.account_id;
+            profileData.name += d.toISOString();
             profileDataStr = JSON.stringify(profileData, null, "  ");
             updateData = copyObj(profileData);
-            updateData["description"] = "Test Profile Updated";
-            updateData["id"] = profile_id;
+            updateData.description = "Test Profile Updated";
+            updateData.id = profile_id;
             updateDataStr = JSON.stringify(updateData, null, "  ");
             defaultDataStr = JSON.stringify(defaultData, null, "  ");
-            updateDefaultData["id"] = config_id;
+            updateDefaultData.id = config_id;
             updateDefaultDataStr = JSON.stringify(updateDefaultData, null, "  ");
             bclslog("updateDefaultDataStr", updateDefaultDataStr);
             ex1request.value = baseURL + "/accounts/" + defaults.account_id + "/profiles";
@@ -133,7 +134,7 @@ var BCLS = (function ($, window, document) {
             ex6request.value = baseURL + "/accounts/" + defaults.account_id + "/configuration";
             ex7request.value = baseURL + "/accounts/" + defaults.account_id + "/configuration";
             ex7data.value = defaultDataStr;
-            ex8request.value = baseURL + "/accounts/" + defaults.account_id + "/configuration/" + config_id;
+            ex8request.value = baseURL + "/accounts/" + defaults.account_id + "/configuration";
             ex8data.value = updateDefaultDataStr;
         };
         // listeners
@@ -173,38 +174,42 @@ var BCLS = (function ($, window, document) {
                 method: "POST",
                 data: options,
                 success : function (data) {
-                    try {
-                        bclslog("data", data);
-                        respData = JSON.parse(data);
-                        respEl.value = JSON.stringify(respData, null, "  ");
-                        if (exNum === 2) {
-                            profile_id = respData.id;
-                            bclslog("profile_id", profile_id);
-                            setupExercises();
+                    if (exNum === 5) {
+                        respEl.value = "(There is no response, meaning the profile was deleted successfully)";
+                    } else {
+
+                        try {
+                            bclslog("data", data);
+                            respData = data;
+                            respEl.value = JSON.stringify(respData, null, "  ");
+                            if (exNum === 2) {
+                                profile_id = respData.id;
+                                bclslog("profile_id", profile_id);
+                                setupExercises();
+                            }
+                            if (exNum === 6 || exNum === 7) {
+                                config_id = respData.id;
+                                bclslog("config_id", config_id);
+                                setupExercises();
+                            }
+                        } catch (e) {
+                            bclslog("invalid JSON - something went wrong", e);
+                            data = {"Error": e};
+                            switch (exNum) {
+                                case 5:
+                                respEl.value = "[DELETE requests do not return any data - you will just see an empty HTTP 204 response]";
+                                break;
+                                case 6:
+                                respEl.value = "There is no default profile - we'll set one in the next exercise";
+                                break;
+                                case 7:
+                                respEl.value = "There is already a default profile - we'll update it in the next exercise";
+                                break;
+                                default:
+                                respEl.value = "There was a problem with the request";
+                            }
                         }
-                        if (exNum === 6 || exNum === 7) {
-                            config_id = respData["id"];
-                            bclslog("config_id", config_id);
-                            setupExercises();
-                        }
-                    } catch (e) {
-                         bclslog("invalid JSON - something went wrong", e);
-                         data = {"Error": e};
-                         switch (exNum) {
-                            case 5:
-                            respEl.value = "[DELETE requests do not return any data - you will just see an empty HTTP 204 response]";
-                            break;
-                            case 6:
-                            respEl.value = "There is no default profile - we'll set one in the next exercise";
-                            break;
-                            case 7:
-                            respEl.value = "There is already a default profile - we'll update it in the next exercise";
-                            break;
-                            default:
-                            respEl.value = "There was a problem with the request";
-                         }
                     }
-                    // write the response to the response element
 
                 }
             });
