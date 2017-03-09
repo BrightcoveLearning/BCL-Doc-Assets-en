@@ -26,6 +26,72 @@ var BCLS = ( function (window, document) {
     });
     // set initial from value
     fromDatePicker.value = nowISO;
+    console.log('nowISO', nowISO);
+
+    /**
+     * tests for all the ways a variable might be undefined or not have a value
+     * @param {*} x the variable to test
+     * @return {Boolean} true if variable is defined and has a value
+     */
+    function isDefined(x) {
+        if ( x === '' || x === null || x === undefined) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * createRequest sets up requests, send them to makeRequest(), and handles responses
+     * @param  {string} type the request type
+     */
+    function createRequest(type) {
+        var options   = {},
+            cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account.value,
+            diBaseURL = 'https://ingest.api.brightcove.com/v1/accounts/' + account.value,
+            endpoint,
+            responseDecoded,
+            i,
+            iMax,
+            el,
+            txt;
+
+        // set credentials
+        options.client_id     = client_id.value;
+        options.client_secret = client_secret.value;
+
+        switch (type) {
+            case 'getProfiles':
+                options.proxyURL = './profiles-proxy.php';
+                endpoint         = '/profiles';
+                options.url      = ipBaseURL + endpoint;
+                makeRequest(options, function(response) {
+                    responseDecoded = JSON.parse(response);
+                    if (Array.isArray(responseDecoded)) {
+                        // remove existing options
+                        iMax = profiles.length;
+                        for (i = 0; i < iMax; i++) {
+                            profiles.remove(i);
+                        }
+                        // add new options
+                        iMax = responseDecoded.length;
+                        for (i = 0; i < iMax; i++) {
+                            el = document.createElement('option');
+                            el.setAttribute('value', responseDecoded[i].name);
+                            txt = document.createTextNode(responseDecoded[i].name);
+                            el.appendChild(txt);
+                            profiles.appendChild(el);
+                        }
+                    }
+                });
+                break;
+            // additional cases
+            default:
+                console.log('Should not be getting to the default case - bad request type sent');
+                break;
+        }
+    }
+
+
 
     /**
      * send API request to the proxy

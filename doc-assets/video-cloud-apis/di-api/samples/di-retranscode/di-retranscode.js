@@ -11,7 +11,7 @@ var BCLS = ( function (window, document) {
         custom_profile_display = document.getElementById("custom_profile_display"),
         videoDataDisplay = document.getElementById("videoData"),
         // Dynamic Ingest API stuff
-        profilesArray = ['high-resolution', 'balanced-nextgen-player', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
+        profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
         di_url_display = document.getElementById("di_url"),
         di_submit_display = document.getElementById("di_Submit"),
         diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
