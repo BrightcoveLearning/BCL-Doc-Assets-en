@@ -37,6 +37,23 @@ var BCLS = ( function (window, document) {
     }
 
     /**
+     * get selected value for single select element
+     * @param {htmlElement} e the select element
+     * @return {Object} object containing the `value`, text, and selected `index`
+     */
+    function getSelectedValue(e) {
+        var selected = e.options[e.selectedIndex],
+            val = selected.value,
+            txt = selected.textContent,
+            idx = e.selectedIndex;
+        return {
+            value: val,
+            text: txt,
+            index: idx
+        };
+    }
+
+    /**
      * createRequest sets up requests, send them to makeRequest(), and handles responses
      * @param  {string} type the request type
      */
@@ -50,13 +67,15 @@ var BCLS = ( function (window, document) {
         // set credentials
         options.client_id     = cid;
         options.client_secret = csec;
+        options.requestBody    = {};
         options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php';
 
         switch (type) {
             case 'createVideo':
                 endpoint           = '/videos';
                 options.url        = cmsBaseURL + endpoint;
-                option.requestType = 'POST';
+                options.requestType = 'POST';
+                options.requestBody.name
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
                     video_id = responseDecoded.id;
@@ -79,8 +98,6 @@ var BCLS = ( function (window, document) {
                 break;
         }
     }
-
-
 
     /**
      * send API request to the proxy
@@ -178,7 +195,9 @@ var BCLS = ( function (window, document) {
             starts_at = fromDatePicker.value;
             ends_at = toDatePicker.value;
             if (isDefined(custom_profile_display.value)) {
-
+                profile = custom_profile_display.value;
+            } else {
+                profile = getSelectedValue(ingest_profile_display);
             }
 
         });
