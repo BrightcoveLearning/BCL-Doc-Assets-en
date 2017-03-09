@@ -39,7 +39,7 @@ var BCLS = ( function (window, document) {
      * @return {}
      */
     bclslog = function (context, message) {
-        if (window["console"] && console["log"]) {
+        if (window.console && console.log) {
           console.log(context, message);
         }
         return;
