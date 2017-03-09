@@ -6,10 +6,16 @@ var BCLS = ( function (window, document) {
         client_secret          = document.getElementById('client_secret'),
         ingest_profile_display = document.getElementById('ingest_profile_display'),
         custom_profile_display = document.getElementById('custom_profile_display'),
+        video_url              = document.getElementById('video_url'),
+        video_name             = document.getElementById('video_name'),
         di_url                 = document.getElementById('di_url'),
         cms_url                = document.getElementById('cms_url'),
         di_submit              = document.getElementById('di_submit'),
+        response               = document.getElementById('response'),
         profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
+        name,
+        video,
+        default_video          = '//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4',
         fromPicker,
         toPicker,
         video_id,
@@ -67,30 +73,43 @@ var BCLS = ( function (window, document) {
         // set credentials
         options.client_id     = cid;
         options.client_secret = csec;
-        options.requestBody    = {};
+        options.requestData    = {};
         options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php';
 
         switch (type) {
             case 'createVideo':
-                endpoint           = '/videos';
-                options.url        = cmsBaseURL + endpoint;
-                options.requestType = 'POST';
-                options.requestBody.name
+                endpoint                               = '/videos';
+                options.url                            = cmsBaseURL + endpoint;
+                options.requestType                    = 'POST';
+                options.requestData.name               = name;
+                options.requestData.schedule           = {};
+                options.requestData.schedule.starts_at = starts_at;
+                cms_url.textContent                     = JSON.stringify(options.requestData, null, '  ');
+                if (isDefined(ends_at)) {
+                    options.requestData.schedule.ends_at = ends_at;
+                }
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
+                    results.textContent = JSON.stringify(responseDecoded, null, '  ');
                     video_id = responseDecoded.id;
                     createRequest('ingestVideo');
                 });
                 break;
             // additional cases
             case 'ingestVideo':
-            endpoint           = '/videos/' + video_id + '/ingest-requests';
-            options.url        = diBaseURL + endpoint;
-            option.requestType = 'POST';
+            endpoint                       = '/videos/' + video_id + '/ingest-requests';
+            options.url                    = diBaseURL + endpoint;
+            options.requestType            = 'POST';
+            options.requestData.master     = {};
+            options.requestData.master.url = video;
+            options.requestData.profile    = profile;
+            options.requestData.callbacks  = ['http://solutions.brightcove.com/bcls/di-api/di-callbacks.php'];
+            di_url.textContent                     = JSON.stringify(options.requestData, null, '  ');
+
+
             makeRequest(options, function(response) {
                 responseDecoded = JSON.parse(response);
-                video_id = responseDecoded.id;
-                createRequest('ingestVideo');
+                response.textContent = 'Your request has been submitted - your Job ID is ' + responseDecoded.id;
             });
                 break;
             default:
@@ -108,7 +127,7 @@ var BCLS = ( function (window, document) {
      * @param  {String} options.client_id client id for the account (default is in the proxy)
      * @param  {String} options.client_secret client secret for the account (default is in the proxy)
      * @param  {String} options.requestType HTTP type for the request
-     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {JSON} [options.requestData] Data to be sent in the request body in the form of a JSON string
      * @param  {Function} [callback] callback function that will process the response
      */
     function makeRequest(options, callback) {
@@ -153,7 +172,7 @@ var BCLS = ( function (window, document) {
         }
         // add request data if any
         if (options.requestData) {
-            requestParams += '&requestBody=' + options.requestBody;
+            requestParams += '&requestData=' + JSON.stringify(options.requestData);
         }
         console.log('requestParams', requestParams);
         // set response handler
@@ -199,7 +218,8 @@ var BCLS = ( function (window, document) {
             } else {
                 profile = getSelectedValue(ingest_profile_display);
             }
-
+            video = (isDefined(video_url.value)) ? video_url.value : default_video;
+            name = (isDefined())
         });
     }
     // call init to set things up
