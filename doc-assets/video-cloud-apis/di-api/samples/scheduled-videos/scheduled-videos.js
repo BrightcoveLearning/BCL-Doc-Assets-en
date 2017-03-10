@@ -87,10 +87,8 @@ var BCLS = ( function (window, document) {
                 if (isDefined(ends_at)) {
                     options.requestBody.schedule.ends_at = ends_at;
                 }
-                console.log('requestBody', options.requestBody);
                 cms_url.textContent                     = JSON.stringify(options.requestBody, null, '  ');
                 makeRequest(options, function(response) {
-                    console.log(response);
                     responseDecoded = JSON.parse(response);
                     responseEl.textContent = JSON.stringify(responseDecoded, null, '  ');
                     video_id = responseDecoded.id;
@@ -111,7 +109,6 @@ var BCLS = ( function (window, document) {
 
 
             makeRequest(options, function(response) {
-                console.log(response);
                 responseDecoded = JSON.parse(response);
                 responseEl.textContent = 'Your request has been submitted - your Job ID is ' + responseDecoded.id;
             });
@@ -178,7 +175,6 @@ var BCLS = ( function (window, document) {
         if (options.requestBody) {
             requestParams += '&requestBody=' + JSON.stringify(options.requestBody);
         }
-        console.log('requestParams', requestParams);
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
