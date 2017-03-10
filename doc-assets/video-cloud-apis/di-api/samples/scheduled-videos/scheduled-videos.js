@@ -15,7 +15,7 @@ var BCLS = ( function (window, document) {
         profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
         name,
         video,
-        default_video          = '//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4',
+        default_video          = 'http://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4',
         fromPicker,
         toPicker,
         video_id,
@@ -73,7 +73,6 @@ var BCLS = ( function (window, document) {
         // set credentials
         options.client_id     = cid;
         options.client_secret = csec;
-        options.requestData    = {};
         options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php';
 
         switch (type) {
@@ -81,13 +80,15 @@ var BCLS = ( function (window, document) {
                 endpoint                               = '/videos';
                 options.url                            = cmsBaseURL + endpoint;
                 options.requestType                    = 'POST';
-                options.requestData.name               = name;
-                options.requestData.schedule           = {};
-                options.requestData.schedule.starts_at = starts_at;
+                options.requestBody                    = {};
+                options.requestBody.name               = name;
+                options.requestBody.schedule           = {};
+                options.requestBody.schedule.starts_at = starts_at;
                 if (isDefined(ends_at)) {
-                    options.requestData.schedule.ends_at = ends_at;
+                    options.requestBody.schedule.ends_at = ends_at;
                 }
-                cms_url.textContent                     = JSON.stringify(options.requestData, null, '  ');
+                console.log('requestBody', options.requestBody);
+                cms_url.textContent                     = JSON.stringify(options.requestBody, null, '  ');
                 makeRequest(options, function(response) {
                     console.log(response);
                     responseDecoded = JSON.parse(response);
@@ -101,11 +102,12 @@ var BCLS = ( function (window, document) {
             endpoint                       = '/videos/' + video_id + '/ingest-requests';
             options.url                    = diBaseURL + endpoint;
             options.requestType            = 'POST';
-            options.requestData.master     = {};
-            options.requestData.master.url = video;
-            options.requestData.profile    = profile;
-            options.requestData.callbacks  = ['http://solutions.brightcove.com/bcls/di-api/di-callbacks.php'];
-            di_url.textContent                     = JSON.stringify(options.requestData, null, '  ');
+            options.requestBody            = {};
+            options.requestBody.master     = {};
+            options.requestBody.master.url = video;
+            options.requestBody.profile    = profile;
+            options.requestBody.callbacks  = ['http://solutions.brightcove.com/bcls/di-api/di-callbacks.php'];
+            di_url.textContent                     = JSON.stringify(options.requestBody, null, '  ');
 
 
             makeRequest(options, function(response) {
@@ -124,12 +126,12 @@ var BCLS = ( function (window, document) {
      * send API request to the proxy
      * @param  {Object} options for the request
      * @param  {String} options.url the full API request URL
-     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestBody [options.requestType="GET"] HTTP type for the request
      * @param  {String} options.proxyURL proxyURL to send the request to
      * @param  {String} options.client_id client id for the account (default is in the proxy)
      * @param  {String} options.client_secret client secret for the account (default is in the proxy)
      * @param  {String} options.requestType HTTP type for the request
-     * @param  {JSON} [options.requestData] Data to be sent in the request body in the form of a JSON string
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
      * @param  {Function} [callback] callback function that will process the response
      */
     function makeRequest(options, callback) {
@@ -165,7 +167,7 @@ var BCLS = ( function (window, document) {
          * requestType - the HTTP request type (default: GET)
          * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
          * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-         * requestData - request body for write requests (optional JSON string)
+         * requestBody - request body for write requests (optional JSON string)
          */
         requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
         // only add client id and secret if both were submitted
@@ -173,8 +175,8 @@ var BCLS = ( function (window, document) {
             requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
         }
         // add request data if any
-        if (options.requestData) {
-            requestParams += '&requestData=' + JSON.stringify(options.requestData);
+        if (options.requestBody) {
+            requestParams += '&requestBody=' + JSON.stringify(options.requestBody);
         }
         console.log('requestParams', requestParams);
         // set response handler
