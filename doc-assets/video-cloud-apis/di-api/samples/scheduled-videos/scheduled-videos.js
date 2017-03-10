@@ -11,7 +11,7 @@ var BCLS = ( function (window, document) {
         di_url                 = document.getElementById('di_url'),
         cms_url                = document.getElementById('cms_url'),
         di_submit              = document.getElementById('di_submit'),
-        response               = document.getElementById('response'),
+        responseEl             = document.getElementById('responseEl'),
         profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
         name,
         video,
@@ -28,7 +28,6 @@ var BCLS = ( function (window, document) {
         now                    = new Date(),
         // get the date part of the date-time string
         nowISO                 = now.toISOString().substr(0, 10);
-
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -70,6 +69,7 @@ var BCLS = ( function (window, document) {
             endpoint,
             responseDecoded;
 
+
         // set credentials
         options.client_id     = cid;
         options.client_secret = csec;
@@ -84,13 +84,14 @@ var BCLS = ( function (window, document) {
                 options.requestData.name               = name;
                 options.requestData.schedule           = {};
                 options.requestData.schedule.starts_at = starts_at;
-                cms_url.textContent                     = JSON.stringify(options.requestData, null, '  ');
                 if (isDefined(ends_at)) {
                     options.requestData.schedule.ends_at = ends_at;
                 }
+                cms_url.textContent                     = JSON.stringify(options.requestData, null, '  ');
                 makeRequest(options, function(response) {
+                    console.log(response);
                     responseDecoded = JSON.parse(response);
-                    results.textContent = JSON.stringify(responseDecoded, null, '  ');
+                    responseEl.textContent = JSON.stringify(responseDecoded, null, '  ');
                     video_id = responseDecoded.id;
                     createRequest('ingestVideo');
                 });
@@ -108,8 +109,9 @@ var BCLS = ( function (window, document) {
 
 
             makeRequest(options, function(response) {
+                console.log(response);
                 responseDecoded = JSON.parse(response);
-                response.textContent = 'Your request has been submitted - your Job ID is ' + responseDecoded.id;
+                responseEl.textContent = 'Your request has been submitted - your Job ID is ' + responseDecoded.id;
             });
                 break;
             default:
@@ -216,10 +218,11 @@ var BCLS = ( function (window, document) {
             if (isDefined(custom_profile_display.value)) {
                 profile = custom_profile_display.value;
             } else {
-                profile = getSelectedValue(ingest_profile_display);
+                profile = getSelectedValue(ingest_profile_display).text;
             }
             video = (isDefined(video_url.value)) ? video_url.value : default_video;
-            name = (isDefined())
+            name = (isDefined(video_name.value)) ? video_name.value : video.substr(video.lastIndexOf('/') + 1);
+            createRequest('createVideo');
         });
     }
     // call init to set things up
