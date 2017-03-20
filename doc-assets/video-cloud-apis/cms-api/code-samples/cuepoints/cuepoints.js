@@ -5,6 +5,7 @@ var BCLS = (function (window, document) {
         account            = document.getElementById('account'),
         cid                = document.getElementById('cid'),
         secret             = document.getElementById('secret'),
+        get_videos         = document.getElementById('get_videos'),
         // value below is for BrightcoveLearning
         // default client id and secret should be stored in the proxy
         default_account_id = '57838016001',
@@ -60,6 +61,17 @@ var BCLS = (function (window, document) {
         client_id     = (cid.value) ? cid.value : undefined;
         client_secret = (secret.value) ? secret.value : undefined;
         video_id      = getSelectedValue(video).value;
+
+
+    get_videos.addEventListener('click', function() {
+        if (account.value && cid.value && secret.value) {
+            account_id    = account.value;
+            client_id     = cid.value;
+            client_secret = secret.value;
+            createRequest('getVideos');
+        } else {
+            alert('The account id, client id, and client secret are required if you wish to use your own account');
+        }
     });
 
     /**
@@ -114,6 +126,7 @@ var BCLS = (function (window, document) {
             case 'getVideos':
                 endpoint = '/videos?q=playable:true&limit=20';
                 options.url = cmsBaseURL + endpoint;
+                options.requestType = 'GET';
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
                     // add options to the video selector
@@ -128,6 +141,9 @@ var BCLS = (function (window, document) {
                         for (i = 0; i < iMax; i++) {
                             el = document.createElement('option');
                             el.setAttribute('value', responseDecoded[i].id);
+                            if (i === 0) {
+                                el.setAttribute('selected', 'selected');
+                            }
                             txt = document.createTextNode(responseDecoded[i].name);
                             el.appendChild(txt);
                             video.appendChild(el);
