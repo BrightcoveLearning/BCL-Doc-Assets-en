@@ -10,8 +10,7 @@ var BCLS = (function (window, document) {
         // default client id and secret should be stored in the proxy
         default_account_id = '57838016001',
         // cuepoint fields
-        name               = document.getElementById('name').
-        type               = document.getElementById('type'),
+        name               = document.getElementById('name'),
         type               = document.getElementById('type'),
         time               = document.getElementById('time'),
         metadata           = document.getElementById('metadata'),
@@ -23,7 +22,7 @@ var BCLS = (function (window, document) {
         // request / response display fields
         apiRequest         = document.getElementById('apiRequest'),
         requestData        = document.getElementById('requestData'),
-        response           = document.getElementById('response'),
+        results            = document.getElementById('results'),
         // data objects
         updateData         = {},
         client_id,
@@ -59,9 +58,17 @@ var BCLS = (function (window, document) {
 
     setRequest.addEventListener('click', function() {
         // get or set values for the request
-        account_id    = (account.value) ? account.value : default_account_id;
-        client_id     = (cid.value) ? cid.value : undefined;
-        client_secret = (secret.value) ? secret.value : undefined;
+        if (account) {
+            account_id = account.value;
+        } else {
+            account_id = default_account_id;
+        }
+        if (cid) {
+            client_id = cid.value;
+        }
+        if (secret) {
+            client_secret = secret.value;
+        }
         video_id      = getSelectedValue(video).value;
         createRequest('updateVideo');
     });
@@ -164,7 +171,7 @@ var BCLS = (function (window, document) {
                 requestData.textContent = JSON.stringify(updateData, null, '  ');
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
-                    response.textContent = JSON.stringify(responseDecoded, null, '  ');
+                    results.textContent = JSON.stringify(responseDecoded, null, '  ');
                 });
                 break;
             // additional cases
@@ -229,7 +236,6 @@ var BCLS = (function (window, document) {
         if (options.requestBody) {
             requestParams += '&requestBody=' + options.requestBody;
         }
-        console.log('requestParams', requestParams);
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
