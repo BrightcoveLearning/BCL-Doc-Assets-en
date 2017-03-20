@@ -1,27 +1,30 @@
 var BCLS = (function (window, document) {
     // account info
-    var useMyAccount = document.getElementById('useMyAccount'),
-        basicInfo = document.getElementById('basicInfo'),
-        account = document.getElementById('account'),
-        cid = document.getElementById('cid'),
-        secret = document.getElementById('secret'),
+    var useMyAccount       = document.getElementById('useMyAccount'),
+        basicInfo          = document.getElementById('basicInfo'),
+        account            = document.getElementById('account'),
+        cid                = document.getElementById('cid'),
+        secret             = document.getElementById('secret'),
         // value below is for BrightcoveLearning
         // default client id and secret should be stored in the proxy
         default_account_id = '57838016001',
         // cuepoint fields
-        name = document.getElementById('name').
-        type = document.getElementById('type'),
+        name               = document.getElementById('name').
+        type               = document.getElementById('type'),
+        type               = document.getElementById('type'),
+        time               = document.getElementById('time'),
+        metadata           = document.getElementById('metadata'),
+        force_stop         = document.getElementById('force_stop'),
         // update info
-        video = document.getElementById('video'),
-        name = document.getElementById('name'),
-        type = document.getElementById('type'),
-        time = document.getElementById('time'),
-        metadata = document.getElementById('metadata'),
-        force_stop = document.getElementById('force_stop'),
-        addCue = document.getElementById('addCue'),
-        setRequest = document.getElementById('setRequest'),
+        video              = document.getElementById('video'),
+        addCue             = document.getElementById('addCue'),
+        setRequest         = document.getElementById('setRequest'),
+        // request / response display fields
+        apiRequest         = document.getElementById('apiRequest'),
+        requestData        = document.getElementById('requestData'),
+        response           = document.getElementById('response'),
         // data objects
-        cuePointData = [],
+        cuePointData       = [],
         client_id,
         client_secret,
         account_id,
@@ -29,7 +32,7 @@ var BCLS = (function (window, document) {
 
     // set event listeners
     useMyAccount.addEventListener('click', function () {
-        if (basicInfo.getAttribute('style') === 'display:non;') {
+        if (basicInfo.getAttribute('style') === 'display:none;') {
             basicInfo.setAttribute('style', 'display:block;');
             useMyAccount.textContent = 'Use Sample Account';
         } else {
@@ -39,25 +42,25 @@ var BCLS = (function (window, document) {
     });
 
     addCue.addEventListener('click', function() {
-        var cue = {};
-        cue.name = name.value;
-        cue.type = getSelectedValue(type).value;
-        cue.time = parseFloat(time.value);
-        cue.metadata = metadata.value;
+        var cue        = {};
+        cue.name       = name.value;
+        cue.type       = getSelectedValue(type).value;
+        cue.time       = parseFloat(time.value);
+        cue.metadata   = metadata.value;
         cue.force_stop = isChecked(force_stop);
         cuePointData.push(cue);
-        name.value = '';
-        time.value = '';
+        name.value     = '';
+        time.value     = '';
         metadata.value = '';
     });
 
     setRequest.addEventListener('click', function() {
         // get or set values for the request
-        account_id = (account.value) ? account.value : default_account_id;
-        client_id = (cid.value) ? cid.value : undefined;
+        account_id    = (account.value) ? account.value : default_account_id;
+        client_id     = (cid.value) ? cid.value : undefined;
         client_secret = (secret.value) ? secret.value : undefined;
-        video_id = getSelectedValue(video);
-    })
+        video_id      = getSelectedValue(video).value;
+    });
 
     /**
      * get selected value for single select element
@@ -66,9 +69,9 @@ var BCLS = (function (window, document) {
      */
     function getSelectedValue(e) {
         var selected = e.options[e.selectedIndex],
-            val = selected.value,
-            txt = selected.textContent,
-            idx = e.selectedIndex;
+            val      = selected.value,
+            txt      = selected.textContent,
+            idx      = e.selectedIndex;
         return {
             value: val,
             text: txt,
@@ -93,9 +96,8 @@ var BCLS = (function (window, document) {
      * @param  {string} type the request type
      */
     function createRequest(type) {
-        var options   = {},
-            ipBaseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account.value,
-            diBaseURL = 'https://ingest.api.brightcove.com/v1/accounts/' + account.value,
+        var options    = {},
+            cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
             endpoint,
             responseDecoded,
             i,
@@ -103,36 +105,40 @@ var BCLS = (function (window, document) {
             el,
             txt;
 
-        // set credentials
+        // set credentials and proxy url
         options.client_id     = cid.value;
         options.client_secret = secret.value;
+        options.proxyURL      = '//solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php';
 
         switch (type) {
             case 'getVideos':
-
-                break;
-            case 'updateVideo':
-                options.proxyURL = './profiles-proxy.php';
-                endpoint         = '/profiles';
-                options.url      = ipBaseURL + endpoint;
+                endpoint = '/videos?q=playable:true&limit=20';
+                options.url = cmsBaseURL + endpoint;
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
+                    // add options to the video selector
                     if (Array.isArray(responseDecoded)) {
                         // remove existing options
-                        iMax = profiles.length;
+                        iMax = video.length;
                         for (i = 0; i < iMax; i++) {
-                            profiles.remove(i);
+                            video.remove(i);
                         }
                         // add new options
                         iMax = responseDecoded.length;
                         for (i = 0; i < iMax; i++) {
                             el = document.createElement('option');
-                            el.setAttribute('value', responseDecoded[i].name);
+                            el.setAttribute('value', responseDecoded[i].id);
                             txt = document.createTextNode(responseDecoded[i].name);
                             el.appendChild(txt);
-                            profiles.appendChild(el);
+                            video.appendChild(el);
                         }
                     }
+                });
+                break;
+            case 'updateVideo':
+                endpoint         = '/profiles';
+                options.url      = ipBaseURL + endpoint;
+                makeRequest(options, function(response) {
                 });
                 break;
             // additional cases
@@ -148,7 +154,7 @@ var BCLS = (function (window, document) {
      * send API request to the proxy
      * @param  {Object} options for the request
      * @param  {String} options.url the full API request URL
-     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} [options.requestType="GET"] HTTP type for the request
      * @param  {String} options.proxyURL proxyURL to send the request to
      * @param  {String} options.client_id client id for the account (default is in the proxy)
      * @param  {String} options.client_secret client secret for the account (default is in the proxy)
@@ -196,7 +202,7 @@ var BCLS = (function (window, document) {
             requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
         }
         // add request data if any
-        if (options.requestData) {
+        if (options.requestBody) {
             requestParams += '&requestBody=' + options.requestBody;
         }
         console.log('requestParams', requestParams);
@@ -210,7 +216,13 @@ var BCLS = (function (window, document) {
         httpRequest.send(requestParams);
     }
 
+    function init() {
+        // initially get videos from BrightcoveLearning account
+        account_id = default_account_id;
+        createRequest('getVideos');
+    }
 
+    init();
 
 
 })(window, document);
