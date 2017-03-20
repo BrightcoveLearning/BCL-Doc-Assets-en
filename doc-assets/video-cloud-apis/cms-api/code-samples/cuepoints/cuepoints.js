@@ -112,6 +112,7 @@ var BCLS = (function (window, document) {
             cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
             endpoint,
             responseDecoded,
+            dataObj = {},
             i,
             iMax,
             el,
@@ -152,9 +153,13 @@ var BCLS = (function (window, document) {
                 });
                 break;
             case 'updateVideo':
-                endpoint         = '/profiles';
-                options.url      = ipBaseURL + endpoint;
+                dataObj.cue_points  = cuePointData;
+                endpoint            = '/videos/' + video_id;
+                options.url         = cmsBaseURL + endpoint;
+                options.requestType = 'PATCH';
+                options.requestBody = JSON.stringify()
                 makeRequest(options, function(response) {
+
                 });
                 break;
             // additional cases
@@ -163,8 +168,6 @@ var BCLS = (function (window, document) {
                 break;
         }
     }
-
-
 
     /**
      * send API request to the proxy
