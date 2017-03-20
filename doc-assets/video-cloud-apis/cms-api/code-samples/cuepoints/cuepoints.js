@@ -25,7 +25,7 @@ var BCLS = (function (window, document) {
         requestData        = document.getElementById('requestData'),
         response           = document.getElementById('response'),
         // data objects
-        cuePointData       = [],
+        updateData         = {},
         client_id,
         client_secret,
         account_id,
@@ -49,10 +49,12 @@ var BCLS = (function (window, document) {
         cue.time       = parseFloat(time.value);
         cue.metadata   = metadata.value;
         cue.force_stop = isChecked(force_stop);
-        cuePointData.push(cue);
+        updateData.cue_points.push(cue);
         name.value     = '';
         time.value     = '';
         metadata.value = '';
+        addCue.textContent = 'Add Another Cue Point';
+        requestData.textContent = JSON.stringify(updateData, null, '  ');
     });
 
     setRequest.addEventListener('click', function() {
@@ -61,6 +63,8 @@ var BCLS = (function (window, document) {
         client_id     = (cid.value) ? cid.value : undefined;
         client_secret = (secret.value) ? secret.value : undefined;
         video_id      = getSelectedValue(video).value;
+        createRequest('updateVideo');
+    });
 
 
     get_videos.addEventListener('click', function() {
@@ -97,7 +101,7 @@ var BCLS = (function (window, document) {
      * @return {Boolean}  true if box is checked
      */
     function isChecked(e) {
-        if (e.value) {
+        if (e.checked) {
             return true;
         }
         return false;
@@ -112,7 +116,6 @@ var BCLS = (function (window, document) {
             cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
             endpoint,
             responseDecoded,
-            dataObj = {},
             i,
             iMax,
             el,
@@ -153,13 +156,15 @@ var BCLS = (function (window, document) {
                 });
                 break;
             case 'updateVideo':
-                dataObj.cue_points  = cuePointData;
                 endpoint            = '/videos/' + video_id;
                 options.url         = cmsBaseURL + endpoint;
                 options.requestType = 'PATCH';
-                options.requestBody = JSON.stringify()
+                options.requestBody = JSON.stringify(updateData);
+                apiRequest.textContent = options.url;
+                requestData.textContent = JSON.stringify(updateData, null, '  ');
                 makeRequest(options, function(response) {
-
+                    responseDecoded = JSON.parse(response);
+                    response.textContent = JSON.stringify(responseDecoded, null, '  ');
                 });
                 break;
             // additional cases
@@ -236,6 +241,8 @@ var BCLS = (function (window, document) {
     }
 
     function init() {
+        // array for cue point data
+        updateData.cue_points = [];
         // initially get videos from BrightcoveLearning account
         account_id = default_account_id;
         createRequest('getVideos');
