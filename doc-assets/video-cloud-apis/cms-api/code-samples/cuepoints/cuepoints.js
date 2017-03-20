@@ -24,7 +24,8 @@ var BCLS = (function (window, document) {
         cuePointData = [],
         client_id,
         client_secret,
-        account_id;
+        account_id,
+        video_id;
 
     // set event listeners
     useMyAccount.addEventListener('click', function () {
@@ -47,8 +48,16 @@ var BCLS = (function (window, document) {
         cuePointData.push(cue);
         name.value = '';
         time.value = '';
-        metadata.value - '';
+        metadata.value = '';
     });
+
+    setRequest.addEventListener('click', function() {
+        // get or set values for the request
+        account_id = (account.value) ? account.value : default_account_id;
+        client_id = (cid.value) ? cid.value : undefined;
+        client_secret = (secret.value) ? secret.value : undefined;
+        video_id = getSelectedValue(video);
+    })
 
     /**
      * get selected value for single select element
@@ -99,7 +108,10 @@ var BCLS = (function (window, document) {
         options.client_secret = secret.value;
 
         switch (type) {
-            case 'getProfiles':
+            case 'getVideos':
+
+                break;
+            case 'updateVideo':
                 options.proxyURL = './profiles-proxy.php';
                 endpoint         = '/profiles';
                 options.url      = ipBaseURL + endpoint;
@@ -125,7 +137,7 @@ var BCLS = (function (window, document) {
                 break;
             // additional cases
             default:
-                console.log('Should not be getting to the default case - bad request type sent);
+                console.log('Should not be getting to the default case - bad request type sent');
                 break;
         }
     }
