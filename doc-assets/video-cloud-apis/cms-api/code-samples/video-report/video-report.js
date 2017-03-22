@@ -256,6 +256,9 @@ var BCLS = (function(window, document) {
                 apiRequest.textContent = requestData.url;
                 getMediaData(requestData, id);
                 break;
+            case 'getCustomFields':
+
+                break;
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
                 endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
