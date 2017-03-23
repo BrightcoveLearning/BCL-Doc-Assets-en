@@ -9,8 +9,6 @@ var BCLS = (function(window, document) {
         totalVideos = 0,
         totalCalls = 0,
         callNumber = 0,
-        superSet = 0,
-        superSetVideos,
         videosCompleted = 0,
         videosArray = [],
         summaryData = {},
@@ -29,21 +27,15 @@ var BCLS = (function(window, document) {
         csvData = document.getElementById('csvData'),
         apiRequest = document.getElementById('apiRequest'),
         allButtons = document.getElementsByName('button'),
-        pLogGettingVideoSets = document.createElement('p'),
+        pLogGettingVideos = document.createElement('p'),
         pLogGettingRenditions = document.createElement('p'),
         pLogFinish = document.createElement('p'),
-        spanIntro1 = document.createElement('span'),
-        spanOf1 = document.createElement('span'),
         spanIntro2 = document.createElement('span'),
         spanOf2 = document.createElement('span'),
-        spanSetsTotal = document.createElement('span'),
-        spanSetsCount = document.createElement('span'),
-        spanVideosTotal = document.createElement('span'),
-        spanVideosCount = document.createElement('span'),
-        spanSetsTotalEl,
-        spanSetsCountEl,
-        spanVideosTotalEl,
-        spanVideosCountEl;
+        spanRenditionsTotal = document.createElement('span'),
+        spanRenditionsCount = document.createElement('span'),
+        spanRenditionsTotalEl,
+        spanRenditionsCountEl;
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -187,11 +179,12 @@ var BCLS = (function(window, document) {
             resWidth,
             resHeight,
             rendition = {};
+            console.log('write report');
         if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
-
+                console.log('video', video);
                 // generate the video detail row
                 hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
                 hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
@@ -234,8 +227,6 @@ var BCLS = (function(window, document) {
             // content = document.createTextNode('Finished! See the results or get the CSV data below.');
             pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
             // reportDisplay.innerHTML = summaryReportStr + reportStr;
-            makeReport.textContent = 'Get next 100 videos';
-            superSet++;
             enableButtons();
         }
     }
@@ -258,10 +249,14 @@ var BCLS = (function(window, document) {
                 getMediaData(requestData, id);
                 break;
             case 'getCustomFields':
-
+                endPoint = accountId + '/video_fields';
+                requestData.url = baseURL + endPoint;
+                requestData.requestType = 'GET';
+                apiRequest.textContent = requestData.url;
+                getMediaData(requestData, id);
                 break;
             case 'getVideos':
-                var offset = (superSet * 100) + (limit * callNumber);
+                var offset = (limit * callNumber);
                 endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
@@ -300,24 +295,25 @@ var BCLS = (function(window, document) {
                         videosCompleted++;
                         logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
                         callNumber++;
-                        if (callNumber < iMax) {
+                        if (callNumber < totalVideos) {
                             setRequestData('getVideoRenditions');
                         } else {
                             // create csv headings
-                            console.log('customFields', customFields);
                             startCSVStrings();
                             // write the report
+                            console.log('videosArray', videosArray);
                             writeReport();
                         }
                     };
                 videosArray[callNumber].hlsRenditions = [];
                 videosArray[callNumber].mp4Renditions = [];
+                videosArray[callNumber].flvRenditions = [];
+                videosArray[callNumber].otherRenditions = [];
                 endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
-                spanVideosCountEl.textContent = callNumber + 1;
-                spanVideosTotalEl.textContent = superSetVideos;
+                spanRenditionsCountEl.textContent = callNumber + 1;
                 getMediaData(requestData, id, callback);
                 break;
         }
@@ -336,6 +332,7 @@ var BCLS = (function(window, document) {
             requestParams,
             dataString,
             renditions,
+            field,
             i = 0,
             iMax,
             // response handler
@@ -343,16 +340,24 @@ var BCLS = (function(window, document) {
                 try {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200) {
+// console.log('response', httpRequest.responseText);
                             // check for completion
                             if (requestID === 'getCount') {
                                 responseRaw = httpRequest.responseText;
                                 parsedData = JSON.parse(responseRaw);
                                 // set total videos
                                 totalVideos = parsedData.count;
-                                totalCalls = Math.ceil(superSetVideos / limit);
-                                logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-                                spanSetsCountEl.textContent = callNumber + 1;
-                                spanSetsTotalEl.textContent = totalCalls;
+                                totalCalls = Math.ceil(totalVideos / limit);
+                                logText.textContent = totalVideos + ' videos found; getting account custom fields';
+                                setRequestData('getCustomFields');
+                            } else if (requestID === 'getCustomFields') {
+                                responseRaw = httpRequest.responseText;
+                                parsedData = JSON.parse(responseRaw);
+                                for (field in parsedData.custom_fields) {
+                                    customFields.push(field);
+                                }
+                                logText.textContent = 'Custom fields retrieved; getting videos...';
+                                spanRenditionsTotalEl.textContent = totalVideos;
                                 setRequestData('getVideos');
                             } else if (requestID === 'getVideos') {
                                 if (httpRequest.responseText === '[]') {
@@ -364,14 +369,11 @@ var BCLS = (function(window, document) {
                                 videosArray = videosArray.concat(parsedData);
                                 callNumber++;
                                 if (callNumber < totalCalls) {
-                                    spanSetsCountEl.textContent = callNumber + 1;
                                     setRequestData('getVideos');
                                 } else {
                                     callNumber = 0;
-                                    iMax = videosArray.length;
-                                    for (i; i < iMax; i++) {
-                                        processCustomFields(videosArray[i].custom_fields);
-                                    }
+                                    spanRenditionsCountEl.textContent = callNumber + 1;
+                                    spanRenditionsTotalEl.textContent = totalVideos;
                                     setRequestData('getVideoRenditions');
                                 }
                             } else if (requestID === 'getVideoRenditions') {
@@ -418,36 +420,19 @@ var BCLS = (function(window, document) {
             this.select();
         });
         // set up the log elements
-        content = document.createTextNode('Getting video set ');
-        spanIntro1.appendChild(content);
         content = document.createTextNode('Getting renditions for video ');
         spanIntro2.appendChild(content);
         content = document.createTextNode(' of ');
-        spanOf1.appendChild(content);
-        content = document.createTextNode(' of ');
         spanOf2.appendChild(content);
-        spanSetsCount.setAttribute('id', 'spanSetsCount');
-        spanSetsTotal.setAttribute('id', 'spanSetsTotal');
-        spanVideosCount.setAttribute('id', 'spanVideosCount');
-        spanVideosTotal.setAttribute('id', 'spanVideosTotal');
-        pLogGettingVideoSets.appendChild(spanIntro1);
-        pLogGettingVideoSets.appendChild(spanSetsCount);
-        pLogGettingVideoSets.appendChild(spanOf1);
-        pLogGettingVideoSets.appendChild(spanSetsTotal);
+        spanRenditionsCount.setAttribute('id', 'spanRenditionsCount');
+        spanRenditionsTotal.setAttribute('id', 'spanRenditionsTotal');
         pLogGettingRenditions.appendChild(spanIntro2);
-        pLogGettingRenditions.appendChild(spanVideosCount);
+        pLogGettingRenditions.appendChild(spanRenditionsCount);
         pLogGettingRenditions.appendChild(spanOf2);
-        pLogGettingRenditions.appendChild(spanVideosTotal);
-        logger.appendChild(pLogGettingVideoSets);
-        spanSetsCountEl = document.getElementById('spanSetsCount');
-        spanSetsTotalEl = document.getElementById('spanSetsTotal');
-        spanSetsCountEl.textContent = callNumber + 1;
-        spanSetsTotalEl.textContent = totalCalls;
+        pLogGettingRenditions.appendChild(spanRenditionsTotal);
         logger.appendChild(pLogGettingRenditions);
-        spanVideosCountEl = document.getElementById('spanVideosCount');
-        spanVideosTotalEl = document.getElementById('spanVideosTotal');
-        spanVideosCountEl.textContent = callNumber + 1;
-        spanVideosTotalEl.textContent = superSetVideos;
+        spanRenditionsCountEl = document.getElementById('spanRenditionsCount');
+        spanRenditionsTotalEl = document.getElementById('spanRenditionsTotal');
         logger.appendChild(pLogFinish);
 
         // button event handlers
@@ -455,7 +440,7 @@ var BCLS = (function(window, document) {
             // get the inputs
             clientId = client_id.value;
             clientSecret = client_secret.value;
-            superSet = getSelectedValue(videoCount);
+            totalVideos = getSelectedValue(videoCount);
             // only use entered account id if client id and secret are entered also
             if (isDefined(clientId) && isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
@@ -469,24 +454,12 @@ var BCLS = (function(window, document) {
             } else {
                 accountId = '1752604059001';
             }
-            // if first set, we need to get the count
-            if (superSet === 0) {
+            // if getting all videos, get video count
+            if (videoCount === 'All') {
                 setRequestData('getCount');
             } else {
-                if ((totalVideos - videosCompleted) < 100) {
-                    superSetVideos = totalVideos - videosCompleted;
-                }
-                // resets
-                videosArray = [];
-                summaryData = {};
-                totalCalls = 0;
-                callNumber = 0;
-                totalCalls = Math.ceil(superSetVideos / limit);
-                spanSetsTotalEl.textContent = totalCalls;
-                spanSetsCountEl.textContent = callNumber + 1;
-                spanVideosTotalEl.textContent = superSetVideos;
-                spanVideosCountEl.textContent = 1;
-                setRequestData('getVideos');
+                totalCalls = Math.ceil(totalVideos / limit);
+                setRequestData('getCustomFields');
             }
 
         });
