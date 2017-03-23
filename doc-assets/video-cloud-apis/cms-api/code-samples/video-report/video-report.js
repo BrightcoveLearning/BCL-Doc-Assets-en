@@ -179,12 +179,10 @@ var BCLS = (function(window, document) {
             resWidth,
             resHeight,
             rendition = {};
-            console.log('write report');
         if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
-                console.log('video', video);
                 // generate the video detail row
                 hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
                 hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
@@ -301,7 +299,6 @@ var BCLS = (function(window, document) {
                             // create csv headings
                             startCSVStrings();
                             // write the report
-                            console.log('videosArray', videosArray);
                             writeReport();
                         }
                     };
@@ -340,13 +337,11 @@ var BCLS = (function(window, document) {
                 try {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200) {
-// console.log('response', httpRequest.responseText);
                             // check for completion
                             if (requestID === 'getCount') {
                                 responseRaw = httpRequest.responseText;
                                 parsedData = JSON.parse(responseRaw);
                                 // set total videos
-                                console.log('count', responseRaw);
                                 totalVideos = parsedData.count;
                                 totalCalls = Math.ceil(totalVideos / limit);
                                 logText.textContent = totalVideos + ' videos found; getting account custom fields';
@@ -441,11 +436,9 @@ var BCLS = (function(window, document) {
     // button event handlers
     makeReport.addEventListener('click', function() {
         // get the inputs
-        console.log('makeReport');
         clientId = client_id.value;
         clientSecret = client_secret.value;
         totalVideos = getSelectedValue(videoCount);
-        console.log('totalVideos', totalVideos);
         // only use entered account id if client id and secret are entered also
         if (isDefined(clientId) && isDefined(clientSecret)) {
             if (isDefined(account_id.value)) {
