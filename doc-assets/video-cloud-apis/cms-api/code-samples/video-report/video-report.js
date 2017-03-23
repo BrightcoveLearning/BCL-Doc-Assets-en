@@ -10,7 +10,7 @@ var BCLS = (function(window, document) {
         totalCalls = 0,
         callNumber = 0,
         superSet = 0,
-        superSetVideos = 100,
+        superSetVideos,
         videosCompleted = 0,
         videosArray = [],
         summaryData = {},
@@ -21,6 +21,7 @@ var BCLS = (function(window, document) {
         account_id = document.getElementById('account_id'),
         client_id = document.getElementById('client_id'),
         client_secret = document.getElementById('client_secret'),
+        videoCount = document.getElementById('videoCount'),
         makeReport = document.getElementById('makeReport'),
         content,
         logger = document.getElementById('logger'),
@@ -454,6 +455,7 @@ var BCLS = (function(window, document) {
             // get the inputs
             clientId = client_id.value;
             clientSecret = client_secret.value;
+            superSet = getSelectedValue(videoCount);
             // only use entered account id if client id and secret are entered also
             if (isDefined(clientId) && isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
