@@ -346,6 +346,7 @@ var BCLS = (function(window, document) {
                                 responseRaw = httpRequest.responseText;
                                 parsedData = JSON.parse(responseRaw);
                                 // set total videos
+                                console.log('count', responseRaw);
                                 totalVideos = parsedData.count;
                                 totalCalls = Math.ceil(totalVideos / limit);
                                 logText.textContent = totalVideos + ' videos found; getting account custom fields';
@@ -435,35 +436,38 @@ var BCLS = (function(window, document) {
         spanRenditionsTotalEl = document.getElementById('spanRenditionsTotal');
         logger.appendChild(pLogFinish);
 
-        // button event handlers
-        makeReport.addEventListener('click', function() {
-            // get the inputs
-            clientId = client_id.value;
-            clientSecret = client_secret.value;
-            totalVideos = getSelectedValue(videoCount);
-            // only use entered account id if client id and secret are entered also
-            if (isDefined(clientId) && isDefined(clientSecret)) {
-                if (isDefined(account_id.value)) {
-                    accountId = account_id.value;
-                } else {
-                    window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-                    clientId = '';
-                    clientSecret = '';
-                    accountId = '1752604059001';
-                }
+    }
+
+    // button event handlers
+    makeReport.addEventListener('click', function() {
+        // get the inputs
+        console.log('makeReport');
+        clientId = client_id.value;
+        clientSecret = client_secret.value;
+        totalVideos = getSelectedValue(videoCount);
+        console.log('totalVideos', totalVideos);
+        // only use entered account id if client id and secret are entered also
+        if (isDefined(clientId) && isDefined(clientSecret)) {
+            if (isDefined(account_id.value)) {
+                accountId = account_id.value;
             } else {
+                window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+                clientId = '';
+                clientSecret = '';
                 accountId = '1752604059001';
             }
-            // if getting all videos, get video count
-            if (videoCount === 'All') {
-                setRequestData('getCount');
-            } else {
-                totalCalls = Math.ceil(totalVideos / limit);
-                setRequestData('getCustomFields');
-            }
+        } else {
+            accountId = '1752604059001';
+        }
+        // if getting all videos, get video count
+        if (totalVideos === 'All') {
+            setRequestData('getCount');
+        } else {
+            totalCalls = Math.ceil(totalVideos / limit);
+            setRequestData('getCustomFields');
+        }
 
-        });
-    }
+    });
 
     init();
 })(window, document);
