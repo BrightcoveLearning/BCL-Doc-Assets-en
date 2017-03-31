@@ -68,7 +68,7 @@ var BCLS_player_fix = ( function (window, document) {
         sideNav.insertAdjacentHTML('afterBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
-
+        hideElements(bpContent);
         vc.addEventListener('click', function() {
             showElements(vcContent);
             hideElements(bpContent);
