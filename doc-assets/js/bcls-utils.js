@@ -53,7 +53,7 @@ var BCLS_player_fix = ( function (window, document) {
     function showElements(elements) {
         var iMax = elements.length, i;
         for (i = 0; i < iMax; i++) {
-            elements[i].setAttribute('style', 'display:initial');
+            elements[i].setAttribute('style', 'display:block');
         }
     }
     function addStyle(e) {
