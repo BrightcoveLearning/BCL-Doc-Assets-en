@@ -44,6 +44,20 @@ var BCLS_player_fix = ( function (window, document) {
         toggleStr = '<li><button id="vc" class="bcls-button__version" style="background-color:#dd712e;">Video Cloud Version</button> <button id="bp" class="bcls-button__version">Brightcove Player Version</button> <a style="font-size:smaller;" href="//docs.brightcove.com/en/player/brightcove-player/versions.html">(What\'s the difference?)</a><hr></li>',
         iMax, i;
 
+    /**
+     * gets value of a URL param if exists
+     * @param {string} name the param you want the value of
+     * @return {string} result value of param if exists or ""
+     */
+    function getURLparam(name) {
+        var regex,
+            results;
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     function hideElements(elements) {
         var iMax = elements.length, i;
         for (i = 0; i < iMax; i++) {
@@ -74,8 +88,16 @@ var BCLS_player_fix = ( function (window, document) {
         sideNav.insertAdjacentHTML('afterBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
-        showElements(vcContent);
-        hideElements(bpContent);
+        console.log('version', getURLparam('version'));
+        if (getURLparam('version') === 'bp') {
+            showElements(bpContent);
+            hideElements(vcContent);
+            addStyle(bp);
+            removeStyle(vc);
+        } else {
+            showElements(vcContent);
+            hideElements(bpContent);
+        }
         vc.addEventListener('click', function() {
             showElements(vcContent);
             hideElements(bpContent);
