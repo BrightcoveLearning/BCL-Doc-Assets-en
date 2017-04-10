@@ -271,6 +271,7 @@ var BCLS = (function(window, document) {
                                 if (hlsRenditions.length > 0) {
                                     sortArray(hlsRenditions, 'encoding_rate');
                                 }
+
                                 videosArray[callNumber].hlsRenditions = hlsRenditions;
                                 if (mp4Renditions.length > 0) {
                                     sortArray(mp4Renditions, 'encoding_rate');
@@ -334,6 +335,7 @@ var BCLS = (function(window, document) {
             iMax,
             // response handler
             getResponse = function() {
+                var videoCount;
                 try {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status === 200) {
@@ -342,7 +344,12 @@ var BCLS = (function(window, document) {
                                 responseRaw = httpRequest.responseText;
                                 parsedData = JSON.parse(responseRaw);
                                 // set total videos
-                                totalVideos = parsedData.count;
+                                videoCount = parsedData.count;
+                                if (totalVideos === "All") {
+                                    totalVideos = videoCount;
+                                } else {
+                                    totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
+                                }
                                 totalCalls = Math.ceil(totalVideos / limit);
                                 logText.textContent = totalVideos + ' videos found; getting account custom fields';
                                 setRequestData('getCustomFields');
@@ -452,13 +459,8 @@ var BCLS = (function(window, document) {
         } else {
             accountId = '1752604059001';
         }
-        // if getting all videos, get video count
-        if (totalVideos === 'All') {
-            setRequestData('getCount');
-        } else {
-            totalCalls = Math.ceil(totalVideos / limit);
-            setRequestData('getCustomFields');
-        }
+        // get video count
+        setRequestData('getCount');
 
     });
 
