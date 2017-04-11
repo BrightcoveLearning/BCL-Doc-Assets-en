@@ -387,7 +387,7 @@ var aapi_model = {
             description: 'In this topic, you will learn about the Analytics API videos dimension. The video dimension provides analytics by video.',
             from: '2011-01-01',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name'],
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name','video_download_request', 'video_download_complete','video_download_cancellation','video_download_error'],
             filter_values: ['video ids as a comma-delimited list or video.q=={video field}:{value}'],
             incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_path', 'region', 'search_terms'],
             samples: [{
