@@ -228,7 +228,7 @@ var BCLS = (function (window, document, Pikaday) {
                         thisVideo;
                     try {
                         if (httpRequest.readyState === 4) {
-                              if (httpRequest.status === 200) {
+                              if (httpRequest.status >= 200 && httpRequest.status < 300) {
                                 data = JSON.parse(httpRequest.responseText);
                                 bclslog('data', data);
                             } else {

@@ -79,7 +79,7 @@ var BCLS = (function (document, Handlebars) {
             getResponse = function () {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status === 200) {
+                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // add/remove folder video return no data
                             videoData = JSON.parse(httpRequest.responseText);
                             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';

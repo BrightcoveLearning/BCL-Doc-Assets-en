@@ -338,7 +338,7 @@ var BCLS = (function(window, document) {
                 var videoCount;
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status === 200) {
+                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // check for completion
                             if (requestID === 'getCount') {
                                 responseRaw = httpRequest.responseText;

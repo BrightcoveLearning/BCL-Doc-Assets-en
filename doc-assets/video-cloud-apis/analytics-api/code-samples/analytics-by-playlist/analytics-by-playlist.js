@@ -278,7 +278,7 @@ var BCLS = (function (window, document, Pikaday) {
             getResponse = function() {
                 try {
                   if (httpRequest.readyState === 4) {
-                    if (httpRequest.status === 200) {
+                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         bclslog('responseText', httpRequest.responseText);
                         if (type === 'getAnalytics') {
                             callback(httpRequest.responseText);

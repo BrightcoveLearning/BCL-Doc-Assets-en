@@ -452,7 +452,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 bclslog("getting data");
                 try {
                     if (httpRequest.readyState === 4) {
-                      if (httpRequest.status === 200) {
+                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         // try {
                           bclslog('response', httpRequest.responseText);
                           tmpArr = JSON.parse(httpRequest.responseText);

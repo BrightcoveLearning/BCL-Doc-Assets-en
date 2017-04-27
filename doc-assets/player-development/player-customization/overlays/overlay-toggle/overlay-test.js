@@ -143,7 +143,7 @@ videojs("popularVideosPlayer").ready(function () {
         function getResponse() {
             try {
                 if (httpRequest.readyState === 4) {
-                    if (httpRequest.status === 200) {
+                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         responseRaw = httpRequest.responseText;
                         responseData.textContent = responseRaw;
                         parsedData = JSON.parse(responseRaw);

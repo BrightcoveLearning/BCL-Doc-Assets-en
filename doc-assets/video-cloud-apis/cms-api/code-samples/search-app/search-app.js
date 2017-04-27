@@ -214,7 +214,7 @@ function cmsSearchModel() {
                 getResponse = function() {
                     try {
                         if (httpRequest.readyState === 4) {
-                            if (httpRequest.status === 200) {
+                            if (httpRequest.status >= 200 && httpRequest.status < 300) {
                                 switch (type) {
                                     case "counts":
                                         var count = JSON.parse(httpRequest.responseText).count;

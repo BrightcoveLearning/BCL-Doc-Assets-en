@@ -68,7 +68,7 @@ function secondsToTime(secs) {
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status === 200) {
+                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             responseData = httpRequest.responseText;
                             videoData = JSON.parse(responseData);
                             generateSchema();

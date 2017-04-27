@@ -18,7 +18,7 @@ function makeRequest(options, callback) {
         getResponse = function() {
             try {
                 if (httpRequest.readyState === 4) {
-                    if (httpRequest.status === 200 || httpRequest.status === 204) {
+                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         response = httpRequest.responseText;
                         // some API requests return '{null}' for empty responses - breaks JSON.parse
                         if (response === '{null}') {

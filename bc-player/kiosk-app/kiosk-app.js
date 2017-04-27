@@ -120,7 +120,7 @@ videojs.plugin('kioskApp', function() {
       dataReturned = false;
       try {
         if (httpRequest.readyState === 4) {
-          if (httpRequest.status === 200) {
+          if (httpRequest.status >= 200 && httpRequest.status < 300) {
             responseRaw = httpRequest.responseText;
             parsedData = JSON.parse(responseRaw);
             dataReturned = true;

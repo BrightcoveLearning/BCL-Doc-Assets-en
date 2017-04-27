@@ -85,7 +85,7 @@ var BCLS = (function() {
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status === 200) {
+                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // check for completion
                             responseRaw = httpRequest.responseText;
                             parsedData = JSON.parse(responseRaw);

@@ -308,7 +308,7 @@ var BCLS = (function (window, document, Handlebars, bclsProfiles_cached) {
                 bclslog('getting data');
                 try {
                     if (httpRequest.readyState === 4) {
-                      if (httpRequest.status === 200) {
+                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           bclslog(httpRequest.responseText);
                           data.BCLSprofilesArray = JSON.parse(httpRequest.responseText);
                           removeExtraProfiles();

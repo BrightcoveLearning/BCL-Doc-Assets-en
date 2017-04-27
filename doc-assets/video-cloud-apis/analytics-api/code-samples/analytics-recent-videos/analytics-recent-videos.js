@@ -397,7 +397,7 @@ var BCLS = (function(window, document, aapi_model) {
             getResponse = function() {
                 try {
                   if (httpRequest.readyState === 4) {
-                    if (httpRequest.status === 200) {
+                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
                       // check for completion
                       if (requestID === 'getCount') {
                         if (httpRequest.responseText === '[]') {
