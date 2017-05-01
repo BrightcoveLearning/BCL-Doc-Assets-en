@@ -51,6 +51,10 @@ videojs.plugin('registerToPlay', function(options) {
         myPlayer.play();
     };
 
+    /**
+     * handles timeupdate events - when playback reaches 3 seconds
+     * pause the player and hides controls to force registration
+     */
     function timeupdateHandler(evt) {
         // use my player.currentTime() to get the current position
         // you can't be sure the event will fire at 5 seconds, so check for
