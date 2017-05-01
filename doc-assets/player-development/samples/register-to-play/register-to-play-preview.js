@@ -51,17 +51,21 @@ videojs.plugin('registerToPlay', function(options) {
         myPlayer.play();
     };
 
-    // pause the video when the overlay appears
-    myPlayer.on('timeupdate', function(evt) {
+    function timeupdateHandler(evt) {
         // use my player.currentTime() to get the current position
         // you can't be sure the event will fire at 5 seconds, so check for
         // when the currentTime exceeds 3
-        if (myPlayer.currentTime() > 3 && !registered) {
+        if (myPlayer.currentTime() > 3) {
             myPlayer.pause();
+
             // we only want to do this once, so unload the listener
-           myPlayer.addClass('hide-controls');
+            myPlayer.off('timeupdate', timeupdateHandler);
+            myPlayer.addClass('hide-controls');
         }
-    });
+    }
+
+    // pause the video when the overlay appears
+    myPlayer.on('timeupdate', timeupdateHandler);
 
     // everything below is for handling the registration form
 
