@@ -56,12 +56,10 @@ videojs.plugin('registerToPlay', function(options) {
         // use my player.currentTime() to get the current position
         // you can't be sure the event will fire at 5 seconds, so check for
         // when the currentTime exceeds 3
-        if (myPlayer.currentTime() > 3) {
+        if (myPlayer.currentTime() > 3 && !registered) {
             myPlayer.pause();
             // we only want to do this once, so unload the listener
-            myPlayer.off('timeupdate');
-            // hide the player controls
-            myPlayer.addClass('hide-controls');
+           myPlayer.addClass('hide-controls');
         }
     });
 
