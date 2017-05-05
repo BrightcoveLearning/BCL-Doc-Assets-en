@@ -83,6 +83,8 @@ var BCLS_player_fix = ( function (window, document) {
         //     sideNavList = document.getElementById('sideNavList');
         //     console.log('foo', sideNavList);
         // }
+        // vc.addEventListener('click', vcClickHandler);
+        // bp.addEventListener('click', bpClickHandler);
     }
 
     function bpClickHandler() {
@@ -100,6 +102,8 @@ var BCLS_player_fix = ( function (window, document) {
         //     sideNavList = document.getElementById('sideNavList');
         //     console.log('foo', sideNavList);
         // }
+        // vc.addEventListener('click', vcClickHandler);
+        // bp.addEventListener('click', bpClickHandler);
     }
 
     if (vcContent.length !== 0 || bpContent.length !== 0) {
