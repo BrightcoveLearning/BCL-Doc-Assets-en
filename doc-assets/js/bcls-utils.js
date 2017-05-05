@@ -44,7 +44,6 @@ var BCLS_player_fix = ( function (window, document) {
         bpContent = document.getElementsByClassName('player-only'),
         toggleStr = '<li><button id="vc" class="bcls-button__version" style="background-color:#dd712e;">Video Cloud Version</button> <button id="bp" class="bcls-button__version">Brightcove Player Version</button> <a style="font-size:smaller;" href="//docs.brightcove.com/en/player/brightcove-player/versions.html">(What\'s the difference?)</a><hr></li>',
         iMax, i;
-        console.log('hash', location.hash);
 
 
     function hideElements(elements) {
@@ -73,48 +72,61 @@ var BCLS_player_fix = ( function (window, document) {
         e.removeAttribute('style');
     }
 
+    function vcClickHandler() {
+        showElements(vcContent);
+        hideElements(bpContent);
+        addStyle(vc);
+        removeStyle(bp);
+        // if (BCLSmain.createInPageNavMenu) {
+        //     sideNavList.outerHTML = '';
+        //     BCLSmain.createInPageNavMenu();
+        //     sideNavList = document.getElementById('sideNavList');
+        //     console.log('foo', sideNavList);
+        // }
+    }
+
+    function bpClickHandler() {
+        var j, jMax;
+        if (location.hash === '') {
+            location.hash = 'bp';
+        }
+        showElements(bpContent);
+        hideElements(vcContent);
+        addStyle(bp);
+        removeStyle(vc);
+        // if (BCLSmain.createInPageNavMenu) {
+        //     sideNavList.outerHTML = '';
+        //     BCLSmain.createInPageNavMenu();
+        //     sideNavList = document.getElementById('sideNavList');
+        //     console.log('foo', sideNavList);
+        // }
+    }
+
     if (vcContent.length !== 0 || bpContent.length !== 0) {
-        sideNav.insertAdjacentHTML('afterBegin', toggleStr);
-        vc = document.getElementById('vc');
-        bp = document.getElementById('bp');
         if (location.hash.indexOf('bp') >- 0) {
             showElements(bpContent);
             hideElements(vcContent);
-            addStyle(bp);
-            removeStyle(vc);
         } else {
             showElements(vcContent);
             hideElements(bpContent);
         }
-        vc.addEventListener('click', function() {
-            showElements(vcContent);
-            hideElements(bpContent);
-            addStyle(vc);
-            removeStyle(bp);
-            // if (BCLSmain.createInPageNavMenu) {
-            //     sideNavList.outerHTML = '';
-            //     BCLSmain.createInPageNavMenu();
-            //     sideNavList = document.getElementById('sideNavList');
-            //     console.log('foo', sideNavList);
-            // }
-        });
-
-        bp.addEventListener('click', function() {
-            var j, jMax;
-            if (location.hash === '') {
-                location.hash = 'bp';
-            }
-            showElements(bpContent);
-            hideElements(vcContent);
+        if (BCLSmain.createInPageNavMenu) {
+            sideNavList.outerHTML = '';
+            BCLSmain.createInPageNavMenu();
+            sideNavList = document.getElementById('sideNavList');
+            console.log('foo', sideNavList);
+        }
+        sideNav.insertAdjacentHTML('afterBegin', toggleStr);
+        vc = document.getElementById('vc');
+        bp = document.getElementById('bp');
+        if (location.hash.indexOf('bp') >- 0) {
             addStyle(bp);
             removeStyle(vc);
-            // if (BCLSmain.createInPageNavMenu) {
-            //     sideNavList.outerHTML = '';
-            //     BCLSmain.createInPageNavMenu();
-            //     sideNavList = document.getElementById('sideNavList');
-            //     console.log('foo', sideNavList);
-            // }
-        });
+        }
+
+        vc.addEventListener('click', vcClickHandler);
+
+        bp.addEventListener('click', bpClickHandler);
 
 
     }
