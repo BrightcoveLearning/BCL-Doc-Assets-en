@@ -133,7 +133,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 navLabel.push(navObj);
             }
         }
-        bclslog('navLabel', navLabel);
+        // bclslog('navLabel', navLabel);
         // only create the nav widget if there is more than one item
         if (navLabel.length > 1) {
             // create in-page nav menu
@@ -210,7 +210,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
         fragment.appendChild(newSectionNode);
-        bclslog('data.BCLSprofilesArray', data.BCLSprofilesArray);
+        // bclslog('data.BCLSprofilesArray', data.BCLSprofilesArray);
         iMax = data.BCLSprofilesArray.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesArray[i];
@@ -275,7 +275,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         tr.appendChild(th);
     }
     function buildDetailTables() {
-        bclslog("building data tables");
+        // bclslog("building data tables");
         var section,
             fragment = document.createDocumentFragment(),
             sectionHeading,
@@ -380,7 +380,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             }
             // dedupe the headers
             headersArray = dedupe(headersArray);
-            bclslog("deduped headers array", headersArray);
+            // bclslog("deduped headers array", headersArray);
             // write the th elements to the string
             // create the table headers
             lMax = headersArray.length;
@@ -423,7 +423,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             }
         }
         mainSection.appendChild(fragment);
-        bclslog("content built");
+        // bclslog("content built");
         // get reference to codeBlocks
         setCodeBlocks();
         createInPageNav();
@@ -449,12 +449,12 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             iMax,
             tmpArr,
             getResponse = function () {
-                bclslog("getting data");
+                // bclslog("getting data");
                 try {
                     if (httpRequest.readyState === 4) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         // try {
-                          bclslog('response', httpRequest.responseText);
+                        //   bclslog('response', httpRequest.responseText);
                           tmpArr = JSON.parse(httpRequest.responseText);
                           iMax = tmpArr.length;
                           data.BCLSprofilesArray = [];
