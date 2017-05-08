@@ -36,7 +36,7 @@ var BCLSshowContentByProduct = ( function (window, document) {
 
     // if product = perform, hide video cloud content and vice-versa
     if (arrayContains(pathArr, 'video-cloud')) {
-        hideContent(pbContent);
+        hideContent(bpContent);
     } else {
         hideContent(vcContent);
     }
