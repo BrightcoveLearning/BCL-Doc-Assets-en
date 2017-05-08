@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Begin Drupal Taxonomy Data -->
+    <meta name="products" content="Video Cloud">
+    <meta name="role" content="API Developer">
+    <meta name="api" content="Ingest Profiles">
+    <meta name="task" content="Add Videos">
+    <meta name="topic" content="Ingest Profiles">
+    <meta name="keywords" content="digital master">
+    <!-- End Drupal Taxonomy Data -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
+    <!-- change title to match the h1 heading -->
+    <title>Dynamic Profiles</title>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700" rel="stylesheet" type="text/css">
+<script src="//use.edgefonts.net/source-code-pro.js"></script>
+<link rel="stylesheet" href="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.css">
+<link rel="stylesheet" href="//docs.brightcove.com/en/styles/template-less/css/bcls-doc.css">
+<link rel="stylesheet" href="/en/styles/foundation-fixes.css">
+
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-2728311-29', 'auto');
+    ga('send', 'pageview');
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js"></script>
+
+</head>
+
+<body>
+    <!-- header navbar -->
+    <div id="navWrapper" class="fixed"></div>
+    <!-- breadcrumbs -->
+    <nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
+    <!-- search -->
+    <div id="searchModal" class="reveal-modal" data-reveal></div>
+    <!-- content -->
+    <div class="row">
+        <div class="sidebar large-2 columns show-for-large-up">
+            <div id="sidenav" class="side-nav"></div>
+        </div>
+        <div id="main" class="large-10 small-12 columns">
+            <h1>Dynamic Profiles (beta)</h1>
+            <!-- begin drupal content -->
+            <article class="bcls-article">
+                <header id="bcls_header" class="bcls-header">
+                    <p>In this topic, you will learn how to create and use dynamic ingest profiles.</p>
+                    <aside class="bcls-aside bcls-aside--information">This technology in currently in beta testing.</aside>
+                </header>
+                <section id="Introduction" class="bcls-section">
+                    <h2>Introduction</h2>
+                    <p>Dynamic profiles is a technology developed by Brightcove to analyze the source video during transcoding and generate an optimum set of renditions and bitrates based on the complexity of the video and a set of bounding parameters provided (minimum number of renditions, max bitrate, etc.). A comparable industry term for this technology is "per title encoding".</p>
+                </section>
+                <section id="Limitations" class="bcls-section">
+                    <h2>Limitations</h2>
+                    <ul>
+                        <li>Server-Side Ad Integration (SSAI) will not work on renditions generated through Dynamic profiles</li>
+                    </ul>
+                </section>
+                <section class="bcls-section" id="Enabling_an_account">
+                    <h2>Enabling an account</h2>
+                    <p>You will need to enable your account for Dynamic Delivery by contacting Customer Support (If you haven't already). After that send an email to dynamic-profiles-beta@brightcove.com to enable your account to use <a href="//docs.brightcove.com/en/video-cloud/di-api/getting-started/overview-di-dynamic-delivery.html">Dynamic Profiles</a>.</p>
+                </section>
+                <section class="bcls-section" id="Create_dynamic_profiles">
+                    <h2>Create dynamic profiles</h2>
+                    <p>Once your account is enabled, you can add dynamic profiles using the Ingest Profiles section of the Studio Admin pages. The steps that follow will walk you through creating your first dynamic profile.</p>
+                    <ol class="bcls-tasklist">
+                        <li>Login to Studio.</li>
+                        <li>Go to the <strong>Admin&gt;Ingest Profiles</strong> section.</li>
+                        <li>Click the <strong>New Profile</strong> button.</li>
+                        <li>Click on the Advanced Profiles tab:
+                            <figure class="bcls-figure">
+                                <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/guides/dynamic-profiles/assets/advanced-profile-editor.png" alt="Advanced Profile Editor">
+                                <figcaption class="bcls-caption--image">Advanced Profile Editor</figcaption>
+                            </figure>
+                        </li>
+                        <li>Replace the JSON code in the editor with the following, replacing the highlighted fields:
+<pre class="line-numbers"><code class="language-json">{
+  "name": "<span class="bcls-input">Your Profile Name</span>",
+  "account_id": "<span class="bcls-input">Your Account Id</span>",
+  "digital_master": {
+    "rendition": "passthrough",
+    "distribute": false
+  },
+  "renditions": [],
+  "packages": [],
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/dynamic",
+      "default/audio128",
+      "default/audio96"
+    ],
+    "dynamic_profile_options": {
+      "min_renditions": 3,
+      "max_renditions": 6,
+      "max_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "max_bitrate": 2000
+    },
+    "images": [
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+      },
+      {
+        "label": "poster",
+        "height": 720,
+        "width": 1280
+      }
+    ]
+  }
+}</code></pre>
+                        </li>
+                        <li>Click <strong>Save</strong>, and you now have a dynamic profile. Try uploading a video in the Upload module, selecting your new profile to process it. This should provide a set of renditions that are optimized for playback on the most commonly used platforms such as desktop and mobile devices.</li>
+                    </ol>
+                </section>
+                <section id="Playback_testing" class="bcls-section">
+                    <h2>Playback testing</h2>
+                    <p>While we expect the playback experience to be seamless regardless of static or dynamic profiles, this technology is in beta, and we encourage you to test this and <a href="#Feedback">let us know</a> (dynamic-profiles-beta@brightcove.com) of any instances where there is noticeable differences in quality.</p>
+                </section>
+                <section id="Advanced_testing" class="bcls-section">
+                    <h2>Advanced testing</h2>
+                    <p>If you are interested in testing renditions produced by Dynamic Profiles on large screen TVs or other "lean back" platforms, try adding another dynamic ingest profile using the code below:</p>
+<pre class="line-numbers"><code class="language-json">{
+  "name": "<span class="bcls-input">Your Profile Name</span>",
+  "account_id": "<span class="bcls-input">Your Account ID</span>",
+  "digital_master": {
+    "rendition": "passthrough",
+    "distribute": false
+  },
+  "renditions": [],
+  "packages": [],
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/dynamic",
+      "default/audio128",
+      "default/audio96"
+    ],
+    "dynamic_profile_options": {
+      "min_renditions": 3,
+      "max_renditions": 6,
+      "max_resolution": {
+        "width": 1080,
+        "height": 1920
+      },
+      "max_bitrate": 3800
+    },
+    "images": [
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+      },
+      {
+        "label": "poster",
+        "height": 720,
+        "width": 1280
+      }
+    ]
+  }
+}</code></pre>
+                    <p>After you create the profile, upload some content using it, and try it out on a large screen monitor or TV.</p>
+                </section>
+                <section id="Feedback" class="bcls-section">
+                    <h2>Feedback</h2>
+                    <p>When providing us feedback at (dynamic-profiles-beta@brightcove.com), please include the following:</p>
+                    <ul>
+                        <li>Account ID</li>
+                        <li>Video ID</li>
+                        <li>Link to player you've published using the encoded video</li>
+                        <li>Platforms tested</li>
+                        <li>A short explanation on why the quality during playback was not on par with your expectations</li>
+                        <li><strong>Bonus points</strong> for providing us quality or analytics reports with data that supports your observation of differences in playback behavior</li>
+                    </ul>
+                </section>
+                <section id="DRM" class="bcls-section">
+                    <h2>Dynamic Profiles and DRM</h2>
+                    <p>If your account is enabled for DRM, by default your optimally produced renditions will be stored and delivered encrypted.</p>
+                </section>
+                <section id="Benefits_of_Dynamic_Profiles" class="bcls-section">
+                    <h2>Benefits</h2>
+                    <p>Below are some of the benefits of switching to dynamic profiles:</p>
+                    <ul>
+                        <li>Improvement in quality of service – Because many videos will be encoded at a lower bitrate, viewer performance should improve: faster load times and less buffering.</li>
+                        <li>Reduction in storage and bandwidth costs – Most videos will be encoded at a lower bitrate and an optimum set produced as needed based on the input. Based on our research, on average total size of the renditions are reduced by 40% and less bandwidth consumed by the end user much lower resulting in lower storage and bandwidth costs.</li>
+                        <li>Potential increase in visual quality – Because we are analyzing each video and creating content-specific profiles, video with a higher complexity will be encoded with higher bitrates. As a result, there should be less distortion than with a basic static profile.</li>
+                    </ul>
+                </section>
+            </article>
+            <!-- end drupal content -->
+        </div>
+    </div>
+    <!-- bcl scripts -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+<script src="/en/scripts/docs-nav-data.min.js"></script>
+<script src="/en/scripts/bcls-doc-site-v2.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
+<script>
+    $(document).foundation();
+</script>
+
+
+<div style="text-align:center">
+    <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+</div>
+<div class="bcls-footer text-center"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+<script>
+var feedbackMail = document.getElementById("feedbackMail");
+feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+</script>
+</body>
+
+</html>
