@@ -53,9 +53,18 @@ var BCLS_player_fix = ( function (window, document) {
         }
     }
     function showElements(elements) {
-        var iMax = elements.length, i;
+        var iMax = elements.length, i, tag;
         for (i = 0; i < iMax; i++) {
-            elements[i].setAttribute('style', 'display:block');
+            tag = elements[i].tagName.toLowerCase();
+            if (tag === 'li') {
+                elements[i].setAttribute('style', 'display:list-item;');
+            } else if (tag === 'span' || tag === 'a') {
+                elements[i].setAttribute('style', 'display:inline;');
+            } else if (tag === 'tr') {
+                elements[i].setAttribute('style', 'display:table-row;');
+            } else {
+                elements[i].setAttribute('style', 'display:block;');
+            }
         }
     }
     function addStyle(e) {
