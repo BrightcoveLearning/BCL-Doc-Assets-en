@@ -1,0 +1,253 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>After a job or an output file is complete, you can find out about it in several ways.</p>
+
+<ul>
+	<li>We can POST an HTTP request to your application with the details.
+	</li>
+	<li>You can <a href="/node/17780">request your notifications using the Zencoder Fetcher gem</a>. This is useful when you are developing locally and Zencoder can't reach your development server.</li>
+	<li>We can send an email.</li>
+	<li>You can check the Zencoder Dashboard for job status.</li>
+</ul>
+</section>
+
+<section id="http_email_notifications" class="bcls-section">
+<h2>Get HTTP/Email notifications</h2>
+
+<p>To receive HTTP or email notifications, add <a href="/node/17881">Notification options</a> to your API request, like this:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "api_key": "93h630j1dsyshjef620qlkavnmzui3",
+  "input": "s3://bucket-name/file-name.avi",
+  "notifications": [
+  "http://user:password@example.com/zencoder",
+  "admin@example.com"
+  ],
+  "outputs": [
+  {
+      "label": "web",
+      "url": "s3://output-bucket/web.mp4",
+      "size": "512x384",
+      "notifications": [
+      "http://user:password@example.com/zencoder",
+      "admin@example.com"
+      ]
+  },
+  {
+      "label": "iphone",
+      "url": "s3://output-bucket/iphone.m4v",
+      "size": "480x320",
+      "notifications": [
+      {"format": "xml", "url": "http://user:password@example.com/zencoder1"},
+      {"format": "json", "url": "http://user:password@example.com/zencoder2"},
+      "http://example.com/zencoder3",
+      "admin@example.com"
+      ]
+  }
+  ]
+}</code></pre>
+
+<p>In this example, when the first output file is completed, two notifications would be sent:</p>
+
+<ul>
+	<li>Email to <code>admin@example.com</code> with information about the output and the input/job.</li>
+	<li>HTTP POST to <code>http://user:password@example.com/zencoder</code> with a Content-Type header set to 'application/json' with information about the output and the input/job.</li>
+</ul>
+
+<p>When the second output file is complete, four more notifications would be sent:</p>
+
+<ul>
+	<li>HTTP POST to <code>http://example.com/zencoder1</code> with a Content-Type header set to 'application/xml' with information about the output and the input.</li>
+	<li>HTTP POST to <code>http://example.com/zencoder2</code> with a Content-Type header set to 'application/json' with information about the output and the input/job.</li>
+	<li>Email to <code>admin@example.com</code> with information about the output and the input/job.</li>
+	<li>HTTP POST to <code>http://example.com/zencoder3</code> with a Content-Type header set to 'application/json' with information about the output and the input/job.</li>
+</ul>
+
+<p>When the job is completed, two more notifications would be sent:</p>
+
+<ul>
+	<li>Email to <code>admin@example.com</code> with information about the output and the input.</li>
+	<li>HTTP POST to <code>http://user:password@example.com/zencoder</code> with a Content-Type header set to 'application/json' with information about the output and the input.</li>
+</ul>
+
+<p><strong>Note:</strong> If Zencoder is unable to succesfully connect to the target server when sending a notification, the notification will be queued to try again. The notification will be attempted up to 25 times, with the delay between attempts doubling each time.</p>
+</section>
+
+<section id="HTTP_Notifications" class="bcls-section">
+<h2>HTTP Notifications</h2>
+
+<p>Notifications contain rich content with much more information about the job and input and output files. The body of the notification can contain JSON or XML. If uploads fail, notifications will also contain information about <a href="file-backups.html">errors and backup servers used</a>.</p>
+
+<h3>Job Notification Example</h3>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "outputs":[
+  {
+      "height":120,
+      "audio_sample_rate":8000,
+      "frame_rate":8.0,
+      "channels":"1",
+      "duration_in_ms":1920,
+      "video_bitrate_in_kbps":70,
+      "video_codec":"h264",
+      "format":"mpeg4",
+      "audio_codec":"aac",
+      "label":null,
+      "file_size_in_bytes":17938,
+      "width":160,
+      "audio_bitrate_in_kbps":9,
+      "id":235314,
+      "total_bitrate_in_kbps":79,
+      "state":"finished",
+      "url":"ftp://example.com/file.mp4",
+      "md5_checksum":"7f106918e02a69466afa0ee014172496",
+      "thumbnails": [
+      {
+          "label":"poster",
+          "images":
+          [
+          {
+              "url": "ftp://example.com/images/123.png",
+              "format": "PNG",
+              "file_size_bytes": 1273573,
+              "dimensions": "1280x720"
+          }
+          ]
+      }
+      ]
+  },
+  {
+      "height":120,
+      "audio_sample_rate":8000,
+      "frame_rate":8.0,
+      "channels":"1",
+      "duration_in_ms":1920,
+      "video_bitrate_in_kbps":70,
+      "video_codec":"h264",
+      "format":"mpeg4",
+      "audio_codec":"aac",
+      "label":null,
+      "file_size_in_bytes":17938,
+      "width":160,
+      "audio_bitrate_in_kbps":9,
+      "id":235314,
+      "total_bitrate_in_kbps":79,
+      "state":"finished",
+      "url":"ftp://example.com/file.mp4",
+      "md5_checksum":"7f106918e02a69466afa0ee014172496",
+      "thumbnails": [
+      {
+          "label":"poster",
+          "images":
+          [
+          {
+              "url": "ftp://example.com/images/123.png",
+              "format": "PNG",
+              "file_size_bytes": 1273573,
+              "dimensions": "1280x720"
+          }
+          ]
+      }
+      ]
+  }
+  ],
+  "job":{
+      "created_at":"2011-09-27T04:20:10Z",
+      "pass_through":null,
+      "updated_at":"2011-09-27T04:21:18Z",
+      "submitted_at":"2011-09-27T04:20:10Z",
+      "id":172151,
+      "state":"finished"
+  },
+  "input":{
+      "height":120,
+      "audio_sample_rate":8000,
+      "frame_rate":8.0,
+      "channels":"1",
+      "duration_in_ms":1552,
+      "video_bitrate_in_kbps":32,
+      "video_codec":"mpeg4",
+      "format":"mpeg4",
+      "audio_codec":"aac",
+      "file_size_in_bytes":13960,
+      "width":160,
+      "audio_bitrate_in_kbps":9,
+      "id":172149,
+      "state":"finished",
+      "total_bitrate_in_kbps":41,
+      "md5_checksum":"7f106918e02a69466afa0ee014174143"
+  }
+}</code></pre>
+
+<h3>Output Notification Example</h3>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "output":{
+      "height":120,
+      "audio_sample_rate":8000,
+      "frame_rate":8.0,
+      "channels":"1",
+      "duration_in_ms":1920,
+      "video_bitrate_in_kbps":70,
+      "video_codec":"h264",
+      "format":"mpeg4",
+      "audio_codec":"aac",
+      "label":null,
+      "file_size_in_bytes":17938,
+      "width":160,
+      "audio_bitrate_in_kbps":9,
+      "id":235314,
+      "total_bitrate_in_kbps":79,
+      "state":"finished",
+      "url":"ftp://example.com/file.mp4",
+      "md5_checksum":"7f106918e02a69466afa0ee014172496",
+      "thumbnails":
+      [
+      {
+          "label":"poster",
+          "images":
+          [
+          {
+              "url": "ftp://example.com/images/123.png",
+              "format": "PNG",
+              "file_size_bytes": 1273573,
+              "dimensions": "1280x720"
+          }
+          ]
+      }
+      ]
+  },
+  "job":{
+      "created_at":"2011-09-27T04:20:10Z",
+      "pass_through":null,
+      "updated_at":"2011-09-27T04:21:18Z",
+      "submitted_at":"2011-09-27T04:20:10Z",
+      "id":172151,
+      "state":"finished"
+  },
+  "input":{
+      "height":120,
+      "audio_sample_rate":8000,
+      "frame_rate":8.0,
+      "channels":"1",
+      "duration_in_ms":1552,
+      "video_bitrate_in_kbps":32,
+      "video_codec":"mpeg4",
+      "format":"mpeg4",
+      "audio_codec":"aac",
+      "file_size_in_bytes":13960,
+      "width":160,
+      "audio_bitrate_in_kbps":9,
+      "id":172149,
+      "state":"finished",
+      "total_bitrate_in_kbps":41,
+      "md5_checksum":"7f106918e02a69466afa0ee014174143"
+  }
+}</code></pre>
+</section>
+</article>

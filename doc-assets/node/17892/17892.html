@@ -1,0 +1,98 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>If a transfer error is encountered while attempting to upload files that error will be captured and a Zencoder server will be used for the remainder of the files. Should this happen on your job there will be details in both the notifications that are posted to your application and on the Zencoder dashboard.</p>
+</section>
+
+<section id="Dashboard_Information" class="bcls-section">
+<h2>Dashboard Information</h2>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Zencoder Dashboard" src="//learning-services-media.brightcove.com/doc-assets/zencoder/assets/docs/backup_job_banner-aeb10ef70e5693b0edab2ed47c06a47f.png" />
+<figcaption class="bcls-caption--image">Zencoder Dashboard</figcaption>
+</figure>
+
+<p>When reviewing a job in the dashboard the banner above will appear at the top of the page, similar to the banner displayed for test jobs.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Dashboard Message" src="//learning-services-media.brightcove.com/doc-assets/zencoder/assets/docs/backup_output_flag-a2861f186e689d5765efb0abfae2d329.png" />
+<figcaption class="bcls-caption--image">Dashboard Message</figcaption>
+</figure>
+
+<p>The specific output that used the backup server is flagged under the progress bar, alongside similar notifications for any warnings on the job and notifications:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Dashboard Notifications" src="//learning-services-media.brightcove.com/doc-assets/zencoder/assets/docs/backup_output_error_banners-57893fcf1e70c9078ba2cd1f29687532.png" />
+<figcaption class="bcls-caption--image">Dashboard Notifications</figcaption>
+</figure>
+
+<p>When you view the output's record the error that was prevented Zencoder from uploading the video to your server will be displayed. A full <a href="../error-codes/error-codes.html">list of errors</a> is available.</p>
+</section>
+
+<section id="Notifications" class="bcls-section">
+<h2>Notifications</h2>
+
+<p>API version 2 also includes rich notifications, which contain much more information than the basic notifications in version 1. Along with metadata and details about the files for a job, several attributes are also included if a backup server was used. If the backup server is not used, these attributes will not be passed.</p>
+
+<p><code>backup_server_used</code> will be set to true if any backup servers were used. If it is false or not present, your files were uploaded to the URL specified in your request or to the default S3 bucket.</p>
+
+<p><code>primary_upload_error_link</code> will contain a link to the documentation on Zencoder for the error that occurred when uploading the video.</p>
+
+<p><code>primary_upload_error_message</code> will contain a human-friendly message about the error that occurred when uploading the video.</p>
+
+<p>primary_thumbnail_upload_error_message will contain a link to the documentation on Zencoder for the error that occurred when uploading thumbnails.</p>
+
+<p><code>primary_thumbnail_upload_error_message</code> will contain a human-friendly message about the error that occurred when upload thumbnails.</p>
+
+<h3>Example</h3>
+
+<pre class="line-numbers">
+<code class="language-json">{
+"output":{
+    "backup_server_used":true,
+    "primary_upload_error_link":"https://app.zencoder.com/docs/errors/UnableToResolveHostError",
+    "primary_upload_error_message":"There was a problem resolving the host at ftp://example.com. Please check that it is correct.",
+    "height":120,
+    "audio_sample_rate":8000,
+    "frame_rate":8.0,
+    "channels":"1",
+    "duration_in_ms":1920,
+    "video_bitrate_in_kbps":70,
+    "video_codec":"h264",
+    "format":"mpeg4",
+    "audio_codec":"aac",
+    "label":null,
+    "file_size_in_bytes":17938,
+    "width":160,
+    "audio_bitrate_in_kbps":9,
+    "id":235314,
+    "total_bitrate_in_kbps":79,
+    "state":"finished",
+    "url":"https://zencoder-live.s3.amazonaws.com/2Faf653e6b5e9b4440081827be2dcd962c.mp4?Signature=0DhjHh1X%2FQxSk%&amp;Expires=1317237305&amp;AWSAccessKeyId=AKIA"
+  },
+"job":{
+    "created_at":"2011-09-27T04:20:10Z",
+    "pass_through":null,
+    "updated_at":"2011-09-27T04:21:18Z",
+    "submitted_at":"2011-09-27T04:20:10Z",
+    "id":172151,
+    "state":"finished"
+  },
+"input":{
+    "height":120,
+    "audio_sample_rate":8000,
+    "frame_rate":8.0,
+    "channels":"1",
+    "duration_in_ms":1552,
+    "video_bitrate_in_kbps":32,
+    "video_codec":"mpeg4",
+    "format":"mpeg4",
+    "audio_codec":"aac",
+    "file_size_in_bytes":13960,
+    "width":160,
+    "audio_bitrate_in_kbps":9,
+    "id":172149,
+    "state":"finished",
+    "total_bitrate_in_kbps":41
+  }
+}</code></pre>
+</section>
+</article>
