@@ -1,0 +1,60 @@
+<article class="bcls-article">
+<section class="bcls-section" id="top">
+<p>When you retrieve videos from the Brightcove catalog, the SDK has to decide which source to play. This is implemented in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> components.</p>
+</section>
+
+<section class="bcls-section" id="Default_selection_process">
+<h2>Default selection process</h2>
+
+<p>The Brightcove Player SDK for Android provides a default implementation as follows. To simplify this discussion, we will focus on the SDK’s support for the Brightcove Playback API and Google’s ExoPlayer.</p>
+
+<ol class="bcls-tasklist">
+	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> looks for the first source that has a <code>deliveryType</code> of <strong>MPEG-DASH</strong>, and a profile that is neither <strong>urn:hbbtv</strong> nor <strong>urn:dvb</strong>. The SDK does not support playback with either of these DASH profiles, and so they will be filtered out of the sources.</li>
+	<li>If the above is not found, source selection falls back to the first source with a <code>deliveryType</code> of <strong>HLS</strong>.</li>
+	<li>If no such source is found, it falls back to the source with a <code>deliveryType</code> of <strong>MP4</strong> and a bitrate closest to 256 kBps.</li>
+</ol>
+
+<p>Once a source is found, the implementation continues as follows:</p>
+
+<ol class="bcls-tasklist">
+	<li>If found, the selected source will be emitted with a response to the <strong>SELECT_SOURCE</strong> event.</li>
+	<li>By default, the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/VideoPlaybackController.html">VideoPlaybackController</a> handles the <strong>SELECT_SOURCE</strong> response, by emitting a <strong>SET_SOURCE</strong> event.</li>
+	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/display/VideoDisplayComponent.html">VideoDisplayComponent</a> or a subclass handles the <strong>SET_SOURCE</strong> event by loading the URL into the underlying player (ExoPlayer or MediaPlayer).</li>
+	<li>When playback begins, the underlying player is responsible for adapting the bitrate with HLS and DASH content. With HLS, the underlying player starts with the first bitrate listed in the master manifest.</li>
+</ol>
+
+<p>When using the default transcode settings, the first HLS source should be the master m3u8 playlist that points to all of your individual sources (renditions).</p>
+</section>
+
+<section class="bcls-section" id="Customizing_source_selection">
+<h2>Customizing source selection</h2>
+
+<p>It is possible to customize source selection at the app level, to filter out any undesired delivery types before the SDK’s default source selection policy is invoked. To do this, you would modify the source collections that are set into the Video object from the Playback API’s JSON response.</p>
+
+<p>This example uses only HLS sources:</p>
+
+<pre class="line-numbers">
+<code class="language-java">catalog.findVideoByReferenceID(videoReferenceId, new com.brightcove.player.edge.VideoListener() {
+   @Override
+   public void onVideo(Video video) {
+       sourceSelectionFilter(DeliveryType.HLS, video);
+       brightcoveVideoView.add(video);
+       brightcoveVideoView.start();
+   }
+});
+</code></pre>
+
+<p>And the <code>sourceSelectionFilter()</code> method would look like this:</p>
+
+<pre class="line-numbers">
+<code class="language-java">public static void sourceSelectionFilter(String deliveryTypeFilter, Video video){
+   for (DeliveryType deliveryType : DeliveryType.values()) {
+       if (!deliveryType.name().equals(deliveryTypeFilter)) {
+           Log.v(TAG, "Removing the deliveryType " + deliveryType.name());
+           video.getSourceCollections().remove(deliveryType);
+       }
+   }
+}
+</code></pre>
+</section>
+</article>

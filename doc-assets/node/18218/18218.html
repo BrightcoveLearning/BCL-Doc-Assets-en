@@ -1,0 +1,49 @@
+<article class="bcls-article">
+<section class="bcls-section" id="top">
+<aside class="bcls-aside bcls-aside--information">Although you can't control which source in the HLS manifest gets selected by the AVPlayer, you can apply a <a href="/node/18228#Limiting_the_bitrate">bitrate cap on playback</a>.</aside>
+</section>
+
+<section class="bcls-section" id="Default_selection_process">
+<h2>Default selection process</h2>
+
+<p>When you retrieve videos from the Brightcove catalog or construct a <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVVideo.html">BCOVVideo</a> object with multiple <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVSource.html">BCOVSource</a> elements, the player has to decide which <code>BCOVSource</code> (rendition) to play back.</p>
+
+<p>Apple introduced App Transport Security in iOS 9, and strongly encourages the use of HTTPS instead of HTTP for all web traffic. Therefore, the Brightcove default source selection policy is: <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVBasicSourceSelectionPolicy.html#//api/name/sourceSelectionHLSWithScheme:">[BCOVBasicSourceSelectionPolicy sourceSelectionHLSWithScheme:NSURLProtectionSpaceHTTPS]</a>.</p>
+
+<p>Brightcove provides a default implementation as follows:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>It looks for the first source that has a <code>deliveryType</code> of <strong>HLS</strong> using the HTTPS scheme.</li>
+	<li>If no such source is found, the first <strong>HLS</strong> with an HTTP scheme is returned.</li>
+	<li>If no <strong>HLS</strong> sources are present, it will fall back to the first source with a <code>deliveryType</code> of <strong>MP4</strong>.</li>
+	<li>If none of the above is found, the first playable source of any kind is returned.</li>
+	<li>The source URL is provided to the <code>AVPlayer</code> for playback.</li>
+	<li>When playback begins, the <code>AVPlayer</code> is responsible for selecting which bit rate and resolution to serve.</li>
+	<li>The <code>AVPlayer</code> will start at the first item in the index and adjust accordingly.</li>
+</ol>
+
+<p>When using the default transcode settings, the first HLS source should be the master m3u8 playlist that points to all of your individual renditions.</p>
+</section>
+
+<section class="bcls-section" id="Alternate_rendition_selection_policies">
+<h2>Alternate source selection policies</h2>
+
+<p>You can easily override the default source selection policy if this does not work for you. For details, see the <strong>Source Selection</strong> section of the <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/index.html">Brightcove Player SDK for iOS</a> reference document.</p>
+</section>
+
+<section class="bcls-section" id="Overriding_source">
+<h2>Overriding source</h2>
+
+<p>If you want to override which <code>BCOVSource</code> gets provided to the <code>AVPlayer</code>, you can implement the <code>sourceSelectionPolicy</code> block property on the <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVBasicSessionProviderOptions.html#//api/name/sourceSelectionPolicyy">BCOVBasicSessionProviderOptions</a> class.</p>
+</section>
+<!-- <section class="bcls-section" id="Widevine_plugin">
+      				<h2>Widevine plugin</h2>
+                <p>The Widevine plugin has a slightly different behavior. Its implementation is as follows:</p>
+                <ol>
+                    <li>It looks for the first source with a <code>deliveryType</code> of <strong>WVM</strong>.</li>
+                    <li>The source URL is provided to the <code>AVPlayer</code> for playback.</li>
+                    <li>When playback begins, the <code>AVPlayer</code> is responsible for selecting which bit rate and resolution to serve.</li>
+                </ol>
+                <p>Bit rate and resolution selection is handled by the <code>AVPlayer</code>, unless you enable Widevine&rsquo;s rendition selection option as documented <a href="//www.widevine.com/wv_drm.html">here</a>.</p>
+                <aside class="bcls-aside bcls-aside--information">Widevine does not document how their bit rate and resolution selection works.</aside>
+      			</section> --></article>
