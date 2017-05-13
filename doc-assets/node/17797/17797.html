@@ -1,0 +1,146 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>To take advantage of MSS your video and audio need to be encoded in a special segmented format, plus client and server manifests must be generated containing information about the files. Zencoder can generate all the necessary files for both single- and multi-bitrate Smooth Streaming.</p>
+</section>
+
+<section id="basic_request" class="bcls-section">
+<h2>Basic request</h2>
+
+<p>Creating a Smooth Streaming video is easy to do with Zencoder. There are only a few options that need to be set to create the necessary files for a single-bitrate encode.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "api_key": "asdf1234",
+    "input": "s3://my-input-bucket/input-file.mp4",
+    "outputs": [
+    {
+        "audio_bitrate": 56,
+        "audio_sample_rate": 22050,
+        "url": "s3://my-bucket/medium/file.ism",
+        "decoder_bitrate_cap": 900,
+        "decoder_buffer_size": 2400,
+        "max_frame_rate": 30,
+        "segment_seconds": 2,
+        "type": "segmented",
+        "video_bitrate": 600,
+        "width": 400,
+        "format": "ism"
+    }
+    ]
+}</code></pre>
+
+<p>The relevant portions of the above API request are the "type", "format", and "url" options.</p>
+
+<ul>
+	<li>"type" should be "segmented"</li>
+	<li>"format" should be "ism"</li>
+	<li>"url" should have an extension of "ism"</li>
+</ul>
+
+<p>In Smooth Streaming parlance, an "ism" file is a Smooth Streaming server manifest. This isn't the only file that will be generated, however. In the same directory as the "ism" file we will also create an "ismc" file, otherwise known as a Smooth Streaming client manifest, and an "ismv" file, which is the encoded video. <!-- If the created file is audio-only, it will end in "isma" instead of "ismv". --></p>
+</section>
+
+<section id="Full_request" class="bcls-section">
+<h2>Full request</h2>
+
+<p>Creating a multi-bitrate Smooth Streaming job with Zencoder doesn't require much more in your API request, just outputs for the different transfer speeds plus a playlist that references them.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "api_key": "asdf1234",
+    "input": "s3://my-input-bucket/input-file.mp4",
+    "outputs": [
+    {
+        "type": "playlist",
+        "format": "ism",
+        "url": "s3://my-output-bucket/file.ism",
+        "streams": [
+        {
+            "source": "low-output",
+            "path": "low/file.ismv"
+        },
+        {
+            "source": "medium-output",
+            "path": "medium/file.ismv"
+        },
+        {
+            "source": "high-output",
+            "path": "high/file.ismv"
+        }
+        ]
+    },
+    {
+        "label": "low-output",
+        "audio_bitrate": 56,
+        "audio_sample_rate": 22050,
+        "url": "s3://my-bucket/low/file.ism",
+        "decoder_bitrate_cap": 165,
+        "decoder_buffer_size": 440,
+        "max_frame_rate": 30,
+        "segment_seconds": 2,
+        "public": 1,
+        "type": "segmented",
+        "video_bitrate": 110,
+        "width": 320,
+        "format": "ism"
+    },
+    {
+        "label": "medium-output",
+        "audio_bitrate": 56,
+        "audio_sample_rate": 22050,
+        "url": "s3://my-bucket/medium/file.ism",
+        "decoder_bitrate_cap": 600,
+        "decoder_buffer_size": 1600,
+        "max_frame_rate": 30,
+        "segment_seconds": 2,
+        "public": 1,
+        "type": "segmented",
+        "video_bitrate": 400,
+        "width": 400,
+        "format": "ism"
+    },
+    {
+        "label": "high-output",
+        "audio_bitrate": 56,
+        "audio_sample_rate": 22050,
+        "url": "s3://my-bucket/high/file.ism",
+        "decoder_bitrate_cap": 900,
+        "decoder_buffer_size": 2400,
+        "max_frame_rate": 30,
+        "segment_seconds": 2,
+        "public": 1,
+        "type": "segmented",
+        "video_bitrate": 600,
+        "width": 400,
+        "format": "ism"
+    }
+    ]
+}</code></pre>
+
+<p>The individual single-bitrate Smooth Streaming outputs (labeled "low-output", "medium-output", and "high-output") are similar to the output in the previous example request, and could be played on their own if needed. The important difference is the first output, which creates the playlist that references the videos. The device playing the video will use this playlist to determine the appropriate file to load based on available bandwidth.</p>
+
+<p>The relevant portions to notice for the playlist are:</p>
+
+<ul>
+	<li><code>type</code> should be "playlist"</li>
+	<li><code>format</code> should be "ism"</li>
+	<li><code>url</code> should have an extension of "ism"</li>
+	<li><code>streams</code> should be an array of JSON objects which each have the keys "source" and "path"
+	<ul>
+		<li><code>source</code> should be the label of the output to use for the given stream</li>
+		<li><code>path</code> should be the relative path to the "source" output's "ismv" or "isma" file as it will be served by your server</li>
+	</ul>
+	</li>
+</ul>
+
+<p>Playlists for multi-bitrate Smooth Streaming and their videos must be created within a single Zencoder job, they cannot be created in separate jobs or after the videos have been created in other jobs. Certain information from the videos and their manifests is required in order to generate the multi-bitrate Smooth Streaming manifests. This includes the client manifests from the single-bitrate Smooth Streaming outputs along with the relative path to the single-bitrate video or audio files as they will be served from their final destination. Once the segmented outputs have finished transcoding, their client manifests are used to generate the multi-bitrate Smooth Streaming manifests and place them at the location specified by "url".</p>
+</section>
+
+<section id="Requirements" class="bcls-section">
+<h2>Requirements</h2>
+
+<p>An IIS Smooth Streaming server is required to deliver Smooth Streaming files to players. This guide on <a href="http://www.iis.net/learn/media/on-demand-smooth-streaming/getting-started-with-iis-smooth-streaming">getting started with IIS Smooth Streaming</a> is a good place to start setting up an IIS Smoth Streaming server.</p>
+</section>
+</article>
