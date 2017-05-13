@@ -1,0 +1,188 @@
+<article class="bcls-article">
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>Video Cloud customers have access to their media data and metadata from Video Cloud Studio. Brightcove Player customers will supply the URL for their media content.</p>
+</section>
+
+<section class="bcls-section" id="Video_Cloud_customers">
+<h2>Video Cloud customers</h2>
+
+<p>As a Video Cloud customer, you can access your media data stored in Video Cloud Studio. For more information, see the <a href="https://github.com/BrightcoveOS/android-player-samples">Player SDK for Android code samples</a>.</p>
+
+<h3>Retrieving media data</h3>
+
+<p>The Playback API is the latest and recommended API to use to retrieve your video and playlist data from your Video Cloud library. For details, see the <a href="/node/17906">Playback API Documentation</a>.</p>
+
+<ol>
+	<li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class to retrieve your videos and playlists from Brightcove's Playback API. This component's methods allow retrieval of videos and playlists by <code>ID</code> and/or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+	<li>For this option, you will need Policy Key. If you are not familiar with Policy Keys, see <a href="/node/18003">Policy API Overview</a>.</li>
+</ol>
+
+<p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.edge.Catalog</code> class:</p>
+
+<pre class="line-numbers">
+<code class="language-java">package com.brightcove.player.samples.exoplayer.basic;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import com.brightcove.player.edge.Catalog;
+import com.brightcove.player.edge.VideoListener;
+import com.brightcove.player.event.EventEmitter;
+import com.brightcove.player.model.Video;
+import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
+import com.brightcove.player.view.BrightcovePlayer;
+
+/**
+ * This app illustrates how to use the ExoPlayer with the Brightcove
+ * Native Player SDK for Android.
+ *
+ * @author Billy Hnath (bhnath@brightcove.com)
+ */
+public class MainActivity extends BrightcovePlayer {
+
+    private final String TAG = this.getClass().getSimpleName();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_main);
+        brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+        super.onCreate(savedInstanceState);
+
+        // Get the event emitter from the SDK and create a catalog request to fetch a video from the
+        // Brightcove Edge service, given a video id, an account id and a policy key.
+        EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
+        Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
+
+        catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
+
+            // Add the video found to the queue with add().
+            // Start playback of the video with start().
+            @Override
+            public void onVideo(Video video) {
+                Log.v(TAG, "onVideo: video = " + video);
+                brightcoveVideoView.add(video);
+                brightcoveVideoView.start();
+            }
+        });
+    }
+}</code></pre>
+<!-- <h4>Using the Media API</h4>
+                <p>The Media API is a RESTful API that lets you interact with your Video Cloud media library. For details, see the <a href="//docs.brightcove.com/en/video-cloud/media/index.html">Media API Documentation</a>.</p>
+                <aside class="bcls-aside bcls-aside--warning">You should only use the Media API if there is some specific functionality that is not available with the Playback API. Brightcove recommends using the Playback API whenever possible. </aside>
+                <ol>
+                    <li>Use the <a href="../../brightcove-player-sdk-for-android/reference/current/javadoc/com/brightcove/player/media/Catalog.html">com.brightcove.player.media.Catalog</a> class to access your videos and playlists from Brightcove's Media API. This component's methods allow retrieval of videos and playlists by <code>ID</code> and/or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+                    <li>For this option, you will need your Media API Token. If you are not familiar with tokens, see <a href="http://support.brightcove.com/en/video-cloud/docs/managing-media-api-tokens">Managing Media API Tokens</a> document.</li>
+                </ol>
+
+                <p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.media.Catalog</code> class:</p>
+                <pre class="line-numbers"><code class="language-java">package com.brightcove.player.samples.exoplayer.basic;
+
+import android.os.Bundle;
+
+import com.brightcove.player.event.EventEmitter;
+import com.brightcove.player.media.Catalog;
+import com.brightcove.player.media.VideoListener;
+import com.brightcove.player.model.Video;
+import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
+import com.brightcove.player.view.BrightcovePlayer;
+
+/**
+ * This app illustrates how to use the ExoPlayer with the Brightcove
+ * Native Player SDK for Android.
+ *
+ * @author Billy Hnath (bhnath@brightcove.com)
+ */
+public class MainActivity extends BrightcovePlayer {
+
+    private final String TAG = this.getClass().getSimpleName();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_main);
+        brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+        super.onCreate(savedInstanceState);
+
+        // Get the event emitter from the SDK and create a catalog request to fetch a video from the
+        // Brightcove Media API, given a video id and account token.
+        EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
+        Catalog catalog = new Catalog("XGuquNMCweRY0D3tt_VUotzuyIASMAzhUS4F8ZIWa_e0cYlKpA4WtQ..");
+
+        catalog.findVideoByID("1754276206001", new VideoListener() {
+            @Override
+            public void onVideo(Video video) {
+                brightcoveVideoView.add(video);
+                brightcoveVideoView.start();
+            }
+
+            @Override
+            public void onError(String s) {
+                throw new RuntimeException(s);
+            }
+        });
+    }
+}</code></pre> -->
+
+<h3>Geo-restricted videos</h3>
+
+<p>The Brightcove Player SDK for Android supports geo-restricted videos.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Notes:
+<ul>
+	<li>You need to use the Playback API when working with geo-restricted videos.</li>
+	<li>The playback service will only return an error if your video is geo-restricted in Video Cloud. The error will be null if your video is geo-retricted at the CDN level.</li>
+</ul>
+</aside>
+
+<p>There are two ways you can add geo-restrictions to your videos to control which countries they can (or cannot) be viewed in:</p>
+
+<ul>
+	<li><a href="/node/18034">Brightcove's CMS API</a></li>
+	<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
+</ul>
+
+<p>In your Android app, when you retrieve a video using Brightcove's edge <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">Catalog</a> object (Playback API) in a country which is geo-restricted for that video, you should see this message:</p>
+
+<pre class="line-numbers">
+<code class="language-java">error { message: Access to this resource is forbidden by access policy.
+    client_geo: us
+    error_subcode: CLIENT_GEO
+    error_code: ACCESS_DENIED }</code></pre>
+</section>
+
+<section class="bcls-section" id="Perform_customers">
+<h2>Brightcove Player customers</h2>
+
+<p>As a Brightcove Player customer, you will supply the URL for your video assets.</p>
+
+<p>Here is an example of adding a video to your video view and starting playback:</p>
+
+<pre class="line-numbers">
+<code class="language-java">import com.brightcove.player.media.DeliveryType;
+import com.brightcove.player.model.Video;
+import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
+import com.brightcove.player.view.BrightcovePlayer;
+import com.brightcove.player.analytics.Analytics;
+
+@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        BrightcoveVideoView brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
+
+        Analytics analytics = brightcoveVideoView.getAnalytics();
+        analytics.setAccount("123456789");
+
+        MediaController controller = new MediaController(this);
+        brightcoveVideoView.setMediaController(controller);
+
+        brightcoveVideoView.add(Video.createVideo("http://solutions.brightcove.com/bcls/assets/videos/Bird_Titmouse.mp4", DeliveryType.MP4));
+        brightcoveVideoView.start();
+    }</code></pre>
+</section>
+&nbsp;
+
+<p>Next, let's take a look at how events work within the SDK architecture.</p>
+</article>

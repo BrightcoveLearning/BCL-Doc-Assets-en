@@ -1,0 +1,95 @@
+<article class="bcls-article">
+<section class="bcls-section" id="top">&nbsp;</section>
+
+<section class="bcls-section" id="Analytics_integration">
+<h2>Analytics integration</h2>
+
+<p>If you use the Brightcove player and <code>catalog</code> included in the SDK to retrieve and play videos, analytics data will be automatically collected and will appear in the Video Cloud Analytics module.</p>
+
+<p>If you override the <code>BCOVVideo</code> class or do not use the Brightcove player and <code>catalog</code>, you need to send your Account Id to Video Cloud Analytics.</p>
+</section>
+
+<section class="bcls-section" id="Customize_properties">
+<h2>Customize properties</h2>
+
+<p>As of version 4.1.8 of the Brightcove Mobile SDK for iOS, you can send custom values to Brightcove Analytics from your app for Account Id, Destination URI and Source URI.</p>
+
+<p>Your Account Id is required, but is automatically set when you use the Brightcove player and the <code>catalog</code>.</p>
+
+<p>You can set the Destination and Source URIs if you choose. The default values are based on the application package name.</p>
+
+<p>These properties can be set in your <code>ViewController</code> implementation file. This is typically done after the call to create the <code>PlaybackController</code>:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">id&lt;BCOVPlaybackController&gt; controller =
+    [[BCOVPlayerSDKManager sharedManager] createPlaybackController];
+
+controller.analytics.account = &lt;insert valid accountId&gt;;
+controller.analytics.destination = &lt;insert valid URI&gt;;
+controller.analytics.source = &lt;insert valid URI&gt;;</code></pre>
+<!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="3-8"></code></p> -->
+
+<h3>Account</h3>
+
+<p>Use the <code>account</code> property to set the Account Id value in Brightcove Analytics. This property will be useful only in cases where there is no <code>accountId</code> value in the video’s metadata (for example, if your app uses a mix of Video Cloud videos, which contain the <code>accountId</code> property, and non-Video Cloud videos, which will not contain the <code>accountId</code> property).</p>
+
+<pre class="line-numbers">
+<code class="language-swift">controller.analytics.account = @"&lt;insert valid accountId&gt;";</code></pre>
+<!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="22"></code></p> -->
+
+<p>When you set the account property, the value of this property will be used for any of your videos which do not already have an <code>accountId</code> property. The most useful value for this property is your own Account Id. These videos will be reported in the Analytics module as <strong>Other/Third Party</strong> since Brightcove Analytics does not currently support detailed reporting for videos that are not retrieved through the Brightcove Catalog service.</p>
+
+<p>For Video Cloud videos, setting this account override has no effect on reporting, since the video's <code>accountId</code> metadata value remains unchanged. That value can not be overridden by setting this account value.</p>
+
+<h3>Destination</h3>
+
+<p>Use the <code>destination</code> property to set the value of the location that originates the event. This field can be any string value, but it is most useful to use a URI with valid structure:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">&lt;scheme name&gt; : &lt;hierarchical part&gt;</code></pre>
+<!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="11"></code></p> -->
+
+<p>The default value the destination property is <code>bcsdk://</code> followed by the app's bundle identifier as listed in the app's <strong>info.plist</strong> file.</p>
+
+<p>For example, in an iOS Sample app, the default destination value would be <code>bcsdk://com.brightcove.sampleAppMainScreen.Destination</code> and it could be overridden like this:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">controller.analytics.destination =
+    @"myapp://com.mycompany.homescreen.destination";</code></pre>
+<!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="14-15"></code></p> -->
+
+<p>Any screen in your app that instantiates a <code>BCOVPlaybackController</code> can set this destination override to a distinct value, to better track video views within the app itself.</p>
+
+<h3>Source</h3>
+
+<p>Use the <code>source</code> property to set the URI that sent the end-user to the destination URI. As with the destination value, the value of the source field can be any string value, but it is most useful to use a URI with valid structure:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">&lt;scheme name&gt; : &lt;hierarchical part&gt;</code></pre>
+<!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="11"></code></p> -->
+
+<p>The default value of the source property is nil. When the value is nil, the source property is not sent to the Analytics server.</p>
+
+<p>Example:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">controller.analytics.source =
+    @"myapp://com.mycompany.homescreen.destination.source";</code></pre>
+<!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="18-19"></code></p> -->
+
+<aside class="bcls-aside bcls-aside--information">For more details about URI structures for use in the destination and source fields, see the <a href="//en.wikipedia.org/wiki/URI_scheme">URI Scheme</a> Wikipedia page.</aside>
+</section>
+
+<section class="bcls-section" id="View_analytics">
+<h2>View analytics</h2>
+
+<p>In the Video Cloud Analytics module, you can view metric data at the account level or at a detailed level such as by video.To learn how, view the following docs:</p>
+
+<ul>
+	<li><a href="/node/18214">Viewing Brightcove Analytics</a></li>
+	<li><a href="/node/10104">Performance Report Reference</a></li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">Brightcove Analytics converts the destination and source values you’ve set to an all lower-case string value in all reports.</aside>
+</section>
+</article>
