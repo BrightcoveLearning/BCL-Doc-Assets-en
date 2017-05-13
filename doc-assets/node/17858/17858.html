@@ -1,0 +1,193 @@
+<article class="bcls-article">
+<section id="rotate" class="bcls-section">
+<h2>rotate</h2>
+<code>rotate:Integer</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> automatically detected</p>
+
+<p><strong>Valid Values:</strong> 0, 90, 180, 270. Leave unset if you want auto-rotation.</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> 180</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Explicitly rotate a movie. By default, Zencoder will automatically rotate rotated content (including rotated iPhone video), but you can also manually rotate a movie. If you set "rotate" to 0, we will not auto-rotate, so leave this option unset if you want auto-rotation.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "rotate": 180
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="deinterlace" class="bcls-section">
+<h2>deinterlace</h2>
+<code>deinterlace:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> detect</p>
+
+<p><strong>Valid Values:</strong> on, off, detect</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> on</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Determines whether or not to apply a deinterlacing filter. Default is "detect" – if the input file is detected as interlaced, it will be deinterlaced. Set this to "on" to force deinterlacing (which will reduce quality if the input is not interlaced), or "off" to avoid deinterlacing.</p>
+
+<p>Note that Zencoder makes this determination based on file metadata. If interlaced content is re-encoded with an encoder that does not deinterlace the content, or flag it as interlaced, we may not be able to auto-deinterlace the content in "detect" mode.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "deinterlace": "on"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="sharpen" class="bcls-section">
+<h2>sharpen</h2>
+<code>sharpen:Boolean</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Apply a sharpen filter to the video.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "sharpen": true
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="denoise" class="bcls-section">
+<h2>denoise</h2>
+<code>denoise:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> weak, medium, strong, or strongest</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> weak</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Apply a denoise filter to the video.</p>
+
+<p>Valid options are 'weak', 'medium', 'strong', and 'strongest'. Typically reduces file size by 5%-20%, depending on denoising level, bitrate, and source video. Any denoising slows down encoding by about 20%.</p>
+
+<p>Values above 'weak' should be used carefully, though animation can sometimes handle a high level of denoising.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "denoise": "weak"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="autolevel" class="bcls-section">
+<h2>autolevel</h2>
+<code>autolevel:Boolean</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Apply a color auto-level filter to the video. Note that this filter may cause unexpected color problems in some videos, so use carefully.</p>
+
+<p>The VP6 <a href="../format-and-codecs/format-and-codecs.html#video-codec">video_codec</a> does not support the autolevel option.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "autolevel": true
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="deblock" class="bcls-section">
+<h2>deblock</h2>
+<code>deblock:Boolean</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Apply a deblocking filter to the video.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "deblock": true
+    }
+  ]
+}</code></pre>
+</section>
+</article>

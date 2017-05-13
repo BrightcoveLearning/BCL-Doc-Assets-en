@@ -1,0 +1,358 @@
+<article class="bcls-article">
+<section id="frame_rate" class="bcls-section">
+<h2>frame_rate</h2>
+<code>frame_rate:Float</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> The original (input) frame rate.</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 25</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The output frame rate to use, as a decimal number (e.g. 15, or 24.98).</p>
+
+<p>We recommend that you do not use this setting – forcing a change to the video frame rate will result in a lower-quality video. If you want to prevent frame rates above a certain level, use <a href="#max-frame-rate">max_frame_rate</a> instead.</p>
+
+<p>Frame rates above 60 are not allowed for resolutions greater than HD (i.e. 1920x1080).</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "frame_rate": 25
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#max-frame-rate">max_frame_rate</a> and <a href="#decimate">decimate</a></p>
+</section>
+
+<section id="max_frame_rate" class="bcls-section">
+<h2>max_frame_rate</h2>
+<code>max_frame_rate:Float</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 30</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Limits the output frame rate to a certain number. If the frame rate would otherwise exceed this number (e.g. the input frame rate is too high), this will reduce the frame rate to the max_frame_rate setting</p>
+
+<p>Example: if you set max_frame_rate to 29.97, and the input has a frame rate of 59.94, the output file will have a frame rate of 29.97.</p>
+
+<p>We recommend using this setting rather than setting an exact <a href="#frame-rate">frame_rate</a>, for two reasons:</p>
+
+<p>First, changing a frame_rate can result in a visual quality drop due to stuttering and jerky motion.</p>
+
+<p>Second, setting frame rate to a fixed number may actually increase the frame rate of the output video beyond the frame rate of the input, which would result in an unneeded increase in file size (or decrease in quality).</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "max_frame_rate": 30
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#frame-rate">frame_rate</a> and <a href="#decimate">decimate</a></p>
+</section>
+
+<section id="decimate" class="bcls-section">
+<h2>decimate</h2>
+<code>decimate:Integer</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A positive integer</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 2</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Divide the input frame rate by the specified number. This is useful if you know you want to cut frame rate in half, but you don’t know what the input frame rate is. Given an input frame rate of 20, if you set decimate to 2, you’ll get an output frame rate of 10. You can still set <a href="#max-frame-rate">max_frame_rate</a> if you want to ensure that a decimated frame rate does not exceed a certain value.</p>
+
+<p>&nbsp;</p>
+
+<p>The output video will have a frame_rate that is equal to the input frame rate divided by the decimate value. So if the input is 24 fps, and you set decimate to 4, the output would be 6 fps (24 / 4).</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "decimate": 2
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#frame-rate">frame_rate</a> and <a href="#max-frame-rate">max_frame_rate</a></p>
+</section>
+
+<section id="keyframe_interval" class="bcls-section">
+<h2>keyframe_interval</h2>
+<code>keyframe_interval:Integer</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> 250</p>
+
+<p><strong>Valid Values:</strong> A positive integer</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 100</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set the maximum number of frames between each keyframe. By default, a keyframe will be created at least every 250 frames. Specifying a different keyframe interval will allow you to create more or less keyframes in your video. Keyframe interval should be specified as a positive integer. For example, a value of 100 will create a keyframe every 100 frames.</p>
+
+<p>A greater number of keyframes will increase the size of your output file, but will allow for more precise scrubbing in most players.</p>
+
+<p>Note that this is a maximum keyframe interval. Depending on scene transitions and other things, more keyframes may be used to ensure high quality encoding.</p>
+
+<p>keyframe_interval takes precidence over <a href="#keyframe-rate">keyframe_rate</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "keyframe_interval": 100
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#keyframe-rate">keyframe_rate</a></p>
+</section>
+
+<section id="keyframe_rate" class="bcls-section">
+<h2>keyframe_rate</h2>
+<code>keyframe_rate:Float</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> keyframe_interval of 250</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 1.5</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set the number of keyframes per second. So a value of 0.5 would result in one keyframe every two seconds. A value of 3 would result in three keyframes per second.</p>
+
+<p>The default is to control keyframes via <a href="#keyframe-interval">keyframe_interval</a>, with a default value of 250. Depending on the video frame rate, this results in a keyframe every 8-11 seconds.</p>
+
+<p>A greater number of keyframes will increase the size of your output file, but will allow for more precise scrubbing in most players.</p>
+
+<p><a href="#keyframe-interval">keyframe_interval</a> takes precidence over keyframe_rate.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "keyframe_rate": 1.5
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#fixed-keyframe-interval">fixed_keyframe_interval</a>, <a href="#forced-keyframe-interval">forced_keyframe_interval</a>, and <a href="#forced-keyframe-rate">forced_keyframe_rate</a></p>
+</section>
+
+<section id="fixed_keyframe_interval" class="bcls-section">
+<h2>fixed_keyframe_interval</h2>
+<code>fixed_keyframe_interval:Boolean</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>By default, a specified <a href="#keyframe-interval">keyframe_interval</a> only guarantees the max number of frames between two keyframes. The encoder may decide to place a keyframe before it is required by the keyframe_interval; for example, better compression might be achieved by putting a keyframe at a scene change. Setting this option to true prevents this variability.</p>
+
+<p>This option only applies when using the H.264, HEVC or VP6 <a href="../format-and-codecs/format-and-codecs.html#video-codec">video_codec</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "fixed_keyframe_interval": true
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#keyframe-interval">keyframe_interval</a>, <a href="#forced-keyframe-interval">forced_keyframe_interval</a>, and <a href="#forced-keyframe-rate">forced_keyframe_rate</a></p>
+</section>
+
+<section id="forced_keyframe_interval" class="bcls-section">
+<h2>forced_keyframe_interval</h2>
+<code>forced_keyframe_interval:Integer</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A positive integer</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 10</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Forces keyframes to be created at the specified frame interval (every N frames), while still allowing the encoder to place keyframes elsewhere, such as at scene cuts. As opposed to <a href="#fixed-keyframe-interval">fixed_keyframe_interval</a> which only puts keyframes at the specified interval.</p>
+
+<p>This option only applies when using the H.264 or HEVC <a href="../format-and-codecs/format-and-codecs.html#video-codec">video_codec</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "forced_keyframe_interval": 10
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#keyframe-interval">keyframe_interval</a>, <a href="#fixed-keyframe-interval">fixed_keyframe_interval</a>, and <a href="#forced-keyframe-rate">forced_keyframe_rate</a></p>
+</section>
+
+<section id="forced_keyframe_rate" class="bcls-section">
+<h2>forced_keyframe_rate</h2>
+<code>forced_keyframe_rate:Floating point number</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> 0.001 to 100</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 0.1</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set the forced keyframe interval by specifying number of keyframes per second, taking frame rate into account.</p>
+
+<p>This option is ignored if <a href="#forced-keyframe-interval">forced_keyframe_interval</a> is specified.</p>
+
+<p>This option only applies when using the H.264 or HEVC <a href="../format-and-codecs/format-and-codecs.html#video-codec">video_codec</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "forced_keyframe_rate": "0.1"
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#keyframe-interval">keyframe_interval</a> and <a href="#fixed-keyframe-interval">fixed_keyframe_interval</a></p>
+</section>
+
+<section id="generate_frame_index" class="bcls-section">
+<h2>generate_frame_index</h2>
+<code>generate_frame_index:Boolean</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Produces a tab-delimited file with three integer values: frame #, frame size (bytes) and last keyframe #. Each line is padded with spaces to a width of 42 columns.</p>
+
+<p>This option cannot be used unless the output contains a video stream.</p>
+
+<p>The default index filename 'frame_index.tab' can be overridden with <a href="#frame-index-filename">frame_index_filename</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "generate_frame_index": true,
+      "frame_index_filename": "my_frame_index.txt"
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#frame-index-filename">frame_index_filename</a></p>
+</section>
+
+<section id="frame_index_filename" class="bcls-section">
+<h2>frame_index_filename</h2>
+<code>frame_index_filename:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> my_frame_index.txt</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Unless specified, the filename used for frame index generation will be 'frame_index.tab'.</p>
+
+<p>This option requires that <a href="#generate-frame-index">generate_frame_index</a> is true.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "generate_frame_index": true,
+      "frame_index_filename": "my_frame_index.txt"
+    }
+  ]
+}
+</code></pre>
+
+<p><strong>See Also:</strong> <a href="#generate-frame-index">generate_frame_index</a></p>
+</section>
+</article>

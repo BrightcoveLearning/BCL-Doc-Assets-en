@@ -1,0 +1,221 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>Zencoder can perform AES encryption of video files. Our implementation is designed to be compatible with HTTP Live Streaming (HLS) outputs, but can be used to encrypt any video file similarly. When used for segmented outputs, only the segment files will be encrypted (leaving the manifest/playlist files readable, as expected). For HLS outputs, the necessary key/IV data will be added to the M3U8 manifest file, and encryption key files will be included with the other deliverable files if applicable.</p>
+
+<p>Encryption is turned on when <code>encryption_key</code>, <code>encryption_key_url</code>, <code>encryption_method</code>, or <code>encryption_key_rotation_period</code> are specified.</p>
+</section>
+
+<section id="encryption_method" class="bcls-section">
+<h2>encryption_method</h2>
+<code>encryption_method:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> "none", "aes-128-cbc", "aes-128-ctr", "aes-256-cbc", or "aes-256-ctr"</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> aes-128-cbc</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set the encryption method to use for encrypting.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_method": "aes-128-cbc"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="encryption_key" class="bcls-section">
+<h2>encryption_key</h2>
+<code>encryption_key:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A hexadecimal string of 16 octets (32 chars long, optional "0x" prefix)</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> a5f6a7d6ef5d6a7a02a23dd35dd56a63</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set a single encryption key to use rather than having Zencoder generate one. Passing an encryption key is not compatible with key rotation. Zencoder will generate and return the encryption keys if using key rotation.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_key": "a5f6a7d6ef5d6a7a02a23dd35dd56a63"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="encryption_key_url" class="bcls-section">
+<h2>encryption_key_url</h2>
+<code>encryption_key_url:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A URL to a file containing a 16-byte binary key</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> http://example.com/encryption.key</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set a single encryption key to use rather than having Zencoder generate one. Specified as a URL to a file containing a 16-byte binary key.</p>
+
+<p>This will be included as the URL to the key file in HLS manifests and no encryption key files will be included with the output. If the encryption_key is not also specified, Zencoder will attempt to download this file and use it to encrypt the output.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_key_url": "http://example.com/encryption.key"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="encryption_key_rotation_period" class="bcls-section">
+<h2>encryption_key_rotation_period</h2>
+<code>encryption_key_rotation_period:Number</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A number greater than 0</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> 10</p>
+
+<p><strong>Description:</strong></p>
+
+<p>When Zencoder is generating encryption keys, use a different key for each set of segments, rotating to a new key after this many segments.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_key_rotation_period": 10
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="encryption_key_url_prefix" class="bcls-section">
+<h2>encryption_key_url_prefix</h2>
+<code>encryption_key_url_prefix:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A URL or relative path</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> keys/</p>
+
+<p><strong>Description:</strong></p>
+
+<p>When an encryption_key_url is not specified, prepend this to the encryption key filenames before including them in the manifest. Otherwise the keys are assumed to be accessible from the same path as the manifest file. If a question mark is used in the string the prefix it will be used as-is, otherwise a slash will be added to the end of the prefix (unless it already ends with a slash).</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_key_url_prefix": "keys/"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="encryption_iv" class="bcls-section">
+<h2>encryption_iv</h2>
+<code>encryption_iv:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A hexadecimal string of 16 octets (32 chars long, optional "0x" prefix)</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> a5f6a7d6ef5d6a7a02a23dd35dd56a63</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Set an initialization vector to use when encrypting, as a 16-octet hexadecimal string. On segmented outputs if this is not specified, the segments will be encrypted with incrementing IV values, starting at zero (consistent with HLS specifications).</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_iv": "a5f6a7d6ef5d6a7a02a23dd35dd56a63"
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="encryption_password" class="bcls-section">
+<h2>encryption_password</h2>
+<code>encryption_password:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="../job/job.html#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> A string</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> super-secret-password</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Sets a password to use for generating an initialization vector. Not supported for segmented outputs. Non-segmented outputs require either encryption_iv or encryption_password.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "type": "segmented",
+      "encryption_password": "super-secret-password"
+    }
+  ]
+}</code></pre>
+</section>
+</article>
