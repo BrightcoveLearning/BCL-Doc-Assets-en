@@ -1,0 +1,79 @@
+<article class="bcls-article">
+<section id="max_aac_profile" class="bcls-section">
+<h2>max_aac_profile</h2>
+<code>max_aac_profile:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> he-aac</p>
+
+<p><strong>Valid Values:</strong> aac-lc, he-aac, or he-aac-v2</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> he-aac-v2</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The AAC audio codec has several profiles. By default, Zencoder will pick the right profile based on the bitrate and number of channels used: stereo content under 40kbps will use HE-AAC v2 if max-aac-profile is set to "he-aac-v2"; stereo content under 84kbps will use HE-AAC if max-aac-profile is set to "he-aac"; and AAC-LC will be used for higher bitrate content, or if max-aac-profile is set to "aac-lc". "he-aac" is the default value, which means that by default, 0-84kbps will use HE-AAC and 85kbps and up will use AAC-LC.</p>
+
+<p><strong>AAC-LC</strong> ("Low Complexity") is the most common AAC profile, and virtually every AAC decoder supports AAC-LC. AAC-LC allows mono and stereo, with sample rates from 8khz-96khz, and high bitrates (&gt;300kbps). Use AAC-LC when encoding stereo content at 80kbps and above or mono content above 40kbps, or when you want to support devices that only play AAC-LC, like the Roku or old iPods.</p>
+
+<p><strong>HE-AAC</strong> ("High Efficiency") is a widely supported AAC profile that sounds better than AAC-LC at low bitrates by implementing <a href="http://en.wikipedia.org/wiki/Spectral_band_replication">Spectral Band Replication</a> (SBR). HE-AAC supports mono and stereo content at sample rates of 16khz-48khz and bitrates ranging from 16kbps-128kbps. Most web and mobile decoders support HE-AAC, including Flash, HTML5 (wherever AAC is supported), iPhone, iPad, Android, etc. Use HE-AAC for stereo content below 80, or low bitrate mono content.</p>
+
+<p><strong>HE-AAC v2</strong> is optimized for even more aggressive compression than HE-AAC by adding <a href="http://en.wikipedia.org/wiki/Parametric_Stereo">Parametric Stereo</a> (PS) to HE-AAC. This means that HE-AAC v2 is only suitable for stereo content; mono content can only use HE-AAC. HE-AAC v2 is supported by Flash, HTML5, and some mobile devices (Windows Phone 7, Android). Use HE-AAC v2 for stereo content below 40kbps or so, but not for iOS audio. (Newer iOS devices can play HE-AAC v2 content, but ignore the PS information, resulting in mono content.)</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "max_aac_profile": "he-aac-v2"
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#force-aac-profile">force_aac_profile</a></p>
+</section>
+
+<section id="force_aac_profile" class="bcls-section">
+<h2>force_aac_profile</h2>
+<code>force_aac_profile:String</code>
+
+<p><strong>API Versions:</strong> V1, V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> aac-lc, he-aac, or he-aac-v2</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> he-aac-v2</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Force the use of a particular AAC profile, rather than letting Zencoder choose the best profile for the bitrate.</p>
+
+<p>The AAC audio codec has several profiles.</p>
+
+<p><strong>AAC-LC</strong> ("Low Complexity") is the most common AAC profile, and virtually every AAC decoder supports AAC-LC. AAC-LC allows mono and stereo, with sample rates from 8khz-96khz, and high bitrates (&gt;300kbps). Use AAC-LC when encoding stereo content at 80kbps and above or mono content above 40kbps, or when you want to support devices that only play AAC-LC, like the Roku or old iPods.</p>
+
+<p><strong>HE-AAC</strong> ("High Efficiency") is a widely supported AAC profile that sounds better than AAC-LC at low bitrates by implementing <a href="http://en.wikipedia.org/wiki/Spectral_band_replication">Spectral Band Replication</a> (SBR). HE-AAC supports mono and stereo content at sample rates of 16khz-48khz and bitrates ranging from 16kbps-128kbps. Most web and mobile decoders support HE-AAC, including Flash, HTML5 (wherever AAC is supported), iPhone, iPad, Android, etc. Use HE-AAC for stereo content below 80, or low bitrate mono content.</p>
+
+<p><strong>HE-AAC v2</strong> is optimized for even more aggressive compression than HE-AAC by adding <a href="http://en.wikipedia.org/wiki/Parametric_Stereo">Parametric Stereo</a> (PS) to HE-AAC. This means that HE-AAC v2 is only suitable for stereo content; mono content can only use HE-AAC. HE-AAC v2 is supported by Flash, HTML5, and some mobile devices (Windows Phone 7, Android). Use HE-AAC v2 for stereo content below 40kbps or so, but not for iOS audio. (Newer iOS devices can play HE-AAC v2 content, but ignore the PS information, resulting in mono content.)</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "force_aac_profile": "he-aac-v2"
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#max-aac-profile">max_aac_profile</a></p>
+</section>
+</article>

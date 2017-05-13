@@ -1,0 +1,222 @@
+<article class="bcls-article">
+<section id="Limitations" class="bcls-section">
+<h2>Limitations</h2>
+
+<p>There is a default limit of 5 waiting live streams per account. If you reach this limit, you will need to cancel or start streaming to one of the waiting streams in order to create a new live job. You can increase this limit by <a href="https://support.brightcove.com/en/contact/create">contacting support</a>.</p>
+</section>
+
+<section id="live_stream" class="bcls-section">
+<h2>live_stream</h2>
+<code>live_stream:Boolean</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> live</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>For HLS outputs on Live Streaming jobs, setting live_stream to true on an output will create the output as the input is streamed to Zencoder. If live_stream is false, or is not set, the HLS output will be transcoded and uploaded once the input has finished streaming.</p>
+
+<p>See <a href="/node/17902">our Live streaming guide</a> for more information.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "live_stream": true,
+  "output": [
+    {
+      "live_stream": true,
+      "type": "segmented"
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="/node/17852#source">source</a> and <a href="/node/17881#notification-event">event</a></p>
+</section>
+
+<section id="reconnect_time" class="bcls-section">
+<h2>reconnect_time</h2>
+<code>reconnect_time:Integer</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+
+<p><strong>Default:</strong> 30</p>
+
+<p><strong>Valid Values:</strong> 0-1800</p>
+
+<p><strong>Compatible Job Types:</strong> live</p>
+
+<p><strong>Example:</strong> 45</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The time, in seconds, to wait for a stream to reconnect.</p>
+
+<p><strong>Note:</strong> The live stream will remain available for the remainder of <a href="#event-length">event_length</a> or reconnect_time, whichever is greater. You can end a job at any time with a <a href="/node/17878#finish">finish</a> API request.</p>
+
+<p><code>{<br />
+&nbsp;&nbsp;"live_stream": "true",<br />
+&nbsp;&nbsp;"event_length": 1800,<br />
+&nbsp;&nbsp;"reconnect_time": 120,<br />
+&nbsp;&nbsp;"outputs": [ ... ]<br />
+} </code></p>
+
+<p>Given this API request, the following scenarios would be true:</p>
+
+<ul>
+	<li><strong>Disconnect at 15 minutes</strong>: Job finishes at 30 minutes</li>
+	<li><strong>Disconnect at 29 minutes</strong>: Job finishes at 31 minutes</li>
+	<li><strong>Disconnect at 50 minutes</strong>: Job finishes at 52 minutes</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "live_stream": true,
+  "reconnect_time": 45
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#event-length">event_length</a></p>
+</section>
+
+<section id="event_length" class="bcls-section">
+<h2>event_length</h2>
+<code>event_length:Integer</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+
+<p><strong>Valid Values:</strong> 0-93600</p>
+
+<p><strong>Compatible Job Types:</strong> live</p>
+
+<p><strong>Example:</strong> 18000</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The minimum time, in seconds, to keep a live stream available. At any point within the specified event_length you may reconnect to your stream. The event_length setting goes into effect as soon as streaming begins.</p>
+
+<p><strong>Note:</strong> The live stream will remain available for the remainder of event_length or <a href="#reconnect-time">reconnect_time</a>, whichever is greater. You can end a job at any time with a <a href="/node/17878#finish">finish</a> API request.</p>
+
+<p><code>{<br />
+&nbsp;&nbsp;"live_stream": "true",<br />
+&nbsp;&nbsp;"event_length": 1800,<br />
+&nbsp;&nbsp;"reconnect_time": 120,<br />
+&nbsp;&nbsp;"outputs": [ ... ]<br />
+} </code></p>
+
+<p>Given this API request, the following scenarios would be true:</p>
+
+<ul>
+	<li><strong>Disconnect at 15 minutes</strong>: Job finishes at 30 minutes</li>
+	<li><strong>Disconnect at 29 minutes</strong>: Job finishes at 31 minutes</li>
+	<li><strong>Disconnect at 50 minutes</strong>: Job finishes at 52 minutes</li>
+</ul>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "live_stream": true,
+  "event_length": 18000
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#reconnect-time">reconnect_time</a></p>
+</section>
+
+<section id="live_sliding_window_duration" class="bcls-section">
+<h2>live_sliding_window_duration</h2>
+<code>live_sliding_window_duration:Integer</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
+
+<p><strong>Default:</strong> 7200</p>
+
+<p><strong>Valid Values:</strong> Greater than combined duration of 4 segments</p>
+
+<p><strong>Compatible Job Types:</strong> live</p>
+
+<p><strong>Example:</strong> 300</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The time, in seconds, to keep in the manifest. Setting this affects the number of segments that will be included in the manifest. Once the stream duration is longer than the set window duration, segment references will be removed from the top of the manifest.</p>
+
+<h4>Recommendations</h4>
+
+<p>Default is 2 hours (7200 seconds). For delivery over a static HTTP server this works very well. For a live stream over a CDN, it is usually good to set a shorter window. For CDNs we recommend between 40 (assuming 10 second segments) and 300 (5 minutes).</p>
+
+<h4>Considerations</h4>
+
+<p>The amount of video that can be scrubbed (rewound) will be limited to the size of the window.</p>
+
+<p>The smaller the window, the faster the manifest will load and less bandwidth is needed to begin streaming.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "live_stream": true,
+  "output": [
+    {
+      "live_stream": true,
+      "type": "segmented",
+      "live_sliding_window_duration": 300
+    }
+  ]
+}</code></pre>
+</section>
+
+<section id="redundant_transcode" class="bcls-section">
+<h2>redundant_transcode</h2>
+<code>redundant_transcode:Boolean</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+
+<p><strong>Default:</strong> false</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> live</p>
+
+<p><strong>Example:</strong> true</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Extracts secondary_urls from outputs and uses them to create outputs in a backup job with the same transcoding settings. Setting redundant_transcode to true will return one stream name along with primary and redundant stream urls. The redundant url endpoint is hosted in the nearest transcoding region powered by a different service provider. For example, if the Amazon AWS backed "us-virginia" region is requested, the redundant transcode will run in the Google GCE backed "us-central-gce" region.</p>
+
+<h4>Considerations</h4>
+
+<p>This will double the client bandwidth requirement, as the client will broadcast to both the stream_url and redundant_stream_url</p>
+
+<p>Only outputs with "secondary_urls" will be selected for the redundant job, at least one output with a secondary_url is required.</p>
+
+<p>The backup job will be billed as an additional live job at standard live rates.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "live_stream": true,
+  "redundant_transcode": true,
+  "output": [
+    {
+      "live_stream": true,
+      "url": "rtmp://primary.example.com/live/stream",
+      "secondary_url": "rtmp://backup.example.com/live/stream"
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="/node/17852#source">source</a> and <a href="/node/17881#notification-event">event</a></p>
+</section>
+</article>
