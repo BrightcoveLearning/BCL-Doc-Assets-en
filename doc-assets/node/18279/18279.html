@@ -1,0 +1,190 @@
+<article class="bcls-article">
+<header id="bcls_header" class="bcls-header">
+<p>In this topic, you will learn how to work with the Brightcove Player controls when using the Brightcove Player SDK for Android.</p>
+</header>
+
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>The Native Player SDK provides player controls similar to the Brightcove Web Player to provide a consistent user experience across platforms. You can use the out-of-the-box Brightcove player controls, or customize them with your own colors, styles and buttons.</p>
+
+<p>To learn more about these features, see the <a href="/node/15321">Brightcove Native Player Controls</a> document.</p>
+</section>
+
+<section class="bcls-section" id="Default_player_controls">
+<h2>Default player controls</h2>
+
+<p>When you create an app using the Brightcove Player SDK for Android, you should start with either the <code>BrightcovePlayer</code> or the <code>BrightcovePlayerFragment</code> class.</p>
+
+<h3>Extend the BrightcovePlayer</h3>
+
+<p>In your app code, extend the <code>MainActivity</code> class from one of the classes above. For example:</p>
+
+<pre class="line-numbers">
+<code class="language-java">public class MainActivity extends BrightcovePlayer {
+}</code></pre>
+
+<p>Now, you are ready to instantiate the video view in your code.</p>
+
+<h3>Instantiate the BrightcoveVideoView</h3>
+
+<p>In the <code>MainActivity.java</code> file, and in the <code>onCreate()</code> method, add the following code:</p>
+
+<pre class="line-numbers">
+<code class="language-java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+    setContentView(R.layout.activity_main);
+    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+    super.onCreate(savedInstanceState);
+}</code></pre>
+
+<p>Your player controls should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Basic player controls" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/guides/player-controls/bcplayer-basic-controls.png" />
+<figcaption class="bcls-caption--image">Basic player controls</figcaption>
+</figure>
+</section>
+
+<section class="bcls-section" id="Customize_player_controls">
+<h2>Customize player controls</h2>
+
+<p>The Brightcove player controls provide support for captions, video rewind and full-screen mode. You can also select the animation style for showing and hiding the controls.</p>
+
+<h3>Change control colors</h3>
+
+<p>Easily customizable, you can change the Brightcove player control colors to match your company branding material.</p>
+
+<p>Use the same code in your <strong>MainActivity.java</strong> file as above, and include the following code in your <strong>src/main/res/values/colors.xml</strong> file:</p>
+
+<pre class="line-numbers">
+<code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+
+    &lt;!-- Define the new colors. --&gt;
+    &lt;color name="bc_orange"&gt;#F3951D&lt;/color&gt;
+    &lt;color name="magenta_semi_trans"&gt;#4DFF00FF&lt;/color&gt;
+
+    &lt;!-- This file will be found at ...res/values/colors.xml --&gt;
+
+    &lt;!-- Change the progress colors to magenta/black/blue, all transparent. --&gt;
+    &lt;color name="bmc_seekbar_played"&gt;@color/magenta_semi_trans&lt;/color&gt;
+    &lt;color name="bmc_seekbar_buffered"&gt;@color/black_semi_trans&lt;/color&gt;
+    &lt;color name="bmc_seekbar_track"&gt;@color/bc_orange&lt;/color&gt;
+
+&lt;/resources&gt;</code></pre>
+
+<p>Your player controls should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Change control colors" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/guides/player-controls/bcplayer-seekbar-colors.png" />
+<figcaption class="bcls-caption--image">Change control colors</figcaption>
+</figure>
+&nbsp;
+
+<h3>Change icons and buttons in the player controls</h3>
+
+<p>To further customize the Brightcove player controls, you can swap out icons and add your own buttons to match your company styles.</p>
+
+<p>Use the same code in your <strong>MainActivity.java</strong> file as above, and include the following code in your <strong>src/main/res/values/strings.xml</strong> file:</p>
+
+<pre class="line-numbers">
+<code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="app_name"&gt;Step Backward Rewind Sample App&lt;/string&gt;
+
+    &lt;!-- Use the Font Awesome fa-stepbackward icon for the rewind
+         button face. --&gt;
+    &lt;string name="rewind"&gt;&amp;#xf048;&lt;/string&gt;
+&lt;/resources&gt;</code></pre>
+
+<p>Your player controls should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Add backstep button" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/guides/player-controls/bcplayer-backstep-controls.png" />
+<figcaption class="bcls-caption--image">Add backstep button</figcaption>
+</figure>
+&nbsp;
+
+<p>For complete code examples, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-player-controls">Brightcove Player Controls for Android Samples</a>.</p>
+<!--                <p>With a basic understanding of the Brightcove SDK for Android components, you are now ready to build an app. Check out the <a href="/node/18238">Quick Start to Brightcove Player SDK for Android</a>.</p>--></section>
+
+<section class="bcls-section" id="Show/hide_player_controls">
+<h2>Show/hide player controls</h2>
+
+<p>There are three ways to show and hide the player controls during video playback:</p>
+
+<ol>
+	<li>
+	<p>The user can tap on the device screen to toggle the player controls between showing and hiding the controls.</p>
+	</li>
+	<li>
+	<p>You can use the <code>BrightcoveMediaController</code> class. Here is one example of how to show player controls for a defined playhead position range.</p>
+
+	<pre class="line-numbers">
+<code class="language-java">brightcoveVideoView.getEventEmitter().on(EventType.PROGRESS, new EventListener() {
+    @Override
+    public void processEvent(Event event) {
+        int playheadPosition = brightcoveVideoView.getCurrentPosition();
+        if(playheadPosition &gt; 24000 &amp;&amp; playheadPosition &lt; 29000) {
+            <span class="bcls-highlight">BrightcoveMediaController controller = brightcoveVideoView.getBrightcoveMediaController();
+            controller.show();</span>
+        }
+    }
+});</code></pre>
+
+	<aside class="bcls-aside bcls-aside--warning">You will get a null pointer exception if you try to call the <code>getBrightcoveMediaController()</code> method before the video is loaded. You can also listen for the <code>DID_SET_VIDEO</code> event before calling this method.<br />
+	<br />
+	Be aware that the player controls will automatically hide 3 seconds after you show them, unless you override this default behavior.</aside>
+	</li>
+	<li>
+	<p>You can use events as follows:</p>
+
+	<pre class="line-numbers">
+<code class="language-java">import static com.brightcove.player.mediacontroller.ShowHideController.SHOW_MEDIA_CONTROLS;
+import static com.brightcove.player.mediacontroller.ShowHideController.HIDE_MEDIA_CONTROLS;
+...
+eventEmitter.emit(HIDE_MEDIA_CONTROLS);
+eventEmitter.emit(SHOW_MEDIA_CONTROLS);</code></pre>
+	</li>
+</ol>
+</section>
+
+<section class="bcls-section" id="Disable_player_controls">
+<h2>Disable player controls</h2>
+
+<p>While designing your app layout and functionality, you may have a need to turn off the player controls. This can be done by setting the <code>MediaController</code> to null as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-java">@
+Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+   View rootView = inflater.inflate(R.layout.fragment_player, container, false);
+   brightcoveVideoView = (BrightcoveExoPlayerVideoView) rootView.findViewById(R.id.brightcove_video_view);
+   super.onCreateView(inflater, container, savedInstanceState); // Need to be called after brightcoveVideoView is set.
+   <span class="bcls-highlight">brightcoveVideoView.setMediaController((MediaController) null); // Need to be called after onCreateView.</span>
+   return rootView;
+}</code></pre>
+
+<p>This example uses the <code>BrightcovePlayerFragment</code>.</p>
+
+<aside class="bcls-aside bcls-aside--information">The <code>BrightcoveMediaController</code> class provides the default Brightcove player controls and allows you to manage and customize them, including the control bar, seek bar and a set of media control buttons. You can also disable the Brightcove Player controls to use the Android native controls.</aside>
+</section>
+
+<section class="bcls-section" id="Manually_control_fullscreen_mode">
+<h2>Manually control fullscreen mode</h2>
+
+<p>Typically, users will control fullscreen viewing by tapping on the fullscreen button in the control bar. There may be times when you want to control this functionality manually, in code.</p>
+
+<p>To set fullscreen mode, use the following code:</p>
+
+<pre class="line-numbers">
+<code class="language-java">brightcoveVideoView.getEventEmitter().emit(EventType.ENTER_FULL_SCREEN);</code></pre>
+
+<p>To exit fullscreen mode, use the following code:</p>
+
+<pre class="line-numbers">
+<code class="language-java">brightcoveVideoView.getEventEmitter().emit(EventType.EXIT_FULL_SCREEN);</code></pre>
+
+<p>For a complete list of event types, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/index.html">Player SDK for Android Reference</a>, and navigate to the <strong>EventType</strong> class document.</p>
+
+<p>Alternatively, you can use the <code>fullScreen()</code> and <code>normalScreen()</code> methods. You can find these methods in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/index.html">Player SDK for Android Reference</a>, and navigating to the <strong>BrightcovePlayer</strong> class document.</p>
+</section>
+</article>

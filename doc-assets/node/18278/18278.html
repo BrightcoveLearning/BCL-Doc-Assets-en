@@ -1,0 +1,120 @@
+<article class="bcls-article">
+<header id="bcls_header" class="bcls-header">
+<p>In this topic, you will learn how to use the Brightcove Native Player SDK for iOS to create apps that allow offline playback with DRM content protection.</p>
+
+<aside class="bcls-aside bcls-aside--warning">This feature is currently a BETA release for testing purposes.</aside>
+</header>
+
+<section class="bcls-section" id="top">&nbsp;</section>
+
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>The Native SDK for iOS allows you to create mobile apps which include Offline playback of your video content, while keeping it secure with a <a href="https://developer.apple.com/streaming/fps/">FairPlay Streaming</a> solution. The Native SDK simplifies your implementation for download management, offline catalog management, analytics, offline playback and DRM.</p>
+
+<aside class="bcls-aside bcls-aside--information">To use this feature, you need to be a Video Cloud customer using Dynamic Delivery.</aside>
+</section>
+
+<section class="bcls-section" id="Supported_versions">
+<h2>Supported versions</h2>
+
+<p>Offline DRM is supported on iOS versions 10.3+</p>
+</section>
+
+<section class="bcls-section" id="Download_the_SDK">
+<h2>Download the SDK</h2>
+
+<p>Get the latest version of the Brightcove Native SDK for iOS, which includes code to implement offline playback with DRM.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th style="border-bottom:1px solid #707070;">&nbsp;</th>
+			<th style="border-bottom:1px solid #707070;">Package<br />
+			(Github Repo)</th>
+			<!-- <th style="border-bottom:1px solid #707070;">Podspec</th> -->
+			<th style="border-bottom:1px solid #707070;">Reference Documentation</th>
+			<th style="border-bottom:1px solid #707070;">Notes</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td style="background-color:#dbdbdb;font-weight: bold;">SDK</td>
+			<td><a href="https://github.com/brightcove/brightcove-player-sdk-ios/tree/beta">Native SDK for iOS v6.0.0</a></td>
+			<!-- <td>
+                        <a href="https://github.com/CocoaPods/Specs/tree/master/Specs/2/4/f/Brightcove-Player-SDK">Brightcove-Player-SDK</a>
+                      </td> -->
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/odrm/index.html">SDK Reference</a></td>
+			<td><a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/beta/CHANGELOG.md">Release Notes</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>or select this button:</p>
+
+<p><button class="bcls-button" type="button" title="iOS Player SDK" onclick="location.href='https://github.com/brightcove/brightcove-player-sdk-ios/tree/beta';">Download the SDK</button></p>
+</section>
+
+<section class="bcls-section" id="Prepare_videos">
+<h2>Prepare videos</h2>
+
+<p>For videos that you want to be viewable offline, you need to use the <a href="/node/18034">CMS API</a> to set the <a href="/node/18023#videoFields">offline_enabled</a> field to a value of <strong>true</strong>.</p>
+
+<p>Setting this field will be similar to the steps found in the <a href="/node/18014">Setting 360-Video Properties with the CMS API</a> document.</p>
+</section>
+
+<section class="bcls-section" id="Security_features">
+<h2>Security features</h2>
+
+<p>The following security features are related to offline playback with the Native SDK for iOS.</p>
+
+<h3>AirPlay</h3>
+
+<p>You can not stream an offline HLS video to an AirPlay device for playback. This appears to be an <code>AVFoundation</code> limitation.</p>
+</section>
+
+<section class="bcls-section" id="Known_Issues">
+<h2>Known issues</h2>
+
+<p>The following known issues are related to offline playback with the Native SDK for iOS.</p>
+
+<h3>Multiple Concurrent Downloads</h3>
+
+<p>It’s possible to download multiple videos at the same time, but it is important to understand some aspects of this behavior.</p>
+
+<p>When you request a video download, the first thing that happens is FairPlay license generation and key exchange. After this, the download proceeds to completion.</p>
+
+<p>If you request multiple downloads at the same time it may take a while for the license and key requests for some of the videos to begin processing and/or complete. It’s important that the key exchange for all the videos happen before allowing the user to move the app to the background.</p>
+
+<p>If the app moves to the background before all the key exchanges are complete, FairPlay may not get a chance to make its callbacks in a timely fashion, and as a result the download with an incomplete license will result in an error.</p>
+
+<p>There are several ways to address this:</p>
+
+<ul>
+	<li>Only allow the user to download a single video at a time. This ensures that the license is secured as soon as possible, and that the video will download successfully.</li>
+	<li>If allowing multiple concurrent downloads, inform the user that they should not move the app to the background until all the downloads have started to report progress. You could simply put up a “please wait” spinner until you detect progress from all the downloads.</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--tip">You may want to limit the number of allowed concurrent downloads for practical reasons. The more downloads you begin at once, the longer it takes for them to begin. You should test with your own videos to see what works best for you.</aside>
+
+<h3>Playback During Download</h3>
+
+<p>While a movie is being downloaded, you can play the movie by passing the <code>BCOVVideo</code> object to the <code>BCOVPlaybackController</code> just like any other movie. We do this by using an internal reference stored in the currently active <code>AVAssetDownloadTask</code> (this is the method recommended by Apple to make the download and playback as efficient as possible).</p>
+
+<p>Doing this has several potentially unexpected side effects:</p>
+
+<ul>
+	<li>When you start playing, progress on the download task may stop. The <code>AVPlayer</code> appears to take over all network activity to give priority to buffering and displaying the playing video. This appears to be normal behavior.</li>
+	<li>When you stop playing, the download task may not resume. That will happen if the video’s session is still active in the <code>BCOVPlaybackController</code>. To clear out the current session, you can play a new video, or delete the playback controller. Be sure you don’t store the current session in a strong property.</li>
+	<li>Also, when you begin playback of a video that is downloading, the <code>AVPlayer</code> may initially seek to the end of the video, requiring the user to manually seek back to the beginning. This does not appear to be expected behavior and we are currently exploring workarounds.</li>
+</ul>
+
+<h3>Playing the Same Offline Video Twice</h3>
+
+<p>Unexpected network activity can occur when playing the same offline video two times in a row in a certain way. If you play a video with one playback controller, and then immediately play the same video with another playback controller, the <code>AVPlayer</code> for the second video may opt to retrieve its video data from the Internet rather than from local storage. (If the device is not online then the AVPlayer may not play the second video.)</p>
+
+<p>We believe this happens when two AVPlayers are in memory for a brief time referencing the same video in local storage. It’s unknown exactly why the <code>AVPlayer</code> switches to playing the online version; we will address this with Apple when we can more precisely narrow down the behavior.</p>
+
+<p>When possible, a better way to play the same video twice is to simply seek the same playback controller to timecode zero and play again.</p>
+</section>
+</article>

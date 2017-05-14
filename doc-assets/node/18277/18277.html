@@ -1,0 +1,95 @@
+<article class="bcls-article">
+<header id="bcls_header" class="bcls-header">
+<p>In this topic, you will learn how to use the Brightcove Native Player SDK for Android to create apps that allow offline playback with DRM content protection.</p>
+
+<aside class="bcls-aside bcls-aside--warning">This feature is currently a <strong>beta</strong> release for testing purposes.</aside>
+</header>
+
+<section class="bcls-section" id="top">&nbsp;</section>
+
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>The Native SDK for Android allows you to create mobile apps which include Offline playback of your video content, while keeping it secure with a <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a> solution. The Native SDK simplifies your implementation for download management, offline catalog management, analytics, offline playback and DRM.</p>
+
+<aside class="bcls-aside bcls-aside--information">
+<p>To use this feature, you need to be a Video Cloud customer using Dynamic Delivery. For videos that you want to be viewable offline, you need to use the <a href="/node/18034">CMS API</a> to set the <a href="/node/18034#videoFields">offline_enabled</a> field to a value of <strong>true</strong>.</p>
+Setting this field will be similar to the steps found in the <a href="/node/18014">Setting 360-Video Properties with the CMS API</a> document.</aside>
+</section>
+
+<section class="bcls-section" id="Supported_versions">
+<h2>Supported versions</h2>
+
+<p>Offline DRM is supported on the following versions:</p>
+
+<ul>
+	<li>Android 5+ for this beta release</li>
+	<li>Android 4.4+ for GA release</li>
+</ul>
+</section>
+
+<section class="bcls-section" id="Download_the_SDK">
+<h2>Download the SDK</h2>
+
+<p>Get the latest version of the Brightcove Native SDK for Android, which includes code to implement offline playback with DRM.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th style="border-bottom:1px solid #707070;">&nbsp;</th>
+			<th style="border-bottom:1px solid #707070;">Package<br />
+			(Github Repo)</th>
+			<th style="border-bottom:1px solid #707070;">Reference Documentation</th>
+			<th style="border-bottom:1px solid #707070;">Notes</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td style="background-color:#dbdbdb;font-weight: bold;">SDK</td>
+			<td><a href="https://learning-services-media.brightcove.com/doc-assets/device-sdks/android/reference/android-native-player-public-5.0.0.zip">Native SDK for Android v5.0.0</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/odrm/javadoc/index.html">SDK Reference</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/odrm/release-notes.txt">Release Notes</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>or select this button:</p>
+
+<p><button class="bcls-button" type="button" title="Android Player SDK" onclick="location.href='https://learning-services-media.brightcove.com/doc-assets/device-sdks/android/reference/android-native-player-public-5.0.0.zip';">Download the SDK</button></p>
+</section>
+
+<section class="bcls-section" id="Known_Issues">
+<h2>Known issues</h2>
+
+<p>The following known issues are related to offline playback with the Native SDK for Android.</p>
+
+<h3>Download Performance</h3>
+
+<p>It is recommended to test with shorter downloads, which will contain fewer segments. Our internal testing showed overall download performance can be slow because of the number of segments, Android download manager bugs, etc.</p>
+
+<h3>Long-form Video Downloads</h3>
+
+<p>Long-form video downloads (i.e. downloads of videos greater than 20 minutes in length) may overly stress the Android DownloadManager, and can cause the <code>android.process.media</code> process to crash. While this issue has been observed in all versions of Android tested, it is more prevalent in earlier versions of the operating system.</p>
+
+<h3>Multiple Concurrent Downloads</h3>
+
+<p>Downloading multiple videos, regardless of the length of any individual video, is not yet supported. Allow users to download a video only after the previous one has been successfully completed.</p>
+
+<h3>Intermittent Audio Problems During Playback or Seeking</h3>
+
+<p>While playing downloaded content, intermittent audio dropouts may occur during playback, seeking and orientation changes of the device. This issue does not persist for more than a few seconds as the player recovers. When this happens, the following will be written to the logcat:</p>
+
+<pre class="line-numbers">
+<code class="language-java">04-18 19:03:46.934 28764-28764/com.brightcove.player.test E/ExoPlayerVideoDisplayComponent: onAudioTrackUnderrun: bufferSize = 48000, bufferSizeMs = 250, elapsedSinceLastFeedMs = 1766</code></pre>
+
+<p>Audio problems did not occur when selecting another downloaded video or when going back to the original downloaded video.</p>
+
+<h3>Download File Management: Download Cancellation and Deletion</h3>
+
+<p>Canceling and deleting downloaded videos can sometimes fail to entirely clean up a download directory.</p>
+
+<p>It is recommended that if a deleted video download is not entirely removed from the device, that it is possible to delete the remainder of the download through the <strong>Storage</strong> section of the <strong>Settings</strong> on the device.</p>
+
+<p>For now, overriding the download directory is not supported.</p>
+</section>
+</article>
