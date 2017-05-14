@@ -1,0 +1,34 @@
+<article class="bcls-article">
+<section class="bcls-section" id="top">&nbsp;</section>
+
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>One reason to assume control over the resizing animation of the <code>AVPlayerLayer</code> would be to implement a "full screen" button.</p>
+
+<p>If you want to do this, Brightcove recommends that you create your own <code>UIView</code> and capture the <code>AVPlayerLayer</code> that is created for each <code>BCOVPlaybackSession</code> and not use <code>BCOVPlaybackController.view</code> at all.</p>
+
+<p>The SDK adds the <code>AVPlayerLayer</code> to the <code>BCOVPlaybackController.view</code> every time a new playback session is sent to the playback controller. This is done for each video since each video's session has a unique <code>playerLayer</code> object.</p>
+
+<p>Each time the <code>AVPlayerLayer</code> is added to the <code>BCOVPlaybackController.view</code>, the SDK disables its animation by setting the bounds and position entries in the <code>AVPlayerLayer.actions</code> dictionary to <code>NSNull</code>. If you try to mutate the actions dictionary directly, you will have to update it every time it advances to a new playback session.</p>
+</section>
+
+<section class="bcls-section" id="Example">
+<h2>Example</h2>
+
+<p>Here is an example of what you might do:</p>
+
+<ol>
+	<li>If you are using the code from the Basic Player Sample, in the <code>viewDidLoad</code> method, comment any references to the <code>playbackController.view</code> as follows:
+
+	<pre class="line-numbers">
+<code class="language-swift">// self.playbackController.view.frame = self.videoContainer.bounds;
+// self.playbackController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+// [self.videoContainer addSubview:self.playbackController.view];</code></pre>
+	</li>
+	<li>Then, in the <code>didAdvanceToPlaybackSession</code> method, add the <code>AVPlayerLayer</code> to the layer of your view.</li>
+</ol>
+
+<p>If you really need to use <code>BCOVPlaybackController.view</code>, you can remove the bounds and position entries from the <code>AVPlayerLayer.actions</code> dictionary, but you’ll have to assume responsibility for setting up the <code>CALayer</code> animations to look good in your code.</p>
+</section>
+</article>
