@@ -1,0 +1,214 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>With Zencoder you can encode your videos to MP4 and then also repackage those as HLS outputs, through a process we call "transmuxing" (rather than transcoding). Transmuxing will repackage existing MP4 videos into the MPEG TS segments necessary for HTTP Live Streaming (HLS), without having to re-encode the video files. Using dependent outputs you can create your H.264 files plus the segmented files all in a single job, producing faster turnaround at lower cost; transmuxed outputs are charged at 1/4 of the cost of encoding. The resulting job creates 6 outputs - 2 charged at your account's regular rate, 3 transmuxed files at 1/4 of the encoding cost, and 1 playlist, which is free.</p>
+
+<p>For this, you'll create a single job with two main sets of outputs (plus the playlists). The first set of outputs will be normal H.264/AAC MP4 files with a few special settings to allow them to work as source files for HLS outputs. The second set of outputs will use those MP4 files as "source" inputs, transmuxing their content to HLS outputs. Since these are dependent outputs, they will wait until their corresponding source finishes before being scheduled to process.</p>
+
+<p>The key part of the process is using <a href="/node/17852#source">source</a>, a new option in V2 of the Zencoder API. Source tells an output to use the file created by another output on the job for processing, instead of the input file. In this situation, Zencoder will create H.264 files based on the input file at requested bitrates. As each of those outputs finishes, a segmented version will then be created from the output.</p>
+</section>
+
+<section id="h264_outputs" class="bcls-section">
+<h2>The H.264 Outputs</h2>
+
+<p>We'll start by creating 2 H.264 files, targeting high and low bitrates.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "label": "low",
+    "format": "mp4",
+    "video_bitrate": 200,
+    "decoder_bitrate_cap": 300,
+    "decoder_buffer_size": 1200,
+    "audio_sample_rate": 44100,
+    "height": "288",
+    "url": "s3://example-bucket/low.mp4",
+    "h264_reference_frames": 1,
+    "forced_keyframe_rate": "0.1",
+    "audio_bitrate": 56,
+    "decimate": 2
+},
+{
+    "label": "high",
+    "format": "mp4",
+    "video_bitrate": 1000,
+    "decoder_bitrate_cap": 1500,
+    "decoder_buffer_size": 6000,
+    "audio_sample_rate": 44100,
+    "height": "432",
+    "url": "s3://example-bucket/high.mp4",
+    "h264_reference_frames": "auto",
+    "h264_profile": "main",
+    "forced_keyframe_rate": "0.1",
+    "audio_bitrate": 56
+}</code></pre>
+
+<p>The resulting files from these outputs are capable of being played on a wide variety of devices. Each targets a different bitrate and resolution, so users can be sent the appropriate file. Each is also appropriate for segmenting for HTTP Live Streaming and serving as an adaptive bitrate stream.</p>
+
+<p>A few options in the request above to note:</p>
+
+<ul>
+	<li><a href="/node/17876#forced-keyframe-rate">forced_keyframe_rate</a> to 0.1. This forces the video to have a keyframe every 10 seconds. The segmented files will be 10 seconds long, so this ensures will ensure that there each segment will start with a keyframe.</li>
+	<li><a href="/node/17879#decoder-bitrate-cap">decoder_bitrate_cap</a> is set to 1.5x the target bitrate of the file. <a href="/node/17879#decoder-buffer-size">decoder_buffer_size</a> is set to 3.5x to 5x the target bitrate of the file. These settings will help keep a consistent bitrate throughout the file, so that the segmented segments won't vary too much in size and bitrate.</li>
+</ul>
+
+<p>Now that the H.264 files have been created, additional outputs can be added to the request to create HTTP Live Streaming segmented files from the source, without needing to do additional encoding.</p>
+</section>
+
+<section id="Segmented_Outputs" class="bcls-section">
+<h2>Segmented Outputs</h2>
+
+<p>Each of the H.264 video and the audio outputs above have <a href="/node/17852#abel">labels</a> in their API options. These labels can be used in conjunction with the <a href="/node/17852#source">source</a> option to tell Zencoder to use the video created by the output with the given label, rather than the input file. Since the H.264 files are already at good settings for HLS, no additional encoding is necessary.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "source": "low",
+    "segment_video_snapshots": "true",
+    "url": "s3://example-bucket/hls-audio-only/hls-audio-only.m3u8",
+    "copy_audio": "true",
+    "skip_video": "true",
+    "label": "hls-audio-only",
+    "type": "segmented",
+    "format": "aac"
+},
+{
+    "source": "low",
+    "format": "ts",
+    "copy_audio": "true",
+    "copy_video": "true",
+    "url": "s3://example-bucket/hls-low/hls-low.m3u8",
+    "label": "hls-low",
+    "type": "segmented"
+}
+{
+    "source": "high",
+    "format": "ts",
+    "copy_audio": "true",
+    "copy_video": "true",
+    "url": "s3://example-bucket/hls-high/hls-high.m3u8",
+    "label": "hls-high",
+    "type": "segmented"
+}
+{
+    "streams": [
+    {
+        "path": "hls-low/hls-low.m3u8",
+        "bandwidth": 256
+    },
+    {
+        "path": "hls-audio-only/hls-audio-only.m3u8",
+        "bandwidth": 56
+    },
+    {
+        "path": "hls-high/hls-high.m3u8",
+        "bandwidth": 1056
+    }
+    ],
+    "type": "playlist",
+    "url": "s3://example-bucket/playlist.m3u8"
+}</code></pre>
+
+<p>The resulting files from these outputs are segmented outputs, targeting different bandwidths, plus a playlist file for the playback device to know the available streams.</p>
+
+<p>Each segmented output includes the <a href="/node/17852#source">source</a>, and specifies one of the outputs listed earlier. They also include the <a href="/node/17855#copy-audio">copy_audio</a> and <a href="/node/17855#copy-video">copy_video</a> options, which tell Zencoder to use the audio and video streams from the source file and repackage them in the new container, rather than transcode them. Finally, the outputs also specify a <a href="/node/17852#type">type</a> of segmented and a <a href="/node/17856#format">format</a> of ts, plus a <a href="/node/17852#url">url</a> with an extension of .m3u8, so that Zencoder knows to create segmented HLS files.</p>
+
+<p>The only exception among these outputs is the first, which is an audio-only stream for playback on low-bandwidth devices. Apple recommends/requires this option, but it doesn't need to be made from an audio-only output, in fact it's better if its source is a video. This helps keep the audio segments in sync with their higher-bitrate video counterparts, because the segmenting is done around the frames, which the audio-only file doesn't have. Segmenting from an audio-only file increases the likelihood that the audio-segments can get out of sync with their video counterparts. It also means that the <a href="/node/17863#segment-video-snapshots">segment_video_snapshots</a> option can be used.</p>
+
+<p>Finally, there is also a playlist generated that references each of the segmented outputs. Note that the first file refrenced in the playlist is the low bitrate video; the device playing the video will generally load the first stream listed in the playlist initially, and switch to other streams as necessary. This means that the first 10 seconds of playback will use this stream, after which the device will have enough information to select the appropriate stream to play.</p>
+
+<p><strong>NOTES</strong></p>
+
+<ul>
+	<li>The HLS playlist generation currently uses no information from the other outputs in the job, but is simply a way to easily generate a correctly formatted adaptive-bitrate playlist and have it uploaded along with the other files.</li>
+	<li>While iOS devices will play the adaptive bitrate playlist created, VLC won't, due to errors in handling relative URLs. It will look for the segment files in the same directory as the playlist file, rather than the directory of the manifest file.</li>
+</ul>
+</section>
+
+<section id="Full_request" class="bcls-section">
+<h2>Full Request</h2>
+
+<p>Now that we've gone over each of the major output sections, let's pull it together in to a single API request.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+    {
+        "label": "low",
+        "format": "mp4",
+        "video_bitrate": 200,
+        "decoder_bitrate_cap": 300,
+        "decoder_buffer_size": 1200,
+        "audio_sample_rate": 44100,
+        "height": "288",
+        "url": "s3://example-bucket/low.mp4",
+        "h264_reference_frames": 1,
+        "forced_keyframe_rate": "0.1",
+        "audio_bitrate": 56,
+        "decimate": 2
+    },
+    {
+        "label": "high",
+        "format": "mp4",
+        "video_bitrate": 1000,
+        "decoder_bitrate_cap": 1500,
+        "decoder_buffer_size": 6000,
+        "audio_sample_rate": 44100,
+        "height": "432",
+        "url": "s3://example-bucket/high.mp4",
+        "h264_reference_frames": "auto",
+        "h264_profile": "main",
+        "forced_keyframe_rate": "0.1",
+        "audio_bitrate": 56
+    },
+    {
+        "source": "low",
+        "segment_video_snapshots": "true",
+        "url": "s3://example-bucket/hls-audio-only/hls-audio-only.m3u8",
+        "copy_audio": "true",
+        "skip_video": "true",
+        "label": "hls-audio-only",
+        "type": "segmented",
+        "format": "aac"
+    },
+    {
+        "source": "low",
+        "format": "ts",
+        "copy_audio": "true",
+        "copy_video": "true",
+        "url": "s3://example-bucket/hls-low/hls-low.m3u8",
+        "label": "hls-low",
+        "type": "segmented"
+    }
+    {
+        "source": "high",
+        "format": "ts",
+        "copy_audio": "true",
+        "copy_video": "true",
+        "url": "s3://example-bucket/hls-high/hls-high.m3u8",
+        "label": "hls-high",
+        "type": "segmented"
+    }
+    {
+        "streams": [
+        {
+            "path": "hls-low/hls-low.m3u8",
+            "bandwidth": 256
+        },
+        {
+            "path": "hls-audio-only/hls-audio-only.m3u8",
+            "bandwidth": 56
+        },
+        {
+            "path": "hls-high/hls-high.m3u8",
+            "bandwidth": 1056
+        }
+        ],
+        "type": "playlist",
+        "url": "s3://example-bucket/playlist.m3u8"
+    }
+    ]
+}</code></pre>
+</section>
+</article>
