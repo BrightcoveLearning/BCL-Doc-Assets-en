@@ -1,0 +1,47 @@
+<article class="bcls-article">
+<section id="VP6_Overview" class="bcls-section">
+<h2>VP6 Overview</h2>
+
+<p>VP6 is a video codec that is widely used for Flash Video. Its quality is generally worse than H.264 or VP8, but still respectable, and compatibility is excellent due to the proliferation of the Flash Player. So while H.264 or VP8 is probably a better option for many people, there are still legitimate use cases for VP6.</p>
+
+<p>VP6 is deployed in the FLV file container, so if you're specifying an output file name, use an extension of .flv.</p>
+
+<p>AAC and MP3 audio codecs are valid alongside VP6 in a FLV container.</p>
+
+<p>To use VP6, set the <a href="/node/17856#video-codec">video_codec</a> API option to "vp6".</p>
+</section>
+
+<section id="VP6-only_options" class="bcls-section">
+<h2>VP6-only options</h2>
+
+<p><strong><a href="/node/17859#vp6-temporal-down-watermark">vp6_temporal_down_watermark</a></strong>: Codec parameter for temporal down watermark percentage. Specifies the percentage of the datarate buffer remaining below which the encoder is allowed to start dropping frames. Only used if vp6_temporal_resampling is enabled. Valid values are 0-100. Default: 20 A larger percentage will make it more likely frames will be dropped to achieve the requested video bitrate. The converse is also true.</p>
+
+<p><strong><a href="/node/17859#vp6-temporal-resampling">vp6_temporal_resampling</a></strong>: Codec parameter for temporal resampling. In particularly difficult regions, if enabled, the encoder will drop frames to achieve the target the data rate. The value of vp6_temporal_down_watermark determines the percentage of the datarate buffer below which the encoder is enabled to start dropping frames. Accepts a boolean. Default is "true" on files using a low number of bits per pixel, and "false" on files using a high number of bits per pixel.</p>
+
+<p>Note: when using constant_bitrate mode, this option is forced to "true". Adjust vp6_temporal_down_watermark to improve results.</p>
+
+<p><strong><a href="/node/17859#vp6-undershoot-pct">vp6_undershoot_pct</a></strong>: Creates output that targets a slightly lower datarate so there are bits available in the buffer to improve difficult sections. This is a percentage, so valid values are 0-100. Default is 90.</p>
+
+<p><strong><a href="/node/17859#vp6-profile">vp6_profile</a></strong>: either "vp6s" or "vp6e". vp6e is designed for general use. vp6s is optimized for high resolution/datarate video. Decreases decoding complexity, allowing playback on resource constrained machines. Default is vp6e.</p>
+
+<p><strong><a href="/node/17859#vp6-compression-mode">vp6_compression_mode</a></strong>: Affects the speed of encoding, compared to the quality of output. "good" balances speed and quality. "best" prioritizes quality over speed, resulting in higher compression but slower encoding. Interacts with the <strong><a href="/node/17879#speed">speed</a></strong> API option (below). Default is "good".</p>
+
+<p><strong><a href="/node/17859#vp6-2pass-min-section">vp6_2pass_min_section</a></strong>: For two-pass VBR encoding, this controls the lowest datarate that the encoder will allow for any section, no matter how easy the section is. This value is used to prevent difficult sections from stealing too many bits from easy sections. Expressed as a percentage, as an integer. Default: 40.</p>
+
+<p>For example, if video_bitrate is set to 1000 kbps and vp6_2_pass_min_section is set to 50, the lowest bitrate of any section will be 500kbps (1000 * 50%).</p>
+
+<p><strong><a href="/node/17859#vp6-2pass-max-section">vp6_2pass_max_section</a></strong>: For two-pass VBR encoding, this controls the highest datarate that can be streamed, and also the highest datarate that the encoder will allow, no matter how difficult the section is. Default: 400.</p>
+
+<p>For example, if video_bitrate is set to 1000 kbps and vp6_2_pass_max_section is set to 450, the highest bitrate of any section will be 4500kbps (1000 * 450%).</p>
+
+<p><strong><a href="/node/17859#vp6-stream-prebuffer">vp6_stream_prebuffer</a></strong>: Seconds of preload that are necessary before starting playback. The buffer is used to maintain a consistent datarate and minimize playback interruption. Valid for constant_bitrate encoding only. Default: 6.</p>
+
+<p><strong><a href="/node/17859#vp6-stream-max-buffer">vp6_stream_max_buffer</a></strong>: The maximum size of the buffer, in seconds. Valid for constant_bitrate encoding only.</p>
+
+<p><strong><a href="/node/17859#vp6-deinterlace-mode">vp6_deinterlace_mode</a></strong>: If deinterlacing is enabled, this option sets the deinterlacing filter that will be applied. Valid options are "adaptive", "blur" (for 1:2:1 Blur mode, and "drop" (for Drop Field mode). Default: adaptive.</p>
+
+<p><strong><a href="/node/17859#vp6-denoise-level">vp6_denoise_level</a></strong>: Specifies the noise level of the source. Any value greater than 0 implies a constant and known level of noise within the source. A value of 0 will cause the filter to estimate the noise level, allowing it to vary from frame to frame. Larger noise levels indicate a noisier source resulting in increased removal by the filter, at the cost of sharpness. Should be a decimal value between 0 and 1 (e.g. 0.2). Default: 0.</p>
+
+<p><strong><a href="/node/17876#fixed-keyframe-interval">fixed_keyframe_interval</a></strong>: by default, a specified keyframe_interval only guarantees the max number of frames between two keyframes. The encoder may decide to place a keyframe before it is required by the keyframe_interval. Setting this option to true prevents this variability. Default: false.</p>
+</section>
+</article>

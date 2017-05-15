@@ -122,28 +122,26 @@
 
 <p>The content will be encrypted with the <code>content_key</code>, and the .mpd manifest file will include the <code>key_id</code> in its headers. However, to ensure this output is playable, it also needs headers specifying how to retrieve the <code>content_key</code>. On a multi-bitrate DASH encode, these headers only need to be added to the playlist output, but can also be added to each rendition, so the rendition is individually playable. This is done by adding one or more DRM schemas:</p>
 
-<pre class="brush: js;">
-            {
-                "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
-                "outputs": [
-                {
-                    "streaming_delivery_format": "dash",
-                    "video_bitrate": 700,
-                    "type": "segmented",
-                    "url": "s3://mybucket/dash-examples/sbr/rendition.mpd",
-                    "drm": {
-                        "method": "cenc",
-                        "key_id": "d57d416ccd454d5a08d05bff0742ee76",
-                        "content_key": "f15cae8f4e48a023056e1960ff2228b0",
-                        "schemas": [
-                        { "type": "marlin" },
-                        { "type": "playready", "license_acquisition_url": "https://playready.example.com/license_server/" }
-                        ]
-                    }
-                }
-                ]
-            }
-        </pre>
+<pre class="line-numbers"><code class="language-json">
+    "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
+    "outputs": [
+    {
+        "streaming_delivery_format": "dash",
+        "video_bitrate": 700,
+        "type": "segmented",
+        "url": "s3://mybucket/dash-examples/sbr/rendition.mpd",
+        "drm": {
+            "method": "cenc",
+            "key_id": "d57d416ccd454d5a08d05bff0742ee76",
+            "content_key": "f15cae8f4e48a023056e1960ff2228b0",
+            "schemas": [
+            { "type": "marlin" },
+            { "type": "playready", "license_acquisition_url": "https://playready.example.com/license_server/" }
+            ]
+        }
+    }
+    ]
+}</code></pre>
 
 <p>We can then put this together to create a multi-bitrate, DRM-encrypted DASH job:</p>
 
@@ -214,7 +212,7 @@
 <section id="Transmuxing" class="bcls-section">
 <h2>Transmuxing</h2>
 
-<p>Of course, generating multiple formats of a video can get expensive and wasteful. So Zencoder supports repackaging the same encoded streams into different formats (called transmuxing), by using the <code><a href="/node/17855copy-video">copy_video</a></code> and <code><a href="/node/17855copy-audio">copy_audio</a></code> options. Outputs for which the video is transmuxed rather than encoded are charged at 1/4 the regular duration. So if you're planning to make multiple formats of the same video (MP4, HLS, and DASH, for example), you can encode the MP4 version of each bitrate first, and then transmux those outputs to create the HLS and DASH versions. (Note that we don't support transmuxing from a format that's segmented, since the video is no longer a single stream.)</p>
+<p>Of course, generating multiple formats of a video can get expensive and wasteful. So Zencoder supports repackaging the same encoded streams into different formats (called transmuxing), by using the <code><a href="/node/17855#copy-video">copy_video</a></code> and <code><a href="/node/17855#copy-audio">copy_audio</a></code> options. Outputs for which the video is transmuxed rather than encoded are charged at 1/4 the regular duration. So if you're planning to make multiple formats of the same video (MP4, HLS, and DASH, for example), you can encode the MP4 version of each bitrate first, and then transmux those outputs to create the HLS and DASH versions. (Note that we don't support transmuxing from a format that's segmented, since the video is no longer a single stream.)</p>
 
 <p>To ensure that the MP4 is prepared according to the constraints of the subsequent segmented streaming formats, also use the <code><a href="/node/17853#prepare-for-segmenting">prepare_for_segmenting</a></code> option on the MP4 output. This will control default values for keyframes and captions when encoding the video stream of the MP4 to ensure that it will be compatible with transmuxing to segmented formats afterward.</p>
 
