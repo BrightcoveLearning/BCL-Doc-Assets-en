@@ -42,7 +42,10 @@ var BCLS_player_fix = ( function (window, document) {
         sideNavList = document.querySelector('.bc-ipnav-block ul'),
         vcContent = document.getElementsByClassName('video-cloud-only'),
         bpContent = document.getElementsByClassName('player-only'),
-        toggleStr = '<li><button id="vc" class="bcls-button__version" style="background-color:#dd712e;">Video Cloud Version</button> <button id="bp" class="bcls-button__version">Brightcove Player Version</button> <a style="font-size:smaller;" href="//docs.brightcove.com/en/player/brightcove-player/versions.html">(What\'s the difference?)</a><hr></li>',
+        versionPath = 'versions-brightcove-player-documentation',
+        thisHost = window.location.host,
+        thisProtocol = window.location.protocol,
+        toggleStr = '<p><button id="vc" class="bcls-button__version" style="background-color:#dd712e;">Video Cloud Version</button></p><p>button id="bp" class="bcls-button__version">Brightcove Player Version</button><br><a style="font-size:smaller;" href="' + thisProtocol + '//' + thisHost + versionPath + '">(What\'s the difference?)</a><hr></li>',
         iMax, i;
 
 
@@ -129,7 +132,7 @@ var BCLS_player_fix = ( function (window, document) {
         //     sideNavList = document.getElementById('sideNavList');
         //     console.log('foo', sideNavList);
         // }
-        sideNav.insertAdjacentHTML('afterBegin', toggleStr);
+        sideNav.insertAdjacentHTML('beforeBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
         if (location.hash.indexOf('bp') >- 0) {
