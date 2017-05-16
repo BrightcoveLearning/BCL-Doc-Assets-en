@@ -1,0 +1,686 @@
+<style type="text/css">.video-js {
+          height: 240px;
+          width: 448px;
+          float: left;
+        }
+        .vjs-playlist {
+          width: 280px;
+          height: 240px;
+        }
+        .actual-player {
+          width: 80%;
+          min-height: 360px;
+        }
+</style>
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Examples">Examples</h2>
+
+<p>The following shows two Brightcove Players with associated playlists. The different look and feel of the playlists reflects the version of the playlist style. The first example uses version 1 of the playlist display and the second example uses version 2.</p>
+
+<h3>Version 1 of Playlist</h3>
+
+<video data-playlist-id="5126480959001" data-account="1752604059001" data-player="f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe" data-embed="default" class="video-js" controls="">&nbsp;</video>
+
+<ol class="vjs-playlist">
+</ol>
+
+<h3>Version 2 of Playlist</h3>
+<iframe class="actual-player" src="//players.brightcove.net/1752604059001/H1EyAYN3_default/index.html?playlistId=5126480959001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></section>
+
+<section class="bcls-section">
+<h2 id="Implementation_overview">Implementation overview</h2>
+
+<p>&nbsp;</p>
+
+<p>To use playlists, complete the follow tasks:</p>
+
+<ol>
+	<li><a href="#createplaylist">Create a playlist</a> either in Studio or manually using JavaScript</li>
+	<li><a href="#enableplayer">Enable your player</a> to use playlists</li>
+	<li>Use playlists with the <a href="#iframe">iframe</a> player implementation</li>
+	<li>Use playlists with the <a href="#inpageembed">in-page embed implementation</a></li>
+	<li>Use playlists with the <a href="#playlistapi">Playlist API</a>, where you programmatically control playlist behavior</li>
+</ol>
+</section>
+<section" class="bcls-section video-cloud-only">
+<h2 15152="" id="createplaylist&gt;Create playlist&lt;/h2&gt;
+
+&lt;p&gt;The following three documents show how to create playlists. The first two using Video Cloud Studio and the last one using JavaScript.&lt;/p&gt;
+
+&lt;ul&gt;
+	&lt;li&gt;&lt;a  data-cke-saved-href=" node="">Creating and Managing Playlists</h2>
+
+<ul>
+	<li><a href="/node/15475">Working with Playlists</a></li>
+	<li><a href="/node/18099#manualcreation">Guide: Playlist API</a></li>
+</ul>
+
+<section class="bcls-section player-only">
+<h2 id="createplaylistperform">Create playlist</h2>
+
+<p>To create a playlist you need to use the player's <code>playlist()</code> method along with JSON to define the videos in the playlist. The following code shows an example.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">  &lt;script type="text/javascript"&gt;
+    videojs('myPlayerID').ready(function () {
+      var myPlayer = this;
+      myPlayer.playlist([{
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_SeaHorse.mp4", "type": "video/mp4"
+        }],
+        "name": "Seahorse",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_Seahorse_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_Seahorse_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_Anemone.mp4", "type": "video/mp4"
+        }],
+        "name": "Sea Anemone",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_Anemone_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_Anemone_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Tiger.mp4", "type": "video/mp4"
+        }],
+        "name": "Tiger",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_ClownFish.mp4", "type": "video/mp4"
+        }],
+        "name": "Clownfish",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_ClownFish_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_ClownFish_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_LionFish.mp4", "type": "video/mp4"
+        }],
+        "name": "Lionfish",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_LionFish_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_LionFish_poster.png"
+      }]);
+    });
+  &lt;/script&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="enableplayer">Enable player</h2>
+
+<p>You can use <span class="video-cloud-only">Video Cloud</span><span class="player-only">Perform</span> Studio to enable your player to use playlists. In the <strong>Settings</strong> section, click the <strong>Edit</strong> button then enable the display of playlists. Note the default playlist version is version 2.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="playlist enable studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/playlist-enable-in-studio.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="iframe">iframe player</h2>
+
+<p>Once you have a playlist to use, and have enabled your player to use a playlist, you are ready to actually utilize the playlist with the player. As usual you have the iframe and in-page embed player implementations available. In this section, instructions for using the playlist with the iframe implementation are shown. When using the iframe, the playlist will appear on the right side of the player, as shown in this screenshot (NOT a functional player and playlist):</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="iframe playlist" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/example-iframe.png" /></figure>
+
+<aside class="bcls-aside bcls-aside--tip">Note: If you need to position the playlist in a different location other than on the right side of the player, you will need to use the in-page embed implementation, detailed below.</aside>
+
+<p>To use a playlist with the iframe implementation, you append one of the following query strings to the <code>src</code> attribute of the iframe. If using an ID:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;iframe src='//players.brightcove.net/.../index.html<em>?playlistId=1754200320001</em>'</code></pre>
+
+<p>or if you are using a reference ID:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;iframe src='//players.brightcove.net/.../index.html<em>?playlistId=ref:myrefid001</em>'</code></pre>
+
+<p>If you added one of the query strings, then browsed the page with your iframe player implementation, chances are you would not see the playlist. The reason being is that you need to style the player to allow the playlist to show. For instance, the styles shown here could be placed in the head of your HTML page:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;style&gt;
+  iframe {
+    width: 88%;
+    min-height: 360px;
+  }
+&lt;/style&gt;</code></pre>
+
+<p>Of course the actual styles and associated values you use will vary depending on the size of the videos being displayed and your HTML page layout.</p>
+
+<p>An example HTML page using the iframe implementation is:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Untitled Document&lt;/title&gt;
+  &lt;style&gt;
+    iframe {
+      width: 88%;
+      min-height: 360px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;iframe src='//players.brightcove.net/1752604059001/f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe_default/
+    index.html?playlistId=1754200320001' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section video-cloud-only">
+<h2 id="In_page_embed_player">In-page embed player</h2>
+
+<p>Once you have a playlist to use, and have enabled your player to use a playlist, you are ready to actually utilize the playlist with the player. As usual you have the iframe and in-page embed player implementations available. In this section, instructions for using the playlist with the in-page embed implementation are shown. Just below is a screenshot of an in-page embed playlist. Note that in the in-page V2 implementation the playlist you do NOT get the functionality to hide and show the playlist, that is only with iframe implementations. This is because in the in-page V2 implementation the playlist does not overlay the player, and as a result does not have the show and hide button.</p>
+
+<aside class="bcls-aside bcls-aside--information">When using the in-page embed implementation of Brightcove Player the playlist element needs to be sized and positioned using CSS. This provides you with the flexibility to position the playlist separately from the player, in a location and direction of your choice. With these options you can present the playlist in many ways, as shown later in this document in the <a href="#movingplaylist">Moving the playlist</a> section. When using a playlist with the iframe implementation of the player you simply don't have these options.</aside>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="in-page embed playlist" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/example-in-page-embed.png" /></figure>
+
+<p>To use the playlist in the in-page embed implementation you need to do the following:</p>
+
+<ul>
+	<li>Add one of the following attributes to the <code>&lt;video&gt;</code> tag (the first is using a playlist ID, the second is using a reference ID):
+
+	<pre class="line-numbers">
+<code class="language-javascript">data-playlist-id="5126480959001"</code></pre>
+
+	<pre class="line-numbers">
+<code class="language-javascript">data-playlist-id="ref:myrefid001"</code></pre>
+
+	<p>Here is an example <code>&lt;video&gt;</code> tag:</p>
+
+	<pre class="line-numbers">
+<code class="language-html">&lt;video data-playlist-id="5126480959001"
+  data-account="1752604059001"
+  data-player="H1EyAYN3"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls&gt;&lt;/video&gt;</code></pre>
+	</li>
+	<li>In your HTML page, in the location you wish the playlist to appear, insert an ordered list (<code>&lt;ol&gt;&lt;/ol&gt;</code>) with a class of <code>vjs-playlist</code>, as shown here:
+	<pre class="line-numbers">
+<code class="language-html">&lt;ol class="vjs-playlist"&gt;&lt;/ol&gt;</code></pre>
+	</li>
+</ul>
+
+<p>The playlist will be injected into your HTML page at the location of the ordered list.</p>
+
+<p>Chances are you will wish to style the player and playlist to appear the way you wish. For instance, the styles used for the player and playlist at the top of the document are:</p>
+
+<pre class="line-numbers">
+<code class="language-html">  &lt;style type="text/css"&gt;
+    .video-js {
+      height: 350px;
+      width: 640px;
+      float: left;
+    }
+    .vjs-playlist {
+      width: 280px;
+      height: 365px;
+    }
+&lt;/style&gt;</code></pre>
+
+<p>An example HTML page using the in-page embed implementation is:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Untitled Document&lt;/title&gt;
+  &lt;style type="text/css"&gt;
+    .video-js {
+      height: 350px;
+      width: 640px;
+      float: left;
+    }
+    .vjs-playlist {
+      width: 280px;
+      height: 333px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;video data-playlist-id="5126480959001"
+  data-account="1752604059001"
+  data-player="f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls&gt;&lt;/video&gt;
+  &lt;script src="//players.brightcove.net/1752604059001/f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe_default/index.min.js"&gt;&lt;/script&gt;
+
+  &lt;ol class="vjs-playlist"&gt;&lt;/ol&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section player-only">
+<h2 id="In_page_embed_player">In-page embed player</h2>
+
+<p>Once you have a playlist to use, and have enabled your player to use a playlist, you are ready to actually utilize the playlist with the player. As usual you have the iframe and in-page embed player implementations available. In this section, instructions for using the playlist with the in-page embed implementation are shown. Just below is a screenshot of an in-page embed playlist. Note that in the in-page V2 implementation the playlist you do NOT get the functionality to hide and show the playlist, that is only with iframe implementations. This is because in the in-page V2 implementation the playlist does not overlay the player, and as a result does not have the show and hide button.</p>
+
+<aside class="bcls-aside bcls-aside--information">When using the in-page embed implementation of Brightcove Player the playlist element needs to be sized and positioned using CSS. This provides you with the flexibility to position the playlist separately from the player, in a location and direction of your choice. With these options you can present the playlist in many ways, as shown later in this document in the <a href="#movingplaylist">Moving the playlist</a> section. When using a playlist with the iframe implementation of the player you simply don't have these options.</aside>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="in-page embed playlist" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/example-in-page-embed.png" /></figure>
+
+<p>To use the playlist in the in-page embed implementation you need to do the following:</p>
+
+<ul>
+	<li>Use JavaScript to create the playlist using the <code>playlist()</code> method and JSON to define the video objects. This is shown in the code below in lines 352-387.</li>
+	<li>In your HTML page, in the location you wish the playlist to appear, insert an ordered list (<code>&lt;ol&gt;&lt;/ol&gt;</code>) with a class of <code>vjs-playlist</code>, as shown here:
+	<pre class="line-numbers">
+<code class="language-html">&lt;ol class="vjs-playlist"&gt;&lt;/ol&gt;</code></pre>
+	</li>
+</ul>
+
+<p>The playlist will be injected into your HTML page at the location of the ordered list.</p>
+
+<p>Chances are you will wish to style the player and playlist to appear the way you wish. For instance, the styles used for the player and playlist at the top of the document are:</p>
+
+<pre class="line-numbers">
+<code class="language-css">    .video-js {
+      float: left;
+      margin: 15px;
+      width: 440px;
+      height: 280px;
+    }
+    .vjs-playlist {
+      width: 250px;
+      float: left;
+      margin: 15px;
+    }</code></pre>
+
+<p>An example HTML page using the in-page embed implementation is:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Playlist Tester Perform&lt;/title&gt;
+  &lt;style type="text/css"&gt;
+    .video-js {
+      float: left;
+      margin: 15px;
+      width: 440px;
+      height: 280px;
+    }
+    .vjs-playlist {
+      width: 250px;
+      float: left;
+      margin: 15px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;video id="myPlayerID"
+    data-account="3676484087001"
+    data-player="04ac0699-ca6b-449b-a2b6-0f14b4a7893b"
+    data-embed="default"
+    class="video-js" controls&gt;&lt;/video&gt;
+
+  &lt;ol class="vjs-playlist"&gt;&lt;/ol&gt;
+
+  &lt;script src="//players.brightcove.net/3676484087001/04ac0699-ca6b-449b-a2b6-0f14b4a7893b_default/index.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript"&gt;
+    videojs('myPlayerID').ready(function () {
+      var myPlayer = this;
+      myPlayer.playlist([{
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_SeaHorse.mp4", "type": "video/mp4"
+        }],
+        "name": "Seahorse",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_Seahorse_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_Seahorse_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_Anemone.mp4", "type": "video/mp4"
+        }],
+        "name": "Sea Anemone",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_Anemone_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_Anemone_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Tiger.mp4", "type": "video/mp4"
+        }],
+        "name": "Tiger",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_ClownFish.mp4", "type": "video/mp4"
+        }],
+        "name": "Clownfish",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_ClownFish_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_ClownFish_poster.png"
+      }, {
+        "sources": [{
+          "src": "http://solutions.brightcove.com/bcls/assets/videos/Sea_LionFish.mp4", "type": "video/mp4"
+        }],
+        "name": "Lionfish",
+        "thumbnail": "http://solutions.brightcove.com/bcls/assets/images/Sea_LionFish_poster.png",
+        "poster": "http://solutions.brightcove.com/bcls/assets/images/Sea_LionFish_poster.png"
+      }]);
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="customize">Customize appearance</h2>
+
+<p>You can think of a playlist divided into four main parts to which you can apply styles. They are:</p>
+
+<ul>
+	<li>The container of the playlist items. In HTML terms it is an <code>&lt;ol&gt;</code> element. The playlist container is surrounded in red below.</li>
+	<li>The playlist item representing the video currently in the player, called the selected item. In HTML terms it is an <code>&lt;li&gt;</code> element. The selected item is surrounded in orange below.</li>
+	<li>The descriptions in the items. In HTML terms they are <code>&lt;p&gt;</code> elements. An example description is surrounded in yellow below.
+	<aside class="bcls-aside bcls-aside--information">Descriptions in the playlist only appear in version 1 of playlists.</aside>
+	</li>
+	<li>All the playlist items that are not currently in the player. In HTML terms they are <code>&lt;li&gt;</code> elements. An example playlist item is surrounded in blue below.</li>
+</ul>
+
+<p>The four parts are shown here with their selectors.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="selectors" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/playlist-selectors.png" /></figure>
+
+<p>Each playlist item is composed of the following:</p>
+
+<ul>
+	<li>Containing list item element</li>
+	<li>Picture element</li>
+	<li>Image element, which is a child of the picture element</li>
+	<li>Time element</li>
+	<li>Citation element</li>
+	<li>Paragraph element for the description</li>
+</ul>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="custom listitem" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/playlist-customize-listitem.png" /></figure>
+
+<h3>CSS playlist examples</h3>
+
+<p>The playlist below is shown with default styling.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="no styles" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/no-styles.png" /></figure>
+
+<hr />
+<p>The playlist below uses the following CSS to change the background of the playlist as well the color of the fonts in the playlist. Note that the descriptions are NOT affected by the <code>color</code> style.</p>
+
+<pre class="line-numbers">
+<code class="language-css">.vjs-mouse.vjs-playlist {
+  color: #466675; /* darker blue */
+  background-color: #CCCCCC; /* gray */
+}</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="blue titles only" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/only-titles-blue.png" /></figure>
+
+<hr />
+<p>The playlist below uses the following CSS to style the playlist as in the previous example, but now a new style is added to also change the font color of the descriptions.</p>
+
+<pre class="line-numbers">
+<code class="language-css">.vjs-mouse.vjs-playlist {
+  color: #466675; /* darker blue */
+  background-color: #CCCCCC; /* gray */
+}
+.vjs-mouse.vjs-playlist .vjs-playlist-description {
+  color: #466675; /* darker blue */
+}</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="test and description blue" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/text-and-description-blue.png" /></figure>
+
+<hr />
+<p>The playlist below uses the following CSS to change the background color of the playlist itself, then uses another color to change the background of the list items.</p>
+
+<pre class="line-numbers">
+<code class="language-css">.vjs-mouse.vjs-playlist {
+  background-color: #466675; /* darker blue */
+}
+li.vjs-playlist-item {
+  background-color: #6A8D9D; /* lighter blue */
+}</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="two blues" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/two-blues.png" /></figure>
+
+<hr />
+<p>The playlist below uses the following CSS to style the playlist as in the previous example, but now a new style is added to change the background color of the selected item.</p>
+
+<pre class="line-numbers">
+<code class="language-css">.vjs-mouse.vjs-playlist {
+  background-color: #466675; /* darker blue */
+}
+li.vjs-playlist-item {
+  background-color: #6A8D9D; /* lighter blue */
+}
+li.vjs-playlist-item.vjs-selected {
+  background-color: #FAC8BF; /* pink */
+}</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="pink selected" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/pink-selected.png" /></figure>
+
+<aside class="bcls-aside bcls-aside--information">It has been reported that at times the selector shown above will not change the style of the selected video. You can also try this selector:
+<p><code>.vjs-playlist .vjs-selected, .vjs-playlist.vjs-mouse .vjs-selected</code></p>
+</aside>
+
+<hr />
+<p>The playlist below uses the following CSS to change the color of the font for the video time durations.</p>
+
+<pre class="line-numbers">
+<code class="language-css">time.vjs-playlist-duration {
+  color: #94FFFC; /* turquoise */
+}</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="time styled" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/time-styled.png" /></figure>
+
+<hr />
+<p>The playlist below uses the following CSS to alter the margins around the playlist and list items. Note that in the original styles the bottom margin is not set for the playlist, but in the list item. The new styles reflect the same approach.</p>
+
+<pre class="line-numbers">
+<code class="language-css">.vjs-mouse.vjs-playlist {
+  background-color: #466675; /* darker blue */
+  padding: 5px 5px 0 5px;
+}
+.vjs-mouse.vjs-playlist .vjs-playlist-item {
+  background-color: #6A8D9D; /* lighter blue */
+  margin-bottom: 5px;
+}</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="margins adjusted" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/margins-adjusted.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="movingplaylist">Moving the playlist</h2>
+
+<p>By default the playlist displays to the right of the video, displaying the videos vertically. This can be changed using CSS, and is described in this section.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Note: This section of the document applies ONLY to in-page embed implementations of the player and playlist.</aside>
+
+<h3>Vertical playlist below player</h3>
+
+<p>The following screenshot shows the playlist positioned below the player, and the videos displayed in their normal way, vertically.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="playlist stacked" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/playlist-using-stacked.png" /></figure>
+
+<p>To accomplish this you use CSS and some additional <code>&lt;div&gt;</code> tags. First the changed structure of the HTML will be shown, then the CSS.</p>
+
+<div class="video-cloud-only">
+<ul>
+	<li>Lines: 489,501: A <code>&lt;div&gt;</code> that surrounds both the player and playlist. A <code>myPlayer</code> class is added to the element.</li>
+	<li>Lines: 497,499: A <code>&lt;div&gt;</code> that surrounds both the playlist. A <code>playlist-wrapper</code> class is added to the element.</li>
+</ul>
+
+<pre class="line-numbers" data-start="489">
+<code class="language-html"><span class="bcls-highlight">  &lt;div class="myplayer"&gt;</span>
+
+    &lt;video data-playlist-id="4400450992001"
+      data-account="1507807800001"
+      data-player="default"
+      data-embed="default"
+      class="video-js" controls&gt;&lt;/video&gt;
+
+    <span class="bcls-highlight">&lt;div class="playlist-wrapper"&gt;</span>
+      &lt;ol class="vjs-playlist vjs-csspointerevents vjs-mouse"&gt;&lt;/ol&gt;
+    <span class="bcls-highlight">&lt;/div&gt;</span>
+
+  <span class="bcls-highlight">&lt;/div&gt;</span></code></pre>
+</div>
+
+<div class="player-only">
+<ul>
+	<li>Lines: 574-585: A <code>&lt;div&gt;</code> that surrounds both the player and playlist. A <code>myPlayer</code> class is added to the element.</li>
+	<li>Lines: 581-583: A <code>&lt;div&gt;</code> that surrounds both the playlist. A <code>playlist-wrapper</code> class is added to the element.</li>
+</ul>
+
+<pre class="line-numbers" data-start="574">
+<code class="language-html">  &lt;div class="myplayer"&gt;
+
+    &lt;video data-account="1507807800001"
+      data-player="default"
+      data-embed="default"
+      class="video-js" controls&gt;&lt;/video&gt;
+
+    &lt;div class="playlist-wrapper"&gt;
+      &lt;ol class="vjs-playlist vjs-csspointerevents vjs-mouse"&gt;&lt;/ol&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;</code></pre>
+</div>
+
+<p>The following is the CSS that is used. Note that the selector for the <code>.video-js</code> class may need to be altered to fit the size of your player to avoid letterboxing or pillarboxing.</p>
+
+<pre class="line-numbers">
+<code class="language-css">    .video-js {
+      height: 430px;
+      width: 800px;
+      float: left;
+    }
+    .myplayer {
+      width: 800px;
+      height: 450px;
+      position: relative;
+    }
+    .vjs-playlist {
+      width: 766px;
+      max-height: 433px;
+      position: relative;
+      top: 15px;
+    }
+    .vjs-playlist .vjs-playlist-item {
+      min-height: 100px;
+    }
+    .vjs-playlist-item.vjs-selected {
+      background: rgb(89, 44, 54);
+    }
+    .vjs-mouse.vjs-playlist .vjs-playlist-description {
+      white-space: normal;
+      min-height: 99px;
+    }</code></pre>
+
+<h3>Horizontal playlist below player</h3>
+
+<p>The following screenshot shows the playlist positioned below the player, and the videos displayed horizontally.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="playlist horizontal" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/general-information/using-playlists/playlist-using-horizontal.png" /></figure>
+
+<p>To accomplish this you use CSS and some additional <code>&lt;div&gt;</code> tags. First the changed structure of the HTML will be shown, then the CSS.</p>
+
+<div class="video-cloud-only">
+<ul>
+	<li>Lines: 489,501: A <code>&lt;div&gt;</code> that surrounds both the player and playlist. A <code>myPlayer</code> class is added to the element.</li>
+	<li>Lines: 497,499: A <code>&lt;div&gt;</code> that surrounds both the playlist. A <code>playlist-wrapper</code> class is added to the element.</li>
+</ul>
+
+<pre class="line-numbers" data-start="489">
+<code class="language-html">  &lt;div class="myplayer"&gt;
+
+    &lt;video data-playlist-id="4400450992001"
+      data-account="1507807800001"
+      data-player="default"
+      data-embed="default"
+      class="video-js" controls&gt;&lt;/video&gt;
+
+    &lt;div class="playlist-wrapper"&gt;
+      &lt;ol class="vjs-playlist vjs-csspointerevents vjs-mouse"&gt;&lt;/ol&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;</code></pre>
+</div>
+
+<div class="player-only">
+<ul>
+	<li>Lines: 574-585: A <code>&lt;div&gt;</code> that surrounds both the player and playlist. A <code>myPlayer</code> class is added to the element.</li>
+	<li>Lines: 581-583: A <code>&lt;div&gt;</code> that surrounds both the playlist. A <code>playlist-wrapper</code> class is added to the element.</li>
+</ul>
+
+<pre class="line-numbers" data-start="574">
+  &lt;div class="myplayer"&gt;
+
+    &lt;video data-account="1507807800001"
+      data-player="default"
+      data-embed="default"
+      class="video-js" controls&gt;&lt;/video&gt;
+
+    &lt;div class="playlist-wrapper"&gt;
+      &lt;ol class="vjs-playlist vjs-csspointerevents vjs-mouse"&gt;&lt;/ol&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;</pre>
+</div>
+
+<p>The following is the CSS that is used. Note that the selector for the <code>.video-js</code> class may need to be altered to fit the size of your player to avoid letterboxing or pillarboxing.</p>
+
+<pre class="line-numbers">
+<code class="language-css">   .video-js {
+      height: 430px;
+      width: 800px;
+      float: left;
+    }
+    .myplayer {
+      width: 1200px;
+      height: 450px;
+      position: relative;
+    }
+    .playlist-wrapper {
+      width: 800px;
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }
+    .vjs-playlist.vjs-playlist {
+      width: auto;
+      white-space: nowrap;
+    }
+    .vjs-playlist-item {
+      display: inline-block;
+      height: 75px;
+    }
+    cite.vjs-playlist-name {
+      display: none;
+    }
+    .vjs-playlist-description {
+      display: none;
+    }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="playlistapi">Playlist API</h2>
+
+<p>The Playlist API gives you programmatic control over the usage of playlists, for instance <code>next()</code>, <code>previous()</code> and <code>autoadvance()</code> methods. The <a href="/node/18099">Guide: Playlist API</a>document provides full details.</p>
+</section>
+</section"></article>
+<script src="//players.brightcove.net/1752604059001/f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe_default/index.min.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/js/bcls-utils-d8.js">
+
+</script>
