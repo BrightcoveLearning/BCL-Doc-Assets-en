@@ -23,10 +23,8 @@ var BCLS_expander = (function(window, document) {
         var expanderBody = this.nextElementSibling;
         if (expanderBody.getAttribute('style') === 'height:0;visibility:hidden;display:none;' || expanderBody.getAttribute('style') === null) {
             expanderBody.setAttribute('style', 'height:auto;visibility:visible;display:block;');
-            this.setAttribute('class', 'bcls-expander-head changed');
         } else {
             expanderBody.setAttribute('style', 'height:0;visibility:hidden;display:none;');
-            this.setAttribute('class', 'bcls-expander-head');
         }
     }
 
