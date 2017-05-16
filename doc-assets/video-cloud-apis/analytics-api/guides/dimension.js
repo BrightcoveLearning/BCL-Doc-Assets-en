@@ -1,4 +1,4 @@
-var BCLS = (function(window, document, aapi_model) {
+var BCLS_dimesions = (function(window, document, aapi_model) {
     var header = document.getElementsByTagName('h1')[0],
         headerContent = header.textContent,
         dimension = headerContent.substring(0, headerContent.indexOf(' ')),
