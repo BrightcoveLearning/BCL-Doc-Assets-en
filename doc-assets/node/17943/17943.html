@@ -1,5 +1,8 @@
-<section class="bcls-section" id="Limitations">
-<h2>Limitations</h2>
+<article class="bcls-article">
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>The Dynamic Ingest API call is exactly the same as it would be for <a href="/node/17944">ingesting new videos</a> - the only difference is that you do not need to make a prior call to the CMS API to create the video object in the Video Cloud system and get an id for it, and the request body is slightly different. All videos will remain playable with existing renditions until retranscoding is complete.</p>
 
 <aside class="bcls-aside bcls-aside--information">Dynamic Ingest does <strong>not</strong> have a mechanism for processing multiple videos - this sample simply executes a loop to make a Dynamic Ingest request for each video.</aside>
 </section>
@@ -32,36 +35,24 @@
 
 <p>This script expects a data set as a JSON array of objects like this:</p>
 
-<p>Video data:<textarea id="videoData" class="bcls-data" style="height:20em;">[
-                        {
-                            "name": "Woodpecker",
-                            "description": "A bird that hunts insects inside wood",
-                            "url": "http://learning-services-media.brightcove.com/videos/mp4/Bird_Woodpecker.mp4",
-                            "reference_id": "Bird_Woodpecker.mp4",
-                            "tags": ["bird", "air", "nature"]
-                        },
-                        {
-                            "name": "Chickadee",
-                            "description": "A small friendly bird",
-                            "url": "http://learning-services-media.brightcove.com/videos/mp4/Bird_Chickadee.mp4",
-                            "reference_id": "Bird_Chickadee.mp4",
-                            "tags": ["bird", "air", "nature"]
-                        },
-                        {
-                            "name": "Great Blue Heron",
-                            "description": "Pair of great blue herons",
-                            "url": "http://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4",
-                            "reference_id": "greatblueheron.mp4",
-                            "tags": ["bird", "air", "nature"]
-                        },
-                        {
-                            "name": "Great Horned Owl",
-                            "description": "Mother and child owls",
-                            "url": "http://learning-services-media.brightcove.com/videos/mp4/greathornedowl.mp4",
-                            "reference_id": "greathornedowl.mp4",
-                            "tags": ["bird", "air", "nature"]
-                        }
-                    ]</textarea></p>
+<p>Video data:<textarea id="videoData" class="bcls-code">[
+    {
+        "name": "Oyster Catcher",
+        "id": "4752175597001"
+    },
+    {
+        "name": "Brown Pelican",
+        "id": "4752142999001"
+    },
+    {
+        "name": "Great Blue Heron",
+        "id": "4752143002001"
+    },
+    {
+        "name": "Great Horned Owl",
+        "id": "4746402489001"
+    }
+]</textarea></p>
 
 <p>This is the actual data used in this sample. You could include other metadata fields, but you would need to modify the script a little to send those with the first API call. You'll also notice that these are risky values to use for reference ids, especially for a sample like this that will be run multiple times - but I am getting around the duplication issue by appending the current epoch time in milliseconds to whatever is in the data.</p>
 
@@ -77,10 +68,7 @@
 <p>Ingest profile: <select id="ingest_profile_display"></select><br />
 or Custom Profile: <input id="custom_profile_display" type="text" value="" name="custom_profile_display" /> (you must use the name exactly as it appears in the Video Cloud system, or the request will fail)</p>
 
-<p>Full request URL for the CMS API call:<br />
-<textarea name="url" id="cms_url"></textarea> (automatically generated - for information only)</p>
-
-<p>Full request URL for the DI API call:<br />
+<p>Full request URL for the API call:<br />
 <textarea name="url" id="di_url"></textarea> (automatically generated - for information only)</p>
 
 <p><input id="di_Submit" type="submit" value="Start Ingest" /></p>
@@ -101,11 +89,11 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
 
 <h3>HTML</h3>
 
-<p>To see the HTML code used in this sample, view the page source.</p>
+<p>To see the HTML code, view the page source.</p>
 
 <h3>The JavaScript code for this sample:</h3>
 
-<pre data-src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/samples/batch-ingest/di-ingest.js?buster" class="line-numbers language-javascript">
+<pre data-src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/samples/di-retranscode/di-retranscode.js?buster" class="line-numbers language-javascript">
 
 &nbsp;</pre>
 
@@ -118,4 +106,5 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
 </ul>
 </aside>
 </section>
-<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/samples/batch-ingest/di-ingest.js"></script>
+</article>
+<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/samples/di-retranscode/di-retranscode.js"></script>
