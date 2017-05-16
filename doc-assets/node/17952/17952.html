@@ -1,0 +1,102 @@
+<article class="bcls-article">
+<section class="bcls-section" id="Introduction">Working with Captions
+<h2>Introduction</h2>
+
+<p>"Captions" here is used to mean bits of text provided by an external file that are overlaid on a video, as seen in the screenshot below:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Example of Captions" src="assets/samplecaptions.png" />
+<figcaption class="bcls-caption--image">Example of Captions</figcaption>
+</figure>
+
+<p>Such text may be used for accessibilty or to provide translations of the audio track, or some other purpose, but the underlyting technology used is the same.</p>
+</section>
+
+<section id="New_and_old_players" class="bcls-section">
+<h2>New and old players</h2>
+
+<p>Although captions look similar in the Brightcove Player and the legacy Smart Player, the underlying technologies are significantly different:</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Captions in the Brightcove Player and Smart Player</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Player</th>
+			<th>Captions format</th>
+			<th>File extension</th>
+			<th>Cross-domain control</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Brightcove Player</td>
+			<td>WebVTT (<a href="https://w3c.github.io/webvtt/">text tracks</a>). (Note that WebVTT is a general syntax for providing information about time-based events during video playback, and may be used for other purposes such as specifying <a href="/node/18078">video chapters</a> as well.)</td>
+			<td>.vtt</td>
+			<td><a href="http://enable-cors.org">CORS</a></td>
+		</tr>
+		<tr>
+			<td>Smart Player (legacy)</td>
+			<td>DFXP</td>
+			<td>.xml</td>
+			<td><a href="https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html">crossdomain.xml</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The remainder of this document deals with WebVTT captions (text tracks), since that is the technology used for the current Brightcove Player. Additional information about captions for the legacy Smart Player can be found <a href="/node/15481">here</a>.</p>
+</section>
+
+<section id="Add_captions_to_video" class="bcls-section">
+<h2>Add captions to video</h2>
+
+<p>You can associate a WebVTT file with a Video Cloud video to provide captions in two ways:</p>
+
+<ol>
+	<li>Use a remote asset, meaning that the WebVTT is hosted on your server, and you provide add the URL for the file to the video metadata.
+	<aside class="bcls-aside bcls-aside--information">Note: If you are hosting captions files on your own server, make sure the file is located at a URL that can be accessed by the Brightcove player. The server hosting the captions file should also have Cross-Origin Resource Sharing (CORS) enabled. You can read more about CORS <a href="/node/17916">here</a>.</aside>
+	</li>
+	<li>Ingest the WebVTT file to Video Cloud.</li>
+</ol>
+
+<p>The following sections will point to the relevant documentation for these two options.</p>
+</section>
+
+<section id="Add_captions_in_Studio" class="bcls-section">
+<h2>Add captions in Studio</h2>
+
+<p>Both remote and ingested caption files can be added through the Media module in Studio. See <a href="/node/17916#texttrack">Configuring the text track properties</a>.</p>
+</section>
+
+<section id="Add_captions_via_the_APIs" class="bcls-section">
+<h2>Add captions via the APIs</h2>
+
+<p>How you add captions via the APIs varies depending on whether the captions file will be ingested or used as a remote asset.</p>
+
+<aside class="bcls-aside bcls-aside--warning">There is a <code>/caption</code> endpoint for the CMS API, but this is used <strong>only</strong> for DFXP captions for the Smart Player.</aside>
+
+<h3>Remote asset captions</h3>
+
+<p>If you prefer to host the captions yourself (or have a captions provider who hosts them), then you can associate the captions with a video using the CMS API <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html.html#api-videoGroup-Update_Video">Update Video</a> and including the <code>text_tracks</code> array in your request body.</p>
+
+<h3>Add captions to Video Cloud</h3>
+
+<p>In you want to have Brightcove host your captions, you can <a href="/node/17938">ingest your WebVTT file via the Dynamic Ingest API</a>.</p>
+</section>
+
+<section id="Removing_captions" class="bcls-section">
+<h2>Removing captions</h2>
+
+<h3>In Studio</h3>
+
+<p>WebVTT captions can be removed from videos in Studio - see <a href="/node/15481">Configuring the text track properties</a> for details.</p>
+
+<h3>Via the CMS API</h3>
+
+<p>Remove WebVTT captions from a video by making an <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> request and submitting a request body with an empty <code>text_tracks</code> array (or an array from which the object associated with that set of captions has been removed).</p>
+</section>
+
+<section id="Styling_captions" class="bcls-section">
+<h2>Styling captions</h2>
+
+<p>Styling can be appliedt to WebVTT captions using CSS. See <a href="/node/18076#style">Styling Captions</a> for details.</p>
+</section>
+</article>
