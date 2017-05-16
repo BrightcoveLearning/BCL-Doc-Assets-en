@@ -123,12 +123,12 @@ var BCLS_player_fix = ( function (window, document) {
             showElements(vcContent);
             hideElements(bpContent);
         }
-        if (BCLSmain.createInPageNavMenu) {
-            sideNavList.outerHTML = '';
-            BCLSmain.createInPageNavMenu();
-            sideNavList = document.getElementById('sideNavList');
-            console.log('foo', sideNavList);
-        }
+        // if (BCLSmain.createInPageNavMenu) {
+        //     sideNavList.outerHTML = '';
+        //     BCLSmain.createInPageNavMenu();
+        //     sideNavList = document.getElementById('sideNavList');
+        //     console.log('foo', sideNavList);
+        // }
         sideNav.insertAdjacentHTML('afterBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
