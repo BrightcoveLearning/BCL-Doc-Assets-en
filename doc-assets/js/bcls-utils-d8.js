@@ -45,7 +45,7 @@ var BCLS_player_fix = ( function (window, document) {
         versionPath = 'versions-brightcove-player-documentation',
         thisHost = window.location.host,
         thisProtocol = window.location.protocol,
-        toggleStr = '<p><button id="vc" class="bcls-button__version" style="background-color:#dd712e;">Video Cloud Version</button><br><button id="bp" class="bcls-button__version">Brightcove Player Version</button><br><a style="font-size:smaller;" href="' + thisProtocol + '//' + thisHost + versionPath + '">(What\'s the difference?)</a><hr></li>',
+        toggleStr = '<p><button id="vc" class="bcls-button__version" style="background-color:#dd712e;">Video Cloud Version</button><br><button id="bp" class="bcls-button__version">Brightcove Player Version</button><br><a style="font-size:smaller;" href="' + thisProtocol + '//' + thisHost + '/' + versionPath + '">(What\'s the difference?)</a><hr></li>',
         iMax, i;
 
 
