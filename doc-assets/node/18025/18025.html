@@ -1,0 +1,144 @@
+<link rel="stylesheet" type="text/css" href="//docs.brightcove.com/en/scripts/rome/rome.min.css" />
+<h1>Search Videos via the CMS API</h1>
+
+<article class="bcls-article">
+<section id="dependencies" class="bcls-section">
+<h2>Dependencies</h2>
+
+<p>The proxy runs at:</p>
+
+<ul>
+	<li><a href="https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php">https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php</a></li>
+</ul>
+
+<p>You may also use this proxy for testing from <strong>localhost</strong>, but not for production - the proxy will only accept requests from Brightcove domains or localhost. See <a href="/node/17927">Oauth Quick Start</a> for a guide to building a simple proxy of your own.</p>
+
+<h3>Other dependencies</h3>
+
+<ul>
+	<li><a href="//knockoutjs.com/index.html">Knockout.js</a> (2-way data-binding)</li>
+	<li><a href="//github.com/bevacqua/rome">rome.js</a> (date picker)</li>
+</ul>
+</section>
+
+<section class="bcls-section" id="getCredentials">
+<h2>Get credentials</h2>
+
+<p>To use the CMS API you will need proper credentials. Later in this quick start, you will use the credentials in a form when submitting requests to the API.</p>
+
+<ol>
+	<li>To obtain proper credentials use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. In this quick start you will need <strong>video</strong> operations. The following can be used with curl or Postman to get the proper permissions:</li>
+</ol>
+
+<p>&nbsp;</p>
+
+<ul>
+	<li><a href="/node/17924">OAuth: Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+</ul>
+</section>
+
+<section class="bcls-section" id="accountInputs">
+<h2>Account Inputs</h2>
+
+<fieldset class="bcls-fieldset"><legend>Inputs</legend>
+
+<p>Account ID: <input id="account_id" type="text" value="" data-bind="value: account_id" /></p>
+
+<p>Client ID: <input id="client_id" type="text" value="" data-bind="value: client_id" /></p>
+
+<p>Client Secret: <input id="client_secret" type="text" value="" data-bind="value: client_secret" /></p>
+
+<p>Proxy URL: <input id="proxyURL" type="text" data-bind="value: proxyURL" /></p>
+</fieldset>
+</section>
+
+<section class="bcls-section" id="searchInput">
+<h2>Search Inputs</h2>
+
+<fieldset id="searchInputs" data-bind="enable: haveAccountInputs"><legend>Search Inputs</legend>
+
+<p><input type="checkbox" id="exactMatch" data-bind="checked: exactMatch" /> Require exact match on search terms</p>
+
+<p><input type="checkbox" id="requiredTerms" data-bind="checked: requiredTerms" /> Only return videos that have <strong>all</strong> the search terms</p>
+
+<p><input type="checkbox" id="excludeTerms" data-bind="checked: excludeTerms" /> Only return videos that do <strong>not</strong> have the search terms</p>
+
+<p><input type="checkbox" id="searchComplete" data-bind="checked: searchComplete" /><strong>Only</strong> return videos that have been completely processed</p>
+
+<p>Limit search to this field: <select id="searchField" data-bind="disable: haveCustomField(), options: searchField, value: selectedSearchField, optionsCaption: 'Any'"></select></p>
+
+<p>Limit search to this custom field: <input type="text" id="customField" data-bind="value: customField, disable: haveSearchField" /></p>
+
+<div data-bind="visible: !haveSearchState() &amp;&amp; !havePlayable()">Search terms: <input id="searchTerms" type="text" data-bind="value: searchTerms" /></div>
+
+<div data-bind="visible: haveSearchState">State: <select id="searchStates" data-bind="options: searchState, value: selectedSearchState"></select></div>
+
+<div data-bind="visible: havePlayable">State: <select id="searchPlayable" data-bind="options: searchPlayable, value: selectedSearchState"></select></div>
+
+<table class="bcls-table">
+	<caption>Limit search by dates:</caption>
+	<tbody>
+		<tr>
+			<td>Date type</td>
+			<td>From date</td>
+			<td>To date</td>
+		</tr>
+		<tr>
+			<td><select class="date" id="dateRangeType" data-bind="options: dateRangeType, value: selectedDateRangeType, optionsCaption: 'Do not limit by date'"></select></td>
+			<td><input id="fromDate" class="date" data-bind="enable: haveDateType" /></td>
+			<td><input id="toDate" class="date" data-bind="enable: haveDateType" /></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Items found:<br />
+Offset (number of items to skip): <select id="offset" data-bind="options: offsets, value: selectedOffset"></select></p>
+
+<p>Number of items to return: <select id="limit" data-bind="options: limit, value: selectedLimit"></select></p>
+
+<p>Sort results by: <select id="sort" data-bind="options: sortOptions, value: selectedSortOption"></select></p>
+
+<p><button class="bcls-button" id="submitRequest" data-bind="click: setupURL, enable: haveSearchTermsOrDateRange">Submit Request</button></p>
+</fieldset>
+</section>
+
+<section class="bcls-section" id="outputLog">
+<h2>Results</h2>
+
+<fieldset class="bcls-fieldset"><legend>Outputs</legend>
+
+<p>Note that if you request multiple result sets using the offset, new items will be appended to the existing ones.</p>
+
+<p>API request:<textarea id="apiURL" class="bcls-code"></textarea></p>
+
+<pre>
+
+&nbsp;</pre>
+</fieldset>
+</section>
+
+<section class="bcls-section" id="sampleCode">
+<h2>Code for the sample</h2>
+
+<h3>HTML code:</h3>
+
+<p>To see the HTML, view the page source.</p>
+
+<h3>JavaScript code:</h3>
+
+<pre data-src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/code-samples/search-app/search-app.js?buster" class="line-numbers language-javascript">
+
+&nbsp;</pre>
+
+<h3>Proxy</h3>
+
+<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+<ul>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
+</ul>
+</aside>
+</section>
+</article>
+<!-- knockout --><script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-debug.js"></script><!-- date picker --><script src="//docs.brightcove.com/en/scripts/rome/rome.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/code-samples/search-app/search-app.js"></script>
