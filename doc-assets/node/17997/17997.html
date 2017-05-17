@@ -10,14 +10,13 @@
 	<li>Combining your video analytic data with other site analytics data</li>
 	<li>For some sample solutions, see
 	<ul>
-		<li><a href="//docs.brightcove.com/en/player/brightcove-player/samples/popular-videos-overlay.html">Most Popular Videos</a></li>
-		<li><a href="//docs.brightcove.com/en/video-cloud/analytics-api/samples/analytics-by-playlist.html">Analytics for Playlists</a></li>
-		<li><a href="//docs.brightcove.com/en/video-cloud/analytics-api/samples/video-views-by-country-and-day/video-views-by-country-and-day.html">Analytics by Country and Day</a></li>
+		<li><a href="/node/18161">Most Popular Videos</a></li>
+		<li><a href="/node/17994">Analytics for Playlists</a></li>
+		<li><a href="/node/17988">Analytics by Country and Day</a></li>
 	</ul>
 	</li>
 </ul>
 
-<aside class="bcls-aside bcls-aside--warning">if you have been using the Limited Availability version of the Analytics API, we strongly encourage you to upgrade your apps to the current version. If you still need the documentation for the Limited Availability version, you can find it <a href="//docs.brightcove.com/en/video-cloud/analytics-api-v0/index.html">here</a>.</aside>
 </section>
 
 <section class="bcls-section" id="Base_URL">
@@ -36,7 +35,7 @@
 
 <p>The Analytics API uses the Brightcove <a href="/node/17928">OAuth Service</a> to authenticate calls.</p>
 
-<p>You will first need to obtain client credentials (a <code>client_id</code> and <code>client_secret</code>). This is a one-time operation that can be performed using the <a href="../guides/managing-api-credentials.html">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="../../oauth-api/guides/get-client-credentials.html">CURL</a> or <a href="../../oauth-api/guides/get-client-credentials-postman.html">Postman</a>.</p>
+<p>You will first need to obtain client credentials (a <code>client_id</code> and <code>client_secret</code>). This is a one-time operation that can be performed using the <a href="/node/14056">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/node/17924">CURL</a> or <a href="/node/17923">Postman</a>.</p>
 
 <p>You will also need an <code>access_token</code>, which is obtained using the <code>client_id</code> and <code>client_secret</code> and passed in an Authorization header with your API request:</p>
 
@@ -48,10 +47,6 @@
 <h3>Accept-Encoding: gzip (optional)</h3>
 
 <p>Passing this header will cause the response to be returned in compressed form. This may improve performance for large reports.</p>
-
-<p class="BCL-aside">Note: the permanent Analytics API tokens issued during the Limited Availability program are no longer supported. Access tokens must be acquired from the Brightcove OAuth Service.</p>
-</section>
-
 <section class="bcls-section" id="Caching">
 <h2>Caching</h2>
 
@@ -63,7 +58,7 @@
 
 <p>The <code>Cache-Control</code> tells you the maximum time the results will be cached for in seconds (in the example above, 24 seconds). The <code>Last-Modified</code> and <code>Expires</code> headers tell you when the current cache was created and when it will expire.</p>
 
-<p>In most cases this is probably not an issue, but if the freshness of analytics data is of critical importance, you should know that the longer a query runs, the longer it will be cached, and reports that fetch realtime (unreconciled hourly) data only will not be cached as long as those that fetch reconciled data (only, or in addition to realtime data). Find a <a href="http://support.brightcove.com/en/video-cloud/docs/faq-analytics-module#26">full explanation of realtime and reconciled data</a> if you like; the short version is that the Analytics API relies on two data buckets:</p>
+<p>In most cases this is probably not an issue, but if the freshness of analytics data is of critical importance, you should know that the longer a query runs, the longer it will be cached, and reports that fetch realtime (unreconciled hourly) data only will not be cached as long as those that fetch reconciled data (only, or in addition to realtime data). Find a <a href="/node/10743#26">full explanation of realtime and reconciled data</a> if you like; the short version is that the Analytics API relies on two data buckets:</p>
 
 <ul>
 	<li>realtime, or hourly unreconciled data, which is made available immediately and stored for 32 days</li>
@@ -129,7 +124,7 @@
 	<dt>Engagement report</dt>
 	<dd>Detailed engagement data that is available for periods within the past 32 days. See <a href="#engagement">the engagement section</a> for more details.</dd>
 	<dt>Video information endpoint</dt>
-	<dd>A specific piece of analytics data served with minimal latency. See <a href="../guides/video-information-endpoint.html">Video Data Endpoint</a> for more information.</dd>
+	<dd>A specific piece of analytics data served with minimal latency. See <a href="/node/17962">Video Data Endpoint</a> for more information.</dd>
 </dl>
 
 <p><a href="#filterValues">Where filters</a> and <a href="#dateRanges">date ranges</a> can be applied to reports. Report requests can have additional parameters detailed below.</p>
@@ -175,12 +170,12 @@
 
 <fieldset class="bcls-fieldset"><legend>Output</legend>
 
-<h5>Earliest <code>from</code> date for this dimension combination:</h5>
+<h5>Earliest <code>from</code> date for this dimension combination: <span id="fromDate">&nbsp;</span></h5>
 
 <h5 id="logger">&nbsp;</h5>
 
 <h5>Sample API request:</h5>
-<textarea id="apiRequest"></textarea>
+<textarea id="apiRequest" class="bcls-code">&nbsp;</textarea>
 
 <h5>Response data</h5>
 
@@ -273,7 +268,7 @@
 
 <ul>
 	<li><strong>Brightcove Players</strong> - Enter the player URL in this format: <code>players.brightcove.com/account_id/player_id<span class="bcls-highlight">_default</span></code></li>
-	<li>If you used an <a href="//docs.brightcove.com/en/player/brightcove-player/guides/player-application-id.html">application-id</a> to identify the player, then enter the player URL in this format: <code>players.brightcove.com/account_id/player_id_default/<span class="bcls-highlight">application-id</span></code> - for example: <code>players.brightcove.com/1752604059001/BJFYWrtUl_default/AlltimeViewsPlayerSample</code></li>
+	<li>If you used an <a href="/node/18092">application-id</a> to identify the player, then enter the player URL in this format: <code>players.brightcove.com/account_id/player_id_default/<span class="bcls-highlight">application-id</span></code> - for example: <code>players.brightcove.com/1752604059001/BJFYWrtUl_default/AlltimeViewsPlayerSample</code></li>
 	<li>Smart Players - Enter the Player ID</li>
 </ul>
 </aside>
@@ -326,7 +321,7 @@
 <pre class="line-numbers">
 <code class="language-http">where=video.q==tags:foo,bar+custom_fields.field2:fish</code></pre>
 
-<p>For a complete explanation of this query syntax, see <a href="http://docs.brightcove.com/en/video-cloud/cms-api/guides/search-videos.html">Using the CMS API: Search for Videos</a>.</p>
+<p>For a complete explanation of this query syntax, see <a href="/node/18025">Using the CMS API: Search for Videos</a>.</p>
 
 <aside class="bcls-aside bcls-aside--information">The data fetched using this filter is cached for 24 hours, and so will not reflect changes made in the past day</aside>
 
@@ -424,7 +419,7 @@
 <section class="bcls-section" id="fieldsAndSorting">
 <h2>Fields and Sorting</h2>
 
-<p>Use the <code>fields</code> parameter to specify the fields you want to return. By default, <code>video_view</code> is returned and the field corresponding to the dimension you are reporting on (e.g. <code>destination_domain</code>) are returned. See <a href="../getting-started/api-overview.html#metrics">dimensions and fields</a> for more details.</p>
+<p>Use the <code>fields</code> parameter to specify the fields you want to return. By default, <code>video_view</code> is returned and the field corresponding to the dimension you are reporting on (e.g. <code>destination_domain</code>) are returned. See <a href="#metrics">dimensions and fields</a> for more details.</p>
 
 <p>Use the <code>sort</code> parameter to specify which metric field is used to sort the returned items; for example: <code class="language-http">sort=video_view</code>. You can reverse the sort order by negating the sort field: <code><span>sort=<span style="color:#CC0000;font-weight: bold;background-color:#FFFF00;">-</span>video_view</span></code></p>
 
@@ -575,4 +570,5 @@
 </code></pre>
 </section>
 </article>
-<script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/getting-started/api-overview/api-overview-v2.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/js/prism/prism.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/getting-started/api-overview/api-overview-v2.js"></script>
