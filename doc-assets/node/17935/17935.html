@@ -1,0 +1,88 @@
+<article class="bcls-article">
+<section class="bcls-section" id="introduction">
+<h2>Introduction</h2>
+
+<p>We all want the best possible video and audio quality in our online video. At the same time, we want the videos to perform well, meaning that the delay between the moment the viewer clicks play and the actual beginning of playback is as small as possible, and that once playback begins, it continues smoothly, with no stalling or pausing while additional data is buffered.</p>
+
+<p>Unfortunately, these are conflicting desires: the quality of the video depends primarily on the amount of data delivered to and processed by the viewer's system; performance, on the other hand, depends on not delivering more data than the internet connection and the client application and system can handle. To make things more complicated, there are considerable variations in connection bandwidth and system capacity based on geography, time of day, internet provider, type of device, and so forth.</p>
+
+<p>Brightcove players help to optimize the viewing experience by detecting available bandwidth and selecting the video rendition best suited to it. The player can only choose among the available renditions, however, to it is up to you to try to provide a set of renditions that will match the needs of your viewers.</p>
+</section>
+
+<section class="bcls-section" id="source">
+<h2>Video source</h2>
+
+<p>The first factor to consider is the video source file. The renditions cannot be of higher quality than the source, so it's important that you export the video at a higher bitrate than the highest one you want in your renditions.</p>
+
+<p>On the other hand, there is no value in exporting at bitrates <em>much</em> higher than your highest target bitrate - you will just increase upload and transcoding time without increasing the quality of your online videos. We generally recommend that the source bitrate be no higher than twice the highest target bitrate. However, changes in technology, average bandwidth, and new devices might mean that higher bitrate renditions will be useful in the future, so you should save the raw video file to allow exporting a new source later, or export one version for use now, and another higher bitrate version for future use.</p>
+</section>
+
+<section class="bcls-section" id="renditionProperties">
+<h2>Rendition properties</h2>
+
+<p>There are several rendition properties affecting video quality and performance that you can set in your ingest profiles. These are explained below</p>
+</section>
+<!-- <div class="bcls-section" id="crf">
+                    <h2>crf</h2>
+                    <p>The Constant Rate Factor (CRF) is the default quality setting for the h.264 encoder. You can set the values between 0 and 51, where lower values would result in better quality (at the expense of higher file sizes). The most commonly used values are between 18 and 28.</p>
+                    <p>Unless you have a deep knowledge of video encoding, we recommend that you <em>not</em> specify <code>crf</code> in your profiles. Use settings like <a href="#quality"><code>quality</code></a> instead.</p>
+                    <p>For a detailed explanation of CRF, see <a href="http://slhck.info/articles/crf">http://slhck.info/articles/crf</a>.</p>
+                </div> -->
+
+<section class="bcls-section" id="decoder_bitrate_cap">
+<h2>decoder_bitrate_cap</h2>
+
+<p>The max bitrate fed to the decoder via a buffer. This setting is typically used only for streaming (RTMP, HLS, or broadcast video).</p>
+
+<p>Only use this setting if you understand its implications, as it can decrease video quality.</p>
+</section>
+
+<section class="bcls-section" id="decoder_buffer_size">
+<h2>decoder_buffer_size</h2>
+
+<p>The size of the buffer fed to the decoder when using a bitrate_cap, expressed in kbps. The buffer_size divided by bitrate_cap represents the size of the buffer in seconds; so if you set bitrate_cap to 1000 and buffer_size to 1000, the buffer is effectively 1.0 second. If bitrate_cap is 500 and buffer_size is 1000, the buffer is 2.0 seconds.</p>
+
+<p>Only use this setting if you understand its implications, as it can decrease video quality. This should typically only be used for streaming (or for device playback).</p>
+</section>
+
+<section class="bcls-section" id="h264_level">
+<h2>h264_level</h2>
+
+<p>Constrains the bitrate and macroblocks. Primarily used for device compatibility. For example, the iPhone supports H.264 Level 3, which means that a video’s decoder_bitrate_cap can’t exceed 10,000kbps. Typically, you should only change this setting if you’re targeting a specific device that requires it.</p>
+</section>
+
+<section class="bcls-section" id="max_video_bitrate">
+<h2>max_video_bitrate</h2>
+
+<p>A maximum average bitrate for a movie. Overrides both the quality and video_bitrate settings to ensure that a bitrate doesn't exceed the provided number.</p>
+
+<p><code>max_video_bitrate</code> is especially useful when encoding for mobile devices using the quality setting, which autoselects a bitrate. Mobile devices sometimes have fixed bitrate limits; for example, the iPhone 3GS has a bitrate limit of 1500 kbps.</p>
+
+<p><code>max_video_bitrate</code> can also help to avoid bitrate spikes that can occur at transition points between, say, a talking-head segment and a high-action or screencast segment. Such spikes can cause a video to stall because the data fed to the decoder temporarily exceeds its processing capacity.</p>
+</section>
+<div class="bcls-section" id="quality">
+    <h2>quality</h2>
+    <p>By setting the <code>quality</code> for your renditions, you indicate the desired quality of the output, and the Video Cloud transcoding system will automatically select a bitrate that achieves that quality. The available settings are:</p>
+    <ol class="integer">
+        <li>Highly compressed. Mediocre visual quality, but small files</li>
+        <li>Acceptable quality</li>
+        <li>Good quality. <em>Better than most web video</em></li>
+        <li>Great quality. Looks excellent</li>
+        <li>Nearly lossless. Large files. Not recommended unless you plan to encode this output again</li>
+    </ol>
+</div>
+
+<section class="bcls-section" id="speed">
+<h2>speed</h2>
+
+<p><code>speed</code> determines target transcoding speed. Slower transcoding allows for more advanced file compression, while faster transcoding is possible by skipping some advanced compression features. Valid values are 1-5. If quick availability of the video is not critical, you may achieve slightly better video quality by selecting a slower transcoding speed.</p>
+</section>
+
+<section class="bcls-section" id="video_bitrate">
+<h2>video_bitrate</h2>
+
+<p>The target output bitrate for a video, expressed in kbps. This results in a predictable output bitrate, but not predictable quality. For example, at 640x480, 500kbps might be enough for a video blog to look good, but an action movie might look bad at the same bitrate. Similarly, it might be too high for a screencast, resulting in a file that is larger than it needs to be.</p>
+
+<p>If a reliable bitrate is more important than reliable quality, choose video_bitrate. If a reliable visual quality is more important, use <a href="#quality">quality</a> instead.</p>
+</section>
+</article>

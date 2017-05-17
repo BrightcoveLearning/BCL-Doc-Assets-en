@@ -1,0 +1,68 @@
+<article class="bcls-article">
+<section id="introduction" class="bcls-section">
+<h2>Introduction</h2>
+
+<p>The Dynamic Ingest portion of this guide is no different from the process discussed in other documents and samples, and ingesting the video using the Upload module in Studio can be used as well. However, in the interest of completeness, <a href="/node/17908">curl</a> examples are given for all three steps here:</p>
+
+<ol>
+	<li><a href="#Create_video">Create video</a></li>
+	<li><a href="#Create_the_ingest_request">Create the ingest request</a></li>
+	<li><a href="#Share_video_with_Media_API">Share video with Media API</a></li>
+</ol>
+
+<p class="BCL-aside">Note: eventually management of media sharing will be added to the <a href="/node/18034">CMS API</a>. The solution offered here is a temporary workaround until that work is completed. Once media sharing management is added to the CMS API, you should update any apps using the Media API for this purpose to use the CMS API instead.</p>
+</section>
+
+<section class="bcls-section" id="Create_video">
+<h2>Create video</h2>
+
+<p>The video object in the Video Cloud system is created using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API</a>. Here is a curl example:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl --request POST
+  --url https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos
+  --header 'authorization: Bearer OAUTH_TOKEN'
+  --header 'content-type: application/json'
+  --data '{"name": "Video to be shared"}'</code></pre>
+
+<p>The JSON returned will include the new video id:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "id": "VIDEO_ID",
+  "account_id": "ACCOUNT_ID",
+  ...
+}</code></pre>
+</section>
+
+<section class="bcls-section" id="Create_the_ingest_request">
+<h2>Create the ingest request</h2>
+
+<p>The video can then be ingested using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest API</a> with the video id returned from the CMS API request. Here is a curl example of the request:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl --request POST
+  --url https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/<span class="bcls-input">VIDEO_ID</span>/ingest-requests
+  --header 'authorization: Bearer <span class="bcls-input">OAUTH_TOKEN</span>'
+  --header 'content-type: application/json'
+  --data '{"master": {"url": "http://example.com/video.mp4"}}'</code></pre>
+</section>
+
+<section class="bcls-section" id="Share_video_with_Media_API">
+<h2>Share video with Media API</h2>
+
+<p>Once the video has been ingested, you can share it to another account using the <a href="//docs.brightcove.com/en/video-cloud/media/samples/share_video.html">Media API</a>. Here is a curl example of the request:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl --request POST
+  --url https://api.brightcove.com/services/post
+  --header 'content-type: application/x-www-form-urlencoded'
+  --data 'json={"method":"share_video",
+  "params":{"video_id": "<span class="bcls-input">VIDEO_ID_TO_BE_SHARED</span>", "sharee_account_ids": "<span class="bcls-input">ACCOUNT_ID_TO_SHARE_TO</span>", "auto_accept": true, "token": "<span class="bcls-input">MEDIA_API_WRITE_TOKEN</span>" }}'</code></pre>
+
+<p>The response includes the id of the new video in the sharee account:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{"result": [123456789001], "error": null, "id": null}</code></pre>
+</section>
+</article>

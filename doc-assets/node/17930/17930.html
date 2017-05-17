@@ -1,0 +1,117 @@
+<article class="bcls-article">
+<section id="setup" class="bcls-section">
+<h2>Setup</h2>
+
+<p>The setup is exactly the same as for other Dynamic Ingest notifications. See the <a href="/node/17939#diAPI">Notifications topic</a> for details.</p>
+</section>
+
+<section id="successNotifications" class="bcls-section">
+<h2>Success notifications</h2>
+
+<p>Notifications for Dynamic Delivery ingests are similar to ones for ordinary Dynamic Ingest. Below are sample notifications for successful rendition completion for Dynamic Delivery an non-Dynamic Delivery ingests to highlight the differences.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Dynamic Delivery and non-Dynamic Delivery Notifications</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Dynamic Delivery Rendition Success</th>
+			<th>Non-Dynamic Delivery Rendition Success</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>
+			<pre class="line-numbers">
+<code class="language-json">{
+    "status": "SUCCESS",
+    "entity": "5123312711001",
+    <span class="bcls-highlight">"entityType": "DYNAMIC_RENDITION",</span>
+    "version": "1",
+    "action": "CREATE",
+    "jobId": "48c3a283-40f9-4214-8c27-21e3a040ca6a",
+    "videoId": "5123312711001",
+    <span class="bcls-highlight">"dynamicRenditionId": "default/audio64",</span>
+    "accountId": "57838016001"
+}</code></pre>
+			</td>
+			<td>
+			<pre class="line-numbers">
+<code class="language-json">{
+    <span class="bcls-highlight">"entityType": "ASSET",</span>
+    "status": "SUCCESS",
+    "version": "1",
+    "jobId": "93d40db1-df3f-4023-bab6-51459cdda470",
+    "videoId": "5122632511001",
+    <span class="bcls-highlight">"profileRefId": "mp2",</span>
+    "entity": "5122644754001",
+    "action": "CREATE",
+    "accountId": "57838016001"
+}</code></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>As you can see, the differences here are that the <code>entity_type</code> for Dynamic Delivery ingestion is <code>DYNAMIC_RENDITION</code> instead of <code>ASSET</code>, and you get a <code>dynamicRenditionId</code> instead of a <code>profileRefId</code></p>
+
+<p>Also note:</p>
+
+<ul>
+	<li>The <code>JobId</code> value is the Job ID for the ingest request, and the <code>videoId</code> is the Video Cloud id for the video that was added. These values allow you to identify which notifications are associated with a specific ingest request.</li>
+	<li>The <code>action</code> tells you what kind of operation was performed.</li>
+	<li>The <code>status</code> tells you whether the operation was successful.</li>
+</ul>
+
+<p>You will get a notification like this one for each of the renditions specified in the ingest profile. You will also get these two additional notifications (the comments indicate their meaning):</p>
+
+<pre class="line-numbers">
+<code class="language-json">/*
+    this notification signals that the video has at least one playable rendition
+*/
+{
+    "entity": "5255920696001",
+    <span class="bcls-highlight">"entityType": "TITLE",</span>
+    "version": "1",
+    <span class="bcls-highlight">"action": "PUBLISH",</span>
+    "jobId": "a739ad83-ada7-41db-b8d0-06e3da228690",
+    "videoId": "5255920696001",
+    "accountId": "57838016001",
+    "status": "SUCCESS"
+}
+/*
+    this notification signals that all processing for the video is complete
+*/
+{
+    "entity": "5255920696001",
+    <span class="bcls-highlight">"entityType": "TITLE",</span>
+    "version": "1",
+    <span class="bcls-highlight">"action": "CREATE",</span>
+    "jobId": "a739ad83-ada7-41db-b8d0-06e3da228690",
+    "videoId": "5255920696001",
+    "accountId": "57838016001",
+    "status": "SUCCESS"
+}</code></pre>
+</section>
+
+<section id="failureNotifications" class="bcls-section">
+<h2>Failure notifications</h2>
+
+<p>Now we will look at what happens when the ingest job fails. Here's a sample failure notification:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "status": "FAILED",
+  "entity": "5123263227001",
+  "entityType": "TITLE",
+  "version": "1",
+  "action": "CREATE",
+  "jobId": "661145f7-389b-4b05-9293-aa35da9c9949",
+  "videoId": "5123263227001",
+  <span class="bcls-highlight">"errorCode": "NoMediaError",</span>
+  <span class="bcls-highlight">"errorMessage": "Audio-only output was requested on a file that only contains video.",</span>
+  <span class="bcls-highlight">"status": "FAILED"</span>
+}</code></pre>
+
+<p>The issue in this case is that the ingest profile specified one or more audio-only renditions, but the video did not have an audio track. You would get similar failure notifications on the renditions themselves.</p>
+</section>
+</article>
