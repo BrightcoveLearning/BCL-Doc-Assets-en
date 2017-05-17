@@ -427,6 +427,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
                   if (httpRequest.readyState === 4) {
                     if (httpRequest.status >= 200 && httpRequest.status < 300) {
                       // check for completion
+console.log('response', httpRequest.responseText);
                         responseRaw = httpRequest.responseText;
                         responseData.textContent = responseRaw;
                         parsedData = JSON.parse(responseRaw);
