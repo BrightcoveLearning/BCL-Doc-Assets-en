@@ -58,7 +58,7 @@ var BCLS = (function (window, document) {
 
     setRequest.addEventListener('click', function() {
         // get or set values for the request
-        if (account) {
+        if (account.value) {
             account_id = account.value;
         } else {
             account_id = default_account_id;
