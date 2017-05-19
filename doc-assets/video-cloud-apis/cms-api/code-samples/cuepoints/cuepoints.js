@@ -63,10 +63,10 @@ var BCLS = (function (window, document) {
         } else {
             account_id = default_account_id;
         }
-        if (cid) {
+        if (cid.value) {
             client_id = cid.value;
         }
-        if (secret) {
+        if (secret.value) {
             client_secret = secret.value;
         }
         video_id      = getSelectedValue(video).value;
