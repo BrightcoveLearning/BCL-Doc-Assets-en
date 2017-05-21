@@ -17,11 +17,11 @@ var BCLSfinder = ( function (window, document) {
     }
 
     if (h1) {
-        searchURL = newSite + '/search/search=' + encodeURI(h1.textContent);
+        searchURL = newSite + '/search?search=' + encodeURI(h1.textContent);
         injectMessage(h1);
     } else {
         var h2 = document.getElementsByTagName('h2')[0];
-        searchURL = newSite + '/search/search=' + encodeURI(h2.textContent);
+        searchURL = newSite + '/search?search=' + encodeURI(h2.textContent);
         injectMessage(h2);
     }
 

@@ -17,7 +17,7 @@ var BCLSfinder = ( function (window, document) {
         searchLink.setAttribute('href', searchURL);
     }
 
-        searchURL = homeDomain + '/search/search=' + encodeURI(path);
+        searchURL = homeDomain + '/search?search=' + encodeURI(path);
         injectMessage();
 
 })(window, document);
