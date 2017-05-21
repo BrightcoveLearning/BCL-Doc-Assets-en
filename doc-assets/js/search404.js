@@ -2,7 +2,7 @@ var BCLSfinder = ( function (window, document) {
     var homeDomain = '//' + window.location.hostname,
         pathArray = window.location.pathname.split('/'),
         path = pathArray[pathArray.length - 1],
-        body = document.getElementsByTagName('body')[0],
+        body = document.getElementsByTagName('body')[1],
         searchURL,
         searchTag,
         searchLink,
