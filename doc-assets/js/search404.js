@@ -17,6 +17,7 @@ var BCLSfinder = ( function (window, document) {
         searchLink.setAttribute('href', searchURL);
     }
 
+        path = path.str.replace(/-/g, ' ');
         searchURL = homeDomain + '/search?search=' + encodeURI(path);
         injectMessage();
 
