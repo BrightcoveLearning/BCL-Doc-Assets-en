@@ -111,7 +111,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         for (i = 0; i < max; i++) {
             liEl = document.createElement('li');
             aEl = document.createElement('a');
-            a.setAttribute('href', '#' + navLabel[i].link);
+            aEl.setAttribute('href', '#' + navLabel[i].link);
             txt = document.createTextNode(navLabel[i].text);
             aEl.appendChild(txt);
             liEl.appendChild(aEl);
