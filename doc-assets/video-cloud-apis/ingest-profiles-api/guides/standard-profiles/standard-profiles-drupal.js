@@ -100,14 +100,12 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
 
     // create navigation for page sections
     function createInPageNavMenu() {
-        var sideNav = document.getElementsByClassName('bc-ipnav-block'),
-            sideNavList = sideNav.firstElementChild,
+        var sideNavList = document.querySelector('.bc-ipnav-block li'),
             i,
             max = navLabel.length,
             aEl,
             liEl,
-            txt,
-            $sidenav = $("#sidenav");
+            txt;
         for (i = 0; i < max; i++) {
             liEl = document.createElement('li');
             aEl = document.createElement('a');
