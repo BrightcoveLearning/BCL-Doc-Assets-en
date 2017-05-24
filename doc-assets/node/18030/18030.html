@@ -19,7 +19,7 @@
 
 <h3>HTTP method</h3>
 
-<p>Cue points cannot be added when you create the video. Instead, they must be added by making a <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">video update</a> request, which means you will use the <code>PATCH</code> method.</p>
+<p>Cue points can be added either when you <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">create the video</a> or later with an <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">update request</a>. In this sample, we will add them to an existing video by making a <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">video update</a> request, which means you will use the <code>PATCH</code> method.</p>
 
 <aside class="bcls-aside bcls-aside--information">If you update the video again to change or add additional cue points, you must include the entire array of cue points in the request body.</aside>
 
@@ -189,7 +189,8 @@
 
 <p>API request body:<textarea id="requestData" class="bcls-code"></textarea></p>
 
-<pre class="line-numbers"><code class="language-json" id="results">Response will appear here...</code></pre>
+<pre class="line-numbers">
+<code class="language-json" id="results">Response will appear here...</code></pre>
 </fieldset>
 </section>
 
@@ -265,69 +266,82 @@
 
 <h3>JavaScript code:</h3>
 
-<pre class="line-numbers"><code class="language-javascript"><fieldset class="bcls-fieldset">
-    <legend>Account Information</legend>
-    <p>By default, you will get results from  Brightcove sample account.</p>
-    <p><button class="bcls-button" id="useMyAccount">Use My Account Instead</button></p>
-    <div id="basicInfo" style="display:none;">
-        <table class="bcls-table">
-            <tbody class="bcls-table__body">
-                <tr>
-                    <td>Video Cloud Account (Publisher ID):</td>
-                    <td>
-                        <input id="account" type="text" size="55">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="align-top no-wrap">Client id:</td>
-                    <td>
-                        <input id="cid" type="text" size="100" value=""> (must include permissions for <code>video-cloud/video/update</code> or <code>video-cloud/video/all</code>)
-                    </td>
-                </tr>
-                <tr>
-                    <td class="align-top no-wrap">Client secret:</td>
-                    <td>
-                        <input id="secret" type="text" size="100" value=""> (must include permissions for <code>video-cloud/video/update</code> or <code>video-cloud/video/all</code>)
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p><button id="get_videos" class="bcls-button">Refresh Video List New Account Information </button></p>
-    </div>
-</fieldset>
-<fieldset class="bcls-fieldset">
-    <legend>Inputs</legend>
-    <p>Video to update:
-        <select id="video" style="display:inline-block;width:40%;"></select>
-    </p>
-    <h4>Cue point information</h4>
-    <p>Name: <input id="name" type="text" style="display:inline-block;width:40%;"></p>
-    <p>Type:
-        <select id="type" style="display:inline-block;width:40%;">
-            <option value="AD">AD</option>
-            <option value="CODE" selected="selected">CODE</option>
-        </select>
-    </p>
-    <p>Time: <input id="time" type="text" placeholder="2.45" style="display:inline-block;width:40%;"></p>
-    <p>Metadata: <input id="metadata" type="text" style="display:inline-block;width:40%;"></p>
-    <p>Force stop: <input type="checkbox" id="force_stop" value="true"></p>
-    <p><button id="addCue" class="bcls-button">Add Cue Point</button>     <button id="setRequest" class="bcls-button">Submit Video Update Request</button></p>
-</fieldset>
+<pre class="line-numbers">
+
+&nbsp;</pre>
+
+<fieldset class="bcls-fieldset"><legend><code class="language-javascript">Account Information</code></legend><code class="language-javascript"> </code>
+
+<p><code class="language-javascript">By default, you will get results from Brightcove sample account.</code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript"><button class="bcls-button" id="useMyAccount">Use My Account Instead</button></code></p>
+<code class="language-javascript"> </code>
+
+<div id="basicInfo" style="display:none;">
+<table class="bcls-table">
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code class="language-javascript">Video Cloud Account (Publisher ID):</code></td>
+			<td><code class="language-javascript"><input id="account" type="text" size="55" /> </code></td>
+		</tr>
+		<tr>
+			<td class="align-top no-wrap"><code class="language-javascript">Client id:</code></td>
+			<td><code class="language-javascript"><input id="cid" type="text" size="100" value="" /> (must include permissions for <code>video-cloud/video/update</code> or <code>video-cloud/video/all</code>) </code></td>
+		</tr>
+		<tr>
+			<td class="align-top no-wrap"><code class="language-javascript">Client secret:</code></td>
+			<td><code class="language-javascript"><input id="secret" type="text" size="100" value="" /> (must include permissions for <code>video-cloud/video/update</code> or <code>video-cloud/video/all</code>) </code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p><code class="language-javascript"><button id="get_videos" class="bcls-button">Refresh Video List New Account Information</button></code></p>
+</div>
+<code class="language-javascript"> </code></fieldset>
+
+<fieldset class="bcls-fieldset"><legend><code class="language-javascript">Inputs</code></legend><code class="language-javascript"> </code>
+
+<p><code class="language-javascript">Video to update: <select id="video" style="display:inline-block;width:40%;"></select> </code></p>
+<code class="language-javascript"> </code>
+
+<h4><code class="language-javascript">Cue point information</code></h4>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript">Name: <input id="name" type="text" style="display:inline-block;width:40%;" /></code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript">Type: <select id="type" style="display:inline-block;width:40%;"><option value="AD">AD</option><option value="CODE" selected="selected">CODE</option> </select> </code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript">Time: <input id="time" type="text" placeholder="2.45" style="display:inline-block;width:40%;" /></code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript">Metadata: <input id="metadata" type="text" style="display:inline-block;width:40%;" /></code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript">Force stop: <input type="checkbox" id="force_stop" value="true" /></code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript"><button id="addCue" class="bcls-button">Add Cue Point</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="setRequest" class="bcls-button">Submit Video Update Request</button></code></p>
+<code class="language-javascript"> </code></fieldset>
 </section>
+
 <section class="bcls-section" id="outputLog">
-<h2>Results</h2>
-<fieldset class="bcls-fieldset">
-    <legend>Outputs</legend>
-    <p>
-        API request:
-        <textarea id="apiRequest" class="bcls-code"></textarea>
-    </p>
-    <p>
-        API request body:
-        <textarea id="requestData" class="bcls-code"></textarea>
-    </p>
-    <pre class="line-numbers"><code class="language-json" id="results"></code></pre>
-</fieldset></code></pre>
+<h2><code class="language-javascript">Results</code></h2>
+
+<fieldset class="bcls-fieldset"><legend><code class="language-javascript">Outputs</code></legend><code class="language-javascript"> </code>
+
+<p><code class="language-javascript">API request:<textarea id="apiRequest" class="bcls-code"></textarea> </code></p>
+<code class="language-javascript"> </code>
+
+<p><code class="language-javascript">API request body:<textarea id="requestData" class="bcls-code"></textarea> </code></p>
+<code class="language-javascript"> </code>
+
+<pre class="line-numbers">
+
+&nbsp;</pre>
+<code class="language-javascript"> </code></fieldset>
 
 <h3>Proxy</h3>
 
