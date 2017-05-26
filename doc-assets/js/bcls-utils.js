@@ -135,7 +135,7 @@ var BCLS_player_fix = ( function (window, document) {
         sideNav.insertAdjacentHTML('afterBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
-        if (location.hash.indexOf('bp') >- 0) {
+        if (location.search.indexOf('bp') >- 0) {
             addStyle(bp);
             removeStyle(vc);
         }
