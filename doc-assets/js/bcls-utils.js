@@ -119,7 +119,7 @@ var BCLS_player_fix = ( function (window, document) {
     }
 
     if (vcContent.length !== 0 || bpContent.length !== 0) {
-        if (location.hash.indexOf('bp') >- 0) {
+        if (location.search.indexOf('bp') >- 0) {
             showElements(bpContent);
             hideElements(vcContent);
         } else {
