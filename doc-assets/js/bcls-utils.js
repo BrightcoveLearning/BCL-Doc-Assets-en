@@ -82,6 +82,9 @@ var BCLS_player_fix = ( function (window, document) {
     }
 
     function vcClickHandler() {
+        if (window.location.search === 'prod=bp') {
+            window.location.search = '';
+        }
         showElements(vcContent);
         hideElements(bpContent);
         addStyle(vc);
@@ -98,8 +101,8 @@ var BCLS_player_fix = ( function (window, document) {
 
     function bpClickHandler() {
         var j, jMax;
-        if (location.hash === '') {
-            location.hash = 'bp';
+        if (window.location.search === '') {
+            window.location.search = 'prod=bp';
         }
         showElements(bpContent);
         hideElements(vcContent);
