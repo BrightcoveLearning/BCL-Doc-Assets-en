@@ -83,57 +83,34 @@ var BCLS_player_fix = ( function (window, document) {
     }
 
     function vcClickHandler() {
+        window.location.search = '';
         showElements(vcContent);
         hideElements(bpContent);
         addStyle(vc);
         removeStyle(bp);
-        // if (BCLSmain.createInPageNavMenu) {
-        //     sideNavList.outerHTML = '';
-        //     BCLSmain.createInPageNavMenu();
-        //     sideNavList = document.getElementById('sideNavList');
-        //     console.log('foo', sideNavList);
-        // }
-        // vc.addEventListener('click', vcClickHandler);
-        // bp.addEventListener('click', bpClickHandler);
     }
 
     function bpClickHandler() {
         var j, jMax;
-        if (location.hash === '') {
-            location.hash = 'bp';
-        }
+        window.location.search = 'bp';
         showElements(bpContent);
         hideElements(vcContent);
         addStyle(bp);
         removeStyle(vc);
-        // if (BCLSmain.createInPageNavMenu) {
-        //     sideNavList.outerHTML = '';
-        //     BCLSmain.createInPageNavMenu();
-        //     sideNavList = document.getElementById('sideNavList');
-        //     console.log('foo', sideNavList);
-        // }
-        // vc.addEventListener('click', vcClickHandler);
-        // bp.addEventListener('click', bpClickHandler);
     }
 
     if (vcContent.length !== 0 || bpContent.length !== 0) {
-        if (location.hash.indexOf('bp') >- 0) {
+        if (window.location.search.indexOf('bp') >- 0) {
             showElements(bpContent);
             hideElements(vcContent);
         } else {
             showElements(vcContent);
             hideElements(bpContent);
         }
-        // if (BCLSmain.createInPageNavMenu) {
-        //     sideNavList.outerHTML = '';
-        //     BCLSmain.createInPageNavMenu();
-        //     sideNavList = document.getElementById('sideNavList');
-        //     console.log('foo', sideNavList);
-        // }
         sideNav.insertAdjacentHTML('beforeBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
-        if (location.hash.indexOf('bp') >- 0) {
+        if (window.location.search.indexOf('bp') >- 0) {
             addStyle(bp);
             removeStyle(vc);
         }
