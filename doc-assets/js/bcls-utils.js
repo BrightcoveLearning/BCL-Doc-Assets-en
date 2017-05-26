@@ -82,40 +82,20 @@ var BCLS_player_fix = ( function (window, document) {
     }
 
     function vcClickHandler() {
-        if (window.location.search === 'prod=bp') {
-            window.location.search = '';
-        }
+        window.location.search = '';
         showElements(vcContent);
         hideElements(bpContent);
         addStyle(vc);
         removeStyle(bp);
-        // if (BCLSmain.createInPageNavMenu) {
-        //     sideNavList.outerHTML = '';
-        //     BCLSmain.createInPageNavMenu();
-        //     sideNavList = document.getElementById('sideNavList');
-        //     console.log('foo', sideNavList);
-        // }
-        // vc.addEventListener('click', vcClickHandler);
-        // bp.addEventListener('click', bpClickHandler);
     }
 
     function bpClickHandler() {
         var j, jMax;
-        if (window.location.search === '') {
-            window.location.search = 'prod=bp';
-        }
+        window.location.search = 'bp';
         showElements(bpContent);
         hideElements(vcContent);
         addStyle(bp);
         removeStyle(vc);
-        // if (BCLSmain.createInPageNavMenu) {
-        //     sideNavList.outerHTML = '';
-        //     BCLSmain.createInPageNavMenu();
-        //     sideNavList = document.getElementById('sideNavList');
-        //     console.log('foo', sideNavList);
-        // }
-        // vc.addEventListener('click', vcClickHandler);
-        // bp.addEventListener('click', bpClickHandler);
     }
 
     if (vcContent.length !== 0 || bpContent.length !== 0) {
