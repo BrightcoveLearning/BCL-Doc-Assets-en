@@ -1,0 +1,52 @@
+<p>This topic describes how you can get the output from the read methods in the Video Cloud Media API in MRSS format, rather than the default JSON output.</p>
+
+<div class="text-warning">Note: the Media API is deprecated. You can also generate MRSS feeds using the newer CMS API, as shown in the these examples:
+<ul>
+    <li><a href="/node/18028">MRSS Generator</a></li>
+    <li><a href="/node/18026">MRSS Feed from Playlist</a></li>
+</ul>
+</div>
+
+<p>RSS is short for Really Simple Syndication. RSS is an XML-based language which represents information on the web in a form which may be syndicated (subscribed to) in special news reader applications. RSS allows your news reader program to bring a web site news feed directly to your computer.</p>
+
+<p>MRSS is short for Media Really Simple Syndication. MRSS is an RSS module (originally developed by Yahoo) that is used for syndicating multimedia files (audio, video, image) in RSS feeds. The format can be used for podcasting, which uses the RSS format as a means of delivering content to media-playing devices. Media RSS allows for a much more detailed description of the content to be delivered to the subscriber than is covered by the RSS standard.</p>
+
+<h2><a name="simple" href=""></a>Simple MRSS feeds and Media API calls</h2>
+
+<p>There are two ways to generate MRSS feeds for your Video Cloud account. The most simple way, described in <a href="/node/596">Publishing Simple MRSS Feeds</a>, is to use a ready-made URL. However, this method has significant limitations:</p>
+
+<ul>
+	<li>No filtering or ordering: all videos, up to the limit, are returned, always in the same order</li>
+	<li>For security reasons, URLs for the video or specific renditions are not included - this may limit the usability of the feed, especially on mobile devices, where a link for a progressive download or HLS rendition is often needed to play the video directly</li>
+</ul>
+
+<p>A much more robust and flexible way to generate MRSS feeds is to use the <a href="http://docs.brightcove.com/en/video-cloud/media/index.html">Media API</a>, which allows you to avoid these limitations.</p>
+
+<h2><a name="output" href=""></a>MRSS output from read method calls</h2>
+
+<p>The default output for the read methods in the Video Cloud Media API is JSON. You can, if you prefer, get the output in XML, using RSS or MRSS. Use the <code>output</code> argument with any of the read methods to specify the format of the output. The valid values of the <code>output</code> argument are:</p>
+
+<p class="text-warning">Note that you do not have to generate MRSS feeds — if you are creating a feed for your own app or a specific syndication partner, consider providing a JSON feed instead. If the feed is going to be processed by some syndication client, JSON is generally easier to work with than the XML provided by MRSS, and also allows you to include some additional video metadata that is not available to MRSS output. Of course, if the partner or client app already has MRSS processing in place, an MRSS feed may be preferred.</p>
+
+<ul>
+	<li>json (the default)</li>
+	<li>mrss (RSS with Media RSS and Video Cloud extensions)</li>
+	<li>tm (for <a href="/node/4162">distribution through TubeMogul OneLoad</a>)</li>
+</ul>
+
+<p><a name="search_videos" href=""></a>For example, to get MRSS output from the <code>search_videos</code> method:</p>
+
+<pre>
+http://api.brightcove.com/services/library
+  ?command=search_videos&amp;<strong>output=mrss</strong>
+  &amp;token=ZY4Ls9Hq6LCBgleGDTaFRDLWWBC8uoXQun0xEEXtlDUHBDPZBCOzbw..</pre>
+
+<p class="text-warning">Using <code>search_videos</code> gives you the greatest flexibility in generating your feed, as it allows you to include search terms to determine which videos are included, and also makes it easy to exclude certain videos from the feed. See <a href="http://docs.brightcove.com/en/video-cloud/media/samples/search_videos.html">Using search_videos</a> for more details on using this Media API method.</p>
+
+<h2><a name="link" href=""></a>Inluding links to video files in the feed</h2>
+
+<p>If you need to include links to the actual video renditions, you must use a Read token with <strong>URL Access</strong>. Links to all renditions will be returned, so receiving application is responsible for parsing these to select the best rendition to deliver to the client.</p>
+
+<h2>Contents of MRSS output</h2>
+
+<p>The MRSS output is in the form of XML. You can read more about the RSS definition at: <a target="_blank" href="http://www.rssboard.org/rss-specification">http://www.rssboard.org/rss-specification</a>. The Media RSS specification is located here: <a target="_blank" href="http://www.rssboard.org/media-rss">http://www.rssboard.org/media-rss</a>. Video Cloud adds a small extension to RSS. For details, see <a href="/node/438">Video Cloud RSS extension</a>.</p>
