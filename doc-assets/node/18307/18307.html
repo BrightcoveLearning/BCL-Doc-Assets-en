@@ -1,0 +1,30 @@
+<p>Apple describes the Media Stream Validator in <a href="http://developer.apple.com/library/ios/#technotes/tn2235/_index.html" target="_blank">Technical Note TN2235</a>:</p>
+<blockquote class="rteindent2">The Media Stream Validator (<span style="font-family: Courier New;">mediastreamvalidator</span>) is a command-line tool to validate HTTP Live Streaming streams and servers.  <br />
+This tool simulates an HTTP Live Streaming session and verifies that the index file and media segments conform to the HTTP Live Streaming specification. It performs several checks to ensure reliable streaming. If any errors or problems are found, a detailed diagnostic report is displayed. This technote provides an explanation of many of the common errors and warnings reported by the tool.<br />
+</blockquote>
+<h2><a name="using"></a>Using the Media Stream Validator</h2>
+<p>The Media Stream Validator is relevant only for Apple HLS renditions. Read Apple's  <a href="http://developer.apple.com/library/ios/#technotes/tn2235/_index.html" target="_blank">Technical Note TN2235</a> for details about how to download and use this Apple tool. Read more about <a href="internal:node/5712">creating Apple HLS renditions for your videos</a> in Video Cloud.</p>
+<p>The Media Stream Validator is a command line tool. To use it to validate an Apple HLS video, from the command line, enter a command in this form:</p>
+<pre>
+mediastreamvalidator validate [URL of video master index file]</pre>
+<p>The URL of the video should be a fully-qualified URL of the master index file (<span style="font-family: Courier New;">.m3u8</span>) of an Apple HLS video.</p>
+<p>To get the URL of the master index file of a video in your Video Cloud media library, get the video ID of the video, which you can find in the Media module, and append it to this URL:</p>
+<p><span style="font-family: Courier New;">http://c.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=</span></p>
+<p>The <span style="font-family: Courier New;">mediastreamvalidator</span> command with the video URL may look like this:</p>
+<pre>
+mediastreamvalidator validate http://c.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=12345671</pre>
+<p>Note that there is a query argument after the <span style="font-family: Courier New;">.m3u8</span> file extension in the URL. This argument will not affect the behavior of the Media Stream Validator.</p>
+<h2>Errors and warnings received from the Media Stream Validator</h2>
+<p>Here are some errors you might receive from the Media Stream Validator. If you receive other errors from Apple&nbsp;HLS renditions created by Video Cloud, <a href="http://support.brightcove.com/en/contact" target="_blank">contact Customer Support</a>.</p>
+<h3>Segment duration too short or too long</h3>
+<p><strong>WARNING: Media segment exceeds target duration of 10.00 seconds by 1.31 seconds (segment duration is 11.31 seconds).</strong> This is a benign warning and will not prevent Apple app publishing. Apple HLS segments may exceed the target duration by a small amount without a problem.</p>
+<p>In addition, you may receive warnings about very short segment durations. Since video durations are not necessarily evenly divisible by 10 second increments, you can expect the final segment to be shorter than 10 seconds and may be only a second or two or even less.</p>
+<h3>Segment duration is not finite</h3>
+<p><strong>ERROR:&nbsp;Invalid media segment: (-1) segment duration is not finite</strong>. This error is an <a href="http://developer.apple.com/library/ios/#technotes/tn2235/_index.html" target="_blank">Apple known issue</a>. Apple recommends that if you receive this error, you should file a bug report against the  Media Stream Validator using the Apple Bug Reporter.</p>
+<h3>Audio-only renditions</h3>
+<p><strong>Video streaming content over a cellular network longer than 10 minutes must use HTTP Live and include a baseline 64 kbps audio-only HTTP Live Stream</strong>. You may get this error using an audio bitrate of 64 kbps. The total bitrate of a rendition includes some overhead for the container itself. Reducing the bitrate of your audio-only rendition to 54 kbps or less should avoid this error message.</p>
+<h3>Related Topics</h3>
+<ul>
+    <li><a href="internal:node/5712">Delivering Videos with Apple HLS</a></li>
+</ul>
+<p>&nbsp;</p>
