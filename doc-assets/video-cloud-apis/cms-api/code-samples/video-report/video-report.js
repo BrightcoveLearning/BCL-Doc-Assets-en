@@ -153,13 +153,16 @@ var BCLS = (function(window, document) {
 
 
     function startCSVStrings() {
-        var i = 0, iMax = customFields.length;
+        var i = 0, iMax;
         csvStr = '"ID","Name","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",';
-        for (i; i < iMax; i++) {
-            if (i < (iMax - 1)) {
-                csvStr += '"' + customFields[i] + '",';
-            } else {
-                csvStr += '"' + customFields[i] + '"\n';
+        if (customFields) {
+            iMax = customFields.length;
+            for (i; i < iMax; i++) {
+                if (i < (iMax - 1)) {
+                    csvStr += '"' + customFields[i] + '",';
+                } else {
+                    csvStr += '"' + customFields[i] + '"\n';
+                }
             }
         }
     }
@@ -204,21 +207,25 @@ var BCLS = (function(window, document) {
                 resHeight = rendition.frame_height;
                 // add csv row
                 csvStr += '"' + video.id + '","' + video.name + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",';
-                jMax = customFields.length;
-                for (j = 0; j < jMax; j++) {
-                    if (j < (jMax - 1)) {
-                        if (video.custom_fields.hasOwnProperty(customFields[j])) {
-                            csvStr += '"' + video.custom_fields[customFields[j]] + '",';
+                if (customFields) {
+                    jMax = customFields.length;
+                    for (j = 0; j < jMax; j++) {
+                        if (j < (jMax - 1)) {
+                            if (video.custom_fields.hasOwnProperty(customFields[j])) {
+                                csvStr += '"' + video.custom_fields[customFields[j]] + '",';
+                            } else {
+                                csvStr += '"",';
+                            }
                         } else {
-                            csvStr += '"",';
-                        }
-                    } else {
-                        if (video.custom_fields.hasOwnProperty(customFields[j])) {
-                            csvStr += '"' + video.custom_fields[customFields[j]] + '"\n';
-                        } else {
-                            csvStr += '""\n';
+                            if (video.custom_fields.hasOwnProperty(customFields[j])) {
+                                csvStr += '"' + video.custom_fields[customFields[j]] + '"\n';
+                            } else {
+                                csvStr += '""\n';
+                            }
                         }
                     }
+                } else {
+                    csvStr += '\n';
                 }
             }
             csvData.textContent += csvStr;
