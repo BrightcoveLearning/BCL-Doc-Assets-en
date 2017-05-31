@@ -1,0 +1,498 @@
+<p><strong>Identified known issues include:</strong></p>
+
+<ul>
+	<li><a href="#studio"><span class="video-cloud-only">Video Cloud</span><span class="perform-only">Perform</span> Studio</a>
+
+	<ul>
+		<li class="video-cloud-only"><a href="#media">Media module</a></li>
+		<li><a href="#players">Players module</a></li>
+		<li class="video-cloud-only"><a href="#live">Live video</a></li>
+		<li class="video-cloud-only"><a href="#livemodule">Live module</a></li>
+		<li class="video-cloud-only"><a href="#analytics">Analytics</a></li>
+		<li class="video-cloud-only"><a href="#audience">Audience</a></li>
+		<li class="video-cloud-only"><a href="#di">Upload module / Dynamic Ingestion</a></li>
+		<li class="video-cloud-only"><a href="#admin">Administration</a></li>
+		<li class="video-cloud-only"><a href="#marketplace">Marketplace</a></li>
+	</ul>
+	</li>
+</ul>
+
+<ul>
+	<li><a href="#player">Brightcove Player</a></li>
+</ul>
+
+<ul>
+	<li><a href="#sdks">Native Player SDKs</a>
+
+	<ul>
+		<li><a href="#androidsdk">Native Player SDK for Android</a></li>
+		<li><a href="#iossdk">Native Player SDK for iOS</a></li>
+	</ul>
+	</li>
+</ul>
+
+<ul>
+	<li class="video-cloud-only"><a href="#cms">CMS API</a></li>
+</ul>
+
+<div id="studio" class="BCL-concept">
+<h2><span class="video-cloud-only">Video Cloud</span><span class="perform-only">Perform</span> Studio</h2>
+
+<p class="perform-only">No issues currently reported.</p>
+</div>
+
+<div id="media" class="BCL-concept  video-cloud-only">
+<h2>Media Module</h2>
+
+<h3>Preview Player</h3>
+
+<p>Live, HLS-only remote asset videos are not playable in the preview player.</p>
+
+<h3>Source file name containing double byte characters</h3>
+
+<p>Source file name containing double byte characters gets garbled after retranscoding in the media module.</p>
+
+<h3>Media Sharing</h3>
+
+<p>When sharing large numbers of videos, Brightcove recommends sharing at most two pages of videos at a time. Sharing a large number of videos at once may cause a timeout error.</p>
+
+<p>Adding captions to a video that was shared which already contains captions is not supported.</p>
+</div>
+
+<div id="players" class="BCL-concept">
+<h2>Players Module</h2>
+
+<h3>Preload setting</h3>
+
+<p>Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.</p>
+</div>
+
+<div id="live" class="BCL-concept  video-cloud-only">
+<h2>Live Video</h2>
+
+<h3>Brightcove Player counting video views for finished live events</h3>
+
+<p>The Brightcove player accounts for video_view every time a remote asset is loaded, even if it's a finished live event with an empty or no longer retrievable HLS playlist. <strong>Workaround:</strong> deactivate, unschedule, or delete the video.</p>
+</div>
+
+<div id="livemodule" class="BCL-concept  video-cloud-only">
+<h2>Live Module</h2>
+
+<h3>Clipped videos from live events have no published date</h3>
+
+<p>If a live event is trimmed and saved as a VOD asset, the video will not have a Published Date.</p>
+
+<p><strong>Workaround:</strong> Deactivate and activate the video to set a published date for the asset.</p>
+
+<h3>Clips are not processed if the video title contains double-byte characters</h3>
+
+<p>Transcoding fails if clips contain double-byte characters.</p>
+
+<p><strong>Workaround:</strong> use only single-byte characters in video titles. After the clip is processed, you can rename it in the Media Module using double-byte characters.</p>
+
+<h3>Trimmed video may get stuck in transcoding</h3>
+
+<p>After trimming and saving the event as a VOD asset, the trimmed video may become "stuck" in a Processing state. If this happens, contact Brightcove Support. They can manually restart the transcode for the trimmed video. (BC-34543, BC-33687)</p>
+</div>
+
+<div id="analytics" class="BCL-concept  video-cloud-only">
+<h2>Analytics</h2>
+
+<h3><strong>Custom Reports using Mutiple Filters</strong></h3>
+
+<p>When using multiple filters, an AND operation will be used. For example, if you add two filters, <strong>video tag</strong> and <strong>player</strong>, only videos with the specified tags <strong>and</strong> viewed in the specified player will be returned.</p>
+
+<h3><strong>Custom Reports using the Filter by Video Tag functionality</strong></h3>
+
+<p>When creating a custom report, there is a limitation when using the Filter by Video Tag functionality. It only takes into consideration up to 2,000 videos in your library with that specific tag. If the amount of videos with a specific tag is greater than that, we recommend to get an unfiltered report which includes the tags and perform the filtering locally with your spreadsheet software.</p>
+
+<h3><strong>"Other/Third Party"</strong> Appears in Performance Report</h3>
+
+<p>When a video that is not your Video Cloud library is played in a Video Cloud player (e.g a remote asset), <strong>Other/Third Party</strong> will be displayed with no associated video ID.</p>
+
+<h3>Updated Video Names not Reflected in Analytics</h3>
+
+<p>The only time Analytics learns about the title of a video is when the player sends it to Analytics as part of the playback beacon. If a video title is changed, analytics will not have the new video title until there has been a video playback. This can result in a scenario where a video name is updated and if there are no playbacks recorded, the old video name will be reflected in the Analytics reports. Data for time periods before March 2013 suffer from this issue often, and will show metadata that is only a number. For example, a video title might display as 1230123012. This is because data from this period was captured in the old analytics system.</p>
+
+<h3>Video Names and Player Names Displaying ??????? in Analytics UI</h3>
+
+<p>For the month of October 2013, the metadata (video names and player names) may look like a bunch of ?????s. This issue impacts publishers whose metadata has double byte characters and had video views in October 2013. This issue was related to the way that we were capturing the metadata for display in the Analytics UI. Starting in November 2013, the Analytics system has additional safeguards in place to prevent metadata sent with the event metrics from being corrupted.</p>
+
+<h3>Reporting Time Zone</h3>
+
+<p>The reporting time zone is used to calculate day boundaries for reporting data. Changing the reporting time zone setting only affects data going forward, and changes are not applied retroactively. If you change this setting, you may see a flat spot or a spike in your data when looking at day boundaries where the change was applied. Updates to this setting may not take effect immediately, and analytics data may continue to refer to the old setting until the system processes the changes.</p>
+
+<h3>Engagement data are stored in daily granularity</h3>
+
+<p>Engagement data are stored in daily granularity using UTC time and might sometimes include 2 full days of data in the "Audience at x%" table in the Engagement Report.</p>
+
+<h3>Internet Explorer Support</h3>
+
+<p>The Analytics module requires Internet Explorer 9 or later.</p>
+</div>
+
+<div id="audience" class="BCL-concept  video-cloud-only">
+<h2>Audience</h2>
+
+<h3>Internet Explorer Support</h3>
+
+<p>Audience lead forms require Internet Explorer 9 or newer.</p>
+</div>
+
+<div id="di" class="BCL-concept  video-cloud-only">
+<h2>Upload module / Dynamic ingestion</h2>
+
+<h3>Uploads via the upload module fail if the clock on the device doesn't match the actual time</h3>
+
+<p>Uploads are authorized for a certain amount of time. If your clock time varies from the actual time by more than 15 minutes, you will receive errors when uploading.</p>
+
+<h3>Retranscoding via Dynamic Ingestion updates the video activation date</h3>
+
+<p>When you retranscode a video using Dynamic Ingestion, the activation date for the video is updated to the current date. If you use Smart Playlists ordered by activation date, this will affect the order of the videos in the playlist.</p>
+
+<h3>File names</h3>
+
+<p>Video file names (including the extension) must not exceed 120 single-byte (60 double-byte) characters. If it does, the video will be ingested successfully, but you will not be able to retranscode it later.</p>
+</div>
+
+<div id="admin" class="BCL-concept  video-cloud-only">
+<h2>Administration</h2>
+
+<h3>Tagged videos not syncing to YouTube</h3>
+
+<p>If video tags are added to a video while the video is in a Processing state, the YouTube sync service will not have the correct metadata to process the upload to YouTube. When using YouTube sync, Brightcove recommends adding tags after the video upload has completed.</p>
+</div>
+
+<div id="marketplace" class="BCL-concept  video-cloud-only">
+<h2>Marketplace</h2>
+
+<h3>Marketplace module will not load in Google Chrome with an ad-blocking extension enabled</h3>
+
+<p>The Marketplace (Vemba) module will not load in Google Chrome with an ad-blocking extension enabled. Rather, the user will be served with an entirely blank page.</p>
+</div>
+
+<div id="player" class="BCL-concept">
+<h2>Brightcove Player</h2>
+
+<p>Check the <a href="/node/18049">Brightcove Player Release Notes</a> to see if a past known issue has been corrected by a recent release.</p>
+
+<h3>Context Menu</h3>
+
+<p>When right-clicking a video close to the right or bottom edges of a player, the player context menu displays off-screen.</p>
+
+<h3>Harmless Console Warnings</h3>
+
+<p>Warnings are displayed in the console, but are harmless and do not effect the player. The warnings are to let developers know that catalog requests have changed from underscore case to camel case. They appear as follows and can be ignored:</p>
+
+<p><img alt="harmless console warnings" src="http://learning-services-media.brightcove.com.s3.amazonaws.com/doc-assets/player-development/known-issues/console-warnings.png" /></p>
+
+<h3>Akamai Token Auth (TTL)</h3>
+
+<p>Akamai Token Auth (TTL) is supported for VOD content but not for Live content.</p>
+
+<h3>FastClick.js results in incorrect event handling</h3>
+
+<p>Using the FastClick.js results in incorrect event handling within our custom control bar. This may result in not being able to use our control bar on mobile devices.</p>
+
+<h3>Videos display greyish on Chrome and Firefox</h3>
+
+<p>When using Chrome and Firefox, videos in the Brightcove Player may display with a greyish color. This can be due to hardware acceleration and/or NVIDIA driver settings.</p>
+
+<p><strong>Workaround:</strong> Open the NVIDIA Control Panel. Under <strong>Video</strong> select <strong>Adjust video color settings</strong>. Under <strong>How do you make color adjustments</strong> select <strong>With the NVIDIA settings</strong>. Under <strong>Advanced</strong> make sure <strong>Dynamic Range</strong> is <strong>Full (0-255)</strong> not <strong>Limited (16-235)</strong>. <strong>Dynamic contrast enhancement</strong> should be unchecked. This issue has been reported on the <a href="https://productforums.google.com/forum/#!topic/chrome/wsDhGzP73bI;context-place=forum/chrome">Google Chrome Help Forum</a>.</p>
+
+<h3>Using emulators</h3>
+
+<p>Whether you are using Chrome Device Mode or other emulators to test video playback, be aware that emulators do not accurately represent how an actual device will perform. While you can use emulators for initial testing during development, it is best practice to use real devices for accurate results.</p>
+
+<p>When testing playback with Chrome Device Mode, you may see this message: "The use of Chrome in device mode simply renders the viewport and user agent string of that device in Chrome, which is not an accurate representation of how the actual device will perform."</p>
+
+<h3>Using <code>data-setup</code></h3>
+
+<p>You should NOT use <code>data-setup</code> with Brightcove Player. You may see use of <code>data-setup</code> in the API documentation, but this is because that documentation is generated directly from the Video.js player source code, and you MAY use that attribute with the <code>video</code> tag with pure Video.js. The attribute sends configuration information to the player, but Brightcove Player uses a different method to perform this task, which makes <code>data-setup</code> unreliable.</p>
+
+<h3>Protocol-aware source selection and DASH</h3>
+
+<p>Protocol-aware source selection is not available when using DASH content. It is only available for HLS and MP4 content</p>
+
+<h3>Console error thrown when using iframe player implementation in Safari</h3>
+
+<p>When using the iframe implementation of Brightcove Player in Safari you will see the following error message in the console: <strong>Blocked a frame with origin "http://players.brightcove.net" from accessing a frame with origin "#DOMAIN NAME#". Protocols, domains, and ports must match.</strong> The reported error does not affect playback.</p>
+
+<h3>"Unknown" is displayed in the captions menu in Safari.</h3>
+
+<p>This is a Safari/Apple limitation. Newer versions of the Brightcove Player use native captioning capabilities built into Safari and this is the standard behavior. This is documented by Apple: <a href="https://developer.apple.com/library/ios/qa/qa1801/_index.html">https://developer.apple.com/library/ios/qa/qa1801/_index.html</a></p>
+
+<h3>When using the 5.0.9 player (both skins) on some versions of iOS on iPhone, the poster image does not display.</h3>
+
+<p>Issue occurs in the following tested versions:</p>
+
+<ul>
+	<li>iOS 8.3</li>
+	<li>iOS 8.4.1</li>
+	<li>iOS 9.2.1</li>
+</ul>
+
+<p>Issue does not occur in the following tested versions:</p>
+
+<ul>
+	<li>iOS 8.1.2 (poster image appears to work on both Luna and Graphite Skins)</li>
+</ul>
+
+<p>Workaround: upgrade player version to 5.1.7 or later.</p>
+
+<h3>Fullscreen in non-Flash environments</h3>
+
+<p>In environments where Flash is disabled or Flash-based HLS is disabled for the player, and the player is explicitly sized using a <code>style</code> attribute on the <code>video</code> tag, fullscreen viewing may not function in some browsers.</p>
+
+<p>Workaround: remove the <code>style</code> attribute from the <code>video</code> tag, and instead create a rule in page stylesheet like this:</p>
+
+<pre>
+<code>.video-js{
+  width:640px;
+  height:360px;
+}</code></pre>
+
+<h3>Social Sharing</h3>
+
+<p>On desktops, the social sharing button will not be visible during ads.</p>
+
+<h3>HTTPS</h3>
+
+<p>On most desktop browsers, the Brightcove Player will only play HLS on HTTPS web sites when both the manifest and the video segments are served over HTTPS connections. This is due to recent changes to several browsers that more severely restrict non-SSL content. This affects users of Chrome, Firefox and Internet Explorer on desktop computers. It does not affect Safari users or mobile browsers, and it does not affect playback of MP4 renditions.</p>
+
+<p>We are in the process of addressing this limitation for Video Cloud-managed assets; if you manage your own CDN and transcoding (remote assets), you must configure your CDN to support HTTPS delivery of both manifest and video content.</p>
+
+<h3>Full screen display</h3>
+
+<p>In newer browsers that support the fullscreen API, it's necessary to apply in-page CSS rules to ensure the player is scaled to 100% when switching to fullscreen. Otherwise, the player will appear at the original size within the fullscreen display. For details, see the <a href="/node/18134#fullscreen">Fullscreen display</a> topic in the <strong>Size the Player</strong> document.</p>
+
+<p>For IE10 and earlier, with no fullscreen API support, a new window will open, but the player will not be sized to fill the window. This is because no styles have been applied to resize the player. Since the window cannot be scrolled, you may only see a section of the website, with no player at all.</p>
+
+<h3>Akamai HD and HDS</h3>
+
+<p>Brightcove Player does not support video delivery via the Akamai HD or HDS delivery methods.</p>
+
+<h3>Error: <strong>d.off is not a function</strong></h3>
+
+<p>This error, caused by a known bug, can occur when switching between different formats, for instance MP4 and HLS, in a player. Until the bug is fixed, you can simply retry the code that is causing the issue. The following code is an example that corrected the error in an app:</p>
+
+<pre>
+<code>try {
+  myPlayer.catalog.load(video);
+} catch (e) {
+  myPlayer.catalog.load(video);
+}
+myPlayer.play();</code></pre>
+
+<h3>HLS Video Durations</h3>
+
+<p>It is possible that the duration shown in the controlbar may change from initial display. Once all HLS segments are loaded the duration may update.</p>
+
+<h3>RequireJS</h3>
+
+<p>If you are using RequireJS you MAY have to use the <code>bc()</code> method to instantiate the player. The need to use the method will be determined by how/when the player assets are loaded. See the <a href="/node/18120">RequireJS and Brightcove Player</a> document for more information.</p>
+
+<h3>referrer_url vs. description_url</h3>
+
+<p>The <code>referrer_url</code> value may have differnent values between iOS and Android devices. Because of this, it is recommended to use the <code>description_url</code> value instead. This value is consistent across all platforms and devices.</p>
+
+<h3>loop attribute on Safari</h3>
+
+<p>The <strong>loop</strong> attribute does not work correctly on Safari. You can use the solution detailed in the&nbsp;<a href="/node/18176">Brightcove Player Sample: Creating a Video Loop</a> document.</p>
+
+<div id="android" class="section">
+<h2>Android</h2>
+
+<ul>
+	<li>On devices, the progress bar may not be in sync for HLS videos, since HLS does not work very well on Android. The total duration of the video may also incorrectly show up as 0:01.</li>
+	<li>There are multiple accessibility issues with the <em>native</em> browser on both phones and tablets for all versions of Android. Talkback does not provide audio and vibration feedback for any of the player controls. (This issue does <em>not</em> apply to the add-on Chrome browser on Android devices, only to the native browser.</li>
+	<li>Captions cannot be enabled on Android 2.3 devices.</li>
+	<li>On devices, the tap events for error messages do not bubble up to the parent video element. This means that you can not close an error message once it appears.</li>
+</ul>
+
+<p class="BCL-aside">Learn how to create Android apps that utilize the <a href="/node/18245">Brightcove Player SDK for Android</a>.</p>
+</div>
+
+<div id="ios" class="section">
+<h2>iOS</h2>
+
+<ul>
+	<li>Native closed caption menu is not present in iOS 7 full screen.</li>
+	<li>It is possible for Safari to crash on iOS 8 when switching between multiple videos. This is caused by a memory management issue with Safari in iOS. Brightcove is unable to address this issue.</li>
+	<li>Safari on iOS never preloads. For details, see the <a href="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/AudioandVideoTagBasics/AudioandVideoTagBasics.html">Safari HTML5 Audio and Video Guide</a>.</li>
+</ul>
+
+<h3>iPhone</h3>
+
+<ul>
+	<li>Social sharing will not work on iPhones. Since iOS phones switch to fullscreen native, you can't share a video from an iPhone.</li>
+	<li>On iPhones, the tap events for error messages do not bubble up to the parent video element. This means that you can not close an error message once it appears.</li>
+</ul>
+
+<p class="BCL-aside">Learn how to create iOS apps that utilize the <a href="/node/18227">Brightcove Player SDK for iOS</a>.</p>
+</div>
+
+<div id="windows8" class="section">
+<h2>Windows 8</h2>
+
+<ul>
+	<li>Companion ads are not supported.</li>
+	<li>On Windows 8 tablets, seeking does not work for standard HTML/MP4 playback. It works correctly for HLS tech.</li>
+	<li>On Windows 8 tablets, ads work but companions causes browser to crash.</li>
+	<li>On Windows 8 tablets, HLS, Flash, Live and embed types all supported.</li>
+	<li>On Windows 8 phone, plays MP4, but no Flash or HLS support.</li>
+	<li>On Windows 8 phone, regardless of whether the embed type is iframe or inline, once you hit play, playback will always occur in fullscreen. This means that the overlays do not show up once playback begins.</li>
+	<li>Captions cannot be enabled.</li>
+</ul>
+</div>
+
+<div id="chrome" class="section">
+<h2>Chrome</h2>
+
+<ul>
+	<li><strong>Issue with renditions that have a low audio bitrate</strong>
+
+	<p>Due to a bug on MSE on Chrome browser implementation documented here:</p>
+
+	<p><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=534301">https://bugs.chromium.org/p/chromium/issues/detail?id=534301</a></p>
+
+	<p>playback on that browser for version 5 and above of BC player will fail (showing MEDIA_ERR_DECODE) if the audio profile of the rendition being attempted is different from AAC-LC.</p>
+
+	<p>To avoid this happening on new ingested content, customers need to make sure they either</p>
+
+	<ul>
+		<li>use an audio bitrate equals or greater than 48kbps</li>
+		<li>include the following setting on their DI profile: <code>"max_aac_profile": "aac-lc"</code></li>
+	</ul>
+
+	<p>To avoid this happening on existing content, options are:</p>
+
+	<ul>
+		<li>retranscoding following the above recommendations</li>
+	</ul>
+	</li>
+	<li>A request for an HTMl5 video may stay pending and the video never loads. See Google's <a href="https://code.google.com/p/chromium/issues/detail?id=234779">document</a> on the issue.</li>
+</ul>
+</div>
+
+<div id="firefox" class="section">
+<h2>Firefox</h2>
+
+<ul>
+	<li>Firefox Browser for Android: Not officially supported, but will try to address bugs if possible.</li>
+	<li>It has been reported Firefox version 42 may have playback issues with Brightcove Player. The issue seems related to the settings of the Firefox <strong>Use Hardware Acceleration</strong> settings. When this is checked (enabled), the video player will playback the audio only, and will show a still image only. The solution to this problem is to disable this option as follows: <strong>Options -&gt; Advanced -&gt; General -&gt; (UNCHECK) Use Hardware Acceleration When Available</strong></li>
+</ul>
+</div>
+
+<div id="internetexplorer" class="section">
+<h2>Internet Explorer</h2>
+
+<ul>
+	<li>If you are using the Brightcove Player In-Page implementation with IE8, you must include the following script in the <code>head</code> section of your page for the video element to work properly:
+
+	<pre>
+<code>&lt;script&gt;document.createElement('video')&lt;/script&gt;</code></pre>
+
+	<p>To learn more about the extra setup steps needed for IE8, see the <a href="/node/18205">Getting Started with IE8</a> document.</p>
+
+	<p>The following docs go into more detail about IE8 and HTML5 issues:</p>
+
+	<ul>
+		<li><a href="http://www.paulund.co.uk/turn-on-html5-in-ie8-or-lower">Turn On HTML5 In IE8 or Lower</a></li>
+		<li>
+		<p><a href="https://hsivonen.fi/doctype/">Activating Browser Modes with Doctype</a></p>
+		</li>
+	</ul>
+	</li>
+	<li>IMA3 Flash ads work better on IE. Google IMA3 does not supports Flash and HTML ads on IE, but in our testing, we have found that the Flash SDK is much more robust at this time.</li>
+</ul>
+</div>
+
+<div id="safari" class="section">
+<h2>Safari</h2>
+
+<ul>
+	<li>The <code>video</code> element's <code>preload</code> attribute is supported in Safari 5.0 and later. For details, see the <a href="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/AudioandVideoTagBasics/AudioandVideoTagBasics.html">Safari HTML5 Audio and Video Guide</a>.</li>
+</ul>
+</div>
+
+<div id="ima3" class="section">
+<h2>IMA3</h2>
+
+<ul>
+	<li>When using Google IMA3 skippable ads the Skip ad buttons do not have tab indices, so keyboard navigation to those buttons is not possible. Hence, viewers who depend on keyboard navigation will not be able to skip the ad.</li>
+</ul>
+</div>
+</div>
+
+<div id="sdks" class="BCL-concepts">
+<h2>Native Player SDKs</h2>
+
+<h3>Using emulators</h3>
+
+<p>Whether you are using the Android Studio emulator or the Xcode simulator to test video playback, be aware that emulators do not accurately represent how an actual device will perform. While you can use emulators for initial testing during development, it is best practice to use real devices for accurate results.</p>
+
+<h3 id="androidsdk">Native Player SDK for Android</h3>
+
+<h4>360° videos</h4>
+
+<ul>
+	<li>If you do not use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/index.html">BrightcovePlayer</a> class, your 360° video will play, but the app may crash when pausing and resuming it. To learn more about using this class, see the <a href="/node/18252">Understanding the BrightcovePlayer class</a> document.</li>
+	<li>You may experience some video drift after rotating the device. The problem is related to how the device gyroscope is calibrated, and this can affect performance. It is not associated with specific device makes and models, but instead on the motion sensor hardware installed on the device. The newer Android OS's have more sophisticated filter algoritms to correct the problem. A simple fix is to turn off the device and turn it on while it is lying on a flat, stable surface.</li>
+</ul>
+
+<h4>Subtitles</h4>
+
+<ul>
+	<li>The CC button will not appear in the control bar and the player will not load text tracks if you assign text tracks to a video in Video Cloud Studio and set the <strong>KIND</strong> field value to <strong>Subtitles</strong>.The work-around is to set the <strong>KIND</strong> field value to <strong>Close Captions</strong> when you assign text tracks in Studio.</li>
+</ul>
+
+<h4>Playing local videos</h4>
+
+<ul>
+	<li>You will receive an exception error if you try to play MP4 videos stored in the application resource folder (/res/raw). The work-around is to move your MP4 videos to the application asset folder if you want to play local videos.</li>
+</ul>
+
+<h4>Version 4.11.0: Known Issues</h4>
+<ul>
+	<li>When playing IMA ads on a Fire TV, you may experience a 5 to 10 second delay between the end of one ad playback and the beginning of the next ad. This is especially noticeable when playing multiple ads in an Ad Break. This may be an issue with the Fire TV, since this does not happen on the Nexus player.</li>
+</ul>
+
+<h4>Live streams</h4>
+<ul>
+    <li>The Native Player SDK does not support DASH Live streams, nor does it support ads with HLS Live streams.</li>
+</ul>
+
+<h4>Version 4.10.0: Known Issues</h4>
+
+<ul>
+	<li>With the release of Android TV, there is a known issue when playing Widevine content on the Asus Nexus player. The content appears with several trash pixels. This issue is resolved by updating the Nexus player to Android N (7.0). All research points to a hardware issue. Widevine content plays fine on the Nvidia Shield TV (which has Android TV on it).</li>
+</ul>
+
+<ul>
+	<li>When the captions/audio settings exceed the space provided to display the full list, the list is not scrollable on Android TV. The list is scrollable on Android phones and tablets.</li>
+</ul>
+
+<h3 id="iossdk">Native Player SDK for iOS</h3>
+<!-- <p>No issues currently reported.</p> -->
+<h4>Live streams</h4>
+<ul>
+    <li>The Native Player SDK does not support ads with HLS Live streams.</li>
+</ul>
+
+</div>
+
+<div id="cms" class="BCL-concept  video-cloud-only">
+<h2>CMS API</h2>
+
+<h3>In certain cases, the <code>original_filename</code> gets corrupted</h3>
+
+<p>In some cases, the <code>original_filename</code> field for videos gets corrupted and will not contain the real filename.</p>
+
+<h3>Tags may not contain commas</h3>
+
+<p>If you attempt to add a tag to a video that contains a comma (e.g. "SomeCo, Inc") the request will fail with an "illegal tag" error</p>
+</div>
+<!-- script added to handle product specific classes --><script src="//learning-services-media.brightcove.com/doc-assets/js/show-content-by-product.js"></script>
+
+<p>&nbsp;</p>
