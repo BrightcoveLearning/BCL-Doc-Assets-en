@@ -49,15 +49,15 @@
 
 <p>Current API request</p>
 
-<pre class="line-numbers"><code id="apiRequest" class="language-http">API request will appear here...</code></pre>
-
+<pre class="line-numbers">
+<code id="apiRequest" class="language-http">API request will appear here...</code></pre>
 </fieldset>
 </section>
 
 <section id="csvDisplay" class="bcls-section">
 <h2>CSV Data</h2>
 
-<p>Copy and paste the data below into a .csv file to view it in your spreadsheet application.</p>
+<p>Copy and paste the data below into a an empty text file, and save it with a .csv extension. You can then open the file to view it in your spreadsheet application.</p>
 <textarea name="csvData" id="csvData" class="bcls-code" style="height:30em;"></textarea></section>
 
 <section id="code" class="bcls-section">
@@ -69,7 +69,8 @@
 
 <h3>JavaScript</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function(window, document) {
     var accountId,
         clientId,
         clientSecret,
@@ -134,7 +135,7 @@
     function disableButtons() {
         var i,
             iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             allButtons[i].setAttribute('disabled', 'disabled');
         }
     }
@@ -145,7 +146,7 @@
     function enableButtons() {
         var i,
             iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             allButtons[i].removeAttribute('disabled');
         }
     }
@@ -161,9 +162,9 @@
             var propA = a[objProperty],
                 propB = b[objProperty];
             // sort ascending; reverse propA and propB to sort descending
-            if (propA < propB) {
+            if (propA &lt; propB) {
                 return -1;
-            } else if (propA > propB) {
+            } else if (propA &gt; propB) {
                 return 1;
             } else {
                 return 0;
@@ -180,7 +181,7 @@
             flvRenditions = [],
             otherRenditions = [];
         // separate renditions by type
-        for (i = 0; i < iMax; i += 1) {
+        for (i = 0; i &lt; iMax; i += 1) {
             if (renditions[i].video_container === 'M2TS') {
                 hlsRenditions.push(renditions[i]);
             } else if (renditions[i].video_container === 'MP4') {
@@ -205,7 +206,7 @@
     function arrayContains(arr, item) {
         var i,
             iMax = arr.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             if (arr[i] === item) {
                 return true;
             }
@@ -226,8 +227,8 @@
     function startCSVStrings() {
         var i = 0, iMax = customFields.length;
         csvStr = '"ID","Name","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",';
-        for (i; i < iMax; i++) {
-            if (i < (iMax - 1)) {
+        for (i; i &lt; iMax; i++) {
+            if (i &lt; (iMax - 1)) {
                 csvStr += '"' + customFields[i] + '",';
             } else {
                 csvStr += '"' + customFields[i] + '"\n';
@@ -250,22 +251,22 @@
             resWidth,
             resHeight,
             rendition = {};
-        if (videosArray.length > 0) {
+        if (videosArray.length &gt; 0) {
             iMax = videosArray.length;
-            for (i = 0; i < iMax; i += 1) {
+            for (i = 0; i &lt; iMax; i += 1) {
                 video = videosArray[i];
                 // generate the video detail row
-                hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
-                hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
-                mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
-                mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
-                flvLowRate = (video.flvRenditions.length > 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
-                flvHighRate = (video.flvRenditions.length > 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
-                if (video.flvRenditions.length > 0) {
+                hlsLowRate = (video.hlsRenditions.length &gt; 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
+                hlsHighRate = (video.hlsRenditions.length &gt; 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
+                mp4LowRate = (video.mp4Renditions.length &gt; 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
+                mp4HighRate = (video.mp4Renditions.length &gt; 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
+                flvLowRate = (video.flvRenditions.length &gt; 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
+                flvHighRate = (video.flvRenditions.length &gt; 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
+                if (video.flvRenditions.length &gt; 0) {
                     rendition = video.flvRenditions[video.flvRenditions.length - 1];
-                } else if (video.mp4Renditions.length > 0) {
+                } else if (video.mp4Renditions.length &gt; 0) {
                     rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
-                } else if (video.hlsRenditions.length > 0) {
+                } else if (video.hlsRenditions.length &gt; 0) {
                     rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
                 } else {
                     rendition.frame_width = "unknown";
@@ -276,8 +277,8 @@
                 // add csv row
                 csvStr += '"' + video.id + '","' + video.name + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",';
                 jMax = customFields.length;
-                for (j = 0; j < jMax; j++) {
-                    if (j < (jMax - 1)) {
+                for (j = 0; j &lt; jMax; j++) {
+                    if (j &lt; (jMax - 1)) {
                         if (video.custom_fields.hasOwnProperty(customFields[j])) {
                             csvStr += '"' + video.custom_fields[customFields[j]] + '",';
                         } else {
@@ -336,23 +337,23 @@
                 var i,
                     iMax = videosArray.length,
                     callback = function(renditions) {
-                        if (renditions.length > 0) {
+                        if (renditions.length &gt; 0) {
                             // get the best MP4 rendition
                             processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions) {
-                                if (hlsRenditions.length > 0) {
+                                if (hlsRenditions.length &gt; 0) {
                                     sortArray(hlsRenditions, 'encoding_rate');
                                 }
 
                                 videosArray[callNumber].hlsRenditions = hlsRenditions;
-                                if (mp4Renditions.length > 0) {
+                                if (mp4Renditions.length &gt; 0) {
                                     sortArray(mp4Renditions, 'encoding_rate');
                                 }
                                 videosArray[callNumber].mp4Renditions = mp4Renditions;
-                                if (flvRenditions.length > 0) {
+                                if (flvRenditions.length &gt; 0) {
                                     sortArray(flvRenditions, 'encoding_rate');
                                 }
                                 videosArray[callNumber].flvRenditions = flvRenditions;
-                                // if (otherRenditions.length > 0) {
+                                // if (otherRenditions.length &gt; 0) {
                                 //     sortArray(otherRenditions, 'encoding_rate');
                                 // }
                                 // videosArray[callNumber].otherRenditions = otherRenditions;
@@ -365,7 +366,7 @@
                         videosCompleted++;
                         logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
                         callNumber++;
-                        if (callNumber < totalVideos) {
+                        if (callNumber &lt; totalVideos) {
                             setRequestData('getVideoRenditions');
                         } else {
                             // create csv headings
@@ -409,7 +410,7 @@
                 var videoCount;
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 &amp;&amp; httpRequest.status < 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                             // check for completion
                             if (requestID === 'getCount') {
                                 responseRaw = httpRequest.responseText;
@@ -419,7 +420,7 @@
                                 if (totalVideos === "All") {
                                     totalVideos = videoCount;
                                 } else {
-                                    totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
+                                    totalVideos = (totalVideos &lt; videoCount) ? totalVideos : videoCount;
                                 }
                                 totalCalls = Math.ceil(totalVideos / limit);
                                 logText.textContent = totalVideos + ' videos found; getting account custom fields';
@@ -442,7 +443,7 @@
                                 parsedData = JSON.parse(responseRaw);
                                 videosArray = videosArray.concat(parsedData);
                                 callNumber++;
-                                if (callNumber < totalCalls) {
+                                if (callNumber &lt; totalCalls) {
                                     setRequestData('getVideos');
                                 } else {
                                     callNumber = 0;
@@ -472,10 +473,10 @@
                 }
             };
         // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+        if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
+            requestParams += '&amp;client_id=' + clientId + '&amp;client_secret=' + clientSecret;
         }
 
         // set response handler
