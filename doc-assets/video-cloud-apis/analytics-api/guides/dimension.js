@@ -1,7 +1,7 @@
 var BCLS_dimensions = (function(window, document, aapi_model) {
     var header = document.getElementsByTagName('h1')[0],
         headerContent = header.textContent.split(' '),
-        dimension = headerContent[0],
+        dimension = headerContent[1],
         description = document.getElementById('description'),
         paramTableBody = document.getElementById('paramTableBody'),
         fields = document.getElementById('fields'),
