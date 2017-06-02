@@ -1,5 +1,5 @@
 var BCLS_dimensions = (function(window, document, aapi_model) {
-    var header = document.querySelecor('h1 span'),
+    var header = document.querySelector('h1 span'),
         headerContent = header.textContent.split(' '),
         dimension = headerContent[1],
         description = document.getElementById('description'),
