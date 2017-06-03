@@ -221,7 +221,7 @@ var BCLS = (function(window, document) {
                             if (video.custom_fields.hasOwnProperty(customFields[j])) {
                                 csvStr += '"' + video.custom_fields[customFields[j]] + '"\n';
                             } else {
-                                csvStr += '""\n';
+                                csvStr += '""\r\n';
                             }
                         }
                     }
