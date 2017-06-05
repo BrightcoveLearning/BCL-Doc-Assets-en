@@ -118,7 +118,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     }
     function createInPageNav() {
         var navObj = {},
-            h2s = document.getElementsByTagName('h2'),
+            h2s = document.querySelectorAll('section h2'),
             i, index,
             iMax = h2s.length;
         // set initial visibilities
