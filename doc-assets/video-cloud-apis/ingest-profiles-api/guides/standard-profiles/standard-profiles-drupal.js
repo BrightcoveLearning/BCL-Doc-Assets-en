@@ -129,7 +129,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 $this = h2s[i];
                 navObj = {};
                 navObj.link = $this.getAttribute("id");
-                navObj.text = $this.firstElementChild.innerHTML;
+                navObj.text = $this.innerHTML;
                 navLabel.push(navObj);
             }
         }
