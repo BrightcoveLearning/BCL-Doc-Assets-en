@@ -118,7 +118,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     }
     function createInPageNav() {
         var navObj = {},
-            divsections = document.querySelectorAll(".bcls-section"),
+            h2s = document.getElementsByTagName("h2"),
             i, index,
             iMax = divsections.length;
         // set initial visibilities
@@ -126,7 +126,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             index = i;
             // bclslog("index", index);
             if (index > 0) {
-                $this = divsections[i];
+                $this = h2s[i];
                 navObj = {};
                 navObj.link = $this.getAttribute("id");
                 navObj.text = $this.firstElementChild.innerHTML;
