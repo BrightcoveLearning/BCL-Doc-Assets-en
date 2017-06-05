@@ -1,6 +1,6 @@
 var aapi_model = {
     baseURL: 'https://analytics.api.brightcove.com/v1',
-    dimensionsArray: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'social_platform', 'source_type', 'video'],
+    dimensionsArray: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'live_stream', 'player', 'referrer_domain', 'region', 'search_terms', 'social_platform', 'source_type', 'video'],
     endpointGroups: {
         report: {
             name: 'report',
@@ -294,6 +294,20 @@ var aapi_model = {
             incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type'
+            }, {
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=device_type==mobile,tablet'
+            }]
+        },
+        live_stream: {
+            name: 'live_stream',
+            description: 'In this topic, you will learn about the Analytics API live_stream dimension. The live_stream dimension provides analytics data on live streams.',
+            from: '2014-02-01',
+            urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'live_stream', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
+            filter_values: ['mobile', 'tablet', 'tv', 'desktop', 'other'],
+            incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
+            samples: [{
+                dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=live_stream'
             }, {
                 filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=device_type==mobile,tablet'
             }]
