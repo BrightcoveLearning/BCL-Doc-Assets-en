@@ -218,7 +218,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             profiletbodyNode.appendChild(tr);
             td = document.createElement('td');
             a = document.createElement('a');
-            a.setAttribute('href', '#' + removeSpaces(item.name) + 'Copy');
+            a.setAttribute('href', '#' + removeSpaces(item.name));
             content = document.createTextNode(item.name);
             a.appendChild(content);
             td.appendChild(a);
@@ -324,7 +324,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             if (!isDefined(profile.description)) {
                 profile.description = 'legacy profile - not recommended for use';
             }
-            profile.name = profile.name + ' Copy';
+            // profile.name = profile.name + ' Copy';
             profile.account_id = null;
             if (isDefined(profile.renditions)) {
                 jMax = profile.renditions.length;
@@ -332,14 +332,14 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                     delete profile.renditions[j].id;
                 }
             }
-            section = createEl("section", {id: removeSpaces(profile.name), class: "bcls-section"});
-            sectionHeading = createEl("h2");
+            section = createEl("section", {class: "bcls-section"});
+            sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
-            sectionJsonHeading = createEl("h6", {id: profile.name + "json"});
+            sectionJsonHeading = createEl("h6", {id: removeSpaces(profile.name) + "json"});
             text = document.createTextNode("JSON data for the profile");
             sectionJsonHeading.appendChild(text);
             sectionJsonP = createEl('p', {class: 'BCL-aside'});
-            text = document.createTextNode('Note: if you copy and paste the JSON to make a new profile, you will need to replace the null value for "account_id" with your own account id.');
+            text = document.createTextNode('Note: if you copy and paste the JSON to make a new profile, you will need to replace the null value for "account_id" with your own account id, and replace the name with a new name!');
             sectionJsonP.appendChild(text);
             sectionTableHeading = createEl("h6");
             profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
@@ -360,7 +360,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             text = document.createTextNode(JSON.stringify(profile, false, "  "));
             profileCode.appendChild(text);
             fragment.appendChild(section);
-            text = document.createTextNode(profile.name.replace(' Copy', ''));
+            text = document.createTextNode(profile.name);
             sectionHeading.appendChild(text);
             link = createEl("a", {href: "#" + profile.name + "json"});
             text = document.createTextNode("View rendition information in JSON form");
