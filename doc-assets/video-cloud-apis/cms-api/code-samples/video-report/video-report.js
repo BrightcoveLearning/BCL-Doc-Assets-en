@@ -213,24 +213,18 @@ var BCLS = (function(window, document) {
                 if (customFields) {
                     jMax = customFields.length;
                     for (j = 0; j < jMax; j++) {
-                        if (j < (jMax - 1)) {
                             if (video.custom_fields.hasOwnProperty(customFields[j])) {
                                 csvStr += '"' + video.custom_fields[customFields[j]] + '",';
                             } else {
                                 csvStr += '"",';
                             }
-                        } else {
-                            if (video.custom_fields.hasOwnProperty(customFields[j])) {
-                                csvStr += '"' + video.custom_fields[customFields[j]] + '"\r\n';
-                            } else {
-                                csvStr += '""\r\n';
-                            }
-                        }
                     }
+                    csvStr += '\r\n';
                 } else {
                     csvStr += '\r\n';
                 }
             }
+            console.log('csvStr', csvStr);
             csvData.textContent += csvStr;
             // content = document.createTextNode('Finished! See the results or get the CSV data below.');
             pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
