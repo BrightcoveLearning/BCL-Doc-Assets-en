@@ -221,14 +221,14 @@ var BCLS = (function(window, document) {
                             }
                         } else {
                             if (video.custom_fields.hasOwnProperty(customFields[j])) {
-                                csvStr += '"' + video.custom_fields[customFields[j]] + '"\n';
+                                csvStr += '"' + video.custom_fields[customFields[j]] + '"\r\n';
                             } else {
                                 csvStr += '""\r\n';
                             }
                         }
                     }
                 } else {
-                    csvStr += '\n';
+                    csvStr += '\r\n';
                 }
             }
             csvData.textContent += csvStr;
