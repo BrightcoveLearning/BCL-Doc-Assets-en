@@ -186,6 +186,8 @@ var BCLS = (function(window, document) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
+                // replace any line breaks in description, as that will break the CSV
+                video.description = video.description.relace(/(?:\r\n|\r|\n)/g, ' ');
                 console.log('video', video);
                 // generate the video detail row
                 hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
