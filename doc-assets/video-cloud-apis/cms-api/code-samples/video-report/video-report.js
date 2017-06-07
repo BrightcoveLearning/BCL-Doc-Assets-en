@@ -162,7 +162,6 @@ var BCLS = (function(window, document) {
             }
         }
         csvStr += '\r\n';
-        console.log('csvStr', csvStr);
     }
 
     function writeReport() {
@@ -186,7 +185,6 @@ var BCLS = (function(window, document) {
                 video = videosArray[i];
                 // replace any line breaks in description, as that will break the CSV
                 video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
-                console.log('video', video);
                 // generate the video detail row
                 hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
                 hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
@@ -222,7 +220,6 @@ var BCLS = (function(window, document) {
                     csvStr += '\r\n';
                 }
             }
-            console.log('csvStr', csvStr);
             csvData.textContent += csvStr;
             // content = document.createTextNode('Finished! See the results or get the CSV data below.');
             pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
