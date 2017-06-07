@@ -161,11 +161,11 @@ var BCLS = (function(window, document) {
                 if (i < (iMax - 1)) {
                     csvStr += ',"' + customFields[i] + '",';
                 } else {
-                    csvStr += ',"' + customFields[i] + '"\r\n';
+                    csvStr += ',"' + customFields[i] + '", \r\n';
                 }
             }
         } else {
-            csvStr += '\r\n';
+            csvStr += ', \r\n';
         }
         console.log('csvStr', csvStr);
     }
