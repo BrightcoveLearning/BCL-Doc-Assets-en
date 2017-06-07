@@ -137,56 +137,77 @@
 </section>
 
 <section id="load" class="bcls-section">
-				<h2>autoFindAndLoadMedia() method</h2>
-				<p>The <code>autoFindAndLoadMedia(options)</code> method looks for the last-defined video or playlist ID, requests it from the API, and loads it into the player. This method defines the default behavior for the Brightcove Player.</p>
-				<h5>Parameters:</h5>
-				<ul>
-				    <li><strong>options</strong>: Any of the follow options are recognized:
-            <ul>
-              <li>
-                <strong>adConfigId</strong> (number): A numeric value for an ad configuration that will be passed along to the playback API. Will be called ad_config_id in the end.
-              </li>
-              <li>
-                <strong>embedHasPoster</strong> (boolean): Whether or not the original embed had a poster.
-              </li>
-              <li>
-                <strong>embedHasSources</strong> (boolean): Whether or not the original embed had sources.
-              </li>
-              <li>
-                <strong>embedHasTracks</strong> (boolean): Whether or not the original embed had tracks.
-              </li>
-              <li>
-                <strong>playlistId</strong> (string): A playlist ID provided in the player configuration.
-              </li>
-              <li>
-                <strong>videoId</strong> (string): A video ID provided in the player configuration.
-              </li>
-              <li>
-                <strong>playlistVideoId</strong> (string): A video ID, which will be the first video in a playlist to be loaded if it's present in the playlist..
-              </li>
-            </ul></li>
-				</ul>
-        <!-- <pre class="line-numbers"><code class="language-html"> </code></pre> -->
-			</section>
+<h2>autoFindAndLoadMedia() method</h2>
 
-      <section id="transformVideoResponse" class="bcls-section">
-				<h2>transformVideoResponse( ) method</h2>
-				<p>The <code>transformVideoResponse(data)</code> method converts a raw video object from either the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html">CMS API</a> or the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html">Playback API</a> into a format compatible with the player and browsers. This includes duration times and https image compatibility. It also re-arranges the sources to ensure that the sources that are expected to provide the highest quality viewing experience on this platform are attempted first.</p>
-        <aside class="bcls-aside bcls-aside--tip">When using the <code>catalog.getVideo()</code> or <code>catalog.getPlaylist()</code> methods, the <code>transformVideoResponse()</code> is called automatically, so that your returned data is in the appropriate format.</aside>
-				<h5>Parameters:</h5>
-				<ul>
-				    <li><strong>data</strong>: A raw video object parsed from a catalog API response.</li>
-				</ul>
-        <p>An example use of the method follows:</p>
-        <pre class="line-numbers"><code class="language-html"> for (var i=0; i&lt;limitValue; i++) {
+<p>The <code>autoFindAndLoadMedia(options)</code> method looks for the last-defined video or playlist ID, requests it from the API, and loads it into the player. This method defines the default behavior for the Brightcove Player.</p>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><code>options</code>: Any of the follow options are recognized:
+
+	<ul>
+		<li><code>adConfigId</code> (number): A numeric value for an ad configuration that will be passed along to the playback API. Will be called ad_config_id in the end.</li>
+		<li><code>embedHasPoster</code> (boolean): Whether or not the original embed had a poster.</li>
+		<li><code>embedHasSources</code> (boolean): Whether or not the original embed had sources.</li>
+		<li><code>embedHasTracks</code> (boolean): Whether or not the original embed had tracks.</li>
+		<li><code>videoId</code> (string): A video ID provided in the player configuration.</li>
+		<li><code>playlistId</code> (string): A playlist ID provided in the player configuration.</li>
+		<li><code>playlistVideoId</code> (string): A video ID, which will be the first video in a playlist to be loaded if it's present in the playlist. You would use this in conjunction with the <code>playlistId</code> option.</li>
+	</ul>
+	</li>
+</ul>
+<p>
+          The following example gets the video object based on the <code>videoId</code> and loads it into the player:
+        </p>
+        <pre class="line-numbers"><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
+&ensp;&ensp;videojs('myPlayerID').ready(function(){
+&ensp;&ensp;&ensp;&ensp;var myPlayer = this,
+		options = {};
+    options.videoId = '5141730843001';
+    myPlayer.catalog.autoFindAndLoadMedia(options);
+&ensp;&ensp;});
+&lt;/script&gt;</code></pre>
+        <aside class="bcls-aside bcls-aside--tip">You can also load a video by reference id by using <code>options.videoId = 'ref:yourrefid';</code></aside>
+        <p>
+          The following example gets the playlist object based on <code>playlistId</code> and loads it into the player. It also gets the video object based on <code>playlistVideoId</code> and loads it as the first video to play in the playlist:
+        </p>
+        <pre class="line-numbers"><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
+&ensp;&ensp;videojs('myPlayerID').ready(function(){
+&ensp;&ensp;&ensp;&ensp;var myPlayer = this,
+        options = {};
+    options.playlistId = '4845949311001';
+    options.playlistVideoId = '4845831078001'
+    myPlayer.catalog.autoFindAndLoadMedia(options);
+&ensp;&ensp;});
+&lt;/script&gt;</code></pre>
+
+<section id="transformVideoResponse" class="bcls-section">
+<h2>transformVideoResponse( ) method</h2>
+
+<p>The <code>transformVideoResponse(data)</code> method converts a raw video object from either the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html">CMS API</a> or the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html">Playback API</a> into a format compatible with the player and browsers. This includes duration times and https image compatibility. It also re-arranges the sources to ensure that the sources that are expected to provide the highest quality viewing experience on this platform are attempted first.</p>
+
+<aside class="bcls-aside bcls-aside--tip">When using the <code>catalog.getVideo()</code> or <code>catalog.getPlaylist()</code> methods, the <code>transformVideoResponse()</code> is called automatically, so that your returned data is in the appropriate format.</aside>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><code>data</code>: A raw video object parsed from a catalog API response.</li>
+</ul>
+
+<p>An example use of the method follows:</p>
+
+<pre class="line-numbers">
+<code class="language-html"> for (var i=0; i&lt;limitValue; i++) {
   	mediaData.videos[i] = myPlayer.catalog.transformVideoResponse (mediaData.videos[i], myPlayer);
   }</code></pre>
-        <p>
-          For the complete code sample, see the <a href="/node/18171">Playback API Paging</a> document.
-        </p>
-        <h5>Returned value:</h5>
-        <p>An object that is more consistent with the player and browser environment.</p>
-			</section>
+
+<p>For the complete code sample, see the <a href="/node/18171">Playback API Paging</a> document.</p>
+
+<h5>Returned value:</h5>
+
+<p>An object that is more consistent with the player and browser environment.</p>
+</section>
 
 <section class="bcls-section">
 <h2 id="Catalog_events">Catalog events</h2>
