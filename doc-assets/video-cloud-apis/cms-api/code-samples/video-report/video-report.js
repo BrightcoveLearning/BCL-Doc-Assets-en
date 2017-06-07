@@ -161,7 +161,7 @@ var BCLS = (function(window, document) {
                 if (i < (iMax - 1)) {
                     csvStr += '"' + customFields[i] + '",';
                 } else {
-                    csvStr += '"' + customFields[i] + '"\n';
+                    csvStr += '"' + customFields[i] + '"\r\n';
                 }
             }
         }
