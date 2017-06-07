@@ -164,6 +164,8 @@ var BCLS = (function(window, document) {
                     csvStr += '"' + customFields[i] + '"\r\n';
                 }
             }
+        } else {
+            csvStr += '"\r\n';
         }
     }
 
