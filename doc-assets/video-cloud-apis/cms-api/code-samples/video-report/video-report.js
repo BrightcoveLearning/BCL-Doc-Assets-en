@@ -165,7 +165,7 @@ var BCLS = (function(window, document) {
                 }
             }
         } else {
-            csvStr += '"\r\n';
+            csvStr += '\r\n';
         }
     }
 
