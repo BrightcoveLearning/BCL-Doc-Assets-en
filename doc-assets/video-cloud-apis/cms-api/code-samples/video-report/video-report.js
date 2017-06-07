@@ -154,19 +154,20 @@ var BCLS = (function(window, document) {
 
     function startCSVStrings() {
         var i = 0, iMax;
-        csvStr = '"ID","Name","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",';
+        csvStr = '"ID","Name","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)"';
         if (customFields) {
             iMax = customFields.length;
             for (i; i < iMax; i++) {
                 if (i < (iMax - 1)) {
-                    csvStr += '"' + customFields[i] + '",';
+                    csvStr += ',"' + customFields[i] + '",';
                 } else {
-                    csvStr += '"' + customFields[i] + '"\r\n';
+                    csvStr += ',"' + customFields[i] + '"\r\n';
                 }
             }
         } else {
             csvStr += '\r\n';
         }
+        console.log('csvStr', csvStr);
     }
 
     function writeReport() {
