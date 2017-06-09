@@ -146,9 +146,8 @@
 	<li>Line 11: Calls the function to read the browser cookie named "BC_views".</li>
 	<li>Lines 13-21: Defines a maximum views error message.</li>
 	<li>Line 23: Displays the number of user views.</li>
-	<li>Lines 24-30: Checks if the cookie value exceeds the maximum views limit. If so, then it displays our custom error message.</li>
-	<li>Lines 32-37: Increments the cookie value when the video is played. This cookie expires in 24 hours.</li>
-	<li>Lines 39-44: Hide the <strong>ok</strong> and <strong>close</strong> buttons in our custom error message when it is displayed. This keeps the user from closing the error message and playing the video.</li>
+  <li>Lines 24-31: Checks if the cookie value exceeds the maximum views limit. If so, then it displays our custom error message. The <code>dismiss:false</code> property hides the <strong>close</strong> button in our custom error message when it is displayed. This keeps the user from closing the error message and playing the video.</li>
+  <li>Lines 33-38: Increments the cookie value when the video is played. This cookie expires in 24 hours.</li>
 </ul>
 
 <pre class="line-numbers">
@@ -178,7 +177,8 @@ videojs("video_1").ready(function () {
     if (cookie != null &amp;&amp; cookie &gt;= 2) {
         myPlayer.on("loadedmetadata", function () {
             myPlayer.error({
-                code: '-3'
+              code: '-3',
+              dismiss: false
             });
         })
     }
@@ -189,14 +189,6 @@ videojs("video_1").ready(function () {
         cookie++;
         document.cookie = "BC_views=" + cookie + ";expires=" + d.toUTCString();
     });
-
-    myPlayer.on("error", function () {
-        setTimeout(function () {
-            myPlayer.errorDisplay.el().querySelector('.vjs-errors-ok-button').classList.add('vjs-hidden');
-            myPlayer.errorDisplay.el().querySelector('.vjs-errors-close-button').classList.add('vjs-hidden');
-        }, 50)
-    });
-
 });
 &lt;/script&gt;
 </code></pre>
@@ -250,7 +242,8 @@ videojs("video_1").ready(function () {
     if (cookie != null &amp;&amp; cookie &gt;= 2) {
       myPlayer.on("loadedmetadata", function () {
         myPlayer.error({
-          code: '-3'
+          code: '-3',
+          dismiss: false
         });
       })
     };
@@ -261,13 +254,6 @@ videojs("video_1").ready(function () {
       cookie++;
       document.cookie = "BC_views=" + cookie + ";expires=" + d.toUTCString();
         });
-
-    myPlayer.on("error", function () {
-      setTimeout(function () {
-        myPlayer.errorDisplay.el().querySelector('.vjs-errors-ok-button').classList.add('vjs-hidden');
-        myPlayer.errorDisplay.el().querySelector('.vjs-errors-close-button').classList.add('vjs-hidden');
-      }, 50)
-    });
   });</code></pre>
 
 <ol class="bcls-tasklist">
@@ -292,12 +278,12 @@ videojs("video_1").ready(function () {
 	<li>Click the link for the player to open the player properties.</li>
 	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
 	<li>For the <strong>JavaScript URL</strong>, enter the URL for the file you created in step 13.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Limited Plays Plugin: JavaScript" src="//learning-services-media.brightcove.com/doc-assets/node/18196/limited-plays-js.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Limited Plays Plugin: JavaScript" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/limited-views/limited-plays-js.png" />
 	<figcaption class="bcls-caption--image">Limited Plays Plugin: JavaScript</figcaption>
 	</figure>
 	</li>
 	<li>For the <strong>Name</strong>, enter your plugin name. In this example, we are using <strong>limitedPlays</strong>.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Limited Plays Plugin Name" src="//learning-services-media.brightcove.com/doc-assets/node/18196/limited-plays-name.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Limited Plays Plugin Name" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/limited-views/limited-plays-name.png" />
 	<figcaption class="bcls-caption--image">Limited Plays Plugin Name</figcaption>
 	</figure>
 	</li>
@@ -398,7 +384,8 @@ videojs("video_1").ready(function () {
       if (cookie != null && cookie >= 2) {
           myPlayer.on("loadedmetadata", function () {
               myPlayer.error({
-                  code: '-3'
+                  code: '-3',
+                  dismiss: false
               });
           })
       }
@@ -410,12 +397,12 @@ videojs("video_1").ready(function () {
           document.cookie = "BC_views=" + cookie + ";expires=" + d.toUTCString();
       });
 
-      myPlayer.on("error", function () {
-          setTimeout(function () {
-              myPlayer.errorDisplay.el().querySelector('.vjs-errors-ok-button').classList.add('vjs-hidden');
-              myPlayer.errorDisplay.el().querySelector('.vjs-errors-close-button').classList.add('vjs-hidden');
-          }, 50)
-      });
+      // myPlayer.on("error", function () {
+      //     setTimeout(function () {
+      //         myPlayer.errorDisplay.el().querySelector('.vjs-errors-ok-button').classList.add('vjs-hidden');
+      //         myPlayer.errorDisplay.el().querySelector('.vjs-errors-close-button').classList.add('vjs-hidden');
+      //     }, 50)
+      // });
 
   });
 </script>
