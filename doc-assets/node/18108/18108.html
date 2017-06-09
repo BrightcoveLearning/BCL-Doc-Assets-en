@@ -136,7 +136,7 @@
   &lt;/script&gt;</code></pre>
 </section>
 
-<section id="load" class="bcls-section">
+<section id="autoFindAndLoadMedia_method" class="bcls-section">
 <h2>autoFindAndLoadMedia() method</h2>
 
 <p>The <code>autoFindAndLoadMedia(options)</code> method looks for the last-defined video or playlist ID, requests it from the API, and loads it into the player. This method defines the default behavior for the Brightcove Player.</p>
@@ -157,32 +157,36 @@
 	</ul>
 	</li>
 </ul>
-<p>
-          The following example gets the video object based on the <code>videoId</code> and loads it into the player:
-        </p>
-        <pre class="line-numbers"><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
-&ensp;&ensp;videojs('myPlayerID').ready(function(){
-&ensp;&ensp;&ensp;&ensp;var myPlayer = this,
+
+<p>The following example gets the video object based on the <code>videoId</code> and loads it into the player:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">&lt;script type="text/javascript"&gt;
+  videojs('myPlayerID').ready(function(){
+    var myPlayer = this,
 		options = {};
     options.videoId = '5141730843001';
     myPlayer.catalog.autoFindAndLoadMedia(options);
-&ensp;&ensp;});
+  });
 &lt;/script&gt;</code></pre>
-        <aside class="bcls-aside bcls-aside--tip">You can also load a video by reference id by using <code>options.videoId = 'ref:yourrefid';</code></aside>
-        <p>
-          The following example gets the playlist object based on <code>playlistId</code> and loads it into the player. It also gets the video object based on <code>playlistVideoId</code> and loads it as the first video to play in the playlist:
-        </p>
-        <pre class="line-numbers"><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
-&ensp;&ensp;videojs('myPlayerID').ready(function(){
-&ensp;&ensp;&ensp;&ensp;var myPlayer = this,
+
+<aside class="bcls-aside bcls-aside--tip">You can also load a video by reference id by using <code>options.videoId = 'ref:yourrefid';</code></aside>
+
+<p>The following example gets the playlist object based on <code>playlistId</code> and loads it into the player. It also gets the video object based on <code>playlistVideoId</code> and loads it as the first video to play in the playlist:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">&lt;script type="text/javascript"&gt;
+  videojs('myPlayerID').ready(function(){
+    var myPlayer = this,
         options = {};
     options.playlistId = '4845949311001';
     options.playlistVideoId = '4845831078001'
     myPlayer.catalog.autoFindAndLoadMedia(options);
-&ensp;&ensp;});
+  });
 &lt;/script&gt;</code></pre>
+</section>
 
-<section id="transformVideoResponse" class="bcls-section">
+<section id="transformVideoResponse_method" class="bcls-section">
 <h2>transformVideoResponse( ) method</h2>
 
 <p>The <code>transformVideoResponse(data)</code> method converts a raw video object from either the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html">CMS API</a> or the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html">Playback API</a> into a format compatible with the player and browsers. This includes duration times and https image compatibility. It also re-arranges the sources to ensure that the sources that are expected to provide the highest quality viewing experience on this platform are attempted first.</p>
