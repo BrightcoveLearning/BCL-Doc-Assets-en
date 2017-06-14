@@ -1,0 +1,88 @@
+<p>Media sharing is a feature of Video Cloud that lets publishers share videos with other publishers, enabling you to more easily manage videos across multiple accounts. This topic describes how to share videos using the Media API. For introductory information, read:</p>
+
+<ul>
+	<li><a href="/node/15924">Sharing Videos to Other Accounts</a></li>
+	<li><a href="//docs.brightcove.com/en/video-cloud/media/guides/quick-start.html">Getting&nbsp;Started with the Video Cloud Media API</a></li>
+</ul>
+
+<p><strong>Media sharing is available only for Video Cloud Enterprise and Pro customers with multiple accounts.</strong> If you are interested in upgrading your Video Cloud account, please contact Brightcove for more information.</p>
+
+<h2>The share_video method</h2>
+
+<p>The Video Cloud Media API includes a <code>share_video</code> method you can use to share a video with an affiliate. The <code>share_video</code> method has this signature:</p>
+
+<pre>
+share_video(token:String, video_id:Long, sharee_account_ids:Long[],
+            auto_accept:Boolean, force_reshare:Boolean):Long</pre>
+
+<p>To use the <code>share_video</code> method, pass:</p>
+
+<ul>
+	<li>your Media API write token</li>
+	<li>the ID of the video you want to share</li>
+	<li>a comma-separated array of the Video Cloud account IDs of the affiliates you want to share the video with</li>
+	<li>optionally, if your affiliate has configured its account to automatically accept shared videos, set <code>auto_accept=true</code></li>
+	<li>optionally, if you want the shared video to overwrite any existing version of the video in the affiliate's account, set <span style="font-family: Courier New;">force_reshare=true</span></li>
+</ul>
+
+<p>For example, to share a video with the ID 123 with two affiliates whose Video Cloud account IDs were 456 and 789, you could post something like this to <code>http://api.brightcove.com/services/post</code>:</p>
+
+<pre>
+{"method": "share_video",
+    "params": {"token" : "riBfgveLvpRb-rHGiBBouSAXs-Q8NmphGxt0z04kE.",
+               "video_id" : 123,
+               "sharee_account_ids":[456,789]}}</pre>
+
+<p><a target="_blank" href="http://files.brightcove.com/share_video.html">Click here</a> to see a sample page that uses JavaScript, an HTML form, and the <code>share_video</code> method to share videos.</p>
+
+<p><a href="http://files.brightcove.com/share_video.txt">Click here</a> to see the source code for this example.</p>
+
+<h2><a name="reshare" href=""></a>Modifying shared videos</h2>
+
+<p>If you modify a video in your account after you share it, any changes you make are not automatically propagated to any accounts to which you may have shared the video. To share those subsequent changes with your affiliates, you need to share the video again using the <span style="font-family: Courier New;">share_video</span> method. By default, when you share a video to an affiliate's account, and the affiliate's account already has that video because you shared it with them previously, the <span style="font-family: Courier New;">share_video</span> method fails. If you have updated a shared video in your own account (for example, you may have added higher quality renditions or modified the metadata) and you want to enforce those updates in the shared copies of the video in your affliate's account, use the optional <span style="font-family: Courier New;">force_reshare=true</span> argument.</p>
+
+<p>When you use the <span style="font-family: Courier New;">force_reshare=true</span> argument, only the affiliates whose account IDs you include in the <span style="font-family: Courier New;">sharee_account_ids</span> argument will have their shared video updated. The <span style="font-family: Courier New;">force_reshare</span> argument has no special effect in cases where the video has not been shared yet to one ore more of the accounts included in the <span style="font-family: Courier New;">sharee_account_ids</span> argument; the video will be shared normally in that case.</p>
+
+<h2><a name="unshare" href=""></a>Unsharing videos</h2>
+
+<p>When you share a video with a Brightcove affiliate, Video Cloud adds a copy of your video to the affiliate's account. If you elect to stop sharing that video with an affiliate, you can use the <span style="font-family: Courier New;">unshare_video</span> method. The <span style="font-family: Courier New;">unshare_video</span> method deletes specified videos from accounts where it was previously shared. It has a <span style="font-family: Courier New;">video_id</span> argument for specifying the video to unshare and a <span style="font-family: Courier New;">sharee_account_ids</span> argument for listing the accounts from which to delete the specified video. If a shared video does not exist in a specified sharee account, no action is taken. <a href="http://docs.brightcove.com/en/video-cloud/media/samples/unshare_video.html">See <span style="font-family: Courier New;">unshare_video</span> in the Media API&nbsp;Reference</a>.</p>
+
+<h2>Deleting shared videos</h2>
+
+<p>The <code>delete_video</code> method has an optional <code>delete_shares</code> argument. In order to delete a video that has been shared, you must call <code>delete_video</code> with <code>delete_shares="true"</code>. In that case, the video will be deleted from your account, as well as from all accounts with which the video has been shared. The <code>delete_shares</code> argument is optional, but if you attempt to delete a video that has been shared without using this argument, the method will fail with an error.</p>
+
+<h2><a name="error" href=""></a>share_video Error Messages</h2>
+
+<p>The <code>share_video</code> method can produce the following error messages:</p>
+
+<table>
+	<tbody>
+		<tr>
+			<th style="width: 50%;"><strong>Message</strong></th>
+			<th style="width: 50%;"><strong>Description</strong></th>
+		</tr>
+		<tr>
+			<td>The video specified was not found</td>
+			<td>Video Cloud did not find a video with the specified video ID in your account</td>
+		</tr>
+		<tr>
+			<td>Invalid video id: null</td>
+			<td>You passed null as the video ID</td>
+		</tr>
+		<tr>
+			<td>Shared videos cannot be re-shared</td>
+			<td>You tried to share a video that your account received by sharing. Only the original account that uploaded the video can share the video.</td>
+		</tr>
+		<tr>
+			<td>Invalid sharee account idx: ? value: null<br />
+			(where ? is the index within the passed list of account IDs)</td>
+			<td>You passed null as one of the sharee account IDs</td>
+		</tr>
+		<tr>
+			<td>Sharing is not allowed to account: ?<br />
+			(where ? is an account id)</td>
+			<td>A sharing relationship has not been established between your account and one of the accounts whose account ID you passed. Either the account ID is wrong, or sharing has not been set up between your account and the sharee account. Contact customer support to set up the sharing relationship.</td>
+		</tr>
+	</tbody>
+</table>
+<!-- End of Drupal content -->
