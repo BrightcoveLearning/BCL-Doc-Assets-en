@@ -5,7 +5,7 @@
 <aside class="bcls-aside bcls-aside--warning">
 <p>If you are generating an MRSS feed as a substitute for a video sitemap (for SEO purposes), take note of the following reminder on <a href="https://developers.google.com/webmasters/videosearch/markups">Google's MRSS guide</a>:</p>
 
-<blockquote cite="https://developers.google.com/webmasters/videosearch/markups">Each MRSS feed must be under 50MB in size when uncompressed, and can contain no more than 50,000 video items. If your uncompressed file is larger than 50MB, or you have more than 50,000 videos, you can submit multiple mRSS feeds and a Sitemap index file. Sitemap indexes can contain mRSS feeds.</blockquote>
+<blockquote style="font-size:1.1em;" cite="https://developers.google.com/webmasters/videosearch/markups">Each MRSS feed must be under 50MB in size when uncompressed, and can contain no more than 50,000 video items. If your uncompressed file is larger than 50MB, or you have more than 50,000 videos, you can submit multiple mRSS feeds and a Sitemap index file. Sitemap indexes can contain mRSS feeds.</blockquote>
 </aside>
 </section>
 
@@ -69,8 +69,8 @@
 
 <p>Current API request</p>
 
-<pre><code id="apiRequest">API request will appear here...</code></pre>
-
+<pre>
+<code id="apiRequest">API request will appear here...</code></pre>
 
 <p>Generated MRSS feed</p>
 <textarea id="feedDisplay" style="width:95%;height:30em;"></textarea></fieldset>
@@ -108,107 +108,23 @@
 
 <p>Below is the JavaScript code used for this app. If the code does not appear, try refreshing the page.</p>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = ( function (window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function (window, document) {
     var mrssStr = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
     sChannel = '<channel>',
     eChannel = '</channel>',
-    sTitle = '<title>',
-    eTitle = '</title>',
+    sTitle = '<title></title>',
     sDescription = '<description>',
     eDescription = '</description>',
     sItem = '<item xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
     defaultEndDate = '2020-10-15T00:00+01:00',
     eItemStart = '<dcterms:valid xmlns:dcterms="http://purl.org/dc/terms/">end=',
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
-    sLink = '<link>',
-    eLink = '</link>',
-    sPubDate = '<pubDate>',
-    ePubDate = '</pubDate>',
-    sMediaContent = '<media:content',
-    eMediaContent = '</media:content>',
-    sMediaPlayer = '<media:player',
-    eMediaPlayer = '/>',
-    sMediaDescription = '<media:description>',
-    eMediaDescription = '</media:description>',
-    sMediaThumbnail = '<media:thumbnail',
-    eMediaThumbnail = '/>',
-    sMediaTitle = '<media:title>',
-    eMediaTitle = '</media:title>',
-    // account stuff
-    accountId,
-    clientId,
-    clientSecret,
-    // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
-    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-    sort,
-    sortDirection = "",
-    playlist,
-    limit = 25,
-    totalVideos = 0,
-    totalCalls = 0,
-    callNumber = 0,
-    videosArray = [],
-    // elements
-    account_id = document.getElementById('account_id'),
-    client_id = document.getElementById('client_id'),
-    client_secret = document.getElementById('client_secret'),
-    feedTitle = document.getElementById('feedTitle'),
-    feedDescription = document.getElementById('feedDescription'),
-    playlist_id = document.getElementById('playlist_id'),
-    makeFeed = document.getElementById('makeFeed'),
-    logger = document.getElementById('logger'),
-    apiRequest = document.getElementById('apiRequest'),
-    feedDisplay = document.getElementById('feedDisplay'),
-    allButtons = document.getElementsByName('button');
-
-    /**
-     * tests for all the ways a variable might be undefined or not have a value
-     * @param {String|Number} x the variable to test
-     * @return {Boolean} true if variable is defined and has a value
-     */
-    function isDefined(x){
-        if ( x === "" || x === null || x === undefined) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * disables all buttons so user can't submit new request until current one finishes
-     */
-    function disableButtons() {
-        var i,
-            iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].setAttribute('disabled', 'disabled');
-        }
-    }
-
-    /**
-    * re-enables all buttons
-    */
-    function enableButtons() {
-        var i,
-        iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].removeAttribute('disabled');
-        }
-    }
-
-    /**
-     * sort an array of objects based on an object property
-     * @param {array} targetArray - array to be sorted
-     * @param {string|number} objProperty - object property to sort on
-     * @return sorted array
-     */
-    function sortArray(targetArray, objProperty) {
-        targetArray.sort(function (b, a) {
-            var propA = a[objProperty], propB = b[objProperty];
-            // sort ascending; reverse propA and propB to sort descending
-            if (propA < propB) {
-                 return -1;
-            } else if (propA > propB) {
+    sLink = '<link />',
+    eLink = '',
+    sPubDate = '<pubdate>',
+    ePubDate = '</pubdate>',
+    sMediaContent = '<media:content', emediacontent="&lt;/media:content&gt;">" smediadescription="<media:description>" emediadescription="</media:description>" smediathumbnail="<media:thumbnail" emediathumbnail="/&gt;" smediatitle="&lt;media:title&gt;" emediatitle="&lt;/media:title&gt;" account="" stuff="" accountid=""> propB) {
                  return 1;
             } else {
                  return 0;
@@ -220,7 +136,7 @@
     function processSources(sources) {
         var i = sources.length;
         // remove non-MP4 sources
-        while (i > 0) {
+        while (i &gt; 0) {
             i--;
             if (sources[i].container !== 'MP4') {
                 sources.splice(i, 1);
@@ -236,21 +152,21 @@
 
     function addItems() {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
-        if (videosArray.length > 0) {
+        if (videosArray.length &gt; 0) {
             iMax = videosArray.length;
-            for (i = 0; i < iMax; i += 1) {
+            for (i = 0; i &lt; iMax; i += 1) {
                 video = videosArray[i];
                 // video may not have a valid source
                 if (isDefined(video.source) &amp;&amp; isDefined(video.source.src)) {
-                    videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
+                    videoURL = encodeURI(video.source.src.replace(/&amp;/g, '&amp;'));
                 } else {
                     videoURL = "";
                 }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
                 if (isDefined(video.images) &amp;&amp; isDefined(video.images.thumbnail)) {
-                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
+                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&amp;/g, '&amp;'));
                 } else if (isDefined(video.thumbnail)) {
-                    thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
+                    thumbnailURL = encodeURI(video.thumbnail.replace(/&amp;/g, '&amp;'));
                 } else {
                     doThumbnail = false;
                 }
@@ -259,7 +175,7 @@
                 mrssStr += sItem;
                 mrssStr += sLink + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
-                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
+                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '"&gt;';
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
                 mrssStr += sMediaDescription + video.description + eMediaDescription;
@@ -280,7 +196,7 @@
                 mrssStr += eItem;
             }
         }
-        mrssStr += eChannel + '</rss>';
+        mrssStr += eChannel + '</media:thumbnail"></media:content',></rss>';
         logger.textContent = 'Finished!';
         feedDisplay.textContent = vkbeautify.xml(mrssStr);
         enableButtons();
@@ -314,7 +230,7 @@
                     endpoint = accountId + '/videos/' + videosArray[callNumber].id + '/sources';
                     callback = function(response) {
                         sources = JSON.parse(response);
-                        if (sources.length > 0) {
+                        if (sources.length &gt; 0) {
                             // get the best MP4 rendition
                             var source = processSources(sources);
                             videosArray[callNumber].source = source;
@@ -323,12 +239,12 @@
                             videosArray[callNumber].source = null;
                         }
                         callNumber++;
-                        if (callNumber < iMax) {
+                        if (callNumber &lt; iMax) {
                             setRequestData('getVideoSources');
                         } else {
                             // remove videos with no sources
                             i = videosArray.length;
-                            while (i > 0) {
+                            while (i &gt; 0) {
                                 i--;
                                 console.log('videosArray[i]', videosArray[i]);
                                 if (!isDefined(videosArray[i].source)) {
@@ -366,7 +282,7 @@
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 &amp;&amp; httpRequest.status < 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                             // check for completion
                             if (requestID === 'getVideos') {
                                 if (httpRequest.responseText === '[]') {
@@ -388,10 +304,10 @@
                 }
             };
         // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
         // only add client id and secret if both were submitted
         if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+            requestParams += '&amp;client_id=' + clientId + '&amp;client_secret=' + clientSecret;
         }
 
         // set response handler
