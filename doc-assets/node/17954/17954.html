@@ -125,7 +125,8 @@
 
 <p>The handler for notifications is built in PHP - it looks for processing complete notifications and adds the video id to an array in a separate JavaScript file:</p>
 
-<pre class="line-numbers"><code class="language-php">&lt;?php
+<pre class="line-numbers">
+<code class="language-php">&lt;?php
 // var to log errors, if any
 $problem = "No errors";
 // var to store current video index
@@ -175,7 +176,8 @@ var_dump($notificationData);
 
 <p>The dashboard includes the HTML and JavaScript to fetch the notification data and additional video data from the CMS API and write the results into a table:</p>
 
-<pre class="line-numbers"><code class="language-html">&lt;!DOCTYPE html&gt;
+<pre class="line-numbers">
+<code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
     &lt;head&gt;
         &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
@@ -263,7 +265,7 @@ var_dump($notificationData);
                  * @return {}
                  */
                 function bclslog(context, message) {
-                    if (window["console"] && console["log"]) {
+                    if (window["console"] &amp;&amp; console["log"]) {
                       console.log(context, message);
                     }
                     return;
@@ -330,7 +332,7 @@ var_dump($notificationData);
                     var objIndex, videoObj;
                     // if notification object contains a video id, find the corresponding
                     // object in the videoDataArray or create it if it's not there
-                    if (isDefined(notificationObj) && isDefined(notificationObj.videoId)) {
+                    if (isDefined(notificationObj) &amp;&amp; isDefined(notificationObj.videoId)) {
                         objIndex = findObjectInArray(videoDataArray, 'id', notificationObj.videoId);
                         // if not found, create one
                         if (!isDefined(objIndex)) {
@@ -487,7 +489,7 @@ var_dump($notificationData);
                     } else {
                         // requests via proxy
                         // set up request data
-                        requestData = "url=" + encodeURIComponent(options.url) + "&requestType=GET";
+                        requestData = "url=" + encodeURIComponent(options.url) + "&amp;requestType=GET";
                         // set response handler
                         httpRequest.onreadystatechange = getResponse;
                         // open the request
@@ -525,7 +527,9 @@ var_dump($notificationData);
 <aside class="bcls-aside bcls-aside--tip">There's a design choice to be made here: you can use the notification handler or the dash (or a combination of the two) to process the notications and extract the useful information. In this kind of app, we prefer to keep the notification handler simple, just using it to pass on the notification data, and let the client app (in this case the dashboard) do the information processing. This requires more processing on the client, but make the notification handler more reusable.</aside>
 
 <h4>Proxy</h4>
-<pre class="line-numbers"><code class="language-php">&lt;?php
+
+<pre class="line-numbers">
+<code class="language-php">&lt;?php
 /**
  * brightcove-learning-proxy.php - proxy for Brightcove RESTful APIs
  * gets an access token, makes the request, and returns the response
@@ -625,7 +629,8 @@ echo $response;
 
 <p>This simple PHP app just restores the JavaScript file to its original state, clearing out the old video ids:</p>
 
-<pre class="line-numbers"><code class="language-php">&lt;?php
+<pre class="line-numbers">
+<code class="language-php">&lt;?php
     $logFileLocation = "di.json";
     $freshContent = array ();
     $encodedContent = json_encode($freshContent);
