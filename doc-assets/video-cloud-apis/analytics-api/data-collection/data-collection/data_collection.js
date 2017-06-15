@@ -187,7 +187,7 @@
                 str += " (" + data + " )";
             }
             str += "</span><br /><hr />";
-            eventLog.innerHTML = str;
+            eventLog.innerHTML += str;
             return;
         };
         init = function () {
