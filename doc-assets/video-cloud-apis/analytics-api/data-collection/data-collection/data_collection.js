@@ -36,8 +36,7 @@
         settings,
         // functions
         extend,
-        isDefined,
-        bclslog;
+        isDefined;
     /**
      * extend used to merge options and defaults into settings
      */
@@ -61,26 +60,16 @@
     };
     // more robust test for strings "not defined"
     isDefined =  function (v) {
-        if (v !== "" && v !== null && v !== "undefined" && v !== undefined) {
-            return true;
+        if (v === "" || v === null && v !== "undefined" || v === undefined) {
+            return false;
         }
-        return false;
-    };
-    // safe console logger
-    bclslog = function (message) {
-        if (console) {
-            console.log(message);
-        }
+        return true;
     };
     /**
-     * register the makeChapters plugin
+     * register the collectData plugin
      */
     videojs.plugin("collectData", function (options) {
         var player,
-            // videoDiv,
-            // nextNode,
-            // nextNodeParent,
-            // playerWrapper,
             eventLog = document.getElementById('eventLog'),
             changeVideoBtn,
             currentVideoIndex = 0,
@@ -88,8 +77,9 @@
             firstTimeUpdate = true,
             initialPosition = 0,
             lastPosition = 0,
+            thisPageProtocol = document.location.protocol,
             // data-collection api
-            baseURL = "http://metrics.brightcove.com/tracker?",
+            baseURL = thisPageProtocol + "//metrics.brightcove.com/tracker?",
             // location properties
             destination = encodeURI(window.location.href),
             source = encodeURI(document.referrer),
@@ -227,14 +217,6 @@
             });
             // add listener for time updates events
             player.on("timeupdate", onTimeUpdate);
-            // get a reference to the div that wraps the video tag
-            // videoDiv = document.getElementById(player.id());
-            // wrap the player in a new div
-            // wrapPlayer(videoDiv);
-            // add log if wanted
-            // if (settings.showLog) {
-            //     addEventLog();
-            // }
             // load the first video in the collection
             loadVideo();
         };
