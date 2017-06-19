@@ -19,12 +19,24 @@
 <section class="bcls-section" id="urlencoding">
 <h2>Spaces/Special Characters</h2>
 
-<p>Since the search string will be part of an HTTP request, it cannot contain spaces or special characters that are not allowed in URLs. Avoid illegal characters by URI-encoding the search string before submitting the request. For example, "My Favorite Video" will become:</p>
+<p>The CMS API generally handles special characters in search strings, with a couple of exceptions:</p>
+<ul>
+    <li>Spaces are not allowed, and can be replaced either with <code>+</code> signs or <code>%20</code>
+        <p>For example, to search for "my favorite video" in the name:</p>
+        <p><code>q=name:my+favorite+video</code></p>
+        <p>or</p>
+        <p><code>q=namemy%20favorite%20video</code></p>
+        <aside class="bcls-aside bcls-aside--information">Note that this does not produce results that include only video that have the phrase "my favorite video" in the name; rather it will search for videos that have "my" and/or "favorite" and/or "video". To search for videos based on a multi-word string, see the note that follows this list.</aside>
+    </li>
+    <li>Since <code>+</code> signs are interpreted as word separators, to search for a literal <code>+</code> sign or to use the <code>+</code> to indicate that the returned videos <strong>must</strong> include a term, you must encode the <code>+</code> as <code>%2B</code>:
+<p><code>q=name:two%2Btwo</code></p>
+<p><code>q=%2Bname:heron</code></p>
+    </li>
+    <li>Some agents may not handle literal quotation marks correctly, so it is safer to encode <code>"foo"</code> as <code>%22foo%22</code></li>
+</ul>
 
-<pre class="line-numbers">
-<code class="language-http">q=My%20Favorite%20Video</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">For multi-word tags, enclose the tag in URI-encoded quotation marks (<code>%22</code>), and URI-encode the spaces (%20):
+<aside class="bcls-aside bcls-aside--information">For multi-word tags or strings, enclose the tag/string in URI-encoded quotation marks (<code>%22</code>), and URI-encode the spaces (%20):
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Multi-Word Tag Example</caption>
@@ -47,10 +59,13 @@
 
 <aside class="bcls-aside bcls-aside--warning">Asterisks (<strong>*</strong>) are treated as ordinary special characters, <strong>not</strong> wildcards.</aside>
 </section>
+
 <section id="Stemming" class="bcls-section">
-    <h2>Stemming</h2>
-    <p>Stemming is supported, but <strong>not</strong> partial word searches. For example, <code>q=name:ban</code> should return videos with the names "Parking Ban Announced" or "Parking to be Banned" or "City Banning Parking" but not "Bank Holiday" or "Bandit Captured".</p>
+<h2>Stemming</h2>
+
+<p>Stemming is supported, but <strong>not</strong> partial word searches. For example, <code>q=name:ban</code> should return videos with the names "Parking Ban Announced" or "Parking to be Banned" or "City Banning Parking" but not "Bank Holiday" or "Bandit Captured".</p>
 </section>
+
 <section id="otherParams" class="bcls-section">
 <h2>Combined with other params</h2>
 
@@ -180,9 +195,10 @@
 </table>
 
 <h3>Notes</h3>
+
 <ul>
-    <li id="note2-1"><sup><strong>[2-1]</strong></sup> It is <strong>not</strong> possible to search for videos that have a custom field that has no value or a value of <code>null</code>, because unless the field has been given a value, it is not included in the video metadata at all.</li>
-    <li id="note2-2"><sup><strong>[2-2]</strong></sup> when you create a new video, the <code>complete</code> property is automatically set to <code>false</code>. As soon as one rendition exists for the video, the <code>complete</code> property will be automatically set to <code>true</code>.</li>
+	<li id="note2-1"><sup><strong>[2-1]</strong></sup> It is <strong>not</strong> possible to search for videos that have a custom field that has no value or a value of <code>null</code>, because unless the field has been given a value, it is not included in the video metadata at all.</li>
+	<li id="note2-2"><sup><strong>[2-2]</strong></sup> when you create a new video, the <code>complete</code> property is automatically set to <code>false</code>. As soon as one rendition exists for the video, the <code>complete</code> property will be automatically set to <code>true</code>.</li>
 </ul>
 
 <aside class="bcls-aside bcls-aside--information">The fields that use a string value perform a text search against that field.</aside>
