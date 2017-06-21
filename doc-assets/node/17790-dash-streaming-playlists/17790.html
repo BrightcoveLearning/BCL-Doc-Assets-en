@@ -2,6 +2,8 @@
 <section id="Introduction" class="bcls-section">
 <h2>Introduction</h2>
 
+<aside class="bcls-aside bcls-aside--information">Note that Dash is not compatible with live streams using Zencoder.</aside>
+
 <p>Because DASH isn't a specific video format, codec, or data-agnostic packaging format (such as Zip), we've introduced a new option named <code><a href="/node/17853#streaming-delivery-format">streaming_delivery_format</a></code> to specify that the media files should be structured / formatted according to a particular standard. Selecting "dash" as the <code>streaming_delivery_format</code> will modify some default options for compatibility with DASH, as well as put the output media files into a directory structure consistent with DASH requirements. DASH media outputs must also have <code><a href="/node/17852#type">type</a></code> set to "segmented", to ensure the media is prepared for DASH streaming.</p>
 
 <pre class="line-numbers">
@@ -122,7 +124,8 @@
 
 <p>The content will be encrypted with the <code>content_key</code>, and the .mpd manifest file will include the <code>key_id</code> in its headers. However, to ensure this output is playable, it also needs headers specifying how to retrieve the <code>content_key</code>. On a multi-bitrate DASH encode, these headers only need to be added to the playlist output, but can also be added to each rendition, so the rendition is individually playable. This is done by adding one or more DRM schemas:</p>
 
-<pre class="line-numbers"><code class="language-json">
+<pre class="line-numbers">
+<code class="language-json">
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -423,17 +426,17 @@
         "type": "playlist",
         "url": "s3://mybucket/full-examples/dash/manifest.mpd",
         "streams": [
-        { "source": "dash-1500k", "path": "1500k" },
-        { "source": "dash-1000k", "path": "1000k" },
-        { "source": "dash-500k",  "path": "500k" }
+            { "source": "dash-1500k", "path": "1500k" },
+            { "source": "dash-1000k", "path": "1000k" },
+            { "source": "dash-500k",  "path": "500k" }
         ],
         "drm": {
             "method": "cenc",
             "key_id": "d57d416ccd454d5a08d05bff0742ee76",
             "content_key": "f15cae8f4e48a023056e1960ff2228b0",
             "schemas": [
-            { "type": "marlin" },
-            { "type": "playready", "license_acquisition_url": "https://playready.example.com/license_server/" }
+                { "type": "marlin" },
+                { "type": "playready", "license_acquisition_url": "https://playready.example.com/license_server/" }
             ]
         }
     }
