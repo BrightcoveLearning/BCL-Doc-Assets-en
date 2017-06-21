@@ -1,6 +1,6 @@
 <article class="bcls-article">
-<section id="Introduction" class="bcls-section">
-<h2>Introduction</h2>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
 <p>In this topic, you will learn how to do the following:</p>
 
@@ -16,8 +16,8 @@
 <aside class="bcls-aside bcls-aside--information">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</aside>
 </section>
 
-<section class="bcls-section" id="urlencoding">
-<h2>Spaces/Special Characters</h2>
+<section class="bcls-section">
+<h2 id="urlencoding">Spaces/Special Characters</h2>
 
 <p>The CMS API generally handles special characters in search strings, with a couple of exceptions:</p>
 <ul>
@@ -60,14 +60,14 @@
 <aside class="bcls-aside bcls-aside--warning">Asterisks (<strong>*</strong>) are treated as ordinary special characters, <strong>not</strong> wildcards.</aside>
 </section>
 
-<section id="Stemming" class="bcls-section">
-<h2>Stemming</h2>
+<section class="bcls-section">
+<h2 id="Stemming">Stemming</h2>
 
 <p>Stemming is supported, but <strong>not</strong> partial word searches. For example, <code>q=name:ban</code> should return videos with the names "Parking Ban Announced" or "Parking to be Banned" or "City Banning Parking" but not "Bank Holiday" or "Bandit Captured".</p>
 </section>
 
-<section id="otherParams" class="bcls-section">
-<h2>Combined with other params</h2>
+<sectionclass="bcls-section">
+<h2 id="otherParams" >Combined with other params</h2>
 
 <p>Search can be combined with other parameters such a <code>sort</code>, <code>limit</code> and <code>offset</code>. All URL parameters are separated by <code>&amp;</code>, and the order does not matter.</p>
 
@@ -80,8 +80,8 @@
 <code class="language-http">.../videos?&amp;sort=updated_at&amp;q=name:foo%2Btags:bar&amp;limit=10</code></pre>
 </section>
 
-<section id="specificVideos" class="bcls-section">
-<h2>Search specific videos</h2>
+<section class="bcls-section">
+<h2 id="specificVideos">Search specific videos</h2>
 
 <p>If you want to limit your search to a specific set of videos, you can do so by including the ids as part of the search:</p>
 
@@ -89,8 +89,18 @@
 <code class="language-http">q=id:123456789+id:987654321+id:48376387+tags:foo</code></pre>
 </section>
 
-<section class="bcls-section" id="search">
-<h2>Basic search</h2>
+<section class="bcls-section">
+    <h2 id="Ignored_words">Ignored words</h2>
+    <p>Certain words are ignored in search strings because they are so common that they are likely to return many results unrelated to what you are actually searching for. Below is a list of words that are ignored by search:</p>
+    <p>"a", "an", "and", "are", "as", "at", "be", "but", "by",
+      "for", "if", "in", "into", "is", "it",
+      "no", "not", "of", "on", "or", "such",
+      "that", "the", "their", "then", "there", "these",
+      "they", "this", "to", "was", "will", "with"</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Basic_search">Basic search</h2>
 
 <p>To perform a search of terms in your media library, use the <code>q</code> parameter.</p>
 
@@ -204,8 +214,8 @@
 <aside class="bcls-aside bcls-aside--information">The fields that use a string value perform a text search against that field.</aside>
 </section>
 
-<section class="bcls-section" id="requiredexcludedterms">
-<h2>Required/excluded terms</h2>
+<section class="bcls-section">
+<h2 id="requiredexcludedterms">Required/excluded terms</h2>
 
 <p>You can mark a search term as required (returned videos MUST match) or excluded (returned videos must NOT match). This is controlled with a URI-encoded <code>+ (%2B)</code> or <code>- (%2D)</code> sign immediately preceding the term.</p>
 
@@ -250,8 +260,8 @@
 <p>See <a href="#combinesearchcriteria">Combining search criteria</a> below to see how to use required/excluded syntax to enforce AND logic for multiple search terms.</p>
 </section>
 
-<section class="bcls-section" id="quotedsearchterms">
-<h2>Quoted search terms</h2>
+<section class="bcls-section">
+<h2 id="Quoted_search_terms">Quoted search terms</h2>
 
 <p>By default, a search will match similar words with your search terms. If you want an exact match, or match multiple words, just wrap the term in quotes:</p>
 
@@ -288,8 +298,8 @@ q=name:"foo bar"</code></pre>
 </ul>
 </section>
 
-<section class="bcls-section" id="customfields">
-<h2>Custom fields</h2>
+<section class="bcls-section">
+<h2 id="custom_fields">Custom fields</h2>
 
 <p>You may search on any custom field that you have defined for your videos.</p>
 
@@ -305,8 +315,8 @@ q=my_field:"foo"</code></pre>
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=subject:animal</code></pre>
 </section>
 
-<section class="bcls-section" id="dateranges">
-<h2>Date ranges</h2>
+<section class="bcls-section">
+<h2 id="dateranges">Date ranges</h2>
 
 <p>If you are searching on a date field, you can specify a specific date or a range of dates.</p>
 
@@ -451,8 +461,8 @@ q=my_field:"foo"</code></pre>
 </table>
 </section>
 
-<section class="bcls-section" id="searchByState">
-<h2>Search by state</h2>
+<section class="bcls-section">
+<h2 id="searchByState">Search by state</h2>
 
 <p>You can perform or filter searches by the state of the video using the paramater:</p>
 
@@ -460,8 +470,8 @@ q=my_field:"foo"</code></pre>
 <code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING)</code></pre>
 </section>
 
-<section id="clips" class="bcls-section">
-<h2>Clip search terms</h2>
+<section class="bcls-section">
+<h2 id="clips">Clip search terms</h2>
 
 <p>Clips are videos created from sections of other videos. Clips can be generated by <a href="/node/16672">Brightcove Social</a>, and other means will be available in the future. There are some special search terms you can use to find generated clips in an account:</p>
 
@@ -473,8 +483,8 @@ q=my_field:"foo"</code></pre>
 </ul>
 </section>
 
-<section class="bcls-section" id="combinesearchcriteria">
-<h2>Combine search criteria</h2>
+<section class="bcls-section">
+<h2 id="combinesearchcriteria">Combine search criteria</h2>
 
 <p>You can combine criteria for complex searches.</p>
 
