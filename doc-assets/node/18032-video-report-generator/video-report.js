@@ -1,76 +1,4 @@
-<article class="bcls-article">
-<section id="obtaincredentials" class="bcls-section">
-<h2>Obtain credentials</h2>
-
-<p>Like most of Brightcove's RESTful APIs, the CMS API requires OAuth access tokens to authorize requests. In order to get access tokens, you first need to obtain client credentials with permissions for kinds of operations you want to request.</p>
-
-<ol>
-	<li>To obtain your credentials follow the instructions in <a href="/node/14056">Managing API Credentials</a>. This is the recommended way of obtaining your client credentials. This sample only requires <code>/video/read</code> permissions, but in most cases, you will likely want to get all permissions:
-
-	<figure class="bcls-figure"><img class="bcls-image" alt="Client Credentials" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/getting-started/quick-start/quick-start-required-permissions.png" />
-	<figcaption class="bcls-caption--image">Client Credentials</figcaption>
-	</figure>
-
-	<p>You can also obtain credentials using the OAuth API, following the instructions in one of the guides listed below:</p>
-	</li>
-</ol>
-
-<ul>
-	<li><a href="/node/17924">OAuth: Get Client Credentials Using CURL</a></li>
-	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
-</ul>
-</section>
-
-<section class="bcls-section" id="workingSample">
-<h2>Video report generator</h2>
-
-<fieldset class="bcls-fieldset"><legend>Input</legend>
-
-<p>If you do not enter account information, a Brightcove sample account will be used.</p>
-
-<p>Account id: <input id="account_id" type="text" value="" placeholder="1752604059001" /></p>
-
-<p>Client id: <input id="client_id" type="text" size="60" value="" placeholder="c5d0a622-5479-46d8-8d8a-5f034b943fab" /></p>
-
-<p>Client secret: <input id="client_secret" type="text" size="60" value="" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWK" /></p>
-
-<p>Videos to retrieve: <select name="videoCount" id="videoCount"><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="500">500</option><option value="All">All</option></select></p>
-
-<aside class="bcls-aside bcls-aside--warning">If you select <code>All</code>, be prepared to wait awhile!</aside>
-
-<p><button class="bcls-button" id="makeReport">Generate the Report</button></p>
-</fieldset>
-
-<fieldset class="bcls-fieldset"><legend>Log</legend>
-
-<div id="logger" style="color:rgb(237, 104, 38)">
-<p id="logText">Waiting for input...</p>
-</div>
-
-<p>Current API request</p>
-
-<pre class="line-numbers">
-<code id="apiRequest" class="language-http">API request will appear here...</code></pre>
-</fieldset>
-</section>
-
-<section id="csvDisplay" class="bcls-section">
-<h2>CSV Data</h2>
-
-<p>Copy and paste the data below into a an empty text file, and save it with a .csv extension. You can then open the file to view it in your spreadsheet application.</p>
-<textarea name="csvData" id="csvData" class="bcls-code" style="height:30em;"></textarea></section>
-
-<section id="code" class="bcls-section">
-<h2>Code</h2>
-
-<h3>HTML</h3>
-
-<p>To see the HTML code for this app, view the source for this page.</p>
-
-<h3>JavaScript</h3>
-
-<pre class="line-numbers">
-<code class="language-javascript">var BCLS = (function(window, document) {
+var BCLS = (function(window, document) {
     var accountId,
         clientId,
         clientSecret,
@@ -91,6 +19,7 @@
         account_id = document.getElementById('account_id'),
         client_id = document.getElementById('client_id'),
         client_secret = document.getElementById('client_secret'),
+        tag = document.getElementById('tag'),
         videoCount = document.getElementById('videoCount'),
         makeReport = document.getElementById('makeReport'),
         content,
@@ -135,7 +64,7 @@
     function disableButtons() {
         var i,
             iMax = allButtons.length;
-        for (i = 0; i &lt; iMax; i++) {
+        for (i = 0; i < iMax; i++) {
             allButtons[i].setAttribute('disabled', 'disabled');
         }
     }
@@ -146,7 +75,7 @@
     function enableButtons() {
         var i,
             iMax = allButtons.length;
-        for (i = 0; i &lt; iMax; i++) {
+        for (i = 0; i < iMax; i++) {
             allButtons[i].removeAttribute('disabled');
         }
     }
@@ -162,9 +91,9 @@
             var propA = a[objProperty],
                 propB = b[objProperty];
             // sort ascending; reverse propA and propB to sort descending
-            if (propA &lt; propB) {
+            if (propA < propB) {
                 return -1;
-            } else if (propA &gt; propB) {
+            } else if (propA > propB) {
                 return 1;
             } else {
                 return 0;
@@ -181,7 +110,7 @@
             flvRenditions = [],
             otherRenditions = [];
         // separate renditions by type
-        for (i = 0; i &lt; iMax; i += 1) {
+        for (i = 0; i < iMax; i += 1) {
             if (renditions[i].video_container === 'M2TS') {
                 hlsRenditions.push(renditions[i]);
             } else if (renditions[i].video_container === 'MP4') {
@@ -206,7 +135,7 @@
     function arrayContains(arr, item) {
         var i,
             iMax = arr.length;
-        for (i = 0; i &lt; iMax; i++) {
+        for (i = 0; i < iMax; i++) {
             if (arr[i] === item) {
                 return true;
             }
@@ -225,15 +154,15 @@
 
 
     function startCSVStrings() {
-        var i = 0, iMax = customFields.length;
+        var i = 0, iMax;
         csvStr = '"ID","Name","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",';
-        for (i; i &lt; iMax; i++) {
-            if (i &lt; (iMax - 1)) {
+        if (customFields) {
+            iMax = customFields.length;
+            for (i; i < iMax; i++) {
                 csvStr += '"' + customFields[i] + '",';
-            } else {
-                csvStr += '"' + customFields[i] + '"\n';
             }
         }
+        csvStr += '\r\n';
     }
 
     function writeReport() {
@@ -251,22 +180,26 @@
             resWidth,
             resHeight,
             rendition = {};
-        if (videosArray.length &gt; 0) {
+        if (videosArray.length > 0) {
             iMax = videosArray.length;
-            for (i = 0; i &lt; iMax; i += 1) {
+            for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
+                // replace any line breaks in description, as that will break the CSV
+                if (video.description) {
+                    video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
+                }
                 // generate the video detail row
-                hlsLowRate = (video.hlsRenditions.length &gt; 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
-                hlsHighRate = (video.hlsRenditions.length &gt; 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
-                mp4LowRate = (video.mp4Renditions.length &gt; 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
-                mp4HighRate = (video.mp4Renditions.length &gt; 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
-                flvLowRate = (video.flvRenditions.length &gt; 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
-                flvHighRate = (video.flvRenditions.length &gt; 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
-                if (video.flvRenditions.length &gt; 0) {
+                hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
+                hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
+                mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
+                mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
+                flvLowRate = (video.flvRenditions.length > 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
+                flvHighRate = (video.flvRenditions.length > 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
+                if (video.flvRenditions.length > 0) {
                     rendition = video.flvRenditions[video.flvRenditions.length - 1];
-                } else if (video.mp4Renditions.length &gt; 0) {
+                } else if (video.mp4Renditions.length > 0) {
                     rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
-                } else if (video.hlsRenditions.length &gt; 0) {
+                } else if (video.hlsRenditions.length > 0) {
                     rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
                 } else {
                     rendition.frame_width = "unknown";
@@ -276,21 +209,18 @@
                 resHeight = rendition.frame_height;
                 // add csv row
                 csvStr += '"' + video.id + '","' + video.name + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",';
-                jMax = customFields.length;
-                for (j = 0; j &lt; jMax; j++) {
-                    if (j &lt; (jMax - 1)) {
-                        if (video.custom_fields.hasOwnProperty(customFields[j])) {
-                            csvStr += '"' + video.custom_fields[customFields[j]] + '",';
-                        } else {
-                            csvStr += '"",';
-                        }
-                    } else {
-                        if (video.custom_fields.hasOwnProperty(customFields[j])) {
-                            csvStr += '"' + video.custom_fields[customFields[j]] + '"\n';
-                        } else {
-                            csvStr += '""\n';
-                        }
+                if (customFields) {
+                    jMax = customFields.length;
+                    for (j = 0; j < jMax; j++) {
+                            if (video.custom_fields.hasOwnProperty(customFields[j])) {
+                                csvStr += '"' + video.custom_fields[customFields[j]] + '",';
+                            } else {
+                                csvStr += '"",';
+                            }
                     }
+                    csvStr += '\r\n';
+                } else {
+                    csvStr += '\r\n';
                 }
             }
             csvData.textContent += csvStr;
@@ -313,6 +243,9 @@
         switch (id) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
+                if (isDefined(tag.value)) {
+                    endPoint += '&q=%2Btags:' + tag.value;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -327,7 +260,10 @@
                 break;
             case 'getVideos':
                 var offset = (limit * callNumber);
-                endPoint = accountId + '/videos?sort=created_at&amp;limit=' + limit + '&amp;offset=' + offset;
+                endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+                if (isDefined(tag.value)) {
+                    endPoint += '&q=%2Btags:' + tag.value;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -337,23 +273,23 @@
                 var i,
                     iMax = videosArray.length,
                     callback = function(renditions) {
-                        if (renditions.length &gt; 0) {
+                        if (renditions.length > 0) {
                             // get the best MP4 rendition
                             processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions) {
-                                if (hlsRenditions.length &gt; 0) {
+                                if (hlsRenditions.length > 0) {
                                     sortArray(hlsRenditions, 'encoding_rate');
                                 }
 
                                 videosArray[callNumber].hlsRenditions = hlsRenditions;
-                                if (mp4Renditions.length &gt; 0) {
+                                if (mp4Renditions.length > 0) {
                                     sortArray(mp4Renditions, 'encoding_rate');
                                 }
                                 videosArray[callNumber].mp4Renditions = mp4Renditions;
-                                if (flvRenditions.length &gt; 0) {
+                                if (flvRenditions.length > 0) {
                                     sortArray(flvRenditions, 'encoding_rate');
                                 }
                                 videosArray[callNumber].flvRenditions = flvRenditions;
-                                // if (otherRenditions.length &gt; 0) {
+                                // if (otherRenditions.length > 0) {
                                 //     sortArray(otherRenditions, 'encoding_rate');
                                 // }
                                 // videosArray[callNumber].otherRenditions = otherRenditions;
@@ -366,7 +302,7 @@
                         videosCompleted++;
                         logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
                         callNumber++;
-                        if (callNumber &lt; totalVideos) {
+                        if (callNumber < totalVideos) {
                             setRequestData('getVideoRenditions');
                         } else {
                             // create csv headings
@@ -410,7 +346,7 @@
                 var videoCount;
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // check for completion
                             if (requestID === 'getCount') {
                                 responseRaw = httpRequest.responseText;
@@ -420,7 +356,7 @@
                                 if (totalVideos === "All") {
                                     totalVideos = videoCount;
                                 } else {
-                                    totalVideos = (totalVideos &lt; videoCount) ? totalVideos : videoCount;
+                                    totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
                                 }
                                 totalCalls = Math.ceil(totalVideos / limit);
                                 logText.textContent = totalVideos + ' videos found; getting account custom fields';
@@ -443,7 +379,7 @@
                                 parsedData = JSON.parse(responseRaw);
                                 videosArray = videosArray.concat(parsedData);
                                 callNumber++;
-                                if (callNumber &lt; totalCalls) {
+                                if (callNumber < totalCalls) {
                                     setRequestData('getVideos');
                                 } else {
                                     callNumber = 0;
@@ -473,10 +409,10 @@
                 }
             };
         // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
-            requestParams += '&amp;client_id=' + clientId + '&amp;client_secret=' + clientSecret;
+        if (isDefined(clientId) && isDefined(clientSecret)) {
+            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
         }
 
         // set response handler
@@ -519,7 +455,7 @@
         clientSecret = client_secret.value;
         totalVideos = getSelectedValue(videoCount);
         // only use entered account id if client id and secret are entered also
-        if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
+        if (isDefined(clientId) && isDefined(clientSecret)) {
             if (isDefined(account_id.value)) {
                 accountId = account_id.value;
             } else {
@@ -537,16 +473,4 @@
     });
 
     init();
-})(window, document);</code></pre>
-
-<h3>Proxy</h3>
-
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
-</aside>
-</section>
-</article>
-<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/code-samples/video-report/video-report.js"></script>
+})(window, document);
