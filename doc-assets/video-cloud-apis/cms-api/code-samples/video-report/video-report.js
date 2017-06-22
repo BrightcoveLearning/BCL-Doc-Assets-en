@@ -19,6 +19,7 @@ var BCLS = (function(window, document) {
         account_id = document.getElementById('account_id'),
         client_id = document.getElementById('client_id'),
         client_secret = document.getElementById('client_secret'),
+        tag = document.getElementById('tag'),
         videoCount = document.getElementById('videoCount'),
         makeReport = document.getElementById('makeReport'),
         content,
@@ -242,6 +243,9 @@ var BCLS = (function(window, document) {
         switch (id) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
+                if (isDefined(tag.value)) {
+                    endPoint += 'q=%2Btags:' + tag.value;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
