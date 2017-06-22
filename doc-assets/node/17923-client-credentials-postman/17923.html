@@ -1,0 +1,145 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>Your client_id and client_secret are used in getting an access_token, which provides the authorization to make a call to a particular Brightcove API. You can see an example of how the access_token is retrieved in the <a href="/node/17927">Quick Start: OAuth</a>.</p>
+
+<p>If you haven't yet looked at the <a href="/node/17928">OAuth Overview</a>, it would be a good idea to look at it before proceeding.</p>
+
+<p>Note: there is also a UI for getting the <code>client_id</code> and <code>client_secret</code>:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+</section>
+
+<section id="requirements" class="bcls-section">
+<h2>Requirements</h2>
+
+<ul>
+	<li class="video-cloud-only">A valid Video Cloud account</li>
+	<li class="player-only">A valid Perform account</li>
+	<li><a href="http://www.getpostman.com/">Postman</a> running as a Chrome extension or as a packaged app</li>
+</ul>
+</section>
+
+<section class="bcls-section" id="overview">
+<h2>Overview</h2>
+
+<p>Getting the <code>client_id</code> and <code>client_secret</code> is just a POST call to the OAuth service, but you will need to have your account id and also your <code>BC_TOKEN</code>, which you can find in a temporary cookie when you are logged into Studio.</p>
+</section>
+
+<section class="bcls-section" id="steps">
+<h2>Steps</h2>
+
+<h3>Get your <code>BC_TOKEN</code> and account number</h3>
+
+<p>You will need to login to Studio to get your <code>BC_TOKEN</code>.</p>
+
+<ol class="bcls-tasklist">
+	<li>Login to Studio as you normally do.</li>
+	<li>You need your account number, which you can get by going to your account profile in Studio:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Account Information" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-postman/account-info.png" />
+	<figcaption class="bcls-caption--image">Account Information</figcaption>
+	</figure>
+	</li>
+	<li>With any page in Studio open, open the developer tools for the browser, go to the Console, and paste in the following code:
+	<pre class="line-numbers">
+<code class="language-javascript">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
+for (i = 0; i &lt; cookiesArray.length; i++) {
+    tmpArray = cookiesArray[i].split("=");
+    if (tmpArray[0].indexOf('BC_TOKEN') &gt; -1) {
+        cookiesObj.BC_TOKEN = tmpArray[1];
+    }
+}
+window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
+
+	<p>and press return.</p>
+	</li>
+	<li>You should see a prompt appear that contains your <code>BC_TOKEN</code>:
+	<figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-postman/prompt-with-token-safari.png" />
+	<figcaption class="bcls-caption--image">BC_TOKEN</figcaption>
+	</figure>
+	</li>
+	<li>If you have your BC_TOKEN, go on to the <a href="#getClientCredentials">Get client credentials</a> section; if for some reason you did not get your BC_TOKEN using the previous steps, just go to the Console, type <code class="language-javascript">document.cookie</code>, and press return.</li>
+	<li>All cookies for the page will be returned in a semi-colon-separated list. Find the BC_TOKEN cookie in the list, and copy the value:
+	<figure class="bcls-figure"><img class="bcls-image" alt="BC_TOKEN in Chrome Developer Tools" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-postman/get-access-token-console.png" />
+	<figcaption class="bcls-caption--image">BC_TOKEN in Chrome Developer Tools</figcaption>
+	</figure>
+	</li>
+</ol>
+
+<h3 id="getClientCredentials">Get <code>client_credentials</code></h3>
+
+<p>Now you are ready to make the call to the OAuth service to retrieve client credentials. You will specify a client application name that you are requesting credentials for, the name is arbitrary and intended to help you keep track of the application with which the credentials will be used. You also have to specify the scope of the operations you want access to, and here you will use <code class="video-cloud-only">video-cloud/player/all</code> <code class="player-only">perform/player/all</code> (for the Player Management API). See <a href="/node/17922">API Operations for Client Credentials Requests</a> for a list of all operations currently supported.</p>
+
+<ol class="bcls-tasklist">
+	<li>Launch Postman, and set the request type to <strong>POST</strong>.</li>
+	<li>Enter the following as the <strong>request URL</strong>:
+	<pre class="line-numbers">
+<code class="language-html">https://oauth.brightcove.com/v3/client_credentials</code></pre>
+	</li>
+	<li>Create the header by performing the following instructions:
+	<ol>
+		<li>Click on the request <strong>Headers</strong> option.</li>
+		<li>For the <strong>key</strong>, begin typing <strong>Authorization</strong> and at any time you choose select from the automatically provided options.</li>
+		<li>For the <strong>value</strong> enter, the string <code>BC_TOKEN</code>, followed by a space, then your actual token value.</li>
+	</ol>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="Create the header" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-postman/define-request-header.png" />
+	<figcaption class="bcls-caption--image">Create the header</figcaption>
+	</figure>
+	</li>
+	<li>Select the type of request body to use by clicking the <strong>Body</strong> option, then the radio button for <strong>x-www-form-urlencoded</strong>.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Select type of request body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-postman/select-request-body.png" />
+	<figcaption class="bcls-caption--image">Select type of request body</figcaption>
+	</figure>
+	</li>
+	<li>For the actual <strong>Body</strong> content, you will now enter FOUR key/value pair entries as shown in the screenshot. They are:
+	<ol>
+		<li>key: <strong>type</strong> / value: <strong>credential</strong></li>
+		<li>key: <strong>maximum_scope</strong> / value: <strong>[ { "identity": { "type": "video-cloud-account", "account-id": YOUR_ACCOUNT_VALUE }, "operations": [ "video-cloud/player/all" ] } ]</strong>
+		<aside class="bcls-aside bcls-aside--tip">Be sure your account ID is substituted for <strong>YOUR_ACCOUNT_VALUE</strong> in the value.</aside>
+		</li>
+		<li>key: <strong>name</strong> / value: <em>A name of your choice</em></li>
+		<li>key: <strong>description</strong> / value: <em>A description of your choice</em></li>
+	</ol>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="Define body key/value pairs" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/guides/get-client-credentials-postman/define-body-key-value.png" />
+	<figcaption class="bcls-caption--image">Define body key/value pairs</figcaption>
+	</figure>
+	</li>
+	<li>Click <strong>Send</strong>, and you should see a response that looks like this:
+	<pre class="line-numbers">
+<code class="language-json">{
+    client_secret: "1mIenrNo6fVXcRDJtMi1QG__QNUjFeUQxqDVbXLZ60R9BTQiccSHJoqoDnWB4ZOqe6-YtI9pIpBSdbAg6ltjFA"
+    issued_at: "2014-08-11T22:34:59Z"
+    name: "Test Client"
+    redirect_url: null
+    description_html: "My test app"
+    issued_to: "rcrooks@brightcove.com"
+    client_id: "9376cb17-a24c-4e74-814e-0cbb9c4c82b2"
+    -maximum_scope: [
+        -{
+            -identity: {
+                type: <span class="video-cloud-only">"video-cloud-account"</span><span class="player-only">perform-account</span>
+                account-id: 57838016001
+            }
+            -operations: [
+                <span class="video-cloud-only">"video-cloud/player/all"</span><span class="player-only">perform/player/all</span>
+            ]
+        }
+    ]
+    trusted: null
+    type: "credential"
+    description: "My test app"
+    expires_at: null
+    revoked: null
+    name_html: "Test Client"
+    issued_user: 53255203001
+}</code></pre>
+	</li>
+	<li>Copy and save the <code>client_id</code> and <code>client_secret</code>, because you will need them anytime you need to get an <code>access_token</code> to make a call to the API.</li>
+</ol>
+</section>
+</article>
