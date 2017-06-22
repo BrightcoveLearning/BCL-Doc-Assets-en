@@ -244,7 +244,7 @@ var BCLS = (function(window, document) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
                 if (isDefined(tag.value)) {
-                    endPoint += 'q=%2Btags:' + tag.value;
+                    endPoint += '&q=%2Btags:' + tag.value;
                 }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
@@ -261,6 +261,9 @@ var BCLS = (function(window, document) {
             case 'getVideos':
                 var offset = (limit * callNumber);
                 endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+                if (isDefined(tag.value)) {
+                    endPoint += '&q=%2Btags:' + tag.value;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
