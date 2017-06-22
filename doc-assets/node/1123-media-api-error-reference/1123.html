@@ -1,0 +1,308 @@
+<aside class="bcls-aside bcls-aside--warning">Note: The Media API is <strong>deprecated</strong> and should not be used for new projects. Existing projects using the Media API should be <a href="/node/17955">migrated to use the new catalog APIs</a></aside>
+
+<h2>Error code numbering</h2>
+
+<p>Error messages returned by the Media API include a numerical error code that classifies errors by type:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th scope="col" style="width: 30%;"><strong>Code Range</strong></th>
+			<th scope="col" style="width: 70%;"><strong>Error Type</strong></th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>100–199</td>
+			<td>system errors</td>
+		</tr>
+		<tr>
+			<td>200–299</td>
+			<td>low-level user errors</td>
+		</tr>
+		<tr>
+			<td>300–399</td>
+			<td>high-level (business logic) user errors</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Error codes and messages</h2>
+
+<p>The following error messages can be returned by the Media API:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th><strong>Code</strong></th>
+			<th><strong>Name</strong></th>
+			<th><strong>Message</strong></th>
+			<th><strong>Cause</strong></th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>100</td>
+			<td>UnknownServer<br />
+			Error</td>
+			<td>an unknown error occurred while processing your request</td>
+			<td>An unspecified and unexpected error</td>
+		</tr>
+		<tr>
+			<td>101</td>
+			<td>ServiceDeploying<br />
+			Error</td>
+			<td>The write API is currently unavailable due to a scheduled upgrade. Please check http://studio.brightcove.com/ for updates.</td>
+			<td>The Video Cloud Write API is currently down for a scheduled deployment.</td>
+		</tr>
+		<tr>
+			<td>102</td>
+			<td>FileUploadError</td>
+			<td>An unexpected error occurred during file upload. Please try again.</td>
+			<td>While using a Write API method, an IOException was encountered and the upload failed.</td>
+		</tr>
+		<tr>
+			<td>103</td>
+			<td>CallTimeoutError</td>
+			<td>The request you made is taking longer than expected to return. If requesting a large amount of data please try again with a smaller page_size.</td>
+			<td>Media API calls can time out before they complete if you are trying to get too much data at once. The page_size argument enables returning data in more manageable chunks.</td>
+		</tr>
+		<tr>
+			<td>200</td>
+			<td>EnctypeError</td>
+			<td>wrong enctype; write methods require a multipart/form-data POST</td>
+			<td>Calling a write method with a plain old POST</td>
+		</tr>
+		<tr>
+			<td>201</td>
+			<td>GetRequiredError</td>
+			<td>methods that retrieve data must be called using GET requests</td>
+			<td>Calling POST instead of GET on the Read API</td>
+		</tr>
+		<tr>
+			<td>202</td>
+			<td>PostRequiredError</td>
+			<td>methods that change data must be called using POST requests</td>
+			<td>Calling GET instead of POST on the Write API</td>
+		</tr>
+		<tr>
+			<td>203</td>
+			<td>MissingQuery<br />
+			StringError</td>
+			<td>no query string provided</td>
+			<td>A missing query string in GET</td>
+		</tr>
+		<tr>
+			<td>204</td>
+			<td>MissingBodyError</td>
+			<td>POST methods require valid JSON-RPC in the POST body, with "method" and "params" properties</td>
+			<td>A missing parameter section in POST</td>
+		</tr>
+		<tr>
+			<td>205</td>
+			<td>MalformedParameters<br />
+			Error</td>
+			<td>unable to parse JSON-RPC parameters; they may be malformed or incorrect</td>
+			<td>Malformed JSON in request</td>
+		</tr>
+		<tr>
+			<td>206</td>
+			<td>InvalidMethodError</td>
+			<td>invalid method name</td>
+			<td>Invalid method name</td>
+		</tr>
+		<tr>
+			<td>207</td>
+			<td>FilestreamRequired<br />
+			Error</td>
+			<td>upload requires a multipart/form-data POST with a valid filestream</td>
+			<td>Missing file stream</td>
+		</tr>
+		<tr>
+			<td>208</td>
+			<td>MissingFileName<br />
+			Error</td>
+			<td>file for upload must have a filename</td>
+			<td>Missing file name</td>
+		</tr>
+		<tr>
+			<td>209</td>
+			<td>UnwantedFilestream<br />
+			Error</td>
+			<td>non-upload methods should not include a filestream</td>
+			<td>A filestream was provided for a non-upload method.</td>
+		</tr>
+		<tr>
+			<td>210</td>
+			<td>InvalidTokenError</td>
+			<td>invalid token</td>
+			<td>The token used in the call is invalid.</td>
+		</tr>
+		<tr>
+			<td>211</td>
+			<td>MissingJSONError</td>
+			<td>Could not find JSON-RPC.</td>
+			<td>We got a null string for either the json parameter (for a non-multipart post) or the first part of a multipart post.</td>
+		</tr>
+		<tr>
+			<td>213</td>
+			<td>ConcurrentWrites<br />
+			ExceededError</td>
+			<td>You have exceeded your number of concurrent write API calls. Please reduce the number of concurrent threads making write API calls.</td>
+			<td>You have too many threads making write API calls at the same time. Modify your application so you do not have multiple threads making write API calls.</td>
+		</tr>
+		<tr>
+			<td>214</td>
+			<td>ConcurrentReads<br />
+			ExceededError</td>
+			<td>You have exceeded your number of concurrent read API calls. Please reduce the number of concurrent threads making read API calls.</td>
+			<td>You have too many threads making unique read API calls at the same time. Modify your application so you do not have multiple threads making distinct read API calls.</td>
+		</tr>
+		<tr>
+			<td>301</td>
+			<td>InvalidParameters<br />
+			Error</td>
+			<td>parameters are the wrong type or number for this method</td>
+			<td>Invoking the method threw an IllegalArgumentException</td>
+		</tr>
+		<tr>
+			<td>302</td>
+			<td>DeleteFailedError</td>
+			<td>&lt;message with reason for failure filled in by throwing method&gt;</td>
+			<td>Attempt to delete a business object failed. For example, attempts to delete a video that's in a manual playlist will fail.</td>
+		</tr>
+		<tr>
+			<td>303</td>
+			<td>RequiredParameter<br />
+			Error</td>
+			<td>required parameter &lt;&gt; was missing (&lt;&gt; to be filled in by throwing method)</td>
+			<td>A required parameter was not set.</td>
+		</tr>
+		<tr>
+			<td>304</td>
+			<td>IllegalValueError</td>
+			<td>
+			<ul>
+				<li>Cannot find any video with id: &lt;&gt;</li>
+				<li>Cannot find the video you are trying to update: id &lt;&gt;</li>
+				<li>One or more accounts in sharee_account_ids are not enabled for media sharing</li>
+				<li>The referenceId property on this video is in use by a destination account.</li>
+			</ul>
+			</td>
+			<td>
+			<ul>
+				<li>In a get_upload_status call, the video_id entered does not refer to a valid video in the Media Library</li>
+				<li>In an update_video call, the video_id entered does not refer to a valid video in the Media Library</li>
+				<li>In a share_video call, you do not have a sharing relationship established with the account whose id was entered.</li>
+				<li>The reference ID is already in use in the destination account.</li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>305</td>
+			<td>IncompatibleValue<br />
+			Error</td>
+			<td>
+			<ul>
+				<li>The geo restriction property on this video is incompatible with the destination account.</li>
+				<li>The economics property on this video is incompatible with a destination account.</li>
+			</ul>
+			</td>
+			<td>
+			<ul>
+				<li>The settings in the video and the destination account don't match.</li>
+				<li>Advertising must be enabled on all accounts, or disabled on all accounts.</li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>306</td>
+			<td>FileFormatError</td>
+			<td>The provided file was not in the expected format</td>
+			<td>The file provided to create_video was not in a supported file format.</td>
+		</tr>
+		<tr>
+			<td>307</td>
+			<td>ObjectNotFound<br />
+			Error</td>
+			<td>The object specified by the given parameters could not be found.</td>
+			<td>The object with the specified id could not be found.</td>
+		</tr>
+		<tr>
+			<td>308</td>
+			<td>Nonmatching<br />
+			ChecksumError</td>
+			<td>The provided file's MD5 digest did not match the checksum provided.</td>
+			<td>We checked an uploaded file's hash and it didn't match the expected checksum. Checksums are expected to include numbers and lowercase letters; make sure your checksum generator is not creating checksums with uppercase letters.</td>
+		</tr>
+		<tr>
+			<td>309</td>
+			<td>RemoteAssets<br />
+			DisabledError</td>
+			<td>This account is not approved to use remote assets.</td>
+			<td>You attempted to create or update a remote asset, but your account is not enabled for this feature.</td>
+		</tr>
+		<tr>
+			<td>310</td>
+			<td>InvalidCountryCode<br />
+			Error</td>
+			<td>The following country codes are not supported for geo-restriction:</td>
+			<td>You used an invalid country code for geo-restriction.</td>
+		</tr>
+		<tr>
+			<td>311</td>
+			<td>GeoRestriction<br />
+			DisabledError</td>
+			<td>This account is not approved to use geo-restriction.</td>
+			<td>You attempted to set geo-restriction properties for a video, but your account is not enabled for this feature.</td>
+		</tr>
+		<tr>
+			<td>312</td>
+			<td>ParameterConflict<br />
+			Error</td>
+			<td>Two or more parameters passed to a method have incompatible values. &lt;specific conflict if known&gt;</td>
+			<td>Two or more parameter values passed to an API method have incompatible values.</td>
+		</tr>
+		<tr>
+			<td>313</td>
+			<td>MediaSharing<br />
+			DisabledError</td>
+			<td>This account is not approved to use media sharing.</td>
+			<td>You attempted to share a video, but your account is not enabled to use media sharing.</td>
+		</tr>
+		<tr>
+			<td>314</td>
+			<td>MediaDeliveryType<br />
+			DisabledError</td>
+			<td>This account is not enabled to the specified media delivery type (ie: http)</td>
+			<td>You specified HTTP for the media delivery type of a video, but your account is not enabled for it.</td>
+		</tr>
+		<tr>
+			<td>315</td>
+			<td>MethodRestricted</td>
+			<td>Access to the requested API method is restricted for the given token.</td>
+			<td>You called an <a href="http://docs.brightcove.com/en/video-cloud/media/solutions/unavailable-videos.html">unfiltered read method</a> with a token that is not enabled for unfiltered methods.</td>
+		</tr>
+		<tr>
+			<td>316</td>
+			<td>GeographyRestricted</td>
+			<td>Access to the requested account's data<br />
+			is restricted for the current geography.</td>
+			<td>You used a token that<br />
+			is associated with an IP address restricted account from an an IP address that is not allowed for that account.</td>
+		</tr>
+		<tr>
+			<td>317</td>
+			<td>DistributionDisabledError</td>
+			<td>This account is not approved to use the distribution feature.</td>
+			<td>You tried to use a token to use distribution feature, and the account isn't enabled for it.</td>
+		</tr>
+		<tr>
+			<td>403</td>
+			<td>N/A</td>
+			<td>Forbidden, no credentials</td>
+			<td>You tried to make a Media API call without using a token.</td>
+		</tr>
+	</tbody>
+</table>
+<!-- End of Drupal content -->
