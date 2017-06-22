@@ -8,27 +8,32 @@
 </section>
 
 <section class="bcls-section" id="gettingCredentials">
-<h2>Getting Credentials</h2>
+    <section class="bcls-section" id="gettingCredentials">
+    <h2 class="bcls-expander-head">Getting Credentials</h2>
 
-<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+    <div class="bcls-expander-content">
+        <p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
 
-<ul>
-	<li><a href="https://studio.brightcove.com/products/videocloud/admin/oauthsettings">https://studio.brightcove.com/products/videocloud/admin/oauthsettings</a></li>
-</ul>
+        <ul>
+            <li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+        </ul>
 
-<p>You can also get your credentials via CURL or Postman - see:</p>
+        <p>You can also get your credentials via CURL or Postman - see:</p>
 
-<ul>
-	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
-	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
-</ul>
-</section>
+        <ul>
+            <li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+            <li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+        </ul>
+    </div>
+    </section>
 
-<section class="bcls-section" id="rateLimiting">
-<h2>Rate limiting</h2>
+    <section class="bcls-section" id="rateLimiting">
+    <h2 class="bcls-expander-head">Rate limiting</h2>
 
-<p>No more than 100 concurrent Dynamic Ingest jobs are allowed. The best way to avoid violating this rule is to create an app that receives notifications from the Dynamic Ingest system as well as submitting ingest requests, so that you can keep track of how many jobs are running and how many have completed - see <a href="/node/17941#sample">Fallback / Retry Strategy</a>. This sample implements rudimentary rate limiting by pausing for 30 minutes after submitting 100 requests.</p>
-</section>
+    <div class="bcls-expander-content">
+        <p>No more than 100 concurrent Dynamic Ingest jobs are allowed. The best way to avoid violating this rule is to create an app that receives notifications from the Dynamic Ingest system as well as submitting ingest requests, so that you can keep track of how many jobs are running and how many have completed - see <a href="/node/17941#sample">Fallback / Retry Strategy</a>. This sample implements rudimentary rate limiting by pausing for 30 minutes after submitting 100 requests.</p>
+    </div>
+    </section>
 
 <section class="bcls-section" id="video_data">
 <h2>Video data</h2>
@@ -79,8 +84,8 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
 <section class="bcls-section" id="logger">
 <h2>Results Log</h2>
 
-<pre class="line-numbers"><code id="response" class="language-json">Response will appear here... </code></pre>
-
+<pre class="line-numbers">
+<code id="response" class="language-json">Response will appear here... </code></pre>
 </section>
 
 <section class="bcls-section" id="pageCode">
@@ -92,7 +97,8 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
 
 <h3>The JavaScript code for this sample:</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = ( function (window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function (window, document) {
     var // CMS API stuff
         account_id_display = document.getElementById("account_id"),
         account_id,
@@ -133,7 +139,7 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
      * @return {}
      */
     bclslog = function (context, message) {
-        if (window.console && console.log) {
+        if (window.console &amp;&amp; console.log) {
           console.log(context, message);
         }
         return;
@@ -142,7 +148,7 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
 
     // is defined
     isDefined = function(x){
-        if (x !== "" && x !== null && x !== undefined){
+        if (x !== "" &amp;&amp; x !== null &amp;&amp; x !== undefined){
             return true;
         } else{
             return false;
@@ -182,20 +188,20 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
             getResponse = function () {
                 try {
                     if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                      if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                         logResponse(type, httpRequest.responseText);
                         responseData = httpRequest.responseText;
-                        if (responseData.indexOf("error_code") < 0) {
+                        if (responseData.indexOf("error_code") &lt; 0) {
                             // handle the response
                         totalIngested++;
                         logResponse("totalIngested", totalIngested);
-                        if (videoNumber < totalVideos - 1) {
+                        if (videoNumber &lt; totalVideos - 1) {
                             videoNumber++;
                             currentJobs++;
                             logResponse('Processing video number', videoNumber);
                             logResponse('Current jobs: ', currentJobs);
-                            // if currentJobs is > 99, need to pause
-                            if (currentJobs > 99) {
+                            // if currentJobs is &gt; 99, need to pause
+                            if (currentJobs &gt; 99) {
                                 // reset currentJobs
                                 currentJobs = 0;
                                 // wait 30 min before resuming
@@ -223,7 +229,7 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
             };
         bclslog('options', options);
         // set up request data
-        requestData = "client_id=" + options.client_id + "&client_secret=" + options.client_secret + "&url=" + encodeURIComponent(options.url) + "&requestBody=" + encodeURIComponent(options.requestBody) + "&requestType=" + options.requestType;
+        requestData = "client_id=" + options.client_id + "&amp;client_secret=" + options.client_secret + "&amp;url=" + encodeURIComponent(options.url) + "&amp;requestBody=" + encodeURIComponent(options.requestBody) + "&amp;requestType=" + options.requestType;
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
@@ -255,7 +261,7 @@ or Custom Profile: <input id="custom_profile_display" type="text" value="" name=
             iMax = profilesArray.length,
             newOpt;
         // add options for standard ingest profiles
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             newOpt = new Option(profilesArray[i]);
             ingest_profile_display.add(newOpt);
         }
