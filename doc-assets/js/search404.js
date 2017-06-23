@@ -6,6 +6,6 @@ var BCLSfinder = ( function (window, document) {
         homeLink;
 
         path = path.replace(/-/g, ' ');
-        searchURL = homeDomain + '/search?search=' + encodeURI(path);
+        searchURL = 'https://support.brightcove.com/search?search=' + encodeURI(path);
         searchLink.setAttribute('href', searchURL);
 })(window, document);
