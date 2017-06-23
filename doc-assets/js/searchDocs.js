@@ -1,7 +1,7 @@
 var BCLSfinder = ( function (window, document) {
     var h1 = document.getElementsByTagName('h1')[0],
         // change newSite value to //support.brightcove.com when we go live
-        newSite = '//master-7rqtwti-6sglloa4yrkti.us.platform.sh',
+        newSite = 'https://support.brightcove.com',
         searchURL,
         searchTag,
         searchLink,
