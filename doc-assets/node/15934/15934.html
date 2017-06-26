@@ -1,24 +1,25 @@
 <p><strong>Identified known issues include:</strong></p>
 
 <ul>
-	<li><a href="#studio"><span class="video-cloud-only">Video Cloud</span><span class="perform-only">Perform</span> Studio</a>
+	<li><a href="#studio">Studio</a>
 
 	<ul>
-		<li class="video-cloud-only"><a href="#media">Media module</a></li>
+		<li><a href="#media">Media module</a></li>
 		<li><a href="#players">Players module</a></li>
-		<li class="video-cloud-only"><a href="#live">Live video</a></li>
-		<li class="video-cloud-only"><a href="#livemodule">Live module</a></li>
-		<li class="video-cloud-only"><a href="#analytics">Analytics</a></li>
-		<li class="video-cloud-only"><a href="#audience">Audience</a></li>
-		<li class="video-cloud-only"><a href="#di">Upload module / Dynamic Ingestion</a></li>
-		<li class="video-cloud-only"><a href="#admin">Administration</a></li>
-		<li class="video-cloud-only"><a href="#marketplace">Marketplace</a></li>
+		<li><a href="#live">Live video</a></li>
+		<li><a href="#livemodule">Live module</a></li>
+		<li><a href="#analytics">Analytics module</a></li>
+		<li><a href="#audience">Audience module</a></li>
+		<li><a href="#di">Upload module / Dynamic Ingestion</a></li>
+		<li><a href="#admin">Administration</a></li>
+		<li><a href="#marketplace">Marketplace</a></li>
 	</ul>
 	</li>
 </ul>
 
 <ul>
 	<li><a href="#player">Brightcove Player</a></li>
+	<li><a href="#player_plugins">Brightcove Player Plugins</a></li>
 </ul>
 
 <ul>
@@ -32,17 +33,21 @@
 </ul>
 
 <ul>
-	<li class="video-cloud-only"><a href="#cms">CMS API</a></li>
+	<li><a href="#analytics_api">Analytics API</a></li>
 </ul>
 
-<div id="studio" class="BCL-concept">
-<h2><span class="video-cloud-only">Video Cloud</span><span class="perform-only">Perform</span> Studio</h2>
+<ul>
+	<li><a href="#cms">CMS API</a></li>
+</ul>
 
-<p class="perform-only">No issues currently reported.</p>
+<div class="BCL-concept">
+<h2 id="studio">Studio</h2>
+
+<p>No reported issues.</p>
 </div>
 
-<div id="media" class="BCL-concept  video-cloud-only">
-<h2>Media Module</h2>
+<div class="BCL-concept">
+<h2 id="media">Media Module</h2>
 
 <h3>Preview Player</h3>
 
@@ -57,26 +62,30 @@
 <p>When sharing large numbers of videos, Brightcove recommends sharing at most two pages of videos at a time. Sharing a large number of videos at once may cause a timeout error.</p>
 
 <p>Adding captions to a video that was shared which already contains captions is not supported.</p>
+
+<h3>Scheduled Videos</h3>
+
+<p>Because the Playback API and Catalog cache videos for up to 10-15 minutes, a player requesting a video scheduled to become available during the next few minutes (up to 20), may not be able to get a playable video until the cache refreshes.</p>
 </div>
 
-<div id="players" class="BCL-concept">
-<h2>Players Module</h2>
+<div class="BCL-concept">
+<h2 id="players">Players Module</h2>
 
 <h3>Preload setting</h3>
 
 <p>Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.</p>
 </div>
 
-<div id="live" class="BCL-concept  video-cloud-only">
-<h2>Live Video</h2>
+<div class="BCL-concept">
+<h2 id="live">Live Video</h2>
 
 <h3>Brightcove Player counting video views for finished live events</h3>
 
 <p>The Brightcove player accounts for video_view every time a remote asset is loaded, even if it's a finished live event with an empty or no longer retrievable HLS playlist. <strong>Workaround:</strong> deactivate, unschedule, or delete the video.</p>
 </div>
 
-<div id="livemodule" class="BCL-concept  video-cloud-only">
-<h2>Live Module</h2>
+<div class="BCL-concept">
+<h2 id="livemodule">Live Module</h2>
 
 <h3>Clipped videos from live events have no published date</h3>
 
@@ -95,8 +104,8 @@
 <p>After trimming and saving the event as a VOD asset, the trimmed video may become "stuck" in a Processing state. If this happens, contact Brightcove Support. They can manually restart the transcode for the trimmed video. (BC-34543, BC-33687)</p>
 </div>
 
-<div id="analytics" class="BCL-concept  video-cloud-only">
-<h2>Analytics</h2>
+<div class="BCL-concept">
+<h2 id="analytics">Analytics</h2>
 
 <h3><strong>Custom Reports using Mutiple Filters</strong></h3>
 
@@ -129,18 +138,22 @@
 <h3>Internet Explorer Support</h3>
 
 <p>The Analytics module requires Internet Explorer 9 or later.</p>
+
+<h3>High number of "other" results for Device Manufacturer</h3>
+
+<p>In some cases, you may see a high number of "other" results for the Device Manufacturer This occurs when the Data Collector does not recognize the <code>user_agent </code> delivered to it with analytics data. The most common cause that we have identified for this is a custom user_agent string created by Instagram, but there are probably others.</p>
 </div>
 
-<div id="audience" class="BCL-concept  video-cloud-only">
-<h2>Audience</h2>
+<div class="BCL-concept">
+<h2 id="audience">Audience</h2>
 
 <h3>Internet Explorer Support</h3>
 
 <p>Audience lead forms require Internet Explorer 9 or newer.</p>
 </div>
 
-<div id="di" class="BCL-concept  video-cloud-only">
-<h2>Upload module / Dynamic ingestion</h2>
+<div class="BCL-concept">
+<h2 id="di">Upload module / Dynamic ingestion</h2>
 
 <h3>Uploads via the upload module fail if the clock on the device doesn't match the actual time</h3>
 
@@ -155,26 +168,30 @@
 <p>Video file names (including the extension) must not exceed 120 single-byte (60 double-byte) characters. If it does, the video will be ingested successfully, but you will not be able to retranscode it later.</p>
 </div>
 
-<div id="admin" class="BCL-concept  video-cloud-only">
-<h2>Administration</h2>
+<div class="BCL-concept">
+<h2 id="admin">Administration</h2>
 
 <h3>Tagged videos not syncing to YouTube</h3>
 
 <p>If video tags are added to a video while the video is in a Processing state, the YouTube sync service will not have the correct metadata to process the upload to YouTube. When using YouTube sync, Brightcove recommends adding tags after the video upload has completed.</p>
 </div>
 
-<div id="marketplace" class="BCL-concept  video-cloud-only">
-<h2>Marketplace</h2>
+<div class="BCL-concept">
+<h2 id="marketplace">Marketplace</h2>
 
 <h3>Marketplace module will not load in Google Chrome with an ad-blocking extension enabled</h3>
 
 <p>The Marketplace (Vemba) module will not load in Google Chrome with an ad-blocking extension enabled. Rather, the user will be served with an entirely blank page.</p>
 </div>
 
-<div id="player" class="BCL-concept">
-<h2>Brightcove Player</h2>
+<div class="BCL-concept">
+<h2 id="player">Brightcove Player</h2>
 
 <p>Check the <a href="/node/18049">Brightcove Player Release Notes</a> to see if a past known issue has been corrected by a recent release.</p>
+
+<h3>Videos Not Loading using Edge on Windows 10</h3>
+
+<p>When loading videos in Edge on Windows 10 (both within the Studio and in public URLs), a <strong>MEDIA_ERR_SRC_NOT_SUPPORTED</strong> error is displayed and the video cannot be played.</p>
 
 <h3>Context Menu</h3>
 
@@ -206,9 +223,9 @@
 
 <p>When testing playback with Chrome Device Mode, you may see this message: "The use of Chrome in device mode simply renders the viewport and user agent string of that device in Chrome, which is not an accurate representation of how the actual device will perform."</p>
 
-<h3>Using <code>data-setup</code></h3>
+<h3>Using <code>data-setup </code></h3>
 
-<p>You should NOT use <code>data-setup</code> with Brightcove Player. You may see use of <code>data-setup</code> in the API documentation, but this is because that documentation is generated directly from the Video.js player source code, and you MAY use that attribute with the <code>video</code> tag with pure Video.js. The attribute sends configuration information to the player, but Brightcove Player uses a different method to perform this task, which makes <code>data-setup</code> unreliable.</p>
+<p>You should NOT use <code>data-setup </code> with Brightcove Player. You may see use of <code>data-setup </code> in the API documentation, but this is because that documentation is generated directly from the Video.js player source code, and you MAY use that attribute with the <code>video </code> tag with pure Video.js. The attribute sends configuration information to the player, but Brightcove Player uses a different method to perform this task, which makes <code>data-setup </code> unreliable.</p>
 
 <h3>Protocol-aware source selection and DASH</h3>
 
@@ -242,15 +259,17 @@
 
 <h3>Fullscreen in non-Flash environments</h3>
 
-<p>In environments where Flash is disabled or Flash-based HLS is disabled for the player, and the player is explicitly sized using a <code>style</code> attribute on the <code>video</code> tag, fullscreen viewing may not function in some browsers.</p>
+<p>In environments where Flash is disabled or Flash-based HLS is disabled for the player, and the player is explicitly sized using a <code>style </code> attribute on the <code>video </code> tag, fullscreen viewing may not function in some browsers.</p>
 
-<p>Workaround: remove the <code>style</code> attribute from the <code>video</code> tag, and instead create a rule in page stylesheet like this:</p>
+<p>Workaround: remove the <code>style </code> attribute from the <code>video </code> tag, and instead create a rule in page stylesheet like this:</p>
 
 <pre>
 <code>.video-js{
-  width:640px;
-  height:360px;
-}</code></pre>
+width:640px;
+height:360px;
+}
+</code>
+</pre>
 
 <h3>Social Sharing</h3>
 
@@ -278,11 +297,13 @@
 
 <pre>
 <code>try {
-  myPlayer.catalog.load(video);
+myPlayer.catalog.load(video);
 } catch (e) {
-  myPlayer.catalog.load(video);
+myPlayer.catalog.load(video);
 }
-myPlayer.play();</code></pre>
+myPlayer.play();
+</code>
+</pre>
 
 <h3>HLS Video Durations</h3>
 
@@ -290,18 +311,39 @@ myPlayer.play();</code></pre>
 
 <h3>RequireJS</h3>
 
-<p>If you are using RequireJS you MAY have to use the <code>bc()</code> method to instantiate the player. The need to use the method will be determined by how/when the player assets are loaded. See the <a href="/node/18120">RequireJS and Brightcove Player</a> document for more information.</p>
+<p>If you are using RequireJS you MAY have to use the <code>bc() </code> method to instantiate the player. The need to use the method will be determined by how/when the player assets are loaded. See the <a href="/node/18120">RequireJS and Brightcove Player</a> document for more information.</p>
 
 <h3>referrer_url vs. description_url</h3>
 
-<p>The <code>referrer_url</code> value may have differnent values between iOS and Android devices. Because of this, it is recommended to use the <code>description_url</code> value instead. This value is consistent across all platforms and devices.</p>
+<p>The <code>referrer_url </code> value may have differnent va</p>
+
+<p>lues between iOS and Android devices. Because of this, it is recommended to use the <code>description_url </code> value instead. This value is consistent across all platforms and devices.</p>
 
 <h3>loop attribute on Safari</h3>
 
 <p>The <strong>loop</strong> attribute does not work correctly on Safari. You can use the solution detailed in the&nbsp;<a href="/node/18176">Brightcove Player Sample: Creating a Video Loop</a> document.</p>
 
-<div id="android" class="section">
-<h2>Android</h2>
+<h3>Using an HTML element id named global</h3>
+
+<p>You should not nest your advanced (in-page embed) player implementation code in a parent <code>&lt;div&gt; </code> tag with an <code>id </code> assigned the value <code>global </code>. This causes issues with Brightcove Player.</p>
+</div>
+
+<div class="section">
+<h2 id="player_plugins">Brightcove Player Plugins</h2>
+
+<p>You will be linked to the particular plugin document so see the known issues for a plugin.</p>
+
+<ul>
+	<li><a href="/node/18140#Known_issues">Advertising with the FreeWheel Plugin</a></li>
+	<li><a href="/node/18080#issues">Advertising with the IMA3 Plugin</a></li>
+	<li><a href="/node/18145#Known_issues">Display Error Messages Plugin</a></li>
+	<li><a href="/node/18089#Known_issues">Live DVRUX Plugin</a></li>
+	<li><a href="/node/18127#Known_issues">Manual Rendition Selection Plugin</a></li>
+</ul>
+</div>
+
+<div class="section">
+<h2 id="android">Android</h2>
 
 <ul>
 	<li>On devices, the progress bar may not be in sync for HLS videos, since HLS does not work very well on Android. The total duration of the video may also incorrectly show up as 0:01.</li>
@@ -313,8 +355,8 @@ myPlayer.play();</code></pre>
 <p class="BCL-aside">Learn how to create Android apps that utilize the <a href="/node/18245">Brightcove Player SDK for Android</a>.</p>
 </div>
 
-<div id="ios" class="section">
-<h2>iOS</h2>
+<div class="section">
+<h2 id="ios">iOS</h2>
 
 <ul>
 	<li>Native closed caption menu is not present in iOS 7 full screen.</li>
@@ -332,8 +374,8 @@ myPlayer.play();</code></pre>
 <p class="BCL-aside">Learn how to create iOS apps that utilize the <a href="/node/18227">Brightcove Player SDK for iOS</a>.</p>
 </div>
 
-<div id="windows8" class="section">
-<h2>Windows 8</h2>
+<div class="section">
+<h2 id="windows8">Windows 8</h2>
 
 <ul>
 	<li>Companion ads are not supported.</li>
@@ -346,8 +388,8 @@ myPlayer.play();</code></pre>
 </ul>
 </div>
 
-<div id="chrome" class="section">
-<h2>Chrome</h2>
+<div class="section">
+<h2 id="chrome">Chrome</h2>
 
 <ul>
 	<li><strong>Issue with renditions that have a low audio bitrate</strong>
@@ -356,13 +398,13 @@ myPlayer.play();</code></pre>
 
 	<p><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=534301">https://bugs.chromium.org/p/chromium/issues/detail?id=534301</a></p>
 
-	<p>playback on that browser for version 5 and above of BC player will fail (showing MEDIA_ERR_DECODE) if the audio profile of the rendition being attempted is different from AAC-LC.</p>
+	<p>Playback on that browser for version 5 and above of BC player will fail (showing MEDIA_ERR_DECODE) if the audio profile of the rendition being attempted is different from AAC-LC.</p>
 
 	<p>To avoid this happening on new ingested content, customers need to make sure they either</p>
 
 	<ul>
 		<li>use an audio bitrate equals or greater than 48kbps</li>
-		<li>include the following setting on their DI profile: <code>"max_aac_profile": "aac-lc"</code></li>
+		<li>include the following setting on their DI profile: <code>"max_aac_profile": "aac-lc" </code></li>
 	</ul>
 
 	<p>To avoid this happening on existing content, options are:</p>
@@ -375,8 +417,8 @@ myPlayer.play();</code></pre>
 </ul>
 </div>
 
-<div id="firefox" class="section">
-<h2>Firefox</h2>
+<div class="section">
+<h2 id="firefox">Firefox</h2>
 
 <ul>
 	<li>Firefox Browser for Android: Not officially supported, but will try to address bugs if possible.</li>
@@ -384,14 +426,16 @@ myPlayer.play();</code></pre>
 </ul>
 </div>
 
-<div id="internetexplorer" class="section">
-<h2>Internet Explorer</h2>
+<div class="section">
+<h2 id="internetexplorer">Internet Explorer</h2>
 
 <ul>
-	<li>If you are using the Brightcove Player In-Page implementation with IE8, you must include the following script in the <code>head</code> section of your page for the video element to work properly:
+	<li>If you are using the Brightcove Player In-Page implementation with IE8, you must include the following script in the <code>head </code> section of your page for the video element to work properly:
 
 	<pre>
-<code>&lt;script&gt;document.createElement('video')&lt;/script&gt;</code></pre>
+<code>&lt;script&gt;document.createElement('video')&lt;/script&gt;
+</code>
+</pre>
 
 	<p>To learn more about the extra setup steps needed for IE8, see the <a href="/node/18205">Getting Started with IE8</a> document.</p>
 
@@ -408,25 +452,24 @@ myPlayer.play();</code></pre>
 </ul>
 </div>
 
-<div id="safari" class="section">
-<h2>Safari</h2>
+<div class="section">
+<h2 id="safari">Safari</h2>
 
 <ul>
-	<li>The <code>video</code> element's <code>preload</code> attribute is supported in Safari 5.0 and later. For details, see the <a href="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/AudioandVideoTagBasics/AudioandVideoTagBasics.html">Safari HTML5 Audio and Video Guide</a>.</li>
+	<li>The <code>video </code> element's <code>preload </code> attribute is supported in Safari 5.0 and later. For details, see the <a href="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/AudioandVideoTagBasics/AudioandVideoTagBasics.html">Safari HTML5 Audio and Video Guide</a>.</li>
 </ul>
 </div>
 
-<div id="ima3" class="section">
-<h2>IMA3</h2>
+<div class="section">
+<h2 id="ima3">IMA3</h2>
 
 <ul>
 	<li>When using Google IMA3 skippable ads the Skip ad buttons do not have tab indices, so keyboard navigation to those buttons is not possible. Hence, viewers who depend on keyboard navigation will not be able to skip the ad.</li>
 </ul>
 </div>
-</div>
 
-<div id="sdks" class="BCL-concepts">
-<h2>Native Player SDKs</h2>
+<div class="BCL-concepts">
+<h2 id="sdks">Native Player SDKs</h2>
 
 <h3>Using emulators</h3>
 
@@ -437,7 +480,7 @@ myPlayer.play();</code></pre>
 <h4>360° videos</h4>
 
 <ul>
-	<li>If you do not use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/index.html">BrightcovePlayer</a> class, your 360° video will play, but the app may crash when pausing and resuming it. To learn more about using this class, see the <a href="/node/18252">Understanding the BrightcovePlayer class</a> document.</li>
+	<li>If you do not use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcovePlayer.html">BrightcovePlayer</a> class, your 360° video will play, but the app may crash when pausing and resuming it. To learn more about using this class, see the <a href="/node/18252">Understanding the BrightcovePlayer class</a> document.</li>
 	<li>You may experience some video drift after rotating the device. The problem is related to how the device gyroscope is calibrated, and this can affect performance. It is not associated with specific device makes and models, but instead on the motion sensor hardware installed on the device. The newer Android OS's have more sophisticated filter algoritms to correct the problem. A simple fix is to turn off the device and turn it on while it is lying on a flat, stable surface.</li>
 </ul>
 
@@ -454,13 +497,15 @@ myPlayer.play();</code></pre>
 </ul>
 
 <h4>Version 4.11.0: Known Issues</h4>
+
 <ul>
 	<li>When playing IMA ads on a Fire TV, you may experience a 5 to 10 second delay between the end of one ad playback and the beginning of the next ad. This is especially noticeable when playing multiple ads in an Ad Break. This may be an issue with the Fire TV, since this does not happen on the Nexus player.</li>
 </ul>
 
 <h4>Live streams</h4>
+
 <ul>
-    <li>The Native Player SDK does not support DASH Live streams, nor does it support ads with HLS Live streams.</li>
+	<li>The Native Player SDK does not support DASH Live streams, nor does it support ads with HLS Live streams.</li>
 </ul>
 
 <h4>Version 4.10.0: Known Issues</h4>
@@ -475,24 +520,42 @@ myPlayer.play();</code></pre>
 
 <h3 id="iossdk">Native Player SDK for iOS</h3>
 <!-- <p>No issues currently reported.</p> -->
-<h4>Live streams</h4>
-<ul>
-    <li>The Native Player SDK does not support ads with HLS Live streams.</li>
-</ul>
 
+<h4>Live streams</h4>
+
+<ul>
+	<li>The Native Player SDK does not support ads with HLS Live streams.</li>
+</ul>
 </div>
 
-<div id="cms" class="BCL-concept  video-cloud-only">
-<h2>CMS API</h2>
+<div id="analytics_api">
+<h2>Analytics API</h2>
 
-<h3>In certain cases, the <code>original_filename</code> gets corrupted</h3>
+<h3>Requesting video or player fields in the <code>fields </code> without requesting them as dimensions</h3>
 
-<p>In some cases, the <code>original_filename</code> field for videos gets corrupted and will not contain the real filename.</p>
+<p>If you use <code>video </code> or <code>player </code> fields (such a <code>video </code>, <code>video_name </code>, <code>player </code> or <code>player_name </code>) in the fields to return but do not include them in the dimensions in the <code>dimensions </code>, the response items will include irrelevant values for those items and should be ignored. Other values in the items will be valid</p>
+
+<p><strong>Workaround</strong>: Do not include video or player fields in the response fields unless you also include them as <code>dimensions </code>.</p>
+
+<h3>High number of "other" results for <code>device_manufacturer </code></h3>
+
+<p>In some cases, you may see a high number of "other" results for the <code>device_manufacturer </code> field. This occurs when the Data Collector does not recognize the <code>user_agent </code> delivered to it with analytics data. The most common cause that we have identified for this is a custom user_agent string created by Instagram, but there are probably others.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="cms">CMS API</h2>
+
+<h3>In certain cases, the <code>original_filename </code> gets corrupted</h3>
+
+<p>In some cases, the <code>original_filename </code> field for videos gets corrupted and will not contain the real filename.</p>
 
 <h3>Tags may not contain commas</h3>
 
 <p>If you attempt to add a tag to a video that contains a comma (e.g. "SomeCo, Inc") the request will fail with an "illegal tag" error</p>
+
+<h3>Scheduled Videos</h3>
+
+<p>Because the Playback API and Catalog cache videos for up to 10-15 minutes, a player requesting a video scheduled to become available during the next few minutes (up to 20), may not be able to get a playable video until the cache refreshes.</p>
 </div>
-<!-- script added to handle product specific classes --><script src="//learning-services-media.brightcove.com/doc-assets/js/show-content-by-product.js"></script>
 
 <p>&nbsp;</p>
