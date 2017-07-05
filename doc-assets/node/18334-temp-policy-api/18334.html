@@ -3,14 +3,11 @@
 <h2>Do you need one?</h2>
 
 <aside class="bcls-aside bcls-aside--information">Notes:
-	<ul>
-		<li>
-			Policy keys are generated for Brightcove Players automatically when you create them. You only need to generate policy keys directly using this API if you wish to get a key with geo-restrictions for a player, or to access the Playback API without creating a player - typically this would be for apps created using the <a href="/node/10104">device SDKs</a>. See <a href="/node/18125">Policy Keys</a> for instructions on how to obtain the policy key for any Brightcove Player.
-		</li>
-		<li>
-			When performing video search requests, you must use a <a href="#Video_search">search-enabled Policy Key</a>. Note that this request will only return playable videos. For API request/response details, see the <strong>Get Videos</strong> section of the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api-stage/stage/doc/index.html#api-videoGroup-Get_Videos">Playback API Reference</a>.
-		</li>
-	</ul></aside>
+<ul>
+	<li>Policy keys are generated for Brightcove Players automatically when you create them. You only need to generate policy keys directly using this API if you wish to get a key with geo-restrictions for a player, or to access the Playback API without creating a player - typically this would be for apps created using the <a href="/node/10104">device SDKs</a>. See <a href="/node/18125">Policy Keys</a> for instructions on how to obtain the policy key for any Brightcove Player.</li>
+	<li>When performing video search requests, you must use a <a href="#Search_videos">search-enabled Policy Key</a>. Note that this request will only return playable videos. For API request/response details, see the <strong>Get Videos</strong> section of the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api-stage/stage/doc/index.html#api-videoGroup-Get_Videos">Playback API Reference</a>.</li>
+</ul>
+</aside>
 </section>
 
 <section class="bcls-section" id="faq">
@@ -137,23 +134,20 @@
 <p>To blacklist those countries instead, set <code>exclude_countries</code> to true.</p>
 </section>
 
-<section id="Video_search" class="bcls-section">
-	<h2>Video search</h2>
+<section id="Search_videos" class="bcls-section">
+<h2>Search videos</h2>
 
-	<p>When performing a video search request, you must use a Policy Key that is search-enabled. In the request body, include the following:</p>
+<p>When performing a video search request, you must use a Policy Key that is search-enabled. In the request body, include the following:</p>
 
-	<pre class="line-numbers">
+<pre class="line-numbers">
 	<code class="language-json">{
-  "key-data": {
-    "apis": "search"
-  }
+	"key-data": {
+		"apis": ["search"]
+	}
 }</code></pre>
 
-	<aside class="bcls-aside bcls-aside--warning">
-		In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.
-	</aside>
+<aside class="bcls-aside bcls-aside--warning">In general, search-enabled Policy Keys should only be stored on a server and not in a browser player or mobile app, since they can be used to list all playable videos. For some accounts this may not be applicable if you do not care if all of your playable videos can be discovered.</aside>
 </section>
-
 <!-- <p>You can also use the full format for the request body. In this format, you include a <code>policies</code> array of policy objects, which allow or deny access to the Playback API based on logical patterns. A <code>pattern</code> is an object whose only property is a logical operator. The following logical operators can be used:</p>
                     <ul>
                         <li><code>=</code> equals</li>
