@@ -319,8 +319,8 @@
 		<li>
 		<p>Lines 92-94: Loop through the media data returned from the Playback API and change the <code>duration</code> from milliseconds to seconds.</p>
 
-		<aside class="bcls-aside bcls-aside--tip">The Playback API stores <code>duration</code> in milliseconds. Use the <code>player.catalog.transformVideoResponse()</code> to convert the API response into a format compatible with the player's <code>playlist()</code> function. This includes duration times and https image compatibility.</aside> function.</aside>
-		</li>
+		<aside class="bcls-aside bcls-aside--tip">The Playback API stores <code>duration</code> in milliseconds. Use the <code>player.catalog.transformVideoResponse()</code> to convert the API response into a format compatible with the player's <code>playlist()</code> function. This includes duration times and https image compatibility.</aside>
+		function.</li>
 		<li>Line 96: Loads the first video object into the player.</li>
 		<li>Line 98: Loads the current set of video objects into the playlist.</li>
 		<li>Lines 105-109: Set the Playback API request URL. First time, all videos are returned for the playlist. After that, the next set of videos are returned from the playlist, using the <code>limit</code> and <code>offset</code> parameters.</li>
@@ -401,7 +401,35 @@
       getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
-            if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
+            if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status httpRequest.status < 300) {
+              responseData = httpRequest.responseText;
+              parsedData = JSON.parse(responseData);
+              switch (mediaType) {
+                case 'video':
+                  // do nothing
+                  break;
+                case 'playlist':
+                  callback(parsedData);
+                  break;
+              }
+            } else {
+              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+            }
+          }
+        } catch (e) {
+          alert('Caught Exception: ' + e);
+        }
+      };
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('GET', requestURL);
+    // set headers
+    httpRequest.setRequestHeader('Accept', 'application/json;pk=' + policyKey);
+    // open and send request
+    httpRequest.send();
+  };
+&lt;/script&gt;</code></pre>
 	</li>
 </ol>
 &nbsp;
