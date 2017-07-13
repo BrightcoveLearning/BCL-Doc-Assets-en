@@ -7,8 +7,8 @@
 <p>Clips can be created in four ways:</p>
 
 <ul>
-	<li>With start and end times defined relative to the start and end time of the whole live stream event</li>
-	<li>With start and end times defined in Epoch (Unix) time (in seconds)</li>
+	<li>With <code>start_time</code> and/or <code>end_time</code> defined relative to the start and end time of the whole live stream event</li>
+	<li>With <code>start_time</code> and/or <code>end_time</code> defined in Epoch (Unix) time (in seconds)</li>
     <li>With duration and either a start or end time</li>
     <li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li>
 </ul>
@@ -21,7 +21,12 @@
             <li>If the job is finished: (finished_at - duration) to (finished_at)</li>
         </ul>
     </li>
-    <li></li>
+    <li>If you specify both "start_time" AND "end_time":
+    <ul>
+        <li>If the job is active and still live: as long as the Epoch time window falls entirely within "created_at" and the request time, the clip will be made</li>
+        <li>If the job is finished: as long as the Epoch time window falls entirely within "created_at" and "finished_at", the clip will be made</li>
+    </ul>
+    </li>
 </ol>
 <p>Clips can also be sent to multiple destinations:</p>
 
