@@ -23,25 +23,21 @@
 			<li>Video content can only be watched on the device and app that has downloaded the content.</li>
 			<li>Video content can only be watched until a specific date and time expiration.</li>
 			<li>Video URLs returned to the client will expire so that others can not use them.</li>
-			<li>When the app is deleted, all downloaded content is removed.</li>
+			<li>When the app is deleted, all downloaded content is removed when using the default storage location.</li>
 			<li>Your app can be configured to delete locally stored content at any time.</li>
-		</ul>
-	</section>
-
-	<section id="Additional_functionality" class="bcls-section">
-		<h2>Additional functionality</h2>
-		<p>The Brightcove Native Player SDKs also provide support for the following functionality to enhance the users experience with Offline Playback with DRM:</p>
-
-		<ul>
-			<li>Publishers can specify the maximum average bitrate for the downloaded video.</li>
-			<li>Download and display of closed captions.</li>
-			<li>Multiple audio tracks are supported with the Native SDK for Android. For now, only single audio tracks are supported with the Native SDK for iOS.</li>
 		</ul>
 	</section>
 
 	<section id="Download_management" class="bcls-section">
 		<h2>Download management</h2>
-		<p>The Brightcove Native Player SDKs handle the complexities of downloading content to a viewer's device, greatly simplifying the process for native applications.</p>
+		<p>
+			The Brightcove Native Player SDKs handle the complexities of downloading content to a viewer's device, greatly simplifying the process for native applications.
+		</p>
+		<ul>
+			<li>Publishers can specify the maximum average bitrate for the downloaded video.</li>
+			<li>Captions can be downloaded and displayed while offline.</li>
+			<li>Multiple audio tracks are supported with the Native SDK for Android. For now, only single audio tracks are supported with the Native SDK for iOS.</li>
+		</ul>
 
 		<p>The following functionality can be added to your apps to support download management:</p>
 
@@ -51,7 +47,6 @@
 			<li><a href="#Manage_the_download_queue">Manage the download queue</a></li>
 			<li><a href="#Show_local_storage_space">Show local storage space</a></li>
 			<li><a href="#Pause_resume_cancel_download">Pause/resume/cancel download</a></li>
-			<li><a href="#Playback_content">Playback content</a></li>
 		</ul>
 
 		<h3 class="BCL_conceptTitle" id="Display_content">Display content</h3>
@@ -71,9 +66,9 @@
 
 		<p>Total estimated size, current download status and percent of downloading progress information will be returned by the SDKs.</p>
 
-		<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Download status" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-progress.png" />
+		<!-- <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Download status" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-progress.png" />
 		<figcaption class="bcls-caption--image">Download status</figcaption>
-		</figure>
+		</figure> -->
 
 		<aside class="bcls-aside bcls-aside--tip">
 			For Android devices, download status is also shown in the Notification Area. The notification title is set to the video title. The notification is removed if the download is paused or cancelled. For details, see the <a href="/node/18246#Offline_playback_with_DRM">Code Snippets using the Native SDK for Android</a> document.
@@ -83,7 +78,7 @@
 
 		<p>Create and manage the download queue.</p>
 
-		<p>The Native SDKs download videos one at a time and provide updates so that you can manage the queue.</p>
+		<p>The Native SDKs will allow mutliple videos to be queued for downloads. For example, a user can download multiple episodes of a season and the Native SDKs will manage the process by providing download status for each asset.</p>
 		<!-- <figure class="bcls-figure">
 		  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-queue.png" alt="Download queue">
 		  <figcaption class="bcls-caption--image">Download queue</figcaption>
@@ -103,17 +98,15 @@
 
 		<p>Allow the user to pause, resume or cancel content download.</p>
 
-		<p>Download functionality will resume where it left off IF the user pauses/resumes or if the download is interrupted. If download is cancelled, any progress made will be erased.</p>
+		<p>Download functionality will resume where it left off if the user pauses/resumes or if the download is interrupted. For example, it you lose Wi-Fi connection during download, it will resume where it left off when you are reconnected.</p>
+		<p>
+			If you cancel a video download, then any progress made will be erased.
+		</p>
 
-		<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Pause/resume/cancel download" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-cancelled.png" />
+		<!-- <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Pause/resume/cancel download" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-cancelled.png" />
 		<figcaption class="bcls-caption--image">Pause/resume/cancel download</figcaption>
-		</figure>
+		</figure> -->
 
-		<h3 class="BCL_conceptTitle" id="Playback_content">Playback content</h3>
-
-		<p>Playback content while it downloads. Downloaded content can be played back locally when the device is offline or streamed when the device is online.</p>
-
-		<p>The SDKs support this. The Application can choose to play the locally stored content or stream it instead.</p>
 	</section>
 
 	<section id="Local_catalog_management" class="bcls-section">
@@ -132,19 +125,51 @@
 
 		<p>Show all of the downloaded episodes for each show/season.</p>
 
-		<p>The SDKs return metadata and playback details for all downloaded content. You can then filter the results for your specific implementation.</p>
-
-		<h3 class="BCL_conceptTitle" id="Play_local_content">Play local content</h3>
-
-		<p>Allow users to playback local content.</p>
-
-		<p>The SDKs accept local content as a playable source.</p>
+		<p>The SDKs return metadata and playback details for all downloaded content. This metadata includes video title, description, thumbnails, available captions, available audio tracks, etc.</p>
+		<p>
+			There are also new metadata properties specific to offline playback. These include the following:
+		</p>
+		<ul>
+			<li>
+				Token identifier
+			</li>
+			<li>
+				License expiration date
+			</li>
+			<li>
+				Download start and end time
+			</li>
+			<li>
+				Downloaded thumbnail name along with its file URL
+			</li>
+			<li>
+				Downloaded poster name along with its file URL
+			</li>
+			<li>
+				Relative and derived file URL of the FairPlay bundle
+			</li>
+		</ul>
+		<p>
+			You can then filter the results for your specific implementation.
+		</p>
+		<aside class="bcls-aside bcls-aside--tip">
+			You will be able to see the time remaining for a rental license that has been purchased.
+		</aside>
 
 		<h3 class="BCL_conceptTitle" id="Delete_local_content">Delete local content</h3>
 
 		<p>Allow users to delete content from local storage.</p>
 
-		<p>The SDKs expose a method to delete a video along with its metadata and thumbnail images.</p>
+		<p>The SDKs expose a method to delete a video along with its metadata and related assets.</p>
+	</section>
+
+	<section id="Content_playback" class="bcls-section">
+		<h2>Content playback</h2>
+		<p>The Native SDKs allow you to play content in the following situations:</p>
+		<ul>
+			<li>Play a video while it downloads.</li>
+			<li>Play a video after it has been downloaded. Downloaded content can be played back locally when the device is offline or streamed when the device is online.</li>
+		</ul>
 	</section>
 
 	<section id="Analytics" class="bcls-section">
@@ -168,17 +193,6 @@
 		<!-- <h3>Offline playback metrics</h3>
 
 		<p>Offline Playback Metrics will track various playback data, however is not yet available.</p> -->
-	</section>
-
-	<section id="Coming_soon" class="bcls-section">
-		<!-- <h2>Coming soon</h2>
-		<ul>
-			<li>For now, publishers will not be able to specify download quality. The Native SDKs will use the highest rendition associated with the requested video. In the future, you will be able to specify the maximum average bitrate for the downloaded video.</li>
-			<li>In the future, download and display of closed captions will be supported.</li>
-			<li>In the future, playback of multiple audio tracks will be supported.</li>
-			<li>The download queue should be handled at the app level.</li>
-		</ul> -->
-
 		<aside class="bcls-aside bcls-aside--tip">
 			<p>Looking for developer docs? Below are links to the Brightcove Player SDK documentation:</p>
 
