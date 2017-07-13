@@ -4,15 +4,25 @@
 
 <p>Definitions for clips are created using the <code>/vods</code> endpoint.</p>
 
-<p>Clips can be created in two ways:</p>
+<p>Clips can be created in four ways:</p>
 
 <ul>
 	<li>With start and end times defined relative to the start and end time of the whole live stream event</li>
 	<li>With start and end times defined in Epoch (Unix) time (in seconds)</li>
+    <li>With duration and either a start or end time</li>
+    <li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li>
 </ul>
 
-<p>You can also specify a <code>duration</code> of the clip with either a start or end position. If you specify just a duration without a start or end position, the clip will be taken from the end of the live stream job.</p>
-
+<h3>Notes</h3>
+<ol>
+    <li>If you specify <code>duration</code> without a start or end time, the resulting clip will be as follows:
+        <ul>
+            <li>If the job is active and still live: (request time - duration) to (request time)</li>
+            <li>If the job is finished: (finished_at - duration) to (finished_at)</li>
+        </ul>
+    </li>
+    <li></li>
+</ol>
 <p>Clips can also be sent to multiple destinations:</p>
 
 <ul>
