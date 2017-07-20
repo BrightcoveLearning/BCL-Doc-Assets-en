@@ -1,0 +1,233 @@
+<article class="bcls-article">
+<section id="developmentapproach" class="bcls-section">
+<h2>Development approach</h2>
+
+<p>The JavaScript and CSS you develop for plugins will eventually need to be stored in an Internet accessible location, but it is recommended that during development you create and test locally. To do this, you will perform the following:</p>
+
+<ul>
+	<li>Create a file to contain your JavaScript plugin code</li>
+	<li>Create a file to contain your CSS plugin code (if needed)</li>
+	<li>Create an HTML file for testing. Use the <code>embed_in_page</code> implementation for the player</li>
+	<li>Add an <code>id</code> to the <code>&lt;video&gt;</code> tag</li>
+	<li>Link to the JavaScript and CSS pages</li>
+	<li>Use a <code>&lt;script&gt;</code> tag to call the function</li>
+	<li>Develop and debug your code</li>
+</ul>
+
+<p>The rest of this document guides you through these steps to build and deploy a simple plugin.</p>
+</section>
+
+<section id="buildthebasics" class="bcls-section">
+<h2>Build the basics</h2>
+
+<p>To begin the process of building a plugin, you need to perform some of the foundational, high-level steps mentioned above.</p>
+
+<ol class="bcls-tasklist">
+	<li>Create a folder named <code>plugin-dev</code> that can be browsed using an actual HTTP server. The server is necessary for the iframe implementation testing later in this document.</li>
+	<li>In the folder, create three files with the following names:
+	<ul>
+		<li>plugin-dev.html (Insert the basic elements for an HTML page into the file)</li>
+		<li>plugin-dev.js</li>
+		<li>plugin-dev.css</li>
+	</ul>
+	</li>
+	<li>Using Studio's <strong>Players</strong> module, create a new player.</li>
+	<li class="video-cloud-only">In the <strong>Media</strong> module, select a video and publish it with the newly created player.</li>
+	<li class="player-only">Using the <strong>VIDEO CONTENT</strong> section, associate a video with the player, then save and publish the player.</li>
+	<li class="video-cloud-only">Copy the <strong>Advanced</strong> code and paste into the body of the <code>plugin-dev.html</code> page.</li>
+	<li class="player-only">From the <strong>Embed Code &amp; URL &gt; Published Player</strong> menu, copy the <strong>Advanced Embed Code</strong> code and paste into the body of the <code>plugin-dev.html</code> page.</li>
+	<li>Add an <code>id</code> attribute to the <code>&lt;video&gt;</code> tag with a value of <code>player</code>.</li>
+	<li>Check to be sure your HTML page appears similar to the following <span class="player-only">(Brightcove Player customers will not have a <code>data-video-id</code> property)</span>:
+	<pre class="line-numbers" data-start="58">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Quick Start Plugin Dev&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;video id="player"
+    data-video-id="4607746980001"
+    data-account="1507807800001"
+    data-player="efdfea47-94f7-41bf-aca5-b6864091a716"
+    data-embed="default"
+    class="video-js" controls&gt;&lt;/video&gt;
+  &lt;script src="//players.brightcove.net/1507807800001/efdfea47-94f7-41bf-aca5-b6864091a716_default/index.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+	</li>
+	<li>Browse the page to be sure your video is playing.</li>
+</ol>
+</section>
+
+<section id="javascript" class="bcls-section">
+<h2>Create JavaScript</h2>
+
+<p>Next you will create and test the JavaScript code to build an overlay for the video.</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the file <code>plugin-dev.js</code> and paste in the following JavaScript code:
+
+	<pre class="line-numbers">
+<code class="language-javascript">videojs.registerPlugin('pluginDev', function() {
+  var player = this,
+  overlay = document.createElement('p');
+  overlay.className = 'vjs-overlay';
+  overlay.innerHTML = "Becoming a plugin developer";
+  player.el().appendChild(overlay);
+});</code></pre>
+<aside class="bcls-aside bcls-aside--information">Note: for version 5.x and earlier players, you must use <code>videojs.plugin()</code> instead of <code>videojs.registerPlugin()</code></aside>
+	</li>
+	<li>Check your understanding of each line inserted:
+	<ul>
+		<li>Lines 1 and 7 are the standard syntax to begin and end a new player plugin. In this case, the plugin name is <code>pluginDev</code>.</li>
+		<li>Line 2 is a standard way to have a way to get a handle to the player. This is necessary to call methods of the player, which you will do later.</li>
+		<li>Line 3 creates a paragraph element in the document and assigns it to the <code>overlay</code> variable.</li>
+		<li>Line 4 assigns a class to the overlay which will be used later in conjunction with CSS.</li>
+		<li>Line 5 adds text to the paragraph element.</li>
+		<li>Line 6 uses the <code>el()</code> method of the player to retrieve the player's DOM element, then appends the new paragraph element to that DOM.</li>
+	</ul>
+
+	<aside class="bcls-aside bcls-aside--information">Note: The trailing semicolon at the end of the plugin's JavaScript code (line 7 above) is required.</aside>
+	</li>
+	<li>In the HTML file, add the following code just below the existing <code>&lt;script&gt;</code> tags. This code includes the JavaScript file and then calls the method defined in that JavaScript.
+	<pre class="line-numbers" data-start="83">
+<code class="language-html">&lt;script type="text/javascript" src="plugin-dev.js"&gt;&lt;/script&gt;
+&lt;script&gt;videojs('player').pluginDev();&lt;/script&gt;</code></pre>
+	</li>
+	<li>Browse the HTML page again, and you will see nothing visible has changed. The problem is that the overlay is there, but not visible. You will change this later.</li>
+	<li>To verify the overlay is present, use the development tools of your browser. In the <em>Elements</em> section, check the player's <code>&lt;div&gt;</code> element, and you will see the newly inserted paragraph element, as shown here:
+	<figure class="bcls-figure"><img class="bcls-image" alt="quick-start-overlay-in-elements" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/qs-plugin-dev/quick-start-overlay-in-elements.png" /></figure>
+	</li>
+</ol>
+</section>
+
+<section id="styletheplugin" class="bcls-section">
+<h2>Style the plugin</h2>
+
+<p>You know the overlay is now part of the player, but not visible. Next you will style the overlay so it becomes visible. In this section of the document, you will use a very simple CSS to ensure the overlay is visible.</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the file <code>plugin-dev.css</code> and paste in the following styles:
+
+	<pre class="line-numbers" data-start="89">
+<code class="language-javascript">.vjs-overlay {
+    background-color: #333333;
+    color: white;
+    position: absolute;
+}</code></pre>
+	</li>
+	<li>In the HTML file, add the following code just below the existing <code>&lt;link&gt;</code> tag. This code links to your newly created CSS file.
+	<pre class="line-numbers" data-start="97">
+<code class="language-html">&lt;link href="plugin-dev.css" rel="stylesheet"&gt;</code></pre>
+	</li>
+	<li>Browse the HTML page and you will see the overlay is now visible.
+	<figure class="bcls-figure"><img class="bcls-image" alt="quick-start-overlay-showing" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/qs-plugin-dev/quick-start-overlay-showing.png" /></figure>
+	</li>
+</ol>
+</section>
+
+<section id="passdatatoplugin" class="bcls-section">
+<h2>Pass data to the plugin</h2>
+
+<p>It will often be the case that you want to change the behavior of your plugin at initialization time. This is possible by passing data into the plugin using the <code>options</code> property. In this example you will pass in the text to be displayed in the overlay.</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the HTML page and alter the <code>&lt;script&gt;</code> tags so a variable named <code>options</code> is created and assigned an object with a key-value pair of <em>"overlayText":"This data is supplied at initialization"</em>. Also, pass the <code>options</code> variable as an argument when calling the <code>pluginDev()</code> method. The changes should appear as follows:
+
+	<pre class="line-numbers" data-start="101">
+<code class="language-html">  &lt;script type="text/javascript" src="plugin-dev-copy.js"&gt;&lt;/script&gt;
+  &lt;script type="text/javascript"&gt;
+    <span class="bcls-highlight">var options = {"overlayText": "This data supplied at initialization"};</span>
+  &lt;/script&gt;
+  <span class="bcls-highlight">&lt;script&gt;videojs('player').pluginDev(options);&lt;/script&gt;</span></code></pre>
+	</li>
+	<li>You now need to alter the plugin's JavaScript to use the data passed to the function. Line 110 shows the function accepting the data as a parameter, and line 114 uses the object's data.
+	<pre class="line-numbers" data-start="110">
+<code class="language-javascript"><span class="bcls-highlight">videojs.plugin('pluginDev', function(options) {</span>
+  var player = this,
+  overlay = document.createElement('p');
+  overlay.className = 'vjs-overlay';
+  <span class="bcls-highlight">overlay.innerHTML = options.overlayText;</span>
+  player.el().appendChild(overlay);
+});</code></pre>
+	</li>
+	<li>Browse the HTML page and you will see the new text being used.
+	<figure class="bcls-figure"><img class="bcls-image" alt="quick-start-options-showing" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/qs-plugin-dev/quick-start-options-showing.png" /></figure>
+	</li>
+</ol>
+
+<aside class="bcls-aside bcls-aside--warning">Note: The process shown in this section of the document, including and calling the the plugin via JavaScript, is for development purposes and useful for initial configuration and testing, but not considered a best practice. The best practice is to include the plugin as part of your player configuration Studio (as shown in the following section) even if you're using the embed_in_page implementation.</aside>
+</section>
+
+<section id="deploytheplugin" class="bcls-section">
+<h2>Deploy the plugin</h2>
+
+<p>Once you have the plugin, CSS and player functioning correctly, you need to deploy the assets for proper use. Here is an overview of the steps required for deployment:</p>
+
+<ul>
+	<li>Copy/move the JavaScript and CSS files to your remote location</li>
+	<li>Use Studio to add the plugin configuration to the player.</li>
+	<li>Create an HTML file for testing and use the iframe implementation for the player</li>
+	<li>Test for anomalies</li>
+</ul>
+
+<p>You will now be guided through these steps.</p>
+
+<pre class="line-numbers" data-start="129">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Quick Start Plugin Dev - iframe&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;iframe src='//players.brightcove.net/1507807800001/5bd313a3-4f88-46be-9678-b9dc8f51c1b2_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+
+<ol class="bcls-tasklist">
+	<li>Move your plugin JavaScript and CSS files to an Internet accessible location of your choice.
+	<aside class="bcls-aside bcls-aside--information">If you choose, you can use the files at the location shown below in the example. You could also use the <a href="/node/17911">Delivery System API</a> to store the files in your own repo.</aside>
+	</li>
+	<li>In the folder in which you are working, create another file called <code>plugin-dev-iframe.html</code>.</li>
+	<li>Use Studio's <strong>Players</strong> module to edit the player you created earlier.</li>
+	<li>Locate the <strong>PLUGINS</strong> section, and click the <strong>Edit</strong> button.</li>
+	<li>In the <strong>JavaScript</strong> area, enter the path to your Internet accessible JavaScript file.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Studio add JS in plugins section" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/qs-plugin-dev/studio-plugins-js.png" /></figure>
+	</li>
+	<li>In the <strong>CSS</strong> area, enter the path to your Internet accessible CSS file.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Studio add CSS in plugins section" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/qs-plugin-dev/studio-plugins-cs.png" /></figure>
+	</li>
+	<li>In the <strong>Name, Options (JSON)</strong> area, enter the plugin name and data passed to the plugin.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Studio add Name, Option in plugins section" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/qs-plugin-dev/studio-plugins-nameoptions.png" /></figure>
+
+	<aside class="bcls-aside bcls-aside--information">Note: Even if you are not supplying any options, you still must enter the plugin's name.</aside>
+	</li>
+	<li>Save and publish your player.</li>
+	<li class="video-cloud-only">In the <strong>Media</strong> module, select a video and publish it with the newly updated and published player.</li>
+	<li class="video-cloud-only">Copy the <strong>Standard</strong> code and paste into the body of the <code>plugin-dev-iframe.html</code> page. Your page should appear similar to the following:</li>
+	<li class="player-only">From the <strong>Embed Code &amp; URL &gt; Published Player</strong> menu, copy the <strong>Standard Embed Code</strong> code and paste into the body of the <code>plugin-dev-iframe.html</code> page. Your page should appear similar to the following:</li>
+	<li>Browse the HTML page and you should see the plugin functioning correctly with the iframe.</li>
+</ol>
+</section>
+
+<section id="3rdparty" class="bcls-section">
+<h2>3rd party libraries</h2>
+
+<p>If your plugin has dependencies on 3rd party libraries, for instance jQuery, you need to include them in one of these two ways:</p>
+
+<ul>
+	<li>Add the library as another JavaScript file in the <strong>Plugins</strong> section of <strong>Players</strong> module in <span class="video-cloud-only">Video Cloud</span> Studio.</li>
+	<li>Add multiple entries in the <strong>scripts</strong> section of the player configuration in a curl statement.</li>
+</ul>
+
+<p>BE SURE you put the libraries on which your plugin is dependent before your plugin's JavaScript entry in both scenarios listed above. The order of entry DOES matter.</p>
+</section>
+</article>
