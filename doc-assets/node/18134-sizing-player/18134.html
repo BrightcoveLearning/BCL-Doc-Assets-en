@@ -1,0 +1,314 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Sizing_considerations">Sizing considerations</h2>
+
+<p>There are two important concepts to keep in mind when sizing the video and the player:</p>
+
+<ul>
+	<li>
+	<p>Aspect ratio – The media width and height properties, set in your curl statement when creating a player, define the intrinsic video dimensions, also known as the aspect ratio.</p>
+	</li>
+	<li>Player size – The player width and height properties, set in the CSS or HTML code, control the size of the player. As you change the size of the player, it will use the intrinsic video dimensions to keep the controls positioned correctly.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="setaspectratio">Set aspect ratio</h2>
+
+<p>The video aspect ratio is the relation between width and height. Classic TVs use a 4:3 aspect ratio, while widescreen uses a 16:9 aspect ratio.</p>
+
+<p>When you create a player, you can specify the video width and height using Studio. Use the <strong>PLAYERS</strong> module, <strong>SETTINGS</strong> section.</p>
+
+<aside class="bcls-aside bcls-aside--tip">Note: To determine a video's aspect ratio, simply divide the height by the width. For example, a video with a height of 360 pixels and a width of 640 pixels has a ratio of .5625 (360/640 = .5625), which is 16:9 (9/16 = .5625).</aside>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="sizing-studio-aspect-ratio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/sizing-the-player/sizing-studio-aspect-ratio.png" /></figure>
+
+<p>The video aspect ratio will remain the same and the player controls will be positioned correctly as the player responsively resizes.</p>
+
+<h3><a name="incorrectratio"></a>Using an incorrect ratio</h3>
+
+<p>When you specify a media aspect ratio that is different than the dimensions of your video, you will get leterboxing around the video and the player controls will not be positioned over the video.</p>
+
+<p>Here we set the media width and height to 640px and 480px respectively (4:3 aspect ratio), while using the Tiger video which has a 16:9 aspect ratio.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="incorrect aspect ratio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/sizing-the-player/size-the-player2.png" /></figure>
+
+<h3><a name="correctratio"></a>Using the correct ratio</h3>
+
+<p>When the media dimensions match the aspect ratio of your video, then there is no letterboxing and the player controls stay positioned correctly as you resize the player.</p>
+
+<p>Here we set the media width and height to 640px and 360px respectively (16:9 aspect ratio) which is the same as the Tiger video.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="correct aspect ratio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/sizing-the-player/size-the-player1.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="setplayersize">Set player size</h2>
+
+<p>You can set the size of the player using Studio. Use the <strong>PLAYERS</strong> module, <strong>SETTINGS</strong> section.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="sizing player in studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/sizing-the-player/sizing-studio-size.png" /></figure>
+
+<p>You can also use CSS to size the player, as detailed in the following sections.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="useiframe">Use iframe</h2>
+
+<p>For the iframe implementation, the player size can be set by supplying the <code>width</code> and <code>height</code> attributes for the <code>iframe</code> element. There are several ways to do this:</p>
+
+<ul>
+	<li>Add attributes to the <code>iframe</code> element</li>
+	<li>Use CSS with the <code>iframe</code> element</li>
+	<li>Use CSS with an <code>id</code> attribute</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">Note: By setting the <code>width</code> and <code>height</code> attributes, you create a player that is fixed in size. To create a responsively sizing player, see the <a href="/node/18173">Responsive Sizing for the Brightcove Player</a> document.</aside>
+
+<h3>Add attributes to the <code>iframe</code> element</h3>
+
+<p>Add and set the <code>width</code> and <code>height</code> attributes to the <code>iframe</code> element.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Size the Player&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;iframe src='//players.brightcove.net/1752604059001/0711ceb1-07cf-430c-bd6f-951937e2c488_default/index.html'
+    allowfullscreen webkitallowfullscreen mozallowfullscreen
+<span class="bcls-highlight">    width=640px height=360px&gt;&lt;/iframe&gt;</span>
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h3>Use CSS with the <code>iframe</code> element</h3>
+
+<p>In CSS, set the <code>width</code> and <code>height</code> attributes for the <code>iframe</code> element.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Size the Player&lt;/title&gt;
+
+  &lt;!-- Page styles --&gt;
+  &lt;style&gt;
+<span class="bcls-highlight">    iframe {
+      width: 640px;
+      height: 360px;
+    }</span>
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;iframe src='//players.brightcove.net/1752604059001/0711ceb1-07cf-430c-bd6f-951937e2c488_default/index.html'
+    allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h3>Use CSS with an <code>id</code> attribute</h3>
+
+<p>In CSS, reference an <code>id</code> added to the <code>iframe</code> element. This approach is useful if you have more than one <code>iframe</code> element on the page.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Size the Player&lt;/title&gt;
+
+  &lt;!-- Page styles --&gt;
+  &lt;style&gt;
+<span class="bcls-highlight">    #myPlayer {
+      width: 640px;
+      height: 360px;
+    }</span>
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+<span class="bcls-highlight">  &lt;iframe id="myPlayer"</span>
+    src='//players.brightcove.net/1752604059001/0711ceb1-07cf-430c-bd6f-951937e2c488_default/index.html'
+    allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="useembedinpage">Use embed_in_page</h2>
+
+<p>For the embed_in_page implementation, the player size can be set by supplying the <code>width</code> and height attributes for the <code>video</code> element. There are several ways to do this:</p>
+
+<ul>
+	<li>Add attributes to the <code>video</code> element</li>
+	<li>Use CSS with the class attribute</li>
+	<li>Use CSS with an <code>id</code> attribute</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">Note: By setting the <code>width</code> and <code>height</code> attributes, you create a player that is fixed in size. To create a responsively sizing player, see the <a href="/node/18173">Responsive Sizing for the Brightcove Player</a> document.</aside>
+
+<h3>Add attributes to the <code>video</code> element</h3>
+
+<p>Add and set the <code>width</code> and <code>height</code> attributes to the <code>video</code> element.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Size the Player&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;video
+    data-account="1752604059001"
+    data-player="860a1ffd-4be3-4df6-9d46-c0621534108b"
+    data-embed="default"
+    class="video-js" controls
+<span class="bcls-highlight">    width="640px" height="360px"&gt;&lt;/video&gt;</span>
+
+  &lt;script src="//players.brightcove.net/1752604059001/860a1ffd-4be3-4df6-9d46-c0621534108b_default/index.min.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h3>Use CSS with the class attribute</h3>
+
+<p>The <code>video</code> element has a class attribute which can be referenced from CSS to set the player size.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Size the Player&lt;/title&gt;
+
+  &lt;!-- Page styles --&gt;
+  &lt;style&gt;
+<span class="bcls-highlight">    .video-js {
+      width: 640px;
+      height: 360px;
+    }</span>
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;video
+    data-account="1752604059001"
+    data-player="0711ceb1-07cf-430c-bd6f-951937e2c488"
+    data-embed="default"
+<span class="bcls-highlight">    class="video-js"</span> controls&gt;&lt;/video&gt;
+
+  &lt;script src="//players.brightcove.net/1752604059001/0711ceb1-07cf-430c-bd6f-951937e2c488_default/index.min.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h3>Use CSS with an <code>id</code> attribute</h3>
+
+<p>In CSS, reference an <code>id</code> added to the <code>video</code> element. This approach is useful if you have more than one <code>video</code> element on the page.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Size the Player&lt;/title&gt;
+
+  &lt;!-- Page styles --&gt;
+  &lt;style&gt;
+<span class="bcls-highlight">    #video_1 {
+      width: 640px;
+      height: 360px;
+    }</span>
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+<span class="bcls-highlight">  &lt;video id="video_1"</span>
+    data-account="1752604059001"
+    data-player="860a1ffd-4be3-4df6-9d46-c0621534108b"
+    data-embed="default"
+    class="video-js" controls&gt;&lt;/video&gt;
+
+  &lt;script src="//players.brightcove.net/1752604059001/860a1ffd-4be3-4df6-9d46-c0621534108b_default/index.min.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="fullscreen">Fullscreen display</h2>
+
+<p>In newer browsers that support the fullscreen API, it's necessary to apply in-page CSS rules to ensure the player is scaled to 100% when switching to fullscreen. Otherwise, the player will appear at the original size within the fullscreen display.</p>
+
+<p>Use the following CSS to ensure the player scales when in fullscreen mode:</p>
+
+<pre class="line-numbers">
+<code class="language-css">/***************************
+ * Fullscreen display      *
+ ***************************/
+body.vjs-full-window {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+  }
+  .video-js.vjs-fullscreen {
+    position: fixed;
+    overflow: hidden;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .video-js:-webkit-full-screen {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .video-js.vjs-fullscreen.vjs-user-inactive {
+    cursor: none;
+  }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="precedence">Order of precedence</h2>
+
+<p>You have seen an number of ways to size the player. The following is a list in order precedence:</p>
+
+<ul>
+	<li>Runtime changes (use JavaScript to change player size)</li>
+	<li>Size set in the &lt;video&gt; tag</li>
+	<li>CSS (following normal rules of inheritance)</li>
+	<li>Player configuration settings</li>
+</ul>
+</section>
+<section class="bcls-section">
+    <h2 id="Size_in_the_Player_API">Size in the Player API</h2>
+    <p>There are 4 player methods in the Player API that return sizes in pixels, but it is important to understand the difference between them.</p>
+    <ul>
+        <li><code>.height()</code> - returns the height set in the <code>height</code> attribute of the <code>video</code> tag (if that attribute is not set, <code>height()</code> will return 0)</li>
+        <li><code>.width()</code> - returns the width set in the <code>width</code> attribute of the <code>video</code> tag (if that attribute is not set, <code>width()</code> will return 0)</li>
+        <li><code>.currentHeight()</code> - returns the current height of the player, however it was set</li>
+        <li><code>.currentWidth()</code> - returns the current width of the player, however it was set</li>
+    </ul>
+    <p>In most cases, <code>currentHeight()</code> and <code>currentWidth()</code> are the methods you want to use.</p>
+</section>
+</article>
