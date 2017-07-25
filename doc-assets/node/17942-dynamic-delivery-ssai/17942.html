@@ -351,11 +351,28 @@
 <section class="bcls-section">
 <h2 id="Ad_Variables">Ad variables</h2>
 
-<p>Variables in the <strong>template url</strong> are identified by double curly braces (<code>{{ … }}</code>) with optional whitespace before and after the variable path. All variables are prefixed by one of three namespaces: <strong>system</strong>, <strong>url</strong>, and <strong>metadata</strong>.</p>
+<p>Variables in the <strong>template url</strong> are identified by double curly braces (<code>{{ … }}</code>) with optional whitespace before and after the variable path. All variables are prefixed by one of three namespaces:</p>
+<ul>
+	<li>
+		<a href="#System_varables">system</a>
+	</li>
+	<li>
+		<a href="#URL_variables">url</a>
+	</li>
+	<li>
+		<a href="#Metadata_variables">metadata</a>
+	</li>
+</ul>
+<p>
+	You can also prefix any of the Ad variables with <a href="#Client_side_variables">page</a> to use client-side variables.
+</p>
 
-<h3>System varables</h3>
+<h3 id="System_varables">System varables</h3>
 
 <p>System variables are provided by the SSAI system and can be information about the end user or helper variables to generate random values. The values must be URI-encoded before being inserted into the URL templates.</p>
+<p>
+	System variables are identified as: <code>{{system.*}}</code>
+</p>
 
 <table class="bcls-table">
 	<tbody class="bcls-table__body">
@@ -418,13 +435,22 @@
 	</tbody>
 </table>
 
-<h3>URL variables</h3>
+<h3 id="URL_variables">URL variables</h3>
 
-<p>Query Params provided on the entry point VMAP/Manifest are available under the "url" namespace. Unlike variables under other namespaces these params are not url encoded when inserting into the template. If variable values need to be url encoded going to the ad provider they will need to be double url encoded on the entry point url.</p>
+<p>Query Params provided on the entry point VMAP/Manifest are available under the <code>url</code> namespace. Unlike variables under other namespaces, these params are not url encoded when inserting into the template. If variable values need to be url encoded going to the ad provider, they will need to be double url encoded on the entry point url.</p>
+<p>
+	URL variables are identified as: <code>{{url.*}}</code>
+</p>
+<p>
+	For a list of URL variables, see the <a href="https://support.brightcove.com/node/18080#adMacros">Ad macros and the serverURL</a> section of the Advertising with the IMA3 Plugin document.
+</p>
 
-<h3>Metadata variables</h3>
+<h3 id="Metadata_variables">Metadata variables</h3>
 
 <p>Metadata variables are those that describe the content video, derived from both VideoCloud and Dynamic Delivery data sources. The values are URL encoded before being inserted into the URL templates.</p>
+<p>
+	Metadata variables are identified as: <code>{{metadata.*}}</code>
+</p>
 
 <table class="bcls-table">
 	<tbody class="bcls-table__body">
@@ -469,5 +495,21 @@
 		</tr>
 	</tbody>
 </table>
+
+<h3 id="Client_side_variables">Client-side variables</h3>
+
+<p>If you prefix any Ad variable with <code>page</code>, then a client-side macro will be appended to the end of the VMAP and SRC fields in the catalog response, when SSAI is being used. Then, the Brightcove player will run those strings through the client-side macro replacement logic.</p>
+<p>
+	Client-side variables are identified as: <code>{{page.*}}</code>
+</p>
+<p>
+	For example, an ad template as follows:
+</p>
+<pre class="line-numbers"><code class="language-html">http://adserver.com/{{page.document.referrer}}/{{page.pageVariable.whateverIwant}}</code></pre>
+<p>
+	Would lead to a VMAP response like this:
+</p>
+	<pre class="line-numbers"><code class="language-html"> http://bolt-prefix/blah.vmap?document.referrer={document.referrer}&amp;pageVariable.whateverIwant={pageVariable.whateverIwant}</code></pre>
+<br />
 </section>
 </article>
