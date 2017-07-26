@@ -52,7 +52,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             'search_terms': '',
             'social_platform': '',
             'source_type': '',
-            'date_hour': ''
+            'video': '/node/17961'
         },
         i,
         iMax;
