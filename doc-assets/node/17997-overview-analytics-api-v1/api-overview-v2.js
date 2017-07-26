@@ -240,7 +240,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             thisDimension = aapi_model.dimensionsArray[i];
             li = document.createElement('li');
             a = document.createElement('a');
-            a.setAttribute('href', '//docs.brightcove.com/en/video-cloud/analytics-api/guides/' + thisDimension + '.html');
+            a.setAttribute('href', '/' + dimensionGuides['thisDimension']);
             txt = document.createTextNode(thisDimension);
             a.appendChild(txt);
             li.appendChild(a);
