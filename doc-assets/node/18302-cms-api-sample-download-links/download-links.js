@@ -126,6 +126,9 @@ var BCLS = ( function (window, document) {
             linkTr,
             content,
             linkA;
+        linkTable.setAttribute('class', 'bcls-table');
+        linkHead.setAttribute('class', 'bcls-table__head');
+        linkBody.setAttribute('class', 'bcls-table__body');
         fragment.appendChild(linkTable);
         linkTable.appendChild(linkHead);
         linkTable.appendChild(linkBody);
