@@ -272,7 +272,8 @@
 		<tr>
 			<td>vmap_response_namespace</td>
 			<td>String</td>
-			<td>Adjusts the VMAP output to use the legacy Unicorn Once namespace format or to use the new Brightcove namespace format. <br />Values: <code>uo</code>, <code>bc</code> Default: <code>bc</code></td>
+			<td>Adjusts the VMAP output to use the legacy Unicorn Once namespace format or to use the new Brightcove namespace format. <br />Values: <code>uo</code>, <code>bc</code> Default: <code>bc</code><br /><br />
+			<aside class="bcls-aside bcls-aside--information">For now, you must use a value of <code>uo</code> for SSAI to work with the Brightcove player or with the OnceUX plugin for the SDKs.</aside></td>
 		</tr>
 		<tr>
 			<td>description</td>
@@ -363,9 +364,6 @@
 		<a href="#Metadata_variables">metadata</a>
 	</li>
 </ul>
-<p>
-	You can also prefix any of the Ad variables with <a href="#Client_side_variables">page</a> to use client-side variables.
-</p>
 
 <h3 id="System_varables">System varables</h3>
 
@@ -441,9 +439,6 @@
 <p>
 	URL variables are identified as: <code>{{url.*}}</code>
 </p>
-<p>
-	For a list of URL variables, see the <a href="https://support.brightcove.com/node/18080#adMacros">Ad macros and the serverURL</a> section of the Advertising with the IMA3 Plugin document.
-</p>
 
 <h3 id="Metadata_variables">Metadata variables</h3>
 
@@ -495,19 +490,25 @@
 		</tr>
 	</tbody>
 </table>
+<br />
+</section>
 
-<h3 id="Client_side_variables">Client-side variables</h3>
+<section class="bcls-section">
+<h2 id="Client_side_macros">Client-side macros</h2>
 
-<p>If you prefix any Ad variable with <code>page</code>, then a client-side macro will be appended to the end of the VMAP and SRC fields in the catalog response, when SSAI is being used. Then, the Brightcove player will run those strings through the client-side macro replacement logic.</p>
+<p>Use the <code>page</code> prefix when you want to use client-side ad macros. These macros enable you to use variables in the VMAP and server URLs. For ad macro details, see the <a href="https://support.brightcove.com/node/18080#adMacros">Ad macros and the serverURL</a> section of the Advertising with the IMA3 Plugin document.</p>
+<!-- <p>
+	When you prefix an Ad variable with , then a client-side macro will be appended to the end of the VMAP and SRC fields in the catalog response, when SSAI is being used. Then, the Brightcove player will run those strings through the client-side macro replacement logic.
+</p> -->
 <p>
-	Client-side variables are identified as: <code>{{page.*}}</code>
+	Client-side macros are prefixed with: <code>{{page.*}}</code>
 </p>
 <p>
-	For example, an ad template as follows:
+	For example, to add the <code>document.referrer</code> and a <code>pageVariable</code> DOM window variable, you would prefix them with <code>page</code> in the ad template as follows:
 </p>
 <pre class="line-numbers"><code class="language-html">http://adserver.com/{{page.document.referrer}}/{{page.pageVariable.whateverIwant}}</code></pre>
 <p>
-	Would lead to a VMAP response like this:
+	The Playback API returns <code>document.referrer</code> and <code>pageVariable.whateverIwant</code> appended to the VMAP and SRC URLs. The Brightcove player then runs through its client-side macro replacement logic to replace the appropriate values, before sending the request:
 </p>
 	<pre class="line-numbers"><code class="language-html"> http://bolt-prefix/blah.vmap?document.referrer={document.referrer}&amp;pageVariable.whateverIwant={pageVariable.whateverIwant}</code></pre>
 <br />
