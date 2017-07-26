@@ -36,7 +36,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
         logger                  = document.getElementById('logger'),
         dimensionGuides         = {
             'account': 'dimension-account',
-            'browser_type': '',
+            'browser_type': 'dimension-browsertype',
             'city': 'dimension-city',
             'country': 'dimension-country',
             'date': 'dimension-date',
