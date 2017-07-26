@@ -324,7 +324,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             input.setAttribute('type', 'checkbox');
             input.setAttribute('value', thisDimension.name);
             label.setAttribute('for', 'dim' + thisDimension.name);
-            text = document.createTextNode('&nbsp;' + thisDimension.name);
+            text = document.createTextNode('  ' + thisDimension.name);
             br = document.createElement('br');
             label.appendChild(text);
             if (count < half) {
