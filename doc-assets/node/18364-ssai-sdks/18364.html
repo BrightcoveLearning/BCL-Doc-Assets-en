@@ -33,7 +33,7 @@
 						<a href="#iOS_implementation">iOS implementation</a>
 					</li>
 					<li>
-						<a href="">Android implementation</a>
+						<a href="#Android_implementation">Android implementation</a>
 					</li>
 				</ul>
 			</li>
@@ -146,6 +146,87 @@ error.localizedDescription);
 }];
 }
 </code></pre>
+		<br />
+
+		<h3 id="Android_implementation">Android implementation</h3>
+		<p>
+			Follow these steps within your app to get your ad configuration and play your video:
+		</p>
+		<ol class="bcls-tasklist__restart">
+			<li>
+				Include the Once UX plugin in your app. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/BasicOnceUxSampleApp">Basic Once UX Player</a> sample.
+			</li>
+			<li>
+				Define constants for your account id, policy key, video id or video reference id, and your ad configuration id.
+				<pre class="line-numbers"><code class="language-java">String accountId = &quot;&lt;accountId&gt;&quot;;
+String policyKey = &quot;&lt;policyKey&gt;&quot;;
+String videoRef = &quot;&lt;videoRef&gt;&quot;;
+String adConfigId = &quot;&lt;adConfigId&gt;&quot;;
+		</code></pre>
+				<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="https://support.brightcove.com/node/18125">Policy Keys</a> document.</aside>
+			</li>
+			<li>
+				Set the query parameter value to your ad configuration id.
+				<pre class="line-numbers"><code class="language-java">Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
+parameters.put(&quot;ad_config_id&quot;, adConfigId);
+		</code></pre>
+			</li>
+			<li>
+				Create an instance of the catalog service.
+				<pre class="line-numbers"><code class="language-java">Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
+		</code></pre>
+			</li>
+			<li>
+				Call the catalog service to retrieve your video along with your ad configuration from the Playback API.
+				<pre class="line-numbers"><code class="language-java">catalog.findVideoByReferenceID(videoRef, null, parameters, new VideoListener() {
+...
+});
+		</code></pre>
+			</li>
+			<li>
+				Start video playback with your specified ads.
+				<pre class="line-numbers"><code class="language-java">@Override
+public void onVideo(Video video) {
+try {
+	plugin.processVideo(video);
+} catch (NoSourceFoundException e) {
+	// If NoSourceFoundException is thrown it means a suitable vmap url wasn't found.
+	// You can try to play it on a regular view
+	brightcoveVideoView.add(video)
+}
+}
+		</code></pre>
+			</li>
+		</ol>
+
+		<p>
+			Here is the complete code block:
+		</p>
+		<pre class="line-numbers"><code class="language-java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+	setContentView(R.layout.activity_main);
+	brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
+	super.onCreate(savedInstanceState);
+
+	final OnceUxComponent plugin = new OnceUxComponent(this, brightcoveVideoView);
+	Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
+
+	Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
+	parameters.put(&quot;ad_config_id&quot;, adConfigId);
+	catalog.findVideoByReferenceID(videoRef, null, parameters, new VideoListener() {
+			@Override
+			public void onVideo(Video video) {
+					try {
+							plugin.processVideo(video);
+					} catch (NoSourceFoundException e) {
+							// If NoSourceFoundException is thrown it means a suitable vmap url wasn't found.
+							// You can try to play it on a regular view
+							brightcoveVideoView.add(video)
+					}
+			}
+	});
+}
+		</code></pre>
 
 </section>
 </article>
