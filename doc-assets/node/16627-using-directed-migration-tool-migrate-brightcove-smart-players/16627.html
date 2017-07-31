@@ -1,0 +1,119 @@
+<p><iframe class="training-video-player" src="//players.brightcove.net/20318290001/E16-WGGOe_default/index.html?videoId=5157550187001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></p>
+
+<div class="BCL-concept">
+<p>The Directed Migration Tool provides a way to specify that a Brightcove Player should be loaded instead of a Smart Player. The tool provides an easy way to publish videos inside of Brightcove Players instead of using legacy Smart Players. No changes to your existing publishing code is required.</p>
+
+<p>This topic contains the following sections:</p>
+
+<ul>
+	<li><a href="#req">Directed migration requirements</a></li>
+	<li><a href="#create">Creating a mapping</a></li>
+	<li><a href="#test">Testing player mappings</a></li>
+	<li><a href="#edit">Editing player mappings</a></li>
+	<li><a href="#delete">Deleting player mappings</a></li>
+</ul>
+</div>
+
+<div class="BCL-concept">
+<h2 id="req">Directed Migration requirements</h2>
+
+<p>The following requirements apply when using the Directed Migration Tool:</p>
+
+<ul>
+	<li>The Directed Migration UI only shows up when you have 3 or more Smart Players in your account</li>
+	<li>You should create a new Brightcove Player that has the styling, customizations and plugins that are compatible with the Brightcove Player</li>
+	<li>Make sure the appropriate video renditions are available. For more information, see the <a href="/node/18129">Smart Player to Brightcove Player Migration</a> developer document.</li>
+	<li>The Directed Migration Tool is not supported for players with playlists.</li>
+	<li>Any Smart Player API code in your existing page will no longer function once the player is replaced.</li>
+</ul>
+</div>
+<section class="bcls-section">
+    <p>Note the following limitations of the Directed Migration Tool:</p>
+    <ul>
+        <li>Directed Migration will work when using the Smart Player embed publishing code or with shortened or custom URLs (bcove.me or link.brightcove.com).</li>
+        <li>Directed Migration will not work with the Flash-only embed code from the Legacy Studio.</li>
+    </ul>
+</section>
+<h2 id="limitations">Limitations</h2>
+
+<div class="BCL-concept">
+<h2 id="create">Creating a mapping</h2>
+
+<p>Mappings are used to specify that a Smart Player should be replaced with a Brightcove Player. To create a new mapping, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Click the <strong>ADMIN</strong> link in the Studio header.</li>
+	<li>Click the <strong>Player Settings</strong> link.</li>
+	<li>Click <strong>Create Mapping</strong>. A list of Smart Players in the account will be displayed.
+	<div><img class="bcls-image--no-border" alt="Create mapping" src="http://img.brightcove.com/node16627-create-mapping.png" /></div>
+	</li>
+	<li>Select one or more Smart Players to replace with a Brightcove Player. Click <strong>Next</strong>.</li>
+	<li>Select a Brightcove Player to use in place of the Smart Player(s). When a Brightcove Player is selected, a preview of the player will be displayed.
+	<div><img class="bcls-image--no-border" alt="Select Brightcove Player" src="http://img.brightcove.com/node16627-select-bc-player.png" /></div>
+	</li>
+	<li>Click <strong>Next</strong>. Instructions for <a href="#test">testing player mappings</a> will be displayed.
+	<p class="BCL-aside">Note: Player mappings can take up to 5 minutes to take effect.</p>
+	</li>
+	<li>Click <strong>Save</strong>. A list of current mappings will be displayed.
+	<div><img class="bcls-image--no-border" alt="Player mappings" src="http://img.brightcove.com/node16627-mappings-list.png" /></div>
+	</li>
+</ol>
+
+<p>After creating a mapping, the status will be <strong>Testing</strong>. Once the <a href="#test">mapping has been tested</a> and committed, the status will be <strong>Committed</strong>. Mappings marked with a status of <strong>Committed</strong> will render a Brightcove Player instead of the Smart Player.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="test">Testing player mappings</h2>
+
+<p>You should test any player mappings that are created before they are committed. To test a player mapping, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Find a page that displays your legacy Smart Player.
+	<div><img class="bcls-image--no-border" alt="Smart Player Example" src="http://img.brightcove.com/node16627-smart-player.png" /></div>
+	</li>
+	<li>Add the <code>enableMapping=true</code> parameter to the page URL.
+	<ul>
+		<li>If the page URL doesn't have URL parameters, add <code>?enableMapping=true</code> to the end of the URL. For example:<br />
+		<code>http://www.mysite.com/videos.html?enableMapping=true</code></li>
+		<li>If the page URL has URL parameters, add <code>&amp;enableMapping=true</code> to the end of the URL. For example:<br />
+		<code>http://www.mysite.com/videos.html?myparams=true&amp;enableMapping=true</code></li>
+	</ul>
+
+	<p>The newly mapped Brightcove Player should display and the video should play.</p>
+
+	<div><img class="bcls-image--no-border" alt="Brightcove  Player Example" src="http://img.brightcove.com/node16627-brightcove-player.png" /></div>
+
+	<p>When you are satisfied with how the player is working, return to Video Cloud Studio.</p>
+	</li>
+	<li>Select the checkbox next to the player mapping and click <strong>Commit Mapping</strong> to make the new Brightcove Player visible to all site visitors.</li>
+</ol>
+</div>
+
+<div class="BCL-concept">
+<h2 id="edit">Editing player mappings</h2>
+
+<p>To edit a player mapping, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Click the <strong>ADMIN</strong> link in the Studio header.</li>
+	<li>Click the <strong>Player Settings</strong> link. A list of player mappings will be displayed.</li>
+	<li>Select the checkbox next to the player mapping to edit. Click <strong>Edit Mapping</strong>.</li>
+	<li>Select a new Brightcove Player to map to. Click <strong>Next</strong> and then <strong>Save</strong> to save the changes.</li>
+</ol>
+
+<p>Make sure you <a href="#test">test any changes to player mappings</a>.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="delete">Deleting player mappings</h2>
+
+<p>To delete a player mapping, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Click the <strong>ADMIN</strong> link in the Studio header.</li>
+	<li>Click the <strong>Player Settings</strong> link. A list of player mappings will be displayed.</li>
+	<li>Select the checkbox next to the player mapping to delete. Click <strong>Delete Mapping</strong>.</li>
+	<li>Confirm the delete by clicking <strong>Delete</strong>.</li>
+</ol>
+</div>
+<!-- End of Drupal content -->
