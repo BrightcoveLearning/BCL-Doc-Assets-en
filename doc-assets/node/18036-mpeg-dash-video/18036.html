@@ -1,0 +1,352 @@
+<article class="bcls-article">
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>MPEG-DASH is a segmented video format. It is particularly useful if you require DRM security for your content, because DASH can be used with Playready, Marlin, or Widevine Modular DRM. Since the syntax for specifying MPEG-DASH renditions is slightly different than that for other video formats, we include here a couple of sample profiles, one without DRM packaging and the other including DRM packaging.</p>
+</section>
+
+<section class="bcls-section" id="nodrm">
+<h2>Sample Profile (no DRM)</h2>
+
+<p>This sample shows the packaging of MPEG-DASH renditions without DRM packaging.</p>
+
+<aside class="bcls-aside bcls-aside--information">For DASH renditions, set the <code>decoder_bitrate_cap</code> <code>decoder_buffer_size</code> to optimize playback on your target viewing environments.
+
+<p>Our general recommendation is to set <code>decoder_bitrate_cap</code> to the maximum bitrate available for the video stream. Remember you need to take into account the audio, as well as overhead for the file format. The <code>decoder_buffer_size</code> is technically supposed to match the available video buffer memory on the decoding device, but is often better used to control how much content may be pre-buffered. It works as a multiple of the <code>decoder_bitrate_cap</code>, so that for example, if <code>decoder_bitrate_cap</code> was 500 kbps, and <code>decoder_buffer_size</code> was 1000 kbps, then the buffer could store 2 seconds worth of video. We also recommend setting the <code>video_bitrate</code> a little lower than the <code>decoder_bitrate_cap</code>, which allows the encoder to use more data to encode complex scenes and less data on simpler scenes. A decent starting point would be to assume up to 10% of overhead for the file format, setting the <code>video_bitrate</code> 10% lower than the <code>decoder_bitrate_cap</code>, and allowing about 1.5 seconds of video to be buffered.</p>
+
+<p>Assuming a 1000 Kbps connection is available to the viewer:</p>
+
+<ul>
+	<li>1000 * 0.90 = 900 Kbps available after subtracting 10% for format overhead.</li>
+	<li>900 - 128 = 772 Kbps video decoder_bitrate_cap after subtracting 128 Kbps for the audio.</li>
+	<li>772 * 1.5 = 1158 Kb decoder_buffer_size (for 1.5 seconds worth of video).</li>
+	<li>772 * 0.90 = 695 Kbps target video bitrate (10% lower than the decoder_bitrate_cap).</li>
+</ul>
+</aside>
+
+<aside class="bcls-aside bcls-aside--warning">
+<ol>
+	<li>The Brightcove player currently supports DASH playback only with special plugins.</li>
+	<li>The <code>force_aac_profile</code> property has to be present in each DASH rendition.
+	<ul>
+		<li><code>force_aac_profile</code> must one of these three values:
+		<ul>
+			<li><code>aac-lc</code></li>
+			<li><code>he-aac</code></li>
+			<li><code>he-aac-v2</code></li>
+		</ul>
+		</li>
+		<li>The value for <code>force_aac_profile</code> must be the same for all renditions in a profile</li>
+	</ul>
+	</li>
+</ol>
+</aside>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "id": "56e077ace4b0a7b3c178e6e7",
+  "name": "DASH-no-drm",
+  "description": "DASH renditions",
+  "account_id": "1752604059001",
+  "renditions": [
+    {
+      "media_type": "video",
+      "id": "56e077ace4b0a7b3c178e6e5",
+      "reference_id": "r1",
+      "format": "m4f",
+      "type": "segmented",
+      "audio_codec": "aac",
+      "audio_bitrate": 36,
+      "video_codec": "h264",
+      "video_bitrate": 300,
+      "decoder_bitrate_cap": 400,
+      "decoder_buffer_size": 800,
+      "force_aac_profile": "aac-lc",
+      "frame_rate": 30,
+      "keyframe_rate": 0.5,
+      "fixed_keyframe_interval": true,
+      "width": 800,
+      "height": 600,
+      "h264_profile": "baseline",
+      "streaming_delivery_profile": "live"
+    },
+    {
+      "media_type": "video",
+      "id": "56e077ace4b0a7b3c178e6e6",
+      "reference_id": "r2",
+      "format": "m4f",
+      "type": "segmented",
+      "audio_codec": "aac",
+      "audio_bitrate": 36,
+      "video_codec": "h264",
+      "video_bitrate": 600,
+      "decoder_bitrate_cap": 800,
+      "decoder_buffer_size": 1600,
+      "frame_rate": 30,
+      "keyframe_rate": 0.5,
+      "fixed_keyframe_interval": true,
+      "force_aac_profile": "aac-lc",
+      "width": 1024,
+      "height": 768,
+      "h264_profile": "baseline",
+      "streaming_delivery_profile": "live"
+    },
+    {
+      "media_type": "image",
+      "id": "559697ece4b072e9641b840f",
+      "format": "jpg",
+      "label": "poster",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "media_type": "image",
+      "id": "559697ece4b072e9641b8410",
+      "format": "jpg",
+      "label": "thumbnail",
+      "width": 160,
+      "height": 90
+    }
+  ],
+  "packages": [
+    {
+      "package_type": "dash",
+      "renditions": [
+        "r1"
+      ]
+    },
+    {
+      "package_type": "dash",
+      "renditions": [
+        "r2"
+      ]
+    }
+  ]
+}</code></pre>
+</section>
+
+<section class="bcls-section" id="drm">
+<h2>Sample Profile (with DRM)</h2>
+
+<p>Here is the same sample profile with Common Encryption (CENC) and DRM packaging (Widevine and Playready) included.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "account_id": 2728142649001,
+    "digital_master": {
+        "distribute": true,
+        "rendition": "passthrough"
+    },
+    "name": "dash-cenc-live",
+    "description": "This will produce 6 dash live renditions with cenc",
+    "renditions": [
+        {
+            "media_type": "video",
+            "reference_id": "av0",
+            "format": "m4f",
+            "audio_codec": "aac",
+            "audio_bitrate": 40,
+            "video_bitrate": 110,
+            "decoder_bitrate_cap": 200,
+            "decoder_buffer_size": 400,
+            "width": "400",
+            "height": "300",
+            "fixed_keyframe_interval": true,
+            "frame_rate": 30,
+            "force_aac_profile": "aac-lc",
+            "video_codec": "h264",
+            "h264_profile": "baseline",
+            "keyframe_rate": 0.5,
+            "streaming_delivery_profile": "live",
+            "type": "segmented"
+        },
+        {
+            "media_type": "video",
+            "reference_id": "av1",
+            "format": "m4f",
+            "audio_codec": "aac",
+            "audio_bitrate": 40,
+            "video_bitrate": 260,
+            "decoder_bitrate_cap": 400,
+            "decoder_buffer_size": 800,
+            "width": "400",
+            "height": "300",
+            "fixed_keyframe_interval": true,
+            "frame_rate": 30,
+            "force_aac_profile": "aac-lc",
+            "video_codec": "h264",
+            "h264_profile": "baseline",
+            "keyframe_rate": 0.5,
+            "streaming_delivery_profile": "live",
+            "type": "segmented"
+        },
+        {
+            "media_type": "video",
+            "reference_id": "av2",
+            "format": "m4f",
+            "audio_codec": "aac",
+            "audio_bitrate": 64,
+            "video_bitrate": 436,
+            "decoder_bitrate_cap": 600,
+            "decoder_buffer_size": 1200,
+            "width": "480",
+            "height": "360",
+            "fixed_keyframe_interval": true,
+            "frame_rate": 30,
+            "force_aac_profile": "aac-lc",
+            "video_codec": "h264",
+            "h264_profile": "baseline",
+            "keyframe_rate": 0.5,
+            "streaming_delivery_profile": "live",
+            "type": "segmented"
+        },
+        {
+            "media_type": "video",
+            "reference_id": "av3",
+            "format": "m4f",
+            "audio_codec": "aac",
+            "audio_bitrate": 96,
+            "video_bitrate": 704,
+            "decoder_bitrate_cap": 800,
+            "decoder_buffer_size": 1600,
+            "width": "640",
+            "height": "480",
+            "fixed_keyframe_interval": true,
+            "frame_rate": 30,
+            "force_aac_profile": "aac-lc",
+            "video_codec": "h264",
+            "h264_profile": "baseline",
+            "keyframe_rate": 0.5,
+            "streaming_delivery_profile": "live",
+            "type": "segmented"
+        },
+        {
+            "media_type": "video",
+            "reference_id": "av4",
+            "format": "m4f",
+            "audio_codec": "aac",
+            "audio_bitrate": 128,
+            "video_bitrate": 1072,
+            "decoder_bitrate_cap": 1200,
+            "decoder_buffer_size": 2400,
+            "width": "720",
+            "height": "540",
+            "fixed_keyframe_interval": true,
+            "frame_rate": 30,
+            "force_aac_profile": "aac-lc",
+            "video_codec": "h264",
+            "h264_profile": "baseline",
+            "keyframe_rate": 0.5,
+            "streaming_delivery_profile": "live",
+            "type": "segmented"
+        },
+        {
+            "media_type": "video",
+            "reference_id": "av5",
+            "format": "m4f",
+            "audio_codec": "aac",
+            "audio_bitrate": 128,
+            "video_bitrate": 1672,
+            "decoder_bitrate_cap": 2000,
+            "decoder_buffer_size": 4000,
+            "width": "1280",
+            "height": "960",
+            "fixed_keyframe_interval": true,
+            "frame_rate": 30,
+            "force_aac_profile": "aac-lc",
+            "video_codec": "h264",
+            "h264_profile": "baseline",
+            "keyframe_rate": 0.5,
+            "streaming_delivery_profile": "live",
+            "type": "segmented"
+        },
+        {
+            "media_type": "image",
+            "format": "png",
+            "label": "poster",
+            "width": 640,
+            "height": 480
+        },
+        {
+            "media_type": "image",
+            "format": "png",
+            "label": "thumbnail",
+            "width": 160,
+            "height": 90
+        }
+    ],
+    "packages": [
+        {
+"drm": [
+    "playready",
+    "widevine"
+],
+"package_type": "dash",
+"renditions": [
+    "av0"
+]
+        },
+        {
+"drm": [
+    "playready",
+    "widevine"
+],
+"package_type": "dash",
+"renditions": [
+    "av1"
+]
+        },
+        {
+"drm": [
+    "playready",
+    "widevine"
+],
+"package_type": "dash",
+"renditions": [
+    "av2"
+]
+        },
+        {
+"drm": [
+    "playready",
+    "widevine"
+],
+"package_type": "dash",
+"renditions": [
+    "av3"
+]
+        },
+        {
+"drm": [
+    "playready",
+    "widevine"
+],
+"package_type": "dash",
+"renditions": [
+    "av4"
+]
+        },
+        {
+"drm": [
+    "playready",
+    "widevine"
+],
+"package_type": "dash",
+"renditions": [
+    "av5"
+]
+        }
+    ]
+}</code></pre>
+</section>
+
+<section id="silverlight" class="bcls-section">
+<h2>Silverlight security</h2>
+
+<p>On certain platforms, the Brightcove Player uses a Silverlight fallback to play MPEG-DASH renditions. For security reasons, Silverlight requires that a <strong>clientaccesspolicy.xml</strong> file be present in the document root of the server from which DASH content is served. See <a href="https://msdn.microsoft.com/en-us/library/cc645032(VS.95).aspx">this Microsoft article</a> for more details.</p>
+
+<p>Here is a sample <strong>clientaccesspolicy.xml</strong> file:</p>
+
+<p><script src="https://gist.github.com/fde89cf617c9ec86f7b5.js"></script></p>
+</section>
+</article>
