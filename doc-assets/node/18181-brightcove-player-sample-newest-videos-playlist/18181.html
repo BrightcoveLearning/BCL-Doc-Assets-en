@@ -290,7 +290,7 @@
           dataReturned = false;
       requestURL = cmsURL + accountId + '/videos';
       // return the 10 most recently created videos
-      endPoint = '?sort=-created_at&amp;limit=10';
+      endPoint = '?sort=-created_at&limit=10';
       requestData.url = requestURL + endPoint;
       requestData.requestType = 'GET';
       return requestData;
@@ -302,7 +302,7 @@
           parsedData,
           requestParams;
       // set up request data
-      requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=' + options.requestType;
+      requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
       // set response handler
       httpRequest.onreadystatechange = getResponse;
       // open the request
@@ -316,7 +316,76 @@
           dataReturned = false;
           try {
               if (httpRequest.readyState === 4) {
-                  if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
+                  if (httpRequest.status === 200) {
+                      responseRaw = httpRequest.responseText;
+                      parsedData = JSON.parse(responseRaw);
+                      dataReturned = true;
+                  } else {
+                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                  }
+              }
+          } catch (e) {
+              alert('Caught Exception: ' + e);
+          }
+          if (dataReturned) {
+              callback(parsedData);
+          }
+      }
+  }
+  /**
+   * extract video data from CMS API response
+   * @param {array} cmsData the data from the CMS API
+   * @return {array} videoData array of video info
+   */
+  function extractVideoData(cmsData) {
+      var i,
+          iMax = cmsData.length,
+          videoItem,
+          videoDataForReturn = [];
+      for (i = 0; i < iMax; i++) {
+          if (cmsData[i].id !== null) {
+              videoItem = {};
+              videoItem.id = cmsData[i].id;
+              videoDataForReturn.push(videoItem);
+          }
+      }
+      return videoDataForReturn;
+  }
+  /**
+   * get video objects
+   * @param {array} videoIds array of video ids
+   * @return {array} videoData array of video objects
+   */
+  function getVideoData(videoIds, callback) {
+      var i = 0,
+          iMax = videoIds.length,
+          videoObjectsForReturn =  [];
+      /**
+       * makes catalog calls for all video ids in the array
+       */
+      getVideo();
+
+      function getVideo() {
+          if (i < iMax) {
+              myPlayer.catalog.getVideo(videoIds[i].id, pushData);
+          } else {
+              callback(videoObjectsForReturn);
+          }
+      }
+      /**
+       * callback for the catalog calls
+       * pushes the returned data object into an array
+       * @param {string} error error returned if the call fails
+       * @parap {object} video the video object
+       */
+      function pushData(error, video) {
+          videoObjectsForReturn.push(video);
+          i++;
+          getVideo();
+      }
+  }
+
+});</code></pre>
 
 <h3>Create the CSS file</h3>
 
