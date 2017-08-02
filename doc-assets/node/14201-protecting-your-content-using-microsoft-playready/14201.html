@@ -1,0 +1,93 @@
+<p>PlayReady is a DRM system developed by Microsoft with client implementations available in Silverlight, on XBox and several other platforms. Playready comes in two forms:</p>
+
+<ul>
+	<li><strong>Smooth Playready</strong> - Provides DRM protection for Smooth Streaming content</li>
+	<li><strong>Playready</strong> - Provides DRM protection for MPEG-DASH content</li>
+</ul>
+
+<p>The steps to get started producing and playing PlayReady content are:</p>
+
+<ul>
+	<li><a href="#configure">Configuring your Video Cloud account</a></li>
+	<li><a href="#package">Packaging content</a></li>
+	<li><a href="#urls">Retrieving packaged content</a></li>
+	<li><a href="#license">Specifying a License Acquisition URL in the player</a></li>
+</ul>
+
+<div class="BCL_concept">
+<h2 id="signup" class="BCL_conceptTitle">Signing up for DRM</h2>
+
+<p>This feature requires an additional fee. Video Cloud offers other options for protecting your content across devices. See <a href="/node/6302">Content Protection and Digital Rights Management</a> for more information. Contact your Account Manager about bundling DRM protection so that you can secure your content wherever it plays.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="configure">Configuring your Video Cloud account</h2>
+
+<p>Publisher accounts looking to use PlayReady with Video Cloud will need to have their Video Cloud account configured by Brightcove Support. You should contact <a href="http://support.brightcove.com/en/contact">Brightcove Support</a> and request that your account be configured to support PlayReady.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="package">Packaging content</h2>
+
+<p>Packaging content with PlayReady requires the use of Video Cloud's Ingest Profiles feature to indicate which renditions should be packaged with PlayReady and delivered via Smooth Streaming or MPEG-DASH. The Injest Profiles feature offers more fine-grained control of the output files than when using the standard transcode settings that are configured for an account.</p>
+
+<div class="BCL_subsection">
+<h3 class="BCL_subsectionTitle">Smooth Streaming + PlayReady Profile</h3>
+
+<p>When packaging Smooth Streaming renditions with PlayReady, the renditions should be included in a package with type "smooth-playready": see the <a href="/node/18038#playreadySmooth">details of specify Smooth-Playready packages</a>.</p>
+</div>
+
+<div class="BCL_subsection">
+<h3 class="BCL_subsectionTitle">Example MPEG-DASH + PlayReady Profile</h3>
+
+<p>Since MPEG-DASH is encrypted with Common Encryption (CENC), it can be decrypted with any one of a number of DRM license formats. When using DASH+CENC in a profile, an additional "drm" element is added to each package, listing which DRM types should be permissable for decryption. See <a href="/node/18038#multipleDash">the details of specifying MPEG-DASH - Playready packages</a>.</p>
+</div>
+</div>
+
+<div class="BCL-concept">
+<h2 id="urls">Retrieving packaged content</h2>
+
+<p>Typically, publishers using PlayReady will be working with custom player implementations. The Media API has been updated to expose details about PlayReady content. This applies to PlayReady content delivered over both Smooth Streaming and MPEG-DASH. Client applications can now make straightforward HTTP calls to Brightcove servers to obtain, among other things, the current playback URL. With IIS delivery as well as the implementations of Smooth Streaming provided by Akamai and other major CDN providers, the <code>smoothManifestUrl</code> is all that is needed to begin playback.</p>
+
+<div class="BCL_subsection">
+<h3 class="BCL_subsectionTitle">Smooth Streaming</h3>
+
+<p>The CMS API has endpoints that can be used to retrieve one or all ISM manifests.</p>
+
+<h4>Get an array of all ISM manifests</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/:account_id/videos/:video_id/assets/ism_manifest</code></pre>
+
+<h4>Get a single ISM manifest</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/:account_id/videos/:video_id/assets/ism_manifest/:asset_id</code></pre>
+</div>
+
+<div class="BCL_subsection">
+<h3 class="BCL_subsectionTitle">MPEG-DASH</h3>
+
+<p>The CMS API has endpoints that can be used to retrieve one or all DASH manifests.</p>
+
+<h4>Get an array of all DASH manifests</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/:account_id/videos/:video_id/assets/dash_manifests</code></pre>
+
+<h4>Get a single DASH manifest</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/:account_id/videos/:video_id/assets/dash_manifests/:asset_id</code></pre>
+</div>
+</div>
+
+<div class="BCL-concept">
+<h2 id="license">Specifying a License Acquisition URL</h2>
+
+<p>In order to playback PlayReady packaged content, the player will need to retrieve a license from Brightcove's servers. SDKs that support the development of PlayReady applications provide a method of specifying a License Acquisition URL, sometimes abbreviated LA_URL. The precise method of specifying this to the player varies depending on the SDK being used. Application developers should consult the SDK documentation. Publishers should configure their PlayReady players to acquire a license from:</p>
+<code>https://prlic.brightcove.com/license/&lt;accountID&gt;</code>
+
+<p>where <strong>accountID</strong> is the Video Cloud account ID for the account which will hold the content.</p>
+</div>
+<!-- End of Drupal content -->
