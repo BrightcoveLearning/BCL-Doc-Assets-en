@@ -25,7 +25,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
         fieldsCol2              = document.getElementById('fieldsCol2'),
         dateSelect              = document.getElementById('dateSelect'),
         count                   = document.getElementById('count'),
-        allButtons              = document.getElementsByTagName('button'),
+        allButtons              = document.getElementsByClassName('bcls-button'),
         getData                 = document.getElementById('getData'),
         apiRequest              = document.getElementById('apiRequest'),
         fieldsArrayDisplay,
