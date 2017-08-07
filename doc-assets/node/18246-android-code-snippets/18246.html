@@ -45,7 +45,7 @@
 	<li><a href="#Offline_playback_with_DRM">Offline playback with DRM</a></li>
 	<li><a href="#Playing_local_videos">Playing local videos</a></li>
 	<li><a href="#Setting_the_buffer_size">Setting the buffer size</a></li>
-	<li><a href="#Setting_VR_Goggles_mode_for_360_videos">Setting VR Goggles mode for 360ￂﾰ videos</a></li>
+	<li><a href="#Setting_VR_Goggles_mode_for_360_videos">Setting VR Goggles mode for 360° videos</a></li>
 	<li><a href="#Starting_playback_in_the_middle_of_a_video">Starting playback in the middle of a video</a></li>
 	<li><a href="#Swapping_videos">Swapping videos</a></li>
 </ul>
@@ -77,12 +77,12 @@
 <p>To get the duration for a live stream, you can use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/Event.html#MAX_POSITION"><code>MAX_POSITION</code></a>. This gives you the largest seekable position for a live stream (ie., the furthest you can drag the scrollbar). Your code should look similar to this:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/Event.html#MAX_POSITION"><code class="language-java">brightcoveVideoView.getEventEmitter().on(EventType.PROGRESS, new EventListener() {
-   @Override
-   public void processEvent(Event event) {
-       int duration = (int) event.properties.get(Event.MAX_POSITION);
-   }
-});</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/Event.html#MAX_POSITION">brightcoveVideoView.getEventEmitter().on(EventType.PROGRESS, new EventListener() {
+	 @Override
+	 public void processEvent(Event event) {
+			 int duration = (int) event.properties.get(Event.MAX_POSITION);
+	 }
+});</a></code></pre>
 </section>
 
 <section class="bcls-section" id="Getting_URL_for_thumbnail_images">
@@ -95,32 +95,30 @@
 	<p>If you are using the Edge Catalog (com.brightcove.player.edge.Catalog), you should be able to get the thumbnail URL like this:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()"><code class="language-java">String thumbnailUrl = video.getProperties().get("thumbnail").toString();</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()">String thumbnailUrl = video.getProperties().get("thumbnail").toString();</a></code></pre>
 
 	<p>If you find that the thumbnail image is too small, you can get the video still image instead:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()"><code class="language-java">String videoStillUrl = video.getProperties().get("stillImageUri").toString();</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()">String videoStillUrl = video.getProperties().get("stillImageUri").toString();</a></code></pre>
 	</li>
 	<li>
 	<p>If you are using the legacy Media API Catalog (com.brightcove.player.media.Catalog), you can do this:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()"><code class="language-java">Catalog catalog = new Catalog("");
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()">Catalog catalog = new Catalog("");
 Map props = new HashMap();
 props.put("video_fields", "accountId,name,shortDescription,longDescription,videoStillURL,thumbnailURL,referenceId,id,length,customFields,HLSURL,videoFullLength,cuePoints");
-  catalog.findVideoByID("3951601515001", props, new VideoListener() {
-    @Override
-    public void onVideo(Video video) {
-      String thumbnailUrl = video.getProperties().get("thumbnailURL").toString();
-      ...</code></a></pre>
+	catalog.findVideoByID("3951601515001", props, new VideoListener() {
+		@Override
+		public void onVideo(Video video) {
+			String thumbnailUrl = video.getProperties().get("thumbnailURL").toString();
+			...</a></code></pre>
 
 	<p>For a larger image, use the video still image:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()"><code class="language-java">String videoStillUrl = video.getProperties().get("videoStillURL").toString();
-
-</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/MetadataObject.html#getProperties()">String videoStillUrl = video.getProperties().get("videoStillURL").toString();</a></code></a></pre>
 	</li>
 </ul>
 </section>
@@ -138,9 +136,9 @@ props.put("video_fields", "accountId,name,shortDescription,longDescription,video
 	<li>Extend the Application and provide a helper method that returns your applications tracker. It should look similar to the <a href="https://github.com/googlesamples/google-services/blob/master/android/analytics/app/src/main/java/com/google/samples/quickstart/analytics/AnalyticsApplication.java">google-services AnalyticsApplication</a>.</li>
 	<li>In a separate class which extends the BrightcovePlayer, obtain the shared tracker instance:
 	<pre class="line-numbers">
-<a href="https://developers.google.com/analytics/devguides/collection/android/v4/#set-up-your-project"><code class="language-java">// Obtain the shared Tracker instance
+<code class="language-java"><a href="https://developers.google.com/analytics/devguides/collection/android/v4/#set-up-your-project">// Obtain the shared Tracker instance
 AnalyticsApplication application = (AnalyticsApplication) getApplication();
-tracker = application.getDefaultTracker();</code></a></pre>
+tracker = application.getDefaultTracker();</a></code></pre>
 	</li>
 	<li>Override appropriate methods to log screen changes and/or send custom events for tracking.</li>
 </ol>
@@ -158,14 +156,14 @@ tracker = application.getDefaultTracker();</code></a></pre>
 	<p>Here is the code to set fullscreen mode:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ENTER_FULL_SCREEN"><code class="language-java">brightcoveVideoView.getEventEmitter().emit(EventType.ENTER_FULL_SCREEN);</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ENTER_FULL_SCREEN">brightcoveVideoView.getEventEmitter().emit(EventType.ENTER_FULL_SCREEN);</a></code></pre>
 	</li>
 	<li>
 	<p>Here is the code to exit fullscreen mode:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#EXIT_FULL_SCREEN"><code class="language-java">brightcoveVideoView.getEventEmitter().emit(EventType.EXIT_FULL_SCREEN);
-</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#EXIT_FULL_SCREEN">brightcoveVideoView.getEventEmitter().emit(EventType.EXIT_FULL_SCREEN);
+</a></code></pre>
 	</li>
 </ul>
 </section>
@@ -176,12 +174,12 @@ tracker = application.getDefaultTracker();</code></a></pre>
 <p>As a Brightcove Player customer, you may want to use DRM protected content from your own server. You can manually load DRM content as follows:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/display/WidevineMediaDrmCallback.html"><code class="language-java">import com.brightcove.player.display.WidevineMediaDrmCallback;
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/display/WidevineMediaDrmCallback.html">import com.brightcove.player.display.WidevineMediaDrmCallback;
 
 Video video = Video.createVideo("https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears.mpd");
 video.getProperties().put(WidevineMediaDrmCallback.DEFAULT_URL, "https://proxy.uat.widevine.com/proxy?video_id=&amp;provider=widevine_test");
 brightcoveVideoView.add(video);
-brightcoveVideoView.start();</code></a></pre>
+brightcoveVideoView.start();</a></code></pre>
 
 <aside class="bcls-aside bcls-aside--information">You do not need to manually load DRM content in your Brightcove library.</aside>
 </section>
@@ -214,7 +212,7 @@ brightcoveVideoView.start();</code></a></pre>
 	<tbody class="bcls-table__body">
 		<tr>
 			<td>Downloading</td>
-			<td><code>R.string.odrm_download_running</code> - this is "Downloading￢ﾀﾦ" by default<br />
+			<td><code>R.string.odrm_download_running</code> - this is "Downloading…" by default<br />
 			<br />
 			There will be a progress bar showing the percent complete.</td>
 			<td>The platform-default animated "downloading" icon - <code>android.R.drawable.stat_sys_download</code></td>
@@ -259,10 +257,10 @@ brightcoveVideoView.start();</code></a></pre>
 <p>If you want to play MP4 videos that are stored locally, then you should save them in the application asset folder.</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Video.html"><code class="language-java">String PACKAGE_NAME = getApplicationContext().getPackageName();
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Video.html">String PACKAGE_NAME = getApplicationContext().getPackageName();
 Uri video = Uri.parse("android.asset://" + PACKAGE_NAME + "/" + R.video.getting_started);
 brightcoveVideoView.add(Video.createVideo(video.toString()));
-brightcoveVideoView.start();</code></a></pre>
+brightcoveVideoView.start();</a></code></pre>
 
 <aside class="bcls-aside bcls-aside--information">You may get an exception error if you try to play MP4 videos stored in the application resource folder (/res/raw).</aside>
 </section>
@@ -308,18 +306,18 @@ brightcoveVideoView.start();</code></a></pre>
 <pre class="line-numbers" data-start="1">
 <code class="language-java">final VideoPlaybackController playbackController = brightcoveVideoView.getPlaybackController();
 eventEmitter.on(EventType.VIDEO_DURATION_CHANGED, new EventListener() {
-    @Override
-    public void processEvent(final Event event) {
-        playbackController.setAdsDisabled(true);
-        brightcoveVideoView.seekTo(10000);
-    }
+		@Override
+		public void processEvent(final Event event) {
+				playbackController.setAdsDisabled(true);
+				brightcoveVideoView.seekTo(10000);
+		}
 });
 
 eventEmitter.on(EventType.DID_SEEK_TO, new EventListener() {
-    @Override
-    public void processEvent(final Event event) {
-        playbackController.setAdsDisabled(false);
-    }
+		@Override
+		public void processEvent(final Event event) {
+				playbackController.setAdsDisabled(false);
+		}
 });</code></pre>
 </section>
 
@@ -345,33 +343,33 @@ eventEmitter.on(EventType.DID_SEEK_TO, new EventListener() {
 <section class="bcls-section" id="Setting_captions_and_themes">
 <h2>Setting captions and themes</h2>
 
-<p>Currently, the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code>BrightcoveCaptionPropertiesActivity</code></a> is set in the Brightcove Player SDK￢ﾀﾙs manifest file, so developers don￢ﾀﾙt need to specify it in their applications:</p>
+<p>Currently, the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code>BrightcoveCaptionPropertiesActivity</code></a> is set in the Brightcove Player SDK’s manifest file, so developers don’t need to specify it in their applications:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+<code class="language-xml"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.brightcove.player"
-    android:versionCode="1"
-    android:versionName="1.0"&gt;
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		package="com.brightcove.player"
+		android:versionCode="1"
+		android:versionName="1.0"&gt;
 
-    &lt;application&gt;
-        &lt;!-- If we don't register this Activity in the Manifest, apps using the SDK will crash when they try to access it. --&gt;
-        &lt;!-- During the app's build process, this manifest will be merged with the app-level one. --&gt;
-        <span class="bcls-highlight">&lt;activity android:name="com.brightcove.player.captioning.BrightcoveCaptionPropertiesActivity"/&gt;</span>
-    &lt;/application&gt;
-&lt;/manifest&gt;</code></a></pre>
+		&lt;application&gt;
+				&lt;!-- If we don't register this Activity in the Manifest, apps using the SDK will crash when they try to access it. --&gt;
+				&lt;!-- During the app's build process, this manifest will be merged with the app-level one. --&gt;
+				<span class="bcls-highlight">&lt;activity android:name="com.brightcove.player.captioning.BrightcoveCaptionPropertiesActivity"/&gt;</span>
+		&lt;/application&gt;
+&lt;/manifest&gt;</a></code></pre>
 
-<p>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code>BrightcoveCaptionPropertiesActivity</code></a> will inherit the platform default theme, as long as you set themes for your app at the <code>&lt;activity&gt;</code> level in your app￢ﾀﾙs manifest.</p>
+<p>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code>BrightcoveCaptionPropertiesActivity</code></a> will inherit the platform default theme, as long as you set themes for your app at the <code>&lt;activity&gt;</code> level in your app’s manifest.</p>
 
 <p>If you set a single app theme at the <code>&lt;application&gt;</code> level, then the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code>BrightcoveCaptionPropertiesActivity</code></a> will inherit the properties of this application-level theme. For some themes, this can cause the activity to look oddly styled or even illegible.</p>
 
 <p>In those cases, you should specify the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code>BrightcoveCaptionPropertiesActivity</code></a> in your own manifest and apply a theme there, like so:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html"><code class="language-xml">&lt;activity
-    <span class="bcls-highlight">android:name="com.brightcove.player.captioning.BrightcoveCaptionPropertiesActivity"</span>
-    android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</code></a></pre>
+<code class="language-xml"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/captioning/BrightcoveCaptionPropertiesActivity.html">&lt;activity
+		<span class="bcls-highlight">android:name="com.brightcove.player.captioning.BrightcoveCaptionPropertiesActivity"</span>
+		android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
 </section>
 
 <section class="bcls-section" id="Setting_default_captions">
@@ -380,30 +378,30 @@ eventEmitter.on(EventType.DID_SEEK_TO, new EventListener() {
 <p>If your video uses multiple language captions, you can programmatically set a default language when playback starts. Your code should look similar to this:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#setSubtitleLocale(java.lang.String)"><code class="language-java">brightcoveVideoView.getEventEmitter().once(EventType.CAPTIONS_LANGUAGES, new EventListener() {
-    @Override
-    public void processEvent(Event event) {
-        brightcoveVideoView.setClosedCaptioningEnabled(true);
-        brightcoveVideoView.setSubtitleLocale("fr");
-    }
-});</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#setSubtitleLocale(java.lang.String)">brightcoveVideoView.getEventEmitter().once(EventType.CAPTIONS_LANGUAGES, new EventListener() {
+		@Override
+		public void processEvent(Event event) {
+				brightcoveVideoView.setClosedCaptioningEnabled(true);
+				brightcoveVideoView.setSubtitleLocale("fr");
+		}
+});</a></code></pre>
 </section>
 
 <section class="bcls-section" id="Setting_VR_Goggles_mode_for_360_videos">
-<h2>Setting VR Goggles mode for 360ￂﾰ videos</h2>
+<h2>Setting VR Goggles mode for 360° videos</h2>
 
-<p>When playing a 360ￂﾰ video, users can select the Video 360 button on the control bar to switch to VR Goggles mode. If you are using either the <code>BrightcovePlayer</code> or <code>BrightcovePlayerFragment</code> activity, then the screen orientation will change to landscape when VR Goggles mode is enabled.</p>
+<p>When playing a 360° video, users can select the Video 360 button on the control bar to switch to VR Goggles mode. If you are using either the <code>BrightcovePlayer</code> or <code>BrightcovePlayerFragment</code> activity, then the screen orientation will change to landscape when VR Goggles mode is enabled.</p>
 
 <p>If you are using a custom activity, then you will need to add the following:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/Event.html#REQUESTED_ORIENTATION"><code class="language-java">brightcoveVideoView.getEventEmitter().on(EventType.CHANGE_ORIENTATION, new EventListener() {
-  @Override
-  public void processEvent(Event event) {
-      int orientation = event.getIntegerProperty(Event.REQUESTED_ORIENTATION);
-      setRequestedOrientation(orientation);
-  }
-});</code></a></pre>
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/Event.html#REQUESTED_ORIENTATION">brightcoveVideoView.getEventEmitter().on(EventType.CHANGE_ORIENTATION, new EventListener() {
+	@Override
+	public void processEvent(Event event) {
+			int orientation = event.getIntegerProperty(Event.REQUESTED_ORIENTATION);
+			setRequestedOrientation(orientation);
+	}
+});</a></code></pre>
 
 <aside class="bcls-aside bcls-aside--information">In the method that contains the above code, you must add <code>@SuppressWarnings("ResourceType")</code> to the method.</aside>
 </section>
@@ -424,34 +422,34 @@ eventEmitter.on(EventType.DID_SEEK_TO, new EventListener() {
 <p>Sometimes, you may need to start playback from somewhere in the middle of the video. To do this, you can call <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#seekTo(int)"><code>BrightCoveVideoView.seekTo()</code></a> before starting playback.</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#seekTo(int)"><code class="language-java">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
-    @Override
-    public void onVideo(Video video) {
-        Log.v(TAG, "onVideo: video = " + video);
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#seekTo(int)">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
+		@Override
+		public void onVideo(Video video) {
+				Log.v(TAG, "onVideo: video = " + video);
 
-        brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
-            @Override
-            public void processEvent(Event event) {
-                brightcoveVideoView.seekTo(60000);
-                brightcoveVideoView.start();
-            }
-        });
-        brightcoveVideoView.add(video);
-        brightcoveVideoView.pause();
-    }
-});</code></a></pre>
+				brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
+						@Override
+						public void processEvent(Event event) {
+								brightcoveVideoView.seekTo(60000);
+								brightcoveVideoView.start();
+						}
+				});
+				brightcoveVideoView.add(video);
+				brightcoveVideoView.pause();
+		}
+});</a></code></pre>
 </section>
 <!--
-            <div id="singleline" class="section">
-                <h2>Showing single line controls</h2>
-                <p>By default, the player controls will appear as a single line in landscape mode and appear stacked in portrait mode. You can override this behavior and display player controls as a single line in portrait mode.</p>
-                <p>Follow these steps:</p>
-                <ul>
-                    <li></li>
-                </ul>
+						<div id="singleline" class="section">
+								<h2>Showing single line controls</h2>
+								<p>By default, the player controls will appear as a single line in landscape mode and appear stacked in portrait mode. You can override this behavior and display player controls as a single line in portrait mode.</p>
+								<p>Follow these steps:</p>
+								<ul>
+										<li></li>
+								</ul>
 
-                <p><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#setSubtitleLocale(java.lang.String)"><code data-gist-id="ac85a1305f851b406dde" data-gist-hide-footer="true" data-gist-line="115-121"></code></a></p>
-            </div>
+								<p><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#setSubtitleLocale(java.lang.String)"><code data-gist-id="ac85a1305f851b406dde" data-gist-hide-footer="true" data-gist-line="115-121"></code></a></p>
+						</div>
 -->
 
 <section class="bcls-section" id="Swapping_videos">
@@ -468,33 +466,33 @@ eventEmitter.on(EventType.DID_SEEK_TO, new EventListener() {
 	<p>Since the time to fetch a video from Video Cloud should dwarf the time to update the playlist, you can try something like this:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html"><code class="language-java">brightcoveVideoView.clear();
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html">brightcoveVideoView.clear();
 
 catalog.findVideoByID("123456789", new VideoListener() {
-  @Override
-  public void onVideo(final Video video) {
-      brightcoveVideoView.add(video);
-      brightcoveVideoView.start();
+	@Override
+	public void onVideo(final Video video) {
+			brightcoveVideoView.add(video);
+			brightcoveVideoView.start();
 
-  }
-});</code></a></pre>
+	}
+});</a></code></pre>
 	</li>
 	<li>
 	<p>Another approach is to wait for an event:</p>
 
 	<pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_CHANGE_LIST"><code class="language-java">catalog.findVideoByID("", new VideoListener() {
-  @Override
-  public void onVideo(final Video video) {
-    eventEmitter.once(EventType.DID_CHANGE_LIST, new EventListener() {
-      @Override
-      public void processEvent(Event event)
-        { brightcoveVideoView.add(video); brightcoveVideoView.start(); }
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_CHANGE_LIST">catalog.findVideoByID("", new VideoListener() {
+	@Override
+	public void onVideo(final Video video) {
+		eventEmitter.once(EventType.DID_CHANGE_LIST, new EventListener() {
+			@Override
+			public void processEvent(Event event)
+				{ brightcoveVideoView.add(video); brightcoveVideoView.start(); }
 
-      });
-    brightcoveVideoView.clear();
-  }
-});</code></a></pre>
+			});
+		brightcoveVideoView.clear();
+	}
+});</a></code></pre>
 	</li>
 </ul>
 
@@ -505,9 +503,9 @@ catalog.findVideoByID("123456789", new VideoListener() {
 <p>Instead, you can try something like this:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html"><code class="language-java">brightcoveVideoView.pause();
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html">brightcoveVideoView.pause();
 brightcoveVideoView.stopPlayback();
-brightcoveVideoView.setCurrentIndex(0);</code></a></pre>
+brightcoveVideoView.setCurrentIndex(0);</a></code></pre>
 </section>
 
 <section class="bcls-section" id="Switching_between_videos_in_a_playlist">
@@ -516,39 +514,39 @@ brightcoveVideoView.setCurrentIndex(0);</code></a></pre>
 <p>If you are using a playlist, you can use the following code to switch between videos in the playlist:</p>
 
 <pre class="line-numbers">
-<a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Playlist.html"><code class="language-java">private void setupControls(List&lt;Video&gt; videos) {
-    previousVideoButton = (Button) findViewById(R.id.previous_video_button);
-    nextVideoButton = (Button) findViewById(R.id.next_video_button);
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Playlist.html">private void setupControls(List&lt;Video&gt; videos) {
+		previousVideoButton = (Button) findViewById(R.id.previous_video_button);
+		nextVideoButton = (Button) findViewById(R.id.next_video_button);
 
-    if (videos != null) {
-        previousVideoButton.setEnabled(false);
-        previousVideoButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                int index = brightcoveVideoView.getCurrentIndex();
-                int size = brightcoveVideoView.getList().size();
-                previousVideoButton.setEnabled(index &gt; 1);
-                nextVideoButton.setEnabled((index + 1) &lt; size);
+		if (videos != null) {
+				previousVideoButton.setEnabled(false);
+				previousVideoButton.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View view) {
+								int index = brightcoveVideoView.getCurrentIndex();
+								int size = brightcoveVideoView.getList().size();
+								previousVideoButton.setEnabled(index &gt; 1);
+								nextVideoButton.setEnabled((index + 1) &lt; size);
 
-                if (index &gt; 0) {
-                    brightcoveVideoView.setCurrentIndex(index - 1);
-                }
-            }
-        });
+								if (index &gt; 0) {
+										brightcoveVideoView.setCurrentIndex(index - 1);
+								}
+						}
+				});
 
-        nextVideoButton.setEnabled(videos.size() &gt; 1);
-        nextVideoButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                int index = brightcoveVideoView.getCurrentIndex();
-                int size = brightcoveVideoView.getList().size();
-                previousVideoButton.setEnabled(index &gt;= 0);
-                nextVideoButton.setEnabled((index + 2) &lt; size);
+				nextVideoButton.setEnabled(videos.size() &gt; 1);
+				nextVideoButton.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View view) {
+								int index = brightcoveVideoView.getCurrentIndex();
+								int size = brightcoveVideoView.getList().size();
+								previousVideoButton.setEnabled(index &gt;= 0);
+								nextVideoButton.setEnabled((index + 2) &lt; size);
 
-                if ((index + 1) &lt; size) {
-                    brightcoveVideoView.setCurrentIndex(index + 1);
-                }
-            }
-        });
-    }
-}</code></a></pre>
+								if ((index + 1) &lt; size) {
+										brightcoveVideoView.setCurrentIndex(index + 1);
+								}
+						}
+				});
+		}
+}</a></code></pre>
 </section>
 </article>
