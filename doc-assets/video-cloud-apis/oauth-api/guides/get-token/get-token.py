@@ -42,7 +42,7 @@ print """
 # get the oauth 2.0 token
 def getAuthToken(creds):
     conn = httplib.HTTPSConnection("oauth.brightcove.com")
-    url =  "/v3/access_token"
+    url =  "/v4/access_token"
     params = {
 "grant_type": "client_credentials"
     }
