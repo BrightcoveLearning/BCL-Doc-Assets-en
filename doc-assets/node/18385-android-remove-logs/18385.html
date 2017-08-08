@@ -1,0 +1,70 @@
+<article class="bcls-article">
+  <section id="top" class="bcls-section">
+      <p>Test your video apps with the default log messages to assist with debugging. When you are ready to publish your app, then you can remove these log messages.</p>
+  </section>
+
+  <section id="Overview" class="bcls-section">
+  <h2>Remove log messages</h2>
+  <p>To remove the default log messages from the Native SDK for Android, follow these steps:</p>
+  <ol class="bcls-tasklist">
+    <li>
+      In your app, open the <strong>proguard-rules.pro</strong> file.
+      <br /><br />
+      <aside class="bcls-aside bcls-aside--tip">In Android Studio, this file is created by default. If you are wondering where this file is in our Brightcove Android samples, we have renamed this file to <strong>proguard-project.txt</strong>.</aside>
+    </li>
+    <li>
+      Add the following code block to remove the log from your app:
+      <pre class="line-numbers"><code class="language-java">-assumenosideeffects class android.util.Log {
+public static *** v(...);
+public static *** d(...);
+public static *** i(...);
+public static *** w(...);
+public static *** e(...);
+}
+</code></pre>
+      <aside class="bcls-aside bcls-aside--tip">For details about log messages, see the <a href="https://developer.android.com/reference/android/util/Log.html">Android Log class</a> documentation.</aside>
+    </li>
+    <li>
+      Next, open your app's <strong>build.gradle</strong> file.
+    </li>
+    <li>
+      In the <code>buildTypes</code> section, add the <code>minifyEnabled</code> attribute with a value of <code>true</code>.
+    </li>
+    <li>
+      Below the previous code, add a <code>proguardFiles</code> attribute as follows:
+      <ul>
+        <li>
+          Use the <code>getDefaultProguardFile()</code> method to get the <strong>proguard-android-optimize.txt</strong> file from the Android SDK.
+        </li>
+        <li>
+          Reference the <strong>proguard-rules.pro</strong> file.
+        </li>
+      </ul>
+      <br />
+      Your <strong>build.gradle</strong> file should look similar to this:
+      <pre class="line-numbers"><code class="language-java">android {
+compileSdkVersion 25
+buildToolsVersion '25.0.0'
+
+defaultConfig {
+  ...
+}
+
+buildTypes {
+  release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+      'proguard-rules.pro'
+  }
+}
+}
+</code></pre>
+    </li>
+  </ol>
+  <aside class="bcls-aside bcls-aside--tip">Android Studio temporarily disables the Java Code Coverage Library (JaCoCo) and ProGuard while using Instant Run. Because Instant Run only works with debug builds, this does not affect your release build (<strong>https://developer.android.com/studio/run/index.html</strong>).
+    <br /><br />
+If you want to remove logs on your debug build type, you need to <a href="https://developer.android.com/studio/run/index.html#disable-ir">disable Instant Run</a>.
+</aside>
+  </section>
+
+</article>
