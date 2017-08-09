@@ -100,7 +100,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
 
     // create navigation for page sections
     function createInPageNavMenu() {
-        var sideNavList = document.querySelector('.bc-ipnav-block li'),
+        var sideNavList = document.querySelector('.bc-ipnav-block ul'),
+            lastLI = sideNavList.lastChild,
             i,
             max = navLabel.length,
             aEl,
@@ -113,7 +114,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             txt = document.createTextNode(navLabel[i].text);
             aEl.appendChild(txt);
             liEl.appendChild(aEl);
-            sideNavList.appendChild(liEl);
+            sideNavList.insertAdjacentHTML(liEl, lastLI);
         }
     }
     function createInPageNav() {
