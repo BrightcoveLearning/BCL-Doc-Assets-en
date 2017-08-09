@@ -5,23 +5,23 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                 requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
         navLabel = [];
-        /**
-         * determines whether specified item is in an array
-         *
-         * @param {array} array to check
-         * @param {string} item to check for
-         * @return {boolean} true if item is in the array, else false
-         */
-        function isItemInArray(arr, item) {
-            var i,
-                iMax = arr.length;
-            for (i = 0; i < iMax; i++) {
-                if (arr[i] === item) {
-                    return true;
-                }
+    /**
+     * determines whether specified item is in an array
+     *
+     * @param {array} array to check
+     * @param {string} item to check for
+     * @return {boolean} true if item is in the array, else false
+     */
+    function isItemInArray(arr, item) {
+        var i,
+            iMax = arr.length;
+        for (i = 0; i < iMax; i++) {
+            if (arr[i] === item) {
+                return true;
             }
-            return false;
         }
+        return false;
+    }
     /**
      * remove spaces from passed string
      * @param  {string} str - the string to remove spaces from
@@ -174,10 +174,6 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             item.videoRenditions = 0;
             item.audioRenditions = 0;
             item.imageRenditions = 0;
-            // add legacy description if none
-            if (!isDefined(item.description)) {
-                item.description = 'legacy profile - not recommended for use';
-            }
 
             jMax = item.renditions.length;
             item.numRenditions = jMax;
@@ -459,7 +455,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                           iMax = tmpArr.length;
                           data.BCLSprofilesArray = [];
                           for (i = 0; i < iMax; i += 1) {
-                              if (isItemInArray(standardProfileList, tmpArr[i].name)) {
+                              if (isDefined(tmpArr[i].dynamic_origin)) {
                                   data.BCLSprofilesArray.push(tmpArr[i]);
                               }
                           }
