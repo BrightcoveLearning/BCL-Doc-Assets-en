@@ -117,6 +117,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             sideNavList.insertBefore(liEl, lastLI);
         }
     }
+
+    // create array of new nav objects
     function createInPageNav() {
         var navObj = {},
             h2s = document.querySelectorAll('section.bcls-section h2'),
