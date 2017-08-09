@@ -4,8 +4,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
                 requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
-        navLabel = [],
-        standardProfileList = ['screencast-1280', 'smart-player-transition', 'Live - Standard', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'Live - Premium HD', 'Live - HD', 'single-bitrate-standard', 'high-resolution'];
+        navLabel = [];
         /**
          * determines whether specified item is in an array
          *
@@ -100,7 +99,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
 
     // create navigation for page sections
     function createInPageNavMenu() {
-        var sideNavList = document.querySelector('.bc-ipnav-block li'),
+        var sideNavList = document.querySelector('.bc-ipnav-block ul'),
+            lastLI = sideNavList.lastChild,
             i,
             max = navLabel.length,
             aEl,
@@ -113,7 +113,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             txt = document.createTextNode(navLabel[i].text);
             aEl.appendChild(txt);
             liEl.appendChild(aEl);
-            sideNavList.appendChild(liEl);
+            sideNavList.insertAdjacentHTML(liEl, lastLI);
         }
     }
     function createInPageNav() {
