@@ -114,7 +114,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             txt = document.createTextNode(navLabel[i].text);
             aEl.appendChild(txt);
             liEl.appendChild(aEl);
-            sideNavList.insertAdjacentHTML(liEl, lastLI);
+            sideNavList.insertBefore(liEl, lastLI);
         }
     }
     function createInPageNav() {
