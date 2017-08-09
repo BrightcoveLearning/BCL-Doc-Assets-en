@@ -2,7 +2,7 @@ var codeBlocks;
 var BCLS = ( function (window, document, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-                requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
+        requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
         navLabel = [];
     /**
@@ -19,6 +19,18 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             if (arr[i] === item) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    /*
+     * determines whether this profile is static
+     * @param {Object} item the profile item
+     * @return {Boolean} whether the item is static
+     */
+    function isStatic(item) {
+        if (item.name.indexOf('static') >= 0) {
+            return true;
         }
         return false;
     }
@@ -444,6 +456,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             i,
             iMax,
             tmpArr,
+            item,
             getResponse = function () {
                 // bclslog("getting data");
                 try {
@@ -453,10 +466,16 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                         //   bclslog('response', httpRequest.responseText);
                           tmpArr = JSON.parse(httpRequest.responseText);
                           iMax = tmpArr.length;
-                          data.BCLSprofilesArray = [];
+                          data.BCLSprofilesStatic = [];
+                          data.BCLSprofilesDynamic = [];
                           for (i = 0; i < iMax; i += 1) {
-                              if (isDefined(tmpArr[i].dynamic_origin)) {
-                                  data.BCLSprofilesArray.push(tmpArr[i]);
+                              item = tmpArr[i];
+                              if (isDefined(item.dynamic_origin)) {
+                                  if (isStatic(item)) {
+                                      data.BCLSprofilesStatic.push(item);
+                                  } else {
+                                      data.BCLSprofilesDynamic.push(item);
+                                  }
                               }
                           }
                           buildSummaryTable();
