@@ -34,6 +34,16 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         }
         return false;
     }
+
+    /*
+     * 
+     */
+    function isAudio(rendition) {
+        if (rendition.indexOf('audio') >= 0) {
+            return true;
+        }
+        return false;
+    }
     /**
      * remove spaces from passed string
      * @param  {string} str - the string to remove spaces from
@@ -179,15 +189,16 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             td,
             a,
             content;
+        // static profiles
         iMax = data.BCLSprofilesArray.length;
         // massage data
         for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesArray[i];
+            item = data.BCLSprofilesStatic[i];
             item.videoRenditions = 0;
             item.audioRenditions = 0;
             item.imageRenditions = 0;
 
-            jMax = item.renditions.length;
+            jMax = item.dynamic_origin.renditions.length;
             item.numRenditions = jMax;
 
             for (j = 0; j < jMax; j++) {
