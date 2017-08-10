@@ -36,10 +36,10 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     }
 
     /*
-     * 
+     *
      */
-    function isAudio(rendition) {
-        if (rendition.indexOf('audio') >= 0) {
+    function isAudio(item) {
+        if (item.indexOf('audio') >= 0) {
             return true;
         }
         return false;
