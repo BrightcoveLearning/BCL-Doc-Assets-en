@@ -191,9 +191,6 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             a,
             content;
         // static profiles
-        sectionSubHeadingNode = document.createElement('h3');
-        content = document.createTextNode('Regular Profiles');
-        sectionSubHeadingNode.appendChild(content);
         iMax = data.BCLSprofilesArray.length;
         // massage data
         for (i = 0; i < iMax; i++) {
@@ -213,8 +210,10 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                     item.audioRenditions++;
                 }
             }
-
         }
+        sectionSubHeadingNode = document.createElement('h3');
+        content = document.createTextNode('Regular Profiles');
+        sectionSubHeadingNode.appendChild(content);
         newSectionNode.setAttribute("id", "Summary_Table");
         newSectionNode.setAttribute("class", "bcls-section");
         sectionHeadingNode.setAttribute("id", "summaryTableHeading");
@@ -227,6 +226,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         profiletbodyNode.setAttribute("class", "bcls-table__body");
         newSectionNode.appendChild(sectionHeadingNode);
         newSectionNode.appendChild(sectionIntroNode);
+        newSectionNode.appendChild(sectionSubHeadingNode);
         newSectionNode.appendChild(profileTableNode);
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
@@ -294,6 +294,101 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         content = document.createTextNode('Description');
         th.appendChild(content);
         tr.appendChild(th);
+
+        // now the CAE profiles
+        iMax = data.BCLSprofilesDynamic.length;
+
+        for (i = 0; i < iMax; i++) {
+            item = data.BCLSprofilesDynamic[i];
+            item.videoRenditions = item.dynamic_origin.dynamic_profile_options.min_renditions + ' - ' + item.dynamic_origin.dynamic_profile_options.max_renditions;
+            item.audioRenditions = item.dynamic_origin.renditions.length;
+            item.imageRenditions = item.dynamic_origin.images.length;
+
+        }
+        sectionSubHeadingNode = document.createElement('h3');
+        content = document.createTextNode('Context Aware Encoding Profiles');
+        sectionSubHeadingNode.appendChild(content);
+        newSectionNode.setAttribute("id", "Summary_Table");
+        newSectionNode.setAttribute("class", "bcls-section");
+        sectionHeadingNode.setAttribute("id", "summaryTableHeading");
+        sectionIntroNode.setAttribute("id", "summarySectionIntro");
+        profileTableNode.setAttribute("id", "profileSummaryTable");
+        profileTableNode.setAttribute("class", "bcls-table");
+        profiletheadNode.setAttribute("id", "profileSummaryTableThead");
+        profiletheadNode.setAttribute("class", "bcls-table__head");
+        profiletbodyNode.setAttribute("id", "profileSummaryTableTbody");
+        profiletbodyNode.setAttribute("class", "bcls-table__body");
+        newSectionNode.appendChild(sectionHeadingNode);
+        newSectionNode.appendChild(sectionIntroNode);
+        newSectionNode.appendChild(sectionSubHeadingNode);
+        newSectionNode.appendChild(profileTableNode);
+        profileTableNode.appendChild(profiletheadNode);
+        profileTableNode.appendChild(profiletbodyNode);
+        fragment.appendChild(newSectionNode);
+        iMax = data.BCLSprofilesArray.length;
+        for (i = 0; i < iMax; i++) {
+            item = data.BCLSprofilesArray[i];
+            tr = document.createElement('tr');
+            profiletbodyNode.appendChild(tr);
+            td = document.createElement('td');
+            a = document.createElement('a');
+            a.setAttribute('href', '#' + removeSpaces(item.name));
+            content = document.createTextNode(item.name);
+            a.appendChild(content);
+            td.appendChild(a);
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.setAttribute('class', 'bcl-center');
+            content = document.createTextNode(item.videoRenditions);
+            td.appendChild(content);
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.setAttribute('class', 'bcl-center');
+            content = document.createTextNode(item.audioRenditions);
+            td.appendChild(content);
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.setAttribute('class', 'bcl-center');
+            content = document.createTextNode(item.imageRenditions);
+            td.appendChild(content);
+            tr.appendChild(td);
+            td = document.createElement('td');
+            content = document.createTextNode(item.description);
+            td.appendChild(content);
+            tr.appendChild(td);
+        }
+        mainSection.appendChild(fragment);
+        sectionHeadingElem = document.getElementById("summaryTableHeading");
+        sectionIntroElem = document.getElementById("summarySectionIntro");
+        profiletheadElem = document.getElementById("profileSummaryTableThead");
+        profiletbodyElem = document.getElementById("profileSummaryTableTbody");
+        sectionHeadingElem.innerHTML = "Standard Profiles List";
+        content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
+        sectionIntroElem.appendChild(content);
+        tr = document.createElement('tr');
+        profiletheadElem.appendChild(tr);
+        th = document.createElement('th');
+        content = document.createTextNode('Profile Name');
+        th.appendChild(content);
+        tr.appendChild(th);
+        th = document.createElement('th');
+        content = document.createTextNode('Video');
+        th.appendChild(content);
+        tr.appendChild(th);
+        th = document.createElement('th');
+        content = document.createTextNode('Audio');
+        th.appendChild(content);
+        tr.appendChild(th);
+        th = document.createElement('th');
+        content = document.createTextNode('Image');
+        th.appendChild(content);
+        tr.appendChild(th);
+        th = document.createElement('th');
+        content = document.createTextNode('Description');
+        th.appendChild(content);
+        tr.appendChild(th);
+
+
     }
     function buildDetailTables() {
         // bclslog("building data tables");
