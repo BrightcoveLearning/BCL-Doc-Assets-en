@@ -491,7 +491,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             }
             renditionthead.appendChild(tr);
             // now add the body row for each rendition
-            jMax = profile.renditions.length;
+            jMax = profile.dynamic_origin.images.length;
             for (j = 0; j < jMax; j++) {
                 tr = createEl("tr");
                 rendition = profile.renditions[j];
