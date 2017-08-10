@@ -230,7 +230,6 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         newSectionNode.appendChild(profileTableNode);
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
-        fragment.appendChild(newSectionNode);
         // bclslog('data.BCLSprofilesArray', data.BCLSprofilesArray);
         iMax = data.BCLSprofilesArray.length;
         for (i = 0; i < iMax; i++) {
@@ -308,23 +307,16 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         sectionSubHeadingNode = document.createElement('h3');
         content = document.createTextNode('Context Aware Encoding Profiles');
         sectionSubHeadingNode.appendChild(content);
-        newSectionNode.setAttribute("id", "Summary_Table");
-        newSectionNode.setAttribute("class", "bcls-section");
-        sectionHeadingNode.setAttribute("id", "summaryTableHeading");
-        sectionIntroNode.setAttribute("id", "summarySectionIntro");
         profileTableNode.setAttribute("id", "profileSummaryTable");
         profileTableNode.setAttribute("class", "bcls-table");
-        profiletheadNode.setAttribute("id", "profileSummaryTableThead");
+        profiletheadNode.setAttribute("id", "CAEprofileSummaryTableThead");
         profiletheadNode.setAttribute("class", "bcls-table__head");
         profiletbodyNode.setAttribute("id", "profileSummaryTableTbody");
         profiletbodyNode.setAttribute("class", "bcls-table__body");
-        newSectionNode.appendChild(sectionHeadingNode);
-        newSectionNode.appendChild(sectionIntroNode);
         newSectionNode.appendChild(sectionSubHeadingNode);
         newSectionNode.appendChild(profileTableNode);
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
-        fragment.appendChild(newSectionNode);
         iMax = data.BCLSprofilesArray.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesArray[i];
@@ -357,6 +349,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             td.appendChild(content);
             tr.appendChild(td);
         }
+        fragment.appendChild(newSectionNode);
+
         mainSection.appendChild(fragment);
         sectionHeadingElem = document.getElementById("summaryTableHeading");
         sectionIntroElem = document.getElementById("summarySectionIntro");
@@ -434,20 +428,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             delete profile.audioRenditions;
             delete profile.imageRenditions;
             delete profile.numRenditions;
-            if (isDefined(profile.keep_renditions)) {
-                delete profile.keep_renditions;
-            }
-            if (!isDefined(profile.description)) {
-                profile.description = 'legacy profile - not recommended for use';
-            }
             // profile.name = profile.name + ' Copy';
             profile.account_id = null;
-            if (isDefined(profile.renditions)) {
-                jMax = profile.renditions.length;
-                for (j = 0; j < jMax; j++) {
-                    delete profile.renditions[j].id;
-                }
-            }
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
