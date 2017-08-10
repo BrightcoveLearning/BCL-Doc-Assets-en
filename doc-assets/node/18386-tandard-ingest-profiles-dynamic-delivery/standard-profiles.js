@@ -166,6 +166,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     function buildSummaryTable() {
         var newSectionNode = document.createElement("section"),
             sectionHeadingNode = document.createElement("h2"),
+            sectionSubHeadingNode,
             sectionIntroNode = document.createElement("p"),
             profileTableNode = document.createElement("table"),
             profiletheadNode = document.createElement("thead"),
@@ -190,24 +191,25 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             a,
             content;
         // static profiles
+        sectionSubHeadingNode = document.createElement('h3');
+        content = document.createTextNode('Regular Profiles');
+        sectionSubHeadingNode.appendChild(content);
         iMax = data.BCLSprofilesArray.length;
         // massage data
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesStatic[i];
             item.videoRenditions = 0;
             item.audioRenditions = 0;
-            item.imageRenditions = 0;
+            item.imageRenditions = item.dynamic_origin.images.length;
 
             jMax = item.dynamic_origin.renditions.length;
             item.numRenditions = jMax;
 
             for (j = 0; j < jMax; j++) {
                 // count up renditions of each kind
-                if (item.renditions[j].media_type === "video") {
+                if (!isAudio(item.reditions[j])) {
                     item.videoRenditions++;
-                } else if (item.renditions[j].media_type === "image") {
-                    item.imageRenditions++;
-                } else if (item.renditions[j].media_type === "audio") {
+                } else {
                     item.audioRenditions++;
                 }
             }
