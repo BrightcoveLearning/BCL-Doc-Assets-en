@@ -469,7 +469,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             text = document.createTextNode("View rendition information in JSON form");
             link.appendChild(text);
             sectionSubHeading.appendChild(link);
-            text = document.createTextNode("Table of rendition properties");
+            text = document.createTextNode("Table of image rendition properties");
             sectionTableHeading.appendChild(text);
             // now do the reditions
             headersArray.push('renditions');
