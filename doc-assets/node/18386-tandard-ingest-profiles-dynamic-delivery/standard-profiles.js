@@ -393,6 +393,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             sectionJsonHeading,
             sectionJsonP,
             sectionTableHeading,
+            renditionList,
             renditionTable,
             renditionthead,
             renditiontbody,
@@ -417,7 +418,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             var headersArray = [],
                 l,
                 lMax;
-            profile = data.BCLSprofilesArray[i];
+            // static profiles
+            profile = data.BCLSprofilesStatic[i];
             // remove id's and other stuff from data
             delete profile.id;
             delete profile.version;
@@ -433,16 +435,19 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
-            sectionJsonHeading = createEl("h6", {id: removeSpaces(profile.name) + "json"});
+            renditionList = createEl('p');
+            text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(','));
+            sectionJsonHeading = createEl("h4", {id: removeSpaces(profile.name) + "json"});
             text = document.createTextNode("JSON data for the profile");
             sectionJsonHeading.appendChild(text);
             sectionJsonP = createEl('p', {class: 'BCL-aside'});
             text = document.createTextNode('Note: if you copy and paste the JSON to make a new profile, you will need to replace the null value for "account_id" with your own account id, and replace the name with a new name!');
             sectionJsonP.appendChild(text);
-            sectionTableHeading = createEl("h6");
+            sectionTableHeading = createEl("h4");
             profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
+            section.appendChild(renditionList);
             section.appendChild(sectionTableHeading);
             renditionTable = createEl("table", {class: "bcls-table"});
             renditionthead = createEl("thead", {class: 'bcls-table__head'});
@@ -467,11 +472,12 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             text = document.createTextNode("Table of rendition properties");
             sectionTableHeading.appendChild(text);
             // now do the reditions
-            jMax = profile.renditions.length;
+            headersArray.push('renditions');
+            jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
             for (j = 0; j < jMax; j++) {
                 var prop;
-                rendition = profile.renditions[j];
+                rendition = profile.dynamic_origin.images[j];
                 for (prop in rendition) {
                     headersArray.push(prop);
                 }
