@@ -495,7 +495,7 @@ console.log('item.dynamic_origin.renditions[j]', item.dynamic_origin.renditions[
             jMax = profile.dynamic_origin.images.length;
             for (j = 0; j < jMax; j++) {
                 tr = createEl("tr");
-                rendition = profile.renditions[j];
+                rendition = profile.dynamic_origin.images[j];
                 for (l = 0; l < lMax; l++) {
                     td = createEl("td");
                     if (headersArray[l] === 'skip') {
