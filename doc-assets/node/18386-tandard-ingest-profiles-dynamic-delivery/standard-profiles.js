@@ -293,7 +293,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         tr.appendChild(th);
 
         fragment1.appendChild(newSectionNode);
-        mainSection.appendChild(fragment);
+        mainSection.appendChild(fragment1);
 
 
         // now the CAE profiles
@@ -352,9 +352,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         //     tr.appendChild(td);
         // }
         // fragment2.appendChild(newSectionNode);
-        // mainSection.appendChild(fragment);
+        // mainSection.appendChild(fragment2);
         //
-        // mainSection.appendChild(fragment);
         // content = document.createTextNode('Standard Profiles List');
         // sectionHeadingNode.appendChild(content);
         // content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
