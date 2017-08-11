@@ -191,7 +191,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             a,
             content;
         // static profiles
-        iMax = data.BCLSprofilesArray.length;
+        iMax = data.BCLSprofilesStatic.length;
         // massage data
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesStatic[i];
@@ -231,9 +231,9 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
         // bclslog('data.BCLSprofilesArray', data.BCLSprofilesArray);
-        iMax = data.BCLSprofilesArray.length;
+        iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesArray[i];
+            item = data.BCLSprofilesStatic[i];
             tr = document.createElement('tr');
             profiletbodyNode.appendChild(tr);
             td = document.createElement('td');
@@ -317,9 +317,9 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         newSectionNode.appendChild(profileTableNode);
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
-        iMax = data.BCLSprofilesArray.length;
+        iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesArray[i];
+            item = data.BCLSprofilesDynamic[i];
             tr = document.createElement('tr');
             profiletbodyNode.appendChild(tr);
             td = document.createElement('td');
@@ -497,7 +497,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             }
             renditionthead.appendChild(tr);
             // now add the body row for each rendition
-            jMax = profile.renditions.length;
+            jMax = profile.dynamic_origin.images.length;
             for (j = 0; j < jMax; j++) {
                 tr = createEl("tr");
                 rendition = profile.renditions[j];
