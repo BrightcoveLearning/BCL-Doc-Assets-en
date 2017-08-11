@@ -406,7 +406,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             profilePre,
             profileCode,
             i, j, jMax,
-            iMax = data.BCLSprofilesArray.length,
+            iMax = data.BCLSprofilesStatic.length,
             headings,
             profile,
             rendition,
