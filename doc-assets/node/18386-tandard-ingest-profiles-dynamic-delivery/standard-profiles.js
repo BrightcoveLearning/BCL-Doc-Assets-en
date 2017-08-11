@@ -204,7 +204,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
 
             for (j = 0; j < jMax; j++) {
                 // count up renditions of each kind
-                if (!isAudio(item.renditions[j])) {
+console.log('item.dynamic_origin.renditions[j]', item.dynamic_origin.renditions[j]);
+                if (!isAudio(item.dynamic_origin.renditions[j])) {
                     item.videoRenditions++;
                 } else {
                     item.audioRenditions++;
