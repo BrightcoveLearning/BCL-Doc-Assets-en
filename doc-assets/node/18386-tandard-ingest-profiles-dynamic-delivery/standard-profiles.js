@@ -350,16 +350,12 @@ console.log('item.dynamic_origin.renditions[j]', item.dynamic_origin.renditions[
         fragment.appendChild(newSectionNode);
 
         mainSection.appendChild(fragment);
-        sectionHeadingElem = document.getElementById("summaryTableHeading");
-        sectionIntroElem = document.getElementById("summarySectionIntro");
-        profiletheadElem = document.getElementById("profileSummaryTableThead");
-        profiletbodyElem = document.getElementById("profileSummaryTableTbody");
         content = document.createTextNode('Standard Profiles List');
         sectionHeadingNode.appendChild(content);
         content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
-        sectionIntroElem.appendChild(content);
+        sectionHeadingNode.appendChild(content);
         tr = document.createElement('tr');
-        profiletheadElem.appendChild(tr);
+        profiletheadNode.appendChild(tr);
         th = document.createElement('th');
         content = document.createTextNode('Profile Name');
         th.appendChild(content);
