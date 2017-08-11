@@ -393,6 +393,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             sectionJsonP,
             sectionTableHeading,
             renditionList,
+            renditionListNote,
+            renditionListNoteA,
             renditionTable,
             renditionthead,
             renditiontbody,
@@ -436,6 +438,14 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             sectionSubHeading = createEl("p");
             renditionList = createEl('p');
             text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(','));
+            renditionList.appendChild(text);
+            renditionListNote = document.createEl('p');
+            renditionListNoteA = document.createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
+            text = document.createTextNode('Rendition Details for Dynamic Delivery');
+            renditionListNoteA.appendChild(text);
+            text = document.createTextNode('For details on the renditions created see ');
+            renditionListNote.appendChild(text);
+            renditionListNote.appendChild(renditionListNoteA);
             sectionJsonHeading = createEl("h4", {id: removeSpaces(profile.name) + "json"});
             text = document.createTextNode("JSON data for the profile");
             sectionJsonHeading.appendChild(text);
@@ -447,6 +457,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
             section.appendChild(renditionList);
+            section.appendChild(renditionListNote);
             section.appendChild(sectionTableHeading);
             renditionTable = createEl("table", {class: "bcls-table"});
             renditionthead = createEl("thead", {class: 'bcls-table__head'});
