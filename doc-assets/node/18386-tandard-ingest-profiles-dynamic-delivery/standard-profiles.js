@@ -451,6 +451,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             renditionTable = createEl("table", {class: "bcls-table"});
             renditionthead = createEl("thead", {class: 'bcls-table__head'});
             renditiontbody = createEl("tbody", {class: 'bcls-table__body'});
+            section.appendChild(renditionList);
             section.appendChild(renditionTable);
             renditionTable.appendChild(renditionthead);
 
