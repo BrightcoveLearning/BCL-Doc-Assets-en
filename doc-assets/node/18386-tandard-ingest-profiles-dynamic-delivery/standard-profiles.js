@@ -176,7 +176,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             profileTableElem,
             profiletheadElem,
             profiletbodyElem,
-            fragment = document.createDocumentFragment(),
+            fragment1 = document.createDocumentFragment(),
+            fragment2 = document.createDocumentFragment(),
             i,
             iMax,
             j,
@@ -264,7 +265,6 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             td.appendChild(content);
             tr.appendChild(td);
         }
-        mainSection.appendChild(fragment);
         content = document.createTextNode('Standard Profiles List');
         sectionHeadingNode.appendChild(content);
         content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
@@ -291,6 +291,10 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         content = document.createTextNode('Description');
         th.appendChild(content);
         tr.appendChild(th);
+
+        fragment1.appendChild(newSectionNode);
+        mainSection.appendChild(fragment);
+
 
         // now the CAE profiles
         // iMax = data.BCLSprofilesDynamic.length;
@@ -347,35 +351,36 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         //     td.appendChild(content);
         //     tr.appendChild(td);
         // }
-        fragment.appendChild(newSectionNode);
-
-        mainSection.appendChild(fragment);
-        content = document.createTextNode('Standard Profiles List');
-        sectionHeadingNode.appendChild(content);
-        content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
-        sectionHeadingNode.appendChild(content);
-        tr = document.createElement('tr');
-        profiletheadNode.appendChild(tr);
-        th = document.createElement('th');
-        content = document.createTextNode('Profile Name');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Video');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Audio');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Image');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Description');
-        th.appendChild(content);
-        tr.appendChild(th);
+        // fragment2.appendChild(newSectionNode);
+        // mainSection.appendChild(fragment);
+        //
+        // mainSection.appendChild(fragment);
+        // content = document.createTextNode('Standard Profiles List');
+        // sectionHeadingNode.appendChild(content);
+        // content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
+        // sectionHeadingNode.appendChild(content);
+        // tr = document.createElement('tr');
+        // profiletheadNode.appendChild(tr);
+        // th = document.createElement('th');
+        // content = document.createTextNode('Profile Name');
+        // th.appendChild(content);
+        // tr.appendChild(th);
+        // th = document.createElement('th');
+        // content = document.createTextNode('Video');
+        // th.appendChild(content);
+        // tr.appendChild(th);
+        // th = document.createElement('th');
+        // content = document.createTextNode('Audio');
+        // th.appendChild(content);
+        // tr.appendChild(th);
+        // th = document.createElement('th');
+        // content = document.createTextNode('Image');
+        // th.appendChild(content);
+        // tr.appendChild(th);
+        // th = document.createElement('th');
+        // content = document.createTextNode('Description');
+        // th.appendChild(content);
+        // tr.appendChild(th);
 
 
     }
