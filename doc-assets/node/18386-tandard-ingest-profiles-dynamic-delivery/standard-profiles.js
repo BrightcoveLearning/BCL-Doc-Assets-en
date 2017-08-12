@@ -320,8 +320,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         profiletbodyNode.setAttribute("class", "bcls-table__body");
         newSectionNode.appendChild(sectionSubHeadingNode);
         newSectionNode.appendChild(profileTableNodeCAE);
-        profileTableNode.appendChild(profiletheadNodeCAE);
-        profileTableNode.appendChild(profiletbodyNodeCAE);
+        profileTableNodeCAE.appendChild(profiletheadNodeCAE);
+        profileTableNodeCAE.appendChild(profiletbodyNodeCAE);
         iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesDynamic[i];
