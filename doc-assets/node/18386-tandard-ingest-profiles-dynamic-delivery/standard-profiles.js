@@ -317,11 +317,12 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         profiletheadNodeCAE.setAttribute("id", "profileSummaryTableTheadCAE");
         profiletheadNodeCAE.setAttribute("class", "bcls-table__head");
         profiletbodyNodeCAE.setAttribute("id", "profileSummaryTableTbodyCAE");
-        profiletbodyNode.setAttribute("class", "bcls-table__body");
+        profiletbodyNodeCAE.setAttribute("class", "bcls-table__body");
         newSectionNode.appendChild(sectionSubHeadingNode);
         newSectionNode.appendChild(profileTableNodeCAE);
         profileTableNodeCAE.appendChild(profiletheadNodeCAE);
         profileTableNodeCAE.appendChild(profiletbodyNodeCAE);
+console.log('BCLSprofilesDynamic', BCLSprofilesDynamic);
         iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesDynamic[i];
