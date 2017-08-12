@@ -358,7 +358,6 @@ console.log('item', item);
         fragment2.appendChild(newSectionNode);
         mainSection.appendChild(fragment2);
 
-        sectionHeadingNode.appendChild(content);
         tr = document.createElement('tr');
         profiletheadNodeCAE.appendChild(tr);
         th = document.createElement('th');
