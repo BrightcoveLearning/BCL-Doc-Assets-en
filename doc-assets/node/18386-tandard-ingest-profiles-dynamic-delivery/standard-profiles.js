@@ -217,7 +217,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             }
         }
         sectionSubHeadingNode = document.createElement('h3');
-        content = document.createTextNode('Regular Profiles');
+        content = document.createTextNode('Dynamic Delivery Profiles');
         sectionSubHeadingNode.appendChild(content);
         newSectionNode.setAttribute("id", "Summary_Table");
         newSectionNode.setAttribute("class", "bcls-section");
@@ -406,8 +406,7 @@ console.log('item', item);
             link,
             profilePre,
             profileCode,
-            i, j, jMax,
-            iMax = data.BCLSprofilesStatic.length,
+            i, j, jMax, iMax,
             headings,
             profile,
             rendition,
@@ -415,11 +414,136 @@ console.log('item', item);
             text,
             str,
             re = /_/g;
+            // static profiles
+            iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
             var headersArray = [],
                 l,
                 lMax;
-            // static profiles
+            profile = data.BCLSprofilesStatic[i];
+            // remove id's and other stuff from data
+            delete profile.id;
+            delete profile.version;
+            delete profile.brightcove_standard;
+            delete profile.date_created;
+            delete profile.date_last_modified;
+            delete profile.videoRenditions;
+            delete profile.audioRenditions;
+            delete profile.imageRenditions;
+            delete profile.numRenditions;
+            // profile.name = profile.name + ' Copy';
+            profile.account_id = null;
+            section = createEl("section", {class: "bcls-section"});
+            sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
+            sectionSubHeading = createEl("p");
+            renditionList = createEl('p');
+            text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(', '));
+            renditionList.appendChild(text);
+            renditionListNote = createEl('p');
+            renditionListNoteA = createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
+            text = document.createTextNode('Rendition Details for Dynamic Delivery');
+            renditionListNoteA.appendChild(text);
+            text = document.createTextNode('For details on the renditions created see ');
+            renditionListNote.appendChild(text);
+            renditionListNote.appendChild(renditionListNoteA);
+            sectionJsonHeading = createEl("h4", {id: removeSpaces(profile.name) + "json"});
+            text = document.createTextNode("JSON data for the profile");
+            sectionJsonHeading.appendChild(text);
+            sectionJsonP = createEl('p', {class: 'BCL-aside'});
+            text = document.createTextNode('Note: if you copy and paste the JSON to make a new profile, you will need to replace the null value for "account_id" with your own account id, and replace the name with a new name!');
+            sectionJsonP.appendChild(text);
+            sectionTableHeading = createEl("h4");
+            profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
+            section.appendChild(sectionHeading);
+            section.appendChild(sectionSubHeading);
+            section.appendChild(renditionList);
+            section.appendChild(renditionListNote);
+            section.appendChild(sectionTableHeading);
+            renditionTable = createEl("table", {class: "bcls-table"});
+            renditionthead = createEl("thead", {class: 'bcls-table__head'});
+            renditiontbody = createEl("tbody", {class: 'bcls-table__body'});
+            section.appendChild(renditionTable);
+            renditionTable.appendChild(renditionthead);
+
+            renditionTable.appendChild(renditiontbody);
+
+            section.appendChild(sectionJsonHeading);
+            section.appendChild(sectionJsonP);
+            section.appendChild(profileCode);
+            text = document.createTextNode(JSON.stringify(profile, false, "  "));
+            profileCode.appendChild(text);
+            fragment.appendChild(section);
+            text = document.createTextNode(profile.name);
+            sectionHeading.appendChild(text);
+            link = createEl("a", {href: "#" + profile.name + "json"});
+            text = document.createTextNode("View rendition information in JSON form");
+            link.appendChild(text);
+            sectionSubHeading.appendChild(link);
+            text = document.createTextNode("Table of image rendition properties");
+            sectionTableHeading.appendChild(text);
+            // now do the reditions
+            headersArray.push('renditions');
+            jMax = profile.dynamic_origin.images.length;
+            // get all properties and build the table headers
+            for (j = 0; j < jMax; j++) {
+                var prop;
+                rendition = profile.dynamic_origin.images[j];
+                for (prop in rendition) {
+                    headersArray.push(prop);
+                }
+            }
+            // dedupe the headers
+            headersArray = dedupe(headersArray);
+            // bclslog("deduped headers array", headersArray);
+            // write the th elements to the string
+            // create the table headers
+            lMax = headersArray.length;
+            tr = createEl("tr");
+            for (l = 0; l < lMax; l++) {
+                th = createEl("th");
+                text = document.createTextNode(headersArray[l].replace(re, " "));
+                th.appendChild(text);
+                tr.appendChild(th);
+            }
+            renditionthead.appendChild(tr);
+            // now add the body row for each rendition
+            jMax = profile.dynamic_origin.images.length;
+            for (j = 0; j < jMax; j++) {
+                tr = createEl("tr");
+                rendition = profile.dynamic_origin.images[j];
+                for (l = 0; l < lMax; l++) {
+                    td = createEl("td");
+                    if (headersArray[l] === 'skip') {
+                        var key,
+                            skip = rendition[headersArray[l]];
+                        ul = document.createElement('ul');
+                        for (key in skip) {
+                            if (skip.hasOwnProperty(key)) {
+                                li = document.createElement('li');
+                                text = document.createTextNode(key + ': ' + skip[key]);
+                                li.appendChild(text);
+                                ul.appendChild(li);
+                            }
+                        }
+                        td.appendChild(ul);
+                    } else {
+                        str = isDefined(rendition[headersArray[l]]) ? rendition[headersArray[l]] : "";
+                        text = document.createTextNode(str);
+                        td.appendChild(text);
+                    }
+                    tr.appendChild(td);
+                }
+                renditiontbody.appendChild(tr);
+            }
+        }
+        mainSection.appendChild(fragment);
+        // bclslog("content built");
+            // dynamic profiles
+            iMax = data.BCLSprofilesStatic.length;
+        for (i = 0; i < iMax; i++) {
+            var headersArray = [],
+                l,
+                lMax;
             profile = data.BCLSprofilesStatic[i];
             // remove id's and other stuff from data
             delete profile.id;
