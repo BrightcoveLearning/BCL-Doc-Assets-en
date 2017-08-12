@@ -322,7 +322,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         newSectionNode.appendChild(profileTableNodeCAE);
         profileTableNodeCAE.appendChild(profiletheadNodeCAE);
         profileTableNodeCAE.appendChild(profiletbodyNodeCAE);
-console.log('BCLSprofilesDynamic', BCLSprofilesDynamic);
+console.log('BCLSprofilesDynamic', data.BCLSprofilesDynamic);
         iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesDynamic[i];
