@@ -296,7 +296,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         mainSection.appendChild(fragment1);
 
 
-        now the CAE profiles
+        // now the CAE profiles
         iMax = data.BCLSprofilesDynamic.length;
 
         for (i = 0; i < iMax; i++) {
