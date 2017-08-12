@@ -319,7 +319,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         profiletbodyNodeCAE.setAttribute("id", "profileSummaryTableTbodyCAE");
         profiletbodyNode.setAttribute("class", "bcls-table__body");
         newSectionNode.appendChild(sectionSubHeadingNode);
-        newSectionNode.appendChild(profileTaprofileTableNodeCAE);
+        newSectionNode.appendChild(profileTableNodeCAE);
         profileTableNode.appendChild(profiletheadNodeCAE);
         profileTableNode.appendChild(profiletbodyNodeCAE);
         iMax = data.BCLSprofilesDynamic.length;
