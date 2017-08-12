@@ -169,8 +169,11 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             sectionSubHeadingNode,
             sectionIntroNode = document.createElement("p"),
             profileTableNode = document.createElement("table"),
+            profileTableNodeCAE = document.createElement("table"),
             profiletheadNode = document.createElement("thead"),
+            profiletheadNodeCAE = document.createElement("thead"),
             profiletbodyNode = document.createElement("tbody"),
+            profiletbodyNodeCAE = document.createElement("tbody"),
             sectionHeadingElem,
             sectionIntroElem,
             profileTableElem,
@@ -232,7 +235,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         newSectionNode.appendChild(profileTableNode);
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
-        // bclslog('data.BCLSprofilesArray', data.BCLSprofilesArray);
+
         iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesStatic[i];
@@ -309,21 +312,21 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         sectionSubHeadingNode = document.createElement('h3');
         content = document.createTextNode('Context Aware Encoding Profiles');
         sectionSubHeadingNode.appendChild(content);
-        profileTableNode.setAttribute("id", "profileSummaryTable");
-        profileTableNode.setAttribute("class", "bcls-table");
-        profiletheadNode.setAttribute("id", "CAEprofileSummaryTableThead");
-        profiletheadNode.setAttribute("class", "bcls-table__head");
-        profiletbodyNode.setAttribute("id", "profileSummaryTableTbody");
+        profileTableNodeCAE.setAttribute("id", "profileSummaryTableCAE");
+        profileTableNodeCAE.setAttribute("class", "bcls-table");
+        profiletheadNodeCAE.setAttribute("id", "profileSummaryTableTheadCAE");
+        profiletheadNodeCAE.setAttribute("class", "bcls-table__head");
+        profiletbodyNodeCAE.setAttribute("id", "profileSummaryTableTbodyCAE");
         profiletbodyNode.setAttribute("class", "bcls-table__body");
         newSectionNode.appendChild(sectionSubHeadingNode);
-        newSectionNode.appendChild(profileTableNode);
-        profileTableNode.appendChild(profiletheadNode);
-        profileTableNode.appendChild(profiletbodyNode);
+        newSectionNode.appendChild(profileTaprofileTableNodeCAE);
+        profileTableNode.appendChild(profiletheadNodeCAE);
+        profileTableNode.appendChild(profiletbodyNodeCAE);
         iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesDynamic[i];
             tr = document.createElement('tr');
-            profiletbodyNode.appendChild(tr);
+            profiletbodyNodeCAE.appendChild(tr);
             td = document.createElement('td');
             a = document.createElement('a');
             a.setAttribute('href', '#' + removeSpaces(item.name));
@@ -354,12 +357,9 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         fragment2.appendChild(newSectionNode);
         mainSection.appendChild(fragment2);
 
-        content = document.createTextNode('Standard Profiles List');
-        sectionHeadingNode.appendChild(content);
-        content = document.createTextNode('Click on a profile name to see details of the renditions it includes. Note that the actual renditions created will depend on the quality of the source video.');
         sectionHeadingNode.appendChild(content);
         tr = document.createElement('tr');
-        profiletheadNode.appendChild(tr);
+        profiletheadNodeCAE.appendChild(tr);
         th = document.createElement('th');
         content = document.createTextNode('Profile Name');
         th.appendChild(content);
