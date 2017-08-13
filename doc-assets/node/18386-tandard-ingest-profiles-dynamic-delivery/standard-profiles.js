@@ -579,6 +579,7 @@ console.log('static profiles', data.BCLSprofilesStatic);
             text = document.createTextNode('Note: if you copy and paste the JSON to make a new profile, you will need to replace the null value for "account_id" with your own account id, and replace the name with a new name!');
             sectionJsonP.appendChild(text);
             sectionTableHeading = createEl("h4");
+            profileSettingsTableHeading = createEl("h4");
             profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
@@ -588,11 +589,17 @@ console.log('static profiles', data.BCLSprofilesStatic);
             renditionTable = createEl("table", {class: "bcls-table"});
             renditionthead = createEl("thead", {class: 'bcls-table__head'});
             renditiontbody = createEl("tbody", {class: 'bcls-table__body'});
+            profileSettingsTable = createEl("table", {class: "bcls-table"});
+            profileSettingsthead = createEl("thead", {class: 'bcls-table__head'});
+            profileSettingstbody = createEl("tbody", {class: 'bcls-table__body'});
             section.appendChild(renditionTable);
             renditionTable.appendChild(renditionthead);
 
             renditionTable.appendChild(renditiontbody);
-
+            section.appendChild(profileSettingsTableHeading);
+            section.appendChild(profileSettingsTable);
+            profileSettingsTable.appendChild(profileSettingsthead);
+            profileSettingsTable.appendChild(profileSettingstbody);
             section.appendChild(sectionJsonHeading);
             section.appendChild(sectionJsonP);
             section.appendChild(profileCode);
