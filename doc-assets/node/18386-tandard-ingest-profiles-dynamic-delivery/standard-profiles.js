@@ -668,6 +668,16 @@ console.log('static profiles', data.BCLSprofilesStatic);
                 renditiontbody.appendChild(tr);
             }
             // now the dynamic rendition settings
+            tr = createEl('tr');
+            th = createEl('th');
+            text = document.createTextNode('Property');
+            th.appendChild(text);
+            tr.appendChild(th);
+            th = createEl('th');
+            text = document.createTextNode('Value');
+            th.appendChild(text);
+            tr.appendChild(th);
+            profileSettingsthead.appendChild(tr);
         }
         mainSection.appendChild(fragment);
         // bclslog("content built");
