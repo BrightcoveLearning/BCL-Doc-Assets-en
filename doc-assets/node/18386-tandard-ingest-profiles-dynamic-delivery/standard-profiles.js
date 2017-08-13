@@ -299,88 +299,87 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         mainSection.appendChild(fragment1);
 
 
-        // now the CAE profiles
-        iMax = data.BCLSprofilesDynamic.length;
-
-        for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesDynamic[i];
-            item.videoRenditions = item.dynamic_origin.dynamic_profile_options.min_renditions + ' - ' + item.dynamic_origin.dynamic_profile_options.max_renditions;
-            item.audioRenditions = item.dynamic_origin.renditions.length;
-            item.imageRenditions = item.dynamic_origin.images.length;
-
-        }
-        sectionSubHeadingNode = document.createElement('h3');
-        content = document.createTextNode('Context Aware Encoding Profiles');
-        sectionSubHeadingNode.appendChild(content);
-        profileTableNodeCAE.setAttribute("id", "profileSummaryTableCAE");
-        profileTableNodeCAE.setAttribute("class", "bcls-table");
-        profiletheadNodeCAE.setAttribute("id", "profileSummaryTableTheadCAE");
-        profiletheadNodeCAE.setAttribute("class", "bcls-table__head");
-        profiletbodyNodeCAE.setAttribute("id", "profileSummaryTableTbodyCAE");
-        profiletbodyNodeCAE.setAttribute("class", "bcls-table__body");
-        newSectionNode.appendChild(sectionSubHeadingNode);
-        newSectionNode.appendChild(profileTableNodeCAE);
-        profileTableNodeCAE.appendChild(profiletheadNodeCAE);
-        profileTableNodeCAE.appendChild(profiletbodyNodeCAE);
-        iMax = data.BCLSprofilesDynamic.length;
-        for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesDynamic[i];
-console.log('item', item);
-            tr = document.createElement('tr');
-            profiletbodyNodeCAE.appendChild(tr);
-            td = document.createElement('td');
-            a = document.createElement('a');
-            a.setAttribute('href', '#' + removeSpaces(item.name));
-            content = document.createTextNode(item.name);
-            a.appendChild(content);
-            td.appendChild(a);
-            tr.appendChild(td);
-            td = document.createElement('td');
-            td.setAttribute('class', 'bcl-center');
-            content = document.createTextNode(item.videoRenditions);
-            td.appendChild(content);
-            tr.appendChild(td);
-            td = document.createElement('td');
-            td.setAttribute('class', 'bcl-center');
-            content = document.createTextNode(item.audioRenditions);
-            td.appendChild(content);
-            tr.appendChild(td);
-            td = document.createElement('td');
-            td.setAttribute('class', 'bcl-center');
-            content = document.createTextNode(item.imageRenditions);
-            td.appendChild(content);
-            tr.appendChild(td);
-            td = document.createElement('td');
-            content = document.createTextNode(item.description);
-            td.appendChild(content);
-            tr.appendChild(td);
-        }
-        fragment2.appendChild(newSectionNode);
-        mainSection.appendChild(fragment2);
-
-        tr = document.createElement('tr');
-        profiletheadNodeCAE.appendChild(tr);
-        th = document.createElement('th');
-        content = document.createTextNode('Profile Name');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Video');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Audio');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Image');
-        th.appendChild(content);
-        tr.appendChild(th);
-        th = document.createElement('th');
-        content = document.createTextNode('Description');
-        th.appendChild(content);
-        tr.appendChild(th);
-
+//         // now the CAE profiles
+//         iMax = data.BCLSprofilesDynamic.length;
+//
+//         for (i = 0; i < iMax; i++) {
+//             item = data.BCLSprofilesDynamic[i];
+//             item.videoRenditions = item.dynamic_origin.dynamic_profile_options.min_renditions + ' - ' + item.dynamic_origin.dynamic_profile_options.max_renditions;
+//             item.audioRenditions = item.dynamic_origin.renditions.length;
+//             item.imageRenditions = item.dynamic_origin.images.length;
+//
+//         }
+//         sectionSubHeadingNode = document.createElement('h3');
+//         content = document.createTextNode('Context Aware Encoding Profiles');
+//         sectionSubHeadingNode.appendChild(content);
+//         profileTableNodeCAE.setAttribute("id", "profileSummaryTableCAE");
+//         profileTableNodeCAE.setAttribute("class", "bcls-table");
+//         profiletheadNodeCAE.setAttribute("id", "profileSummaryTableTheadCAE");
+//         profiletheadNodeCAE.setAttribute("class", "bcls-table__head");
+//         profiletbodyNodeCAE.setAttribute("id", "profileSummaryTableTbodyCAE");
+//         profiletbodyNodeCAE.setAttribute("class", "bcls-table__body");
+//         newSectionNode.appendChild(sectionSubHeadingNode);
+//         newSectionNode.appendChild(profileTableNodeCAE);
+//         profileTableNodeCAE.appendChild(profiletheadNodeCAE);
+//         profileTableNodeCAE.appendChild(profiletbodyNodeCAE);
+//         iMax = data.BCLSprofilesDynamic.length;
+//         for (i = 0; i < iMax; i++) {
+//             item = data.BCLSprofilesDynamic[i];
+// console.log('item', item);
+//             tr = document.createElement('tr');
+//             profiletbodyNodeCAE.appendChild(tr);
+//             td = document.createElement('td');
+//             a = document.createElement('a');
+//             a.setAttribute('href', '#' + removeSpaces(item.name));
+//             content = document.createTextNode(item.name);
+//             a.appendChild(content);
+//             td.appendChild(a);
+//             tr.appendChild(td);
+//             td = document.createElement('td');
+//             td.setAttribute('class', 'bcl-center');
+//             content = document.createTextNode(item.videoRenditions);
+//             td.appendChild(content);
+//             tr.appendChild(td);
+//             td = document.createElement('td');
+//             td.setAttribute('class', 'bcl-center');
+//             content = document.createTextNode(item.audioRenditions);
+//             td.appendChild(content);
+//             tr.appendChild(td);
+//             td = document.createElement('td');
+//             td.setAttribute('class', 'bcl-center');
+//             content = document.createTextNode(item.imageRenditions);
+//             td.appendChild(content);
+//             tr.appendChild(td);
+//             td = document.createElement('td');
+//             content = document.createTextNode(item.description);
+//             td.appendChild(content);
+//             tr.appendChild(td);
+//         }
+//         fragment2.appendChild(newSectionNode);
+//         mainSection.appendChild(fragment2);
+//
+//         tr = document.createElement('tr');
+//         profiletheadNodeCAE.appendChild(tr);
+//         th = document.createElement('th');
+//         content = document.createTextNode('Profile Name');
+//         th.appendChild(content);
+//         tr.appendChild(th);
+//         th = document.createElement('th');
+//         content = document.createTextNode('Video');
+//         th.appendChild(content);
+//         tr.appendChild(th);
+//         th = document.createElement('th');
+//         content = document.createTextNode('Audio');
+//         th.appendChild(content);
+//         tr.appendChild(th);
+//         th = document.createElement('th');
+//         content = document.createTextNode('Image');
+//         th.appendChild(content);
+//         tr.appendChild(th);
+//         th = document.createElement('th');
+//         content = document.createTextNode('Description');
+//         th.appendChild(content);
+//         tr.appendChild(th);
 
     }
     function buildDetailTables() {
