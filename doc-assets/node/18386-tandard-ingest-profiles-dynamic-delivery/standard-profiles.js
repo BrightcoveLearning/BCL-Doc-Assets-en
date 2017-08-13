@@ -4,6 +4,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
+        headersArray,
+        prop,
         navLabel = [];
     /**
      * determines whether specified item is in an array
@@ -417,13 +419,13 @@ console.log('static profiles', data.BCLSprofilesStatic);
             renditionProperty,
             text,
             str,
+            l,
+            lMax,
             re = /_/g;
             // static profiles
             iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
-            var headersArray = [],
-                l,
-                lMax;
+            headersArray = [];
             profile = data.BCLSprofilesStatic[i];
             // remove id's and other stuff from data
             delete profile.id;
@@ -490,7 +492,6 @@ console.log('static profiles', data.BCLSprofilesStatic);
             jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
             for (j = 0; j < jMax; j++) {
-                var prop;
                 rendition = profile.dynamic_origin.images[j];
                 for (prop in rendition) {
                     headersArray.push(prop);
@@ -618,7 +619,6 @@ console.log('static profiles', data.BCLSprofilesStatic);
             jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
             for (j = 0; j < jMax; j++) {
-                var prop;
                 rendition = profile.dynamic_origin.images[j];
                 for (prop in rendition) {
                     headersArray.push(prop);
