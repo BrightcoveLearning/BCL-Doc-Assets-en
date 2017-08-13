@@ -195,6 +195,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             a,
             content;
         // static profiles
+console.log('static profiles', data.BCLSprofilesStatic);
         iMax = data.BCLSprofilesStatic.length;
         // massage data
         for (i = 0; i < iMax; i++) {
