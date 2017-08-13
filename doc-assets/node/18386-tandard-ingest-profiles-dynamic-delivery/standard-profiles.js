@@ -539,9 +539,9 @@ console.log('static profiles', data.BCLSprofilesStatic);
         mainSection.appendChild(fragment);
         // bclslog("content built");
             // dynamic profiles
-            iMax = data.BCLSprofilesStatic.length;
+            iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
-            profile = data.BCLSprofilesStatic[i];
+            profile = data.BCLSprofilesDynamic[i];
             headersArray = [];
             // remove id's and other stuff from data
             delete profile.id;
