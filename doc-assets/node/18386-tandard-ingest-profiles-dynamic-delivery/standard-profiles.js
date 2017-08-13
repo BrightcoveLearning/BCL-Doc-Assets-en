@@ -481,7 +481,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             text = document.createTextNode("Table of image rendition properties");
             sectionTableHeading.appendChild(text);
             // now do the reditions
-            headersArray.push('renditions');
+            // headersArray.push('renditions');
             jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
             for (j = 0; j < jMax; j++) {
@@ -540,10 +540,8 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             // dynamic profiles
             iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
-            var headersArray = [],
-                l,
-                lMax;
             profile = data.BCLSprofilesStatic[i];
+            headersArray = [];
             // remove id's and other stuff from data
             delete profile.id;
             delete profile.version;
