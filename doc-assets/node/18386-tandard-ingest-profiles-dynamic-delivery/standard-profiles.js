@@ -679,6 +679,7 @@ console.log('static profiles', data.BCLSprofilesStatic);
             tr.appendChild(th);
             profileSettingsthead.appendChild(tr);
         }
+        fragment.appendChild(section);
         mainSection.appendChild(fragment);
         // bclslog("content built");
         // get reference to codeBlocks
