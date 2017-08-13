@@ -615,7 +615,6 @@ console.log('static profiles', data.BCLSprofilesStatic);
             text = document.createTextNode("Table of image rendition properties");
             sectionTableHeading.appendChild(text);
             // now do the reditions
-            headersArray.push('renditions');
             jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
             for (j = 0; j < jMax; j++) {
@@ -668,6 +667,7 @@ console.log('static profiles', data.BCLSprofilesStatic);
                 }
                 renditiontbody.appendChild(tr);
             }
+            // now the dynamic rendition settings
         }
         mainSection.appendChild(fragment);
         // bclslog("content built");
