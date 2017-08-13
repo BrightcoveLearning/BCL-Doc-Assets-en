@@ -399,6 +399,7 @@ console.log('static profiles', data.BCLSprofilesStatic);
             renditionthead,
             renditiontbody,
             profileSettingsTable,
+            profileSettingsTableHeading,
             profileSettingsthead,
             profileSettingstbody,
             tr,
