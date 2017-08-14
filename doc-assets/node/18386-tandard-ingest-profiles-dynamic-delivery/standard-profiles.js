@@ -694,6 +694,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
                     text = document.createTextNode('width: ' + profile.dynamic_origin.dynamic_profile_options.max_resolution.width);
                     li.appendChild(text);
                     ul.appendChild(li);
+                    li = createEl('li');
                     text = document.createTextNode('height: ' + profile.dynamic_origin.dynamic_profile_options.max_resolution.height);
                     li.appendChild(text);
                     ul.appendChild(li);
