@@ -111,12 +111,13 @@ Offset (number of items to skip): <select id="offset" data-bind="options: offset
 <p>Note that if you request multiple result sets using the offset, new items will be appended to the existing ones.</p>
 
 <p>API request:<textarea id="apiURL" class="bcls-code"></textarea></p>
+<textarea id="apiURL" class="bcls-code">API request will appear here...</textarea>
 
 <h3>Response</h3>
+
 <pre>
 <code id="response" class="language-json">Response will appear here...</code>
 </pre>
-
 </fieldset>
 </section>
 
@@ -129,7 +130,8 @@ Offset (number of items to skip): <select id="offset" data-bind="options: offset
 
 <h3>JavaScript code:</h3>
 
-<pre class="line-numbers"><code class="language-javascript">// knockout view model
+<pre class="line-numbers">
+<code class="language-javascript">// knockout view model
 function cmsSearchModel() {
         var self = this,
             i, iMax, item, itemsArray, termsArray,
@@ -233,7 +235,8 @@ function cmsSearchModel() {
         // operations
         // function to write the request to the page
         self.logResponse = function(data) {
-            response.innerHTML += data + ",<br />";
+            response.innerHTML += data + ",
+";
         };
         // function to set up the request
         self.setupURL = (function() {
@@ -247,11 +250,11 @@ function cmsSearchModel() {
                     termsArray = self.searchTerms().split(" ");
                     imax = termsArray.length;
                     if (self.exactMatch()) {
-                        for (i = 0; i < iMax; i++) {
+                        for (i = 0; i &lt; iMax; i++) {
                             termsArray[i] = '\"' + termsArray[i] + '\"';
                         }
                     }
-                    for (i = 0; i < iMax; i++) {
+                    for (i = 0; i &lt; iMax; i++) {
                         item = termsArray[i];
                         item = self.selectedSeachField() + ":" + item;
                         if (self.excludeTerms()) {
@@ -267,11 +270,11 @@ function cmsSearchModel() {
                     termsArray = self.searchTerms().split(" ");
                     iMax = termsArray.length;
                     if (self.exactMatch()) {
-                        for (i = 0; i < iMax; i++) {
+                        for (i = 0; i &lt; iMax; i++) {
                             termsArray[i] = '\"' + termsArray[i] + '\"';
                         }
                     }
-                    for (i = 0; i < iMax; i++) {
+                    for (i = 0; i &lt; iMax; i++) {
                         termsArray[i] = self.customField() + ":" + termsArray[i];
                         if (self.excludeTerms()) {
                             item = "%2D" + item;
@@ -292,12 +295,12 @@ function cmsSearchModel() {
                         str += '"' + self.searchTerms() + '"';
                     }
                 } else if (self.excludeTerms()) {
-                    for (i = 0; i < iMax; i++) {
+                    for (i = 0; i &lt; iMax; i++) {
                         termsArray[i] = '%2D' + termsArray[i];
                         str += termsArray.join(" ");
                     }
                 } else if (self.requiredTerms()) {
-                    for (i = 0; i < iMax; i++) {
+                    for (i = 0; i &lt; iMax; i++) {
                         termsArray[i] = '%2B' + termsArray[i];
                         str += termsArray.join(" ");
                     }
@@ -319,16 +322,16 @@ function cmsSearchModel() {
                     str += toDateValue.toISOString();
                 }
             }
-            str += "&limit=" + self.selectedLimit();
-            str += "&offset=" + self.selectedOffset();
-            str += "&sort=" + self.selectedSortOption();
+            str += "&amp;limit=" + self.selectedLimit();
+            str += "&amp;offset=" + self.selectedOffset();
+            str += "&amp;sort=" + self.selectedSortOption();
             url = str;
             self.apiURL.value = url;
             self.submitRequest("counts", function(count) {
                 var totalSets = Math.ceil(count / self.selectedLimit()),
                     i;
                 self.itemCount(count);
-                for (i = 1; i < totalSets; i++) {
+                for (i = 1; i &lt; totalSets; i++) {
                     self.offsets.push(i * self.selectedLimit());
                 }
                 url = url.replace("/counts/videos", "/videos");
@@ -345,7 +348,7 @@ function cmsSearchModel() {
                 getResponse = function() {
                     try {
                         if (httpRequest.readyState === 4) {
-                            if (httpRequest.status >= 200 &amp;&amp; httpRequest.status < 300) {
+                            if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                                 switch (type) {
                                     case "counts":
                                         var count = JSON.parse(httpRequest.responseText).count;
@@ -372,7 +375,7 @@ function cmsSearchModel() {
                 return;
             }
             // set up request data
-            requestData = "client_id=" + self.client_id() + "&client_secret=" + self.client_secret() + "&url=" + encodeURIComponent(self.apiURL.value) + "&requestType=GET";
+            requestData = "client_id=" + self.client_id() + "&amp;client_secret=" + self.client_secret() + "&amp;url=" + encodeURIComponent(self.apiURL.value) + "&amp;requestType=GET";
             // set response handler
             httpRequest.onreadystatechange = getResponse;
             // open the request
