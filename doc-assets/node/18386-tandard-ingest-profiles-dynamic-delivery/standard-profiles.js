@@ -680,6 +680,7 @@ console.log('static profiles', data.BCLSprofilesStatic);
             th.appendChild(text);
             tr.appendChild(th);
             profileSettingsthead.appendChild(tr);
+console.log('dynamic profile options', profile.dynamic_profile_options);
             for (prop in profile.dynamic_profile_options) {
                 tr = createEl('tr');
                 profileSettingstbody.appendChild(tr);
