@@ -678,6 +678,17 @@ console.log('static profiles', data.BCLSprofilesStatic);
             th.appendChild(text);
             tr.appendChild(th);
             profileSettingsthead.appendChild(tr);
+            for (prop in profile.dynamic_profile_options) {
+                tr = createEl('tr');
+                profileSettingstbody.appendChild(tr);
+                td = createEl('td');
+                text = document.createTextNode(prop);
+                td.appendChild(text);
+                tr.appendChild(td);
+                if (prop === 'max_resolution') {
+                    
+                }
+            }
         }
         fragment.appendChild(section);
         mainSection.appendChild(fragment);
