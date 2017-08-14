@@ -197,7 +197,6 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             a,
             content;
         // static profiles
-console.log('static profiles', data.BCLSprofilesStatic);
         iMax = data.BCLSprofilesStatic.length;
         // massage data
         for (i = 0; i < iMax; i++) {
@@ -680,7 +679,6 @@ console.log('static profiles', data.BCLSprofilesStatic);
             th.appendChild(text);
             tr.appendChild(th);
             profileSettingsthead.appendChild(tr);
-console.log('dynamic profile options', profile.dynamic_origin.dynamic_profile_options);
             for (prop in profile.dynamic_origin.dynamic_profile_options) {
                 tr = createEl('tr');
                 profileSettingstbody.appendChild(tr);
@@ -700,9 +698,11 @@ console.log('dynamic profile options', profile.dynamic_origin.dynamic_profile_op
                     li.appendChild(text);
                     ul.appendChild(li);
                     td.appendChild(ul);
+                    tr.appendChild(td);
                 } else {
                     text = document.createTextNode(profile.dynamic_origin.dynamic_profile_options[prop]);
                     td.appendChild(text);
+                    tr.appendChild(td);
                 }
             }
         }
