@@ -680,8 +680,8 @@ console.log('static profiles', data.BCLSprofilesStatic);
             th.appendChild(text);
             tr.appendChild(th);
             profileSettingsthead.appendChild(tr);
-console.log('dynamic profile options', profile.dynamic_profile_options);
-            for (prop in profile.dynamic_profile_options) {
+console.log('dynamic profile options', profile.dynamic_origin.dynamic_profile_options);
+            for (prop in profile.dynamic_origin.dynamic_profile_options) {
                 tr = createEl('tr');
                 profileSettingstbody.appendChild(tr);
                 td = createEl('td');
@@ -693,15 +693,15 @@ console.log('dynamic profile options', profile.dynamic_profile_options);
                     var ul = createEl('ul'),
                         li;
                     li = createEl('li');
-                    text = document.createTextNode('width: ' + profile.dynamic_profile_options.max_resolution.width);
+                    text = document.createTextNode('width: ' + profile.dynamic_origin.dynamic_profile_options.max_resolution.width);
                     li.appendChild(text);
                     ul.appendChild(li);
-                    text = document.createTextNode('height: ' + profile.dynamic_profile_options.max_resolution.height);
+                    text = document.createTextNode('height: ' + profile.dynamic_origin.dynamic_profile_options.max_resolution.height);
                     li.appendChild(text);
                     ul.appendChild(li);
                     td.appendChild(ul);
                 } else {
-                    text = document.createTextNode(profile.dynamic_profile_options[prop]);
+                    text = document.createTextNode(profile.dynamic_origin.dynamic_profile_options[prop]);
                     td.appendChild(td);
                 }
             }
