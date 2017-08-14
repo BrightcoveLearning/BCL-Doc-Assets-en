@@ -615,6 +615,8 @@ console.log('static profiles', data.BCLSprofilesStatic);
             sectionSubHeading.appendChild(link);
             text = document.createTextNode("Table of image rendition properties");
             sectionTableHeading.appendChild(text);
+            text = document.createTextNode('Dynamic Profile Settings');
+            profileSettingsHeading.appendChild(text);
             // now do the reditions
             jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
