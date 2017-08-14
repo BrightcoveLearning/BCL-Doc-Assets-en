@@ -702,7 +702,7 @@ console.log('dynamic profile options', profile.dynamic_origin.dynamic_profile_op
                     td.appendChild(ul);
                 } else {
                     text = document.createTextNode(profile.dynamic_origin.dynamic_profile_options[prop]);
-                    td.appendChild(td);
+                    td.appendChild(text);
                 }
             }
         }
