@@ -1,232 +1,215 @@
 <article class="bcls-article">
-	<section id="top" class="bcls-section">
-			<aside class="bcls-aside bcls-aside--information">Notes:
-			<ul>
-				<li>
-					Dynamic Delivery is currently in Limited Availability. Contact your account manager if you are interested in converting your account to Dynamic Delivery.
-				</li>
-				<li>
-					Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD).
-				</li>
-			</ul></aside>
-	</section>
-
-	<section class="bcls-section">
-		<h2 id="Overview">Overview</h2>
-		<p>
-			Server-Side Ad Insertion (SSAI) allows you to embed ads into your videos so that they can't be blocked by ad blockers in the browser. Dynamic Delivery is the next generation ingest and delivery system which reduces your storage footprint and dynamically packages media. Learn more about using <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a> for your videos.
-		</p>
-		<p>
-			SSAI works with both DRM and non-DRM content.
-		</p>
-		<p>
-			To play server-side ads with your video content stored in Video Cloud, follow these steps:
-		</p>
-		<ol class="bcls-tasklist">
-			<li>
-				<a href="#Create_an_ad_configuration">Create an ad configuration</a>
-			</li>
-			<li>
-				<a href="#Play_a_video_with_ads">Play a video with ads</a>
-				<ul>
-					<li>
-						<a href="#iOS_implementation">iOS implementation</a>
-					</li>
-					<li>
-						<a href="#Android_implementation">Android implementation</a>
-					</li>
-				</ul>
-			</li>
-		</ol>
+<section id="top" class="bcls-section">
+<aside class="bcls-aside bcls-aside--information">Notes:
+<ul>
+	<li>Dynamic Delivery is currently in Limited Availability. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
+	<li>Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD).</li>
+</ul>
+</aside>
 </section>
 
 <section class="bcls-section">
-	<h2 id="Create_an_ad_configuration">Create an ad configuration</h2>
-	<p>
-		The ad configuration defines various aspects of SSAI playback, including a URL to your Video Multiple Ad Playlist (VMAP) file, beacons, and other configurations. For now, you must contact your Brightcove account manager to create your ad configuration.
-	</p>
+<h2 id="Overview">Overview</h2>
+
+<p>Server-Side Ad Insertion (SSAI) allows you to embed ads into your videos so that they can't be blocked by ad blockers in the browser. Dynamic Delivery is the next generation ingest and delivery system which reduces your storage footprint and dynamically packages media. Learn more about using <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a> for your videos.</p>
+
+<p>SSAI works with both DRM and non-DRM content.</p>
+
+<p>To play server-side ads with your video content stored in Video Cloud, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li><a href="#Create_an_ad_configuration">Create an ad configuration</a></li>
+	<li><p>Play a video with ads</p>
+		<p>First, you will include the Once UX plugin in your app. Then, you will call an SDK method to fetch a video along with your ad configuration from the Playback API. Finally, you will play the video with ads.</p>
+	<ul>
+		<li><a href="#iOS_implementation">iOS implementation</a></li>
+		<li><a href="#Android_implementation">Android implementation</a></li>
+	</ul>
+	</li>
+</ol>
 </section>
 
 <section class="bcls-section">
-	<h2 id="Play_a_video_with_ads">Play a video with ads</h2>
-	<p>
-		First, you will include the Once UX plugin in your app. Then, you will call an SDK method to fetch a video along with your ad configuration from the Playback API. Finally, you will play the video with ads.
-	</p>
-	<h3 id="iOS_implementation">iOS implementation</h3>
-	<p>
-		Follow these steps within your app to get your ad configuration and play your video:
-	</p>
-	<ol class="bcls-tasklist__restart">
-		<li>
-			Include the Once UX plugin in your app. For details, see the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/OUX">Basic Once UX Player</a> sample.
-		</li>
-		<li>
-			Define constants for your account id, policy key, video id or video reference id, and your ad configuration id.
-			<pre class="line-numbers"><code class="language-objectivec">NSString *accountId = @&quot;&lt;accountId&gt;&quot;;
-NSString *policyKey = @&quot;&lt;policyKey&gt;&quot;;
-NSString *videoReferenceId = @&quot;&lt;videoReferenceId&gt;&quot;;
-NSString *adConfigId = @&quot;&lt;adConfigId&gt;&quot;;
-</code></pre>
-			<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="https://support.brightcove.com/node/18125">Policy Keys</a> document.</aside>
-		</li>
-		<li>
-			Set the query parameter value to your ad configuration id.
-			<pre class="line-numbers"><code class="language-objectivec">NSDictionary *queryParameters = @{
-@&quot;ad_config_id&quot; : adConfigId
-};
-</code></pre>
-		</li>
-		<li>
-			Create an instance of the playbackService if it does not already exist.
-			<pre class="line-numbers"><code class="language-objectivec">if (_playbackService == nil) {
-self.playbackService = [[BCOVPlaybackService alloc]
-	initWithAccountId:accountId
-	policyKey:policyKey];
-}
-</code></pre>
-		</li>
-		<li>
-			Call the Playback API to retrieve your video along with your ad configuration.
-			<pre class="line-numbers"><code class="language-objectivec">[_playbackService findVideoWithReferenceID:videoReferenceId
-parameters:queryParameters
-completion:^(BCOVVideo *video,
-	NSDictionary *jsonResponse,
-	NSError *error)
-{...}]
-</code></pre>
-		</li>
-		<li>
-			Start video playback with your specified ads.
-			<pre class="line-numbers"><code class="language-objectivec">if (error == nil)
-	 {
-			 // play it.
-			 [self.playbackController setVideos: @[ video ]];
-	 }
-	 else
-	 {
-			 NSLog (@&quot;Error! Playback Service says: %@&quot;,
-error.localizedDescription);
-	 }
-</code></pre>
-		</li>
-	</ol>
+<h2 id="Create_an_ad_configuration">Create an ad configuration</h2>
 
-	<p>
-		Here is the complete code block:
-	</p>
-	<pre class="line-numbers"><code class="language-objectivec">- (void)playVideo
-{
-
-NSDictionary *queryParameters = @{
-	@&quot;ad_config_id&quot; : adConfigId
-};
-
-if (_playbackService == nil) {
-	self.playbackService = [[BCOVPlaybackService alloc]
-			initWithAccountId:accountId
-			 policyKey:policyKey];
-}
-
-[_playbackService findVideoWithReferenceID:videoReferenceId
-			parameters:queryParameters
-			completion:^(BCOVVideo *video,
-					 NSDictionary *jsonResponse,
-					 NSError *error)
-{
-	 if (error == nil)
-	 {
-			 // play it.
-			 [self.playbackController setVideos: @[ video ]];
-	 }
-	 else
-	 {
-			 NSLog (@&quot;Error! Playback Service says: %@&quot;,
-error.localizedDescription);
-	 }
-}];
-}
-</code></pre>
-		<br />
-
-		<h3 id="Android_implementation">Android implementation</h3>
-		<p>
-			Follow these steps within your app to get your ad configuration and play your video:
-		</p>
-		<ol class="bcls-tasklist__restart">
-			<li>
-				Include the Once UX plugin in your app. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/BasicOnceUxSampleApp">Basic Once UX Player</a> sample.
-			</li>
-			<li>
-				Define constants for your account id, policy key, video id or video reference id, and your ad configuration id.
-				<pre class="line-numbers"><code class="language-java">String accountId = &quot;&lt;accountId&gt;&quot;;
-String policyKey = &quot;&lt;policyKey&gt;&quot;;
-String videoRef = &quot;&lt;videoRef&gt;&quot;;
-String adConfigId = &quot;&lt;adConfigId&gt;&quot;;
-		</code></pre>
-				<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="https://support.brightcove.com/node/18125">Policy Keys</a> document.</aside>
-			</li>
-			<li>
-				Set the query parameter value to your ad configuration id.
-				<pre class="line-numbers"><code class="language-java">Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
-parameters.put(&quot;ad_config_id&quot;, adConfigId);
-		</code></pre>
-			</li>
-			<li>
-				Create an instance of the catalog service.
-				<pre class="line-numbers"><code class="language-java">Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
-		</code></pre>
-			</li>
-			<li>
-				Call the catalog service to retrieve your video along with your ad configuration from the Playback API.
-				<pre class="line-numbers"><code class="language-java">catalog.findVideoByReferenceID(videoRef, null, parameters, new VideoListener() {
-...
-});
-		</code></pre>
-			</li>
-			<li>
-				Start video playback with your specified ads.
-				<pre class="line-numbers"><code class="language-java">@Override
-public void onVideo(Video video) {
-try {
-	plugin.processVideo(video);
-} catch (NoSourceFoundException e) {
-	// If NoSourceFoundException is thrown it means a suitable vmap url wasn't found.
-	// You can try to play it on a regular view
-	brightcoveVideoView.add(video)
-}
-}
-		</code></pre>
-			</li>
-		</ol>
-
-		<p>
-			Here is the complete code block:
-		</p>
-		<pre class="line-numbers"><code class="language-java">@Override
-protected void onCreate(Bundle savedInstanceState) {
-	setContentView(R.layout.activity_main);
-	brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
-	super.onCreate(savedInstanceState);
-
-	final OnceUxComponent plugin = new OnceUxComponent(this, brightcoveVideoView);
-	Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
-
-	Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
-	parameters.put(&quot;ad_config_id&quot;, adConfigId);
-	catalog.findVideoByReferenceID(videoRef, null, parameters, new VideoListener() {
-			@Override
-			public void onVideo(Video video) {
-					try {
-							plugin.processVideo(video);
-					} catch (NoSourceFoundException e) {
-							// If NoSourceFoundException is thrown it means a suitable vmap url wasn't found.
-							// You can try to play it on a regular view
-							brightcoveVideoView.add(video)
-					}
-			}
-	});
-}
-		</code></pre>
-
+<p>The ad configuration defines various aspects of SSAI playback, including a URL to your Video Multiple Ad Playlist (VMAP) file, beacons, and other configurations. For now, you must contact your Brightcove account manager to create your ad configuration.</p>
 </section>
+
+<section class="bcls-section">
+<h2 id="iOS_implementation">iOS implementation</h2>
+
+<p>Follow these steps within your app to get your ad configuration and play your video:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>Include the Once UX plugin in your app. For details, see the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/OUX">Basic Once UX Player</a> sample.</li>
+	<li>Define constants for your account id, policy key, video id or video reference id, and your ad configuration id.
+	<pre class="line-numbers">
+      <code class="language-objectivec">NSString *accountId = @"&lt;accountId&gt;";
+      NSString *policyKey = @"&lt;policyKey&gt;";
+      NSString *videoReferenceId = @"&lt;videoReferenceId&gt;";
+      NSString *adConfigId = @"&lt;adConfigId&gt;";
+      </code></pre>
+
+	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="https://support.brightcove.com/node/18125">Policy Keys</a> document.</aside>
+	</li>
+	<li>Set the query parameter value to your ad configuration id.
+	<pre class="line-numbers">
+      <code class="language-objectivec">NSDictionary *queryParameters = @{
+          @"ad_config_id" : adConfigId
+      };
+      </code></pre>
+	</li>
+	<li>Create an instance of the <code>playbackService</code> if it does not already exist.
+	<pre class="line-numbers">
+      <code class="language-objectivec">if (_playbackService == nil) {
+          self.playbackService = [[BCOVPlaybackService alloc]
+              initWithAccountId:accountId
+              policyKey:policyKey];
+      }
+      </code></pre>
+	</li>
+	<li>Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API.
+	<pre class="line-numbers">
+      <code class="language-objectivec">[_playbackService findVideoWithReferenceID:videoReferenceId
+          parameters:queryParameters
+          completion:^(BCOVVideo *video,
+              NSDictionary *jsonResponse,
+              NSError *error)
+      {...}]
+      </code></pre>
+	</li>
+	<li>Start video playback with your specified ads.
+	<pre class="line-numbers">
+      <code class="language-objectivec">if (error == nil)
+               {
+                   // play it.
+                   [self.playbackController setVideos: @[ video ]];
+               }
+               else
+               {
+                   NSLog (@"Error! Playback Service says: %@",
+      error.localizedDescription);
+               }
+      </code></pre>
+	</li>
+</ol>
+
+<p>Here is the complete code block:</p>
+
+<pre class="line-numbers">
+      <code class="language-objectivec">- (void)playVideo
+      {
+
+          NSDictionary *queryParameters = @{
+              @"ad_config_id" : adConfigId
+          };
+
+          if (_playbackService == nil) {
+              self.playbackService = [[BCOVPlaybackService alloc]
+                  initWithAccountId:accountId
+                   policyKey:policyKey];
+          }
+
+          [_playbackService findVideoWithReferenceID:videoReferenceId
+                  parameters:queryParameters
+                  completion:^(BCOVVideo *video,
+                       NSDictionary *jsonResponse,
+                       NSError *error)
+           {
+               if (error == nil)
+               {
+                   // play it.
+                   [self.playbackController setVideos: @[ video ]];
+               }
+               else
+               {
+                   NSLog (@"Error! Playback Service says: %@",
+      error.localizedDescription);
+               }
+          }];
+      }
+      </code></pre>
+&nbsp;
+</section>
+
+<section class="bcls-section">
+<h2 id="Android_implementation">Android implementation</h2>
+
+<p>Coming soon!</p>
+<!-- <p>Follow these steps within your app to get your ad configuration and play your video:</p>
+
+      <ol class="bcls-tasklist__restart">
+      	<li>Include the Once UX plugin in your app. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/BasicOnceUxSampleApp">Basic Once UX Player</a> sample.</li>
+      	<li>Define constants for your account id, policy key, video id or video reference id, and your ad configuration id.
+      	<pre class="line-numbers">
+      <code class="language-java">String accountId = "&lt;accountId&gt;";
+      String policyKey = "&lt;policyKey&gt;";
+      String videoRef = "&lt;videoRef&gt;";
+      String adConfigId = "&lt;adConfigId&gt;";
+                </code></pre>
+
+      	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="https://support.brightcove.com/node/18125">Policy Keys</a> document.</aside>
+      	</li>
+      	<li>Set the query parameter value to your ad configuration id.
+      	<pre class="line-numbers">
+      <code class="language-java">Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
+      parameters.put("ad_config_id", adConfigId);
+                </code></pre>
+      	</li>
+      	<li>Create an instance of the catalog service.
+      	<pre class="line-numbers">
+      <code class="language-java">Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
+                </code></pre>
+      	</li>
+      	<li>Call the catalog service to retrieve your video along with your ad configuration from the Playback API.
+      	<pre class="line-numbers">
+      <code class="language-java">catalog.findVideoByReferenceID(videoRef, null, parameters, new VideoListener() {
+          ...
+      });
+                </code></pre>
+      	</li>
+      	<li>Start video playback with your specified ads.
+      	<pre class="line-numbers">
+      <code class="language-java">@Override
+      public void onVideo(Video video) {
+          try {
+              plugin.processVideo(video);
+          } catch (NoSourceFoundException e) {
+              // If NoSourceFoundException is thrown it means a suitable vmap url wasn't found.
+              // You can try to play it on a regular view
+              brightcoveVideoView.add(video)
+          }
+      }
+                </code></pre>
+      	</li>
+      </ol>
+
+      <p>Here is the complete code block:</p>
+
+      <pre class="line-numbers">
+      <code class="language-java">@Override
+          protected void onCreate(Bundle savedInstanceState) {
+              setContentView(R.layout.activity_main);
+              brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
+              super.onCreate(savedInstanceState);
+
+              final OnceUxComponent plugin = new OnceUxComponent(this, brightcoveVideoView);
+              Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
+
+              Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
+              parameters.put("ad_config_id", adConfigId);
+              catalog.findVideoByReferenceID(videoRef, null, parameters, new VideoListener() {
+                  @Override
+                  public void onVideo(Video video) {
+                      try {
+                          plugin.processVideo(video);
+                      } catch (NoSourceFoundException e) {
+                          // If NoSourceFoundException is thrown it means a suitable vmap url wasn't found.
+                          // You can try to play it on a regular view
+                          brightcoveVideoView.add(video)
+                      }
+                  }
+              });
+          }
+                </code></pre> --></section>
 </article>
