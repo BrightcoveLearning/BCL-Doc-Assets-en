@@ -441,7 +441,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
-            renditionList = createEl('p', {'style':'font-weight:500;'});
+            renditionList = createEl('p', {'style':'font-weight:600;'});
             text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(', '));
             renditionList.appendChild(text);
             renditionListNote = createEl('p');
