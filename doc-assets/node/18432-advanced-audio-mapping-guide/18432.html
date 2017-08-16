@@ -1,127 +1,319 @@
-<div id="main_content">
+<article class="bcls-article">
 
-      <div id="search-results">
-  <p>
-    <a href="/docs">Home</a> » <a href="/docs/guides">Guides</a> » <a href="/docs/guides/encoding-settings">Encoding Recommendations</a> » Advanced Audio Mapping Guide
-  </p>
+        <p>It is common for editing systems to output video files that contain multiple audio tracks - either for surround sound audio, archival, or multi-language scenarios. Using Zencoder, input files that contain multiple audio tracks can be mapped or mixed down to a single audio track on the output. For example, these options can be combined to map 6 discrete mono PCM audio tracks from an input file into a single 5.1 surround sound audio track on an output.</p>
 
-  <h2>
-      <span class="api-section-permalink">
-        <a href="/docs/guides/encoding-settings/audio-mapping">permalink</a>
-      </span>
-    Advanced Audio Mapping Guide
-  </h2>
+        <p>This guide introduces two options: <code>input_audio_channels</code> and
+            <code>output_audio_channels</code>, which can be used to control how audio tracks and channels from an input file are mapped into the output file.</p>
 
-    <ol>
-  <li><a href="#mapping">Advanced Audio Mapping Options</a></li>
-  <li><a href="#examples">Example Settings</a></li>
-</ol>
-<p>
-  <a name="introduction"></a>
+        <p><a name="mapping"></a>
+        </p>
+        <h2>Audio Mapping Options</h2>
 
-  </p><p>It is common for editing systems to output video files that contain
-  multiple audio tracks - either for surround sound audio, archival, or multi-language
-  scenarios. Using Zencoder, input files that contain multiple audio tracks can
-  be mapped or mixed down to a single audio track on the output. For example,
-  these options can be combined to map 6 discrete mono PCM audio tracks from an
-  input file into a single 5.1 surround sound audio track on an output.</p>
+        <p>
+            <a name="audio-mapping-settings"></a>
+        </p>
+        <ul>
+            <li><strong><a href="/docs/api/encoding/audio/input-audio-channels">input_audio_channels</a></strong>: Set the input audio tracks-to-channels layout.
+            </li>
+            <li><strong><a href="/docs/api/encoding/audio/output-audio-channels">output_audio_channels</a></strong>: Set the output audio channel layout.
+            </li>
+        </ul>
+        <p></p>
+        <p></p>
 
-  <p>This guide introduces two options: <code>input_audio_channels</code> and
-  <code>output_audio_channels</code>, which can be used to control how audio
-  tracks and channels from an input file are mapped into the output file.</p>
+        <p>The <code>input_audio_channels</code> option can be used to tag individual audio tracks or channels from the input file by giving them a channel name, like
+            <code>FL</code> for the "front-left" channel in a 5.1 surround audio track. The examples below demonstrate how to use this option to map from 6 individual audio tracks to a single 5.1 surround track.</p>
 
-  <p><a name="mapping"></a>
-    </p><h2>Audio Mapping Options</h2>
-    <p></p>
-    <p>
-      <a name="audio-mapping-settings"></a>
-      </p><ul>
-        <li><strong><a href="/docs/api/encoding/audio/input-audio-channels">input_audio_channels</a></strong>: Set the input audio tracks-to-channels layout.
-        </li><li><strong><a href="/docs/api/encoding/audio/output-audio-channels">output_audio_channels</a></strong>: Set the output audio channel layout.
-      </li></ul>
-    <p></p>
-  <p></p>
+        <p>By setting the <code>output_audio_channels</code> option, the output audio track's channel layout can be customized. If this is not set, then the default arrangement for the audio codec is used.</p>
 
-  <p>The <code>input_audio_channels</code> option can be used to tag individual
-  audio tracks or channels from the input file by giving them a channel name, like
-  <code>FL</code> for the "front-left" channel in a 5.1 surround audio track. The
-  examples below demonstrate how to use this option to map from 6 individual
-  audio tracks to a single 5.1 surround track.</p>
+        <p>The <code>output_audio_channels</code> option can be used in two ways: to create a mixdown of all of the channels in <code>input_audio_channels</code>, or to create an output with audio channels remapped to a custom output channel layout without
+            performing any mixing. Zencoder can generate a stereo or mono mixdown from a multi-channel or surround sound input audio track. To create a mixdown output, set this option to either <strong>1</strong> (for mono) or
+            <strong>2</strong> (for stereo). To create a custom channel layout, set this option to an array of track identifiers which were defined in the
+            <code>input_audio_channels</code> option. See the examples below for more information.
+        </p>
 
-  <p>By setting the <code>output_audio_channels</code> option, the output audio
-  track's channel layout can be customized. If this is not set, then the default
-  arrangement for the audio codec is used.</p>
+        <p>Zencoder currently supports <strong>mono</strong>, <strong>stereo</strong>, and <strong>5.1 channel</strong> output audio.</p>
 
-  <p>The <code>output_audio_channels</code> option can be used in two ways: to
-  create a mixdown of all of the channels in <code>input_audio_channels</code>,
-  or to create an output with audio channels remapped to a custom output channel
-  layout without performing any mixing. Zencoder can generate a stereo or mono
-  mixdown from a multi-channel or surround sound input audio track. To create a
-  mixdown output, set this option to either <strong>1</strong> (for mono) or
-  <strong>2</strong> (for stereo). To create a custom channel layout, set this
-  option to an array of track identifiers which were defined in the
-  <code>input_audio_channels</code> option. See the examples below for more
-  information.</p>
+        <p>Stereo mixdowns can be generated from surround sound audio by using both the <code>input_audio_channels</code> and <code>output_audio_channels</code> options. By setting <code>output_audio_channels</code> to 2, it is possible to create a stereo
+            mixdown.</p>
 
-  <p>Zencoder currently supports <strong>mono</strong>, <strong>stereo</strong>,
-  and <strong>5.1 channel</strong> output audio.</p>
+        <p></p>
+        <p>
+            <a name="examples"></a>
+        </p>
+        <h2>Example Settings</h2>
+        <p><strong>5.1 Surround Track from Multiple Mono Tracks</strong></p>
+        <p>This example maps individual audio tracks into the named channels
+            <code>FL, FR, FC, LFE, BL, BR</code> and create a single 5.1 surround sound track from the mapping.
+        </p>
 
-  <p>Stereo mixdowns can be generated from surround sound audio by using both
-  the <code>input_audio_channels</code> and <code>output_audio_channels</code>
-  options. By setting <code>output_audio_channels</code> to 2, it is possible
-  to create a stereo mixdown.</p>
+        <div class="docs-code">
+            <div>
+                <div id="highlighter_139269" class="syntaxhighlighter  js">
+                    <div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td class="gutter">
+                                    <div class="line number1 index0 alt2">1</div>
+                                    <div class="line number2 index1 alt1">2</div>
+                                    <div class="line number3 index2 alt2">3</div>
+                                    <div class="line number4 index3 alt1">4</div>
+                                    <div class="line number5 index4 alt2">5</div>
+                                    <div class="line number6 index5 alt1">6</div>
+                                    <div class="line number7 index6 alt2">7</div>
+                                    <div class="line number8 index7 alt1">8</div>
+                                    <div class="line number9 index8 alt2">9</div>
+                                    <div class="line number10 index9 alt1">10</div>
+                                    <div class="line number11 index10 alt2">11</div>
+                                    <div class="line number12 index11 alt1">12</div>
+                                    <div class="line number13 index12 alt2">13</div>
+                                </td>
+                                <td class="code">
+                                    <div class="container">
+                                        <div class="line number1 index0 alt2"><code class="js plain">{</code></div>
+                                        <div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code>
+                                            <code
+                                                class="js plain">,</code>
+                                        </div>
+                                        <div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div>
+                                        <div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div>
+                                        <div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div>
+                                        <div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2,</code></div>
+                                        <div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FC"</code><code class="js plain">: 3,</code></div>
+                                        <div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"LFE"</code><code class="js plain">: 4,</code></div>
+                                        <div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BL"</code><code class="js plain">: 5,</code></div>
+                                        <div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BR"</code><code class="js plain">: 6</code></div>
+                                        <div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                        <div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                        <div class="line number13 index12 alt2"><code class="js plain">}</code></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-<p></p>
-<p>
-<a name="examples"></a>
-</p><h2>Example Settings</h2>
-<p><strong>5.1 Surround Track from Multiple Mono Tracks</strong></p>
-<p>This example maps individual audio tracks into the named channels
-<code>FL, FR, FC, LFE, BL, BR</code> and create a single 5.1 surround sound track from the
-mapping.</p>
+        <p><strong>Stereo Mixdown from a Mapped 5.1 Surround Track</strong></p>
+        <p>The example below shows how to create a stereo mixdown from the 5.1 surround audio track that was created in the example above.</p>
 
-<div class="docs-code">
-  <div><div id="highlighter_139269" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">{</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code><code class="js plain">,</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2,</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FC"</code><code class="js plain">: 3,</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"LFE"</code><code class="js plain">: 4,</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BL"</code><code class="js plain">: 5,</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BR"</code><code class="js plain">: 6</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number13 index12 alt2"><code class="js plain">}</code></div></div></td></tr></tbody></table></div></div>
-</div>
+        <div class="docs-code">
+            <div>
+                <div id="highlighter_535956" class="syntaxhighlighter  js">
+                    <div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td class="gutter">
+                                    <div class="line number1 index0 alt2">1</div>
+                                    <div class="line number2 index1 alt1">2</div>
+                                    <div class="line number3 index2 alt2">3</div>
+                                    <div class="line number4 index3 alt1">4</div>
+                                    <div class="line number5 index4 alt2">5</div>
+                                    <div class="line number6 index5 alt1">6</div>
+                                    <div class="line number7 index6 alt2">7</div>
+                                    <div class="line number8 index7 alt1">8</div>
+                                    <div class="line number9 index8 alt2">9</div>
+                                    <div class="line number10 index9 alt1">10</div>
+                                    <div class="line number11 index10 alt2">11</div>
+                                    <div class="line number12 index11 alt1">12</div>
+                                    <div class="line number13 index12 alt2">13</div>
+                                    <div class="line number14 index13 alt1">14</div>
+                                </td>
+                                <td class="code">
+                                    <div class="container">
+                                        <div class="line number1 index0 alt2"><code class="js plain">{</code></div>
+                                        <div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code>
+                                            <code
+                                                class="js plain">,</code>
+                                        </div>
+                                        <div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div>
+                                        <div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div>
+                                        <div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div>
+                                        <div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2,</code></div>
+                                        <div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FC"</code><code class="js plain">: 3,</code></div>
+                                        <div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"LFE"</code><code class="js plain">: 4,</code></div>
+                                        <div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BL"</code><code class="js plain">: 5,</code></div>
+                                        <div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BR"</code><code class="js plain">: 6</code></div>
+                                        <div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">},</code></div>
+                                        <div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"output_audio_channels"</code><code class="js plain">: 2</code></div>
+                                        <div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                        <div class="line number14 index13 alt1"><code class="js plain">}</code></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-<p><strong>Stereo Mixdown from a Mapped 5.1 Surround Track</strong></p>
-<p>The example below shows how to create a stereo mixdown from the 5.1 surround
-audio track that was created in the example above.</p>
+        <p><strong>Custom Audio Channel Layout</strong></p>
+        <p>The <code>output_audio_channels</code> option can be used to create a custom channel layout in addition to creating mixdowns. The example below will create a stereo output from the front-left and front-right channels, but with their order swapped,
+            so the left channel is in the right and vice versa.</p>
+        <div class="docs-code">
+            <div>
+                <div id="highlighter_646696" class="syntaxhighlighter  js">
+                    <div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td class="gutter">
+                                    <div class="line number1 index0 alt2">1</div>
+                                    <div class="line number2 index1 alt1">2</div>
+                                    <div class="line number3 index2 alt2">3</div>
+                                    <div class="line number4 index3 alt1">4</div>
+                                    <div class="line number5 index4 alt2">5</div>
+                                    <div class="line number6 index5 alt1">6</div>
+                                    <div class="line number7 index6 alt2">7</div>
+                                    <div class="line number8 index7 alt1">8</div>
+                                    <div class="line number9 index8 alt2">9</div>
+                                    <div class="line number10 index9 alt1">10</div>
+                                    <div class="line number11 index10 alt2">11</div>
+                                    <div class="line number12 index11 alt1">12</div>
+                                    <div class="line number13 index12 alt2">13</div>
+                                    <div class="line number14 index13 alt1">14</div>
+                                </td>
+                                <td class="code">
+                                    <div class="container">
+                                        <div class="line number1 index0 alt2"><code class="js plain">{</code></div>
+                                        <div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code>
+                                            <code
+                                                class="js plain">,</code>
+                                        </div>
+                                        <div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div>
+                                        <div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div>
+                                        <div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div>
+                                        <div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2,</code></div>
+                                        <div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FC"</code><code class="js plain">: 3,</code></div>
+                                        <div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"LFE"</code><code class="js plain">: 4,</code></div>
+                                        <div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BL"</code><code class="js plain">: 5,</code></div>
+                                        <div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BR"</code><code class="js plain">: 6</code></div>
+                                        <div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">},</code></div>
+                                        <div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"output_audio_channels"</code><code class="js plain">: [</code><code class="js string">"FR"</code><code class="js plain">, </code>
+                                            <code
+                                                class="js string">"FL"</code><code class="js plain">]</code></div>
+                                        <div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                        <div class="line number14 index13 alt1"><code class="js plain">}</code></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-<div class="docs-code">
-  <div><div id="highlighter_535956" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">{</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code><code class="js plain">,</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2,</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FC"</code><code class="js plain">: 3,</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"LFE"</code><code class="js plain">: 4,</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BL"</code><code class="js plain">: 5,</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BR"</code><code class="js plain">: 6</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">},</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"output_audio_channels"</code><code class="js plain">: 2</code></div><div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number14 index13 alt1"><code class="js plain">}</code></div></div></td></tr></tbody></table></div></div>
-</div>
+        <p><strong>Supporting Multiple Language Tracks</strong></p>
+        <p>By using the <code>input_audio_channels</code> option on an input that contains multiple language tracks, it is possible to create multiple outputs each with separate language tracks. Assume that an input file had 4 discrete audio tracks and that
+            track 1 contained the English (left) audio, track 2 contained the English (right) audio, track 3 contained the Spanish (left) audio and track 4 contained the Spanish (right) audio. By defining the
+            <code>input_audio_channels</code> parameter differently for each output, it is possible to create multiple language outputs from a single file.</p>
+        <div class="docs-code">
+            <div>
+                <div id="highlighter_70881" class="syntaxhighlighter  js">
+                    <div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td class="gutter">
+                                    <div class="line number1 index0 alt2">1</div>
+                                    <div class="line number2 index1 alt1">2</div>
+                                    <div class="line number3 index2 alt2">3</div>
+                                    <div class="line number4 index3 alt1">4</div>
+                                    <div class="line number5 index4 alt2">5</div>
+                                    <div class="line number6 index5 alt1">6</div>
+                                    <div class="line number7 index6 alt2">7</div>
+                                    <div class="line number8 index7 alt1">8</div>
+                                    <div class="line number9 index8 alt2">9</div>
+                                    <div class="line number10 index9 alt1">10</div>
+                                    <div class="line number11 index10 alt2">11</div>
+                                    <div class="line number12 index11 alt1">12</div>
+                                    <div class="line number13 index12 alt2">13</div>
+                                    <div class="line number14 index13 alt1">14</div>
+                                    <div class="line number15 index14 alt2">15</div>
+                                    <div class="line number16 index15 alt1">16</div>
+                                    <div class="line number17 index16 alt2">17</div>
+                                </td>
+                                <td class="code">
+                                    <div class="container">
+                                        <div class="line number1 index0 alt2"><code class="js plain">{</code></div>
+                                        <div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code>
+                                            <code
+                                                class="js plain">,</code>
+                                        </div>
+                                        <div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"outputs"</code><code class="js plain">: [{</code></div>
+                                        <div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"label"</code><code class="js plain">: </code><code class="js string">"english"</code><code class="js plain">,</code></div>
+                                        <div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div>
+                                        <div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div>
+                                        <div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2</code></div>
+                                        <div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                        <div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">},</code></div>
+                                        <div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">{</code></div>
+                                        <div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"label"</code><code class="js plain">: </code><code class="js string">"spanish"</code><code class="js plain">,</code></div>
+                                        <div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div>
+                                        <div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 3,</code></div>
+                                        <div class="line number14 index13 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 4</code></div>
+                                        <div class="line number15 index14 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                        <div class="line number16 index15 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}]</code></div>
+                                        <div class="line number17 index16 alt2"><code class="js plain">}</code></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-<p><strong>Custom Audio Channel Layout</strong></p>
-<p>The <code>output_audio_channels</code> option can be used to create a custom
-channel layout in addition to creating mixdowns. The example below will create
-a stereo output from the front-left and front-right channels, but with their
-order swapped, so the left channel is in the right and vice versa.</p>
-<div class="docs-code">
-  <div><div id="highlighter_646696" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">{</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code><code class="js plain">,</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2,</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FC"</code><code class="js plain">: 3,</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"LFE"</code><code class="js plain">: 4,</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BL"</code><code class="js plain">: 5,</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"BR"</code><code class="js plain">: 6</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">},</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"output_audio_channels"</code><code class="js plain">: [</code><code class="js string">"FR"</code><code class="js plain">, </code><code class="js string">"FL"</code><code class="js plain">]</code></div><div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number14 index13 alt1"><code class="js plain">}</code></div></div></td></tr></tbody></table></div></div>
-</div>
-
-<p><strong>Supporting Multiple Language Tracks</strong></p>
-<p>By using the <code>input_audio_channels</code> option on an input that
-contains multiple language tracks, it is possible to create multiple outputs
-each with separate language tracks. Assume that an input file had 4 discrete
-audio tracks and that track 1 contained the English (left) audio, track 2
-contained the English (right) audio, track 3 contained the Spanish (left) audio
-and track 4 contained the Spanish (right) audio. By defining the
-<code>input_audio_channels</code> parameter differently for each output, it is
-possible to create multiple language outputs from a single file.</p>
-<div class="docs-code">
-  <div><div id="highlighter_70881" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">{</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multitrack-audio.mov">s3://zencodertesting/test-multitrack-audio.mov</a>"</code><code class="js plain">,</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"outputs"</code><code class="js plain">: [{</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"label"</code><code class="js plain">: </code><code class="js string">"english"</code><code class="js plain">,</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 1,</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 2</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">},</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">{</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"label"</code><code class="js plain">: </code><code class="js string">"spanish"</code><code class="js plain">,</code></div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div><div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: 3,</code></div><div class="line number14 index13 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: 4</code></div><div class="line number15 index14 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number16 index15 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}]</code></div><div class="line number17 index16 alt2"><code class="js plain">}</code></div></div></td></tr></tbody></table></div></div>
-</div>
-
-<p><strong>Custom Channel Mapping</strong></p>
-<p>The example below shows how to extract an existing stereo downmix out of a media file,
-   in which the first audio track contains both a 5.1 surround mix and a stereo downmix
-   (where channels 1-6 are 5.1 surround, and channels 7-8 are the downmix stereo pair).</p>
-<div class="docs-code">
-  <div><div id="highlighter_463948" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">{</code></div><div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multichannel-audio.mov">s3://zencodertesting/test-multichannel-audio.mov</a>"</code><code class="js plain">,</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: </code><code class="js string">"1:7"</code><code class="js plain">,</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: </code><code class="js string">"1:8"</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"output_audio_channels"</code><code class="js plain">: 2</code></div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div><div class="line number10 index9 alt1"><code class="js plain">}</code></div></div></td></tr></tbody></table></div></div>
-</div>
-
-</div>
-
+        <p><strong>Custom Channel Mapping</strong></p>
+        <p>The example below shows how to extract an existing stereo downmix out of a media file, in which the first audio track contains both a 5.1 surround mix and a stereo downmix (where channels 1-6 are 5.1 surround, and channels 7-8 are the downmix
+            stereo pair).</p>
+        <div class="docs-code">
+            <div>
+                <div id="highlighter_463948" class="syntaxhighlighter  js">
+                    <div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td class="gutter">
+                                    <div class="line number1 index0 alt2">1</div>
+                                    <div class="line number2 index1 alt1">2</div>
+                                    <div class="line number3 index2 alt2">3</div>
+                                    <div class="line number4 index3 alt1">4</div>
+                                    <div class="line number5 index4 alt2">5</div>
+                                    <div class="line number6 index5 alt1">6</div>
+                                    <div class="line number7 index6 alt2">7</div>
+                                    <div class="line number8 index7 alt1">8</div>
+                                    <div class="line number9 index8 alt2">9</div>
+                                    <div class="line number10 index9 alt1">10</div>
+                                </td>
+                                <td class="code">
+                                    <div class="container">
+                                        <div class="line number1 index0 alt2"><code class="js plain">{</code></div>
+                                        <div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"input"</code><code class="js plain">: </code><code class="js string">"<a href="s3://zencodertesting/test-multichannel-audio.mov">s3://zencodertesting/test-multichannel-audio.mov</a>"</code>
+                                            <code
+                                                class="js plain">,</code>
+                                        </div>
+                                        <div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js string">"output"</code><code class="js plain">: {</code></div>
+                                        <div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"input_audio_channels"</code><code class="js plain">: {</code></div>
+                                        <div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FL"</code><code class="js plain">: </code><code class="js string">"1:7"</code><code class="js plain">,</code></div>
+                                        <div
+                                            class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"FR"</code><code class="js plain">: </code><code class="js string">"1:8"</code></div>
+                                    <div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                    <div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"output_audio_channels"</code><code class="js plain">: 2</code></div>
+                                    <div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">}</code></div>
+                                    <div class="line number10 index9 alt1"><code class="js plain">}</code></div>
+                </div>
+                </td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+</div>
+
+</div>
