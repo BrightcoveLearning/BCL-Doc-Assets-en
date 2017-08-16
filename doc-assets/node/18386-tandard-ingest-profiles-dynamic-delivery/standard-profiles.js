@@ -445,7 +445,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(', '));
             renditionList.appendChild(text);
             renditionListNote = createEl('p');
-            renditionListNoteA = createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
+            renditionListNoteA = createEl('a', {href: '#Renditions'});
             text = document.createTextNode('Rendition Details for Dynamic Delivery');
             renditionListNoteA.appendChild(text);
             text = document.createTextNode('For details on the renditions created see ');
