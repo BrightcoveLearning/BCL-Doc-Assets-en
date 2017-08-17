@@ -1,5 +1,5 @@
 var codeBlocks;
-var BCLS = ( function (window, document, bclsProfiles_cached) {
+var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
@@ -441,11 +441,11 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
-            renditionList = createEl('p');
+            renditionList = createEl('p', {'style':'font-weight:600;'});
             text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(', '));
             renditionList.appendChild(text);
             renditionListNote = createEl('p');
-            renditionListNoteA = createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
+            renditionListNoteA = createEl('a', {href: '#Renditions'});
             text = document.createTextNode('Rendition Details for Dynamic Delivery');
             renditionListNoteA.appendChild(text);
             text = document.createTextNode('For details on the renditions created see ');
