@@ -1,409 +1,472 @@
 <article class="bcls-article">
     <section id="Overview" class="bcls-section">
         <h2>Overview</h2>
-        <p>The Job Status API allows you to query the Once system and get back information about the status of a job in JSON format. The status request is defined by query string parameters, and you can obtain the status for any step of a job. The status returned will be:</p>
-        <ul>
-            <li>PENDING</li>
-            <li>PROCESSING</li>
-            <li>ERROR</li>
-            <li>WARN</li>
-            <li>COMPLETE</li>
-        </ul>
+        <p>The Status API is a RESTful API which allows customers to query the processing statuses of a particular Request ID (returned in the response body of an ingest request). Only the HTTP GET verb is supported and must be made over SSL. If you do not know the Request ID you can query by Foreign Key, which will return a list of all the Request IDs for that particular item. The status data returned will be summary of the major milestones along with any errors that occurred during processing.</p>
+        <p>Also see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/once-status-api/v1/doc/index.html">Status API Reference</a>.</p>
     </section>
-<section class="bcls-section" id="baseURL">
-<h2>Base URL</h2>
-
-<p>The base URL for the Job Status API is:</p>
-
-<p><code>http://statusapi.unicornmedia.com</code></p>
+    <section id="baseURL" class="bcls-section">
+    <h2>
+        API Base URL:
+    </h2>
+<pre class="line-numbers"><code class="language-http">https://api.unicornmedia.com/status-api/</code></pre>
+    </section>
+    <section id="checkStatus" class="bcls-section">
+    <h2>Checking a Job Status</h2>
+    <p>
+        Syntax:
+    </p>
+<pre class="line-numbers"><code class="language-http">https://api.unicornmedia.com/status-api/statuses/{referenceId}</code></pre>
+<pre class="line-numbers"><code class="language-http">https://api.unicornmedia.com/status-api/statuses?catalog={catalogId}&amp;foreignKey={foreignKey}</code></pre>
+    <h3>Status Definitions:</h3>
+    <table class="bcls-table">
+        <thead class="bcls-table__head">
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+            <tr>
+                <td>PENDING</td>
+                <td>The activity or overall job has been received and scheduled in a queue</td>
+            </tr>
+            <tr>
+                <td>PROCESSING</td>
+                <td>The activity or overall job is currently being processed. The overall status will remain in processing if any activity has not been completed.</td>
+            </tr>
+            <tr>
+                <td>SKIPPED</td>
+                <td>The particular activity for the job was not configured or necessary for processing.</td>
+            </tr>
+            <tr>
+                <td>WARN</td>
+                <td>A particular activity has failed that does not impact playback, but the overall job has succeeded. (e.g. timed text)</td>
+            </tr>
+            <tr>
+                <td>ERROR</td>
+                <td>The activity or overall job has failed with an error. Any activity error will result in an overall job error.</td>
+            </tr>
+            <tr>
+                <td>COMPLETE</td>
+                <td>The activity has completed successfully.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Example: Status API Job Requests</h3>
+    <p>
+        Request ID (GET):
+    </p>
+    <p>
+        <code>https://api.unicornmedia.com/status-api/statuses/2796350e-2125-4f04-b33a-59488aaa76c7</code>
+    </p>
+    <p>
+        Foreign Key &amp; Catalog (GET):
+    </p>
+    <p>
+        <code>https://api.unicornmedia.com/status-api/statuses?catalog=bc6cb7d4-be99-471b-adf3-7c501172b317&amp;foreignKey=brightcove-once</code>
+    </p>
+    <h4>
+        Request header
+    </h4>
+    <p>
+        Required HTTP Header:
+    </p>
+    <p>
+        <code>X-BC-ONCE-API-KEY : {yourApiKey}</code>
+    </p>
+    <h4>
+        Response(s)
+    </h4>
+    <h5>
+        Body (Request ID)
+    </h5>
+<pre><code>{
+"status": "COMPLETE",
+"startTime": 1415648939000,
+"completeTime": 1415649217000,
+"steps": {
+"ingest": {
+    "name": "ingest",
+    "status": "COMPLETE",
+    "startTime": 1415648939000,
+    "completeTime": 1415648942000,
+    "input": {
+        "foreignKey": "brightcove-once",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "keywords": {
+            "brightcove",
+                "once"
+        },
+        "metadata": {
+            "accoundId": "12345",
+            "company": "brightcove",
+            "product": "once",
+            "eventId": "321"
+        },
+        "media": {
+            "sourceURL": "http://fileserver.com/trailer/trailer_1080p.mov"
+        },
+        "notifications": [],
+        "publicationRules": [],
+        "cuePoints": [
+            {
+                "valueIn": 10,
+                "unit": "Seconds"
+            }, {
+                "valueIn": 25,
+                "unit": "Seconds"
+            }
+        ]
+    },
+    "output": {
+        "mediaItemId": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "hasChanged": true,
+        "description": {
+            "url": "http://fileserver.com/trailer/trailer_1080p.mov",
+            "lastModified": "Wed, 07 May 2014 22:21:59 GMT",
+            "etag": "\"b2f673c3426acf1:0\"",
+            "fileSize": 60047891
+        }
+    }
+},
+"transcode": {
+    "name": "transcode",
+    "status": "COMPLETE",
+    "startTime": 1415648968000,
+    "completeTime": 1415649216000,
+    "output": {
+        "renditions": [
+            "3345fa40-bbb6-11e3-87e6-005056835b09",
+            "45dd911d-54ac-11e4-9f45-005056835b09",
+            "8249c274-b49d-11e3-87e6-005056835b09",
+            "824d3f86-b49d-11e3-87e6-005056835b09",
+            "825072a0-b49d-11e3-87e6-005056835b09",
+            "8253a884-b49d-11e3-87e6-005056835b09",
+            "8256d34a-b49d-11e3-87e6-005056835b09",
+            "825a2774-b49d-11e3-87e6-005056835b09",
+            "825d7a04-b49d-11e3-87e6-005056835b09",
+            "8260dd62-b49d-11e3-87e6-005056835b09",
+            "d34d2cfb-3478-11e4-8b0b-005056835b09",
+            "d34d2d07-3478-11e4-8b0b-005056835b09"
+        ]
+    }
+},
+"notification": {
+    "name": "notification",
+    "status": "COMPLETE",
+    "startTime": 1415649020000,
+    "completeTime": 1415649217000,
+    "input": {
+        "mediaItemId": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "version": 0,
+        "durationMS": 87754,
+        "notificationOverrides": []
+    },
+    "output": {
+        "sentNotification": false
+    }
+},
+"publish": {
+    "name": "publish",
+    "status": "COMPLETE",
+    "startTime": 1415649217000,
+    "completeTime": 1415649217000,
+    "output": {
+        "version": 0,
+        "duration": 87754
+    }
+}
+}
+}</code></pre>
+    <h4>
+        Body (Foreign Key &amp; Catalog)
+    </h4>
+<pre><code>{
+"requests": [
+{
+    "requestId": "2796350e-2125-4f04-b33a-59488aaa76c7",
+    "startTime": 1412214761091,
+    "href": "https://api.unicornmedia.com/status-api/statuses/2796350e-2125-4f04-b33a-59488aaa76c7"
+},
+{
+    "requestId": "afa0b15e-1354-4348-8917-8185ef11c2cb",
+    "startTime": 1412116933401,
+    "href": "https://api.unicornmedia.com/status-api/statuses/afa0b15e-1354-4348-8917-8185ef11c2cb"
+}
+]
+}</code></pre>
 </section>
+<section id="checkNotificationStatus" class="bcls-section">
+    <h2>Check Notification Status</h2>
+    <p>
+        Syntax:
+    </p>
+    <p>
+        https://api.unicornmedia.com/status-api/notifications/{requestId}
+    </p>
+    <h3>Status Definitions:</h3>
+    <table class="bcls-table">
+        <thead class="bcls-table__head">
+            <tr>
+                <th>
+                        Type
+                </th>
+                <th>
+                        Description
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+            <tr>
+                <td>
+                        PENDING
+                </td>
+                <td>
+                        The activity has been received and scheduled in a queue
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        PROCESSING
+                </td>
+                <td>
+                        The activity is currently being processed.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        COMPLETE
+                </td>
+                <td>
+                        The activity has completed successfully.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        FAILED
+                </td>
+                <td>
+                        The activity has encountered a problem and failed
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Example: Notification Statuses</h4>
+    <h5>
+        Request (GET):
+    </h5>
+    <p>
+        https://api.unicornmedia.com/status-api/notifications/<a href="about:blank">2796350e-2125-4f04-b33a-59488aaa76c7</a>
+    </p>
+    <p><strong>Request header</strong></p>
+    <p>Required HTTP Header:</p>
+    <p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+        <p><strong>Response Body</strong></p>
+<pre><code>{
+"notifications": [{
+"sentTime": 1416417989795,
+"event": "ingest",
+"id": "26",
+"status": "COMPLETE",
+"notification": {
+    "notification": "ingest",
+    "requestId": "2796350e-2125-4f04-b33a-59488aaa76c7",
+    "mediaItem": {
+        "id": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "foreignKey": "brightcove-once",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "title": "brightcove-once",
+        "version": 0,
+        "metadata": {}
+    },
+    "details": {
+        "message": "Media Item Ingested."
+    }
+},
+"targets": [
+    "http://api-endpoint.com"
+]
+},
+{
+"sentTime": 1416516506046,
+"event": "transcode",
+"id": "77",
+"status": "COMPLETE",
+"notification": {
+    "notification": "transcode",
+    "requestId": "2796350e-2125-4f04-b33a-59488aaa76c7",
+    "mediaItem": {
+        "id": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "foreignKey": "brightcove-once",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "title": "brightcove-once",
+        "version": 0,
+        "metadata": {}
+    },
+    "details": {
+        "message": "Rendition Transcoded.",
+        "rendition": {
+            "id": "3345fa40-bbb6-11e3-87e6-005056835b09",
+            "name": "Once 3600 MP4 ZC 1280x720 96 29.97 H3_2"
+        }
+    }
+},
+"targets": [
+    "http://api-endpoint.com"
+]
+},
+{
+"sentTime": 1416516513655,
+"event": "transcode",
+"id": "129",
+"status": "COMPLETE",
+"notification": {
+    "notification": "transcode",
+    "requestId": "2796350e-2125-4f04-b33a-59488aaa76c7",
+    "mediaItem": {
+        "id": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "foreignKey": "brightcove-once",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "title": "brightcove-once",
+        "version": 0,
+        "metadata": {}
+    },
+    "details": {
+        "message": "Rendition Transcoded.",
+        "rendition": {
+            "id": "8260dd62-b49d-11e3-87e6-005056835b09",
+            "name": "Once 2500 MP4 ZC 960x540 96 29.97 M3_1"
+        }
+    }
+},
+"targets": [
+    "http://api-endpoint.com"
+]
+},
+{
+"sentTime": 1416516503504,
+"event": "transcode",
+"id": "132",
+"status": "COMPLETE",
+"notification": {
+    "notification": "transcode",
+    "requestId": "2796350e-2125-4f04-b33a-59488aaa76c7",
+    "mediaItem": {
+        "id": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "foreignKey": "brightcove-once",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "title": "brightcove-once",
+        "version": 0,
+        "metadata": {}
+    },
+    "details": {
+        "message": "Rendition Transcoded.",
+        "rendition": {
+            "id": "825d7a04-b49d-11e3-87e6-005056835b09",
+            "name": "Once 1900 MP4 ZC 960x540 96 29.97 M3_1"
+        }
+    }
+},
+"targets": [
+    "http://api-endpoint.com"
+]
+}, {
+"sentTime": 1416418159982,
+"event": "publish",
+"id": "151",
+"status": "COMPLETE",
+"notification": {
+    "notification": "publish",
+    "requestId": "2796350e-2125-4f04-b33a-59488aaa76c7",
+    "mediaItem": {
+        "id": "2d1d6fe7-6924-4d1d-ba06-d49b2d9f5f4b",
+        "foreignKey": "brightcove-once",
+        "domainId": "b207b479-c841-4095-8918-978be9e18dee",
+        "catalogId": "bc6cb7d4-be99-471b-adf3-7c501172b317",
+        "title": "brightcove-once",
+        "version": 0,
+        "metadata": {}
+    },
+    "details": {
+        "message": "Media Item Published."
+    }
+},
+"targets": [
+    "http://api-endpoint.com"
+]
+}]
+}</code></pre>
+</section>
+<section id="resend" class="bcls-section">
+    <h2>Resending Notifications</h2>
+    <p>
+        Syntax:
+    </p>
+    <p><strong>POST</strong>
+</p>
 
-<div class="bcls-section" id="authentication">
-<h2>Authentication</h2>
-
-<p>Login Credentials are passed via an apikey constructed by base64 encoding the login credentials.</p>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Header</td>
-			<td>Value</td>
-		</tr>
-		<tr>
-			<td>X-BC-ONCE-API-KEY</td>
-			<td>Apikey is made up of the login credentials seperated by a colon and base64 encoded.
-			<p>Plain text format: user@email.com:password:domain</p>
-
-			<p>Base64 Encoded: dXNlckBlbWFpbC5jb206cGFzc3dvcmQ6ZG9tYWluTmFtZQ==</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
-</div>
-
-<div class="bcls-section" id="syntax">
-<h2>Syntax</h2>
-
-<h3>Summary of available operations:</h3>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>HTTP Method</th>
-			<th>Syntax</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>GET</td>
-			<td><code>api/Status/Job?mediaItemGUID={mediaItemGUID}</code></td>
-			<td>Returns the Job details of a specified media item.</td>
-		</tr>
-		<tr>
-			<td>GET</td>
-			<td><code>api/Status/Job?catalogGUID={catalogGUID}&amp;foreignKey={foreignKey}</code></td>
-			<td>Returns the Job details of a specified media item.</td>
-		</tr>
-		<tr>
-			<td>GET</td>
-			<td><code>api/Status/Job?itemCount={itemCount}&amp;pageNumber={pageNumber}</code></td>
-			<td>Returns a list of summarized job details for the domain specified in the login credentials.</td>
-		</tr>
-		<tr>
-			<td>GET</td>
-			<td><code>api/Status/Job?catalogGUID={catalogGUID}&amp;itemCount={itemCount}&amp;pageNumber={pageNumber}</code></td>
-			<td>Returns a list of summarized job details for a given catalog.</td>
-		</tr>
-	</tbody>
-</table>
-
-<h3>Summary of query string parameters</h3>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Argument</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code><a href="#qMediaItemGuid">mediaItemGUID</a></code></td>
-			<td>string</td>
-			<td>Unique Identifier for a media item with in the Once system</td>
-		</tr>
-		<tr>
-			<td><code><a href="#qcatalogGuid">catalogGUID</a></code></td>
-			<td>string</td>
-			<td>Unique Identifier for a catalog with in the Once system</td>
-		</tr>
-		<tr>
-			<td><code><a href="#qForeignKey">foreignKey</a></code></td>
-			<td>string</td>
-			<td>Unique Identifier for a media item that was provided by the customer.</td>
-		</tr>
-		<tr>
-			<td><code>itemCount</code></td>
-			<td>int</td>
-			<td>Number of items that are returned in the request. Maximum value is 50 and the default is 10.</td>
-		</tr>
-		<tr>
-			<td><code>pageNumber</code></td>
-			<td>int</td>
-			<td>page number of the items defined by item count. If item count is 10 and page number is 3, the result will be items 30 to 39 of media items by update date newest to oldest.</td>
-		</tr>
-	</tbody>
-</table>
-</div>
-
-<div class="bcls-section" id="queryTypes">
-<h2>Query types</h2>
-
-<h3 id="qMediaItemGuid">Query by MediaItemGuid</h3>
-
-<p>Allow the user to query a specific domain by the mediaitemguid. The mediaitemguid should be anything from:</p>
-
-<ul>
-	<li>Caption</li>
-	<li>Thumbnail</li>
-	<li>Mediaitem</li>
-	<li>MMI</li>
-</ul>
-
-<h3 id="qForeignKey">Query by ForeignKey</h3>
-
-<p>Allows the user to query a specific domain by the foreignkey. If duplicate foreign keys are returned both should be returned in the status. These foreignkeys can be everything from:</p>
-
-<ul>
-	<li>Caption</li>
-	<li>Thumbnail</li>
-	<li>Mediaitem</li>
-	<li>MMI</li>
-</ul>
-
-<p>The response will include (up to) the 100 most recent assets, and <code>previousPage</code> url to get the previous 100 (and so forth). The earliest set of assets will include the <code>request_id</code>.</p>
-
-<h3 id="qCatalogGuid">Query by CatalogGuid</h3>
-
-<p>Allows the user to query a specific domain by a catalog guid to return a collection of summarized outputs of media items created in order of newest to oldest. The user can define an item count and a page number to return media item results that is less than the default item count as defined in the application config (Currently set to 50 as the max number of items).</p>
-
-<p>The response will include (up to) the 100 most recent assets, and <code>previousPage</code> url to get the previous 100 (and so forth). The earliest set of assets will include the <code>request_id</code>.</p>
-
-<h3 id="qDomain">Query by Domain</h3>
-
-<p>Allows the user to query all items within a domain&nbsp;to return a collection of summarized outputs of media items created in order of newest to default item count as defined in the application config&nbsp;(Currently set to 50 as the max number of items).</p>
-</div>
-
-<div class="bcls-section" id="responseData">
-<h2>Response data</h2>
-
-<ul>
-	<li><a href="#mediaItemData">Media Item Data</a></li>
-	<li><a href="#metaMediaItemData">Meta Media Item Data</a></li>
-	<li><a href="#captionsMediaItemData">Captions Media Item Data</a></li>
-	<li><a href="#imageMediaItemData">Image Media Item Data</a></li>
-</ul>
-
-<h3 id="mediaItemData">Media Item Data</h3>
-
-<ul>
-	<li>Foreignkey</li>
-	<li>Title</li>
-	<li>CatalogGuid</li>
-	<li>CreateDate (epoch time in seconds)</li>
-	<li>UpdateDate (epoch time in seconds)</li>
-	<li>Source URL</li>
-	<li>Source FPS</li>
-	<li>Status (overall)
-	<ul>
-		<li>PENDING
-		<ul>
-			<li>No jobs have been created to start work</li>
-		</ul>
-		</li>
-		<li>PROCESSING
-		<ul>
-			<li>1 or more jobs have begun processing</li>
-		</ul>
-		</li>
-		<li>ERROR
-		<ul>
-			<li>A job has failed</li>
-		</ul>
-		</li>
-		<li>WARN
-		<ul>
-			<li>A job failed and the video is playable, but there was a problem processing an asset (usually timed text)</li>
-		</ul>
-		</li>
-		<li>COMPLETE
-		<ul>
-			<li>Content is ready to deliver</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>jobDetails
-	<ul>
-		<li>Asset Ingest
-		<ul>
-			<li>startTime (epoch time in seconds)</li>
-			<li>completeTime (epoch time in seconds)</li>
-			<li>Status</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>
-	<p>AvFileDownload</p>
-
-	<ul>
-		<li>startTime (epoch time in seconds)</li>
-		<li>completeTime (epoch time in seconds)</li>
-		<li>Status:</li>
-	</ul>
-	</li>
-	<li>Collection Caption Creation
-	<ul>
-		<li>Per Caption
-		<ul>
-			<li>Language</li>
-			<li>Start Time (epoch time in seconds)</li>
-			<li>CompleteTime (epoch time in seconds)</li>
-			<li>Source Url</li>
-			<li>Status</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>Transcoding/External Transcoding
-	<ul>
-		<li>Per Profile:
-		<ul>
-			<li>profile name / guid</li>
-			<li>startTime (epoch time in seconds)</li>
-			<li>completeTime (epoch time in seconds)</li>
-			<li>Status</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>Collection &nbsp;File Replication
-	<ul>
-		<li>Per profile
-		<ul>
-			<li>Profile name /guid</li>
-			<li>startTime (epoch time in seconds)</li>
-			<li>completeTime (epoch time in seconds)</li>
-			<li>Status</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>ItemNotification
-	<ul>
-		<li>startTime (epoch time in seconds)</li>
-		<li>completeTime (epoch time in seconds)</li>
-		<li>Notification URL</li>
-		<li>Status</li>
-	</ul>
-	</li>
-</ul>
-
-<h3 id="metaMediaItemData">Meta Media Item Data</h3>
-
-<ul>
-	<li>Foreignkey</li>
-	<li>Title</li>
-	<li>Catalog</li>
-	<li>CreateDate (epoch time in seconds)</li>
-	<li>UpdateDate (epoch time in seconds)</li>
-	<li>Status:
-	<ul>
-		<li>PENDING
-		<ul>
-			<li>Request sitting in a queue OR</li>
-			<li>1 or more segments are in a PENDING state</li>
-		</ul>
-		</li>
-		<li>PROCESSING
-		<ul>
-			<li>1 or more segments are in a PROCESSING state</li>
-		</ul>
-		</li>
-		<li>ERROR
-		<ul>
-			<li>If any segments error out the MMI should error as well</li>
-			<li>If framerates do not match with all segments we should return an error state</li>
-		</ul>
-		</li>
-		<li>COMPLETE
-		<ul>
-			<li>MMI is ready to deliver</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>Notification
-	<ul>
-		<li>Metadata:
-		<ul>
-			<li>startTime (epoch time in seconds)</li>
-			<li>completeTime (epoch time in seconds)</li>
-			<li>Notification URL</li>
-		</ul>
-		</li>
-		<li>Status
-		<ul>
-			<li>ERROR</li>
-			<li>COMPLETE</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-	<li>The overall status of each segment
-	<ul>
-		<li>Metadata
-		<ul>
-			<li>FPS</li>
-			<li>startTime (epoch time in seconds)</li>
-			<li>completeTime (epoch time in seconds)</li>
-		</ul>
-		</li>
-		<li>Status
-		<ul>
-			<li>PENDING</li>
-			<li>PROCESSING</li>
-			<li>ERROR</li>
-			<li>COMPLETE</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
-
-<h3 id="captionsMediaItemData">Captions Media Item Data</h3>
-
-<ul>
-	<li>Language Code</li>
-	<li>Metadata</li>
-	<li>Foreignkey</li>
-	<li>Title</li>
-	<li>Source URL</li>
-	<li>CreateDate (epoch time in seconds)</li>
-	<li>UpdateDate (epoch time in seconds)</li>
-	<li>Status
-	<ul>
-		<li>PENDING</li>
-		<li>PROCESSING</li>
-		<li>ERROR</li>
-		<li>COMPLETE</li>
-	</ul>
-	</li>
-</ul>
-
-<h3 id="imageMediaItemData">Image Media Item Data</h3>
-
-<ul>
-	<li>Foreignkey</li>
-	<li>Source URL</li>
-	<li>CreateDate (epoch time in seconds)</li>
-	<li>UpdateDate (epoch time in seconds)</li>
-	<li>Status
-	<ul>
-		<li>PENDING</li>
-		<li>PROCESSING</li>
-		<li>ERROR</li>
-		<li>COMPLETE</li>
-	</ul>
-	</li>
-</ul>
-</div>
-
-<div class="bcls-section" id="rateLimiting">
-<h2>Rate limiting</h2>
-
-<p>The API will check will check for excessive requests. If the limit is exceeded the api will return no content with a status code of 429 (too many request) along with the limit, request remaining, and the time when the limit will reset in the response header. If content is returned the request made value associated with the domain guid will be incremented.</p>
-
-<p>Values returned in the response header.</p>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Header</td>
-			<td>Value</td>
-		</tr>
-		<tr>
-			<td>X-Rate-Remaining</td>
-			<td>The number of requests left for the time window defined in the application config</td>
-		</tr>
-		<tr>
-			<td>X-Retry-After&nbsp;</td>
-			<td>The remaining window before the rate limit resets in seconds</td>
-		</tr>
-	</tbody>
-</table>
-</div>
+    <p>
+        <code>https://api.unicornmedia.com/status-api/notifications/{requestId}/{notificationType}</code>
+    </p>
+    <p>
+        <code>https://api.unicornmedia.com/status-api/notifications/{requestId}/{notificationType}?id={event}</code>
+    </p>
+    <h3>Example: Resending All Notifications by Type</h3>
+    <h4>
+        Request
+    </h4>
+    <p>
+        <code>https://api.unicornmedia.com/status-api/notifications/2796350e-2125-4f04-b33a-59488aaa76c7/transcode</code>
+    </p>
+    <h5>Request header</h5>
+    <p>Required HTTP Header:</p>
+    <p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+    <h4>
+        Response Body
+    </h4>
+<pre><code>{
+"transcode": [
+{
+    "id": "77",
+    "submitted": true
+},
+{
+    "id": "129",
+    "submitted": true
+},
+{
+    "id": "132",
+    "submitted": true
+}
+]
+}</code></pre>
+    <h3>Example: Resending a Single Notification from an Array</h3>
+    <h4>
+        Request
+    </h4>
+    <p>
+        <code>https://api.unicornmedia.com/status-api/notifications/2796350e-2125-4f04-b33a-59488aaa76c7/transcode?id=77</code>
+    </p>
+    <h5>Request header</h5>
+    <p>Required HTTP Header:</p>
+    <p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+    <h4>
+        Response
+    </h4>
+<pre><code>{
+"transcode": [
+{
+"id": "77",
+"submitted": true
+}
+]
+}</code></pre>
+</section>
 </article>
