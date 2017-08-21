@@ -21,7 +21,7 @@ var BCLSfinder = ( function (window, document) {
         searchURL = newSite + '/search?search=' + encodeURI(h1.textContent);
         injectMessage(article);
     } else {
-        var h2 = document.getElementsByTagName('article')[0];
+        var h2 = document.getElementsByTagName('h1')[0];
         searchURL = newSite + '/search?search=' + encodeURI(h2.textContent);
         injectMessage(h2);
     }
