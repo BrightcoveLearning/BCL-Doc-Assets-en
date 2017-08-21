@@ -19,11 +19,10 @@ var BCLSfinder = ( function (window, document) {
 
     if (h1) {
         searchURL = newSite + '/search?search=' + encodeURI(h1.textContent);
-        injectMessage(article);
+        injectMessage(h1);
     } else {
-        var h2 = document.getElementsByTagName('h1')[0];
         searchURL = newSite + '/search?search=' + encodeURI(h2.textContent);
-        injectMessage(h2);
+        injectMessage(article);
     }
 
 })(window, document);
