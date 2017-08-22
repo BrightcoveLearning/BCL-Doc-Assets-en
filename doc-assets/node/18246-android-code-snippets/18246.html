@@ -424,21 +424,21 @@
 
 	<pre class="line-numbers">
 				<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#seekTo(int)">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
-						@Override
-						public void onVideo(Video video) {
-								Log.v(TAG, "onVideo: video = " + video);
+@Override
+public void onVideo(Video video) {
+Log.v(TAG, "onVideo: video = " + video);
 
-								brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
-										@Override
-										public void processEvent(Event event) {
-												brightcoveVideoView.seekTo(60000);
-												brightcoveVideoView.start();
-										}
-								});
-								brightcoveVideoView.add(video);
-								brightcoveVideoView.pause();
-						}
-				});</a></code></pre>
+brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
+@Override
+public void processEvent(Event event) {
+	brightcoveVideoView.seekTo(60000);
+	brightcoveVideoView.start();
+}
+});
+brightcoveVideoView.add(video);
+brightcoveVideoView.pause();
+}
+});</a></code></pre>
 	</section>
 	<!--
 										<div id="singleline" class="section">
@@ -516,45 +516,45 @@
 
 	<pre class="line-numbers">
 				<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Playlist.html">private void setupControls(List&lt;Video&gt; videos) {
-						previousVideoButton = (Button) findViewById(R.id.previous_video_button);
-						nextVideoButton = (Button) findViewById(R.id.next_video_button);
+previousVideoButton = (Button) findViewById(R.id.previous_video_button);
+nextVideoButton = (Button) findViewById(R.id.next_video_button);
 
-						if (videos != null) {
-								previousVideoButton.setEnabled(false);
-								previousVideoButton.setOnClickListener(new View.OnClickListener() {
-										public void onClick(View view) {
-												int index = brightcoveVideoView.getCurrentIndex();
-												int size = brightcoveVideoView.getList().size();
-												previousVideoButton.setEnabled(index &gt; 1);
-												nextVideoButton.setEnabled((index + 1) &lt; size);
+if (videos != null) {
+previousVideoButton.setEnabled(false);
+previousVideoButton.setOnClickListener(new View.OnClickListener() {
+public void onClick(View view) {
+	int index = brightcoveVideoView.getCurrentIndex();
+	int size = brightcoveVideoView.getList().size();
+	previousVideoButton.setEnabled(index &gt; 1);
+	nextVideoButton.setEnabled((index + 1) &lt; size);
 
-												if (index &gt; 0) {
-														brightcoveVideoView.setCurrentIndex(index - 1);
-												}
-										}
-								});
+	if (index &gt; 0) {
+		brightcoveVideoView.setCurrentIndex(index - 1);
+	}
+}
+});
 
-								nextVideoButton.setEnabled(videos.size() &gt; 1);
-								nextVideoButton.setOnClickListener(new View.OnClickListener() {
-										public void onClick(View view) {
-												int index = brightcoveVideoView.getCurrentIndex();
-												int size = brightcoveVideoView.getList().size();
-												previousVideoButton.setEnabled(index &gt;= 0);
-												nextVideoButton.setEnabled((index + 2) &lt; size);
+nextVideoButton.setEnabled(videos.size() &gt; 1);
+nextVideoButton.setOnClickListener(new View.OnClickListener() {
+public void onClick(View view) {
+	int index = brightcoveVideoView.getCurrentIndex();
+	int size = brightcoveVideoView.getList().size();
+	previousVideoButton.setEnabled(index &gt;= 0);
+	nextVideoButton.setEnabled((index + 2) &lt; size);
 
-												if ((index + 1) &lt; size) {
-														brightcoveVideoView.setCurrentIndex(index + 1);
-												}
-										}
-								});
-						}
-				}</a></code></pre>
+	if ((index + 1) &lt; size) {
+		brightcoveVideoView.setCurrentIndex(index + 1);
+	}
+}
+});
+}
+}</a></code></pre>
 	</section>
 
 	<section class="bcls-section">
 	<h2 id="Working_with_volume_control">Working with volume control</h2>
 
-	<p>If you are using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a>, you can programmatically mute or unmute the player by doing the following:</p>
+	<p>When using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a>, you can programmatically mute or unmute the player by doing the following:</p>
 
 	<pre class="line-numbers">
 				<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VOLUME">float volume = 100;
@@ -564,5 +564,18 @@ Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
 properties.put(Event.VOLUME, volume);
 brightcoveVideoView.getEventEmitter().emit(EventType.SET_VOLUME, properties);
 }</a></code></pre>
+<p>
+	Brightcove recommends using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> whenever possible. If you need to use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html">BrightcoveVideoView</a>, which uses Android's <a href="https://developer.android.com/reference/android/media/MediaPlayer.html">MediaPlayer</a>, you can programmatically mute or unmute the player with the following code:
+</p>
+<pre class="line-numbers">
+			<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VOLUME">float volume = 100;
+private void setMute(boolean mute) {
+volume = mute ? 0 : 1;
+Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
+properties.put(Event.LEFT_VOLUME, volume);
+properties.put(Event.RIGHT_VOLUME, volume);
+brightcoveVideoView.getEventEmitter().emit(EventType.SET_VOLUME, properties);
+}</a></code></pre>
+<br />
 	</section>
 	</article>
