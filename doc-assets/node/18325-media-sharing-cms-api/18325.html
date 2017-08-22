@@ -246,10 +246,54 @@
 <section class="bcls-section">
     <h2 id="cms_operations_sharing">CMS API requests - sharing</h2>
     <p>This section details the CMS API requests used in sharing videos.</p>
-    <h3>Getting existing shares</h3>
+    <h3>Getting existing shares (master)</h3>
+    <table class="bcls-table">
+        <caption class="bcls-caption--table">Get Shares</caption>
+        <p>To find out if a video has already been shared to other accounts, you can use the request below.</p>
+        <aside class="bcls-aside bcls-aside--information">This is important, because sharing a video to an account that you have already shared it to is a <strong>reshare</strong> that will overwrite any metadata changes that the affiliate has made!</aside>
+        <tbody class="bcls-table__body">
+            <tr>
+                <th>Method</th>
+                <td>GET</td>
+            </tr>P
+            <tr>
+                <th>Endpoint</th>
+                <td>https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</td>
+            </tr>
+            <tr>
+                <th>Request body</th>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-    <h3>Sharing a video</h3>
-
+    <h3>Sharing or resharing a video (master)</h3>
+    <p>The request described below will share a video to one or more affiliate accounts.</p>
+    <aside class="bcls-aside bcls-aside--information">Remember that if the video has already been shared to an affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the affiliate has made to the video metadata!</aside>
+    <table class="bcls-table">
+        <caption class="bcls-caption--table">Share Video</caption>
+        <tbody class="bcls-table__body">
+            <tr>
+                <th>Method</th>
+                <td>POST</td>
+            </tr>P
+            <tr>
+                <th>Endpoint</th>
+                <td>https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</td>
+            </tr>
+            <tr>
+                <th>Request body</th>
+                <td>
+<pre class="line-numbers"><code class="language-json">[
+  { "id": "<span class="bcls-input">affiliate_account_id_1</span>" },
+  { "id": "<span class="bcls-input">affiliate_account_id_2</span>" }
+]</code></pre>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Sharing will create a new video in the affiliate's account. The <code>state</code> of the video will be <code>pending</code> until the share is complete <strong>and</strong> the video has been accepted by the affiliate (if <code>auto_accept</code> is set to <code>false</code> on the contract by the affiliate - see the previous section on setting up sharing).</p>
     <h3>Unsharing a video</h3>
 </section>
 </article>
