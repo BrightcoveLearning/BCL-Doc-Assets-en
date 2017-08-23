@@ -1,7 +1,7 @@
 var BCLS = (function () {
     "use strict";
 	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        serviceURL = "https://players.api.brightcove.com/v1",
+        serviceURL = "https://players.api.brightcove.com/v2",
         $accountID = $("#accountID"),
             account_id = "",
         $client_id = $("#client_id"),
@@ -18,7 +18,6 @@ var BCLS = (function () {
         $generatedResults = $("#generatedResults"),
         // functions
         getPlayerData,
-        isDefined,
         bclslog;
 
     /**
@@ -34,12 +33,17 @@ var BCLS = (function () {
         return;
     };
 
-    // more robust test for strings "not defined"
-    isDefined =  function (v) {
-        if (v !== "" && v !== null && v !== "undefined" && v !== undefined) {
-            return true;
-        } else { return false; }
-    };
+    /**
+     * tests for all the ways a variable might be undefined or not have a value
+     * @param {*} x the variable to test
+     * @return {Boolean} true if variable is defined and has a value
+     */
+    function isDefined(x) {
+        if ( x === '' || x === null || x === undefined) {
+            return false;
+        }
+        return true;
+    }
 
     // submit request to get player configuration data for account
     getPlayerData = function () {
