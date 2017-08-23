@@ -2,7 +2,7 @@
 <section class="bcls-section" id="gettingToken">
 <h2>Getting a token</h2>
 
-<p>Tokens are obtained from the Brightcove OAuth API. Before you can get access tokens, you first need to obtain client credentials (a client id and a client secret) that are specific to the API and operations that you want access to. To get your client credentials, see <a class="video-cloud-only" href="//support.brightcove.com/en/video-cloud/docs/managing-api-authentication-credentials">Managing API Credentials</a><a class="player-only" href="//support.brightcove.com/en/player/docs/managing-api-credentials">Managing API Authentication Credentials</a>.</p>
+<p>Tokens are obtained from the Brightcove OAuth API. Before you can get access tokens, you first need to obtain client credentials (a client id and a client secret) that are specific to the API and operations that you want access to. To get your client credentials, see <a href="/node/14056">Managing API Credentials</a>.</p>
 
 <p>Once you have your credentials, you obtain an access token by making a <code>POST</code> request to:</p>
 
@@ -37,7 +37,7 @@
 <pre class="line-numbers">
 <code class="language-http">Authorization: Bearer {access_token}</code></pre>
 
-<p>The <code>expired_in</code> value is the number of seconds that the access token is valid for.</p>
+<p>The <code>expires_in</code> value is the number of seconds that the access token is valid for.</p>
 </section>
 
 <section class="bcls-section" id="implementation">
@@ -91,7 +91,8 @@
 
 <h4 id="shell">Shell script code</h4>
 
-<pre class="line-numbers"><code class="language-bash">bold=`tput bold`
+<pre class="line-numbers">
+<code class="language-bash">bold=`tput bold`
 normal=`tput sgr0`
 echo 'Enter your client id:'
 read CLIENT_ID
@@ -150,17 +151,18 @@ echo
 
 <h4>Ruby code</h4>
 
-<pre class="line-numbers"><code class="language-ruby">#!/usr/bin/env ruby
-# view id --> content,
+<pre class="line-numbers">
+<code class="language-ruby">#!/usr/bin/env ruby
+# view id --&gt; content,
 #!/usr/bin/env ruby
 require 'rest-client'
 require 'json'
 client_id = '5eb0f20e-29a8-4f19-8cb5-80336e2789ab'
 client_secret = 'Zqpb_2YrvnGUEjqQUndx6GsjQ3JyAgXoA2gNbhoj-yUV4scij0jwCN0OBz9FILEwHupjeqwdbOUSFMi7zkhpVg'
-response = RestClient.post 'https://oauth.brightcove.com/v4/access_token', :client_id=>client_id,:client_secret=>client_secret,:grant_type=>'client_credentials'
+response = RestClient.post 'https://oauth.brightcove.com/v4/access_token', :client_id=&gt;client_id,:client_secret=&gt;client_secret,:grant_type=&gt;'client_credentials'
 token = JSON.parse(response)["access_token"]
 puts "The extracted token is:" + token + "\n\n\n"
-data = RestClient.get 'https://data.brightcove.com/analytics-api/videocloud/account/1234567890001/report?dimensions=video&from=2014-01-01&to=2014-03-30', { 'Authorization' => "Bearer #{token}", 'Accept' => 'application/json' }
+data = RestClient.get 'https://data.brightcove.com/analytics-api/videocloud/account/1234567890001/report?dimensions=video&amp;from=2014-01-01&amp;to=2014-03-30', { 'Authorization' =&gt; "Bearer #{token}", 'Accept' =&gt; 'application/json' }
 puts "This is the result from the query: \n" + data
 </code></pre>
 
@@ -172,7 +174,8 @@ puts "This is the result from the query: \n" + data
 
 <h4>Python code</h4>
 
-<pre class="line-numbers"><code class="language-python">import httplib, urllib, base64, json, sys
+<pre class="line-numbers">
+<code class="language-python">import httplib, urllib, base64, json, sys
 # This is a python script to test the CMS API.
 # To use this script, edit the configuration file brightcove_oauth.txt
 # with your brightcove account ID, and a client ID and client secret for
@@ -298,7 +301,8 @@ if __name__ == "__main__":
 
 <h5>Credentials file for Python sample</h5>
 
-<pre class="line-numbers"><code class="language-json">{
+<pre class="line-numbers">
+<code class="language-json">{
     "account" : "1234567890001",
     "client_id": "30ff0909-0909-33d3-ae88-c9887777a7b7",
     "client_secret": "XXXXXXXX_XXXXXXXX_XXXXXXXX_XXXXXXX_XXXXXXX_XXXXXXXXXXXXXXXXX_XXXXXXXXXXX"
@@ -310,7 +314,8 @@ if __name__ == "__main__":
 
 <h4>PHP code</h4>
 
-<pre class="line-numbers"><code class="language-php"><?php
+<pre class="line-numbers">
+<code class="language-php"><!--?php
 /**
  * proxy for Brightcove RESTful APIs
  * gets an access token, makes the request, and returns the response
@@ -334,14 +339,14 @@ $auth_string   = "{$client_id}:{$client_secret}";
 $request       = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
 $ch            = curl_init($request);
 curl_setopt_array($ch, array(
-	CURLOPT_POST           => TRUE,
-	CURLOPT_RETURNTRANSFER => TRUE,
-	CURLOPT_SSL_VERIFYPEER => FALSE,
-	CURLOPT_USERPWD        => $auth_string,
-	CURLOPT_HTTPHEADER     => array(
+	CURLOPT_POST           =--> TRUE,
+	CURLOPT_RETURNTRANSFER =&gt; TRUE,
+	CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+	CURLOPT_USERPWD        =&gt; $auth_string,
+	CURLOPT_HTTPHEADER     =&gt; array(
 		'Content-type: application/x-www-form-urlencoded',
 	),
-	CURLOPT_POSTFIELDS => $data
+	CURLOPT_POSTFIELDS =&gt; $data
 ));
 $response = curl_exec($ch);
 curl_close($ch);
@@ -370,14 +375,14 @@ $request = $_POST["url"];
 //send the http request
 $ch = curl_init($request);
 curl_setopt_array($ch, array(
-		CURLOPT_CUSTOMREQUEST  => $method,
-		CURLOPT_RETURNTRANSFER => TRUE,
-		CURLOPT_SSL_VERIFYPEER => FALSE,
-		CURLOPT_HTTPHEADER     => array(
+		CURLOPT_CUSTOMREQUEST  =&gt; $method,
+		CURLOPT_RETURNTRANSFER =&gt; TRUE,
+		CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+		CURLOPT_HTTPHEADER     =&gt; array(
 			'Content-type: application/json',
 			"Authorization: Bearer {$access_token}",
 		),
-		CURLOPT_POSTFIELDS => json_encode($data)
+		CURLOPT_POSTFIELDS =&gt; json_encode($data)
 	));
 $response = curl_exec($ch);
 curl_close($ch);
@@ -397,7 +402,7 @@ if ($response === FALSE) {
 // $responseData = json_decode($response, TRUE);
 // return the response to the AJAX caller
 echo $response;
-?>
+?&gt;
 </code></pre>
 </section>
 </article>
