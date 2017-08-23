@@ -15,23 +15,20 @@ var BCLS = (function () {
         $generateButton = $("#generateButton"),
         $requestInputs = $(".papi-request"),
         $responseFrame = $("#responseFrame"),
-        $generatedResults = $("#generatedResults"),
-        // functions
-        getPlayerData,
-        bclslog;
+        $generatedResults = $("#generatedResults");
 
     /**
      * Logging function - safe for IE
-     * @param  {string} context description of the data
-     * @param  {*} message the data to be logged by the console
+     * @param  {string} context - description of the data
+     * @param  {*} message - the data to be logged by the console
      * @return {}
      */
-    bclslog = function (context, message) {
-        if (window["console"] && console["log"]) {
-            console.log(context, message);
-        };
+    function bclslog(context, message) {
+        if (window.console && console.log) {
+          console.log(context, message);
+        }
         return;
-    };
+    }
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -46,7 +43,7 @@ var BCLS = (function () {
     }
 
     // submit request to get player configuration data for account
-    getPlayerData = function () {
+    function getPlayerData() {
         if ($accountID.val().length == 0 ||
             $client_id.val().length == 0 ||
             $client_secret.val().length == 0 ||
@@ -79,7 +76,7 @@ var BCLS = (function () {
                 $generatedResults.html("Sorry, the GET request to read player data for your account was not successful. Here's what the server sent back: " + errorThrown);
             }
         });
-    };
+    }
 
     // set listeners for buttons
     console.log("Player Management API script");
