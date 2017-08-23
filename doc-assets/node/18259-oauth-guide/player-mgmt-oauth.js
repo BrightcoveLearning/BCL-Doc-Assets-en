@@ -79,8 +79,6 @@ var BCLS = (function () {
     }
 
     // set listeners for buttons
-    console.log("Player Management API script");
-    console.log("set button listeners");
-    $generateButton.on("click", getPlayerData);
+    $generateButton.addEventListener("click", getPlayerData);
 
 })();
