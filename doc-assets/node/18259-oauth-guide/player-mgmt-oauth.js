@@ -2,20 +2,20 @@ var BCLS = (function () {
     "use strict";
 	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         serviceURL = "https://players.api.brightcove.com/v2",
-        $accountID = $("#accountID"),
+        $accountID = document.getElementById("accountID"),
             account_id = "",
-        $client_id = $("#client_id"),
+        $client_id = document.getElementById("client_id"),
             // for testing purposes
             client_id = "",
-        $client_secret = $("#client_secret"),
+        $client_secret = document.getElementById("client_secret"),
             // for testing purposes
             client_secret = "",
-        $playerID = $("#playerID"),
+        $playerID = document.getElementById("playerID"),
             player_id = "",
-        $generateButton = $("#generateButton"),
-        $requestInputs = $(".papi-request"),
-        $responseFrame = $("#responseFrame"),
-        $generatedResults = $("#generatedResults");
+        $generateButton = document.getElementById("generateButton"),
+        $requestInputs = document.getElementByClassName("papi-request"),
+        $responseFrame = document.getElementById("responseFrame"),
+        $generatedResults = document.getElementById("generatedResults");
 
     /**
      * Logging function - safe for IE
@@ -44,20 +44,20 @@ var BCLS = (function () {
 
     // submit request to get player configuration data for account
     function getPlayerData() {
-        if ($accountID.val().length == 0 ||
-            $client_id.val().length == 0 ||
-            $client_secret.val().length == 0 ||
-            $playerID.val().length == 0) {
+        if ($accountID.value.length == 0 ||
+            $client_id.value.length == 0 ||
+            $client_secret.value.length == 0 ||
+            $playerID.value.length == 0) {
                 alert("Please enter your data before submitting the request");
                 return;
         }
         var options = {};
-        options.client_id = (isDefined($client_id.val())) ? $client_id.val() : client_id;
-        options.client_secret = (isDefined($client_secret.val())) ? $client_secret.val() : client_secret;
+        options.client_id = (isDefined($client_id.value)) ? $client_id.value : client_id;
+        options.client_secret = (isDefined($client_secret.value)) ? $client_secret.value : client_secret;
 
         var values = {};
-        values.account_id = (isDefined($accountID.val())) ? $accountID.val() : account_id;
-        values.player_id = (isDefined($playerID.val())) ? $playerID.val() : player_id;
+        values.account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
+        values.player_id = (isDefined($playerID.value)) ? $playerID.value : player_id;
 
         options.url = serviceURL + "/accounts/" + values.account_id + "/players/" + values.player_id + "/configuration";
         options.requestType = "GET";
