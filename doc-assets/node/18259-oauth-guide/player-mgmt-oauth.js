@@ -69,8 +69,8 @@ var BCLS = (function () {
             txt;
 
         // set credentials
-        options.client_id     = client_id.value;
-        options.client_secret = client_secret.value;
+        options.clientID     = client_id.value;
+        options.clientSecret = client_secret.value;
         account_id = (isDefined(accountID.value)) ? accountID.value : default_account_id;
         player_id = (isDefined(playerID.value)) ? playerID.value : default_player_id;
 
