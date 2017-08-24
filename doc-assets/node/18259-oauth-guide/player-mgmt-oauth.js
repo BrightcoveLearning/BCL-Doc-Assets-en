@@ -2,20 +2,19 @@ var BCLS = (function () {
     "use strict";
 	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php",
         serviceURL = "https://players.api.brightcove.com/v2",
-        $accountID = document.getElementById("accountID"),
+        accountID = document.getElementById("accountID"),
             account_id = "",
-        $client_id = document.getElementById("client_id"),
+        client_id = document.getElementById("client_id"),
             // for testing purposes
             client_id = "",
-        $client_secret = document.getElementById("client_secret"),
+        client_secret = document.getElementById("client_secret"),
             // for testing purposes
             client_secret = "",
-        $playerID = document.getElementById("playerID"),
+        playerID = document.getElementById("playerID"),
             player_id = "",
-        $generateButton = document.getElementById("generateButton"),
-        $requestInputs = document.getElementByClassName("papi-request"),
-        $responseFrame = document.getElementById("responseFrame"),
-        $generatedResults = document.getElementById("generatedResults");
+        generateButton = document.getElementById("generateButton"),
+        responseFrame = document.getElementById("responseFrame"),
+        generatedResults = document.getElementById("generatedResults");
 
     /**
      * Logging function - safe for IE
@@ -42,41 +41,6 @@ var BCLS = (function () {
         return true;
     }
 
-    // submit request to get player configuration data for account
-    function getPlayerData() {
-        if ($accountID.value.length == 0 ||
-            $client_id.value.length == 0 ||
-            $client_secret.value.length == 0 ||
-            $playerID.value.length == 0) {
-                alert("Please enter your data before submitting the request");
-                return;
-        }
-        var options = {};
-        options.client_id = (isDefined($client_id.value)) ? $client_id.value : client_id;
-        options.client_secret = (isDefined($client_secret.value)) ? $client_secret.value : client_secret;
-
-        var values = {};
-        values.account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
-        values.player_id = (isDefined($playerID.value)) ? $playerID.value : player_id;
-
-        options.url = serviceURL + "/accounts/" + values.account_id + "/players/" + values.player_id + "/configuration";
-        options.requestType = "GET";
-
-        bclslog("options", options);
-        $.ajax({
-            url: proxyURL,
-            type: "POST",
-            data: options,
-            success : function (data) {
-                console.log("successful call: " );
-                console.log(data);
-                $generatedResults.html(data);
-            },
-            error : function (XMLHttpRequest, textStatus, errorThrown) {
-                $generatedResults.html("Sorry, the GET request to read player data for your account was not successful. Here's what the server sent back: " + errorThrown);
-            }
-        });
-    }
 
     /**
  * createRequest sets up requests, send them to makeRequest(), and handles responses
@@ -198,6 +162,6 @@ function makeRequest(options, callback) {
 
 
     // set listeners for buttons
-    $generateButton.addEventListener("click", getPlayerData);
+    generateButton.addEventListener("click", getPlayerData);
 
 })();
