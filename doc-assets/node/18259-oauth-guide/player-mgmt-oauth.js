@@ -58,12 +58,12 @@ function createRequest(type) {
     options.client_id     = cid.value;
     options.client_secret = secret.value;
     account_id = (isDefined(accountID.value)) ? accountID.value : default_account_id;
-    player_id = player_
+    player_id = (isDefined(playerID.value)) ? playerID.value : default_player_id;
 
     switch (type) {
         case 'getConfig':
             options.proxyURL    = proxyURL;
-            endpoint            = account_id + '/players/' + player_id;
+            endpoint            = account_id + '/players/' + player_id + ;
             options.url         = baseURL + endpoint;
             options.requestType = 'GET';
             makeRequest(options, function(response) {
