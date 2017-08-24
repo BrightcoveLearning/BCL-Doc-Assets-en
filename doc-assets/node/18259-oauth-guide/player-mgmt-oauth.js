@@ -81,22 +81,11 @@ var BCLS = (function () {
                 options.url         = baseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest(options, function(response) {
-                    responseDecoded = JSON.parse(response);
-                    if (Array.isArray(responseDecoded)) {
-                        // remove existing options
-                        iMax = profiles.length;
-                        for (i = 0; i < iMax; i++) {
-                            profiles.remove(i);
-                        }
-                        // add new options
-                        iMax = responseDecoded.length;
-                        for (i = 0; i < iMax; i++) {
-                            el = document.createElement('option');
-                            el.setAttribute('value', responseDecoded[i].name);
-                            txt = document.createTextNode(responseDecoded[i].name);
-                            el.appendChild(txt);
-                            profiles.appendChild(el);
-                        }
+                    if (isJson(response)) {
+                        responseDecoded = JSON.parse(response);
+                        generatedResults.textContent = JSON.stringify(responseDecoded, null, '  ');
+                    } else {
+                        generatedResults.textContent = 'Something went wrong - here\'s what the server returned: ' + response;
                     }
                 });
                 break;
@@ -155,7 +144,7 @@ var BCLS = (function () {
          */
         requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (options.client_id && options.client_secret) {
+        if (isDefined(options.client_id) && isDefined(options.client_secret)) {
             requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
         }
         // add request data if any
@@ -175,6 +164,8 @@ var BCLS = (function () {
 
 
     // set listeners for buttons
-    generateButton.addEventListener("click", getPlayerData);
+    generateButton.addEventListener("click", function() {
+        createRequest('getConfig');
+    });
 
 })();
