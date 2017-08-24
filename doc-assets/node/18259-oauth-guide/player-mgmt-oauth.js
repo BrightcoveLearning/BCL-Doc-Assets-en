@@ -80,6 +80,7 @@ var BCLS = (function () {
                 endpoint            = account_id + '/players/' + player_id + '/configuration/master';
                 options.url         = baseURL + endpoint;
                 options.requestType = 'GET';
+console.log('url', options.url);
                 makeRequest(options, function(response) {
                     if (isJson(response)) {
                         responseDecoded = JSON.parse(response);
