@@ -3,14 +3,10 @@ var BCLS = (function () {
 	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php",
         serviceURL = "https://players.api.brightcove.com/v2",
         accountID = document.getElementById("accountID"),
-            account_id = "",
+        account_id,
+        default_account_id = '1752604059001',
         client_id = document.getElementById("client_id"),
-            // for testing purposes
-            client_id = "",
         client_secret = document.getElementById("client_secret"),
-            // for testing purposes
-            client_secret = "",
-        playerID = document.getElementById("playerID"),
             player_id = "",
         generateButton = document.getElementById("generateButton"),
         responseFrame = document.getElementById("responseFrame"),
@@ -48,8 +44,7 @@ var BCLS = (function () {
  */
 function createRequest(type) {
     var options   = {},
-        ipBaseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account.value,
-        diBaseURL = 'https://ingest.api.brightcove.com/v1/accounts/' + account.value,
+        baseURL = 'https://players.api.brightcove.com/v2/accounts/',
         endpoint,
         responseDecoded,
         i,
@@ -60,9 +55,10 @@ function createRequest(type) {
     // set credentials
     options.client_id     = cid.value;
     options.client_secret = secret.value;
+    account_id = (isDefined(accountID.value)) ? accountID.value : default_account_id;
 
     switch (type) {
-        case 'getProfiles':
+        case 'getConfig':
             options.proxyURL    = './profiles-proxy.php';
             endpoint            = '/profiles';
             options.url         = ipBaseURL + endpoint;
