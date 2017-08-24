@@ -7,7 +7,9 @@ var BCLS = (function () {
         default_account_id = '1752604059001',
         client_id = document.getElementById("client_id"),
         client_secret = document.getElementById("client_secret"),
-            player_id = "",
+        playerID = document.getElementById('playerID'),
+        player_id,
+        default_player_id = 'BJWo1X3EOZ',
         generateButton = document.getElementById("generateButton"),
         responseFrame = document.getElementById("responseFrame"),
         generatedResults = document.getElementById("generatedResults");
@@ -56,12 +58,13 @@ function createRequest(type) {
     options.client_id     = cid.value;
     options.client_secret = secret.value;
     account_id = (isDefined(accountID.value)) ? accountID.value : default_account_id;
+    player_id = player_
 
     switch (type) {
         case 'getConfig':
-            options.proxyURL    = './profiles-proxy.php';
-            endpoint            = '/profiles';
-            options.url         = ipBaseURL + endpoint;
+            options.proxyURL    = proxyURL;
+            endpoint            = account_id + '/players/' + player_id;
+            options.url         = baseURL + endpoint;
             options.requestType = 'GET';
             makeRequest(options, function(response) {
                 responseDecoded = JSON.parse(response);
