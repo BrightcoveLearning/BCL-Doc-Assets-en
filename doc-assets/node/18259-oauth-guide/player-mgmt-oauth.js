@@ -1,6 +1,6 @@
 var BCLS = (function () {
     "use strict";
-	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php",
+	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php",
         serviceURL = "https://players.api.brightcove.com/v2",
         accountID = document.getElementById("accountID"),
         account_id,
