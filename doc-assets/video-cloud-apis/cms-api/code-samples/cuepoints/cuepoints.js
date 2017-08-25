@@ -127,7 +127,6 @@ var BCLS = (function (window, document) {
             iMax,
             el,
             txt;
-console.log('account_id', account_id);
         // set credentials and proxy url
         options.client_id     = cid.value;
         options.client_secret = secret.value;
