@@ -1,0 +1,170 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+<p>Dynamic Delivery Ingest now has a feature called <strong>Priority Queueing</strong> that allow publishers to submit ingest jobs to us with a desired priority setting to influence the order and timeliness of when the job will be processed.</p>
+<aside class="bcls-aside bcls-aside--warning">
+    <p>Note that Priority Queueing applies only to accounts that are enabled for <a href="/node/17949">Dynamic Delivery</a>. It cannot be used in accounts that use the older ingestion system.</p>
+    <p>If you would like to convert your account to use Dyanamic Delivery, contact your account manager.</p>
+    <p>If you are not sure whether Dynamic Delivery is enabled for your account, the easiest way to tell is to open <a href="https://studio.brightcove.com">Studio</a> and go to the Upload Module. Click the Ingest Profile dropdown menu to expand it. If your account is enabled for Dynamic Delivery, you will see Dynamic Delivery profiles at the top of the list:</p>
+    <figure class="bcls-figure">
+        <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18439-dynamic-delivery-ingest-priority-queueing/18439-dd-profiles-in-upload-module.png" alt="Dynamic Delivery Profiles">
+        <figcaption class="bcls-caption--image">Dynamic Delivery Profiles</figcaption>
+    </figure>
+</aside>
+    ingestion (or any other ingestion system we have.)</p>
+</section>
+<p>Dynamic Delivery Ingestion has a limit on the amount of work a customer can be doing at once.  When that limit is exceeded, ingestion will queue up the request for processing later.  The size of the queue has a separate limit, and when that is reached it will reject the ingestion request back to the customer (with a 409 error code, I believe.)  When jobs finish up, capacity is freed up and jobs that are queued will be picked up and processed one at a time.  Note that all limits are
+"per-customer", not global.</p>
+<p>Before Priority Queueing, the job status in the CMS API did not reflect that the job was queued.  This changes with Priority Queueing, with a new state called "queued" being exposed from the CMS API.  So customers will now know that jobs are queued and not running.  This new status applies to both low and normal priority jobs.</p>
+<h2>How Priority Queueing effects Ingestion</h2>
+<p>Priority queueing allows the user to add a "priority" flag to their ingest request.  The only legal values (currently)
+are "low" and "normal."  Any other value will cause the request to be rejected by Wedge with a 422 error code.  When the user
+doesn't specify any priority, priority is treated as "normal".  Setting priority impacts how work is picked off the queue,
+it<strong>DOES****NOT</strong>impact the starting of work if no work is queued.  Here is a brief description of how Priority Queueing
+changes how work is picked off the queue:</p>
+<ol>
+<li>If there is capacity to run a job, then the job is run immediately.  This applies to both low and normal priority jobs.</li>
+<li>If there is is no capacity for another job to run, the job is queued.</li>
+<li>If there are jobs queue, then any new jobs are also queued.  This means that a new job can't start before queued jobs.</li>
+<li>When there is capacity to run another job and there are queued jobs, a job is picked off the queue.</li>
+<li>If there are ANY normal priority jobs in the queue, the oldest normal priority job will be picked.</li>
+<li>If there are NO normal priority jobs in the queue, then the oldest low priority job will be picked.</li>
+<li>Normal and Low priority jobs are treated the<strong>same</strong>for how many running jobs there can be.  There is 1
+"max running jobs" quota (JobsInFlight), independent of priority.  More on quotas later in the doc.</li>
+<li>There are<strong>separate</strong>quotas for how many normal and low priority jobs can be queued (JobsInQueue and JobsInQueueLow,
+respectively.)  There is more on quotas later in the doc.</li>
+</ol>
+<h2>How Priority Queueing effects Zencoder</h2>
+<p>If priority is set to low, then we will set the <code>low_priority=true</code> flag on the zencoder job.  This will change the
+behavior of Zencoder in several ways.  This is SOME of the ways, but not all.  NOTE: I would put a link here to the official
+documentation from Zencoder on the flag... except that I have not been given such a link.  The main focus of what
+setting low_priority does is to lower costs for processing that video.  To that end:</p>
+<ol>
+<li>low_priority Zencoder jobs are not assigned to encoding services ("workers") until all normal priority work is
+assigned.  Therefor, normal priority work takes precedence over low priority work.</li>
+<li>When deciding to scale up the cluster (launch more workers) queued low priority jobs are ignored.  This can lead
+to a large backlog of low priority work, which has to be dealt with manually by ZC people launching spot workers.</li>
+<li>If their worker cloud is too "full", they will not start new low priority work.  This reserves capacity for new
+normal priority work that comes in.  The limit (which is normally around 85% fullness) is changeable by ZC people
+via the Zencoder dashboard.</li>
+<li>They have a setting that limits when work will be assigned to a worker based on remaining time within the billing hour.
+This means that "idle" workers will not be given new low priority work if their billing hour is nearly up, preventing
+low priority work from keeping the cluster from scaling down.  Normally this is set to "10 minutes", so if there is
+10 minutes or less in the "billing hour" on a worker, a new low priority job will NOT be assigned to it.</li>
+<li>low_priority in Zencoder has a cross-account effect.  Normal priority work from ANY account will be processed before
+ANY low_priority work.</li>
+</ol>
+<p>Because of all these impacts on job startup within Zencoder, we expect that setting Zencoder's low_priority flag
+will slow down completion of ingest jobs.  Unfortunately, we won't know how much until we try it.</p>
+<p>We were also given this warning sent by TAG (who send it to esmith), but written by Justin Greer, about the use of the
+low_priority flag:</p>
+<p><code>Because large backlogs of jobs in the Zencoder queue can affect performance, this is best used for only small batches at a time (probably a thousand jobs, or 5000 outputs, whichever is lower). Using it in a spread-out manner rather than batches is even better.</code></p>
+<p>Due to this, a separate feature was implemented by James via the per-publisher configuration supported in ingest-api.
+It lets us override the use of low_priority on Zencoder jobs, so it is always on or off for a customer.  The original
+use for this feature is to allow us to set specific accounts to always have low_priority set to true (like for trial
+accounts), but it could be used here if there is trouble when we always set Zencoder low_priority to true when
+ingest priority is set to low.  Using this per-account setting to override the low_priority flag on Zencoder would
+let us decouple the two features, if needed.</p>
+<h1>What Priority Queueing IS and IS NOT</h1>
+<h2>IS</h2>
+<ol>
+<li>A way publishers can give us a hint about how quickly they want a job started.</li>
+<li>A way to better handle large amounts of ingest without the publisher having to monitor our capacity limits and send
+us new work when capacity opens up.</li>
+<li>A way to allow publishers to send us large amounts of jobs without rejection (connected to the previous one.)</li>
+<li>A tool to use a priority hint from customers to lower costs within Zencoder</li>
+</ol>
+<h2>IS NOT</h2>
+<ol>
+<li>This does NOT cause any job to be processed faster than it does today.  Period.</li>
+<li>You can not say "I want to run this job next", and guarantee it will happen.</li>
+</ol>
+<h1>How it works and what has changed</h1>
+<p>Within Ingestion, the vast majority of the changes are in the Job Processor.  This is because if there are no queued
+jobs then any job (low or normal priority) is started immediately, like before this feature.  The only change is due
+to setting <code>low_priorite=true</code> on the Zencoder job.  If there are queued jobs, then things change (as described above
+in the "How Priority Queueing effects Ingestion" section.)  Basically, normal priority work is always send to SWF for
+processing before low priority work.</p>
+<h2>How priority works (And why it is a number in Dynamo)</h2>
+<p>The entire logic for picking the next available job in the queue is done automatically by Dynamo.  Neat trick, huh?  There
+is an index called "account-id-priority-created-at-index" on the table that uses account_id for the primary key
+and priority_created_at as the sort key.  How this works depends on the fact that the priority_created_at field is
+sorted alphabetically (it is a String) along with depending on what the data in that field looks like.  The data is
+in the format <code>&lt;2 digit number for priority&gt;,</code>.  For example
+<code>01,2017-02-28T15:05:28.932024942Z</code>.  This puts the priority in front (i.e. most important to string sorting), ahead of
+when it was queued.</p>
+<p>The code within ingest-api guarantees that priority low is converted into a two digit number that is HIGHER than the
+two digit number normal priority is converted to.  So normal priority jobs are sorted BEFORE low priority jobs.  So we
+just ask for the "smallest" in sort order and we automatically have the oldest message of normal priority, or (if
+there are no normal priority) the oldest low priority job.</p>
+<p>Since only Dynamo knows/cares about this, the translation of string-to-number and number-to-string is done in
+queued_job_store.go and doesn't leak outside of that code.</p>
+<p>Note that this implementation, how ever fast and kinda slick, limits us.  For example, without creating new indexes it
+would be hard to implement a system of more than 2 priorities and slowly "age" jobs up in priority.  But for how we use
+it now, this system works VERY well.  Dynamo is VERY fast at picking rows via this index, even when there are
+hundreds of thousands of queued jobs.</p>
+<h2>Quotas</h2>
+<p>There are now several new quotas in Goaltender, and some existing quotas have changed their meaning slightly.</p>
+<ol>
+<li>"JobsInFlight" is a<strong>quota</strong>that applies to all jobs regardless of priority.  It has a quota maximum just like before
+so if there are too many "jobs in flight" for a given publisher (independent of priority), then a job will be queued.</li>
+<li>"JobsInFlightLow" is a<strong>counter</strong>that lets us know how many low priority jobs are in flight.  Note that there is NO
+maximum amount of low priority jobs in flight.  Low priority jobs are lumped into the number of jobs for the JobsInFlight
+quota.  JobsInFlightLow is there to help us with customer support related issues if someone calls and asks us why their
+jobs are not being processed in a timely manor.</li>
+<li>"JobsInQueue" is a<strong>quota</strong>that applies to how many normal priority jobs are in the queue.  It has a maximum value, and
+if we exceed this the job will be rejected with a 409 error (I believe.)</li>
+<li>"JobsInQueueLow" is a<strong>quota</strong>that applies to how many low priority jobs are in the queue.  It has a maximum value, but
+that value will (at least initially) be set so high that we don't expect any customer will hit it (probably 100,000).  If
+they did hit it we would reject the request with a 409 error (I believe.)  This was done so we can throttle the number
+of low priority jobs if we find there are problems with supporting so many low priority jobs.</li>
+</ol>
+<h2>The Job Queue</h2>
+<p>Leveraging the Job Fairness functionality already in Dynamic Delivery, jobs are queued in a dynamo table.  The base name of the
+table is "IngestQueuedJobsTable" with extra info added to the table name by our tools that manage table
+creation/modification.  The table has these fields:</p>
+<ol>
+<li>"account_id" - obvious.</li>
+<li>"created_at" - Kinda obvious, when the row in dynamo was created.</li>
+<li>"input" - a serialized string in JSON of data related to the job.  This can get BIG.</li>
+<li>"job_id" - obvious.</li>
+<li>"priority" - a string that holds a numeric value representing the priority.  Why this is a number is described below.</li>
+<li>"priority_created_at" - A string that holds the concatenation of the priority and created_at fields.  The reasoning
+for this is described below.</li>
+<li>"version" - The string 1.0.  I assume added to support changes to the table data/fields.  Currently always 1.0</li>
+<li>"workflow_tags" - An array of the tags put on the workflow when the job is run.</li>
+<li>"workflow_type" - A string that identifies the workflow that will be run in SWF for this job.</li>
+</ol>
+<h2>Billing differences</h2>
+<p>In version 1.0 of Priority Queueing, there will be no difference in billing between normal and low priority.  But there
+is an idea that we could charge less for low priority jobs.  To that end, we pass in the priority flag
+(low or normal) into zencoder so they have the data they would need to effect billing.  The theory is that if we set
+the low_priority=true flag in Zencoder, it will cost us less to process that video.  This would save us money and we
+could pass a bit of that savings on to our customers (thereby encouraging them to use the feature.)</p>
+<h1>Insight into priority queueing</h1>
+<h2>Jackie Pages improvements.</h2>
+<p>We have a list of ideas of how this information will be displayed.  This includes:</p>
+<ol>
+<li>What priority a job was at (available in the CMS API)</li>
+<li>When it was submitted (available in the CMS API)</li>
+<li>What the priority is within the SWF context</li>
+<li>What the low_priority flag is set to is within the SWF context</li>
+<li>How many jobs are in the queue, with the ability to drill down and see how many at each priority if you choose.</li>
+</ol>
+<h1>Limitations</h1>
+<h2>Links with Expiration Dates</h2>
+<p>Links with expiration dates should NOT be used with low priority jobs.  Users should not expect that a job will start
+quickly, and could take more than 24 hours to start (if thousands of low priority long videos are submitted, for
+example.)  That means that "Source File Upload" links might not be valid by the time the job is run.</p>
+<h2>How long will processing take?</h2>
+<p>Normal priority jobs will take no longer than before.  If a customer sends only normal priority jobs, there will be no
+difference.</p>
+<p>Even removing the effect of low_priority on Zencoder processing, the impact of setting priority to low in Ingestion
+is very situational, and could be large.  If you have a large backlog of low priority jobs combined with a steady
+rate of normal jobs being submitted, the low priority jobs might take a VERY long time to be started.  This is
+the correct behavior from a technical standpoint, but until we see how the feature is used... we won't know what
+customers thing of this.  Low priority jobs will absolutely get processed<strong>when there is capacity and no normal
+jobs to run</strong>but we don't have complete control over when that happens.  It is the customer that sends those
+normal priority jobs, after all.</p>
+</div></div>
+</article>
