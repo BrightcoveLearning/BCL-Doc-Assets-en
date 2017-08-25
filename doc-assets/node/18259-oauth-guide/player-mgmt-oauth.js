@@ -1,8 +1,6 @@
 var BCLS = (function () {
     "use strict";
-	  var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php",
-        serviceURL = "https://players.api.brightcove.com/v2",
-        accountID = document.getElementById("accountID"),
+	  var accountID = document.getElementById("accountID"),
         account_id,
         default_account_id = '1752604059001',
         client_id = document.getElementById("client_id"),
@@ -61,6 +59,7 @@ var BCLS = (function () {
     function createRequest(type) {
         var options   = {},
             baseURL = 'https://players.api.brightcove.com/v2/accounts/',
+            proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php",
             endpoint,
             responseDecoded,
             i,
@@ -69,8 +68,8 @@ var BCLS = (function () {
             txt;
 
         // set credentials
-        options.client_id     = client_id.value;
-        options.client_secret = client_secret.value;
+        options.clientID     = client_id.value;
+        options.clientSecret = client_secret.value;
         account_id = (isDefined(accountID.value)) ? accountID.value : default_account_id;
         player_id = (isDefined(playerID.value)) ? playerID.value : default_player_id;
 
@@ -159,6 +158,7 @@ console.log('response', response);
         // open the request
         httpRequest.open('POST', proxyURL);
         // set headers
+console.log('requestParams', requestParams);
         httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         // open and send request
         httpRequest.send(requestParams);
