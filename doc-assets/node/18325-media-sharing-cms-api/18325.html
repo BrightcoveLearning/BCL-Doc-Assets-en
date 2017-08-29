@@ -84,7 +84,7 @@
     <p>Changes to images by the Master are inherited by the Affiliate <strong>unless the Affiliate has replaced the image(s)</strong>. Once an Affiliate changes an image, that image will no longer be inherited from the Master.</p>
     <h4>Video metadata</h4>
     <p>Any video metadata (such as the name, description, and reference id) can be modified by the Affiliate, and changes made on the Master video are <strong>not</strong> inherited by the Affiliate.</p>
-    <h5>Resharing videos</h5>
+    <h5 id="Resharing_videos">Resharing videos</h5>
     <p>Note, however, that if the Master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to Affiliates, <strong>overwriting any changes the Affiliates have made</strong>.</p>
     <aside class="bcls-aside bcls-aside--information">Note that there are two ways to re-share, that have different consequences:
 <dl>
@@ -105,7 +105,7 @@
         <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18325-media-sharing-cms-api/18325-admin-flow-v2.svg" alt="Set Up Sharing">
         <figcaption class="bcls-caption--image">Set Up Sharing</figcaption>
     </figure> -->
-    <p>Below is a summary of the operations for setting up a relationship:</p>
+    <p>Below is a summary of the operations for setting up a relationship (click on the operation name for more details):</p>
     <table class="bcls-table">
         <caption class="bcls-caption--table">Setup Operations</caption>
         <thead class="bcls-table__head">
@@ -178,29 +178,33 @@
             </tr>
             <tr>
                 <td><a href="#Accept_contract">List contracts for a specific account</a></td>
-                <td>GET <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code>/<span class="bcls-input">master_account_id</span></td>
-                <td>Gets a contract, if any, from a specific account</td>
+                <td>PATCH <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code>/<span class="bcls-input">master_account_id</span></td>
+                <td>Accept a contract and, optionally, turn on auto-accept for shared videos</td>
             </tr>
         </tbody>
     </table>
     <h3>Sharing videos</h3>
-    <p>And here are the operations that can be performed once a relationship is set up:</p>
+    <p>All video sharing operations are performed by the Master account. The Affiliate account can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</p>
+    <p>AHere are the sharing operations that can be performed once a relationship is set up (click on an operation name for more details):</p>
     <table class="bcls-table">
         <caption class="bcls-caption--table">Sharing Operations</caption>
         <thead class="bcls-table__head">
             <tr>
-                <th>Table Header</th>
-                <th>Table Header</th>
+                <th>Operation</th>
+                <th>Method/Endpoint</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody class="bcls-table__body">
             <tr>
-                <td>Table cell</td>
-                <td>Table cell</td>
+                <td><a href="#List_shares">List existing shares</a></td>
+                <td>GET <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
+                <td>Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="Resharing_videos">re-sharing a video</a> when it has already be shared</td>
             </tr>
             <tr>
-                <td>Table cell</td>
-                <td>Table cell</td>
+                <td><a href="#Share_video">Share video</a></td>
+                <td>POST <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
+                <td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a></td>
             </tr>
         </tbody>
     </table>
@@ -565,12 +569,12 @@
 </section>
 <section class="bcls-section">
     <h2 id="cms_operations_sharing">CMS API requests - sharing</h2>
-    <p>This section details the CMS API requests used in sharing videos.</p>
-    <h3>Getting existing shares</h3>
+    <p>This section details the CMS API requests used in sharing videos. All sharing operations are performed by the Master account.</p>
+    <h3 id="List_shares">List existing shares</h3>
     <p>To find out if a video has already been shared to other accounts, you can use the request below.</p>
     <aside class="bcls-aside bcls-aside--information">This is important, because sharing a video to an account that you have already shared it to is a <strong>reshare</strong> that will overwrite any metadata changes that the Affiliate has made!</aside>
     <table class="bcls-table">
-        <caption class="bcls-caption--table">Get Shares</caption>
+        <caption class="bcls-caption--table">List Shares</caption>
         <tbody class="bcls-table__body">
             <tr>
                 <th>Method</th>
@@ -611,7 +615,7 @@
         </tbody>
     </table>
 
-    <h3>Sharing (or resharing) a video</h3>
+    <h3 id="Share_video">Sharing (or resharing) a video</h3>
     <p>The request described below will share a video to one or more Affiliate accounts.</p>
     <aside class="bcls-aside bcls-aside--information">Remember that if the video has already been shared to an Affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the Affiliate has made to the video metadata!</aside>
     <table class="bcls-table">
