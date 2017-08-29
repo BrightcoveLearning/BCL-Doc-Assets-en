@@ -52,7 +52,21 @@
 	</tbody>
 </table>
 </section>
+<section class="bcls-section">
+    <h2 id="base_URL">Base URL</h2>
+    <p>As for all CMS API requests, the base URL for the operations discussed below is:</p>
+<pre><code class="language-http">https://cms.api.brightcove.com/v1</code></pre>
+<p>All endpoints discussed below will be appended to the base URL when you make requests.</p>
+</section>
+<section class="bcls-section">
+    <h2 id="authentication">Authentication</h2>
+    <p>Authentication for requests requires an Authorization header:</p>
 
+    <pre class="line-numbers">
+    <code class="language-http">Authorization: Bearer {access_token}</code></pre>
+
+    <p>The <code>access_token</code> is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
+</section>
 <section class="bcls-section">
     <h2 id="what_is_shared">What is shared?</h2>
     <p>This section explains what gets shared, and how subsequent changes to the video are handled.</p>
@@ -71,20 +85,49 @@
     <p>Changes to images by the Master are inherited by the Affiliate <strong>unless the Affiliate has replaced the image(s)</strong>. Once an Affiliate changes an image, that image will no longer be inherited from the Master.</p>
     <h4>Video metadata</h4>
     <p>Any video metadata (such as the name, description, and reference id) can be modified by the Affiliate, and changes made on the Master video are <strong>not</strong> inherited by the Affiliate.</p>
+    <h5>Resharing videos</h5>
     <p>Note, however, that if the Master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to Affiliates, <strong>overwriting any changes the Affiliates have made</strong>.</p>
+    <aside class="bcls-aside bcls-aside--information">Note that there are two ways to re-share, that have different consequences:
+<dl>
+    <dt>Master <em>un-shares</em> and then <em>re-shares</em> the video</dt>
+    <dd>In this case, the video shared earlier will be deleted from all Affiliate accounts on the un-share. When the Master shares the video again, a <em>new</em> video with a <em>new</em> unique id will be added to each affiliate account, bringing metadata and assets from the Master account as on the original share.</dd>
+    <dt></dt>
+    <dd></dd>
+</dl>
+    </aside>
     <aside class="bcls-aside bcls-aside--warning">Before you re-share a video, be sure that this is what you want to do, and that your Affiliates know that it is going to happen!</aside>
 
 </section>
 
 <section class="bcls-section">
     <h2 id="overview_media_sharing_steps">Overview of media sharing steps</h2>
-
+    <h3>Setting up a relationshipt</h3>
     <p>Here is the logical flow for setting up a sharing relationship:</p>
     <figure class="bcls-figure">
         <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18325-media-sharing-cms-api/18325-admin-flow-v2.svg" alt="Set Up Sharing">
         <figcaption class="bcls-caption--image">Set Up Sharing</figcaption>
     </figure>
     <p>Below is summary of the operations for setting up a relationship:</p>
+    <table class="bcls-table">
+        <caption class="bcls-caption--table">Setup Operations</caption>
+        <thead class="bcls-table__head">
+            <tr>
+                <th>Table Header</th>
+                <th>Table Header</th>
+            </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+            <tr>
+                <td>Table cell</td>
+                <td>Table cell</td>
+            </tr>
+            <tr>
+                <td>Table cell</td>
+                <td>Table cell</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Sharing videos</h3>
     <p>And here are the operations that can be performed once a relationship is set up:</p>
     <table class="bcls-table">
         <caption class="bcls-caption--table">Sharing Operations</caption>
@@ -110,6 +153,7 @@
 <section class="bcls-section">
 <h2 id="CMS_API_operations">CMS API requests - setup</h2>
 <p>This section lists the CMS API operations involved in setting up media sharing.</p>
+<h3>Master operations</h3>
 <h3>List channel(s) (Master)</h3>
 <table class="bcls-table">
     <caption class="bcls-caption--table">List Channels</caption>
@@ -266,6 +310,7 @@
         </tr>
     </tbody>
 </table>
+<h3>Affiliate operations</h3>
 <h3>Get available contracts (affiliate)</h3>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Get Contracts</caption>
