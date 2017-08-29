@@ -10,7 +10,7 @@
 <section class="bcls-section">
 <h2 id="Terminology">Terminology</h2>
 
-<p>In media sharing, there are two accounts involved:</p>
+<p>In media sharing, there is a relationship between a Master account (that shares videos) and one or more affiliate accounts (that receive shared videos) involved:</p>
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Media Sharing Accounts</caption>
@@ -44,6 +44,11 @@
             <td>Describes the interaction between a Master and an Affiliate. <p>A relationship is comprised of a Master to share content, a Channel through which content is shared, a Contract for accepting content, and an Affiliate to receive content.</p>
             </td>
         </tr>
+        <tr>
+            <td>Contract</td>
+            <td>Describes sharing relationship between a Master and an Affiliate. <p>A contract is created by the Master, and then must be accepted for sharing to be enabled. The Affiliate can also specify whether shared videos are accepted automatically or must be approved one by one.</p>
+            </td>
+        </tr>
 	</tbody>
 </table>
 </section>
@@ -52,20 +57,21 @@
     <h2 id="what_is_shared">What is shared?</h2>
     <p>This section explains what gets shared, and how subsequent changes to the video are handled.</p>
     <h3>When the video is shared</h3>
-    <p>Most of the video metadata fields are copied from the master to the affiliate account when the video is shared. The notable exceptions are:</p>
+    <p>Most of the video metadata fields are copied from the Master to the affiliate account when the video is shared. The notable exceptions are:</p>
     <ul>
-        <li><code>id</code> - the video will have its own id in the affiliate account</li>
-        <li>date/time fields such as <code>created_at</code> and <code>updated_at</code></li>
+        <li><code>id</code> - the video will have its own unique id in the affiliate account</li>
+        <li>date fields such as <code>created_at</code> and <code>updated_at</code></li>
     </ul>
     <p>All the video assets (renditions, images, text_tracks, etc.) are shared by reference to the affiliate account. The affiliate video will use those assets for playback.</p>
     <aside class="bcls-aside bcls-aside--information">Note that billing will still be based on the account that the video is played back from, not the account where the assets reside.</aside>
     <h3>After the video is shared</h3>
-    <p>After the video has been shared, some changes to the video in the master account are automatically inherited by the affiliate accounts, and some are not.</p>
+    <p>After the video has been shared, some changes to the video in the Master account are automatically inherited by the affiliate accounts, and some are not.</p>
     <h4>Video assets</h4>
-    <p>Master changes to the video assets are <strong>always</strong> inherited by affiliates. Affiliates cannot change assets such as renditions, manifests, images, text tracks, or the digital master.</p>
+    <p><strong>Except for images</strong>, Master changes to the video assets are <strong>always</strong> inherited by affiliates. Affiliates cannot change assets such as renditions, manifests, text tracks, or the digital master.</p>
+    <p>Changes to images by the Master are inherited by the Affiliate <strong>unless the Affiliate has replaced the image(s)</strong>. Once an Affiliate changes an image, that image will no longer be inherited from the Master.</p>
     <h4>Video metadata</h4>
-    <p>Any video metadata (such as the name, description, and reference id) can be modified by the affiliate, and changes made on the master video are <strong>not</strong> inherited by the affiliate.</p>
-    <p>Note, however, that if the master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to affiliates, <strong>overwriting any changes the affiliates have made</strong>.</p>
+    <p>Any video metadata (such as the name, description, and reference id) can be modified by the affiliate, and changes made on the Master video are <strong>not</strong> inherited by the affiliate.</p>
+    <p>Note, however, that if the Master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to affiliates, <strong>overwriting any changes the affiliates have made</strong>.</p>
     <aside class="bcls-aside bcls-aside--warning">Before you re-share a video, be sure that this is what you want to do, and that your affiliates know that it is going to happen!</aside>
 
 </section>
@@ -89,7 +95,7 @@
 <section class="bcls-section">
 <h2 id="CMS_API_operations">CMS API requests - setup</h2>
 <p>This section lists the CMS API operations involved in setting up media sharing.</p>
-<h3>List channel(s) (master)</h3>
+<h3>List channel(s) (Master)</h3>
 <table class="bcls-table">
     <caption class="bcls-caption--table">List Channels</caption>
     <tbody class="bcls-table__body">
