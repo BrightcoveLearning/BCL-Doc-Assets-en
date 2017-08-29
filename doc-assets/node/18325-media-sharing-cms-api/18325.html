@@ -202,9 +202,14 @@
                 <td>Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="Resharing_videos">re-sharing a video</a> when it has already be shared</td>
             </tr>
             <tr>
-                <td><a href="#Share_video">Share video</a></td>
+                <td><a href="#Share_video">Share a video</a></td>
                 <td>POST <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
-                <td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a></td>
+                <td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a> - that is probably <strong>not</strong> what you want to do</td>
+            </tr>
+            <tr>
+                <td><a href="#Unshare_video">Un-share a video</a></td>
+                <td>DELETE <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares/<span class="bcls-input">affiliate_account_id</span></code></td>
+                <td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a> - that is probably <strong>not</strong> what you want to do</td>
             </tr>
         </tbody>
     </table>
@@ -657,10 +662,16 @@
     </table>
     <p>Sharing will create a new video in the Affiliate's account. The <code>state</code> of the video will be <code>PROCESSING</code> until the share is complete <strong>and</strong> the video has been accepted by the Affiliate (if <code>auto_accept</code> is set to <code>false</code> on the contract by the Affiliate - see the previous section on setting up sharing).</p>
     <aside class="bcls-aside bcls-aside--warning">
-        <p>Note that if the <code>reference_id</code> for the Master video is already in use in the Affiliate account, the share will fail. The Master and Affiliate will need to resolve the issue by changing the <code>reference_id</code> in one of the accounts and then retry the share.</p>
-        <p>Because sharing is an asynchronous operation, no error will be returned on the share requests. However, the GET shares request (see above) will show an error for the account.</p>
+        <p>Important notes:</p>
+        <ul>
+            <li>This operation will re-share a video if it has already been shared with the affiliate(s) - be sure to read <a href="#Resharing_videos">Resharing Videos</a> before you do that!</li>
+            <li>
+                <p>If the <code>reference_id</code> for the Master video is already in use in the Affiliate account, the share will fail. The Master and Affiliate will need to resolve the issue by changing the <code>reference_id</code> in one of the accounts and then retry the share.</p>
+                <p>Because sharing is an asynchronous operation, no error will be returned on the share requests. However, the GET shares request (see above) will show an error for the account.</p>
+            </li>
+        </ul>
     </aside>
-    <h3>Unsharing a video</h3>
+    <h3 id="Unshare_video">Unsharing a video</h3>
     <table class="bcls-table">
     <caption class="bcls-caption--table">Unshare Video</caption>
     <tbody class="bcls-table__body">
