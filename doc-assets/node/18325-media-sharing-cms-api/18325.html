@@ -184,11 +184,14 @@
         </tbody>
     </table>
     <h3>Sharing videos</h3>
-    <p>All video sharing operations are performed by the Master account. The Affiliate account can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</p>
+    <p>Video sharing operations are performed by the Master account. The Affiliate account can accept the share (if <code>auto_accept</code> is set to <code>false</code>) and can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</p>
     <p>AHere are the sharing operations that can be performed once a relationship is set up (click on an operation name for more details):</p>
     <table class="bcls-table">
         <caption class="bcls-caption--table">Sharing Operations</caption>
         <thead class="bcls-table__head">
+            <tr>
+                <th colspan="3">Master operations</th>
+            </tr>
             <tr>
                 <th>Operation</th>
                 <th>Method/Endpoint</th>
@@ -215,6 +218,28 @@
                 <td><a href="#Unshare_video">Un-share a video for all Affiliates</a></td>
                 <td>DELETE <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
                 <td>Un-shares a video for all Affiliates - note that un-sharing and re-sharing will result in the shared video having a new video id in the Affiliate account</td>
+            </tr>
+        </tbody>
+        <thead class="bcls-table__head">
+            <tr>
+                <th colspan="3">Affiliate operations</th>
+            </tr>
+            <tr>
+                <th>Operation</th>
+                <th>Method/Endpoint</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+            <tr>
+                <td><a href="#List_shares">List existing shares</a></td>
+                <td>GET <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
+                <td>Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="Resharing_videos">re-sharing a video</a> when it has already be shared</td>
+            </tr>
+            <tr>
+                <td><a href="#Share_video">Share a video</a></td>
+                <td>POST <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
+                <td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a> - that is probably <strong>not</strong> what you want to do</td>
             </tr>
         </tbody>
     </table>
