@@ -1,0 +1,14 @@
+Live to VOD can not be set to archive the stream on completion.
+Alternatives:
+API for clipping should be used to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).
+Job settings can not be modified. They are currently tied to the settings that initially created the SEP.
+Activating the stream can take up to 60 seconds for the entrypoint to be available.
+Best practice:
+Implement notifications from the Live platform for job state changes to get real-time updates for when a SEP job is actually ready.
+Alternatives
+Activate the stream at minimum 60 seconds in advance of starting the encoder.
+If the encoder has built in retry (Wirecast, Elemental, etc.), the stream can be connected immediately (though there may be some errors) and the encoders will reconnect as soon as the entry point is available. Be cautious of the reconnect time window.
+Reconnect_time is still applicable for SEP jobs on encoder disconnects. If the reconnect time is reached, the SEP job will be placed back to a deactivated state.
+Best practice:
+The customer should always deactivate a stream via the API’s when a job completes and set the reconnect time to an acceptable window of time to wait in the event of a disconnect (input hour costs are accrued during this wait period).
+Each account will only be allocated a finite number of available SEP jobs.
