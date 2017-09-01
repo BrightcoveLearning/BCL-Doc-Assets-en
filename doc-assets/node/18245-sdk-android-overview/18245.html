@@ -39,7 +39,6 @@
 </ul>
 
 <p>Generally, Brightcove provides active support for the versions of the OS that are used by 80% of the user base, and passive support for other versions used by at least 5% of the user base. Only the latest minor revision of a version is supported.</p>
-
 <!-- <h3>Android 7 support</h3>
 
 <p>The Brightcove Native SDK for Android now supports Android 7.</p>
@@ -73,8 +72,7 @@
 			<td>6 (API 23)</td>
 		</tr>
 	</tbody>
-</table> -->
-</section>
+</table> --></section>
 
 <section class="bcls-section">
 <h2 id="Connected_TV_Set_top_boxes">Connected TV / Set top boxes</h2>
@@ -300,21 +298,54 @@
 <p id="n4"><sup>[4]</sup> For the latest Widevine release announcements and product updates, see the <a href="https://www.widevine.com/product_news.html">Widevine Product News</a> page.</p>
 </aside>
 
-<h3>Advertising</h3>
+</section>
 
-<p>Here is additional information you may find helpful when working with the Advertising plugins.</p>
+<section class="bcls-section">
+    <h2 id="Advertising">Advertising</h2>
+		<p>Here is additional information you may find helpful when working with Advertising.</p>
 
-<h4>IMA plugin</h4>
+		<h3>IMA plugin</h3>
 
-<p>The placement of VAST ads is typically specified by a VMAP document. VAST describes an ad while VMAP describes the placement of ads in a video. For code details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/BasicIMASampleApp">BasicIMASampleApp</a>.</p>
+		<p>The placement of VAST ads is typically specified by a VMAP document. VAST describes an ad while VMAP describes the placement of ads in a video. For code details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/BasicIMASampleApp">BasicIMASampleApp</a>.</p>
 
-<p>When working with IMA ads, it is best practice to check that your ads work outside of the SDK before implementing them. The following links will be helpful for this:</p>
+		<p>When working with IMA ads, it is best practice to check that your ads work outside of the SDK before implementing them. The following links will be helpful for this:</p>
 
-<ul>
-	<li><a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector">Google VAST Ad Response validator</a></li>
-	<li><a href="https://www.iab.com/guidelines/digital-video-multiple-ad-playlist-vmap-1-0-1/">Digital Video Multiple Ad Playlist (VMAP) guide</a></li>
-	<li><a href="https://groups.google.com/forum/#!forum/ima-sdk">Google IMA Technical Forum</a></li>
-</ul>
+		<ul>
+			<li><a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector">Google VAST Ad Response validator</a></li>
+			<li><a href="https://www.iab.com/guidelines/digital-video-multiple-ad-playlist-vmap-1-0-1/">Digital Video Multiple Ad Playlist (VMAP) guide</a></li>
+			<li><a href="https://groups.google.com/forum/#!forum/ima-sdk">Google IMA Technical Forum</a></li>
+		</ul>
+
+		<h3>Widevine</h3>
+		<p>
+			The following is Google Widevine DRM specific behavior and beyond the control of the Brigthcove Native SDK for Android.
+		</p>
+		<p>
+				In this scenario:
+		</p>
+		<ul>
+			<li>
+				Request a license prior to video download
+			</li>
+			<li>
+				Release the license on the client, without downloading the content, using the <code>OfflineCatalog.releaseLicense</code> method
+			</li>
+		</ul>
+		<p>
+				There will be a total of two requests made to the licensing server:
+		</p>
+		<ul>
+			<li>
+				The initial request for the license in anticipation of the download
+			</li>
+			<li>
+				A request to the server to release the license prior to clearing the license information from the host device
+			</li>
+		</ul>
+		<p>
+			Keep this in mind, since customers can be billed by Google for each license request.
+		</p>
+
 </section>
 
 <section class="bcls-section">
@@ -421,6 +452,5 @@
 <h3>Video pause</h3>
 
 <p>Android's <a href="http://www.samsung.com/in/support/skp/faq/1048380">Smart Pause</a> feature on Samsung devices will pause a video when the user looks away from the device screen. You can disable this feature if you do not want videos to pause on Smart Pause-enabled devices.</p>
-<br />
 </section>
 </article>
