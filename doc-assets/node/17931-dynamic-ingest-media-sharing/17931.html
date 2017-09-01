@@ -7,10 +7,9 @@
 <ol>
 	<li><a href="#Create_video">Create video</a></li>
 	<li><a href="#Create_the_ingest_request">Create the ingest request</a></li>
-	<li><a href="#Share_video_with_Media_API">Share video with Media API</a></li>
+	<li><a href="#Share_video_with_CMS_API">Share video with CMS API</a></li>
 </ol>
 
-<p class="BCL-aside">Note: eventually management of media sharing will be added to the <a href="/node/18034">CMS API</a>. The solution offered here is a temporary workaround until that work is completed. Once media sharing management is added to the CMS API, you should update any apps using the Media API for this purpose to use the CMS API instead.</p>
 </section>
 
 <section class="bcls-section" id="Create_video">
@@ -48,22 +47,34 @@
   --data '{"master": {"url": "http://example.com/video.mp4"}}'</code></pre>
 </section>
 
-<section class="bcls-section" id="Share_video_with_Media_API">
-<h2>Share video with Media API</h2>
+<section class="bcls-section" id="Share_video_with_CMS_API">
+<h2>Share video with CMS API</h2>
 
 <p>Once the video has been ingested, you can share it to another account using the <a href="//docs.brightcove.com/en/video-cloud/media/samples/share_video.html">CMS API</a>.</p>
 <p>Note that before you can share a video with another account, you must first set up the sharing relationship - see <a href="/node/18325">Media Sharing with the CMS API</a> for more details.</p>
     <p>Here is a curl example of the request:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl --request POST
-  --url https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/video/<span class="bcls-input">VIDEO_ID</span>/shares
-  --header 'content-type: application/x-www-form-urlencoded'
-  --data '[{"id": "<span class="bcls-input">ACCOUNT_ID_TO_SHARE_TO</span>"}]'</code></pre>
+<code class="language-bash">curl --request POST \
+--url 'https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/<span class="bcls-input">VIDEO_ID</span>/shares?=' \
+--header 'authorization: Bearer <span class="bcls-input">ACCESS_TOKEN</span>' \
+--header 'content-type: application/json' \
+--data '[
+  {
+    "id":"1752604059001"
+  }
+]'</code></pre>
 
 <p>The response includes the id of the new video in the sharee account:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{"result": [123456789001], "error": null, "id": null}</code></pre>
+<code class="language-json">[ {
+  "video_id" : "5555086013001",
+  "affiliate_id" : "1752604059001",
+  "affiliate_video_id" : null,
+  "status" : "PROCESSING",
+  "shared_at" : "2017-09-01T12:04:39.911Z",
+  "updated_at" : "2017-09-01T12:04:39.911Z"
+} ]</code></pre>
 </section>
 </article>
