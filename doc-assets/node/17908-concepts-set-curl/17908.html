@@ -30,10 +30,13 @@
 <section class="bcls-section">
 <h2 id="sendData">Sending Data</h2>
 
-<p>If you need to send data with the API request (as in a POST or PATCH request, for example), there are several ways to do it. If you need to submit the data as a form field, use the --form (or -F) flag, and then include the data inline or in a separate file. Here is a Media API example:</p>
+<p>If you need to send data with the API request (as in a POST or PATCH request, for example), there are several ways to do it. You can include the data inline or in a separate file. Here is a Player Management API example submitting the data as a separate JSON file:</p>
 
-<pre class="line-numbers">
-<code class="language-bash">$ curl -F json=&lt;afl.json https://api.brightcove.com/services/post</code></pre>
+<pre class="line-numbers"><code class="language-bash">curl --request POST \
+  --url https://players.api.brightcove.com/v1/accounts/57838016001/players \
+  --header 'authorization: Bearer <span class="bcls-input">YOUR_ACCESS_TOKEN_HERE</span>' \
+  --header 'content-type: application/json' \
+  <span class="bcls-highlight">--data <strong>@</strong>player_data/player_config.json</span> </code></pre>
 
 <aside class="bcls-aside bcls-aside--warning">Attach the file as <code>json=&lt;afl.json</code>, <strong>not</strong> <code>json=@afl.json</code> - the "@" attaches the file as an upload, while the "&lt;" just sends the file contents.</aside>
 </section>
