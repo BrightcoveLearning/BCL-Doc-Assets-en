@@ -5,6 +5,52 @@
     </section>
     <section class="bcls-section">
         <h2 id="Requesting_notifications">Requesting notifications</h2>
-        <p></p>
+        <p>You can request notifications by including one or more <code>notifications</code> fields in the outputs your <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request. </p>
+        <p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post", "credentials": "refToMyCreds"}". A notification will be sent to all destinations when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+        <p>Here is an example</p>
+<pre class="line-numbers"><code class="language-json">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 20,
+    <span class="bcls-highlight">"notifications": [
+        http://httpbin.org/post?liveStateChange",
+        {
+            "url": "http://httpbin.org/post?liveStarted",
+            "event": "first_segment_uploaded"
+        },
+        {
+            "url": "http://httpbin.org/post?liveFinished",
+            "event": "output_finished"
+        }]</span>,
+    "outputs": [
+    {
+        "label": "hls720p",
+        "live_stream": true,
+        "height": 720,
+        "video_bitrate": 2000,
+        "segment_seconds": 6,
+        "video_codec": "h264",
+        "h264_profile": "high",
+        "segment_seconds": 6
+    },
+    {
+        "label": "hls360p",
+        "live_stream": true,
+        "height": 360,
+        "video_bitrate": 650,
+        "segment_seconds": 6
+    },
+    {
+        "url":"s3://YOURBUCKET/path/filename.mp4",
+        "credentials": "accConfiguredCredsAWSIdSecret",
+        <span class="bcls-highlight">"notifications":    [{
+            "url": "http://httpbin.org/post?vodStateChange"
+        },
+        {
+            "url": "http://httpbin.org/post?vodFinished",
+            "event": "output_finished"
+        }]</span>
+    }]
+}</code></pre>
     </section>
 </article>
