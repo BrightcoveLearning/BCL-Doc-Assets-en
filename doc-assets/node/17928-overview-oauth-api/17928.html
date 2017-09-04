@@ -78,7 +78,31 @@
 
 	<p>Below is a very basic Node.js app that will get an <code>access_token</code> given a valid <code>client_id</code> and <code>client_secret</code>.</p>
 
-	<pre data-src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/oauth-api/getting-started/api-overview/node-app-for-access-token.js" class="line-numbers">
+<pre class="line-numbers"><code class="language-javascript">/*
+ * Simple node app to get an access_token for a Brightcove API
+ * You will need to substitute valid client_id and client_secret values
+ * for {your_client_id} and {your_client_secret}
+ */
+var request = require('request');
+var client_id = "{your_client_id}";
+var client_secret = "{your_client_secret}";
+var auth_string = new Buffer(client_id + ":" + client_secret).toString('base64');
+console.log(auth_string);
+request({
+	method: 'POST',
+	url: 'https://oauth.brightcove.com/v4/access_token',
+	headers: {
+		'Authorization': 'Basic ' + auth_string,
+		'Content-Type': 'application/x-www-form-urlencoded'
+	},
+	body: 'grant_type=client_credentials'
+}, function (error, response, body) {
+	console.log('Status: ', response.statusCode);
+	console.log('Headers: ', JSON.stringify(response.headers));
+	console.log('Response: ', body);
+	console.log('Error: ', error);
+});
+</code></pre>
 
 &nbsp;</pre>
 	</li>
