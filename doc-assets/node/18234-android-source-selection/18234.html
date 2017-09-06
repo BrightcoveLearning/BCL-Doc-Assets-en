@@ -3,8 +3,8 @@
 <p>When you retrieve videos from the Brightcove catalog, the SDK has to decide which source to play. This is implemented in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> components.</p>
 </section>
 
-<section class="bcls-section" id="Default_selection_process">
-<h2>Default selection process</h2>
+<section class="bcls-section">
+<h2 id="Default_selection_process">Default selection process</h2>
 
 <p>The Brightcove Player SDK for Android provides a default implementation as follows. To simplify this discussion, we will focus on the SDK’s support for the Brightcove Playback API and Google’s ExoPlayer.</p>
 
@@ -26,8 +26,52 @@
 <p>When using the default transcode settings, the first HLS source should be the master m3u8 playlist that points to all of your individual sources (renditions).</p>
 </section>
 
-<section class="bcls-section" id="Customizing_source_selection">
-<h2>Customizing source selection</h2>
+<section class="bcls-section">
+<h2 id="Setting_HTTPS_sources">Setting HTTPS sources</h2>
+
+<p>You may prefer secure network communication for your video sources. To do this, you can filter your source results to use HTTPS.</p>
+
+<p>This example uses only HTTPS sources:</p>
+
+<pre class="line-numbers">
+<code class="language-java">eventEmitter.on(EventType.SELECT_SOURCE, new EventListener() {
+    @Override
+    public void processEvent(Event event) {
+
+        event.preventDefault();
+        Video video = (Video) event.properties.get(&quot;video&quot;);
+
+        Source newSource = null;
+
+        Map&lt;DeliveryType, SourceCollection&gt; map = video.getSourceCollections();
+        for (Map.Entry&lt;DeliveryType, SourceCollection&gt; entry : map.entrySet())
+        {
+            if(entry.getKey().toString().equals(&quot;application/vnd.apple.mpegurl&quot;)) {
+               if(entry.getKey().toString().equals(DeliveryType.HLS) ||
+                  entry.getKey().toString().equals(DeliveryType.MP4)) {
+
+	                SourceCollection sc = (SourceCollection)entry.getValue();
+	                Set&lt;Source&gt; set = sc.getSources();
+	                for(Source src : set) {
+	                    String url = src.getUrl();
+	                       if(url.startsWith(&quot;https://&quot;)) {
+	                        newSource = src;
+	                        break;
+	                    }
+                }
+            }
+        }
+
+       event.properties.put(Event.SOURCE, newSource);
+       eventEmitter.respond(event);
+    }
+});
+</code></pre>
+<aside class="bcls-aside bcls-aside--tip">This example will set the source to whatever is listed first in your source <code>Set</code>. If you have both HLS and MP4 renditions in the <code>Set</code>, you may want to filter your result a bit further to set the type you want to use.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Setting_HLS_sources">Setting HLS sources</h2>
 
 <p>It is possible to customize source selection at the app level, to filter out any undesired delivery types before the SDK’s default source selection policy is invoked. To do this, you would modify the source collections that are set into the Video object from the Playback API’s JSON response.</p>
 
