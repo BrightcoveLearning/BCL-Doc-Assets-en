@@ -264,8 +264,10 @@
     &lt;pre class="line-numbers"&gt;&lt;code class="language-json" id="results"&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/fieldset&gt;</code></pre>
 
-    <h3>JavaScript</h3>
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (window, document) {
+<h3>JavaScript</h3>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (window, document) {
     // account info
     var useMyAccount       = document.getElementById('useMyAccount'),
         basicInfo          = document.getElementById('basicInfo'),
@@ -342,7 +344,7 @@
 
 
     get_videos.addEventListener('click', function() {
-        if (account.value && cid.value && secret.value) {
+        if (account.value &amp;&amp; cid.value &amp;&amp; secret.value) {
             account_id    = account.value;
             client_id     = cid.value;
             client_secret = secret.value;
@@ -402,7 +404,7 @@ console.log('account_id', account_id);
 
         switch (type) {
             case 'getVideos':
-                endpoint = '/videos?q=playable:true&limit=20&sort=-updated_at';
+                endpoint = '/videos?q=playable:true&amp;limit=20&amp;sort=-updated_at';
                 options.url = cmsBaseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest(options, function(response) {
@@ -411,12 +413,12 @@ console.log('account_id', account_id);
                     if (Array.isArray(responseDecoded)) {
                         // remove existing options
                         iMax = video.length;
-                        for (i = 0; i < iMax; i++) {
+                        for (i = 0; i &lt; iMax; i++) {
                             video.remove(i);
                         }
                         // add new options
                         iMax = responseDecoded.length;
-                        for (i = 0; i < iMax; i++) {
+                        for (i = 0; i &lt; iMax; i++) {
                             el = document.createElement('option');
                             el.setAttribute('value', responseDecoded[i].id);
                             if (i === 0) {
@@ -469,7 +471,7 @@ console.log('account_id', account_id);
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                             response = httpRequest.responseText;
                             // some API requests return '{null}' for empty responses - breaks JSON.parse
                             if (response === '{null}') {
@@ -494,14 +496,14 @@ console.log('account_id', account_id);
          * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
          * requestData - request body for write requests (optional JSON string)
          */
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        if (options.client_id &amp;&amp; options.client_secret) {
+            requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
         }
         // add request data if any
         if (options.requestBody) {
-            requestParams += '&requestBody=' + options.requestBody;
+            requestParams += '&amp;requestBody=' + options.requestBody;
         }
         // set response handler
         httpRequest.onreadystatechange = getResponse;
@@ -526,6 +528,7 @@ console.log('account_id', account_id);
 
 })(window, document);
 </code></pre>
+
 <h3>Proxy</h3>
 
 <aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
