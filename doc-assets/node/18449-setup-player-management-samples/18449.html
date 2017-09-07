@@ -121,7 +121,7 @@ function createRequest(type) {
                     // now do whatever you want with the response
                 }
                 catch (e) {
-                    console.log('something went wrong - this was the JSON.parse error: ' + e)''
+                    console.log('something went wrong - this was the JSON.parse error: ' + e);
                 }
             });
             break;
@@ -137,10 +137,9 @@ function createRequest(type) {
  * @param  {Object} options for the request
  * @param  {String} options.url the full API request URL
  * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
- * @param  {String} options.proxyURL proxyURL to send the request to
- * @param  {String} options.client_id client id for the account (default is in the proxy)
- * @param  {String} options.client_secret client secret for the account (default is in the proxy)
- * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+ * @param  {String} options.username username for the account
+ * @param  {String} options.password password for the account
+ * @param  {JSON} [options.requestBody] Data (if any) to be sent in the request body in the form of a JSON string
  * @param  {Function} [callback] callback function that will process the response
  */
 function makeRequest(options, callback) {
@@ -148,18 +147,15 @@ function makeRequest(options, callback) {
         response,
         requestParams,
         dataString,
-        proxyURL    = options.proxyURL,
         // response handler
         getResponse = function() {
             try {
                 if (httpRequest.readyState === 4) {
+                    // don't just check for staus = 200
+                    // some requests return other 2xx codes
                     if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         response = httpRequest.responseText;
-                        // some API requests return '{null}' for empty responses - breaks JSON.parse
-                        if (response === '{null}') {
-                            response = null;
-                        }
-                        // return the response
+                        // return the response to the callback
                         callback(response);
                     } else {
                         alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -171,32 +167,20 @@ function makeRequest(options, callback) {
         };
     /**
      * set up request data
-     * the proxy used here takes the following params:
-     * url - the full API request (required)
-     * requestType - the HTTP request type (default: GET)
-     * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * requestBody - request body for write requests (optional JSON string)
      */
-    requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-    // only add client id and secret if both were submitted
-    if (options.client_id && options.client_secret) {
-        requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-    }
-    // add request data if any
-    if (options.requestBody) {
-        requestParams += '&requestBody=' + options.requestBody;
-    }
-    console.log('requestParams', requestParams);
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
-    httpRequest.open('POST', proxyURL);
+    httpRequest.open(options.requestType, options.url);
     // set headers
-    httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpRequest.setRequestHeader("Content-Type", "application/json");
+    httpRequest.setRequestHeader("Authorization", "Basic " + btoa(options.username + ":" + options.password));
     // open and send request
-    httpRequest.send(requestParams);
-}
-</code></pre>
+    if (options.requestBody) {
+        httpRequest.send(options.requestBody)
+    } else {
+        httpRequest.send();
+    }
+}</code></pre>
     </section>
 </article>
