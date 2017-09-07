@@ -66,25 +66,29 @@
         <!-- <code data-gist-id="9216425" data-gist-hide-footer="true" data-gist-line="22-47"></code><br /> -->
       <aside class="bcls-aside bcls-aside--information">Separate calls are built if data needs to be passed with the API call. In the Quick Start to Player Management you have seen both use cases. Publishing a player does not require any data to be passed, whereas creating a player with a media source does require passing data.</aside>
         <p>You are then ready to call the function. In the following example the <code>account_id</code>, <code>account_password</code> and <code>account_username</code> values are all extracted from a form.</p>
-    <pre class="line-numbers"><code class="language-javascript">var getPlayerInfo = function () {
+<pre class="line-numbers"><code class="language-javascript">var getPlayerInfo = function () {
     account_id = document.getElementById("account_id").value,
     account_password = document.getElementById("account_password").value,
     account_username = document.getElementById("account_username").value;
     call_url = "https://players.api.brightcove.com/v1/accounts/" + account_id + "/players";
     makeAjaxCall(call_url, "GET", null);
-    };</code></pre>
+};</code></pre>
         <!-- <code data-gist-id="9216425" data-gist-hide-footer="true" data-gist-line="49-55"></code><br /> -->
         <p>If you have completed the Quick Start to Player Management you know that some processes take multiple API calls, like creating and publishing a player. Also, the logic of some apps may require multiple API calls, like getting a list of all players to display, then deleting players the user marked. In these instances you will most likely need to alter your <code>success</code> handler to perform different logic based on which call was just successfully carried out. In these sample apps the implementation logic for these use cases will be implemented using a flag variable, <code>callPurpose</code>, and a <code>case</code> statement using that flag, as shown here:</p>
 <pre class="line-numbers"><code class="language-javascript">var ajaxSuccess = function (data) {
     switch (callPurpose) {
-    case "getPlayers":
-    createCheckboxes(data);
-    watchCheckboxes();
-    break;
-    case "deletePlayer":
-    document.getElementById("jsonResponse").innerHTML += data;
-    break;
+        case "getPlayers":
+            createCheckboxes(data);
+            watchCheckboxes();
+            break;
+        case "deletePlayer":
+            document.getElementById("jsonResponse").textContent += data;
+            break;
     }
-    };</code></pre>
+};</code></pre>
+    </section>
+    <section class="bcls-section">
+        <h2 id="AJAX_without_jquery">AJAX without jQuery</h2>
+        <p>If you would rather not use jQuery, making AJAX requests is a little more complex, but not too much.</p>
     </section>
 </article>
