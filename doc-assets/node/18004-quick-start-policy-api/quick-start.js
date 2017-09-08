@@ -4,7 +4,7 @@ var BCLS = (function() {
         client_secret = document.getElementById('client_secret'),
         accountId,
         clientId,
-        client_secret,
+        clientSecret,
         apiRequest = document.getElementById('apiRequest'),
         requestBody = document.getElementById('requestBody'),
         apiResponse = document.getElementById('apiResponse'),
@@ -21,7 +21,7 @@ var BCLS = (function() {
      * @return {Boolean} true if variable is defined and has a value
      */
     function isDefined(x) {
-        if ( x === '' || x === null || x === undefined || x === NaN) {
+        if ( x === '' || x === null || x === undefined) {
             return false;
         }
         return true;
@@ -58,12 +58,12 @@ var BCLS = (function() {
             callback = function(response) {
                 apiResponse.textContent = JSON.stringify(response, null, '  ');
                 enableButtons();
-            }
+            };
             // disable buttons to prevent a new request before current one finishes
         disableButtons();
         requestData.url = baseURL + accountId + urlSuffix;
         requestData.requestType = 'POST';
-        requestData.requestBody = '{"key-data": {"account-id": "' + accountId + '"}}';
+        requestData.requestBody = '{"key-data": {"account-id": "' + accountId + '","apis": ["search"]}}';
         apiRequest.textContent = requestData.url;
         requestBody.textContent = JSON.stringify(JSON.parse(requestData.requestBody), null, '  ');
         sendRequest(requestData, callback);
