@@ -1,6 +1,6 @@
 <article class="bcls-article">
-<section id="Introduction" class="bcls-section">
-<h2>Introduction</h2>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
 <aside class="bcls-aside bcls-aside--information">Note that Dash is not compatible with live streams using Zencoder.</aside>
 
@@ -55,8 +55,8 @@
 </ul>
 </section>
 
-<section id="Multiple_Bitrates" class="bcls-section">
-<h2>Multiple Bitrates</h2>
+<section class="bcls-section">
+<h2 id="Multiple_Bitrates">Multiple Bitrates</h2>
 
 <p>Zencoder-generated DASH outputs will have the necessary structure to be played on their own, but to truly benefit from such streaming delivery options, you should generate multiple versions at different bitrates (renditions) along with a "playlist" type output that lists the renditions so that a player can switch up / down bitrates as needed depending on the current network conditions. The playlist output is a dependent output - that is, it'll reference the other outputs by their label, and will use data from those outputs to generate the final rendition of the playlist. Note that you must be careful to set the stream paths in the playlist output so that they are relative paths to the location of the rendition files.</p>
 
@@ -99,8 +99,8 @@
 }</code></pre>
 </section>
 
-<section id="Encryption" class="bcls-section">
-<h2>Encryption</h2>
+<section class="bcls-section">
+<h2 id="Encryption">Encryption</h2>
 
 <p>Zencoder also supports generating CENC-encrypted DASH outputs, with necessary headers for integrating with Marlin or Playready license servers. For each output, simply specify a hash of drm options, including the <code><a href="/node/18287#method">method</a></code>, <code><a href="/node/18287#key-id">key_id</a></code>, and <code><a href="/node/18287#content-key">content_key</a></code>. The <code>key_id</code> and <code>content_key</code> should either be retrieved from your DRM vendor, or pre-generated and sent to your DRM vendor. Once you have those keys, the Zencoder API structure for a single rendition is:</p>
 
@@ -212,8 +212,8 @@
 </code></pre>
 </section>
 
-<section id="Transmuxing" class="bcls-section">
-<h2>Transmuxing</h2>
+<section class="bcls-section">
+<h2 id="Transmuxing">Transmuxing</h2>
 
 <p>Of course, generating multiple formats of a video can get expensive and wasteful. So Zencoder supports repackaging the same encoded streams into different formats (called transmuxing), by using the <code><a href="/node/17855#copy-video">copy_video</a></code> and <code><a href="/node/17855#copy-audio">copy_audio</a></code> options. Outputs for which the video is transmuxed rather than encoded are charged at 1/4 the regular duration. So if you're planning to make multiple formats of the same video (MP4, HLS, and DASH, for example), you can encode the MP4 version of each bitrate first, and then transmux those outputs to create the HLS and DASH versions. (Note that we don't support transmuxing from a format that's segmented, since the video is no longer a single stream.)</p>
 
@@ -250,8 +250,8 @@
 }</code></pre>
 </section>
 
-<section id="Optimizing_for_delivery" class="bcls-section">
-<h2>Optimizing for delivery</h2>
+<section class="bcls-section">
+<h2 id="Optimizing_for_delivery">Optimizing for delivery</h2>
 
 <p>Since DASH is intended for streaming delivery, we recommend controlling the peaks of the bitrates in each rendition to avoid having the player rebuffer or switch to lower bitrate encodes unnecessarily. The options that control the variability of the encoded stream according to what the decoder/player can handle are</p>
 
@@ -309,8 +309,8 @@
 <aside class="bcls-aside bcls-aside--information">Note: The above is <strong>not</strong> sufficient to guarantee the HLS encode would pass Apple's validation. While it would stream seamlessly on a 1000 Kbps connection, Apple measures bitrates per-segment (including the final segment which may have a short duration), without accounting for the buffering aspects. To ensure HLS encodes pass Apple's validation, see our HLS guide.</aside>
 </section>
 
-<section id="Putting_it_all_together" class="bcls-section">
-<h2>Putting it all together</h2>
+<section class="bcls-section">
+<h2 id="Putting_it_all_together">Putting it all together</h2>
 
 <pre class="line-numbers">
 <code class="language-json">{
