@@ -1,222 +1,158 @@
 <article class="bcls-article">
-<section id="Segmented_Files" class="bcls-section">
-<h2>Segmented Files</h2>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
-<p>We'll start off by making several segmented files, each targeted at a given bandwidth. With these outputs Zencoder creates a manifest file and segmented video files, which allow the player to download each file individually as it plays the video.</p>
+<p>The <code>&lt;video&gt;</code> tag in HTML5 is a great thing. It enables native video playback in all current browsers, rather than relying on a plugin like Flash. It opens the door to web video on devices that don't support Flash and enables codecs that previously weren't web playable.</p>
 
-<pre class="line-numbers">
-<code class="language-json">{
-    "audio_bitrate": 56,
-    "audio_sample_rate": 22050,
-    "base_url": "s3://my-bucket/",
-    "decoder_bitrate_cap": 900,
-    "decoder_buffer_size": 2400,
-    "filename": "file-640k.m3u8",
-    "max_frame_rate": 30,
-    "public": 1,
-    "type": "segmented",
-    "video_bitrate": 600,
-    "width": 400,
-    "format": "ts"
-}</code></pre>
+<p>But if you're publishing video content, browser support can be confusing. To really support web video, how many output versions do you need to create? WebM, Ogg, and MP4? What about iPhone or Android? What about low/medium/high bitrate versions?</p>
 
-<p>The <code>m3u8</code> file created by the above output is a segmented file. Requesting this output, plus the others described below, will create multiple segmented files targeted at different bandwidths.</p>
-
-<p>This output has a type of "segmented", a format of "ts", and defaults to a video codec of "h264". Each segmented output will have a manifest file in M3U8 format created as its main output, and the segments will be named like the filename of the output. The segmented files will be uploaded along-side the manifest, and named with "-00001" suffixes before the extension. These outputs can be used as-is for standard streaming, simply by referencing the .m3u8 file from the client, and ensuring the segment files are available from the same location as the manifest. Multiple .m3u8 file can also be referenced by a playlist to support adaptive streaming.</p>
+<p>There isn't a single answer to this question, so here is a short guide to picking outputs for HTML5 video.</p>
 </section>
 
-<section id="The_Playlist" class="bcls-section">
-<h2>The Playlist</h2>
+<section class="bcls-section">
+<h2 id="What_web_formats">What&nbsp;web&nbsp;formats?</h2>
 
-<p>You can create adaptive-bitrate playlists yourself, or have Zencoder do it as part of a job. To have us create the playlist, just add another output to your job with a type of "playlist" and specify one or more streams with a path (that is relative to the playlist file's location) and the source of the stream, which is the label of the corresponding output. Bandwidth, resolution, and codec can also be specified, but by default these are inferred from the source. The stream information will be formatted into a playlist and uploaded just like any other output.</p>
+<p>There are three video formats that work natively in some browsers. Unfortunately, no format works in all browsers, so you need to do at least two if you want meaningful HTML5 video support.</p>
 
-<p>This playlist file references the segmented outputs created above, specifying the bandwidth at which each should be played. Loading this file with a device that supports HLS will allow the stream to be adjusted as available bandwidth changes.</p>
+<p>Minimally, you must use <strong>MP4 + H.264</strong>, with AAC or MP3. MP4 video plays natively in Safari, Chrome, and IE9 (Vista/Windows 7). It is also your best option for a Flash video fallback, and plays natively on many devices (iOS, Android, Blackberry, PSP, Xbox, PS3, etc.). Use H.264 High Profile for the best quality, or Baseline profile if you want the same video to be playable on mobile devices.</p>
 
-<p>The first entry in the streams will be used when a user opens the file and is used as part of a test to determine which stream is most appropriate. The order of the other entries is irrelevant.</p>
+<p>Beyond that, use either <strong>WebM + VP8</strong> or <strong>Ogg + Theora</strong> with Vorbis audio for other browsers.</p>
 
-<p>HLS outputs (with video) that have <a href="/node/17863#max-hls-protocol-version">max_hls_protocol_version</a> of 4 or greater will now generate an I-Frame playlist, also known as a "keyframe manifest". By default, the filename is the same as the main manifest file, but with "-iframe-index" appended. For example, for a manifest with the filename "master.m3u8", the keyframe manifest would be named "master-iframe-index.m3u8". This can be overridden using <a href="/node/17863#keyframe-manifest-filename">keyframe_manifest_filename</a>. If an HLS playlist output specifies a "source" stream that has a keyframe manifest, then that keyframe manifest will automatically be included into the playlist as an EXT-X-I-FRAMES-ONLY stream.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    "base_url": "s3://my-bucket/",
-    "filename": "playlist.m3u8",
-    "public": 1,
-    "streams": [
-    {
-        "bandwidth": 440,
-        "path": "file-440k.m3u8"
-    },
-    {
-        "bandwidth": 640,
-        "path": "file-640k.m3u8"
-    },
-    {
-        "bandwidth": 240,
-        "path": "file-240k.m3u8"
-    },
-    {
-        "bandwidth": 150,
-        "path": "file-150k.m3u8"
-    },
-    {
-        "bandwidth": 64,
-        "path": "file-64k.m3u8"
-    }
-    ],
-    "type": "playlist"
-}</code></pre>
+<p><strong>Recommendation:</strong> Minimally, MP4 + either WebM or Ogg, or maybe both.</p>
 </section>
 
-<section id="The_Whole_Picture" class="bcls-section">
-<h2>The Whole Picture</h2>
+<section class="bcls-section">
+<h2 id="What_mobile_devices">What mobile devices?</h2>
 
-<p>Multiple outputs of different bitrates may be specified and referenced by the playlist. These settings match the guidelines given in our <a href="/node/17788">iOS encoding guide</a>.</p>
+<p>Again, there is no single mobile profile that works on every mobile device. In fact, there are more varying standards for mobile video than there are for web. But fortunately, a few well-selected recipes can cover most modern mobile devices.</p>
+
+<p>For full details, check out our guide on <a href="/node/17788">encoding video for mobile use</a>.</p>
+
+<p>1. Most modern mobile devices support MP4/H.264. This includes the whole iOS series (iPhone, iPod, iPad, Apple TV, etc.), most Android devices, modern Blackberry phones, etc. For most of these, be sure to use the H.264 Baseline profile. Use 640x480 or smaller for iOS and Android, and 480x360 or smaller for Blackberry support.</p>
+
+<p>Note that the same file that plays on an iPhone can play on the web, via HTML5 (some browsers) or Flash. So if you want to reduce versions, use the same one. But you're stuck with Baseline profile for most mobile devices, and Main/High makes a big difference, so using separate output versions is a good idea if you want the best quality for each device.</p>
+
+<p>2. Use 3GP/MPEG4 for older mobile devices. Most Blackberrys and some Androids also support 3GP, and 3GP generally even plays on iPhone/iPod too (since iOS plays MP4/MPEG-4 and 3GP is just a subset of MP4).</p>
+
+<p><strong>Recommendation:</strong> Minimally, MP4, 640x480 or 480x360. Maximally, three MP4 versions (480x360, 640x480, 720p + Main profile) plus one or two 3GP versions (320x240 and maybe 176x144). See our earlier post for <a href="/node/17788">specific encoding settings</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Multiple_bitrates">Multiple bitrates</h2>
+
+<p>Should you use multiple bitrates to deliver larger video to users with fast internet connections, and smaller videos to users with slower internet connections? If your users are watching high-quality video on the web, then the answer is probably "Yes". Consider using 2-3 sizes and bitrates to accomplish this – e.g. one video at 640x360, and another at 1280x720. More on this in a future post.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Streaming">Streaming</h2>
+
+<p>Zencoder supports <a href="/node/17863">HTTP Live Streaming</a> for iOS devices, as well as <a href="/node/17797">Microsoft Smooth Streaming (Silverlight)</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Summary">Summary</h2>
+
+<p>1. The minimum for HTML5 video is <strong>MP4 + WebM or Ogg (or both)</strong>, using the MP4 version for Flash fallback.</p>
+
+<p>2. For mobile support, one <strong>H.264/MP4</strong> output can take you a long way. 2-3 enables better quality and wider compatibility.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Recommendations">Recommendations</h2>
+
+<p>Here are some suggested configurations. <a href="http://zencoder.com">Zencoder</a> supports all of these formats, and if you're wondering how to create the optimal output profiles using Zencoder, please open a <a href="https://support.brightcove.com/en/contact/create">support ticket</a>. We're always happy to give you advice.</p>
+
+<p><strong>1. Get it working</strong></p>
+
+<ul>
+	<li>HTML5, Flash, Mobile: MP4/H.264, Baseline profile, 480x360 or 640x480</li>
+	<li>HTML5: WebM or Ogg</li>
+</ul>
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "input": "s3://zencodertesting/test.mov",
-    "output": [
+    "input": "s3://bucket-name/file-name.avi",
+    "outputs": [
     {
-        "label": "hls-64",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "filename": "file-64k.m3u8",
-        "format": "aac",
-        "public": 1,
-        "type": "segmented"
+        "url": "s3://output-bucket/output-file-name.mp4",
+        "size": "640x480"
     },
     {
-        "label": "hls-240",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "decoder_bitrate_cap": 300,
-        "decoder_buffer_size": 800,
-        "filename": "file-240k.m3u8",
-        "max_frame_rate": 15,
-        "public": 1,
-        "type": "segmented",
-        "video_bitrate": 200,
-        "width": 400,
-        "format": "ts"
-    },
-    {
-        "label": "hls-440",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "decoder_bitrate_cap": 600,
-        "decoder_buffer_size": 1600,
-        "filename": "file-440k.m3u8",
-        "public": 1,
-        "type": "segmented",
-        "video_bitrate": 400,
-        "width": 400,
-        "format": "ts"
-    },
-    {
-        "label": "hls-640",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "decoder_bitrate_cap": 900,
-        "decoder_buffer_size": 2400,
-        "filename": "file-640k.m3u8",
-        "public": 1,
-        "type": "segmented",
-        "video_bitrate": 600,
-        "width": 480,
-        "format": "ts"
-    },
-    {
-        "label": "hls-1040",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "decoder_bitrate_cap": 1500,
-        "decoder_buffer_size": 4000,
-        "filename": "file-1040k.m3u8",
-        "public": 1,
-        "type": "segmented",
-        "video_bitrate": 1000,
-        "width": 640,
-        "format": "ts"
-    },
-    {
-        "label": "hls-1540",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "decoder_bitrate_cap": 2250,
-        "decoder_buffer_size": 6000,
-        "filename": "file-1540k.m3u8",
-        "public": 1,
-        "type": "segmented",
-        "video_bitrate": 1500,
-        "width": 960,
-        "format": "ts"
-    },
-    {
-        "label": "hls-2040",
-        "audio_bitrate": 56,
-        "audio_sample_rate": 22050,
-        "base_url": "s3://my-bucket/",
-        "decoder_bitrate_cap": 3000,
-        "decoder_buffer_size": 8000,
-        "filename": "file-2040k.m3u8",
-        "public": 1,
-        "type": "segmented",
-        "video_bitrate": 2000,
-        "width": 1024,
-        "format": "ts"
-    },
-    {
-        "base_url": "s3://my-bucket/",
-        "filename": "playlist.m3u8",
-        "public": 1,
-        "streams": [
-        {
-            "source": "hls-2040",
-            "path": "file-2040k.m3u8"
-        },
-        {
-            "source": "hls-1540",
-            "path": "file-1540k.m3u8"
-        },
-        {
-            "source": "hls-1040",
-            "path": "file-1040k.m3u8"
-        },
-        {
-            "source": "hls-640",
-            "path": "file-640k.m3u8"
-        },
-        {
-            "source": "hls-440",
-            "path": "file-440k.m3u8"
-        },
-        {
-            "source": "hls-240",
-            "path": "file-240k.m3u8"
-        },
-        {
-            "source": "hls-64",
-            "path": "file-64k.m3u8"
-        }
-        ],
-        "type": "playlist"
+        "url": "s3://output-bucket/output-file-name.webm",
+        "size": "640x480"
     }
     ]
 }</code></pre>
 
-<p><strong>NOTES</strong></p>
+<ul>
+	<li>HTML5, Flash: MP4/H.264, High profile</li>
+	<li>HTML5: WebM</li>
+	<li>HTML5: Ogg</li>
+	<li>Mobile: MP4/H.264, Baseline profile, 480x360 or 640x480</li>
+</ul>
+
+<p><strong>2. Round it out</strong></p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "input": "s3://bucket-name/file-name.avi",
+    "outputs": [
+    {
+        "url": "s3://output-bucket/output-file-name.mp4",
+        "h264_profile": "high"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name.webm"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name.ogg"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name-mobile.mp4",
+        "size": "640x480"
+    }
+    ]
+}</code></pre>
+
+<p><strong>3. Support everything</strong></p>
 
 <ul>
-	<li>The playlist generation currently uses no information from the other outputs in the job, but is simply a way to easily generate a correctly formatted adaptive-bitrate playlist and have it uploaded along with the other files.</li>
-	<li>While iOS devices will play the adaptive bitrate playlist created, VLC won't, due to errors in handling relative URLs. It will look for the segment files in the same directory as the playlist file, rather than the directory of the manifest file.</li>
-	<li><a href="/node/17879#decoder-bitrate-cap">decoder_bitrate_cap</a> is set to 1.5x the target bitrate of the file. <a href="/node/17879#decoder-buffer-size">decoder_buffer_size</a> is set to 3.5x to 5x the target bitrate of the file. These settings will help keep a consistent bitrate throughout the file, so that the segmented segments won't vary too much in size and bitrate.</li>
-	<li>If a segmented output is uploaded to temporary storage, it will be uploaded as a <a href="/node/17852#package-format">ZIP archive</a>.</li>
+	<li>HTML5, Flash: MP4/H.264, High profile</li>
+	<li>HTML5: WebM</li>
+	<li>HTML5: Ogg</li>
+	<li>Mobile: MP4/H.264, Baseline profile, 480x360, for wide compatibility</li>
+	<li>Mobile: MP4/H.264, Main profile, 1280x720, for newer iOS devices (iPhone 4, iPad, Apple TV)</li>
+	<li>Mobile: 3GP/MPEG4, 320x240 and/or 177x144, for non-smartphones*</li>
 </ul>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "input": "s3://bucket-name/file-name.avi",
+    "outputs": [
+    {
+        "url": "s3://output-bucket/output-file-name.mp4",
+        "h264_profile": "high"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name.webm"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name.ogg"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name-mobile-480x360.mp4",
+        "size": "480x360"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name-mobile-1280x720.mp4",
+        "size": "1280x720"
+    },
+    {
+        "url": "s3://output-bucket/output-file-name-mobile.3gp",
+        "size": "320x240"
+    }
+    ]
+}
+</code></pre>
 </section>
 </article>
