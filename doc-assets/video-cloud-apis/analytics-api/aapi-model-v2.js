@@ -309,7 +309,7 @@ var aapi_model = {
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=live_stream'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=live_stream'
+                filter: 'Not applicable'
             }]
         },
         player: {
