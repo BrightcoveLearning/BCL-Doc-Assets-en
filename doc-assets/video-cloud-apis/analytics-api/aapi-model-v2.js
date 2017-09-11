@@ -236,7 +236,7 @@ var aapi_model = {
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_domain', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['The destination_domain dimension is not used as a filter.'],
-            incompatible_dimensions: ['ad_mode_begin', 'ad_mode_complete', 'city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'referrer_domain', 'region', 'search_terms', 'source_type'],
+            incompatible_dimensions: ['city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'referrer_domain', 'region', 'search_terms', 'source_type'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain'
             }, {
@@ -250,7 +250,7 @@ var aapi_model = {
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['The destination_path dimension is not used as a filter.'],
-            incompatible_dimensions: ['ad_mode_begin', 'ad_mode_complete', 'city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+            incompatible_dimensions: ['city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_path'
             }, {
@@ -303,13 +303,13 @@ var aapi_model = {
             description: 'In this topic, you will learn about the Analytics API live_stream dimension. The live_stream dimension provides analytics data on live streams.',
             from: '2014-02-01',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'live_stream', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            filter_values: ['mobile', 'tablet', 'tv', 'desktop', 'other'],
-            incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
+            fields: ['bytes_delivered', 'origin_bytes_delivered', 'live_stream'],
+            filter_values: [],
+            incompatible_dimensions: ['account', 'browser_type', 'city', 'country', 'date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_manufacturer', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'social_platform', 'source_type', 'video'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=live_stream'
             }, {
-                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video&where=device_type==mobile,tablet'
+                filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=live_stream'
             }]
         },
         player: {

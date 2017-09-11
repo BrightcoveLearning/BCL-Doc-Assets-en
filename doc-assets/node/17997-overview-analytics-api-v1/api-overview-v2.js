@@ -46,6 +46,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             'device_os': 'dimension-deviceos',
             'device_manufacturer': 'dimension-devicemanufacturer',
             'device_type': 'dimension-devicetype',
+            'live_stream': 'dimension-livestream',
             'player': 'dimension-player',
             'referrer_domain': 'dimension-referrerdomain',
             'region': 'dimension-region',
