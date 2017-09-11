@@ -301,7 +301,7 @@ var aapi_model = {
         live_stream: {
             name: 'live_stream',
             description: 'In this topic, you will learn about the Analytics API live_stream dimension. The live_stream dimension provides analytics data on live streams.',
-            from: '2014-02-01',
+            from: '2017-02-01',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'reconciled', 'from', 'to'],
             fields: ['bytes_delivered', 'origin_bytes_delivered', 'live_stream'],
             filter_values: [],
