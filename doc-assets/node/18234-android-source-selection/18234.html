@@ -31,43 +31,41 @@
 
 <p>You may prefer secure network communication for your video sources. To do this, you can filter your source results to use HTTPS.</p>
 
-<p>This example uses only HTTPS sources:</p>
+<p>This example selects the HTTPS source for the HLS Delivery Type. If one is not found, then the default behavior is used:</p>
 
 <pre class="line-numbers">
 <code class="language-java">eventEmitter.on(EventType.SELECT_SOURCE, new EventListener() {
-    @Override
-    public void processEvent(Event event) {
+@Override
+public void processEvent(Event event) {
 
-        event.preventDefault();
-        Video video = (Video) event.properties.get(&quot;video&quot;);
+Video video = (Video) event.properties.get(Event.VIDEO);
 
-        Source newSource = null;
+Source newSource = null;
 
-        Map&lt;DeliveryType, SourceCollection&gt; map = video.getSourceCollections();
-        for (Map.Entry&lt;DeliveryType, SourceCollection&gt; entry : map.entrySet())
-        {
-            if(entry.getKey().toString().equals(&quot;application/vnd.apple.mpegurl&quot;)) {
-               if(entry.getKey().toString().equals(DeliveryType.HLS) ||
-                  entry.getKey().toString().equals(DeliveryType.MP4)) {
+Map&lt;DeliveryType, SourceCollection&gt; map = video.getSourceCollections();
+for (Map.Entry&lt;DeliveryType, SourceCollection&gt; entry : map.entrySet()) {
+if (entry.getKey().equals(DeliveryType.HLS)) {
+	SourceCollection sc = entry.getValue();
+	Set&lt;Source&gt; set = sc.getSources();
+	for (Source src : set) {
+		String url = src.getUrl();
+		if (url.startsWith(&quot;https://&quot;)) {
+				newSource = src;
+				break;
+		}
+	}
+}
+}
 
-	                SourceCollection sc = (SourceCollection)entry.getValue();
-	                Set&lt;Source&gt; set = sc.getSources();
-	                for(Source src : set) {
-	                    String url = src.getUrl();
-	                       if(url.startsWith(&quot;https://&quot;)) {
-	                        newSource = src;
-	                        break;
-	                    }
-                }
-            }
-        }
+if (newSource != null) {
+	event.preventDefault();
+	event.properties.put(Event.SOURCE, newSource);
+	eventEmitter.respond(event);
+}
+}
+});</code></pre>
 
-       event.properties.put(Event.SOURCE, newSource);
-       eventEmitter.respond(event);
-    }
-});
-</code></pre>
-<aside class="bcls-aside bcls-aside--tip">This example will set the source to whatever is listed first in your source <code>Set</code>. If you have both HLS and MP4 renditions in the <code>Set</code>, you may want to filter your result a bit further to set the type you want to use.</aside>
+<!-- <aside class="bcls-aside bcls-aside--tip">This example will set the source to whatever is listed first in your source <code>Set</code>. If you have both HLS and MP4 renditions in the <code>Set</code>, you may want to filter your result a bit further to set the type you want to use.</aside> -->
 </section>
 
 <section class="bcls-section">
@@ -79,12 +77,12 @@
 
 <pre class="line-numbers">
 <code class="language-java">catalog.findVideoByReferenceID(videoReferenceId, new com.brightcove.player.edge.VideoListener() {
-   @Override
-   public void onVideo(Video video) {
-       sourceSelectionFilter(DeliveryType.HLS, video);
-       brightcoveVideoView.add(video);
-       brightcoveVideoView.start();
-   }
+@Override
+public void onVideo(Video video) {
+ sourceSelectionFilter(DeliveryType.HLS, video);
+ brightcoveVideoView.add(video);
+ brightcoveVideoView.start();
+}
 });
 </code></pre>
 
@@ -92,12 +90,12 @@
 
 <pre class="line-numbers">
 <code class="language-java">public static void sourceSelectionFilter(String deliveryTypeFilter, Video video){
-   for (DeliveryType deliveryType : DeliveryType.values()) {
-       if (!deliveryType.name().equals(deliveryTypeFilter)) {
-           Log.v(TAG, "Removing the deliveryType " + deliveryType.name());
-           video.getSourceCollections().remove(deliveryType);
-       }
-   }
+for (DeliveryType deliveryType : DeliveryType.values()) {
+if (!deliveryType.name().equals(deliveryTypeFilter)) {
+ Log.v(TAG, "Removing the deliveryType " + deliveryType.name());
+ video.getSourceCollections().remove(deliveryType);
+}
+}
 }
 </code></pre>
 </section>
