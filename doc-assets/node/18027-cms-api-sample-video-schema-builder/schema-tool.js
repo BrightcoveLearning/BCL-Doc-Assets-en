@@ -19,8 +19,8 @@ var BCLS = (function (document, Handlebars) {
         template,
         result,
         schemaTemplates = {
-            MicroData: '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="{{name}}"> \n <meta itemprop="description" content="{{description}}"> \n <meta itemprop="videoID" content="{{id}}"> \n <meta itemprop="duration" content="{{duration}}"> \n <link itemprop="thumbnail" href="{{thumbnailURL}}"> \n <link itemprop="embedURL" href="http://players.brightcove.net/{{account_id}}/{{playerID}}_default/index.html?videoID={{id}}"><meta itemprop="width" content="{{width}}"><meta itemprop="height" content="{{height}}"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  height:{{playerHeight}} \n <!-- End Player Code --> \n <\/div> \n <\/div>',
-            json_ld: '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "{{name}}", \n "@id": "{{url}}", \n "datePublished": "{{created_at}}", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "{{total_plays}}" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  height:{{playerHeight}} \n <!-- End Player Code --> \n '
+            MicroData: '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="{{name}}"> \n <meta itemprop="description" content="{{description}}"> \n <meta itemprop="videoID" content="{{id}}"> \n <meta itemprop="duration" content="{{duration}}"> \n <link itemprop="thumbnail" href="{{thumbnailURL}}"> \n <link itemprop="embedURL" href="http://players.brightcove.net/{{account_id}}/{{playerID}}_default/index.html?videoID={{id}}"><meta itemprop="width" content="{{width}}"><meta itemprop="height" content="{{height}}"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>',
+            json_ld: '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "{{name}}", \n "@id": "{{url}}", \n "datePublished": "{{created_at}}", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "{{total_plays}}" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n '
         };
 
     /**
@@ -29,7 +29,7 @@ var BCLS = (function (document, Handlebars) {
      * @return {Boolean}   whether var has a value
      */
     function isDefined(x) {
-        if (x === '' || x === null || x === undefined || x === NaN) {
+        if (x === '' || x === null || x === undefined) {
             return false;
         }
         return true;
