@@ -81,8 +81,7 @@ var BCLS = (function (document, Handlebars) {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // add/remove folder video return no data
-                            videoData = JSON.parse(httpRequest.responseText);
-                            callback(videoData);
+                            callback(httpRequest.responseText);
                             // re-enable the buttons
                         } else {
                             alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -129,6 +128,7 @@ var BCLS = (function (document, Handlebars) {
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.requestType = "GET";
         getMediaData(options, function(response) {
+            videoData = JSON.parse(response);
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
             getMediaData(options, function(response) {
@@ -150,6 +150,7 @@ var BCLS = (function (document, Handlebars) {
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.requestType = "GET";
         getMediaData(options, function(response) {
+            videoData = JSON.parse(response);
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
             getMediaData(options, function(response) {
