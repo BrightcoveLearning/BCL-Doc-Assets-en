@@ -81,7 +81,6 @@ var BCLS = (function (document, Handlebars) {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // add/remove folder video return no data
-console.log('response', httpRequest.responseText);
                             videoData = JSON.parse(httpRequest.responseText);
                             callback(videoData);
                             // re-enable the buttons
@@ -132,7 +131,6 @@ console.log('response', httpRequest.responseText);
         getMediaData(options, function(response) {
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
-console.log('options', options);
             getMediaData(options, function(response) {
                 videoData.total_plays = response.alltime_video_views;
                 generateSchema();
