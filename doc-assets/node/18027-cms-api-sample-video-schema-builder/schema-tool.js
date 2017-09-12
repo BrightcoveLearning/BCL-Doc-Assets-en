@@ -134,7 +134,7 @@ console.log('response', httpRequest.responseText);
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
 console.log('options', options);
             getMediaData(options, function(response) {
-                videoData.total_plays = response.alltime_video_view;
+                videoData.total_plays = response.alltime_video_views;
                 generateSchema();
             });
         });
