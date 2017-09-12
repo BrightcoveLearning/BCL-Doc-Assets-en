@@ -19,7 +19,7 @@ var BCLS = (function (document, Handlebars) {
         template,
         result,
         schemaTemplates = {
-            MicroData: '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="{{name}}"> \n <meta itemprop="description" content="{{description}}"> \n <meta itemprop="videoID" content="{{id}}"> \n <meta itemprop="duration" content="{{duration}}"> \n <link itemprop="thumbnail" href="{{thumbnailURL}}"> \n <link itemprop="embedURL" href="http://players.brightcove.net/{{account_id}}/{{playerID}}_default/index.html?videoID={{id}}"><meta itemprop="width" content="{{width}}"><meta itemprop="height" content="{{height}}"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>',
+            MicroData: '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="{{name}}"> \n <meta itemprop="description" content="{{description}}"> \n <meta itemprop="videoID" content="{{id}}"> \n <meta itemprop="duration" content="{{duration}}"> \n <link itemprop="thumbnail" href="{{images.thumbnail.src}}"> \n <link itemprop="embedURL" href="http://players.brightcove.net/{{account_id}}/{{playerID}}_default/index.html?videoID={{id}}"> \n <meta itemprop="width" content="{{playerWidth}}"> \n <meta itemprop="height" content="{{playerHeight}}"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>',
             json_ld: '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "{{name}}", \n "@id": "{{url}}", \n "datePublished": "{{created_at}}", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "{{total_plays}}" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n '
         };
 
@@ -72,7 +72,7 @@ var BCLS = (function (document, Handlebars) {
      * send API request to the proxy
      * @param  {Object} options options for the request
      */
-    function getMediaData(options) {
+    function getMediaData(options, callback) {
         var httpRequest = new XMLHttpRequest(),
             requestParams,
             // response handler
@@ -81,9 +81,7 @@ var BCLS = (function (document, Handlebars) {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // add/remove folder video return no data
-                            videoData = JSON.parse(httpRequest.responseText);
-                            videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
-                            generateSchema();
+                            callback(httpRequest.responseText);
                             // re-enable the buttons
                         } else {
                             alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -129,7 +127,16 @@ var BCLS = (function (document, Handlebars) {
         video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.requestType = "GET";
-        getMediaData(options);
+        getMediaData(options, function(response) {
+            videoData = JSON.parse(response);
+            videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
+            options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
+            getMediaData(options, function(response) {
+                response = JSON.parse(response);
+                videoData.total_plays = response.alltime_video_views;
+                generateSchema();
+            });
+        });
     });
 
     generateJSON_ld.addEventListener("click", function () {
@@ -143,7 +150,16 @@ var BCLS = (function (document, Handlebars) {
         video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.requestType = "GET";
-        getMediaData(options);
+        getMediaData(options, function(response) {
+            videoData = JSON.parse(response);
+            videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
+            options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
+            getMediaData(options, function(response) {
+                response = JSON.parse(response);
+                videoData.total_plays = response.alltime_video_views;
+                generateSchema();
+            });
+        });
     });
 
     publishingCode.addEventListener('click', function() {
