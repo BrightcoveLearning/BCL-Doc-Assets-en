@@ -1,0 +1,221 @@
+<p class="BCL-aside">Note: Videos uploaded with the Upload module or using the Dynamic Ingest API will only be synced to YouTube if the ingest profile was configured to archive the video source file. By default, the <a href="/node/18041">standard ingest profiles</a> are configured to archive the source file. If you have created your own ingest profiles, include the <code>digital_master</code> object in your ingest profile. For more information, see the <a href="/node/18035">Archiving Masters</a> developer document.</p>
+
+<p class="BCL-aside">Note: If video tags are added to a video while the video is in a Processing state, the YouTube sync service will not have the correct metadata to process the upload to YouTube. When using YouTube sync, Brightcove recommends adding tags after the video upload has completed.</p>
+
+<p>For some publishers, the best approach to video distribution is a blended strategy that uses both their own web sites and YouTube. When you distribute videos on YouTube, you:</p>
+
+<ul>
+	<li>Build awareness of your videos and brand with the largest video available audience</li>
+	<li>Position your videos in an environment tuned for viral sharing</li>
+	<li>Have limited customization options</li>
+	<li>Have access to basic analytics</li>
+</ul>
+
+<p>When you publish your videos on your own web site, you:</p>
+
+<ul>
+	<li>Pursue a goal of viewer interest and conversion</li>
+	<li>Position your videos in an environment tuned for engagement and action</li>
+	<li>Completely control the brand environment and voice</li>
+	<li>Have complete creative control and practically endless customization options</li>
+	<li>Have access to deep analytics</li>
+</ul>
+
+<p>This topic describes how to:</p>
+
+<ul>
+	<li><a href="#setup">Setup distribution to YouTube</a></li>
+	<li><a href="#privacy">Set the privacy status for a video</a></li>
+	<li><a href="#find">Finding a YouTube Sync channel ID</a></li>
+	<li><a href="#updating">Update videos on a YouTube channel</a></li>
+	<li><a href="#delete">Delete a YouTube channel</a></li>
+	<li><a href="#status">Check the status</a> of your YouTube synchronization</li>
+	<li><a href="#trouble">Troubleshoot YouTube authorization issues</a></li>
+</ul>
+
+<div class="BCL-concept">
+<h2>What is a YouTube channel?</h2>
+
+<p>A YouTube channel is a way to organize and collect videos on YouTube. When creating a YouTube channel, you can choose to create a personal channel with your name or create a channel with a business or other name. For help on creating a YouTube channel, see the <a href="https://support.google.com/youtube/answer/1646861">YouTube Help</a>.</p>
+</div>
+
+<div class="BCL-concept" id="setup">
+<h2>Setting up YouTube distribution in Video Cloud Studio</h2>
+
+<p>To set up distribution from your Video Cloud account to your YouTube channel, follow these steps:</p>
+
+<ol>
+	<li>On the Video Cloud Studio homepage, click the Settings icon <img alt="" src="http://img.brightcove.com/node4391-gear-icon.png" /> and then click <strong>Settings</strong>.
+
+	<p class="BCL-aside">Note: Only Video Cloud users with the <strong>Administrator</strong> role can access this page.</p>
+	</li>
+	<li>Click <strong>Distribution Settings</strong>.</li>
+	<li>Click <strong>Add a YouTube&nbsp;Channel</strong> and then click <strong>Authorize Brightcove Access to YouTube Account</strong>.</li>
+	<li>Video Cloud takes you to an authorization page on YouTube. Click <strong>Accept </strong>to allow Video Cloud access to distribute videos to that YouTube channel.
+	<div class="BCL-aside">
+	<p>Note: Verify that the Google account you are authorizing is associated with the YouTube account you want to push your videos to. The Google account will appear in the upper right corner of the authorization page. To be sure you are syncing under the correct credentials, do the following:</p>
+
+	<ol>
+		<li>Open a new browser window.</li>
+		<li>Go to <a href="http://YouTube.com">YouTube.com</a> and either login or make sure you are logged in with the account you want to sync your videos to.</li>
+	</ol>
+	</div>
+	</li>
+	<li>Confirm that the Distribution Settings page opens.
+	<div><img alt="" src="http://img.brightcove.com/node4391-dist-settings.png" /></div>
+	</li>
+	<li>Enter a name for the channel settings.</li>
+	<li>Select which videos to distribute. You can select all videos in the account, or you can select a subset of the videos based upon video tags. If you select by tags, you can specify that videos must <strong>Contain one or more</strong> or <strong>Contain all</strong> of the tags. All videos matching the criteria will be distributed to YouTube.</li>
+	<li id="syncflags">Configure the Synchronization flags.
+	<ul>
+		<li><strong>One-time synchronization</strong> - when checked, the video tags, titles, short description and <a href="#privacy">privacy status custom field</a> from Video Cloud will be synced to YouTube only when the video is initially synced to YouTube. This allows publishers to manage the video metadata on the YouTube side separate from what is in Video Cloud. Changes made to metadata on the Video Cloud side will not update the video metadata on the YouTube side.</li>
+		<li><strong>Sync geo-restricted videos</strong> - when checked, enables videos with geographic restrictions in Video Cloud to be synchronized to YouTube. However, it does not impose geographic restrictions in YouTube. Normally, Video Cloud videos with geo-restrictions are not distributed to YouTube.</li>
+		<li><strong>Sync scheduled videos</strong> - when checked, allows videos with a scheduled start date to be distributed to YouTube. Also sets the publish date and time on the YouTube side. Normally, Video Cloud videos with a scheduled start date are not distributed to YouTube. If the scheduled start date is in in the future, then the YouTube privacy status will be set to 'private'. You can also <a href="#privacy">set the privacy status for a video</a>.
+		<p class="BCL-aside">Note: The publish date on the YouTube side can only be set at initial upload time. If you add a start date to a video that has already been synchronized to YouTube, the date will have no effect on the YouTube side.</p>
+		</li>
+		<li><strong>Remove deleted videos</strong> - when checked, will remove videos on the YouTube channel when they are deleted from Video Cloud. If unchecked, videos that have been synced to YouTube <strong>will not</strong> be deleted when the video is deleted from Video Cloud.</li>
+		<li><strong>Unlist deactivated videos</strong> - when checked, deactivated videos in Video Cloud will be kept on the YouTube channel but will have their privacy status changed to <strong>Unlisted</strong>. If unchecked, deactivated videos will be deleted from the YouTube channel.</li>
+	</ul>
+
+	<p class="BCL-aside">Note: The Synchronization flags do not apply retroactively. They only apply when video metadata changes and a new sync is initiated. For example, if there are a number of videos in your Video Cloud account with a schedule date that were not synchronized due to the settings, and then the settings are edited to <strong>Sync scheduled videos</strong>, these videos will not be synchronized to YouTube unless other metadata changes have been made (i.e. tags, title, description). Only new videos with schedule starts will be synchronized.</p>
+	</li>
+	<li>Click <strong>Add Channel</strong>.
+	<p class="BCL-aside">Note: There is no limit to the number of YouTube distribution channels you can create.</p>
+	</li>
+</ol>
+
+<p>When your video posts to YouTube:</p>
+
+<ul>
+	<li>Video Cloud will distribute your source video file to YouTube, not any of the renditions that are created by Video Cloud</li>
+	<li>Videos will sync to YouTube in a public state however you can <a href="#privacy">set the privacy status for a video</a></li>
+	<li>Your Video Cloud video name becomes your YouTube title - note that the title must be 100 characters or less or you will see an "Invalid Title" error in the YouTube Distribution Console</li>
+	<li>Your Video Cloud video short description becomes your YouTube short description</li>
+	<li>Your Video Cloud video tags become your YouTube keywords. The video ID will also be added as a tag.</li>
+</ul>
+
+<p>For accounts that have configured their YouTube distribution channel to<strong> Sync scheduled videos</strong>, if a start date is specified for a video, and that start date occurs in the future, then the YouTube privacy status will be set to <strong>Scheduled</strong>. If the start date is in the past, then the synchronization will act as if no start date was specified and the value of yt_privacy_status will be ignored. In summary, when <strong>Sync scheduled videos</strong> is enabled, the schedule will take precedence over the yt_privacy_status.</p>
+
+<p>When videos are uploaded to Video Cloud in a deactivated state, those videos do not sync. When they are activated, the videos then automatically sync to YouTube. Also, YouTube does not display your video's thumbnail or logo overlay image.</p>
+</div>
+
+<div class="BCL-concept" id="privacy">
+<h2>Setting the privacy status for a video</h2>
+
+<p>You can control the privacy status for videos that are synced to YouTube. For more information, see <a href="/node/15611">Setting the Privacy Status for a Video</a>.</p>
+</div>
+
+<div class="BCL-concept" id="find">
+<h2>Finding a YouTube Sync channel ID</h2>
+
+<p>To find a YouTube Sync channel ID, follow these steps:</p>
+
+<ol>
+	<li>In the Studio header click <strong>ADMIN &gt; YouTube Sync</strong>. A list of channels will appear.</li>
+	<li>Right-click on a channel name in the <strong>Name</strong> column and copy the link.</li>
+	<li>Paste the link into a text editor. The link will look something like:
+	<pre>
+https://distribution.brightcove.com/public/channel/213602706109</pre>
+	</li>
+	<li>The number at the end of the URL is the channel id, in this case <strong>213602706109</strong>.</li>
+</ol>
+</div>
+
+<div class="BCL-concept" id="updating">
+<h2>Updating videos on a YouTube channel</h2>
+
+<p>Once you've created a YouTube distribution channel, Video Cloud automatically keeps it updated for you:</p>
+
+<ul>
+	<li>Videos uploaded to Video Cloud that match your channel settings are automatically distributed to YouTube.</li>
+	<li>Changes made to a video's metadata in Video Cloud are automatically synchronized with your YouTube distribution channel.</li>
+	<li>Changes made to video tags (both in your Video Cloud YouTube distribution settings, and in the properties of the video itself) are reflected in YouTube, adding videos that match your settings and removing those that do not.</li>
+	<li>If you make changes to a video in the YouTube console, those changes are not synced back to the video in your Video Cloud account. If you subsequently make changes in the video in your Video&nbsp;Cloud account, those changes will get synced to YouTube and overwrite the changes you made in the YouTube console.</li>
+	<li>If you replace an existing video in Video Cloud Studio that has been synced to YouTube, the updated version of the video is not synced out to YouTube. However, removing and re-adding a tag will update the video on YouTube.</li>
+</ul>
+</div>
+
+<div class="BCL-concept">
+<h2>Changing YouTube distribution settings</h2>
+
+<p>Once you have set up distribution to a YouTube channel, you can edit your distribution settings by clicking the pencil icon <img alt="" src="http://img.brightcove.com/node4391-pencil-icon.png" /> for the channel on the Distribution Settings page.</p>
+</div>
+
+<div class="BCL-concept" id="delete">
+<h2>Deleting a YouTube channel</h2>
+
+<p>To delete a YouTube distribution channel, follow these steps.</p>
+
+<p>Checking <strong>Remove all synchronized videos from this channel</strong> will delete the synced videos from YouTube. If this option is not checked, the YouTube distribution channel will be deleted but the videos that were synced to YouTube will remain there.</p>
+
+<ol>
+	<li>Click the delete icon <img alt="" src="http://img.brightcove.com/node4391-delete-icon.png" /> associated with the channel in the Distribution Settings page.
+	<div><img alt="" src="http://img.brightcove.com/node4391-delete-channel.png" /></div>
+	</li>
+	<li>The delete confirmation dialog will appear.
+	<div><img alt="" src="http://img.brightcove.com/node4391-confirm-delete.png" /></div>
+	</li>
+</ol>
+
+<div class="BCL-subsection">
+<h3>What happens after a channel is deleted?</h3>
+
+<p>If you delete a channel, Video Cloud no longer syncs your videos with YouTube. If you delete a channel and then recreate the channel, videos matching the tags will be resynced and will be published as new videos on the YouTube side.</p>
+</div>
+</div>
+
+<div class="BCL-concept">
+<h2>Which videos are distributed to YouTube?</h2>
+
+<p>Video Cloud will distribute your source video file to YouTube, not any of the renditions that are created by Video Cloud. Also, remote asset video files will not be distributed.</p>
+
+<p>By default, any video that has a start date and/or end date or which has a geo-filtering restriction will not be synced with YouTube unless the appropriate <a href="#syncflags">synchronization flags</a> have been configured. By default, only videos that are "always available" will be synced.</p>
+
+<p>It is your responsibility to make sure the videos you distribute to YouTube comply with <a target="_blank" href="http://www.youtube.com/t/terms">YouTube's terms and conditions</a>.</p>
+</div>
+
+<div class="BCL-concept">
+<h2>How fast will my YouTube videos post, update and delete?</h2>
+
+<p>Typically, video additions, updates, and deletes on YouTube happen within five minutes. When monitoring posts and updates to your videos on YouTube, keep in mind:&nbsp;</p>
+
+<ul>
+	<li>Video uploads may take longer depending on the size of the video asset and the number of videos you're syncing to YouTube at one time.</li>
+	<li>YouTube limits the number of updates that can be made to a channel per hour. This may result in longer initial synchronization times for large libraries.</li>
+	<li>When updating relevant video tags, titles, or short descriptions to videos already distributed to YouTube, Video Cloud only updates changed metadata unless the <strong>One-time synchronization</strong> synchronization flag is checked. The video is not redistributed.</li>
+	<li>Deleting a video from your Video Cloud account, or changing video tags to those not assigned in your YouTube distribution settings, removes your video from YouTube typically within five minutes.&nbsp;</li>
+</ul>
+</div>
+
+<div class="BCL-concept" id="status">
+<h2>Monitoring YouTube distribution on the Distribution and Syndication Status page</h2>
+
+<p>You can monitor the status of your videos and YouTube channels on the Distribution and Syndication Status page, located at <a href="https://distribution.brightcove.com/public/status">https://distribution.brightcove.com/public/status</a>. Sign in with your Video Cloud user name and password, if you aren't already signed in.</p>
+
+<p>The Status page lists all of the YouTube channels that you have set up to sync with Video Cloud.</p>
+
+<div><img width="600" height="484" alt="Distribution and Syndication status page" src="http://img.brightcove.com/node4391-dist-channels.png" /></div>
+
+<p>Click<strong> </strong>the Channel Name to see more details about a channel. For each channel, the Status page lists information about your YouTube channel, including your channel name, tags, video selection rule, and status. The page also has sections for Media and Errors. The Media section will list videos that Video Cloud tried to sync to your YouTube channel. The Errors section will list any errors.</p>
+
+<p>For more information on monitoring YouTube distribution, see <a href="/node/8739">Monitoring Your YouTube Distribution Channel</a>.</p>
+</div>
+
+<div class="BCL-concept" id="trouble">
+<h2>Troubleshooting authorization issues</h2>
+
+<p>In order for Video Cloud to sync your videos with YouTube, Brightcove must remain authorized in your Google account. If no videos are syncing, it may be because the authorization token that allows Brightcove to access the Google account for your YouTube channel has been revoked.</p>
+
+<p>To check if the account has a token granting Brightcove access, while logged in with the Google account for the channel, go to this Google accounts page: <a href="https://accounts.google.com/b/0/IssuedAuthSubTokens">https://accounts.google.com/b/0/IssuedAuthSubTokens</a>. You should see "brightcove.com YouTube" listed if there is a current token.</p>
+
+<p>If there is no current token for Brightcove in your Google account, you can reauthorize Brightcove's access. To do this:</p>
+
+<ol>
+	<li>In Video Cloud Studio, open <strong>ADMIN &gt; YouTube Sync</strong>.</li>
+	<li>In the left navigation click <strong>YouTube Sync Settings</strong>.</li>
+	<li>Click on the channel you want to reauthorize.</li>
+	<li>Click <strong>Reauthorize Channel</strong>.</li>
+	<li>The Google Authorization window displays. If you are not currently signed in to Google, you will be prompted to sign in. Make sure you sign in with the correct Google user name and password that created this YouTube channel.</li>
+	<li>Click <strong>Allow Access</strong> to authorize brightcove.com to access your YouTube account.</li>
+</ol>
+</div>
