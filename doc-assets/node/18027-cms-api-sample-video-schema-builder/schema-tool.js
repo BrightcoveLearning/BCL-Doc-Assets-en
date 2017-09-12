@@ -72,7 +72,7 @@ var BCLS = (function (document, Handlebars) {
      * send API request to the proxy
      * @param  {Object} options options for the request
      */
-    function getMediaData(options) {
+    function getMediaData(options, callback) {
         var httpRequest = new XMLHttpRequest(),
             requestParams,
             // response handler
@@ -82,8 +82,7 @@ var BCLS = (function (document, Handlebars) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // add/remove folder video return no data
                             videoData = JSON.parse(httpRequest.responseText);
-                            videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
-                            generateSchema();
+                            callback(videoData);
                             // re-enable the buttons
                         } else {
                             alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -129,7 +128,14 @@ var BCLS = (function (document, Handlebars) {
         video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.requestType = "GET";
-        getMediaData(options);
+        getMediaData(options, function(response) {
+            videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
+            options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
+            getMediaData(options, function(response) {
+                videoData.total_plays = response.alltime_video_view;
+                generateSchema();
+            });
+        });
     });
 
     generateJSON_ld.addEventListener("click", function () {
@@ -143,7 +149,14 @@ var BCLS = (function (document, Handlebars) {
         video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.requestType = "GET";
-        getMediaData(options);
+        getMediaData(options, function(response) {
+            videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
+            options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
+            getMediaData(options, function(response) {
+                videoData.total_plays = response.alltime_video_view;
+                generateSchema();
+            });
+        });
     });
 
     publishingCode.addEventListener('click', function() {
