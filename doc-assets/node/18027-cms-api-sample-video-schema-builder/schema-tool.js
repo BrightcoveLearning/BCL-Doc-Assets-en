@@ -132,6 +132,7 @@ var BCLS = (function (document, Handlebars) {
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
             getMediaData(options, function(response) {
+                response = JSON.parse(response);
                 videoData.total_plays = response.alltime_video_views;
                 generateSchema();
             });
@@ -154,6 +155,7 @@ var BCLS = (function (document, Handlebars) {
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
             getMediaData(options, function(response) {
+                response = JSON.parse(response);
                 videoData.total_plays = response.alltime_video_views;
                 generateSchema();
             });
