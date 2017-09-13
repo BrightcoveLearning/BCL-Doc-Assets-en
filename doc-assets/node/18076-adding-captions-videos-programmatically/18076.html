@@ -1,0 +1,260 @@
+<style type="text/css">.vjs-text-track {
+                background-color: black;
+                font-size: medium;
+                font-weight: bold;
+            }
+</style>
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>Closed captions can be added to your videos to provide additional or interpretive information to individuals who wish to access it. Captions are necessary so the deaf and hard of hearing can access the audio portion of video presentations. To display captions for a video in the Brightcove player, you need to complete the following tasks:</p>
+
+<ul>
+	<li><a href="#captionsfile">Create a captions file for your video</a></li>
+	<li><a href="#pubcode">Modify the player publishing code to include a &lt;track&gt; tag</a></li>
+	<li><a href="#style">Style the captions</a></li>
+	<li><a href="#implementcode">Use code to add captions</a></li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information video-cloud-only">Captions can also be configured using Video Cloud Studio. For more information, see <a href="/node/15481">Adding Captions to Videos</a>.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="captionsfile">Creating caption files</h2>
+
+<p>To add captions to a video, you first need to create a caption file. The Brightcove Player requires that captions be in Web Video Text Tracks Format (WebVTT) format. The WebVTT file format is in plain text and contains time text data followed by the desired caption or subtitle text. A portion of a WebVTT file is shown below.</p>
+
+<pre class="line-numbers">
+<code class="language-html">WEBVTT
+
+00:00:00.000 --&gt; 00:00:07.080 align:middle line:90%
+
+00:00:07.080 --&gt; 00:00:10.280 align:middle line:84%
+Hi, I'm Bob Bailey, a Learning
+Specialist with Brightcove.
+
+00:00:10.280 --&gt; 00:00:12.780 align:middle line:84%
+In this video, you'll learn
+about how Video Cloud Studio is
+
+00:00:12.780 --&gt; 00:00:14.940 align:middle line:84%
+organized and get a
+brief overview of what
+
+00:00:14.940 --&gt; 00:00:17.490 align:middle line:90%
+you can accomplish using it.</code></pre>
+
+<p>For more information on the WebVTT format, see <a href="//dev.w3.org/html5/webvtt/">this link</a>. You should have a separate WebVTT file for each caption language you need to support. While there are many third-party tools to help create captions files, Brightcove has several partners that provide transcription, captioning and translation services. For a complete list of Brightcove partners, visit the <a href="//www.brightcove.com/en/partners/find-partner">Partners</a> section of our website.</p>
+</section>
+
+<section class="bcls-section video-cloud-only">
+<h2 id="Add_captions_to_videos">Add captions to videos</h2>
+
+<p>In Video Cloud, you can add your WebVTT captions to a video, either as a remote asset that you host, or by ingesting it into Video Cloud. Once you do that, the Brightcove player will automatically add the captions when it loads that video, and display the <strong>CC</strong> button in the player controls. For more details on adding captions to videos, see <a href="/node/17952">Working with Captions</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note: If you are hosting captions files on your own server, make sure the file is located at a URL that can be accessed by the Brightcove player. The server hosting the captions file should also have Cross-Origin Resource Sharing (CORS) enabled. You can read more about CORS <a href="/node/17916">here</a>.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="pubcode">Including a &lt;track&gt; tag</h2>
+
+<p>To associate WebVTT caption file(s) to a Brightcove player, you need to modify the In-Page embed code to include <code>&lt;track&gt;</code> tag for each caption file you have. For example:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;track kind="captions" src="&lt;location of caption file&gt;" srclang="en" label="English"&gt;</code></pre>
+
+<p>The <code>&lt;track&gt;</code> tag is used to specify subtitles, caption files or other files containing text, that should be visible when the media is playing. The steps to do this are outlined below.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note that 2- or 4-letter language codes can be used for the <code>srclang</code> attribute (e.g. <code>en</code> or <code>en-us</code>).</aside>
+
+<ol class="bcls-tasklist">
+	<li>Generate the <strong>Advanced</strong> (In-Page) embed code for your player. <span class="video-cloud-only">This can be done using the <a href="/node/14063">Media module</a> or the <a href="/node/15460">Players module</a>.</span><br />
+	Your code should look similar to this:
+	<pre class="video-cloud-only">
+<code class="language-html">&lt;video id="myPlayerID"
+  data-video-id="4230322585001"
+  data-account="20318290001"
+  data-player="default"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  width="640"
+  height="360"&gt;
+&lt;/video&gt;
+&lt;script src="//players.brightcove.net/20318290001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+
+	<pre class="player-only">
+<code class="language-html">&lt;video id="myPlayerID"
+  data-account="20318290001"
+  data-player="d508c6e1-efa7-4aad-ba91-1a8db9761b8c"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  width="640"
+  height="360"&gt;
+&lt;/video&gt;
+&lt;script src="//players.brightcove.net/20318290001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+
+	<aside class="bcls-aside bcls-aside--tip">To the <code>&lt;video&gt;</code> element, we added an <code>id</code> attribute with a value of <strong>myPlayerID</strong>. This is needed to get a reference to the player in step 3.</aside>
+	</li>
+	<li>Add <code>&lt;track&gt;</code> tag(s) inside of the <code>&lt;video&gt;</code> tag that point to location of all caption files. <span class="player-only">Player Studio does not currently provide a way for publishers to upload WebVTT caption files.</span> The URL for the caption file location must be less than 250 characters.<br />
+	<br />
+	In the example below, English, Japanese and French caption files have been specified. For a complete list of language codes, see the <a href="http://www.w3schools.com/tags/ref_language_codes.asp">HTML Language Code Reference</a>.
+	<pre class="video-cloud-only">
+<code class="language-html">&lt;video id="myPlayerID"
+  data-video-id="4230322585001"
+  data-account="20318290001"
+  data-player="default"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  width="640"
+  height="360"&gt;
+  &lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs.vtt" srclang="en" label="English"&gt;
+  &lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs-jp.vtt" srclang="ja" label="Japanese"&gt;
+  &lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs-fr.vtt" srclang="fr" label="French"&gt;
+&lt;/video&gt;
+&lt;script src="//players.brightcove.net/20318290001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+
+	<pre class="player-only">
+<code class="language-html">&lt;video id="myPlayerID"
+  data-account="20318290001"
+  data-player="d508c6e1-efa7-4aad-ba91-1a8db9761b8c"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  width="640"
+  height="360"&gt;
+  &lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs.vtt" srclang="en" label="English"&gt;
+  &lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs-jp.vtt" srclang="ja" label="Japanese"&gt;
+  &lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs-fr.vtt" srclang="fr" label="French"&gt;
+&lt;/video&gt;
+&lt;script src="//players.brightcove.net/20318290001/default_default/index.min.js"&gt;&lt;/script&gt;
+              </code></pre>
+	</li>
+	<li><strong>(Optional)</strong> To have captions automatically display when the video starts playing you have to make a couple of changes to your page. You have to add the <code>default</code> attribute to the <code>&lt;track&gt;</code> tag for the language to display and set and add a small amount of code. Note that the <code>default</code> attribute should only appear on one <code>&lt;track&gt;</code> tag. For example, to have the English captions display when the video starts playing, the <code>&lt;track&gt;</code> tag would be modified as follows:
+	<pre class="line-numbers">
+<code class="language-html">&lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs.vtt" srclang="en" label="English" default&gt;
+&lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs-jp.vtt" srclang="ja" label="Japanese"&gt;
+&lt;track kind="captions" src="http://solutions.brightcove.com/bcls/assets/captions/intro-vcs-fr.vtt" srclang="fr" label="French"&gt;</code></pre>
+
+	<p>The code needed to start the designated captions automatically is:</p>
+
+	<pre class="line-numbers">
+<code class="language-javascript">&lt;script type="text/javascript"&gt;
+  videojs('myPlayerID').ready(function(){
+    var myPlayer = this;
+    myPlayer.on("play", function () {
+      //If you want to start English as the caption automatically
+      myPlayer.textTracks()[1].mode = "showing";
+    });
+  });
+&lt;/script&gt;</code></pre>
+	</li>
+	<li>Publish the page with the player. When a player with associated captions is published, a <strong>CC</strong> button will appear on the player chrome.
+	<figure class="bcls-figure"><img class="bcls-image" alt="CC button on toolbar" src="//img.brightcove.com/cc-button.png" /></figure>
+	</li>
+	<li>Click the <strong>CC</strong> button to select a caption language and display the captions.
+	<figure class="bcls-figure"><img class="bcls-image" alt="captions menu" src="//img.brightcove.com/caption-select.png" /></figure>
+	</li>
+</ol>
+
+<aside class="bcls-aside bcls-aside--tip">Note: For viewers on iOS devices, when viewing videos with captions and ads, we suggest that you explicitly select a track and not set captions to Auto (Recommended) when the video is playing. Using the Auto (Recommended) setting may display incorrect subtitles for ads. Note that using the Auto (Recommended) setting does not affect the captions display for the actual video. Viewers will see video captions for ads but once the video starts playing (pre-rolls) or resumes (mid-rolls), captions will appear as expected.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="style">Styling captions</h2>
+
+<p>The default look and feel of the captions is subject to change so you may wish to style the captions. For information on styling captions, see <a href="/node/18314">Styling Captions</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="livestreamwithcaptions">Live streaming with captions</h2>
+
+<p>Up to this point in the document captions have been delivered as a separate file and associated with a video through the &lt;track&gt; element. This type of captions is sometimes referred to as <em>out-of-band</em>. The alternative method involves embedding the caption data directly into the video content, frequently live video streams, and is sometimes called <em>in-band</em> captions.</p>
+
+<p>Brightcove Player has support for in-band captions, and hence Live with captions, built into HLS, therefore no plugins are needed. Brightcove Player's implementation will work everywhere that native HLS isn't used. If native HLS is being used, support for in-band captions is OS and browser dependent. For instance, iOS's native HLS has full support for in-band captions.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="implementcode">Implement using code</h2>
+
+<p>It is possible to programmatically add text tracks for captions. The key method for this functionality is <code>addRemoteTextTrack()</code>, the syntax of which is:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">playerObject.addRemoteTextTrack({
+  kind: string,
+  language: string,
+  label: string,
+  src: string
+});</code></pre>
+
+<p>where:</p>
+
+<ul>
+	<li><code>kind</code> - Type of text track, for this use <strong>'captions'</strong></li>
+	<li><code>language</code> - Two letter language code, for example <strong>'en'</strong></li>
+	<li><code>label</code> - The language label which appears in the captions UI, for example <strong>'English'</strong></li>
+	<li><code>src</code> - URL to the WebVTT formatted caption file</li>
+</ul>
+
+<p>The function call returns an object of type <code>vjs.TextTrack</code>.</p>
+
+<p>Example usage:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">var frTrack = myPlayer.addRemoteTextTrack({
+  kind: 'captions',
+  language: 'fr',
+  label: 'French',
+  src: 'http://solutions.brightcove.com/bcls/captions/adding_captions_to_videos_french.vtt'
+});</code></pre>
+
+<p>You must wait for the <code>loadedmetadata</code> event to be dispatched before you use the <code>addRemoteTextTrack()</code> method. The following example shows the script block for adding English and French captions to a video.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;script type="text/javascript"&gt;
+  videojs("myPlayerID").ready(function(){
+    var myPlayer = this;
+
+    myPlayer.one("loadedmetadata",function(){
+
+      var enTrack = myPlayer.addRemoteTextTrack({
+        kind: 'captions',
+        language: 'en',
+        label: 'English',
+        src: 'http://solutions.brightcove.com/bcls/captions/adding_captions_to_videos.vtt'
+      });
+
+      var frTrack = myPlayer.addRemoteTextTrack({
+        kind: 'captions',
+        language: 'fr',
+        label: 'French',
+        src: 'http://solutions.brightcove.com/bcls/captions/adding_captions_to_videos_french.vtt'
+      });
+
+    });
+  });
+&lt;/script&gt;</code></pre>
+
+<p>The complementary method <code>textTracks()</code> enables you to retrieve all text tracks assigned to a player. The method returns a object of type <code>vjs.TextTrackList</code>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="limitations">Limitations</h2>
+
+<p>Captions are supported on the following device types and operating systems.</p>
+
+<ul>
+	<li>iOS 7+</li>
+	<li>Android 4+</li>
+	<li>Internet Explorer 8+</li>
+	<li>The latest Chrome, Safari, and Firefox browsers on desktops</li>
+</ul>
+</section>
+</article>
