@@ -1,42 +1,51 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
-<p>Dynamic Delivery Ingest now has a feature called <strong>Priority Queueing</strong> that allow publishers to submit ingest jobs to us with a desired priority setting to influence the order and timeliness of when the job will be processed.</p>
-<aside class="bcls-aside bcls-aside--warning">
-    <p>Note that Priority Queueing applies only to accounts that are enabled for <a href="/node/17949">Dynamic Delivery</a>. It cannot be used in accounts that use the older ingestion system.</p>
-    <p>If you would like to convert your account to use Dynamic Delivery, contact your account manager.</p>
-    <p>If you are not sure whether Dynamic Delivery is enabled for your account, the easiest way to tell is to open <a href="https://studio.brightcove.com">Studio</a> and go to the Upload Module. Click the Ingest Profile dropdown menu to expand it. If your account is enabled for Dynamic Delivery, you will see Dynamic Delivery profiles at the top of the list:</p>
-    <figure class="bcls-figure">
-        <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18439-dynamic-delivery-ingest-priority-queueing/18439-dd-profiles-in-upload-module.png" alt="Dynamic Delivery Profiles">
-        <figcaption class="bcls-caption--image">Dynamic Delivery Profiles</figcaption>
-    </figure>
-</aside>
+    <section class="bcls-section">
+        <h2 id="Introduction">Introduction</h2>
+        <p>Dynamic Delivery Ingest now has a feature called <strong>Priority Queueing</strong> that allow publishers to submit ingest jobs to us with a desired priority setting to influence the order and timeliness of when the job will be processed.</p>
+        <aside class="bcls-aside bcls-aside--warning">
+            <p>Note that Priority Queueing applies only to accounts that are enabled for <a href="/node/17949">Dynamic Delivery</a>. It cannot be used in accounts that use the older ingestion system.</p>
+            <p>If you would like to convert your account to use Dynamic Delivery, contact your account manager.</p>
+            <p>If you are not sure whether Dynamic Delivery is enabled for your account, the easiest way to tell is to open <a href="https://studio.brightcove.com">Studio</a> and go to the Upload Module. Click the Ingest Profile dropdown menu to expand it.
+                If your account is enabled for Dynamic Delivery, you will see Dynamic Delivery profiles at the top of the list:</p>
+            <figure class="bcls-figure">
+                <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18439-dynamic-delivery-ingest-priority-queueing/18439-dd-profiles-in-upload-module.png" alt="Dynamic Delivery Profiles">
+                <figcaption class="bcls-caption--image">Dynamic Delivery Profiles</figcaption>
+            </figure>
+        </aside>
+    </section>
+    <section class="bcls-section">
+        <h2 id="how-dynamic-delivery-ingestion-currently-works">How Dynamic Delivery ingestion currently works</h2>
+        <p>Dynamic Delivery Ingestion has a limit of 100 active jobs per account. When that limit is exceeded, the ingestion system will queue up additional requests for processing later. The size of the queue has a separate limit, and when that is reached
+            it will reject the ingestion request back to the customer (with a 409 error code). When jobs finish up, capacity is freed up and jobs that are queued will be picked up and processed one at a time, in the order they were received.</p>
+        <p>The video status in the CMS API does not reflect that the job was queued - the status will be <code>pending</code> whether the job is processing or queued.</p>
+    </section>
+    <section class="bcls-section">
+        <h2 id="How_Priority_Queueing_affects_ingestion">How Priority Queueing affects ingestion</h2>
+        <p>Priority queueing allows the user to add a <code>priority</code> flag to an ingest request. The allowable values for <code>priority</code> are <code>low</code> and <code>normal</code>. Any other value will cause the request to be rejected with
+            a 422 error code. When the user doesn't specify any priority, the default value of <code>normal</code> is used. Here is a brief description of how Priority Queueing changes how jobs are processed from the queue:</p>
+        <ol>
+            <li>If there are no queued jobs and there is capacity to run a job, then the job is run immediately. This applies to both low and normal priority jobs.</li>
+            <li>If there is is no capacity for another job to run, the job is queued.</li>
+            <li>If there are jobs queue, then any new jobs are also queued. This means that a new job can't start before queued jobs.</li>
+            <li>When there is capacity to run another job and there are queued jobs, a job is taken from the queue:</li>
+            <ul>
+                <li>If there are ANY normal priority jobs in the queue, the oldest normal priority job will be picked.</li>
+                <li>If there are NO normal priority jobs in the queue, then the oldest low priority job will be picked.</li>
+            </ul>
+            <li>Normal and Low priority jobs are treated the <strong>same</strong> for how many running jobs there can be. The total number of jobs processing, whatever their priority, is limited to 100 per account.</li>
+            <li>There are <strong>separate</strong> quotas for how many normal and low priority jobs can be queued.</li>
+        </ol>
+    </section>
+    <section class="bcls-section">
+    <h2 id="What_to_watch_out_for">What to watch out for</h2>
+    <p>When you create a Dynamic Ingest job, the <a href="/node/18374">ingest profile</a> specified is copied by the Dynamic Ingest system, and that profile will be used for processing <em>even if the profile has been modified</em> since the job was submitted.</p>
+    <p>For low priority jobs, where processing could be delayed for a significant amount of time in some cases, the profile specified in the request might be modified before the job is actually processed. If that happens, <strong>the renditions specified in the profile at the time the job was submitted will be used.</strong></p>
+    <p>If you wish to get the renditions as they are specified in the updated profile, you will need to retranscode the video with the updated profile after it has been processed.</p>
 </section>
-<section class="bcls-section">
-    <h2 id="how-dynamic-delivery-ingestion-currently-works">How Dynamic Delivery ingestion currently works</h2>
-    <p>Dynamic Delivery Ingestion has a limit of 100 active jobs per account.  When that limit is exceeded, the ingestion system will queue up additional requests for processing later.  The size of the queue has a separate limit, and when that is reached it will reject the ingestion request back to the customer (with a 409 error code).  When jobs finish up, capacity is freed up and jobs that are queued will be picked up and processed one at a time, in the order they were received.</p>
-    <p>The video status in the CMS API does not reflect that the job was queued - the status will be <code>pending</code> whether the job is processing or queued.</p>
-</section>
-<section class="bcls-section">
-    <h2 id="How_Priority_Queueing_affects_ingestion">How Priority Queueing affects ingestion</h2>
-    <p>Priority queueing allows the user to add a <code>priority</code> flag to an ingest request.  The allowable values for <code>priority</code> are <code>low</code> and <code>normal</code>.  Any other value will cause the request to be rejected with a 422 error code.  When the user doesn't specify any priority, the default value of <code>normal</code> is used. Here is a brief description of how Priority Queueing changes how jobs are processed from the queue:</p>
-    <ol>
-        <li>If there are no queued jobs and there is capacity to run a job, then the job is run immediately. This applies to both low and normal priority jobs.</li>
-        <li>If there is is no capacity for another job to run, the job is queued.</li>
-        <li>If there are jobs queue, then any new jobs are also queued. This means that a new job can't start before queued jobs.</li>
-        <li>When there is capacity to run another job and there are queued jobs, a job is taken from the queue:</li>
-        <ul>
-            <li>If there are ANY normal priority jobs in the queue, the oldest normal priority job will be picked.</li>
-            <li>If there are NO normal priority jobs in the queue, then the oldest low priority job will be picked.</li>
-        </ul>
-        <li>Normal and Low priority jobs are treated the <strong>same</strong> for how many running jobs there can be.  The total number of jobs processing, whatever their priority, is limited to 100 per account.</li>
-        <li>There are <strong>separate</strong> quotas for how many normal and low priority jobs can be queued.</li>
-            </ol>
-</section>
-<section class="bcls-section">
-    <h2 id="sample_request">Sample requests</h2>
-    <p>Below is a sample of an ingest request body with low priority:</p>
-<pre class="line-numbers"><code class="language-json">{
+    <section class="bcls-section">
+        <h2 id="sample_request">Sample requests</h2>
+        <p>Below is a sample of an ingest request body with low priority:</p>
+        <pre class="line-numbers"><code class="language-json">{
     "master": {
         "url": "http://host/master.mp4"
     },
@@ -46,8 +55,8 @@
         "http://mydomain.com/di-callbacks.php"
     ]
 }</code></pre>
-<p>And here's a sample of a normal priority job:</p>
-<pre class="line-numbers"><code class="language-json">{
+        <p>And here's a sample of a normal priority job:</p>
+        <pre class="line-numbers"><code class="language-json">{
     "master": {
         "url": "http://host/master.mp4"
     },
@@ -57,8 +66,8 @@
         "http://mydomain.com/di-callbacks.php"
     ]
 }</code></pre>
-<p>Note that since <code>normal</code> is the default value, the previous request would be processed in exactly the same way as the following one:</p>
-<pre class="line-numbers"><code class="language-json">{
+        <p>Note that since <code>normal</code> is the default value, the previous request would be processed in exactly the same way as the following one:</p>
+        <pre class="line-numbers"><code class="language-json">{
     "master": {
         "url": "http://host/master.mp4"
     },
@@ -67,22 +76,22 @@
         "http://mydomain.com/di-callbacks.php"
         ]
 }</code></pre>
-</section>
-<section class="bcls-section">
-    <h2 id="Using_the_priority_queue">Using the priority queue</h2>
-    <p>From the last example in the previous section, it should be clear that if you do <strong>not</strong> use the <code>priority</code> field in your ingest jobs, they will continue to be processed exactly as they have been.</p>
-    <p>The addition of the <code>priority</code> field will benefit you mainly if:</p>
-    <ol>
-        <li>You ingest a fairly large number of videos</li>
-        <li>It is critical to get <em>some</em> of your videos online as soon as possible, while there is no urgency to publish others (because the content is less important, or you do not plan to publish the videos immediately anyway)</li>
-        <li>You have videos that you want to retranscode, but you do not want that to slow down ingestion of new content</li>
-    </ol>
-</section>
-<section class="bcls-section">
-    <h2 id="How_low_priority_queue_works">How the low priority queue works</h2>
-    <p>This section explains how the low priority queue works.</p>
-    <p>There is no guarantee when normal or low priority jobs will be started. However, normal priority jobs will always be started before low priority jobs.</p>
-    <p>If you have a steady, fast rate of submitting normal priority jobs, it could take considerable time before low priority jobs are started.</p>
-    <p>Low priority jobs may take longer to start and also longer to process than normal priority for the same video.</p>
-</section>
+    </section>
+    <section class="bcls-section">
+        <h2 id="Using_the_priority_queue">Using the priority queue</h2>
+        <p>From the last example in the previous section, it should be clear that if you do <strong>not</strong> use the <code>priority</code> field in your ingest jobs, they will continue to be processed exactly as they have been.</p>
+        <p>The addition of the <code>priority</code> field will benefit you mainly if:</p>
+        <ol>
+            <li>You ingest a fairly large number of videos</li>
+            <li>It is critical to get <em>some</em> of your videos online as soon as possible, while there is no urgency to publish others (because the content is less important, or you do not plan to publish the videos immediately anyway)</li>
+            <li>You have videos that you want to retranscode, but you do not want that to slow down ingestion of new content</li>
+        </ol>
+    </section>
+    <section class="bcls-section">
+        <h2 id="How_low_priority_queue_works">How the low priority queue works</h2>
+        <p>This section explains how the low priority queue works.</p>
+        <p>There is no guarantee when normal or low priority jobs will be started. However, normal priority jobs will always be started before low priority jobs.</p>
+        <p>If you have a steady, fast rate of submitting normal priority jobs, it could take considerable time before low priority jobs are started.</p>
+        <p>Low priority jobs may take longer to start and also longer to process than normal priority for the same video.</p>
+    </section>
 </article>
