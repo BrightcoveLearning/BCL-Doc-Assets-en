@@ -64,16 +64,6 @@
 <pre class="line-numbers">
 <code class="language-json">{
     "source": "low",
-    "segment_video_snapshots": "true",
-    "url": "s3://example-bucket/hls-audio-only/hls-audio-only.m3u8",
-    "copy_audio": "true",
-    "skip_video": "true",
-    "label": "hls-audio-only",
-    "type": "segmented",
-    "format": "aac"
-},
-{
-    "source": "low",
     "format": "ts",
     "copy_audio": "true",
     "copy_video": "true",
@@ -97,10 +87,6 @@
         "bandwidth": 256
     },
     {
-        "path": "hls-audio-only/hls-audio-only.m3u8",
-        "bandwidth": 56
-    },
-    {
         "path": "hls-high/hls-high.m3u8",
         "bandwidth": 1056
     }
@@ -112,8 +98,6 @@
 <p>The resulting files from these outputs are segmented outputs, targeting different bandwidths, plus a playlist file for the playback device to know the available streams.</p>
 
 <p>Each segmented output includes the <a href="/node/17852#source">source</a>, and specifies one of the outputs listed earlier. They also include the <a href="/node/17855#copy-audio">copy_audio</a> and <a href="/node/17855#copy-video">copy_video</a> options, which tell Zencoder to use the audio and video streams from the source file and repackage them in the new container, rather than transcode them. Finally, the outputs also specify a <a href="/node/17852#type">type</a> of segmented and a <a href="/node/17856#format">format</a> of ts, plus a <a href="/node/17852#url">url</a> with an extension of .m3u8, so that Zencoder knows to create segmented HLS files.</p>
-
-<p>The only exception among these outputs is the first, which is an audio-only stream for playback on low-bandwidth devices. Apple recommends/requires this option, but it doesn't need to be made from an audio-only output, in fact it's better if its source is a video. This helps keep the audio segments in sync with their higher-bitrate video counterparts, because the segmenting is done around the frames, which the audio-only file doesn't have. Segmenting from an audio-only file increases the likelihood that the audio-segments can get out of sync with their video counterparts. It also means that the <a href="/node/17863#segment-video-snapshots">segment_video_snapshots</a> option can be used.</p>
 
 <p>Finally, there is also a playlist generated that references each of the segmented outputs. Note that the first file refrenced in the playlist is the low bitrate video; the device playing the video will generally load the first stream listed in the playlist initially, and switch to other streams as necessary. This means that the first 10 seconds of playback will use this stream, after which the device will have enough information to select the appropriate stream to play.</p>
 
@@ -164,16 +148,6 @@
     },
     {
         "source": "low",
-        "segment_video_snapshots": "true",
-        "url": "s3://example-bucket/hls-audio-only/hls-audio-only.m3u8",
-        "copy_audio": "true",
-        "skip_video": "true",
-        "label": "hls-audio-only",
-        "type": "segmented",
-        "format": "aac"
-    },
-    {
-        "source": "low",
         "format": "ts",
         "copy_audio": "true",
         "copy_video": "true",
@@ -195,10 +169,6 @@
         {
             "path": "hls-low/hls-low.m3u8",
             "bandwidth": 256
-        },
-        {
-            "path": "hls-audio-only/hls-audio-only.m3u8",
-            "bandwidth": 56
         },
         {
             "path": "hls-high/hls-high.m3u8",
