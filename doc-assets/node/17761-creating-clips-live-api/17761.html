@@ -88,6 +88,28 @@
 
 <p>The <code>VC_CREDENTIALS</code> here is a reference to a set of client credentials for the Dynamic Ingest system, which are set up in your Live account by the Live team.</p>
 </section>
+<section class="bcls-section">
+<h2 id="Request_body_s3">Request body - S3</h2>
+
+<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to an S3 bucket:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "live_job_id":"{{job_id}}",
+    "outputs":[
+        {
+            "label": "last_30",
+            "duration": 30,
+            "url": "s3://<span class="bcls-input">YOUR_BUCKET_NAME</span>/<span class="bcls-input">file_name.mp4</span>",
+            "credentials": "<span class="bcls-input">s3-credentials</span>"
+        }
+    ],
+    "notifications": ["<span class="bcls-input">http://myserver.com/api/notification_listener?type=jvod</span>"]
+}</code></pre>
+
+<p>In this example, we are creating a clip of 30 second duration and sending it to an S3 bucket. We provide the bucket URL including the file name for clip, and a string that is the name of saved S3 bucket credentials - the credentials can be set up for your account by Brightcove Support.</p>
+
+</section>
 
 <section class="bcls-section">
 <h2 id="Request_body_fields">Request body fields</h2>
