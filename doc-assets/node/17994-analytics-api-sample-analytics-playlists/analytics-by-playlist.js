@@ -254,7 +254,6 @@ var BCLS = (function (window, document, Pikaday) {
                 $request.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     if (format === 'json') {
-                        response = JSON.parse(response);
                         $responseFrame.textContent = JSON.stringify(response, null, '  ');
                     } else {
                         $responseFrame.textContent = response;
