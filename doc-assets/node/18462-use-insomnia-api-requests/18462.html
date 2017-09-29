@@ -1,137 +1,152 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="change-to-section-name">Install Postman</h2>
+    <section class="bcls-section">
+        <h2 id="Install_insomnia">Install Insomnia</h2>
 
-<p>Get Postman from <a href="//www.getpostman.com">www.getpostman.com</a>. Postman can be installed as a Chrome or Mac app. We recommend getting the desktop client, but the Chrome version will run on any platform and is identical in functionality and appearance.</p>
-</section>
+        <p>Get Insomnia from <a href="https://insomnia.rest">https://insomnia.rest</a>. Insomnia can be installed on Mac, Linux, or Windows systems.</p>
 
-<section class="bcls-section">
-<h2 id="getCredentials">Get client credentials</h2>
+        <p>Insomnia can be used to make requests to any of Brightcove's RESTful APIs. Most of the APIs use OAuth2 for authentication, and that is what we will demonstrate in this document. However, you can also use it for the APIs that do not use OAuth, by simply setting the appropriate <code>Authorization</code> header. Here is what that header will look like for non-OAuth API requests:</p>
+        <dl>
+            <dt>OAuth API (create credentials request <strong>only</strong>)</dt>
+            <dd>
+<pre><code class="language-http"></code></pre>
+            </dd>
+            <dt></dt>
+            <dd></dd>
+            <dt></dt>
+            <dd></dd>
+            <dt></dt>
+            <dd></dd>
+        </dl>
+    </section>
 
-<p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get you client credentials in Studio by following the directions in <a href="/node/14056">Managing API Authentication Credentials</a>. In the steps below, we will be making Player Management API requests using Postman, so your credentials should have at least the following permissions:</p>
+    <section class="bcls-section">
+        <h2 id="getCredentials">Get client credentials</h2>
 
-<ul>
-	<li><strong>Players</strong>: <strong>Read/Write</strong></li>
-</ul>
+        <p>To work with the Brightcove APIs, you will need client credentials for the account and API(s) you wish to use. Get you client credentials in Studio by following the directions in <a href="/node/14056">Managing API Authentication Credentials</a>. In the steps below, we will be making Player Management API requests using Insomnia, so your credentials should have at least the following permissions:</p>
 
-<p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you get credentials that will work for multiple accounts if you like.</p>
+        <ul>
+            <li><strong>Players</strong>: <strong>Read/Write</strong></li>
+        </ul>
 
-<aside class="bcls-aside bcls-aside--information">In order to generate client credentials you must have Admin permissions for Studio, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
-</section>
+        <p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you get credentials that will work for multiple accounts if you like.</p>
 
-<section class="bcls-section">
-<h2 id="usingPostman">Using Postman</h2>
+        <aside class="bcls-aside bcls-aside--information">In order to generate client credentials you must have Admin permissions for Studio, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
+    </section>
 
-<p>Once you have your client credentials, you are ready to start using Postman. The steps below will walk you through making some <strong>Player Management API</strong> requests using Postman.</p>
+    <section class="bcls-section">
+        <h2 id="usingInsomnia">Using Insomnia</h2>
 
-<h3>Setting up Postman to get access tokens</h3>
+        <p>Once you have your client credentials, you are ready to start using Insomnia. The steps below will walk you through making some <strong>Player Management API</strong> requests using Insomnia.</p>
 
-<ol class="bcls-tasklist">
-	<li>Launch the Postman app.</li>
-	<li>Go to the <strong>Authorization</strong> section:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Postman Authorization Section" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-authorization-section.png" />
-	<figcaption class="bcls-caption--image">Postman Authorization Section</figcaption>
-	</figure>
-	</li>
-	<li>For the <strong>Type</strong>, select <strong>OAuth 2.0</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Authorization Type" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-authorization-type.png" />
-	<figcaption class="bcls-caption--image">Authorization Type</figcaption>
-	</figure>
-	</li>
-	<li>Click <strong>Get New Access Token</strong></li>
-	<li>In the dialog, enter the following information:
-	<ul>
-		<li><strong>Token name</strong>: (enter some name)</li>
-		<li><strong>Auth URL</strong>: (leave blank)</li>
-		<li><strong>Access Token URL</strong>: <code>https://oauth.brightcove.com/v3/access_token </code></li>
-		<li><strong>Client ID</strong>: (enter your client id)</li>
-		<li><strong>Client Secret</strong>: (enter your client secret)</li>
-		<li><strong>Scope</strong>: (leave blank)</li>
-		<li><strong>Grant Type</strong>: Client Credentials</li>
-		<li>Check <strong>Request Access Token Locally</strong></li>
-	</ul>
+        <h3>Setting up Insomnia to get access tokens</h3>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Grant Access Token Dialog" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-get-new-access-token.png" />
-	<figcaption class="bcls-caption--image">Grant Access Token Dialog</figcaption>
-	</figure>
-	</li>
-	<li>Click <strong>Request Token</strong></li>
-	<li>Click on the name of the token to see you now have access to the new token:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Access Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-access-token.png" />
-	<figcaption class="bcls-caption--image">Access Token</figcaption>
-	</figure>
-	</li>
-	<li>To use this token, select it, make sure <strong>Add token to</strong> selector is set to <strong>Header</strong>, and click <strong>Use Token</strong>
-	<figure class="bcls-figure"><img class="bcls-image" alt="Set Access Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-set-add-token-to.png" />
-	<figcaption class="bcls-caption--image">Set Access Token</figcaption>
-	</figure>
-	</li>
-</ol>
+        <ol class="bcls-tasklist">
+            <li>Launch the Insomnia app.</li>
+            <li>Go to the <strong>Authorization</strong> section:
+                <figure class="bcls-figure"><img class="bcls-image" alt="Insomnia Authorization Section" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-authorization-section.png" />
+                    <figcaption class="bcls-caption--image">Insomnia Authorization Section</figcaption>
+                </figure>
+            </li>
+            <li>For the <strong>Type</strong>, select <strong>OAuth 2.0</strong>:
+                <figure class="bcls-figure"><img class="bcls-image" alt="Authorization Type" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-authorization-type.png" />
+                    <figcaption class="bcls-caption--image">Authorization Type</figcaption>
+                </figure>
+            </li>
+            <li>Click <strong>Get New Access Token</strong></li>
+            <li>In the dialog, enter the following information:
+                <ul>
+                    <li><strong>Token name</strong>: (enter some name)</li>
+                    <li><strong>Auth URL</strong>: (leave blank)</li>
+                    <li><strong>Access Token URL</strong>: <code>https://oauth.brightcove.com/v3/access_token </code></li>
+                    <li><strong>Client ID</strong>: (enter your client id)</li>
+                    <li><strong>Client Secret</strong>: (enter your client secret)</li>
+                    <li><strong>Scope</strong>: (leave blank)</li>
+                    <li><strong>Grant Type</strong>: Client Credentials</li>
+                    <li>Check <strong>Request Access Token Locally</strong></li>
+                </ul>
 
-<aside class="bcls-aside bcls-aside--information">Your token will expire after 5 minutes. When it does, your API requests will return an <strong>Unauthorized</strong> error. When that happens, just delete the token and click <strong>Get New Access Token</strong> again. Postman will remember all the information you entered into the dialog before, so you won't have to enter it again. Don't forget you need to click the <strong>Use Token</strong> button after you create a new one.</aside>
-</section>
+                <figure class="bcls-figure"><img class="bcls-image" alt="Grant Access Token Dialog" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-get-new-access-token.png" />
+                    <figcaption class="bcls-caption--image">Grant Access Token Dialog</figcaption>
+                </figure>
+            </li>
+            <li>Click <strong>Request Token</strong></li>
+            <li>Click on the name of the token to see you now have access to the new token:
+                <figure class="bcls-figure"><img class="bcls-image" alt="Access Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-access-token.png" />
+                    <figcaption class="bcls-caption--image">Access Token</figcaption>
+                </figure>
+            </li>
+            <li>To use this token, select it, make sure <strong>Add token to</strong> selector is set to <strong>Header</strong>, and click <strong>Use Token</strong>
+                <figure class="bcls-figure"><img class="bcls-image" alt="Set Access Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-set-add-token-to.png" />
+                    <figcaption class="bcls-caption--image">Set Access Token</figcaption>
+                </figure>
+            </li>
+        </ol>
 
-<section class="bcls-section">
-<h2 id="getRequest">Send GET request</h2>
+        <aside class="bcls-aside bcls-aside--information">Your token will expire after 5 minutes. When it does, your API requests will return an <strong>Unauthorized</strong> error. When that happens, just delete the token and click <strong>Get New Access Token</strong> again. Insomnia will remember all
+            the information you entered into the dialog before, so you won't have to enter it again. Don't forget you need to click the <strong>Use Token</strong> button after you create a new one.</aside>
+    </section>
 
-<p>Now we are ready to make API requests.</p>
+    <section class="bcls-section">
+        <h2 id="getRequest">Send GET request</h2>
 
-<h3>Make a GET request</h3>
+        <p>Now we are ready to make API requests.</p>
 
-<ol class="bcls-tasklist">
-	<li>Now enter the following URL into the <strong>Enter request URL</strong> field, substituting your account id for {account_id}:
+        <h3>Make a GET request</h3>
 
-	<pre class="line-numbers">
+        <ol class="bcls-tasklist">
+            <li>Now enter the following URL into the <strong>Enter request URL</strong> field, substituting your account id for {account_id}:
+
+                <pre class="line-numbers">
 <code class="language-http">https://players.api.brightcove.com/v1/accounts/{account_id}/players
 </code>
 </pre>
-	</li>
-	<li>Leave the method as GET, and click <strong>Send</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="GET Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-get-request-pm.png" />
-	<figcaption class="bcls-caption--image">GET Request</figcaption>
-	</figure>
-	</li>
-	<li>The response should look something like this:
-	<figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-get-response-pm.png" />
-	<figcaption class="bcls-caption--image">GET Response</figcaption>
-	</figure>
+            </li>
+            <li>Leave the method as GET, and click <strong>Send</strong>:
+                <figure class="bcls-figure"><img class="bcls-image" alt="GET Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-get-request-pm.png" />
+                    <figcaption class="bcls-caption--image">GET Request</figcaption>
+                </figure>
+            </li>
+            <li>The response should look something like this:
+                <figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-get-response-pm.png" />
+                    <figcaption class="bcls-caption--image">GET Response</figcaption>
+                </figure>
 
-	<aside class="bcls-aside bcls-aside--information">If you get an Unauthorized error, remember that you may need to get a new access token.</aside>
-	</li>
-</ol>
-</section>
+                <aside class="bcls-aside bcls-aside--information">If you get an Unauthorized error, remember that you may need to get a new access token.</aside>
+            </li>
+        </ol>
+    </section>
 
-<section class="bcls-section">
-<h2 id="postRequest">Send POST request</h2>
+    <section class="bcls-section">
+        <h2 id="postRequest">Send POST request</h2>
 
-<p>Now we will send a POST request with some data. In this case we will create a new video object using the Player Management API.</p>
+        <p>Now we will send a POST request with some data. In this case we will create a new video object using the Player Management API.</p>
 
-<h3>Make a POST request</h3>
+        <h3>Make a POST request</h3>
 
-<ol class="bcls-tasklist">
-	<li>Use the same URL as you did for the GET request steps above, but now choose <strong>POST</strong> to be the selected HTTP method.
+        <ol class="bcls-tasklist">
+            <li>Use the same URL as you did for the GET request steps above, but now choose <strong>POST</strong> to be the selected HTTP method.
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="POST Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-pm.png" />
-	<figcaption class="bcls-caption--image">POST Request</figcaption>
-	</figure>
-	</li>
-	<li>Click the <strong>Headers</strong> button:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Headers Section" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-headers-section.png" />
-	<figcaption class="bcls-caption--image">Headers Section</figcaption>
-	</figure>
-	</li>
-	<li>Click on "key" to enter a new <strong>key - value</strong> pair <strong>Content-Type - application/json</strong>. Simply begin typing in the input areas and you will be supplied with options from which you can choose the indicated values.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Header" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-add-header.png" />
-	<figcaption class="bcls-caption--image">Add Header</figcaption>
-	</figure>
-	</li>
-	<li>Click the <strong>Body</strong> section just under the URL, then the <strong>raw</strong> radio button:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-select.png" />
-	<figcaption class="bcls-caption--image">Request Body</figcaption>
-	</figure>
-	</li>
-	<li>For the raw data, enter the following JSON code for the body (the screenshot following the JSON shows how the request should appear):
-	<pre class="line-numbers player-only">
+                <figure class="bcls-figure"><img class="bcls-image" alt="POST Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-post-request-pm.png" />
+                    <figcaption class="bcls-caption--image">POST Request</figcaption>
+                </figure>
+            </li>
+            <li>Click the <strong>Headers</strong> button:
+                <figure class="bcls-figure"><img class="bcls-image" alt="Headers Section" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-headers-section.png" />
+                    <figcaption class="bcls-caption--image">Headers Section</figcaption>
+                </figure>
+            </li>
+            <li>Click on "key" to enter a new <strong>key - value</strong> pair <strong>Content-Type - application/json</strong>. Simply begin typing in the input areas and you will be supplied with options from which you can choose the indicated values.
+                <figure class="bcls-figure"><img class="bcls-image" alt="Add Header" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-post-add-header.png" />
+                    <figcaption class="bcls-caption--image">Add Header</figcaption>
+                </figure>
+            </li>
+            <li>Click the <strong>Body</strong> section just under the URL, then the <strong>raw</strong> radio button:
+                <figure class="bcls-figure"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-post-request-body-select.png" />
+                    <figcaption class="bcls-caption--image">Request Body</figcaption>
+                </figure>
+            </li>
+            <li>For the raw data, enter the following JSON code for the body (the screenshot following the JSON shows how the request should appear):
+                <pre class="line-numbers player-only">
 <code class="language-json">{
 "name": "MySamplePlayer",
 "configuration": {
@@ -146,7 +161,7 @@
 </code>
 </pre>
 
-	<pre class="line-numbers video-cloud-only">
+                <pre class="line-numbers video-cloud-only">
 <code class="language-json">{
 "name": "MySamplePlayer",
 "configuration": {}
@@ -155,81 +170,82 @@
 </code>
 </pre>
 
-	<figure class="bcls-figure player-only"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-pm.png" />
-	<figcaption class="bcls-caption--image">Request Body</figcaption>
-	</figure>
+                <figure class="bcls-figure player-only"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-post-request-body-pm.png" />
+                    <figcaption class="bcls-caption--image">Request Body</figcaption>
+                </figure>
 
-	<figure class="bcls-figure video-cloud-only"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-vc.png" />
-	<figcaption class="bcls-caption--image">Request Body</figcaption>
-	</figure>
-	</li>
-	<li>Click <strong>Send</strong>.
-	<aside class="bcls-aside bcls-aside--information">If you have recently submitted a request you may not be asked to authenticate again. If you get an Unauthorized error, request a new access token and click Send again.</aside>
-	</li>
-	<li>
-	<p>Your response will look similar to the following (You can click the <strong>Pretty</strong> button for more nicely formatted JSON):</p>
+                <figure class="bcls-figure video-cloud-only"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-post-request-body-vc.png" />
+                    <figcaption class="bcls-caption--image">Request Body</figcaption>
+                </figure>
+            </li>
+            <li>Click <strong>Send</strong>.
+                <aside class="bcls-aside bcls-aside--information">If you have recently submitted a request you may not be asked to authenticate again. If you get an Unauthorized error, request a new access token and click Send again.</aside>
+            </li>
+            <li>
+                <p>Your response will look similar to the following (You can click the <strong>Pretty</strong> button for more nicely formatted JSON):</p>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="POST Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-response-pm.png" />
-	<figcaption class="bcls-caption--image">POST Response</figcaption>
-	</figure>
-	</li>
-	<li>You can verify that your player was created by checking in the Players section of Studio.</li>
-</ol>
-</section>
+                <figure class="bcls-figure"><img class="bcls-image" alt="POST Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-post-response-pm.png" />
+                    <figcaption class="bcls-caption--image">POST Response</figcaption>
+                </figure>
+            </li>
+            <li>You can verify that your player was created by checking in the Players section of Studio.</li>
+        </ol>
+    </section>
 
-<section class="bcls-section">
-<h2 id="environmentVariables">Environment variables</h2>
+    <section class="bcls-section">
+        <h2 id="environmentVariables">Environment variables</h2>
 
-<p>Although you can create client credentials for multiple accounts and any combination of API operations, you may wish to maintain greater security by limiting the scope of your credentials to a single account and API (or even specific API operations). If so, you can take advantage of Postman's <strong>environment variables</strong> to simplify testing requests across multiple accounts and APIs. The key is to set up environments corresponding to each set of client credentials that you use.</p>
+        <p>Although you can create client credentials for multiple accounts and any combination of API operations, you may wish to maintain greater security by limiting the scope of your credentials to a single account and API (or even specific API operations).
+            If so, you can take advantage of Insomnia's <strong>environment variables</strong> to simplify testing requests across multiple accounts and APIs. The key is to set up environments corresponding to each set of client credentials that you use.</p>
 
-<p>Below are the steps for creating and using environment variables for the <code>client_id </code> and <code>client_secret </code>.</p>
+        <p>Below are the steps for creating and using environment variables for the <code>client_id </code> and <code>client_secret </code>.</p>
 
-<ol class="bcls-tasklist">
-	<li>Click the gear menu in the top-right Postman and select <strong>Manage Environments.</strong>
+        <ol class="bcls-tasklist">
+            <li>Click the gear menu in the top-right Insomnia and select <strong>Manage Environments.</strong>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Environments Menu" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-environments-menu.png" />
-	<figcaption class="bcls-caption--image">Environments Menu</figcaption>
-	</figure>
-	</li>
-	<li>In the <strong>Manage Environments</strong> dialog, click <strong>Add</strong>.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-add-environment.png" />
-	<figcaption class="bcls-caption--image">Add Environment</figcaption>
-	</figure>
-	</li>
-	<li>For the new environment, enter:
-	<ul>
-		<li>A name (whatever you like)</li>
-		<li>An environment variable called <code>client_id </code> with a value of your client id</li>
-		<li>An environment variable called <code>client_secret </code> with a value of your client secret</li>
-	</ul>
+                <figure class="bcls-figure"><img class="bcls-image" alt="Environments Menu" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-environments-menu.png" />
+                    <figcaption class="bcls-caption--image">Environments Menu</figcaption>
+                </figure>
+            </li>
+            <li>In the <strong>Manage Environments</strong> dialog, click <strong>Add</strong>.
+                <figure class="bcls-figure"><img class="bcls-image" alt="Add Environment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-add-environment.png" />
+                    <figcaption class="bcls-caption--image">Add Environment</figcaption>
+                </figure>
+            </li>
+            <li>For the new environment, enter:
+                <ul>
+                    <li>A name (whatever you like)</li>
+                    <li>An environment variable called <code>client_id </code> with a value of your client id</li>
+                    <li>An environment variable called <code>client_secret </code> with a value of your client secret</li>
+                </ul>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-add-environment-variables.png" />
-	<figcaption class="bcls-caption--image">Add Environment Variables</figcaption>
-	</figure>
-	</li>
-	<li>Click <strong>Add</strong> to add the environment</li>
-	<li>Optionally, if you use Postman on multiple systems, you can share the environment and be able to access it on your other systems if you upgrade to Postman Pro. To do this, click the <strong>Share</strong> button in the environment listing.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Share an Environment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-share-environment.png" />
-	<figcaption class="bcls-caption--image">Share an Environment</figcaption>
-	</figure>
-	</li>
-	<li>If you do share, in the <strong>Environment Templates</strong> dialog, click <strong>Share</strong> to share the environment.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment to Shared Environments" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-share-environment2.png" />
-	<figcaption class="bcls-caption--image">Add Environment to Shared Environments</figcaption>
-	</figure>
-	</li>
-	<li>Add more environments for additional client credentials</li>
-	<li>Close the <strong>Manage Environments</strong> dialog to return to Postman and select one of your environments from the menu.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Select an Enviroment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-environments-menu2.png" />
-	<figcaption class="bcls-caption--image">Select an Environment</figcaption>
-	</figure>
-	</li>
-	<li>Now click <strong>Get New Access Token</strong> again, but change the hard-coded values for Client ID and Client Secret to point to the environment variables <code>{{client_id}} </code> and <code>{{client_secret}} </code>
-	<figure class="bcls-figure"><img class="bcls-image" alt="Use Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-use-environment-variables.png" />
-	<figcaption class="bcls-caption--image">Use Environment Variables</figcaption>
-	</figure>
-	</li>
-	<li>Postman will remember these values, so when you change to a different environment for another API or account, you will be able to get access tokens without changing the client id and client secret values.</li>
-</ol>
-</section>
+                <figure class="bcls-figure"><img class="bcls-image" alt="Add Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-add-environment-variables.png" />
+                    <figcaption class="bcls-caption--image">Add Environment Variables</figcaption>
+                </figure>
+            </li>
+            <li>Click <strong>Add</strong> to add the environment</li>
+            <li>Optionally, if you use Insomnia on multiple systems, you can share the environment and be able to access it on your other systems if you upgrade to Insomnia Pro. To do this, click the <strong>Share</strong> button in the environment listing.
+                <figure class="bcls-figure"><img class="bcls-image" alt="Share an Environment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-share-environment.png" />
+                    <figcaption class="bcls-caption--image">Share an Environment</figcaption>
+                </figure>
+            </li>
+            <li>If you do share, in the <strong>Environment Templates</strong> dialog, click <strong>Share</strong> to share the environment.
+                <figure class="bcls-figure"><img class="bcls-image" alt="Add Environment to Shared Environments" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-share-environment2.png" />
+                    <figcaption class="bcls-caption--image">Add Environment to Shared Environments</figcaption>
+                </figure>
+            </li>
+            <li>Add more environments for additional client credentials</li>
+            <li>Close the <strong>Manage Environments</strong> dialog to return to Insomnia and select one of your environments from the menu.
+                <figure class="bcls-figure"><img class="bcls-image" alt="Select an Enviroment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-environments-menu2.png" />
+                    <figcaption class="bcls-caption--image">Select an Environment</figcaption>
+                </figure>
+            </li>
+            <li>Now click <strong>Get New Access Token</strong> again, but change the hard-coded values for Client ID and Client Secret to point to the environment variables <code>{{client_id}} </code> and <code>{{client_secret}} </code>
+                <figure class="bcls-figure"><img class="bcls-image" alt="Use Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/Insomnia/Insomnia-use-environment-variables.png" />
+                    <figcaption class="bcls-caption--image">Use Environment Variables</figcaption>
+                </figure>
+            </li>
+            <li>Insomnia will remember these values, so when you change to a different environment for another API or account, you will be able to get access tokens without changing the client id and client secret values.</li>
+        </ol>
+    </section>
 </article>
