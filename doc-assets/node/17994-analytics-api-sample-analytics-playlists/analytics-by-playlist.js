@@ -11,6 +11,7 @@ var BCLS = (function (window, document, Pikaday) {
         $accountInputs = document.getElementById('accountInputs'),
         $playlistInfo = document.getElementById('playlistInfo'),
         proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analytics-by-playlist.php',
+        $account_id = document.getElementById('account_id'),
         account_id = '1752604059001',
         $client_id = document.getElementById('client_id'),
         $client_secret = document.getElementById('client_secret'),
