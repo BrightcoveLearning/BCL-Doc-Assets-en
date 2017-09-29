@@ -340,6 +340,15 @@ var BCLS = (function (window, document, Pikaday) {
 
     // event listeners
     $getPlaylists.addEventListener('click', function() {
+        if (isDefined($account_id.value)) {
+            account_id = $account_id.value;
+            if (isDefined($client_id.value) && isDefined($client_secret.value)) {
+                client_id = $client_id.value;
+                client_secret = $client_secret.value;
+            } else {
+                alert('You must provide a client id and secret');
+            }
+        }
         buildRequest('getPlaylists');
     });
 
