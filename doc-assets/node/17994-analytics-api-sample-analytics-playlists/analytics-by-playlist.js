@@ -280,12 +280,8 @@ var BCLS = (function (window, document, Pikaday) {
                   if (httpRequest.readyState === 4) {
                     if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         bclslog('responseText', httpRequest.responseText);
-                        if (type === 'getAnalytics') {
-                            callback(httpRequest.responseText);
-                        } else {
-                            parsedData = JSON.parse(httpRequest.responseText);
-                            callback(parsedData);
-                        }
+                        parsedData = JSON.parse(httpRequest.responseText);
+                        callback(parsedData);
                     } else {
                       alert('There was a problem with the request. Request returned ' + httpRequest.status);
                     }
