@@ -46,6 +46,7 @@ var BCLS = (function (window, document, Pikaday) {
         $playlistSelector = document.getElementById('playlistSelector'),
         playlistSelector = document.getElementById('playlistSelector'),
         videoIds = [],
+        isJSON = true,
         searchString,
         playlistLimit,
         playlistSort,
@@ -250,6 +251,9 @@ var BCLS = (function (window, document, Pikaday) {
             case 'getAnalytics':
                 var formatObj = getSelectedValue($format),
                     format = formatObj.value;
+                if (format === 'csv') {
+                    isJSON = false;
+                }
                 requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&where=video==' + videoIds.join(',') + '&from=' + from.value + '&to=' + to.value + '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view' + '&format=' + format;
                 $request.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
@@ -280,8 +284,12 @@ var BCLS = (function (window, document, Pikaday) {
                   if (httpRequest.readyState === 4) {
                     if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         bclslog('responseText', httpRequest.responseText);
-                        parsedData = JSON.parse(httpRequest.responseText);
-                        callback(parsedData);
+                        if (isJSON) {
+                            parsedData = JSON.parse(httpRequest.responseText);
+                            callback(parsedData);
+                        } else {
+                            callback(httpRequest.responseText);
+                        }
                     } else {
                       alert('There was a problem with the request. Request returned ' + httpRequest.status);
                     }
