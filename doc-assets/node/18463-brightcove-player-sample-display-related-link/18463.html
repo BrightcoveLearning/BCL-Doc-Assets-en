@@ -212,3 +212,39 @@ controls&gt;&lt;/video&gt;</code></pre>
     </section>
 
 </article>
+<script src="//players.brightcove.net/1752604059001/HJSEihoR_default/index.min.js"></script>
+  <script type="text/javascript">
+  videojs('myPlayerID').ready(function(){
+    var myPlayer = this;
+    myPlayer.on('loadstart', function(evt) {
+      var linkText = myPlayer.mediainfo.link.text,
+        linkURL = myPlayer.mediainfo.link.url,
+        hrefString = '<a href = "' + linkURL + '" target="_blank" rel="noopener noreferrer">' +  linkText + '</a>';
+      document.getElementById("cta").innerHTML = hrefString;
+      myPlayer.overlay({
+        overlays: [{
+          "align": "bottom",
+          "content": "<p style='color:red; background-color: black; font-weight: bold; font-size: 20px'>" + hrefString + "</p>",
+          "start": "pause",
+          "end": "play"
+        }]
+      });
+      myPlayer.customEndscreen({
+        "content": "<p style='font-weight: bold; font-size: 20px'>" + hrefString + "</p>"
+      });
+      myPlayer.on('ended',function(){
+        var overlayElement = document.getElementsByClassName('vjs-overlay')[0];
+        overlayElement.setAttribute('style', 'display: none;');
+      })
+    });
+  });
+  </script>
+
+  <div style="text-align:center">
+      <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
+  </div>
+  <div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
+  <script>
+  var feedbackMail = document.getElementById("feedbackMail");
+  feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
+  </script>
