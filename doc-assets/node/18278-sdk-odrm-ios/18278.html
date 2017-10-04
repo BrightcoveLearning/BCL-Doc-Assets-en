@@ -2,7 +2,7 @@
 <section class="bcls-section">
 <h2 id="Overview">Overview</h2>
 
-<p>The Native SDK for iOS allows you to create mobile apps which include Offline playback of your video content, while keeping it secure with a <a href="https://developer.apple.com/streaming/fps/">FairPlay Streaming</a> solution. The Native SDK simplifies your implementation for download management, offline catalog management, analytics, offline playback and DRM.</p>
+<p>The Native SDK for iOS allows you to create mobile apps which include Offline playback of your video content. Your content can be non-encrypted or DRM-protected with a <a href="https://developer.apple.com/streaming/fps/">FairPlay Streaming</a> solution. The Native SDK simplifies your implementation for download management, offline catalog management, analytics, offline playback and DRM.</p>
 
 <p>The Offline playback feature is included in the latest version of the Brightcove Native SDK. For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/index.html">Brightcove Native Player SDK for iOS</a> reference.</p>
 
@@ -15,24 +15,41 @@
 <p>Offline DRM is supported on the following OS versions:</p>
 
 <ul>
-	<li>iOS 10.0, but 10.3+ is recommended</li>
+	<li>iOS 10.0+, but 10.3+ is recommended</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Content_delivery">Content delivery</h2>
+
+<p>The offline playback feature supports the following streaming type:</p>
+
+<ul>
+	<li>Apple HTTP Live Streaming (HLS)</li>
 </ul>
 </section>
 
 <section class="bcls-section">
 <h2 id="Prepare_videos">Prepare videos</h2>
+<p>For the SDKs to mark a video as downloadable, you need to do the following:</p>
+<ol class="bcls-tasklist">
+	<li>Contact your account manager to enable your account for offline playback.</li>
+	<li>
+		<p>
+			For each video that you want to be downloadable, use the <a href="/node/18034">CMS API</a> to set the <a href="/node/18023#videoFields">offline_enabled</a> field to a value of <strong>true</strong>.
+		</p>
+		<p>Here is an example using curl:</p>
 
-<p>For the SDKs to mark a video as downloadable, you need to use the <a href="/node/18034">CMS API</a> to set the <a href="/node/18023#videoFields">offline_enabled</a> field to a value of <strong>true</strong>.</p>
+		<pre class="line-numbers" data-start="1">
+			<code class="language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
+			{"offline_enabled" : true}
+			' https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/videos/<span class="bcls-input">your video id</span>
+			</code></pre>
 
-<p>Here is an example using curl:</p>
+		<p>Setting this field will be similar to the steps found in the <a href="/node/18014">Setting 360-Video Properties with the CMS API</a> document.</p>
+	</li>
+</ol>
 
-<pre class="line-numbers" data-start="1">
-<code class="language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
-{"offline_enabled" : true}
-' https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/videos/<span class="bcls-input">your video id</span>
-</code></pre>
-
-<p>Setting this field is similar to the steps found in the <a href="/node/18014">Setting 360-Video Properties with the CMS API</a> document.</p>
 </section>
 
 <section class="bcls-section">
@@ -46,26 +63,25 @@
 </section>
 
 <section class="bcls-section">
-	<h2 id="FAQ">FAQ</h2>
-	<p>
-		Below you will find answers to some general questions.
-	</p>
-	<h3 class="bcls-question">Can the user change the system clock to bypass the expiration date?</h3>
+<h2 id="FAQ">FAQ</h2>
 
-	<p class="bcls-answer">License expiration is enforced by FairPlay. iOS handles all checking for clock changes, etc. An app has the option of checking the license expiration to alert the user that the license has expired. This may be preferable to simply playing back an expired video and then receiving a playback error.</p>
+<p>Below you will find answers to some general questions.</p>
 
-	<h3 class="bcls-question">Will the license and offline videos continue loading while the app is in the background?</h3>
+<h5 class="bcls-question">Can the user change the system clock to bypass the expiration date?</h5>
 
-	<p class="bcls-answer">License loading should happen in the foreground. We have a <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVOfflineVideoManager.h#L631">method to preload the license</a>.
-Downloading of the main video content can happen while the app is in the background.</p>
+<p class="bcls-answer">License expiration is enforced by FairPlay. iOS handles all checking for clock changes, etc. An app has the option of checking the license expiration to alert the user that the license has expired. This may be preferable to simply playing back an expired video and then receiving a playback error.</p>
 
-	<h3 class="bcls-question">What is the video format(s) used during offline playback for iOS?</h3>
+<h5 class="bcls-question">Will the license and offline videos continue loading while the app is in the background?</h5>
 
-	<p class="bcls-answer">iOS uses HLS steaming for downloads. You can specify a bitrate for the download to use a specific variant.</p>
+<p class="bcls-answer">License loading should happen in the foreground. We have a <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVOfflineVideoManager.h#L631">method to preload the license</a>. Downloading of the main video content can happen while the app is in the background.</p>
 
-	<h3 class="bcls-question">Will downloaded videos playback locally or streaming when the user is online?</h3>
+<h5 class="bcls-question">What is the video format(s) used during offline playback for iOS?</h5>
 
-	<p class="bcls-answer">A downloaded video can be played back while online or offline, but it will always use the downloaded video. If you choose to play back an online version of the video, you should retrieve a new video object from the Playback Service. The offline video can only be played from local storage.</p>
+<p class="bcls-answer">iOS uses HLS steaming for downloads. You can specify a bitrate for the download to use a specific variant.</p>
+
+<h5 class="bcls-question">Will downloaded videos playback locally or streaming when the user is online?</h5>
+
+<p class="bcls-answer">A downloaded video can be played back while online or offline, but it will always use the downloaded video. If you choose to play back an online version of the video, you should retrieve a new video object from the Playback Service. The offline video can only be played from local storage.</p>
 </section>
 
 <section class="bcls-section">
