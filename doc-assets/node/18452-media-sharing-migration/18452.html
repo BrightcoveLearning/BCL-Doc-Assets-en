@@ -1,146 +1,174 @@
 <article class="bcls-article">
-    <section class="bcls-section">
-        <h2 id="Introduction">Introduction</h2>
-        <p>In updating media sharing to work with the CMS API, we have also updated the feature generally to make it work better for you:</p>
-        <ul>
-            <li>Shared videos will now use assets (renditions and text tracks) from the Master account, so that changes to the assets (such as replacing or retranscoding the video) are automatically inherited by the shared videos.</li>
-            <li>You can now directly manage sharing relationships without the help of Brightcove Support.</li>
-            <li>Media sharing will work with Dynamic Delivery videos, even if Dynamic Delivery is not enabled for the account(s) you share to.</li>
-        </ul>
-        <p>For details on using the new media sharing in Studio, see <a href="/node/15924">Sharing Videos to Other Accounts</a>.</p>
-        <p>For details on using the new media sharing via the CMS API, see <a href="/node/18325">Media Sharing with the CMS API</a>.</p>
-        <aside class="bcls-aside bcls-aside--warning">If at any time you have both the old and new media sharing systems enabled for your account while you are testing new integrations, <strong>do not share the same video using both the old and new systems!</strong></aside>
-    </section>
-    <section class="bcls-section">
-    <h2 id="Terminology">Terminology</h2>
-    <p>The following table explains terminology related to media sharing.</p>
-    <table class="bcls-table">
-    	<caption class="bcls-caption--table">Media Sharing Terminology</caption>
-    	<thead class="bcls-table__head">
-    		<tr>
-    			<th>Account</th>
-    			<th>Description</th>
-    		</tr>
-    	</thead>
-    	<tbody class="bcls-table__body">
-    		<tr>
-    			<td>Master</td>
-    			<td>The account that created the original video.
-    <p>The Master owns the content and is responsible for setting up, managing and providing content to Affiliates.</p>
-                </td>
-    		</tr>
-    		<tr>
-    			<td>Affiliate</td>
-    			<td>The account that is receiving the video.
-    <p>The Affiliate can accept content shared to it from a Master.</p>
-                </td>
-    		</tr>
-            <tr>
-                <td>Channel</td>
-                <td>A pipeline through which content is shared from a Master to any number of Affiliates. When media sharing is enabled a <code>default</code> channel will be created in your account.
-                </td>
-            </tr>
-            <tr>
-                <td>Relationship</td>
-                <td>Describes the interaction between a Master and an Affiliate. <p>A relationship is comprised of a Master to share content, a Channel through which content is shared, a Contract for accepting content, and an Affiliate to receive content.</p>
-                </td>
-            </tr>
-            <tr>
-                <td>Contract</td>
-                <td>Describes sharing relationship between a Master and an Affiliate. <p>A contract is created by the Master, and then must be accepted for sharing to be enabled. The Affiliate can also specify whether shared videos are accepted automatically or must be approved one by one.</p>
-                </td>
-            </tr>
-    	</tbody>
-    </table>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+<aside class="bcls-aside bcls-aside--information">The new media sharing is currently in Limited Availability. Contact your account manager or Support to request migrating to it.</aside>
+<p>In updating media sharing to work with the CMS API, we have also updated the feature generally to make it work better for you:</p>
+
+<ul>
+	<li>Shared videos will now use assets (renditions and text tracks) from the Master account, so that changes to the assets (such as replacing or retranscoding the video) are automatically inherited by the shared videos.</li>
+	<li>You can now directly manage sharing relationships without the help of Brightcove Support.</li>
+	<li>Media sharing will work with Dynamic Delivery videos, even if Dynamic Delivery is not enabled for the account(s) you share to.</li>
+</ul>
+
+<p>For details on using the new media sharing in Studio, see <a href="/node/15924">Sharing Videos to Other Accounts</a>.</p>
+
+<p>For details on using the new media sharing via the CMS API, see <a href="/node/18325">Media Sharing with the CMS API</a>.</p>
+
+<aside class="bcls-aside bcls-aside--warning">If at any time you have both the old and new media sharing systems enabled for your account while you are testing new integrations, <strong>do not share the same video using both the old and new systems!</strong></aside>
 </section>
-    <section class="bcls-section">
-        <h2 id="Whats_different">What's different?</h2>
-        <p>The most significant changes in shared media behavior are:</p>
-        <ul>
-            <li>In the new Media Sharing Affiliate accounts can no longer add captions to videos they’ve received through a share.</li>
-            <li>In the new Media Sharing Affiliate accounts can no longer add their own renditions to videos they've received through a share.</li>
-        </ul>
-        <p>Instead, Affiliate accounts will inherit any captions and renditions for the original video in the Master account. They will also automatically inherit any changes to those assets (through replacing or retranscoding the video, or replacing the captions).</p>
-        <p>Affiliate accounts will still be able to modify other video metadata, such as the name, description, and tags.</p>
-        <p>Images (the thumbnail and poster) are a special case: as long as the Affiliate does not replace the images, any changes made in the Master account will be inherited. Once the Affiliate replaces the images, changes in the Master account will no longer be inherited (unless the video is reshared, in which case all Affiliate changes will be overwritten).</p>
-        <p>For more details on how the new sharing works, see <a href="/node/18325">Media Sharing with the CMS API</a>.</p>
-        <p>Also be sure to see the <a href="#Limitations">Limitations</a> section at the end of this document.</p>
-    </section>
-    <section class="bcls-section">
-        <h2 id="How_to_migrate">How to migrate</h2>
-        <p>To migrate your account to the new media sharing, submit a request to Support.</p>
-    </section>
-    <section class="bcls-section">
-        <h2 id="What_happens">What happens when you migrate?</h2>
-        <p>Here is what will happen when you migrate to the new media sharing:</p>
-        <ul>
-            <li>When an account is moved forward all existing sharing relationships between Master and Affiliates will be preserved.</li>
-            <li>When an account is moved forward all shared videos will remain shared as they had been.</li>
-            <li>When a Master with Affiliates who do not share themselves is moved forward, the Affiliates will also be moved forward automatically. Affiliates who also have media sharing enabled will need to make their own requests to Support to migrate forward.</li>
-            <li>When an account is moved forward it will no longer be able to share through the Media APIs.</li>
-        </ul>
-    </section>
-    <section class="bcls-section">
-        <h2 id="What_about_integrations">What about integrations?</h2>
-        <p>If you are using your own CMS or other app for media sharing operations through the Media API, you will need to update the integration to use the <a href="/node/18372">CMS API</a> instead. See <a href="/node/18325">Media Sharing with the CMS API</a> for details of the CMS API requests involved in media sharing.</p>
-    </section>
-    <section class="bcls-section">
-        <h2 id="Limitations">Limitations</h2>
-        <p>Currently, media sharing has the following limitations:</p>
-        <ul>
-            <li>DRM: what happens depends on the DRM settings for the Master and Affiliate accounts, and the delivery type for the video (<a href="/node/17949">Dynamic Deliver</a> or using the legacy ingestion/delivery system):
-                <table class="bcls-table">
-                    <caption class="bcls-caption--table">DRM and Media Sharing</caption>
-                    <thead class="bcls-table__head">
-                        <tr>
-                            <th>Master Account Type</th>
-                            <th>Affiliate Account Type</th>
-                            <th>Ingestion/Delivery System</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bcls-table__body">
-                        <tr>
-                            <td>DRM enabled</td>
-                            <td>Non-DRM</td>
-                            <td>Dynamic Delivery</td>
-                            <td>Video is shared, but will not play in the Affiliate account; depending on the browser, an error may be shown, or the video will just fail to play.</td>
-                        </tr>
-                        <tr>
-                            <td>DRM enabled</td>
-                            <td>DRM enabled</td>
-                            <td>Dynamic Delivery</td>
-                            <td>Video is shared and is DRM protected in Master and Affiliate accounts.</td>
-                        </tr>
-                        <tr>
-                            <td>DRM enabled</td>
-                            <td>Non-DRM</td>
-                            <td>Legacy</td>
-                            <td>Video is shared, but will not play in the Affiliate account. No error is shown in the player.</td>
-                        </tr>
-                        <tr>
-                            <td>DRM enabled</td>
-                            <td>DRM enabled</td>
-                            <td>Legacy</td>
-                            <td>Video is shared and is DRM protected in Master and Affiliate accounts.</td>
-                        </tr>
-                        <tr>
-                            <td>Non-DRM</td>
-                            <td>DRM enabled</td>
-                            <td>Dynamic Delivery</td>
-                            <td>Video is shared and playable in the Affiliate account, with DRM.</td>
-                        </tr>
-                        <tr>
-                            <td>Non-DRM</td>
-                            <td>DRM enabled</td>
-                            <td>Legacy</td>
-                            <td>Video is shared and playable in the Affiliate account, but without DRM.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </li>
-            <li>Geo-Filtering: if the Affiliate account is not enabled for geo-filtering, geo-filtering will not be enforced in the Affiliate account. Also note that Affiliates can modify geo-filtering rules.</li>
-            <li>Custom Fields: Matching custom fields are not enforced across Master and Affiliate accounts. If the Master video has values for custom fields that do not exist in the Affiliate account, the share will fail.</li>
-        </ul>
-    </section>
+
+<section class="bcls-section">
+<h2 id="Terminology">Terminology</h2>
+
+<p>The following table explains terminology related to media sharing.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Media Sharing Terminology</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Account</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Master</td>
+			<td>The account that created the original video.
+			<p>The Master owns the content and is responsible for setting up, managing and providing content to Affiliates.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Affiliate</td>
+			<td>The account that is receiving the video.
+			<p>The Affiliate can accept content shared to it from a Master.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Channel</td>
+			<td>A pipeline through which content is shared from a Master to any number of Affiliates. When media sharing is enabled a <code>default</code> channel will be created in your account.</td>
+		</tr>
+		<tr>
+			<td>Relationship</td>
+			<td>Describes the interaction between a Master and an Affiliate.
+			<p>A relationship is comprised of a Master to share content, a Channel through which content is shared, a Contract for accepting content, and an Affiliate to receive content.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Contract</td>
+			<td>Describes sharing relationship between a Master and an Affiliate.
+			<p>A contract is created by the Master, and then must be accepted for sharing to be enabled. The Affiliate can also specify whether shared videos are accepted automatically or must be approved one by one.</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="Whats_different">What's different?</h2>
+
+<p>The most significant changes in shared media behavior are:</p>
+
+<ul>
+	<li>In the new Media Sharing Affiliate accounts can no longer add captions to videos they’ve received through a share.</li>
+	<li>In the new Media Sharing Affiliate accounts can no longer add their own renditions to videos they've received through a share.</li>
+</ul>
+
+<p>Instead, Affiliate accounts will inherit any captions and renditions for the original video in the Master account. They will also automatically inherit any changes to those assets (through replacing or retranscoding the video, or replacing the captions).</p>
+
+<p>Affiliate accounts will still be able to modify other video metadata, such as the name, description, and tags.</p>
+
+<p>Images (the thumbnail and poster) are a special case: as long as the Affiliate does not replace the images, any changes made in the Master account will be inherited. Once the Affiliate replaces the images, changes in the Master account will no longer be inherited (unless the video is reshared, in which case all Affiliate changes will be overwritten).</p>
+
+<p>For more details on how the new sharing works, see <a href="/node/18325">Media Sharing with the CMS API</a>.</p>
+
+<p>Also be sure to see the <a href="#Limitations">Limitations</a> section at the end of this document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="How_to_migrate">How to migrate</h2>
+
+<p>To migrate your account to the new media sharing, submit a request to Support.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="What_happens">What happens when you migrate?</h2>
+
+<p>Here is what will happen when you migrate to the new media sharing:</p>
+
+<ul>
+	<li>When an account is moved forward all existing sharing relationships between Master and Affiliates will be preserved.</li>
+	<li>When an account is moved forward all shared videos will remain shared as they had been.</li>
+	<li>When a Master with Affiliates who do not share themselves is moved forward, the Affiliates will also be moved forward automatically. Affiliates who also have media sharing enabled will need to make their own requests to Support to migrate forward.</li>
+	<li>When an account is moved forward it will no longer be able to share through the Media APIs.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="What_about_integrations">What about integrations?</h2>
+
+<p>If you are using your own CMS or other app for media sharing operations through the Media API, you will need to update the integration to use the <a href="/node/18372">CMS API</a> instead. See <a href="/node/18325">Media Sharing with the CMS API</a> for details of the CMS API requests involved in media sharing.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<p>Currently, media sharing has the following limitations:</p>
+
+<ul>
+	<li>DRM: what happens depends on the DRM settings for the Master and Affiliate accounts, and the delivery type for the video (<a href="/node/17949">Dynamic Deliver</a> or using the legacy ingestion/delivery system):
+
+	<table class="bcls-table">
+		<caption class="bcls-caption--table">DRM and Media Sharing</caption>
+		<thead class="bcls-table__head">
+			<tr>
+				<th>Master Account Type</th>
+				<th>Affiliate Account Type</th>
+				<th>Ingestion/Delivery System</th>
+				<th>Result</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td>DRM enabled</td>
+				<td>Non-DRM</td>
+				<td>Dynamic Delivery</td>
+				<td>Video is shared, but will not play in the Affiliate account; depending on the browser, an error may be shown, or the video will just fail to play.</td>
+			</tr>
+			<tr>
+				<td>DRM enabled</td>
+				<td>DRM enabled</td>
+				<td>Dynamic Delivery</td>
+				<td>Video is shared and is DRM protected in Master and Affiliate accounts.</td>
+			</tr>
+			<tr>
+				<td>DRM enabled</td>
+				<td>Non-DRM</td>
+				<td>Legacy</td>
+				<td>Video is shared, but will not play in the Affiliate account. No error is shown in the player.</td>
+			</tr>
+			<tr>
+				<td>DRM enabled</td>
+				<td>DRM enabled</td>
+				<td>Legacy</td>
+				<td>Video is shared and is DRM protected in Master and Affiliate accounts.</td>
+			</tr>
+			<tr>
+				<td>Non-DRM</td>
+				<td>DRM enabled</td>
+				<td>Dynamic Delivery</td>
+				<td>Video is shared and playable in the Affiliate account, with DRM.</td>
+			</tr>
+			<tr>
+				<td>Non-DRM</td>
+				<td>DRM enabled</td>
+				<td>Legacy</td>
+				<td>Video is shared and playable in the Affiliate account, but without DRM.</td>
+			</tr>
+		</tbody>
+	</table>
+	</li>
+	<li>Geo-Filtering: if the Affiliate account is not enabled for geo-filtering, geo-filtering will not be enforced in the Affiliate account. Also note that Affiliates can modify geo-filtering rules.</li>
+	<li>Custom Fields: Matching custom fields are not enforced across Master and Affiliate accounts. If the Master video has values for custom fields that do not exist in the Affiliate account, the share will fail.</li>
+</ul>
+</section>
 </article>
