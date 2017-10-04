@@ -2,7 +2,7 @@
 <section class="bcls-section">
 <h2 id="Overview">Overview</h2>
 
-<p>The Native SDK for Android allows you to create mobile apps which include Offline playback of your video content, while keeping it secure with a <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a> solution. The Native SDK simplifies your implementation for download management, offline catalog management, analytics, offline playback and DRM.</p>
+<p>The Native SDK for Android allows you to create mobile apps which include Offline playback of your video content. Your content can be non-encrypted or DRM-protected with a <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a> solution. The Native SDK simplifies your implementation for download management, offline catalog management, analytics, offline playback and DRM.</p>
 
 <p>The Offline playback feature is included in the latest version of the Brightcove Native SDK. For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/index.html">Brightcove Native Player SDK for Android</a> reference.</p>
 
@@ -12,7 +12,7 @@
 <section class="bcls-section">
 <h2 id="Supported_versions">Supported versions</h2>
 
-<p>Offline DRM is supported on the following OS versions:</p>
+<p>Offline playback is supported on the following OS versions:</p>
 
 <ul>
 	<li>Android 5+</li>
@@ -20,19 +20,37 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="Content_delivery">Content delivery</h2>
+
+<p>The offline playback feature supports the following streaming type:</p>
+
+<ul>
+	<li>Dynamic Adaptive Streaming over HTTP (DASH)</li>
+</ul>
+</section>
+
+<section class="bcls-section">
 <h2 id="Prepare_videos">Prepare videos</h2>
 
-<p>For the SDKs to mark a video as downloadable, you need to use the <a href="/node/18034">CMS API</a> to set the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">offline_enabled</a> field to a value of <strong>true</strong>.</p>
+<p>For the SDKs to mark a video as downloadable, you need to do the following:</p>
+<ol class="bcls-tasklist">
+	<li>Contact your account manager to enable your account for offline playback.</li>
+	<li>
+		<p>
+			For each video that you want to be downloadable, use the <a href="/node/18034">CMS API</a> to set the <a href="/node/18023#videoFields">offline_enabled</a> field to a value of <strong>true</strong>.
+		</p>
+		<p>Here is an example using curl:</p>
 
-<p>Here is an example using curl:</p>
+		<pre class="line-numbers" data-start="1">
+			<code class="language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
+			{"offline_enabled" : true}
+			' https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/videos/<span class="bcls-input">your video id</span>
+			</code></pre>
 
-<pre class="line-numbers" data-start="1">
-	<code class="language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
-	{"offline_enabled" : true}
-	' https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/videos/<span class="bcls-input">your video id</span>
-	</code></pre>
+		<p>Setting this field will be similar to the steps found in the <a href="/node/18014">Setting 360-Video Properties with the CMS API</a> document.</p>
+	</li>
+</ol>
 
-<p>Setting this field will be similar to the steps found in the <a href="/node/18014">Setting 360-Video Properties with the CMS API</a> document.</p>
 </section>
 
 <section class="bcls-section">
@@ -45,26 +63,26 @@
 
 <p>Below you will find answers to some general questions.</p>
 
-<h3 class="bcls-question">Can the user change the system clock to bypass the expiration date?</h3>
+<h5 class="bcls-question">Can the user change the system clock to bypass the expiration date?</h5>
 
 <p class="bcls-answer">Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the Android OS release notes.</p>
 <!-- <p class="bcls-answer">Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/release-notes.txt">Native SDK for Android release notes</a>.</p> -->
 
-<h3 class="bcls-question">Will the license and offline videos continue loading while the app is in the background?</h3>
+<h5 class="bcls-question">Will the license and offline videos continue loading while the app is in the background?</h5>
 
 <p class="bcls-answer">Yes. Typically, the license is downloaded immediately, but even the license can be downloaded while the app is backgrounded.</p>
 <!-- <p class="bcls-answer">License loading should happen in the foreground. We have a method to preload the license.
 Downloading of the main video content can happen while the app is in the background.</p> -->
 
-<h3 class="bcls-question">What is the video format(s) used during offline playback for Android?</h3>
+<h5 class="bcls-question">What is the video format(s) used during offline playback for Android?</h5>
 
-<p class="bcls-answer">DRM protected DASH only.</p>
+<p class="bcls-answer">DRM-protected DASH or non-encrypted DASH.</p>
 
-<h3 class="bcls-question">Will downloaded videos playback locally or streaming when the user is online?</h3>
+<h5 class="bcls-question">Will downloaded videos playback locally or streaming when the user is online?</h5>
 
 <p class="bcls-answer">A downloaded video can be played back while online or offline, but it will always use the downloaded video. If you choose to play back an online version of the video, you should retrieve a new video object from the Playback Service. The offline video can only be played from local storage.</p>
 
-<h3 class="bcls-question">Will the release of Android OS v8.0 affect the Offline Playback feature?</h3>
+<h5 class="bcls-question">Will the release of Android OS v8.0 affect the Offline Playback feature?</h5>
 
 <p class="bcls-answer">The release of Android OS v8.0 will have new <a href="https://developer.android.com/preview/features/background.html">background service limitations</a>. We will test and make any changes needed for continued support of Offline Playback with the Native Player SDK for Android.</p>
 </section>
