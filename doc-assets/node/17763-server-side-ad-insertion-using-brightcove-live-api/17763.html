@@ -182,6 +182,23 @@ Content-Type: application/json</code></pre>
 </section>
 
 <section class="bcls-section">
+    <h2 id="Custom_headers_ad_requests">Custom headers for ad requests</h2>
+    <p>The SSAI platform can pass custom header with the Ad calls and all beacons used by the backend platform. Some ad servers such as VideoPlaza require custom headers. Custom headers are specified as a set of key-value pairs in an <code>ad_configuration_headers</code> object that is part of the <code>application_ad_configuration</code> (see the next section on <a href="#create_ad_configurations">creating an ad configuration</a>).</p>
+    <h3>Notes</h3>
+    <ul>
+        <li>Standard headers are handled by default such as:
+            <ul>
+                <li>X-Forwarded-For</li>
+                <li>X-Device-User-Agent</li>
+            </ul>
+        </li>
+        <li>Header values can use the <a href="#ad_configuration_variables">ad configuration variables</a></li>
+        <li>Header values can also be static strings</li>
+    </ul>
+    b<aside class="bcls-aside bcls-aside--warning">Headers will be passed to all downstream requests including ad wrappers or impressions/quartiles so you should use them with caution.</aside>
+</section>
+
+<section class="bcls-section">
 <h2 id="create_ad_configurations">Create an ad configuration</h2>
 
 <p>To create a new ad configuration, send a <code>POST</code> request to:</p>
@@ -198,7 +215,7 @@ Content-Type: application/json</code></pre>
         "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>",
         "ad_configuration_headers": {
           "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "stuff"
+          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
         }
         "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
         "ad_configuration_transforms": [
@@ -224,7 +241,7 @@ Content-Type: application/json</code></pre>
       "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
       "ad_configuration_headers": {
           "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "stuff"
+          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
         }
       "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
       "ad_configuration_transforms": [
@@ -258,7 +275,7 @@ Content-Type: application/json</code></pre>
         "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>,
         "ad_configuration_headers": {
           "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "stuff"
+          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
         }
         "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
         "ad_configuration_transforms": [
@@ -283,7 +300,7 @@ Content-Type: application/json</code></pre>
         "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
         "ad_configuration_headers": {
           "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "stuff"
+          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
         }
         "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
         "ad_configuration_transforms": [
