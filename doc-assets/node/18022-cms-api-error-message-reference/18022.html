@@ -48,6 +48,18 @@
             <td>Ad config is inactive</td>
             <td>Ad configuration specified in an SSAI request is inactive</td>
         </tr>
+        <tr>
+            <td>400</td>
+            <td>REFERENCES_EXIST</td>
+            <td>This video is referenced by at least one playlist.</td>
+            <td>You are attempting to delete a video that is included in at least one playlist.</td>
+        </tr>
+        <tr>
+            <td>400</td>
+            <td>SHARED_VIDEO</td>
+            <td>Delete of shared video failed.</td>
+            <td>Deletion of shared videos is not yet supported.</td>
+        </tr>
 		<tr>
 			<td>401</td>
 			<td>UNAUTHORIZED</td>
@@ -67,16 +79,10 @@
 			<td>You requested a resource that does not exist - check spelling.</td>
 		</tr>
 		<tr>
-			<td>422</td>
-			<td>ILLEGAL_FIELD</td>
-			<td>Unrecognized field in the submitted data</td>
-			<td>Spelling error or other use of non-existent field</td>
-		</tr>
-		<tr>
-			<td>429</td>
-			<td>TOO_MANY_REQUESTS</td>
-			<td>Too many requests</td>
-			<td>You are submitting too many simultaneous requests or too many requests per second</td>
+			<td>405</td>
+			<td>METHOD_NOT_ALLOWED</td>
+			<td>The HTTP method used for the request is not allowed for this resource</td>
+			<td>The most common cause is sending a PUT, POST, PATCH, or DELETE to a read-only resource.</td>
 		</tr>
 		<tr>
 			<td>409</td>
@@ -90,30 +96,30 @@
 			<td>Reference id is already in use.</td>
 			<td>To insure uniqueness of reference ids, operations involving reference ids will lock the id for up to 20 seconds. That means that if remove a reference id from a video (or delete that video) and then try to use the reference id for another video immediately, the operation will fail with a 409 error.</td>
 		</tr>
-		<tr>
-			<td>400</td>
-			<td>REFERENCES_EXIST</td>
-			<td>This video is referenced by at least one playlist.</td>
-			<td>You are attempting to delete a video that is included in at least one playlist.</td>
-		</tr>
-		<tr>
-			<td>400</td>
-			<td>SHARED_VIDEO</td>
-			<td>Delete of shared video failed.</td>
-			<td>Deletion of shared videos is not yet supported.</td>
-		</tr>
-		<tr>
-			<td>422</td>
-			<td>VALIDATION_ERROR</td>
-			<td>(the JSON data was not valid - error messages vary depending on the problem)</td>
-			<td>Examples of messages:
-			<ul>
-				<li>name: REQUIRED_FIELD (create a video w/o a name, update name to empty string)</li>
-				<li>account_id: WRONG_ACCOUNT &nbsp;(account ID in URL does not match account ID in JSON)</li>
-				<li>Invalid keys: id (the id cannot be modified and should not appear as key in the JSON)</li>
-			</ul>
-			</td>
-		</tr>
+        <tr>
+            <td>422</td>
+            <td>ILLEGAL_FIELD</td>
+            <td>Unrecognized field in the submitted data</td>
+            <td>Spelling error or other use of non-existent field</td>
+        </tr>
+        <tr>
+            <td>422</td>
+            <td>VALIDATION_ERROR</td>
+            <td>(the JSON data was not valid - error messages vary depending on the problem)</td>
+            <td>Examples of messages:
+                <ul>
+                    <li>name: REQUIRED_FIELD (create a video w/o a name, update name to empty string)</li>
+                    <li>account_id: WRONG_ACCOUNT &nbsp;(account ID in URL does not match account ID in JSON)</li>
+                    <li>Invalid keys: id (the id cannot be modified and should not appear as key in the JSON)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>429</td>
+            <td>TOO_MANY_REQUESTS</td>
+            <td>Too many requests</td>
+            <td>You are submitting too many simultaneous requests or too many requests per second</td>
+        </tr>
 		<tr>
 			<td>500</td>
 			<td>UNKNOWN</td>
@@ -122,7 +128,7 @@
 		</tr>
 		<tr>
 			<td>503</td>
-			<td>Service Unavailable</td>
+			<td>SERVICE_UNAVAILABLE</td>
 			<td>The API is temporarily unavailable</td>
 			<td>Backend issue  - try again later.</td>
 		</tr>
