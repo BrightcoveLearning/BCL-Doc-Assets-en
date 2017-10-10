@@ -1,16 +1,15 @@
 <article class="bcls-article">
-<section class="bcls-section" id="top">&nbsp;</section>
 
-<section class="bcls-section" id="Analytics_integration">
-<h2>Analytics integration</h2>
+<section class="bcls-section">
+<h2 id="Analytics_integration">Analytics integration</h2>
 
 <p>If you use the Brightcove player and <code>catalog</code> included in the SDK to retrieve and play videos, analytics data will be automatically collected and will appear in the Video Cloud Analytics module.</p>
 
 <p>If you override the <code>BCOVVideo</code> class or do not use the Brightcove player and <code>catalog</code>, you need to send your Account Id to Video Cloud Analytics.</p>
 </section>
 
-<section class="bcls-section" id="Customize_properties">
-<h2>Customize properties</h2>
+<section class="bcls-section">
+<h2 id="Customize_properties">Customize properties</h2>
 
 <p>As of version 4.1.8 of the Brightcove Mobile SDK for iOS, you can send custom values to Brightcove Analytics from your app for Account Id, Destination URI and Source URI.</p>
 
@@ -24,9 +23,9 @@
 <code class="language-swift">id&lt;BCOVPlaybackController&gt; controller =
     [[BCOVPlayerSDKManager sharedManager] createPlaybackController];
 
-controller.analytics.account = &lt;insert valid accountId&gt;;
-controller.analytics.destination = &lt;insert valid URI&gt;;
-controller.analytics.source = &lt;insert valid URI&gt;;</code></pre>
+controller.analytics.account = <span class="bcls-input">your accountId</span>;
+controller.analytics.destination = <span class="bcls-input">valid URI</span>;
+controller.analytics.source = <span class="bcls-input">valid URI</span>;</code></pre>
 <!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="3-8"></code></p> -->
 
 <h3>Account</h3>
@@ -34,7 +33,7 @@ controller.analytics.source = &lt;insert valid URI&gt;;</code></pre>
 <p>Use the <code>account</code> property to set the Account Id value in Brightcove Analytics. This property will be useful only in cases where there is no <code>accountId</code> value in the video’s metadata (for example, if your app uses a mix of Video Cloud videos, which contain the <code>accountId</code> property, and non-Video Cloud videos, which will not contain the <code>accountId</code> property).</p>
 
 <pre class="line-numbers">
-<code class="language-swift">controller.analytics.account = @"&lt;insert valid accountId&gt;";</code></pre>
+<code class="language-swift">controller.analytics.account = @"<span class="bcls-input">your accountId</span>";</code></pre>
 <!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="22"></code></p> -->
 
 <p>When you set the account property, the value of this property will be used for any of your videos which do not already have an <code>accountId</code> property. The most useful value for this property is your own Account Id. These videos will be reported in the Analytics module as <strong>Other/Third Party</strong> since Brightcove Analytics does not currently support detailed reporting for videos that are not retrieved through the Brightcove Catalog service.</p>
@@ -43,10 +42,10 @@ controller.analytics.source = &lt;insert valid URI&gt;;</code></pre>
 
 <h3>Destination</h3>
 
-<p>Use the <code>destination</code> property to set the value of the location that originates the event. This field can be any string value, but it is most useful to use a URI with valid structure:</p>
+<p>Use the <code>destination</code> property to set the value of the location that originates the event. The value of the destination property MUST be in proper URI format, similar to this example:</p>
 
 <pre class="line-numbers">
-<code class="language-swift">&lt;scheme name&gt; : &lt;hierarchical part&gt;</code></pre>
+<code class="language-swift">bcsdk://com.mhogben.source</code></pre>
 <!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="11"></code></p> -->
 
 <p>The default value the destination property is <code>bcsdk://</code> followed by the app's bundle identifier as listed in the app's <strong>info.plist</strong> file.</p>
@@ -62,26 +61,26 @@ controller.analytics.source = &lt;insert valid URI&gt;;</code></pre>
 
 <h3>Source</h3>
 
-<p>Use the <code>source</code> property to set the URI that sent the end-user to the destination URI. As with the destination value, the value of the source field can be any string value, but it is most useful to use a URI with valid structure:</p>
+<p>Use the <code>source</code> property to set the URI that sent the end-user to the destination URI. As with the destination value, the value of the source property MUST be in proper URI format, similar to this example:</p>
 
 <pre class="line-numbers">
-<code class="language-swift">&lt;scheme name&gt; : &lt;hierarchical part&gt;</code></pre>
+<code class="language-swift">bcsdk://com.mhogben.source</code></pre>
 <!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="11"></code></p> -->
 
 <p>The default value of the source property is nil. When the value is nil, the source property is not sent to the Analytics server.</p>
 
-<p>Example:</p>
+<p>Here is an example of how to set the source property:</p>
 
 <pre class="line-numbers">
 <code class="language-swift">controller.analytics.source =
     @"myapp://com.mycompany.homescreen.destination.source";</code></pre>
 <!-- <p><code data-gist-id="895406074cbc7f942d9c" data-gist-hide-footer="true" data-gist-line="18-19"></code></p> -->
 
-<aside class="bcls-aside bcls-aside--information">For more details about URI structures for use in the destination and source fields, see the <a href="//en.wikipedia.org/wiki/URI_scheme">URI Scheme</a> Wikipedia page.</aside>
+<aside class="bcls-aside bcls-aside--information">For more details about URI structures for use in the destination and source fields, see the <a href="//en.wikipedia.org/wiki/URI_scheme">URI Scheme</a> Wikipedia page. You can use a tool like this <a href="https://www.url-encode-decode.com/">URL Encoder</a> to convert characters into UTF-8 encoding format.</aside>
 </section>
 
-<section class="bcls-section" id="View_analytics">
-<h2>View analytics</h2>
+<section class="bcls-section">
+<h2 id="View_analytics">View analytics</h2>
 
 <p>In the Video Cloud Analytics module, you can view metric data at the account level or at a detailed level such as by video.To learn how, view the following docs:</p>
 
