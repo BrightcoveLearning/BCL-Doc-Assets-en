@@ -1,0 +1,167 @@
+<style type="text/css">iframe {
+                                height: 420px;
+                                width: 650px;
+                              }
+</style>
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Example_player">Example player</h2>
+
+<p>The sample video below demonstrates the use of the 360º/VR Plugin. Once you click on the video to play it, you can use either your mouse or the arrow keys to control the view on the desktop, or the gyroscope if viewing on a mobile device. The 360 video logo play button fades on play.</p>
+<iframe src="//players.brightcove.net/1752604059001/r1ibOm8PZ_default/index.html?videoId=4944451046001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></section>
+
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<h3>Features</h3>
+
+<p>The following are features of the 360º/VR Plugin</p>
+
+<ul>
+	<li><strong>Gyroscope integration on mobile devices</strong>: The perspective changes as you rotate your phone.</li>
+	<li><strong>Cardboard/VR mode support</strong>: On devices that support it, the Cardboard viewer icon will appear in the control bar. When pressed, the projection will be adjusted to work with Cardboard-style VR goggles.</li>
+	<li><strong>Video Cloud Media 360 Setting</strong>: If you are using Video Cloud videos, the plugin respects Video Cloud’s setting for 360 on Video Cloud media. If the value is not present it will play the video as a normal video. You do not have to ensure that only 360 videos are played on players using the 360º/VR Plugin.</li>
+	<li><strong>Non-Video Cloud Media</strong>: If you are <em>not using media served from Video Cloud</em>, you can still use the plugin. You will need to call the <code>vr</code> plugin passing an object with a <code>projection</code> value set as follows:
+	<pre class="line-numbers">
+                  <code class="language-javascript">&lt;script type="text/javascript"&gt;
+                    videojs('myPlayerID').ready(function(){
+                      var myPlayer = this;
+                      myPlayer.vr({projection: '360'});
+                    });
+                  &lt;/script&gt;</code></pre>
+
+	<aside class="bcls-aside bcls-aside--tip">Setting the <code>projection</code> property to <code>360</code>, <code>equirectangular</code> or <code>Sphere</code> are all logically equivalent.</aside>
+
+	<p>Of course, the code above assumes you have included the JavaScript and CSS files for the plugin, as described later in this document.</p>
+	</li>
+</ul>
+
+<h3>Browser compatibility</h3>
+
+<p>The plugin is compatible with the latest versions of these major browsers:</p>
+
+<ul>
+	<li>Chrome Desktop</li>
+	<li>Chrome Mobile (on Android 6+)</li>
+	<li>Firefox Desktop</li>
+	<li>Edge</li>
+	<li>Safari Desktop<super>*</super></li>
+	<li>Safari Mobile (iOS 10+)<super>*</super></li>
+</ul>
+
+<p><super>*</super> Due to a limitation of this platform, video data must be loaded from the same domain as the page. For more information on this topic, see the <a href="#Known_issues">Known issues</a> section later in this document.</p>
+
+<p>The plugin does <strong>NOT</strong> work with Internet Explorer.</p>
+
+<h3>Limitations</h3>
+
+<p>You should be aware of the following when using the 360º/VR Plugin:</p>
+
+<ul>
+	<li><strong>Single Bitrate</strong>: You must select <strong>Single Bitrate High</strong> as the ingest profile for 360 videos. This is because 360/VR playback only shows a small portion of the frame at a time (more details on this appear in the next section of this document). Any other setting will result in very poor quality. If you are not using Video Cloud, we recommend you use a single high-resolution HLS rendition or MP4 video in order to disable rendition switching.</li>
+	<li><strong>Same Domain Restriction</strong>: On Apple Desktop and Mobile Safari browsers you must host the videos from the same domain as the page in which the player is loaded. Since this browser’s WebVR implementation does not respect so-called CORS headers, all files must be loaded from the same domain. Brightcove Global Services can help setup a proxy service to allow this to work. Please contact your account representative, or see notes below on Mobile Safari.</li>
+</ul>
+
+<h3>Implementation overview</h3>
+
+<p>Implementing the plugin is straightforward, just complete these two steps:</p>
+
+<ul>
+	<li><a href="#Ingest_the_360_video">Properly ingest the video.</a></li>
+	<li><a href="#Implement_using_Players_module">Add the plugin to the player.</a></li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Ingest_the_360_video">Ingest the 360 video</h2>
+
+<aside class="bcls-aside bcls-aside--information">Note: For more information on creating 360º videos see the <a href="/node/16784">Working with 360-Degree Videos</a> document.</aside>
+
+<p>Once you have the 360 video recorded, you need to ingest it into Video Cloud. A little understanding of how 360 video works will help you understand some reasons for the Ingest Profile to choose. The 360 video is filmed to be projected on the interior of a sphere. This means that the visible area of the video in the player is only a fraction of the entire video. The following screenshot gives you a rough idea of this concept. The area inside the red rectangle is what is visible in the player, but only a small part of the entire video.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="show part of video" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/360video/show-display.png" /></figure>
+
+<p>Since only a small part of the video will be in the player at any one time, you want a very high quality rendition to be playing, with no chance of stepping down to a lower quality rendition. In essence, you are "zooming in" on part of the video and a poor quality rendition would yield a very poor quality viewing experience. For this reason, during the ingestion process you should use an Ingest Profile of high-quality, and few renditions. Brightcove recommends using the <strong>single-bitrate-high (2 renditions)</strong> Ingest Profile for 360 videos.</p>
+
+<p>Be sure when the video is ingested it is marked for 360 projection, as shown here in the video's information section:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="show part of video" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/360video/studio-mark-video-360.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="Implement_using_Players_module">Implement using Players module</h2>
+
+<p>To implement the 360º Video Plugin you will add a JavaScript link and a CSS link. You will then add the name of the plugin. Follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
+	<li>Click the link for the player to open the player's properties.</li>
+	<li>Locate the <strong>PLUGINS</strong> section and click <strong>Edit</strong>.</li>
+	<li>The JavaScript for the plugin is provided and will not change for different player implementations. For the <strong>JavaScript URL</strong>, enter:
+	<pre><code class="language-json">//players.brightcove.net/videojs-vr/1/videojs-vr.min.js</code></pre>
+	</li>
+	<li>The CSS for the plugin is provided and will not change for different player implementations. For the <strong>CSS URL</strong>, enter:
+	<pre><code class="language-json">//players.brightcove.net/videojs-vr/1/videojs-vr.css</code></pre>
+	</li>
+	<li>For the plugin function, enter <strong>vr</strong> for the name.</li>
+	<li>You do not have to enter any options for Video Cloud videos. If you are using non-Video Cloud 360 videos you will have to set the projection here, as mentioned in the <a href="#Introduction">Introduction</a> section.</li>
+	<li>Click <strong>Save</strong> in the the <strong>PLUGINS</strong> section.</li>
+	<li>Locate the <strong>STYLING</strong> section and click <strong>Edit</strong>.</li>
+	<li>If you feel it will be a better viewing experience, you can disable the title and description doc. To do this, set the <strong>Enable Title and Description Dock</strong> to <strong>Disabled</strong>.
+	<figure class="bcls-figure"><img class="bcls-image" alt="disable dock" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/360video/disabled.png" /></figure>
+	</li>
+	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+	<li>Select the <strong>MEDIA</strong> module.</li>
+	<li>Publish your 360 video using your newly altered player that uses the 360º Video Plugin.</li>
+</ol>
+</section>
+
+<section id="Known_issues" class="bcls-section">
+<h2>Known issues</h2>
+
+<ul>
+	<li>The 360 plugin is compatible with Brightcove Player version 6.x only.</li>
+	<li>The 360 plugin does not function with advertising.</li>
+	<li>The 360 plugin does not function with Internet Explorer.</li>
+	<li><strong>Using on Safari (iOS and Desktop)</strong>: If you choose to setup 360/VR to work on Safari without contracting Brightcove Global Services (BGS) here are some notes to help you:
+	<ul>
+		<li>You cannot use the standard iframe embed since that iframe’s source is hosted on <strong>players.brightcove.net</strong>, even if your player loads videos from your own domain.</li>
+		<li>Copy the video files to the same web server as your page. The simplest way to do this is using a single MP4 rendition.</li>
+	</ul>
+	</li>
+	<li><strong>Multiple players on a single page</strong>: If you have multiple players on the page using this plugin, and both use the advanced (in-page embed) player implementation, only the first player will function correctly. Multiple players on a page that use the standard (iframe) implementation will function correctly.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="changelog">Changelog</h2>
+
+<h4>29 Aug 2017</h4>
+
+<p>v1.0.1</p>
+
+<ul>
+	<li>Made the <code>projection</code> values <code>equirectangular</code> and <code>360</code> equivalent.</li>
+</ul>
+
+<h4>24 Aug 2017</h4>
+
+<p>v1.0.0</p>
+
+<ul>
+	<li>Added an option to force cardboard button</li>
+	<li>Exposed more of VRS methods</li>
+	<li>Added a cardboard button for native webvr support</li>
+	<li>Auto projection set to the correct value and not auto</li>
+	<li>Cleaned up window listeners</li>
+	<li>Correctly checks for cardboard button on control bar so two aren't added</li>
+	<li>Encode svg in CSS, use exact button replacement size</li>
+	<li>Made cardboard button pseudo fullscreen on iOS</li>
+	<li>Updated pin <strong>webvr-polyfill</strong> to 0.9.23</li>
+	<li>Fixed pixelation issues on some devices</li>
+	<li>Prevent initialization from happening twice</li>
+	<li>Separated and reset CardboardButton and BigVrPlayButton</li>
+	<li>Use player <code>fullscreenchange</code> event so fullscreen toggle works on Safari</li>
+</ul>
+</section>
+</article>
