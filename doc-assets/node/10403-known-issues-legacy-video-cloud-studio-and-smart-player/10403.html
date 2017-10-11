@@ -1,0 +1,491 @@
+<p><strong>Identified known issues include:</strong></p>
+
+<ul>
+	<li><a href="#studio"><strong>Video Cloud Studio</strong></a></li>
+	<li><a href="#players"><strong>Smart Players</strong></a></li>
+	<li><a href="#media"><strong>Media Module</strong></a></li>
+	<li><a href="#publishing"><strong>Publishing Module</strong></a></li>
+	<li><a href="#advertising"><strong>Advertising Delivery</strong></a></li>
+	<li><a href="#mediaapi"><strong>Media API</strong></a></li>
+	<li><a href="#smartplayerapi"><strong>Smart Player API</strong></a></li>
+	<li><a href="#flashplayerapi"><strong>Flash-Only Player API</strong></a></li>
+	<li><a href="#beml"><strong>Custom Players and BEML (Brightcove Experience Markup Language)</strong></a></li>
+	<li><a href="#ftpbatch"><strong>FTP Batch Provisioning</strong></a></li>
+	<li><a href="#live"><strong>Live Video</strong></a></li>
+	<li><a href="#livemodule"><strong>Live Module</strong></a></li>
+	<li><a href="#reports"><strong>Reporting and Analytics</strong></a></li>
+	<li><a href="#di"><strong>Dynamic Ingestion</strong></a></li>
+</ul>
+
+<h2><a id="studio" name="studio" href=""></a>Video Cloud Studio</h2>
+
+<ul>
+	<li><strong>Safari 10 Issues.</strong> With Safari 10, Adobe Flash is disabled by default. This will cause display issues when using the Legacy Video Cloud Studio.<br />
+	<strong>Resolution:</strong> Open <strong>Safari Preferences</strong>, click <strong>Security</strong>, click <strong>Plug-in Settings...</strong>Click <strong>Adobe Flash Player</strong> and enable Flash for the videocloud.brightcove.com domain.</li>
+	<li><strong>Clearing the Custom Link Domain Name in Video Cloud Studio account settings saves a value of "null".</strong> After clearing the host name and saving, "null" will be displayed. This replaces the "link.brightcove.com" bit in the players URL with "null" breaking those links. (BC-17620)<br />
+	<strong>Workaround:</strong> Try saving the change several times until the links are generated correctly or set the domain name to "link.brightcove.com".</li>
+	<li><strong>HDS and FAXS DRM protected content. </strong>DRM content protected with HDS and FAXS cannot be previewed in the Media Module. (BC-33774)</li>
+	<li><strong>Custom Link Domain Name in Video Cloud Studio account settings does not validate.</strong> After entering a valid host name, the validate link will display "Please configure your network" even though a valid host name is entered. (BC-32959)<br />
+	<strong>Workaround:</strong> After entering a valid host name, save your changes and use your custom host name.</li>
+	<li><strong>Default Viral Player selection in Video Cloud Studio account settings does not show all eligible players.</strong> The video player selection list is limited to displaying the first 200 players in alphabetical order.<br />
+	<strong>Workaround:</strong> Temporarily rename the player so it will appear first alphabetically and you will be able to assign it. Then rename it back. (BC-31326)</li>
+	<li><strong>HTML5 Player Delivery settings in Video Cloud Studio account settings do not display the "Turn On" and "Turn Off" buttons.</strong> These buttons will only appear when you have less than 100 players in your account.<br />
+	<strong>Workaround:</strong> To turn on HTML5 player delivery for all of your players, Contact Brightcove Support. (BC-28776)</li>
+	<li><strong>Deleting unwanted logo overlay images is difficult</strong>: Note that there is a bug which prevents the list of videos using a logo overlay to be displayed when you click the <strong>List References</strong> link — the list of IDs you see there are not correct</li>
+	<li><strong>Japanese and Spanish versions of Video Cloud Studio may conflict with Google Toolbar</strong>. If you are using either the Japanese or the Spanish version of Video Cloud Studio while the Google&nbsp;Toolbar is active in your browser, and you switch from the Studio&nbsp;Home page to a Studio module, the screen may blink and freeze. This seems to result from a conflict with Google&nbsp;Toolbar, which is trying to translate the page, causing the page to continuously refresh.<br />
+	<strong>Workaround: </strong>Disable the Google Toolbar while you use Video Cloud Studio. (BC-20979)</li>
+	<li><strong>IE8 Compatibility View required for Search.&nbsp;</strong>Searching in the Media and Advertising modules requires Compatibility View to be enabled when using Internet Explorer 8.&nbsp;(BC-22910)</li>
+</ul>
+
+<h2><a id="players" name="players" href=""></a>Smart Players</h2>
+
+<ul>
+	<li><strong>Smart Player full screen button does not work on Android.</strong>When you click the full screen button on Android, the button does not do anything.<br />
+	<strong>Workaround:</strong> Add the following lines to the player publishing code:
+
+	<pre>
+&lt;param name="includeAPI" value="true" /&gt;
+&lt;param name="templateLoadHandler" value="onLoad"&gt;
+      </pre>
+
+	<p>And add the following <code>templateloadhandler</code>:</p>
+
+	<pre>
+&lt;script&gt;
+   var onLoad = function(id) {
+     var el = document.getElementById(id);
+     if (el.tagName === 'IFRAME') {
+       el.setAttribute('allowfullscreen', 'allowfullscreen');
+     }
+   }
+&lt;/script&gt;
+        </pre>
+	</li>
+	<li><strong>Players not loading in Firefox when using Bootstrap's default modal CSS to present a video</strong>. When using Bootstrap's default modal CSS (i.e. bootstrap.min.css*) to present a video in Bootstrap's modal window, players don't load in Firefox, because Firefox apparently has a problem with "translate" used on a Flash Object.<br />
+	<strong>Workaround:</strong> In the Bootstrap CSS file, find the <code>.modal.fade .modal-dialog</code> and <code>.modal.in .modal-dialog</code> style rules, and replace it with the following:
+	<pre>
+.modal.fade .modal-dialog {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -moz-transition: -moz-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  /* transform: translate(0, -25%); */
+}
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  /* transform: translate(0, 0); */
+}</pre>
+	</li>
+	<li><strong>HLS playback issue on Android 4.4.</strong> When playing a video for the first time, at the 7 -10 second mark, the video will jump back to the beginning and start playing. This happens on some 4.4.x Android devices (particularly on the Nexus 7). This is a bug that has been reported to Google (<a href="https://code.google.com/p/android/issues/detail?id=63346">https://code.google.com/p/android/issues/detail?id=63346</a>). (BC-33389)</li>
+	<li>The following issues may appear when using closed captions on Android devices.
+	<ul>
+		<li>The closed captioning background color displays on the whole screen not just behind the text</li>
+		<li>Some of the closed captioning font family options do not work</li>
+		<li>Closed captions do not play in full screen mode</li>
+	</ul>
+	</li>
+	<li>HTML fallback for Smart Players is only supported in Internet Explorer 11, Chrome and Safari.</li>
+	<li>Even though the Accessible Video Player is Section 508 compliant, there maybe some cases (browser specific or content specific), where the overall page that contains the player could be considered not compliant since elements in the page outside the player may not be reachable. (BC-33429)</li>
+	<li>If you are using Google Widevine to protect your videos, there is a known Widevine bug that may result in truncation of the video at the end (up to 2.5 seconds, according to Google). The work around is to add 2.5 seconds of blank screen or some other content to the end of the video.</li>
+	<li>If you hide and show a Chromeless video player on a page, the video still may not appear when using Internet Explorer. As a workaround, do not use the display or visibility property to hide/show players. Instead, change the width and height to 0, or set the margin or text-indent to large negative values to hide the player or its container. (BC-30066)</li>
+	<li>When the YuMe ad plugin is used in a player, the scrub bar occasionally flashes if the mouse is hovered over the player. (BC-31480)</li>
+	<li>On Windows Server 2008, the BrightcoveExperience.js file throws an error preventing players from loading. (BC-31011)</li>
+	<li>On Internet Explorer 8 and earlier, adding any other elements, including &lt;p&gt;, &lt;br&gt; and &lt;!-comments-&gt; to the object tag in the player publishing code will prevent the player from loading.</li>
+	<li>A recent change in the Flash security model for Chrome causes security warnings to be generated when&nbsp;pages that contain a Video Cloud (or any other Flashed-based) video player <strong>are accessed over https</strong>.</li>
+	<li><strong>If you use an embedded font in a player template, the player will not load.</strong> Do not use embedded fonts in a player template.</li>
+	<li><strong>The HTML embed code (whether from the share menu or from the Publishing / Media Module) will not render our HTML player</strong>. The JavaScript embed code (not available in the share menu) is required at this time for the HTML player to render.</li>
+	<li>When using a player based on the Tabbed Navigation or Compact Tabbed Navigation templates, <strong>the related link underline may not change color on rollover</strong> on certain browsers and/or operating systems..</li>
+	<li><strong>"Video Unavailable" message flashes after the HTLM5 player loads</strong> when your page/app is set up to load content dynamically into the player.<br />
+	<strong>Workaround: </strong>Set the <code>showNoContentMessage</code> parameter in the player publishing code to false:
+	<pre>
+&lt;param name="showNoContentMessage" value="false" /&gt;
+</pre>
+
+	<p>Another option is to load and autoplay a short video clip, such as an introductory or branding clip.</p>
+	</li>
+	<li><strong>If an HTML5 player is initially hidden (as in a lightbox implementation) attempts to play videos will fail silently.</strong> If the publisher intends to hide and show their lightbox multiple times, we recommend hiding it outside the viewport or covering it with another element instead of using display:none to avoid this issue.</li>
+	<li><strong>With Flash Player 11.2, some anamorphic videos and live streams will display with an incorrect aspect ratio</strong>. Not known to affect videos that have been transcoded by Brightcove; only source videos used as a rendition and live streams have been affected. The problem appears to be in the Flash Player runtime, and is resolved in the Flash 11.3 beta</li>
+	<li><strong>Videos with DRM applied will not play on some versions of Chrome. </strong>Viewers using Chrome on Windows 7 will see the video player load, but videos will not load or play. This applies to videos with DRM applied only. This is an issue with Chrome that cannot be resolved by Brightcove.&nbsp;<strong>Workaround</strong>: use a different browser.</li>
+	<li><strong>Users of </strong><a href="http://code.google.com/speed/public-dns/"><strong>Google Public DNS</strong></a><strong> and other DNS servers not provided by their ISP</strong> may experience slower player loads. &nbsp;Google Public DNS interferes with the regional IP information that under normal circumstances would resolve to a regional ISP provider when the request is handled by Brightcove's servers. &nbsp;Brightcove, as well as many of the content delivery networks we work with&nbsp;&nbsp;(Akamai, etc.), depend on the regional ISP information to direct users to servers closest to their location for ideal performance. &nbsp;Brightcove has added the Google Public DNS&nbsp;<a style="color: rgb(17, 85, 204); " target="_blank" href="http://code.google.com/speed/public-dns/faq.html#locations">server locations</a>&nbsp;to our system so that we can make a more educated guess at the end users location but,&nbsp;<a style="color: rgb(17, 85, 204); " target="_blank" href="http://code.google.com/speed/public-dns/faq.html#cdn">as Google acknowledges</a>, this may not be the closest server they would have resolved to otherwise.</li>
+	<li><strong>HEX characters prevent videos from playing HTML5 players.</strong>&nbsp;Avoid using HEX characters in the short or long description of their video title because it will break HTML5 and cause the Video Cloud player to not render on non-flash supported devices. (BC-30439)</li>
+	<li><strong>autoStart configuration parameter disabled in HTML5 mode</strong>. The autoStart configuration parameter is ignored for players in HTML5 mode. (BC-25554)</li>
+	<li><strong>get code option for LiveJournal does not work</strong>. When a viewer clicks the get code option in the viewer and selects the LiveJournal option, the player rejects the viewer's username and password, even if they are valid. (BC-21495)</li>
+	<li><strong><a id="playerTag" name="playerTag" href=""></a>playerTag player configuration parameter is not used in reports</strong>. A player configuration parameter, playerTag, was intended for use in reports, to enable you to distinguish between separate instances of the same player in different pages. Video Cloud reports do not currently use the playerTag configuration parameter, so this parameter can't be used for that intended purpose.</li>
+	<li><strong>InPrivate filtering setting in IE8 can be set by users to block videos from loading.</strong> Microsoft Internet Explorer, version IE8 and later, allows users to set security settings that block Video Cloud videos from loading. The problem arises from the InPrivate filtering feature in IE. This feature detects and provides the option to block communication between the website a user is viewing and third-party websites. Since a web page that hosts a Video Cloud player needs to communicate with Video Cloud in order to load videos, this means IE users can configure their browsers in a way that prevents Video Cloud videos from loading. This problem arises if an IE user sets the InPrivate filtering setting to&nbsp; "Automatically Block".</li>
+	<li><strong>Full screen issue with wmode.</strong> If you add the wmode configuration parameter to a player, and the browser is using Flash Player 9.0.45.0 or lower, Full Screen does not function correctly. Instead of maximizing up to Full Screen, it will only maximize the size of the player template, and upon clicking the 'Exit Full Screen' button, nothing will happen. <strong>Workaround:</strong> Either omit the wmode configuration parameter or require your viewers to use Flash Player 9.0.115 or later. (BC-15292)</li>
+	<li>When playing a video then <strong>going full screen on Android Nexus 4.2 and 4.1.1</strong> the "<strong>Sorry, this video cannot be played</strong>" error is displayed. This appears in both the built in browser and Chrome. This is an Android issue. &nbsp;The user can reload the video full screen to see the video.</li>
+</ul>
+
+<h3><a id="html5player" name="html5player" href=""></a>Device support for HTML5 players</h3>
+
+<p>For a list of supported Apple and Android devices and operating system versions, see <a href="/node/6464">Supported Devices for HTML5 Players</a>.</p>
+
+<p><a id="appleissues" name="appleissues" href=""></a><strong>Issues with supported Apple devices</strong></p>
+
+<ul>
+	<li>The Apple operating system does not support automatically playing an HTML5 video when it loads.</li>
+	<li>An HTML5 player using the thumbnail navigation template and having more than 18 videos in its playlist, might not display the thumbnail images for videos after the 18th on some Apple iOS devices. To avoid this issue, limit a playlist to 18 or fewer videos. (BC-28696)</li>
+	<li>Selecting videos from a playlist while another video is currently playing might not play the selected video on iPad devices running iOS 3.2.2. For this reason we do not support playlist players using chromeless players on iOS 3.2.2 for iPads. Selecting videos while others are playing is more reliable using chromed playlist players for iPads running iOS 3.2.2. (BC-28688) Also videos do not transition smoothly using continuous playback in fullscreen on the iPhone4. (BC-28650) (BC-28640)</li>
+	<li>Videos from horizontal playlists on some OSes of iPad and iPhone 4 do no play sometimes when selected. (BC-28660)</li>
+	<li>When attempting to play an unavailable video from a multiple playlist player on an iPhone or iPad, the video unavailable message appears over the still of the previously played video. (BC-28655)</li>
+	<li><strong><a id="BC-28696" name="BC-28696" href=""></a></strong>A player that uses the Thumbnail Navigation template and which has more than 18 videos in its playlist may not display the thumbnail images for the 19th and 20th video in HTML5 mode on some Apple iOS devices. Each page of the Thumbnail Navigation player displays 9 videos; the 3rd page will not display any thumbnails, though the 19th and 20th video can be played by clicking on the empty tiles where the thumbnails should be. The player displays normally in Flash mode or on Android devices.<br />
+	<strong>Workaround</strong>: Limit your playlist to 18 or fewer videos. (BC-28696)</li>
+	<li>For web pages that include Video Cloud videos via a video tag within an iFrame, and also contain a translate3d transformer , removing the iFrame, renders the entire page blank on devices running iOS 4.1 or earlier.</li>
+</ul>
+
+<p><a id="androidissues" name="androidissues" href=""></a><strong>Issues with supported Android devices</strong></p>
+
+<ul>
+	<li>The chromeless player playhead and pause button controls on Android tablets running version 3.1 or 3.2 might not perform as they should. The Android 3.1 and 3.2 playhead does not support scrubbing backwards and forwards. Playhead scrubbing does perform as it should in fullscreen mode. The pause button pauses the video as it should, but sometimes shows the pause button in the play state. Also pausing a video shows the Android filmstrip icon instead of the last video frame in a frozen state. (BC-28826) (BC-28804)</li>
+	<li>The Android v 3.1 or 3.2 might redraw and flicker when selecting videos in playlist players. This behavior is less frequent in a chromeless version. (BC-28803)</li>
+	<li>An HTML5 player with more than 12 videos in its playlist, might not work on Android 2.1 devices. To avoid this issue, limit a playlist to 12 or fewer videos. (BC-28910)</li>
+</ul>
+
+<p>Note that Video Cloud videos will play in HTML5 players only if Flash is not installed on Android devices. If the Flash player is installed on an Android device, Video Cloud smart players assign the videos to play in Flash mode and HTML 5 player support issues do not apply.</p>
+
+<h2><a id="media" name="media" href=""></a>Media Module</h2>
+
+<h3>Media sharing</h3>
+
+<ul>
+	<li>When a video is shared to another account, the sharee account is not able to change the captions file associated with the shared video. Even though the UI appears to accept the change, the captions file will not be updated. However, if media sharing by reference is enabled, the captions associated with the shared video can be changed.</li>
+</ul>
+
+<h3>Uploading</h3>
+
+<ul>
+	<li><strong>Aspera upload when using Chrome 42 and higher</strong>. Google disabled NPAPI in Chrome 42 which means that the Aspera Connect plugin for Accelerated Upload will not run.<br />
+	<strong>Workaround:</strong> Go to chrome://flags and find <strong>Enable NPAPI</strong>. Enable it and restart Chrome. For more on this issue see this <a href="https://support.asperasoft.com/entries/92926978-Workaround-for-use-of-Aspera-Connect-with-Google-Chrome-version-42-0-2311-90">Aspera page</a>.</li>
+	<li>Files containing question marks in the filename are not supported for upload. If you try uploading a file with a question mark in the name, the upload will fail.</li>
+	<li>Apple ProRes uploads with encoded audio layout of "Channel positions : Front: L R (Matrix)" fail due to not being supported by our existing transcoding infrastructure, whereas audio layout "Channel positions : Front: L R" upload and transcode as expected. This will be resolved once all Video Cloud transcoding is via Zencoder, due to a more recent version of ffmpeg which supports this. (BC-32571)<br />
+	<strong>Workaround</strong>: Use standard mono or stereo audio layout when encoding, rather than the mixed (esp. Matrix) audio layout.</li>
+	<li>Videos uploaded with a frame rateless than or equal to 1 will result in a black screen being transcoded with only audio playing back successfully.</li>
+	<li>You cannot upload a bumper via Studio with DRM enabled on an account.<br />
+	<strong>Workaround</strong>: Disable DRM, upload the bumper and then re-enable DRM. (BC-32697)</li>
+	<li><strong>Cannot select WMV files to upload to Studio</strong> in some versions of Firefox on Windows 7.<br />
+	<strong>Workaround</strong>: type "*.*" in the text field of the file chooser to reveal the WMV files.</li>
+	<li><strong>When Publishers use the <em>Retain source as a rendition</em> encoding option it <em>may</em> not be compatible with DRM.</strong>&nbsp; Brightcove utilizes Adobes Flash Access to implement our DRM feature, and Flash Access is not compatible with all video source file formats that Brightcove allows customers to use. If an incompatible videos source is uploaded into a DRM enabled Publisher, the symptom would show as the highest rendition remaining in <em>processing</em>.</li>
+	<li><strong><a id="flash101" name="flash101" href=""></a>Flash Player 10.1 Beta release is not stable for Studio use.</strong> The beta versions of&nbsp;Flash Player 10.1, released by Adobe, causes some unpredictable behavior in Video Cloud Studio.<br />
+	<strong>Workaround</strong>: Do not install the Beta versions of Flash Player 10.1 on a production machine that you want to use to access the Studio.&nbsp;</li>
+	<li>The maximum size for video files you can upload using the Media module is 2 GB.</li>
+	<li>If you are uploading files and lose your network connection, the Media module doesn't report back an error. The file that was in the process of being uploaded will not resume uploading if you reconnect to the network. You must cancel the currently uploading file and then the rest of the files in the upload queue will continue to upload normally. (BC-12692)</li>
+	<li>If you are uploading a very large file from a network shared drive, your upload may time out before it is complete.<br />
+	<strong>Workaround</strong>: Copy your file to a local drive and start your upload again. (BC-16759)</li>
+	<li><strong><a id="BC19989" name="BC19989" href=""></a>Mac OS upload failures with large video files</strong>. If you are uploading from a Mac, you should make sure that your machine has at least twice as much available system memory size as the size of the video you are uploading. For example, if you are uploading a 1 GB video file, your Mac should have at least 2 GB of available system memory. (BC-19989)</li>
+	<li>If you choose to upload a new Video but the OS&nbsp;file picker does not appear automatically, check to see if your machine is allowed access to the "file selection box". In some organizations where security levels are high, this permission may be disabled. Please contact your internal IT department for assistance enabling this option for your machine.</li>
+	<li><a id="BC-23900" name="BC-23900" href=""></a>Updating FLV files of videos in the Video Files tab of the Media module's Video Editor can result in unexpected failures when using Firefox 3.5.8 and Flash version 10.1.51.95.<br />
+	<strong>Workaround</strong>: Use a different browser or upgrade to a later version of Firefox. (BC-23900)</li>
+</ul>
+
+<h3>Image capture</h3>
+
+<ul>
+	<li>If you are not able to capture a specific image from your video, you may be experiencing limitations of image capture and flash. The capture functionality can only retrieve a key frame. Normally, this is not an issue, as a key frame is often provided every second or two. When attempting to capture an image from the end of the video, this issue can be more noticeable as there may not be a nearby key frame for the last second or two of the video. You can attempt to go back to a slightly earlier time within the video, say for example five seconds before the end to see if the image capture functionality works.</li>
+</ul>
+
+<h3>Duplicate Cue Points When Replacing Video Source</h3>
+
+<p>If you set cue points on a video, and then upload a new source file with a different duration, old cue points may be associated with the video but not visible in the Media module.<br />
+<strong>Workaround:</strong> Do not set cue points on videos until the final source file has been uploaded or use the Media API to verify which cue points exist for a video. (BC-31862 and BC-33856)</p>
+
+<h3>Post-roll cue point issues</h3>
+
+<ul>
+	<li>The Media module shows phantom pre and post-roll cue points and only makes them real if you click Save in the Cue Point editor</li>
+	<li>If the cue points are not created, they do not show up in API calls but do show up in UI causing confusion</li>
+	<li>If the cue points are created, Post-roll is in milliseconds and trying to replace it passing in a new Post-roll in seconds creates a new cue point</li>
+</ul>
+
+<h3>Adding Playlists to a Player</h3>
+
+<p>If you add the same playlist more than once to a tabbed player, additional tabs are added for the duplicated playlists, but these tabs have no content. <strong>Workaround:</strong> Avoid adding the same playlist to a player more than once. (BC-16014)</p>
+
+<h3>Previewing may fail with Internet Explorer in full screen mode</h3>
+
+<p>Some users may experience issues while using the preview in the Media module with Internet Explorer and in full screen mode.</p>
+
+<p><strong>Workaround:</strong> Disable hardware acceleration in the Flash player.<br />
+To turn off hardware acceleration, bring the preview player up in the Media module. Right click the player and select <strong>settings</strong>. At the bottom of the settings dialogue, select the screen icon, which will enable you to uncheck the hardware acceleration. (BC-19718)</p>
+
+<h3>Previewing bandwidth is categorized as "Unknown Video"</h3>
+
+<p>If you preview a video in the Media, Advertising, or Analytics modules, the bandwidth usage is not tracked under the name of that video. If you run a report in the Video Cloud Studio for Video Bandwidth usage, you will see that bandwidth incurred while playing back video files in preview mode is tracked against a video named 'unknown'. This is the desired behavior, since it helps you separate "real" viewers from internal testing or administration views of your videos. (BC-22916)</p>
+
+<h3>Media shared remote asset has no playback on IP restricted accounts</h3>
+
+<p>If you media share a live title (remote asset title for live) to an account with IP restrictions enabled, the shared video will not play.</p>
+
+<p><strong>Workaround:</strong> Add the remote asset to the account that is configured with the IP restrictions. (BC-32286)</p>
+
+<h2><a id="publishing" name="publishing" href=""></a>Publishing Module</h2>
+
+<p>None.</p>
+
+<h2><a id="advertising" name="advertising" href=""></a>Advertising Delivery</h2>
+
+<h3>HTML5 ads with playlist players</h3>
+
+<p>When using HTML5 ads with playlist players and the loadVideo method, the player may crash Safari on iOS 7 devices. Some customers have been able to work around this issue by reloading the player programmatically every time a new video gets selected to play. (BC-33231)</p>
+
+<h3>templateReady event fires twice with IMA2/3</h3>
+
+<p>When an IMA ad source is used, the <code>templateReady</code> handler is fired twice (BC-32369). To workaround this issue, we recommend this code snippet:</p>
+
+<pre>
+
+var onTemplateReadyFired;
+function onTemplateReady(evt) {
+  if (onTemplateReadyFired)
+  { return; }
+  onTemplateReadyFired = true;
+  console.log(evt.type);
+}</pre>
+
+<h3>Media PLAY event dispatched before adComplete event</h3>
+
+<p>For both the Flash-only and Smart Player APIs, the Media PLAY event is dispatched before the adComplete event after a midroll ad plays.</p>
+
+<h3>VAST Ad Duration Format</h3>
+
+<p>The ad duration returned in a VAST response&nbsp;must be specified in the hh:mm:ss format, as indicated in the VAST specification. If you return the duration as XX, instead of 00:XX:00, then your tracking URLs will not fire at the right time. (BC-25811)</p>
+
+<h3>Ad Tag Translators</h3>
+
+<p>Ad tag translator SWFs that were developed for AS2 players do not work with AS3 players.</p>
+
+<h3><a id="BC-28214" name="BC-28214" href=""></a>Banner BEML component can cause video ad to play over video content</h3>
+
+<p>When a custom BEML player with a Banner component gets a VAST response with a video ad and a banner, the video and the video ad may play simultaneously, with the ad over the video content.</p>
+
+<p><strong>Workaround</strong>: A custom BEML player that will be used for advertising with banners should use the ExpandingBanner component rather than the Banner component. (BC-28214)</p>
+
+<h3>ExpandingBanner doesn't support fade mode</h3>
+
+<p>The ExpandingBanner BEML component has an animationType attribute. The fade value for animationType does not work correctly.</p>
+
+<p><strong>Workaround</strong>:&nbsp;Use animationType="expand" instead. (BC-19816)</p>
+
+<h3>Ad SWFs should not be used across videos or playlists</h3>
+
+<p>If you are developing an Ad SWF, you should try to use each call to <span style="font-family: Courier New;">displayAd()</span> as a single ad call within a single video, otherwise you may encounter issues.</p>
+
+<h3>Full screen events not usable from ad SWF</h3>
+
+<p>Full screen events are not seen by the ad SWF.</p>
+
+<p><strong>Workaround</strong>:&nbsp;Use the Flash full screen events instead of using the Video Cloud player's events. (BC-17274)</p>
+
+<h3>Click Tag does not work in Flash 9 ad creatives compiled with ActionScript 3</h3>
+
+<p>Flash ad creatives written and compiled with ActionScript 3 / Flash 9 will play back in the Video Cloud player. However, the click tag functionality won't work. As such, we don't fully support ActionScript 3 in Flash ad creatives. We do support Flash 9 ad creatives compiled with ActionScript 2.</p>
+
+<h3>Internal redirect tag issue in Overlay ads</h3>
+
+<p>Do not use redirect tags for creative URLs for the Overlay and Synched Overlay ad formats (BC-24699)</p>
+
+<h2><a id="mediaapi" name="mediaapi" href=""></a>Media API</h2>
+
+<h3>search_videos_unfiltered method paging issue</h3>
+
+<p>The Media API <code>search_videos_unfiltered</code> method incorrectly returnd deleted videos as part of the page, and then removes them, which reduces the size of each page by a varying amount.</p>
+
+<p><strong>Workaround</strong>: Include the parameter <code>none=item_state%3A2</code> in the request. This will prevent deleted videos from being returned.</p>
+
+<h3>Video still and/or thumnail images not generated</h3>
+
+<p>In very rare cases, when using the Media API to upload videos, video still and/or thumbnail images may not be captured. When this happens, use the Media module to upload or capture an image. (BC-34658)</p>
+
+<h3><strong><a id="BC17725" name="BC17725" href=""></a></strong>Error when passing an empty array of videoIDs in update_playlist</h3>
+
+<p>If you try to clear all contents from a playlist by passing an empty array of videoIDs in the <span style="font-family: Courier New;">update_playlist</span> method, the method returns code 100: UnknownServerError (instead of something more informative) and the playlist will not be modified. (BC-17725)</p>
+
+<h3><strong><a id="BC13332" name="BC13332" href=""></a></strong>Changed Value for total_count property where get_item_count=false</h3>
+
+<p>Previously, in the methods find_related_videos, find_videos_by_user_id and find_videos_by_campaign_id, if you passed null or false for the get_item_count argument, the value returned for the total_count property would be 0. This behavior was inconsistent with the behavior of other related methods. Now, in this circumstance, the value returned for the total_count property is -1. (BC-13332)</p>
+
+<h3><a id="mrss-uds" name="mrss-uds" href=""></a>MRSS Read methods do not return paths to videos</h3>
+
+<p>Universal delivery service enables calling Media Read API methods to retrieve a video's <span style="font-family: Courier New;">FLVURL </span>field, which is the path to the video itself. However, if you call the Media API to return in MRSS format (using the <span style="font-family: Courier New;">output=mrss</span> argument), the <span style="font-family: Courier New;">FLVURL</span> field may not be returned. The <span style="font-family: Courier New;">FLVURL</span> field will always be returned if you call a Media Read method to return in JSON format (using the <span style="font-family: Courier New;">output=json</span> argument). (BC-23681)</p>
+
+<h3><strong><a id="BC17039" name="BC17039" href=""></a></strong>Using both output=MRSS and fields causes error</h3>
+
+<p>In Media API read methods, if you use both the output=MRSS and fields (or video_fields or playlist_fields) parameters in your method call, the method returns a code 100: unknown error. If you want your output in MRSS format, you cannot use the fields parameter to limit the fields returned in the MRSS. (BC-17039)</p>
+
+<h3><a id="ref_id_comma" name="ref_id_comma" href=""></a>Read methods returning lists have problems with commas in reference IDs</h3>
+
+<p>The <span style="font-family: Courier New;">find_videos_by_reference_ids</span> and <span style="font-family: Courier New;">find_playlists_by_reference_ids</span> methods cannot handle reference IDs that contain commas.</p>
+
+<p><strong>Workaround</strong>: Avoid using commas in reference IDs for videos and playlists.</p>
+
+<h2><a id="smartplayerapi" name="smartplayerapi" href=""></a>Smart Player API</h2>
+
+<h3>templateReady Event not Firing</h3>
+
+<p>The <code>templateReady</code> event does not fire if a video is not loaded in the player.</p>
+
+<h3>Rendition selection for Akamai HD</h3>
+
+<p>When using the API to control rendition selection, there will be a delay before the rendition switches. This is the expected behavior. When Akamai HD detects the need for a rendition change, it will continue to play all of the content it already has buffered for the current rendition, before it switches to the new one. This might be 20-30 seconds, or more.</p>
+
+<p>It is possible to force an immediate switch, but it will not switch smoothly - there will be a slight gap while one rendition stops and the other is buffered and played. If that is acceptable, the way to force the switch is to call <code>getCurrentPosition()</code> on the video, then call <code>seek()</code> with that same position. This should cause the new rendition to begin playing immediately.</p>
+
+<h3>Video Playback on mobile devices</h3>
+
+<p>Both iOS and Android require that initial video playback be initiated by the viewer. The methods <code>play()</code>, <code>loadVideoByID()</code>, and <code>loadVideoByReferenceID()</code> will not start video playback on Android and iOS devices unless the viewer has already initiated playback of at least one video.</p>
+
+<h3>When Flash access is enabled, the Media CHANGE event fires twice</h3>
+
+<p>When Flash access is enabled for your videos, the media CHANGE event will fire twice when a new video is loaded into the player.</p>
+
+<p>Workaround: if you need to perform some action when the event fires, test to see if the video has actually changed, so that you only perform the action once:</p>
+
+<pre>
+var currentVideoID, loadedVideoID;
+// on player READY, get the current video ID and store it as currentVideoID
+
+function onChange(event) {
+    if (event.media.id !== currentVideoID) {
+        currentVideoID = event.media.id;
+        // video has changed; do whatever you need to do
+    }
+}</pre>
+
+<h3>Incorrect ReferenceID attribute returned</h3>
+
+<p>When using the Smart Player API, the media object that's attached to the event, <a href="http://docs.brightcove.com/en/video-cloud/smart-player-api/references/symbols/brightcove.api.data.Media.html">brightcove.api.data.Media()</a> has a referenceID attribute. When loading a Flash player, the attribute is actually called "referenceId". When an HTML player is loaded, it's properly called "referenceID". (BC-32815)</p>
+
+<h3>Old versions of <a href="http://www.prototypejs.org/">Prototype JavaScript framework</a> prevent the Smart Player API from functioning</h3>
+
+<p>If you include older versions of <a href="http://www.prototypejs.org/">prototype.js</a> (older than version 1.7) in your HTML then the HTML player does not function properly. The onTemplateReady() handler will not fire and any attempts to call API methods fail silently.</p>
+
+<h2><a id="flashplayerapi" name="flashplayerapi" href=""></a>Flash-Only Player API</h2>
+
+<h3>getCurrentDisplayX() and getCurrentDisplayY() always return 0</h3>
+
+<p>getCurrentDisplayX() and getCurrentDisplayY() always return 0 rather than the offset of the video display. This JS code can be used as a workaround to get the correct x/y values. (BC-31934)</p>
+
+<pre>
+var layoutbox = modExp.getLayoutRoot();
+var len = layoutbox.getNumChildren();
+  for (var i=0; i&lt;len; i++) {
+     var child = layoutbox.getChildAt(i);
+     if (child &amp;&amp; child.name &amp;&amp; child.name=="videoPlayer") {
+          console.log("x="+child.getX());
+          console.log("y="+child.getY());
+      }
+}
+</pre>
+
+<h3><strong><a id="BC12947" name="BC12947" href=""></a></strong>Using system fonts with setRotation and setAlpha</h3>
+
+<p>Using setRotation along with system fonts causes any text in the rotated component to disappear. TextLinks using system fonts cannot have their opacity set with setAlpha. (BC-12947)</p>
+
+<h3><strong><a id="BC14359" name="BC14359" href=""></a></strong>videoChange event in VideoPlayer Module removed</h3>
+
+<p>The <code>videoChange</code> event in the VideoPlayer Module has been removed. For most purposes, the <code>streamStart</code> event can be used instead. (BC-14359)</p>
+
+<h3>showIconMenu function in Menu Module replaced by showMenuPage</h3>
+
+<p>The <code>showIconMenu</code> function in the Menu Module no longer has any effect, since Video Cloud players no longer have an icon menu. Use <code>showMenuPage</code> instead, specifying the menu you want to display.</p>
+
+<h2><a id="beml" name="beml" href=""></a>Custom Players and BEML (Brightcove Experience Markup Language)</h2>
+
+<h3>Auto-advance in multi-video player templates</h3>
+
+<p>Auto-advance is a player setting that causes a player to begin playing the next video in a playlist immediately after the preceding video completes. If you duplicate one of the standard player templates that supports one or more playlists, the new player template will have auto-advance turned on, and you will not be able to turn auto-advance off in the Publishing module for players made with that template. This issue affects player templates duplicated from the following standard player templates:</p>
+
+<ul>
+	<li>Widescreen with Horizontal List</li>
+	<li>Widescreen with Vertical Video List</li>
+	<li>Widescreen with Video Text List</li>
+	<li>Video Player with Horizontal Video List</li>
+	<li>Tabbed Navigation 3.0</li>
+	<li>Compact Tabbed Navigation 3.0</li>
+	<li>Thumbnail Navigation</li>
+	<li>Video Player with Dropdown Navigation</li>
+	<li>Widescreen with Dropdown Navigation</li>
+	<li>Chromeless Video Player with Tabbed Playlists</li>
+</ul>
+
+<p>To avoid this problem, remove the following text from the List or TileList element in the new player template:<br />
+<br />
+<span style="font-family: Courier New;">automaticAdvance="true"</span><br />
+<br />
+(BC-21330)</p>
+
+<h3><strong><a id="fonts" name="fonts" href=""></a></strong>Embedded fonts do not work in player templates</h3>
+
+<p>If you use an embedded font in a player template, the player will not load. Do not use embedded fonts in a player template. (BC-18487)</p>
+
+<h3><strong><a id="white" name="white" href=""></a></strong>Avoid white space in XML attributes</h3>
+
+<p>In BEML player templates, be sure <strong>not</strong> to include extra white space in XML attributes. For example, do this:</p>
+
+<p><span style="font-family: Courier New;">&lt;element id="foo" /&gt;</span></p>
+
+<p>and not this:</p>
+
+<p><span style="font-family: Courier New;">&lt;element id = "foo" /&gt;</span></p>
+
+<p>The extra white space before and after the equals sign in this example prevents the player template from being styled in the Publishing module.&nbsp;</p>
+
+<h2><a id="ftpbatch" name="ftpbatch" href=""></a>FTP Batch Provisioning</h2>
+
+<h3><strong>Retranscoding Videos</strong></h3>
+
+<p>When trying to retranscode from a new source via FTP, you may receive an error message that the operation failed.</p>
+
+<p><strong>Workaround</strong>: Upload the replacement assets in a separate manifest, wait for them to be accessible in the system, THEN submit the retranscode-from-new manifest (that points to the assets uploaded in the previous manifest).</p>
+
+<h3>Deleting Cue Points</h3>
+
+<p>When you delete cue points using FTP batch provisioning, you need to provide the cue point's id; providing the cue point's name (as documented) does not suffice and is not necessary. To get the cue point ids of a video, you can use a Media API call like this:</p>
+
+<pre>
+ http://api.brightcove.com/services/library?command=find_video_by_reference_id&amp;video_fields=cuepoints&amp;reference_id=[VALUE FOR VIDEO]&amp;token=[READ TOKEN FOR YOUR ACCOUNT] </pre>
+
+<p>With the cue point id you retrieve, submit an FTP batch manifest with a line like this:</p>
+
+<pre>
+&lt;delete-cuepoint id="[VALUE FOR CUE POINT]" video-refid="[VALUE FOR VIDEO]"/&gt;
+</pre>
+
+<p>As an alternative, you can delete a cue point using the Media module or Advertising module. (BC-27079)</p>
+
+<h3><strong>FTP Callbacks</strong></h3>
+
+<p>When ingesting a new asset and creating a title through FTP batch provisioning with an account on Mannheim, the callback for the master will not have a reference ID. The callback for the Video should contain the reference ID. When retranscoding from a new source through FTP batch provisioning with an account on Mannheim, none of the callbacks received will contain a reference ID. These are current limitations of the callbacks from Mannheim.</p>
+
+<p>For accounts on Mannheim, a callback is sent for each rendition created. For accounts on Origin, a single callback is sent for the master replacement.</p>
+
+<h2><a id="live" name="live" href=""></a>Live Video</h2>
+
+<h3>Wrong video codec in Batch Provisioning</h3>
+
+<p>If your video stream source is H.264 encoded and you set the video-codec parameter in your FTP batch manifest to H264, viewers receive a unplayable stream. This occurs because "mp4:" gets prepended to the stream name.<br />
+<br />
+<strong>Workaround</strong>: Set the video-codec parameter to "ON2". (BC-22105)</p>
+
+<h2><a id="livemodule" name="livemodule" href=""></a>Live Module</h2>
+
+<p>See this <a href="node/15934#livemodule">page</a>.</p>
+
+<h2><a id="mediasharing" name="mediasharing" href=""></a>Media Sharing</h2>
+
+<p><strong>Universal delivery service.</strong> If the sharer and sharee do not have the same settings for <strong>Universal Delivery Service</strong>, problems can arise with videos shared with media sharing.&nbsp;If a sharee has UDS enabled but the sharer doesn't, the content will not be available. If the sharer has UDS enabled and the sharee doesn't, the Media API requests for UDS will fail.</p>
+
+<p><strong>Workaround:</strong>&nbsp;Enable universal delivery service for both accounts.</p>
+
+<h2><a id="reports" name="reports" href=""></a>Reporting and Analytics</h2>
+
+<p>See this <a href="node/15934#analytics">page</a>.</p>
+
+<h2 id="di">Dynamic Ingestion</h2>
+
+<h3>Blank spaces in file name when using Accelerated Upload</h3>
+
+<p>Video files containing blank spaces in the file name will fail to process if they are uploaded using Aspera and Ingest Profiles is enabled. (BC-34427)</p>
+<!-- End of Drupal content -->
