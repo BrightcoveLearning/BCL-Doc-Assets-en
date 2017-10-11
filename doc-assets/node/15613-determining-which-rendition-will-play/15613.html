@@ -1,0 +1,49 @@
+<div class="BCL-concept">
+<h2 id="hlsmp4">HLS or MP4?</h2>
+
+<p>When using the new Brightcove Player, we recommend you choose or create an ingest profile that has both HLS and MP4 renditions in order to reach the greatest number of devices and browsers. This table shows how the player determines, at run-time, which rendition will play on a particular browser.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Browser Type</th>
+			<th>Playback Technology Used By Default</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Desktop Chrome 34+, Desktop Firefox 42+</td>
+			<td>HTML-based HLS (using MSE)</td>
+		</tr>
+		<tr>
+			<td>Desktop (macOS) Safari, Mobile (iOS) Safari, Edge, Chrome 34+ on Android 5.0+</td>
+			<td>Native HLS (implemented by browser)</td>
+		</tr>
+		<tr>
+			<td>IE 10, and 11, Older Firefox and Chrome</td>
+			<td>HLS using Flash, requires Flash 10.3+</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div class="BCL-concept">
+<h2 id="selection">HLS Rendition Selection</h2>
+
+<p>HLS video is broken into segments. These are typically about 10 seconds in duration but can be longer or shorter. The player always starts with the rendition closest to .5 Mbit/s. During playback, it will switch to a higher or lower rendition based on the following algorithm. Inputs to this algorithm are 1. available bandwidth and 2. player dimensions.</p>
+
+<ol>
+	<li>Remove all renditions that have a bitrate higher than the measured bandwidth.</li>
+	<li>Sort the remaining renditions by resolution (horizontal line count) high to low.</li>
+	<li>Point to the one that is closest to the player dimensions.</li>
+	<li>Choose the one that’s one higher than that one.</li>
+</ol>
+
+<p>For more information, see the Video.js <a href="https://github.com/videojs/videojs-contrib-hls/blob/master/docs/bitrate-switching.md">Adaptive Switching Behavior</a> document.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="mp4">MP4 Rendition Selection</h2>
+
+<p>If running on a mobile device and playing an MP4 (based on the rules listed above), the player will choose the MP4 that has a bitrate closest to .5 Mbit/s. If on a desktop or laptop device it will choose one that is closest to 3 Mbit/s.</p>
+</div>
