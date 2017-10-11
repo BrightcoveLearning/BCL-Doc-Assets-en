@@ -141,8 +141,10 @@ var BCLS = (function(window, document) {
         var tr,
             th,
             content;
+        reportTable.setAttribute('class', 'bcls-table');
         reportTable.appendChild(reportTableHead);
         reportTable.appendChild(reportTableBody);
+        summaryReportTable.setAttribute('class', 'bcls-table');
         summaryReportTable.appendChild(summaryTableHead);
         summaryReportTable.appendChild(summaryTableBody);
         tr = document.createElement('tr');
