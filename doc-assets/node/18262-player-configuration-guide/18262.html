@@ -925,37 +925,35 @@
 
 <p>Here is a curl statement to set three of the playlist related properties:</p>
 
-<pre class="line-numbers">
-      <code class="language-bash">curl \
-        --header "Content-Type: application/json" \
-        --user $EMAIL \
-        --request PATCH \
-        <span class="bcls-highlight">--data '{
-          "playlist": true,
-          "autoadvance": 2,
-          "studio_configuration": {
-            "player": {
-              "adjusted": true,
-              "height": "",
-              "width": ""
-            }
-          }
-        }' \</span>
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+<pre class="line-numbers"><code class="language-bash">curl \
+--header "Content-Type: application/json" \
+--user $EMAIL \
+--request PATCH \
+<span class="bcls-highlight">--data '{
+  "playlist": true,
+  "autoadvance": 2,
+  "studio_configuration": {
+    "player": {
+      "adjusted": true,
+      "height": "",
+      "width": ""
+    }
+  }
+}' \</span>
+https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 
 <aside class="bcls-aside bcls-aside--information">When the <code>height</code> and <code>width</code> are not assigned values, the sizes of the player and playlist are automatically adjusted.</aside>
 
 <p>To set <code>playOnSelect</code> for playlists version 1 use the following curl statement:</p>
 
-<pre class="line-numbers">
-      <code class="language-bash">curl \
-        --header "Content-Type: application/json" \
-        --user $EMAIL \
-        --request PATCH \
-        --data '{
-             <span class="bcls-highlight">{"playOnSelect": true}</span>
-        }' \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+<pre class="line-numbers"><code class="language-bash">curl \
+--header "Content-Type: application/json" \
+--user $EMAIL \
+--request PATCH \
+--data '{
+     <span class="bcls-highlight">{"playOnSelect": true}</span>
+}' \
+https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 <!-- <p><code data-gist-id="9629223" data-gist-hide-footer="true" data-gist-line="248-263" data-gist-highlight-line="252-262"></code></p> -->
 
 <h3>Playlist version 2</h3>
@@ -983,21 +981,19 @@
 
 <p>In this <code>options</code> child property, you pass data to utilize at initialization time. The following JSON passes in a single object in the <code>options</code>.</p>
 
-<pre class="line-numbers">
-      <code class="language-json">"plugins": [{
-          "name": "navigateOnVideoEnd",
-          "options" : {"redirectURL": "http://docs.brightcove.com"}
-      }]</code></pre>
+<pre class="line-numbers"><code class="language-json">"plugins": [{
+  "name": "navigateOnVideoEnd",
+  "options" : {"redirectURL": "http://docs.brightcove.com"}
+}]</code></pre>
 
 <p>This gives you the ability to pass data to a plugin via the player configuration. For instance, to use the <code>redirectURL</code> object shown above, you would do the following in the plugin itself:</p>
 
-<pre class="line-numbers">
-      <code class="language-javascript">videojs.plugin('navigateOnVideoEnd', function (<strong>options</strong>) {
-          var myPlayer = this;
-          myPlayer.on("ended", function () {
-            window.location.href = <strong>options.redirectURL</strong>;
-          });
-      });</code></pre>
+<pre class="line-numbers"><code class="language-javascript">videojs.plugin('navigateOnVideoEnd', function (<strong>options</strong>) {
+  var myPlayer = this;
+  myPlayer.on("ended", function () {
+    window.location.href = <strong>options.redirectURL</strong>;
+  });
+});</code></pre>
 
 <p>Note: you use the standard plugin implementation, but use <code>options</code> as a parameter in the anonymous function. You can then access the value using <code>options.propertyName</code> notation.</p>
 
@@ -1031,10 +1027,9 @@
 	</li>
 </ul>
 
-<pre class="line-numbers">
-      <code class="language-html">&lt;video preload ...&gt;
-      or
-      { "preload": "auto" }</code></pre>
+<pre class="line-numbers"><code class="language-html">&lt;video preload ...&gt;
+or
+{ "preload": "auto" }</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -1070,29 +1065,27 @@
 	<li>Select the Brightcove Player 1.x skin instead of the Brightcove Player 5.x look.</li>
 	<li>If you enable this option, you will also need to make sure Brightcove Player 1.x <code>compatibility</code> property is also set to <code>true</code>.</li>
 	<li>Only valid value is <code>graphite</code>.
-	<pre class="line-numbers">
-      <code class="language-bash">curl \
-        --header "Content-Type: application/json" \
-        --user $EMAIL \
-        --request PATCH \
-        --data '{
-          <span class="bcls-highlight">"skin": "graphite",
-          "compatibility": true</span>
-        }' \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+<pre class="line-numbers"><code class="language-bash">curl \
+--header "Content-Type: application/json" \
+--user $EMAIL \
+--request PATCH \
+--data '{
+  <span class="bcls-highlight">"skin": "graphite",
+  "compatibility": true</span>
+}' \
+https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="9629223" data-gist-hide-footer="true" data-gist-line="282-290" data-gist-highlight-line="287-288"></code></p> -->
 	<li>If you wish to remove the skin entirely and use one of your own design, you can set remove the default skin by using this <code>PATCH</code> statement:
-	<pre class="line-numbers">
-      <code class="language-bash">curl \
-        --header "Content-Type: application/json" \
-        --user $EMAIL \
-        --request PATCH \
-        --data '{
-          <span class="bcls-highlight">"skin": "graphite",
-          "compatibility": true</span>
-        }' \
-        https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+<pre class="line-numbers"><code class="language-bash">curl \
+--header "Content-Type: application/json" \
+--user $EMAIL \
+--request PATCH \
+--data '{
+  <span class="bcls-highlight">"skin": "graphite",
+  "compatibility": true</span>
+}' \
+https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 
 <pre class="line-numbers"><code class="language-bash">curl \
 --header "Content-Type: application/json" \
