@@ -142,9 +142,13 @@ var BCLS = (function(window, document) {
             th,
             content;
         reportTable.setAttribute('class', 'bcls-table');
+        reportTableHead.setAttribute('class', 'bcls-table__head');
+        reportTableBody.setAttribute('class', 'bcls-table__body');
         reportTable.appendChild(reportTableHead);
         reportTable.appendChild(reportTableBody);
         summaryReportTable.setAttribute('class', 'bcls-table');
+        summaryTableHead.setAttribute('class', 'bcls-table__head');
+        summaryTableBody.setAttribute('class', 'bcls-table__body');
         summaryReportTable.appendChild(summaryTableHead);
         summaryReportTable.appendChild(summaryTableBody);
         tr = document.createElement('tr');
