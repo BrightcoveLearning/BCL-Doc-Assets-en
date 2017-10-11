@@ -1,7 +1,6 @@
 <p><strong>Identified known issues include:</strong></p>
 
 <ul>
-	<li><a href="#studio"><strong>Video Cloud Studio</strong></a></li>
 	<li><a href="#players"><strong>Smart Players</strong></a></li>
 	<li><a href="#media"><strong>Media Module</strong></a></li>
 	<li><a href="#publishing"><strong>Publishing Module</strong></a></li>
@@ -17,25 +16,8 @@
 	<li><a href="#di"><strong>Dynamic Ingestion</strong></a></li>
 </ul>
 
-<h2><a id="studio" name="studio" href=""></a>Video Cloud Studio</h2>
 
-<ul>
-	<li><strong>Safari 10 Issues.</strong> With Safari 10, Adobe Flash is disabled by default. This will cause display issues when using the Legacy Video Cloud Studio.<br />
-	<strong>Resolution:</strong> Open <strong>Safari Preferences</strong>, click <strong>Security</strong>, click <strong>Plug-in Settings...</strong>Click <strong>Adobe Flash Player</strong> and enable Flash for the videocloud.brightcove.com domain.</li>
-	<li><strong>Clearing the Custom Link Domain Name in Video Cloud Studio account settings saves a value of "null".</strong> After clearing the host name and saving, "null" will be displayed. This replaces the "link.brightcove.com" bit in the players URL with "null" breaking those links. (BC-17620)<br />
-	<strong>Workaround:</strong> Try saving the change several times until the links are generated correctly or set the domain name to "link.brightcove.com".</li>
-	<li><strong>HDS and FAXS DRM protected content. </strong>DRM content protected with HDS and FAXS cannot be previewed in the Media Module. (BC-33774)</li>
-	<li><strong>Custom Link Domain Name in Video Cloud Studio account settings does not validate.</strong> After entering a valid host name, the validate link will display "Please configure your network" even though a valid host name is entered. (BC-32959)<br />
-	<strong>Workaround:</strong> After entering a valid host name, save your changes and use your custom host name.</li>
-	<li><strong>Default Viral Player selection in Video Cloud Studio account settings does not show all eligible players.</strong> The video player selection list is limited to displaying the first 200 players in alphabetical order.<br />
-	<strong>Workaround:</strong> Temporarily rename the player so it will appear first alphabetically and you will be able to assign it. Then rename it back. (BC-31326)</li>
-	<li><strong>HTML5 Player Delivery settings in Video Cloud Studio account settings do not display the "Turn On" and "Turn Off" buttons.</strong> These buttons will only appear when you have less than 100 players in your account.<br />
-	<strong>Workaround:</strong> To turn on HTML5 player delivery for all of your players, Contact Brightcove Support. (BC-28776)</li>
-	<li><strong>Deleting unwanted logo overlay images is difficult</strong>: Note that there is a bug which prevents the list of videos using a logo overlay to be displayed when you click the <strong>List References</strong> link — the list of IDs you see there are not correct</li>
-	<li><strong>Japanese and Spanish versions of Video Cloud Studio may conflict with Google Toolbar</strong>. If you are using either the Japanese or the Spanish version of Video Cloud Studio while the Google&nbsp;Toolbar is active in your browser, and you switch from the Studio&nbsp;Home page to a Studio module, the screen may blink and freeze. This seems to result from a conflict with Google&nbsp;Toolbar, which is trying to translate the page, causing the page to continuously refresh.<br />
-	<strong>Workaround: </strong>Disable the Google Toolbar while you use Video Cloud Studio. (BC-20979)</li>
-	<li><strong>IE8 Compatibility View required for Search.&nbsp;</strong>Searching in the Media and Advertising modules requires Compatibility View to be enabled when using Internet Explorer 8.&nbsp;(BC-22910)</li>
-</ul>
+
 
 <h2><a id="players" name="players" href=""></a>Smart Players</h2>
 
@@ -61,51 +43,9 @@
 &lt;/script&gt;
         </pre>
 	</li>
-	<li><strong>Players not loading in Firefox when using Bootstrap's default modal CSS to present a video</strong>. When using Bootstrap's default modal CSS (i.e. bootstrap.min.css*) to present a video in Bootstrap's modal window, players don't load in Firefox, because Firefox apparently has a problem with "translate" used on a Flash Object.<br />
-	<strong>Workaround:</strong> In the Bootstrap CSS file, find the <code>.modal.fade .modal-dialog</code> and <code>.modal.in .modal-dialog</code> style rules, and replace it with the following:
-	<pre>
-.modal.fade .modal-dialog {
-  -webkit-transition: -webkit-transform .3s ease-out;
-  -moz-transition: -moz-transform .3s ease-out;
-  -o-transition: -o-transform .3s ease-out;
-  transition: transform .3s ease-out;
-  -webkit-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  /* transform: translate(0, -25%); */
-}
-.modal.in .modal-dialog {
-  -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  /* transform: translate(0, 0); */
-}</pre>
-	</li>
-	<li><strong>HLS playback issue on Android 4.4.</strong> When playing a video for the first time, at the 7 -10 second mark, the video will jump back to the beginning and start playing. This happens on some 4.4.x Android devices (particularly on the Nexus 7). This is a bug that has been reported to Google (<a href="https://code.google.com/p/android/issues/detail?id=63346">https://code.google.com/p/android/issues/detail?id=63346</a>). (BC-33389)</li>
-	<li>The following issues may appear when using closed captions on Android devices.
-	<ul>
-		<li>The closed captioning background color displays on the whole screen not just behind the text</li>
-		<li>Some of the closed captioning font family options do not work</li>
-		<li>Closed captions do not play in full screen mode</li>
-	</ul>
-	</li>
 	<li>HTML fallback for Smart Players is only supported in Internet Explorer 11, Chrome and Safari.</li>
-	<li>Even though the Accessible Video Player is Section 508 compliant, there maybe some cases (browser specific or content specific), where the overall page that contains the player could be considered not compliant since elements in the page outside the player may not be reachable. (BC-33429)</li>
-	<li>If you are using Google Widevine to protect your videos, there is a known Widevine bug that may result in truncation of the video at the end (up to 2.5 seconds, according to Google). The work around is to add 2.5 seconds of blank screen or some other content to the end of the video.</li>
 	<li>If you hide and show a Chromeless video player on a page, the video still may not appear when using Internet Explorer. As a workaround, do not use the display or visibility property to hide/show players. Instead, change the width and height to 0, or set the margin or text-indent to large negative values to hide the player or its container. (BC-30066)</li>
-	<li>When the YuMe ad plugin is used in a player, the scrub bar occasionally flashes if the mouse is hovered over the player. (BC-31480)</li>
-	<li>On Windows Server 2008, the BrightcoveExperience.js file throws an error preventing players from loading. (BC-31011)</li>
-	<li>On Internet Explorer 8 and earlier, adding any other elements, including &lt;p&gt;, &lt;br&gt; and &lt;!-comments-&gt; to the object tag in the player publishing code will prevent the player from loading.</li>
-	<li>A recent change in the Flash security model for Chrome causes security warnings to be generated when&nbsp;pages that contain a Video Cloud (or any other Flashed-based) video player <strong>are accessed over https</strong>.</li>
-	<li><strong>If you use an embedded font in a player template, the player will not load.</strong> Do not use embedded fonts in a player template.</li>
-	<li><strong>The HTML embed code (whether from the share menu or from the Publishing / Media Module) will not render our HTML player</strong>. The JavaScript embed code (not available in the share menu) is required at this time for the HTML player to render.</li>
 	<li>When using a player based on the Tabbed Navigation or Compact Tabbed Navigation templates, <strong>the related link underline may not change color on rollover</strong> on certain browsers and/or operating systems..</li>
-	<li><strong>"Video Unavailable" message flashes after the HTLM5 player loads</strong> when your page/app is set up to load content dynamically into the player.<br />
-	<strong>Workaround: </strong>Set the <code>showNoContentMessage</code> parameter in the player publishing code to false:
-	<pre>
-&lt;param name="showNoContentMessage" value="false" /&gt;
-</pre>
-
-	<p>Another option is to load and autoplay a short video clip, such as an introductory or branding clip.</p>
-	</li>
 	<li><strong>If an HTML5 player is initially hidden (as in a lightbox implementation) attempts to play videos will fail silently.</strong> If the publisher intends to hide and show their lightbox multiple times, we recommend hiding it outside the viewport or covering it with another element instead of using display:none to avoid this issue.</li>
 	<li><strong>With Flash Player 11.2, some anamorphic videos and live streams will display with an incorrect aspect ratio</strong>. Not known to affect videos that have been transcoded by Brightcove; only source videos used as a rendition and live streams have been affected. The problem appears to be in the Flash Player runtime, and is resolved in the Flash 11.3 beta</li>
 	<li><strong>Videos with DRM applied will not play on some versions of Chrome. </strong>Viewers using Chrome on Windows 7 will see the video player load, but videos will not load or play. This applies to videos with DRM applied only. This is an issue with Chrome that cannot be resolved by Brightcove.&nbsp;<strong>Workaround</strong>: use a different browser.</li>
