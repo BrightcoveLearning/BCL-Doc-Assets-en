@@ -1,0 +1,163 @@
+<p><strong>Identified known issues include:</strong></p>
+
+<ul>
+	<li><a href="#players"><strong>Smart Players</strong></a></li>
+	<li><a href="#advertising"><strong>Advertising Delivery</strong></a></li>
+	<li><a href="#smartplayerapi"><strong>Smart Player API</strong></a></li>
+	<li><a href="#flashplayerapi"><strong>Flash-Only Player API</strong></a></li>
+</ul>
+
+
+
+
+<h2><a id="players" name="players" href=""></a>Smart Players</h2>
+
+<ul>
+	<li><strong>Smart Player full screen button does not work on Android.</strong>When you click the full screen button on Android, the button does not do anything.<br />
+	<strong>Workaround:</strong> Add the following lines to the player publishing code:
+
+	<pre>
+&lt;param name="includeAPI" value="true" /&gt;
+&lt;param name="templateLoadHandler" value="onLoad"&gt;
+      </pre>
+
+	<p>And add the following <code>templateloadhandler</code>:</p>
+
+	<pre>
+&lt;script&gt;
+   var onLoad = function(id) {
+     var el = document.getElementById(id);
+     if (el.tagName === 'IFRAME') {
+       el.setAttribute('allowfullscreen', 'allowfullscreen');
+     }
+   }
+&lt;/script&gt;
+        </pre>
+	</li>
+	<li>HTML fallback for Smart Players is only supported in Internet Explorer 11, Chrome and Safari.</li>
+	<li>If you hide and show a Chromeless video player on a page, the video still may not appear when using Internet Explorer. As a workaround, do not use the display or visibility property to hide/show players. Instead, change the width and height to 0, or set the margin or text-indent to large negative values to hide the player or its container. (BC-30066)</li>
+	<li>When using a player based on the Tabbed Navigation or Compact Tabbed Navigation templates, <strong>the related link underline may not change color on rollover</strong> on certain browsers and/or operating systems..</li>
+	<li><strong>If an HTML5 player is initially hidden (as in a lightbox implementation) attempts to play videos will fail silently.</strong> If the publisher intends to hide and show their lightbox multiple times, we recommend hiding it outside the viewport or covering it with another element instead of using display:none to avoid this issue.</li>
+	<li><strong>HEX characters prevent videos from playing HTML5 players.</strong>&nbsp;Avoid using HEX characters in the short or long description of their video title because it will break HTML5 and cause the Video Cloud player to not render on non-flash supported devices. (BC-30439)</li>
+	<li><strong>autoStart configuration parameter disabled in HTML5 mode</strong>. The autoStart configuration parameter is ignored for players in HTML5 mode. (BC-25554)</li>
+</ul>
+
+
+
+<h2><a id="advertising" name="advertising" href=""></a>Advertising Delivery</h2>
+
+<h3>HTML5 ads with playlist players</h3>
+
+<p>When using HTML5 ads with playlist players and the loadVideo method, the player may crash Safari on iOS 7 devices. Some customers have been able to work around this issue by reloading the player programmatically every time a new video gets selected to play. (BC-33231)</p>
+
+<h3>templateReady event fires twice with IMA2/3</h3>
+
+<p>When an IMA ad source is used, the <code>templateReady</code> handler is fired twice (BC-32369). To workaround this issue, we recommend this code snippet:</p>
+
+<pre>
+
+var onTemplateReadyFired;
+function onTemplateReady(evt) {
+  if (onTemplateReadyFired)
+  { return; }
+  onTemplateReadyFired = true;
+  console.log(evt.type);
+}</pre>
+
+<h3>Media PLAY event dispatched before adComplete event</h3>
+
+<p>For both the Flash-only and Smart Player APIs, the Media PLAY event is dispatched before the adComplete event after a midroll ad plays.</p>
+
+<h3>VAST Ad Duration Format</h3>
+
+<p>The ad duration returned in a VAST response&nbsp;must be specified in the hh:mm:ss format, as indicated in the VAST specification. If you return the duration as XX, instead of 00:XX:00, then your tracking URLs will not fire at the right time. (BC-25811)</p>
+
+<h3>Ad Tag Translators</h3>
+
+<p>Ad tag translator SWFs that were developed for AS2 players do not work with AS3 players.</p>
+
+<h3><a id="BC-28214" name="BC-28214" href=""></a>Banner BEML component can cause video ad to play over video content</h3>
+
+<p>When a custom BEML player with a Banner component gets a VAST response with a video ad and a banner, the video and the video ad may play simultaneously, with the ad over the video content.</p>
+
+<p><strong>Workaround</strong>: A custom BEML player that will be used for advertising with banners should use the ExpandingBanner component rather than the Banner component. (BC-28214)</p>
+
+<h3>ExpandingBanner doesn't support fade mode</h3>
+
+<p>The ExpandingBanner BEML component has an animationType attribute. The fade value for animationType does not work correctly.</p>
+
+<p><strong>Workaround</strong>:&nbsp;Use animationType="expand" instead. (BC-19816)</p>
+
+<h3>Ad SWFs should not be used across videos or playlists</h3>
+
+<p>If you are developing an Ad SWF, you should try to use each call to <span style="font-family: Courier New;">displayAd()</span> as a single ad call within a single video, otherwise you may encounter issues.</p>
+
+<h3>Full screen events not usable from ad SWF</h3>
+
+<p>Full screen events are not seen by the ad SWF.</p>
+
+<p><strong>Workaround</strong>:&nbsp;Use the Flash full screen events instead of using the Video Cloud player's events. (BC-17274)</p>
+
+<h3>Click Tag does not work in Flash 9 ad creatives compiled with ActionScript 3</h3>
+
+<p>Flash ad creatives written and compiled with ActionScript 3 / Flash 9 will play back in the Video Cloud player. However, the click tag functionality won't work. As such, we don't fully support ActionScript 3 in Flash ad creatives. We do support Flash 9 ad creatives compiled with ActionScript 2.</p>
+
+<h3>Internal redirect tag issue in Overlay ads</h3>
+
+<p>Do not use redirect tags for creative URLs for the Overlay and Synched Overlay ad formats (BC-24699)</p>
+
+
+<h2><a id="smartplayerapi" name="smartplayerapi" href=""></a>Smart Player API</h2>
+
+<h3>templateReady Event not Firing</h3>
+
+<p>The <code>templateReady</code> event does not fire if a video is not loaded in the player.</p>
+
+<h3>Rendition selection for Akamai HD</h3>
+
+<p>When using the API to control rendition selection, there will be a delay before the rendition switches. This is the expected behavior. When Akamai HD detects the need for a rendition change, it will continue to play all of the content it already has buffered for the current rendition, before it switches to the new one. This might be 20-30 seconds, or more.</p>
+
+<p>It is possible to force an immediate switch, but it will not switch smoothly - there will be a slight gap while one rendition stops and the other is buffered and played. If that is acceptable, the way to force the switch is to call <code>getCurrentPosition()</code> on the video, then call <code>seek()</code> with that same position. This should cause the new rendition to begin playing immediately.</p>
+
+<h3>Video Playback on mobile devices</h3>
+
+<p>Both iOS and Android require that initial video playback be initiated by the viewer. The methods <code>play()</code>, <code>loadVideoByID()</code>, and <code>loadVideoByReferenceID()</code> will not start video playback on Android and iOS devices unless the viewer has already initiated playback of at least one video.</p>
+
+<h3>When Flash access is enabled, the Media CHANGE event fires twice</h3>
+
+<p>When Flash access is enabled for your videos, the media CHANGE event will fire twice when a new video is loaded into the player.</p>
+
+<p>Workaround: if you need to perform some action when the event fires, test to see if the video has actually changed, so that you only perform the action once:</p>
+
+<pre>
+var currentVideoID, loadedVideoID;
+// on player READY, get the current video ID and store it as currentVideoID
+
+function onChange(event) {
+    if (event.media.id !== currentVideoID) {
+        currentVideoID = event.media.id;
+        // video has changed; do whatever you need to do
+    }
+}</pre>
+
+
+<h2><a id="flashplayerapi" name="flashplayerapi" href=""></a>Flash-Only Player API</h2>
+
+<h3>getCurrentDisplayX() and getCurrentDisplayY() always return 0</h3>
+
+<p>getCurrentDisplayX() and getCurrentDisplayY() always return 0 rather than the offset of the video display. This JS code can be used as a workaround to get the correct x/y values. (BC-31934)</p>
+
+<pre>
+var layoutbox = modExp.getLayoutRoot();
+var len = layoutbox.getNumChildren();
+  for (var i=0; i&lt;len; i++) {
+     var child = layoutbox.getChildAt(i);
+     if (child &amp;&amp; child.name &amp;&amp; child.name=="videoPlayer") {
+          console.log("x="+child.getX());
+          console.log("y="+child.getY());
+      }
+}
+</pre>
+
+
+<!-- End of Drupal content -->
