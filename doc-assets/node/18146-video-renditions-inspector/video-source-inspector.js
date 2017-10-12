@@ -1,4 +1,4 @@
-var BCLS = (function(window, document) {
+var BCLS = (function(window, document, rome) {
     var accountId,
         clientId,
         clientSecret,
@@ -473,6 +473,9 @@ var BCLS = (function(window, document) {
     }
 
     function init() {
+        // date pickers
+        rome(fromDate);
+        rome(toDate);
         // event listeners
         window.addEventListener('error', function(e) {
             var stack = e.error.stack;
@@ -529,6 +532,9 @@ var BCLS = (function(window, document) {
             // get the inputs
             clientId = client_id.value;
             clientSecret = client_secret.value;
+            dateTypeValue = getSelectedValue(dateRangeType);
+            fromDateValue = rome(fromDate).getDate();
+            toDateValue = rome(toDate).getDate();
             // only use entered account id if client id and secret are entered also
             if (isDefined(clientId) && isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
@@ -569,4 +575,4 @@ var BCLS = (function(window, document) {
     }
 
     init();
-})(window, document);
+})(window, document, rome);
