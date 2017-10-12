@@ -332,6 +332,9 @@ var BCLS = (function(window, document, rome) {
         switch (id) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
+                if (isDefined(dateTypeValue)) {
+                    endpoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -340,6 +343,9 @@ var BCLS = (function(window, document, rome) {
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
                 endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+                if (isDefined(dateTypeValue)) {
+                    endpoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
