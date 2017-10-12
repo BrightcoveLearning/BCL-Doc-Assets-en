@@ -332,7 +332,7 @@ var BCLS = (function(window, document, rome) {
         switch (id) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
-                if (isDefined(dateTypeValue)) {
+                if (isDefined(fromDateValue) || isDefined(toDateValue)) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
 console.log('endPoint', endPoint);
@@ -344,7 +344,7 @@ console.log('endPoint', endPoint);
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
                 endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
-                if (isDefined(dateTypeValue)) {
+                if (isDefined(fromDateValue) || isDefined(toDateValue)) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
                 requestData.url = baseURL + endPoint;
@@ -541,7 +541,13 @@ console.log('endPoint', endPoint);
             clientSecret = client_secret.value;
             dateTypeValue = getSelectedValue(dateRangeType);
             fromDateValue = rome(fromDate).getDate();
+            if (isDefined(fromDateValue)) {
+                fromDateValue = fromDateValue.toISOString()
+            }
             toDateValue = rome(toDate).getDate();
+            if (isDefined(toDateValue)) {
+                toDateValue = toDateValue.toISOString();
+            }
             // only use entered account id if client id and secret are entered also
             if (isDefined(clientId) && isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
