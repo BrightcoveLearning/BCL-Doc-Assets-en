@@ -335,6 +335,7 @@ var BCLS = (function(window, document, rome) {
                 if (isDefined(dateTypeValue)) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
+console.log('endPoint', endPoint);
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
