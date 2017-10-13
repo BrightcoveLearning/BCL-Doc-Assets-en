@@ -258,7 +258,7 @@ var BCLS = (function(window, document, rome) {
                     for (j = 0; j < iMax; j++) {
                         rendition = video.hlsRenditions[j];
                         console.log('rendition', rendition);
-                        content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
+                        content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
@@ -274,7 +274,7 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < iMax; j++) {
                         rendition = video.mp4Renditions[j];
-                        content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
+                        content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
@@ -290,7 +290,7 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.hlsRenditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.hlsRenditions[j];
-                        csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
                     }
                 } else {
                     csvStr += 'no hls renditions';
@@ -300,7 +300,7 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.mp4Renditions[j];
-                        csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
                     }
                 } else {
                     csvStr += 'no mp4 renditions';
