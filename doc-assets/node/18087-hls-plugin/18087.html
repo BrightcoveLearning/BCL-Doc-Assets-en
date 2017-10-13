@@ -60,9 +60,10 @@
 <p>Type: <code>boolean</code></p>
 
 <p>Can be used as:</p>
+
 <ul>
-    <li>a source option</li>
-    <li>an initialization option</li>
+	<li>a source option</li>
+	<li>an initialization option</li>
 </ul>
 
 <p>When the <code>withCredentials</code> property is set to <code>true</code>, all XHR requests for manifests and segments would have <code>withCredentials</code> set to <code>true</code> as well. This enables storing and passing cookies from the server that the manifests and segments live on. This has some implications on CORS because when set, the <code>Access-Control-Allow-Origin</code> header cannot be set to <code>*</code>, also, the response headers require the addition of <code>Access-Control-Allow-Credentials</code> header which is set to <code>true</code>. See the <a href="http://www.html5rocks.com/en/tutorials/cors/">HTML5Rocks's article</a> for more info.</p>
@@ -71,7 +72,8 @@
 
 <p>You can configure the plugin using the <a href="/node/18269">Player Management API</a> using an HTTP <code>PATCH</code> method, as shown here:</p>
 
-<pre class="line-numbers"><code class="language-json">curl \
+<pre class="line-numbers">
+<code class="language-json">curl \
     --header "Content-Type: application/json" \
     --user YOUR_EMAIL \
     --request PATCH \
@@ -127,7 +129,6 @@ https://players.api.brightcove.com/v2/accounts/YOUR_ACCOUNT_ID/players/YOUR_PLAY
   type: 'application/x-mpegURL',
   withCredentials: true
 });</code></pre>
-
 <!-- <h3>useCueTags</h3>
 
 <p>Type: <code>boolean</code></p>
@@ -237,21 +238,22 @@ https://players.api.brightcove.com/v2/accounts/YOUR_ACCOUNT_ID/players/YOUR_PLAY
 <p>Type: <code>boolean</code></p>
 
 <p>Can be used as:</p>
+
 <ul>
-    <li>an initialization option</li>
+	<li>an initialization option</li>
 </ul>
 
 <p>When <code>enableLowInitialPlaylist</code> is set to true, it will be used to select the lowest bitrate playlist initially. This helps to decrease playback start time. This setting is <code>false</code> by default.</p>
 
 <p>You can configure the plugin using the <a href="/node/18269">Player Management API</a> using an HTTP <code>PATCH</code> method, as shown here:</p>
 
-<pre class="line-numbers"><code class="language-json">curl \
+<pre class="line-numbers">
+<code class="language-json">curl \
     --header "Content-Type: application/json" \
     --user YOUR_EMAIL \
     --request PATCH \
     --data '{ "hls": { "enableLowInitialPlaylist": true } }' \
 https://players.api.brightcove.com/v2/accounts/YOUR_ACCOUNT_ID/players/YOUR_PLAYER_ID/configuration</code></pre>
-
 </section>
 
 <section class="bcls-section">
@@ -499,6 +501,44 @@ https://players.api.brightcove.com/v2/accounts/YOUR_ACCOUNT_ID/players/YOUR_PLAY
 
 <section class="bcls-section">
 <h2 id="changelog">Changelog</h2>
+
+<h4>11 Oct 2017</h4>
+
+<p>v5.11.1</p>
+
+<ul>
+	<li>update videojs-contrib-media-sources to 4.5.3
+	<ul>
+		<li>update mux.js to 4.2.2</li>
+		<ul>
+			<li>
+				Use the first audio and video tracks in the PMT
+			</li>
+		</ul>
+	</ul>
+	</li>
+	<li>fix <code>InvalidStateError</code> for live playback in IE11</li>
+</ul>
+
+<h4>20 Sep 2017</h4>
+
+<p>v5.11.0</p>
+
+<ul>
+	<li>Update videojs-contrib-media-sources to 4.5.2
+	<ul>
+		<li>Let video.js remoteTextTrack auto cleanup take care of text track cleanup</li>
+	</ul>
+	</li>
+	<li>Blacklist incompatible playlists on probe if codec information not in master manifest</li>
+	<li>Seek to seekable start when seeking before the seekable window</li>
+	<li>MediaGroups: various bug fixes and refactor
+	<ul>
+		<li>Removes the Firefox 48 check for for supporting a change in audio info</li>
+		<li>Fix delayed switching between audio tracks and intermittent desync</li>
+	</ul>
+	</li>
+</ul>
 
 <h4>28 Aug 2017</h4>
 
