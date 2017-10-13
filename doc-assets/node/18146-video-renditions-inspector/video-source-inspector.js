@@ -269,6 +269,7 @@ var BCLS = (function(window, document, rome) {
                 }
                 tr.appendChild(td);
                 td = document.createElement('td');
+console.log('mp4Renditions', video.mp4Renditions);
                 if (video.mp4Renditions.length > 0) {
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < iMax; j++) {
