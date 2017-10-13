@@ -168,11 +168,11 @@ var BCLS = (function(window, document, rome) {
         th.appendChild(content);
         tr.appendChild(th);
         th = document.createElement('th');
-        content = document.createTextNode('HLS Renditions (bitrate range KBPS)');
+        content = document.createTextNode('HLS Renditions (bitrate KBPS / Framesize)');
         th.appendChild(content);
         tr.appendChild(th);
         th = document.createElement('th');
-        content = document.createTextNode('MP4 Renditions (bitrate range KBPS)');
+        content = document.createTextNode('MP4 Renditions (bitrate KBPS / Framesize)');
         th.appendChild(content);
         tr.appendChild(th);
         tr = document.createElement('tr');
@@ -196,14 +196,15 @@ var BCLS = (function(window, document, rome) {
     }
 
     function startCSVStrings() {
-        csvStr = '"ID","Name","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)"\n';
+        csvStr = '"ID","Name","HLS Renditions (bitrate KBPS /  Framesize)","MP4 Renditions (bitrate KBPS /  Framesize)"\n';
         summaryCsvStr = '"No HLS or MP4 Renditions","HLS but no MP4 Renditions","MP4 but no HLS Renditions","Both HLS and MP4 Renditions"\n';
     }
 
     function writeReport() {
-        var i,
-            iMax,
+        var i, j,
+            iMax, jMax,
             video,
+            rendition,
             hlsRenditions,
             mp4Renditions,
             hlsLowRate,
@@ -213,6 +214,7 @@ var BCLS = (function(window, document, rome) {
             tr,
             th,
             td,
+            br,
             content;
         // arrays to hold summary groups
         summaryData.noHLSnoMP4 = [];
@@ -238,10 +240,6 @@ var BCLS = (function(window, document, rome) {
                 }
 
                 // generate the video detail row
-                hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
-                hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
-                mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
-                mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
                 tr = document.createElement('tr');
                 // add report row
                 reportTableBody.appendChild(tr);
@@ -254,15 +252,39 @@ var BCLS = (function(window, document, rome) {
                 td.appendChild(content);
                 tr.appendChild(td);
                 td = document.createElement('td');
-                content = document.createTextNode(video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')');
-                td.appendChild(content);
+                jMax = video.hlsRenditions.length;
+                for (j = 0; j < iMax; j++) {
+                    rendition = video.hlsRenditions[j];
+                    content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
+                    br = document.createElement('br');
+                    td.appendChild(content);
+                    td.appendChild(br);
+                }
                 tr.appendChild(td);
                 td = document.createElement('td');
-                content = document.createTextNode(video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')');
-                td.appendChild(content);
+                jMax = video.mp4Renditions.length;
+                for (j = 0; j < iMax; j++) {
+                    rendition = video.mp4Renditions[j];
+                    content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
+                    br = document.createElement('br');
+                    td.appendChild(content);
+                    td.appendChild(br);
+                }
                 tr.appendChild(td);
                 // add csv row
-                csvStr += '"' + video.id + '","' + video.name + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')"\n';
+                csvStr += '"' + video.id + '","' + video.name + '","';
+                jMax = video.hlsRenditions.length;
+                for (j = 0; j < jMax; j++) {
+                    rendition = video.hlsRenditions[j];
+                    csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                }
+                csvStr += '","';
+                jMax = video.mp4Renditions.length;
+                for (j = 0; j < jMax; j++) {
+                    rendition = video.mp4Renditions[j];
+                    csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                }
+                csvStr += '" \n';
             }
             tr = document.createElement('tr');
             summaryTableBody.appendChild(tr);
