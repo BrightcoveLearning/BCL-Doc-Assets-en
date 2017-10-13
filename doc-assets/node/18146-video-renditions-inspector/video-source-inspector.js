@@ -252,15 +252,20 @@ var BCLS = (function(window, document, rome) {
                 td.appendChild(content);
                 tr.appendChild(td);
                 td = document.createElement('td');
-                jMax = video.hlsRenditions.length;
-console.log('hlsRenditions', video.hlsRenditions);
-                for (j = 0; j < iMax; j++) {
-                    rendition = video.hlsRenditions[j];
-console.log('rendition', rendition);
-                    content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
-                    br = document.createElement('br');
+                if (video.hlsRenditions.length > 0) {
+                    jMax = video.hlsRenditions.length;
+                    console.log('hlsRenditions', video.hlsRenditions);
+                    for (j = 0; j < iMax; j++) {
+                        rendition = video.hlsRenditions[j];
+                        console.log('rendition', rendition);
+                        content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
+                        br = document.createElement('br');
+                        td.appendChild(content);
+                        td.appendChild(br);
+                    }
+                } else {
+                    content = createTextNode('No HLS renditions');
                     td.appendChild(content);
-                    td.appendChild(br);
                 }
                 tr.appendChild(td);
                 td = document.createElement('td');
