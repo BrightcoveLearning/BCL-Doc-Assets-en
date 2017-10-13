@@ -269,27 +269,40 @@ var BCLS = (function(window, document, rome) {
                 }
                 tr.appendChild(td);
                 td = document.createElement('td');
-                jMax = video.mp4Renditions.length;
-                for (j = 0; j < iMax; j++) {
-                    rendition = video.mp4Renditions[j];
-                    content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
-                    br = document.createElement('br');
-                    td.appendChild(content);
-                    td.appendChild(br);
+                if (video.mp4Renditions.length > 0) {
+                    jMax = video.mp4Renditions.length;
+                    for (j = 0; j < iMax; j++) {
+                        rendition = video.mp4Renditions[j];
+                        content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
+                        br = document.createElement('br');
+                        td.appendChild(content);
+                        td.appendChild(br);
+                    } else {
+                        content = document.createTextNode('No MP4 renditions');
+                        td.appendChild(content);
+                    }
                 }
                 tr.appendChild(td);
                 // add csv row
                 csvStr += '"' + video.id + '","' + video.name + '","';
-                jMax = video.hlsRenditions.length;
-                for (j = 0; j < jMax; j++) {
-                    rendition = video.hlsRenditions[j];
-                    csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                if (video.hlsRenditions.length > 0) {
+                    jMax = video.hlsRenditions.length;
+                    for (j = 0; j < jMax; j++) {
+                        rendition = video.hlsRenditions[j];
+                        csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                    }
+                } else {
+                    csvStr += 'no hls renditions';
                 }
                 csvStr += '","';
-                jMax = video.mp4Renditions.length;
-                for (j = 0; j < jMax; j++) {
-                    rendition = video.mp4Renditions[j];
-                    csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                if (video.mp4Renditions.length > 0) {
+                    jMax = video.mp4Renditions.length;
+                    for (j = 0; j < jMax; j++) {
+                        rendition = video.mp4Renditions[j];
+                        csvStr += rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                    }
+                } else {
+                    csvStr += 'no mp4 renditions';
                 }
                 csvStr += '" \n';
             }
