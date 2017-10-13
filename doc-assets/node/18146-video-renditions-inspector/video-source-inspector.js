@@ -363,6 +363,18 @@ console.log('mp4Renditions', video.mp4Renditions);
         }
     }
 
+
+    function removeDDvideos() {
+        var i = videosArray.length;
+
+        while (i > 0) {
+            i--;
+            if (videosArray[i].delivery_type === 'dynamic_origin') {
+                videosArray.splice(i, 1);
+            }
+        }
+    }
+
     /**
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
@@ -481,6 +493,8 @@ console.log('endPoint', endPoint);
                                     spanSetsCountEl.textContent = callNumber + 1;
                                     setRequestData('getVideos');
                                 } else {
+                                    // get rid of Dynamic Delivery videos - no need to check them
+                                    removeDDvideos();
                                     callNumber = 0;
                                     setRequestData('getVideoRenditions');
                                 }
