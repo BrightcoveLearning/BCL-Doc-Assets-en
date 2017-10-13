@@ -264,7 +264,7 @@ var BCLS = (function(window, document, rome) {
                         td.appendChild(br);
                     }
                 } else {
-                    content = createTextNode('No HLS renditions');
+                    content = document.createTextNode('No HLS renditions');
                     td.appendChild(content);
                 }
                 tr.appendChild(td);
