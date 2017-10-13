@@ -1,4 +1,4 @@
-var BCLS = (function(window, document) {
+var BCLS = (function(window, document, rome) {
     var accountId,
         clientId,
         clientSecret,
@@ -23,6 +23,12 @@ var BCLS = (function(window, document) {
         account_id = document.getElementById('account_id'),
         client_id = document.getElementById('client_id'),
         client_secret = document.getElementById('client_secret'),
+        dateRangeType = document.getElementById('dateRangeType'),
+        fromDate = document.getElementById('fromDate'),
+        toDate = document.getElementById('toDate'),
+        dateTypeValue,
+        fromDateValue,
+        toDateValue,
         makeReport = document.getElementById('makeReport'),
         warning = document.getElementById('warning'),
         content,
@@ -326,6 +332,10 @@ var BCLS = (function(window, document) {
         switch (id) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
+                if (isDefined(fromDateValue) || isDefined(toDateValue)) {
+                    endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+                }
+console.log('endPoint', endPoint);
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -334,6 +344,9 @@ var BCLS = (function(window, document) {
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
                 endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+                if (isDefined(fromDateValue) || isDefined(toDateValue)) {
+                    endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+                }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -467,6 +480,9 @@ var BCLS = (function(window, document) {
     }
 
     function init() {
+        // date pickers
+        rome(fromDate);
+        rome(toDate);
         // event listeners
         window.addEventListener('error', function(e) {
             var stack = e.error.stack;
@@ -523,6 +539,15 @@ var BCLS = (function(window, document) {
             // get the inputs
             clientId = client_id.value;
             clientSecret = client_secret.value;
+            dateTypeValue = getSelectedValue(dateRangeType);
+            fromDateValue = rome(fromDate).getDate();
+            if (isDefined(fromDateValue)) {
+                fromDateValue = fromDateValue.toISOString()
+            }
+            toDateValue = rome(toDate).getDate();
+            if (isDefined(toDateValue)) {
+                toDateValue = toDateValue.toISOString();
+            }
             // only use entered account id if client id and secret are entered also
             if (isDefined(clientId) && isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
@@ -563,4 +588,4 @@ var BCLS = (function(window, document) {
     }
 
     init();
-})(window, document);
+})(window, document, rome);
