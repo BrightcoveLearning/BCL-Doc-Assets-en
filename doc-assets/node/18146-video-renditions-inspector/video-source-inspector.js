@@ -277,11 +277,11 @@ var BCLS = (function(window, document, rome) {
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
-                    } else {
+                    }
+                } else {
                         content = document.createTextNode('No MP4 renditions');
                         td.appendChild(content);
                     }
-                }
                 tr.appendChild(td);
                 // add csv row
                 csvStr += '"' + video.id + '","' + video.name + '","';
