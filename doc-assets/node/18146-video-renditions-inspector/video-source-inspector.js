@@ -253,6 +253,7 @@ var BCLS = (function(window, document, rome) {
                 tr.appendChild(td);
                 td = document.createElement('td');
                 jMax = video.hlsRenditions.length;
+console.log('hlsRenditions', video.hlsRenditions);
                 for (j = 0; j < iMax; j++) {
                     rendition = video.hlsRenditions[j];
 console.log('rendition', rendition);
