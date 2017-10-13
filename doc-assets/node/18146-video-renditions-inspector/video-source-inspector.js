@@ -255,6 +255,7 @@ var BCLS = (function(window, document, rome) {
                 jMax = video.hlsRenditions.length;
                 for (j = 0; j < iMax; j++) {
                     rendition = video.hlsRenditions[j];
+console.log('rendition', rendition);
                     content = document.createTextNode(rendition.encoding_rate + '/' + rendition.frame_width + 'x' + rendition.frame_height);
                     br = document.createElement('br');
                     td.appendChild(content);
