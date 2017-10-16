@@ -390,6 +390,7 @@ console.log('rendition', rendition);
             if (videosArray[i].delivery_type === 'dynamic_origin') {
                 videosArray.splice(i, 1);
                 totalVideos--;
+                superSetVideos--;
                 logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
             }
         }
