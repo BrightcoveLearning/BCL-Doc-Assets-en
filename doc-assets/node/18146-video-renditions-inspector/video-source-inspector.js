@@ -255,7 +255,7 @@ var BCLS = (function(window, document, rome) {
                 if (video.hlsRenditions.length > 0) {
                     jMax = video.hlsRenditions.length;
                     console.log('hlsRenditions', video.hlsRenditions);
-                    for (j = 0; j < iMax; j++) {
+                    for (j = 0; j < jMax; j++) {
                         rendition = video.hlsRenditions[j];
                         if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
                             content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
@@ -276,7 +276,7 @@ console.log('rendition', rendition);
 console.log('mp4Renditions', video.mp4Renditions);
                 if (video.mp4Renditions.length > 0) {
                     jMax = video.mp4Renditions.length;
-                    for (j = 0; j < iMax; j++) {
+                    for (j = 0; j < jMax; j++) {
                         rendition = video.mp4Renditions[j];
 console.log('mp4 rendition', rendition);
                         if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
