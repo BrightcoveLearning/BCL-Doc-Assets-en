@@ -254,11 +254,15 @@ var BCLS = (function(window, document, rome) {
                 td = document.createElement('td');
                 if (video.hlsRenditions.length > 0) {
                     jMax = video.hlsRenditions.length;
-                    console.log('hlsRenditions', video.hlsRenditions);
-                    for (j = 0; j < iMax; j++) {
+                    // console.log('hlsRenditions', video.hlsRenditions);
+                    for (j = 0; j < jMax; j++) {
                         rendition = video.hlsRenditions[j];
-                        console.log('rendition', rendition);
-                        content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        } else {
+                            content = document.createTextNode('bitrate/frameseze not available');
+// console.log('rendition', rendition);
+                        }
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
@@ -269,12 +273,18 @@ var BCLS = (function(window, document, rome) {
                 }
                 tr.appendChild(td);
                 td = document.createElement('td');
-console.log('mp4Renditions', video.mp4Renditions);
+// console.log('mp4Renditions', video.mp4Renditions);
                 if (video.mp4Renditions.length > 0) {
                     jMax = video.mp4Renditions.length;
-                    for (j = 0; j < iMax; j++) {
+                    for (j = 0; j < jMax; j++) {
                         rendition = video.mp4Renditions[j];
-                        content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+// console.log('mp4 rendition', rendition);
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        } else {
+                            content = document.createTextNode('bitrate/frameseze not available');
+// console.log('rendition', rendition);
+                        }
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
@@ -290,7 +300,11 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.hlsRenditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.hlsRenditions[j];
-                        csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        } else {
+                            csvStr += 'bitrate/frameseze not available \n';
+                        }
                     }
                 } else {
                     csvStr += 'no hls renditions';
@@ -300,7 +314,11 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.mp4Renditions[j];
-                        csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        } else {
+                            csvStr += 'bitrate/frameseze not available \n';
+                        }
                     }
                 } else {
                     csvStr += 'no mp4 renditions';
@@ -356,8 +374,18 @@ console.log('mp4Renditions', video.mp4Renditions);
             content = document.createTextNode('Finished! See the results or get the CSV data below.');
             pLogFinish.appendChild(content);
             // reportDisplay.innerHTML = summaryReportStr + reportStr;
-            makeReport.textContent = 'Get next 100 videos';
-            warning.textContent = 'NOTE: if you want to save the CSV data below, do that BEFORE getting the next set of videos!';
+// console.log('callNumber', callNumber);
+// console.log('totalCalls', totalCalls);
+            if (callNumber < totalCalls) {
+                makeReport.textContent = 'Get next 100 videos';
+                warning.textContent = 'NOTE: if you want to save the CSV data below, do that BEFORE getting the next set of videos!';
+
+            } else {
+                makeReport.textContent = 'Processing complete';
+                warning.textContent = '';
+
+            }
+
             superSet++;
             enableButtons();
         }
@@ -371,6 +399,9 @@ console.log('mp4Renditions', video.mp4Renditions);
             i--;
             if (videosArray[i].delivery_type === 'dynamic_origin') {
                 videosArray.splice(i, 1);
+                totalVideos--;
+                superSetVideos--;
+                logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
             }
         }
     }
@@ -390,7 +421,7 @@ console.log('mp4Renditions', video.mp4Renditions);
                 if (isDefined(fromDateValue) || isDefined(toDateValue)) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
-console.log('endPoint', endPoint);
+// console.log('endPoint', endPoint);
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -495,6 +526,7 @@ console.log('endPoint', endPoint);
                                 } else {
                                     // get rid of Dynamic Delivery videos - no need to check them
                                     removeDDvideos();
+
                                     callNumber = 0;
                                     setRequestData('getVideoRenditions');
                                 }
