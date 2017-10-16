@@ -389,6 +389,8 @@ console.log('rendition', rendition);
             i--;
             if (videosArray[i].delivery_type === 'dynamic_origin') {
                 videosArray.splice(i, 1);
+                totalVideos--;
+                logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
             }
         }
     }
@@ -513,6 +515,7 @@ console.log('endPoint', endPoint);
                                 } else {
                                     // get rid of Dynamic Delivery videos - no need to check them
                                     removeDDvideos();
+
                                     callNumber = 0;
                                     setRequestData('getVideoRenditions');
                                 }
