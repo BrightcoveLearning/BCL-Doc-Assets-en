@@ -257,8 +257,12 @@ var BCLS = (function(window, document, rome) {
                     console.log('hlsRenditions', video.hlsRenditions);
                     for (j = 0; j < iMax; j++) {
                         rendition = video.hlsRenditions[j];
-                        console.log('rendition', rendition);
-                        content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        } else {
+                            content = document.createTextNode('bitrate/frameseze not available');
+console.log('rendition', rendition);
+                        }
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
@@ -274,7 +278,12 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < iMax; j++) {
                         rendition = video.mp4Renditions[j];
-                        content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
+                        } else {
+                            content = document.createTextNode('bitrate/frameseze not available');
+console.log('rendition', rendition);
+                        }
                         br = document.createElement('br');
                         td.appendChild(content);
                         td.appendChild(br);
@@ -290,7 +299,11 @@ console.log('mp4Renditions', video.mp4Renditions);
                     jMax = video.hlsRenditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.hlsRenditions[j];
-                        csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        } else {
+                            csvStr
+                        }
                     }
                 } else {
                     csvStr += 'no hls renditions';
