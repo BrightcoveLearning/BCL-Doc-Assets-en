@@ -302,7 +302,7 @@ console.log('rendition', rendition);
                         if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
                             csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
                         } else {
-                            csvStr
+                            csvStr += 'bitrate/frameseze not available \n';
                         }
                     }
                 } else {
@@ -313,7 +313,11 @@ console.log('rendition', rendition);
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.mp4Renditions[j];
-                        csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
+                            csvStr += rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height + ' \n';
+                        } else {
+                            csvStr += 'bitrate/frameseze not available \n';
+                        }
                     }
                 } else {
                     csvStr += 'no mp4 renditions';
