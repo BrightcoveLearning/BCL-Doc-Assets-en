@@ -21,7 +21,29 @@
 <ul>
 	<li>Each segment file is encrypted</li>
 	<li>The HLS manifest (.m3u8 file) delivered by Video Cloud contains links to the keys for each segment</li>
-	<li>By default, keys are rotated every 10 minutes; you can specify the <code>encryption_key_rotation_period</code> in custom ingest profiles - see the <a href="/node/18038#hlse">Content Security (DRM and HLSe)</a> developer document for more details</li>
+	<li>By default, keys are rotated every 10 minutes; you can specify the <code>encryption_key_rotation_period</code> in custom ingest profiles.</li>
+    <li>To add encryption to your HLS renditions, add the <code>encryption_method</code> and <code>encryption_key_rotation_period</code> fields to each of the HLS renditions defined in your ingestion profile:
+<pre class="line-numbers"><code class="language-json">{
+  "media_type": "video",
+  "reference_id": "ts0",
+  "format": "ts",
+  "type": "segmented",
+  "audio_codec": "aac",
+  "audio_bitrate": 64,
+  "video_codec": "h264",
+  <span class="bcls-highlight">"encryption_method": "aes-128",</span>
+  <span class="bcls-highlight">"encryption_key_rotation_period": 10,</span>
+  "video_bitrate": 450,
+  "decoder_bitrate_cap": 771,
+  "decoder_buffer_size": 1028,
+  "keyframe_rate": 0.5,
+  "max_frame_rate": 30,
+  "width": 480,
+  "height": 270,
+  "h264_profile": "baseline"
+</code></pre>
+
+    </li>
 </ul>
 
 <p class="BCL-aside">Note: Video encryption is not by itself a strong form of content protection. If content security is critical for your organization, you should employ <a href="/node/6302">DRM protection</a>. Contact your Account Manager for details about bundling HLS encryption and DRM protection so that you can secure your content wherever it plays.</p>
