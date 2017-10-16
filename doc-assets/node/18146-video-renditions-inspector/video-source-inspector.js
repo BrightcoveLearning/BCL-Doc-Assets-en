@@ -254,14 +254,14 @@ var BCLS = (function(window, document, rome) {
                 td = document.createElement('td');
                 if (video.hlsRenditions.length > 0) {
                     jMax = video.hlsRenditions.length;
-                    console.log('hlsRenditions', video.hlsRenditions);
+                    // console.log('hlsRenditions', video.hlsRenditions);
                     for (j = 0; j < jMax; j++) {
                         rendition = video.hlsRenditions[j];
                         if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
                             content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
                         } else {
                             content = document.createTextNode('bitrate/frameseze not available');
-console.log('rendition', rendition);
+// console.log('rendition', rendition);
                         }
                         br = document.createElement('br');
                         td.appendChild(content);
@@ -273,17 +273,17 @@ console.log('rendition', rendition);
                 }
                 tr.appendChild(td);
                 td = document.createElement('td');
-console.log('mp4Renditions', video.mp4Renditions);
+// console.log('mp4Renditions', video.mp4Renditions);
                 if (video.mp4Renditions.length > 0) {
                     jMax = video.mp4Renditions.length;
                     for (j = 0; j < jMax; j++) {
                         rendition = video.mp4Renditions[j];
-console.log('mp4 rendition', rendition);
+// console.log('mp4 rendition', rendition);
                         if (isDefined(rendition.encoding_rate) && isDefined(rendition.frame_width) && isDefined(rendition.frame_height)) {
                             content = document.createTextNode(rendition.encoding_rate + ' / ' + rendition.frame_width + 'x' + rendition.frame_height);
                         } else {
                             content = document.createTextNode('bitrate/frameseze not available');
-console.log('rendition', rendition);
+// console.log('rendition', rendition);
                         }
                         br = document.createElement('br');
                         td.appendChild(content);
@@ -374,15 +374,18 @@ console.log('rendition', rendition);
             content = document.createTextNode('Finished! See the results or get the CSV data below.');
             pLogFinish.appendChild(content);
             // reportDisplay.innerHTML = summaryReportStr + reportStr;
-console.log('callNumber', callNumber);
-console.log('totalCalls', totalCalls);
+// console.log('callNumber', callNumber);
+// console.log('totalCalls', totalCalls);
             if (callNumber < totalCalls) {
                 makeReport.textContent = 'Get next 100 videos';
+                warning.textContent = 'NOTE: if you want to save the CSV data below, do that BEFORE getting the next set of videos!';
+
             } else {
                 makeReport.textContent = 'Processing complete';
+                warning.textContent = '';
+
             }
 
-            warning.textContent = 'NOTE: if you want to save the CSV data below, do that BEFORE getting the next set of videos!';
             superSet++;
             enableButtons();
         }
@@ -418,7 +421,7 @@ console.log('totalCalls', totalCalls);
                 if (isDefined(fromDateValue) || isDefined(toDateValue)) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
-console.log('endPoint', endPoint);
+// console.log('endPoint', endPoint);
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
