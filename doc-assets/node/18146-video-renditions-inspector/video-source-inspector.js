@@ -374,7 +374,14 @@ console.log('rendition', rendition);
             content = document.createTextNode('Finished! See the results or get the CSV data below.');
             pLogFinish.appendChild(content);
             // reportDisplay.innerHTML = summaryReportStr + reportStr;
-            makeReport.textContent = 'Get next 100 videos';
+console.log('callNumber', callNumber);
+console.log('totalCalls', totalCalls);
+            if (callNumber < totalCalls) {
+                makeReport.textContent = 'Get next 100 videos';
+            } else {
+                makeReport.textContent = 'Processing complete';
+            }
+
             warning.textContent = 'NOTE: if you want to save the CSV data below, do that BEFORE getting the next set of videos!';
             superSet++;
             enableButtons();
