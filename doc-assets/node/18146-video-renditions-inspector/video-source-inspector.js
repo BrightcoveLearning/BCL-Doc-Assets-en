@@ -376,7 +376,8 @@ var BCLS = (function(window, document, rome) {
             // reportDisplay.innerHTML = summaryReportStr + reportStr;
 // console.log('callNumber', callNumber);
 // console.log('totalCalls', totalCalls);
-            if (callNumber < totalCalls) {
+console.log('superSetVideos', superSetVideos);
+            if (videosCompleted < superSetVideos) {
                 makeReport.textContent = 'Get next 100 videos';
                 warning.textContent = 'NOTE: if you want to save the CSV data below, do that BEFORE getting the next set of videos!';
 
