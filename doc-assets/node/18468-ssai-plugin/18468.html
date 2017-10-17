@@ -1,0 +1,488 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>By default, the plugin enforces that all advertisements are watched and displays an ad count-down timer while they play. You can easily customize this plugin to skip advertisements.</p>
+
+<aside class="bcls-aside bcls-aside--information">
+  <p>
+    Notes:
+  </p>
+  <ul>
+    <li>
+      To use this plugin, your Video Cloud account will need to be configured for <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.
+    </li>
+    <li>
+      The SSAI plugin is compatible only with Brightcove Player v6.8.0 and newer. No support will be offered for v5.
+    </li>
+  </ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Features">Features</h2>
+
+<p>The SSAI plugin is a modern replacement for OnceUX ad serving.</p>
+<p>
+  Features:
+</p>
+
+<ul>
+  <li>
+    All features of OnceUX are supported
+  </li>
+  <li>
+    Dual support for legacy OnceUX VMAPs (using the uo namespace) and new Dynamic Delivery VMAPs (using the bc namespace)
+  </li>
+  <li>
+    More complete VMAP/VAST parsing
+  </li>
+  <li>
+    Full support for VAST companion ads
+  </li>
+  <li>
+    New APIs for interacting with the timeline and linear ad rolls
+  </li>
+  <li>
+    Support for playlists (see Known Issues, though), ad macros, and FairPlay
+  </li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Usage">Usage</h2>
+
+<p>The SSAI plugin differentiates between being initialized and being enabled.</p>
+<p>
+  Once you initialize the plugin, then the plugin will manage the enabled/disabled state, depending on whether an SSAI source is being played.
+</p>
+<p>
+  The SSAI plugin must be initialized before a source is set. If not, the plugin will ignore any matching sources.
+</p>
+<p>
+  Here is an example:
+</p>
+<ul>
+  <li>
+    Line 3: Initializes the SSAI plugin.
+  </li>
+  <li>
+    Lines 5-8: Set the SSAI source.
+  </li>
+</ul>
+<pre class="line-numbers"><code class="language-javascript">var player = videojs('my-player-id');
+
+player.ssai();
+
+player.src({
+  type: 'video/vnd.bcov.ssai',
+  src: vmapXML
+});</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Options">Options</h2>
+
+<ul>
+	<li><code>debug</code>
+	<ul>
+		<li>If true, sets up debug messages in contrib-ads and logs extra information in the presence of videojs-bc-analytics-logger.</li>
+	</ul>
+	</li>
+  <li><code>hideOverlays</code>
+	<ul>
+		<li>If true, the countdown timer and "Learn More" click through overlays will not be shown while ads are playing.</li>
+	</ul>
+  </li>
+  <li><code>trackingBeacons</code>
+	<ul>
+		<li>If false, the tracking beacons parsed from the VMAP for ad view, impression, quartiles, etc. will not be sent.</li>
+	</ul>
+  </li>
+  <li><code>timeout</code>
+	<ul>
+		<li>The number of milliseconds after which an XHR to fetch a VMAP will time out.</li>
+	</ul>
+  </li>
+  <li><code>vmapXML</code>
+	<ul>
+		<li>Used to provide an initial VMAP XML document, which will be loaded into the player. See: Setting an SSAI Source.</li>
+	</ul>
+  </li>
+  <li><code>vmapURL</code>
+	<ul>
+		<li>Used to provide an initial URL to a VMAP, which will be fetched and loaded into the player. See: Setting from a URL.</li>
+	</ul>
+  </li>
+</ul>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Setting_an_SSAI_source">Setting an SSAI source</h2>
+
+<p>To set the SSAI source, you will use the <code>player.src()</code> method as follows:</p>
+<pre class="line-numbers"><code class="language-javascript">
+player.src({
+  type: 'video/vnd.bcov.ssai',
+  src: vmapXML
+});</code></pre>
+<p>
+  where:
+</p>
+<ul>
+  <li>
+    The <code>src</code> value should be an XMLDocument containing a VMAP element (i.e. a valid VMAP).
+  </li>
+  <li><p>
+    The <code>type</code> value should always be <code>video/vnd.bcov.ssai</code>. This value is available as a constant:
+  </p>
+    <pre class="line-numbers"><code class="language-javascript">
+    videojs.getPlugin('ssai').MIME_TYPE</code></pre>
+  </li>
+</ul>
+
+<h3>Setting from a URL</h3>
+<p>
+  The SSAI plugin also supports setting a source from a URL to a VMAP, like this:
+</p>
+<pre class="line-numbers"><code class="language-javascript">
+  player.src({
+    type: 'video/vnd.bcov.ssai',
+    src: 'https://path/to/vmap.xml'
+  });</code></pre>
+  <p>
+    The plugin will attempt to fetch a VMAP from the given URL via XMLHttpRequest and re-set the source using the resulting responseXML data.
+  </p>
+
+  <h3>Using the catalog</h3>
+  <p>
+    The <a href="/node/18108">player catalog</a> works with SSAI as follows. Notice that it makes two requests:
+  </p>
+  <ul>
+    <li>
+      Request video data from the player catalog. This will include a VMAP URL.
+    </li>
+    <li>
+      The player source is set with the VMAP URL, triggering a request for a VMAP document from Dynamic Delivery.
+    </li>
+    <li>
+      The player source is set again with a valid VMAP XML document.
+    </li>
+  </ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Seeking_and_Ads">Seeking and Ads</h2>
+
+<p>One of the primary roles of this plugin is to enforce certain behaviors around seeking and ads.</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Styling">Styling</h2>
+
+<p>There are several useful HTML classes applied to the player by this plugin that can be targeted to determine the plugin's state.</p>
+<table class="bcls-table">
+    <thead class="bcls-table__head">
+        <tr>
+            <th>Class</th>
+            <th>Usage</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td width="20%"><code>vjs-ssai</code></td>
+            <td>Indicates that the SSAI plugin has been instantiated, but is not necessarily enabled. This will be present even when not playing an SSAI source.</td>
+        </tr>
+        <tr>
+            <td><code>vjs-ssai-enabled</code></td>
+            <td>The SSAI plugin is currently enabled. In other words, an SSAI source has been set on the player.</td>
+        </tr>
+        <tr>
+            <td><code>vjs-ssai-disabled</code></td>
+            <td>The SSAI plugin is not currently enabled.</td>
+        </tr>
+        <tr>
+            <td><code>vjs-ssai-waiting</code></td>
+            <td>The SSAI plugin is waiting for data or some other external process.</td>
+        </tr>
+        <tr>
+            <td><code>vjs-ssai-not-waiting</code></td>
+            <td>The SSAI plugin is not waiting for anything.</td>
+        </tr>
+        <tr>
+            <td><code>vjs-ssai-hide-overlays</code></td>
+            <td>The <code>hideOverlays</code> option has been set to <strong>true</strong>.</td>
+        </tr>
+        <tr>
+            <td><code>vjs-ssai-show-overlays</code></td>
+            <td>The <code>showOverlays</code> option is set to <strong>false</strong>. This is the default.</td>
+        </tr>
+    </tbody>
+</table>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Events">Events</h2>
+
+<p>There are a handful of custom, SSAI-specific events dispatched by this plugin. All are prefixed with <code>bcov-ssai-</code>.</p>
+<ul>
+	<li><code>debug</code>
+	<ul>
+		<li>If true, sets up debug messages in contrib-ads and logs extra information in the presence of videojs-bc-analytics-logger.</li>
+	</ul>
+	</li>
+</ul>
+
+</section>
+
+
+
+<!-- <section class="bcls-section">
+<h2 id="player">The player</h2>
+
+<p>This example enforces the playback of an advertisement before the main subject video. For this example, a skippable pre-roll is used.</p>
+
+<div class="player-block"><iframe src="//players.brightcove.net/1752604059001/Hy1btkKDb_default/index.html" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div>
+
+<aside class="bcls-aside bcls-aside--information">Note: The skippable functionality in this example is done as part of the VMAP definition. This functionality is available in both in-page embeds and iframe player implementations. The applicable fragment from the VMAP XML is shown here:
+<pre class="line-numbers">
+      <code class="language-json">&lt;Creatives&gt;
+        &lt;Creative id="57860459056"&gt;
+          <span class="bcls-highlight">&lt;Linear skipoffset="00:00:05"&gt;</span></code></pre>
+</aside>
+</section> -->
+<!-- id="player" -->
+
+<!-- <section class="bcls-section">
+<h2 id="implementplayersmodule">Implement using Players module</h2>
+
+<p>To implement the Once UX Plugin using the Players module, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the <strong>Players</strong> module and locate the player.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
+	<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
+	<pre class="line-numbers">
+      <code class="language-html">//players.brightcove.net/videojs-onceux/2/videojs-onceux.min.js</code></pre>
+	</li>
+	<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
+	<pre class="line-numbers">
+      <code class="language-html">//players.brightcove.net/videojs-onceux/2/videojs-onceux.min.css</code></pre>
+	</li>
+	<li>For the plugin name, enter <strong>onceux</strong>.</li>
+	<li>The <strong>Options</strong> provided in the form specifies the URI to call to get your Once VMAP data. A stub example is shown here:
+	<pre class="line-numbers">
+      <code class="language-json">{
+        "metadataUri" : "http://onceux.unicornmedia.com/now/ads/vmap/od/auto/f1e8b045-e52e-4636-9459-818da5f90bab/3aaf99a3-57d7-4a8d-8dd9-2c6f671d77e1/825a2774-b49d-11e3-87e6-005056835b09/0a10b34f-85e7-44a8-a4fb-4a1b7c9e97ac/content.once"
+      }</code></pre>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="onceux plugin configuration in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/onceux-plugin/onceux-options.png" /></figure>
+	</li>
+	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+</ol>
+
+<h3>Initialize options</h3>
+
+<p>When you add the OnceUX plugin to your player, as shown above, you must pass an <code>options</code> object to the plugin to initialize it. This object must contain a <code>metadataUri</code> string or a VMAP object, along with any of the other optional properties:</p>
+
+<ul>
+	<li><code>metadataUri</code>
+
+	<ul>
+		<li>Required</li>
+		<li>Type: String</li>
+		<li>Default: undefined</li>
+		<li>Description: The URI to call for the VMAP data.</li>
+		<li>Example: "http://onceux.unicornmedia.com/now/ads/vmap/od/auto/1234"</li>
+	</ul>
+	</li>
+	<li><code>vmap</code>
+	<ul>
+		<li>Optional</li>
+		<li>Type: Object</li>
+		<li>Default: none</li>
+		<li>Description: If supplied, the plugin will use this VMAP object instead of calling the metadata URL to get the VMAP data.</li>
+		<li>Example: see this <a href="//solutions.brightcove.com/bcls/brightcove-player/onceux-plugin/vmap-example.json">VMAP object</a></li>
+	</ul>
+	</li>
+	<li><code>hideOverlay</code>
+	<ul>
+		<li>Optional</li>
+		<li>Type: Boolean</li>
+		<li>Default: false</li>
+		<li>Description: If true, the countdown timer and the <strong>Learn More</strong> click through overlays will not be shown while ads are playing.</li>
+		<li>Example: true (hides default overlays)</li>
+	</ul>
+	</li>
+	<li><code>timeout</code>
+	<ul>
+		<li>Optional</li>
+		<li>Type: Number</li>
+		<li>Default: 45000</li>
+		<li>Description: The time in milliseconds to wait for the Once URI to respond.</li>
+		<li>Example: 10000 (wait 10 seconds)</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>Use iframe</h3>
+
+<p>It is a best practice to use the iframe player implementation.</p>
+
+<p>Here is the complete code:</p>
+
+<pre class="line-numbers">
+      <code class="language-html">&lt;!doctype html&gt;
+      &lt;html&gt;
+
+      &lt;head&gt;
+          &lt;meta charset="UTF-8"&gt;
+          &lt;title&gt;Once UX Plugin&lt;/title&gt;
+
+          &lt;!-- Page styles --&gt;
+          &lt;style&gt;
+          /* set player size */
+              iframe {
+                width: 640px;
+                height: 360px;
+              }
+          &lt;/style&gt;
+      &lt;/head&gt;
+
+      &lt;body&gt;
+
+      &lt;iframe src='//players.brightcove.net/1752604059001/f12ef9e3-30bc-4edb-aa0a-ad767c99e807_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+
+      &lt;/body&gt;
+      &lt;/html&gt;</code></pre>
+
+<h3>Use embed_in_page</h3>
+
+<p>If you choose to use the embed_in_page implementation, you can add the OnceUX plugin right in the page code. Just remember that using the embed_in_page implementation only affects the player instance on the page, while the iframe implementation affects all instances of your player.</p>
+
+<p>Here is the complete code:</p>
+
+<div class="video-cloud-only">
+<pre class="line-numbers">
+      <code class="language-html">&lt;!doctype html&gt;
+      &lt;html&gt;
+
+      &lt;head&gt;
+          &lt;meta charset="UTF-8"&gt;
+          &lt;title&gt;Once UX Plugin&lt;/title&gt;
+          &lt;link href="//players.brightcove.net/videojs-onceux/2/videojs-onceux.min.css" rel="stylesheet"&gt;
+      &lt;/head&gt;
+
+      &lt;body&gt;
+          &lt;video id="myPlayerID"
+            style='width: 640px;height: 360px;'
+            data-account="1752604059001"
+            data-player="b4be1424-e1de-4413-8241-ba373272d2ca"
+            data-embed="default"
+            class="video-js" controls&gt;&lt;/video&gt;
+          &lt;script src="//players.brightcove.net/1752604059001/b4be1424-e1de-4413-8241-ba373272d2ca_default/index.min.js"&gt;&lt;/script&gt;
+
+          &lt;script src="//players.brightcove.net/videojs-onceux/2/videojs-onceux.min.js"&gt;&lt;/script&gt;
+
+          &lt;!-- custom script --&gt;
+          &lt;script type="text/JavaScript"&gt;
+              videojs("myPlayerID").ready(function() {
+                  var myPlayer = this,
+                  options = { "metadataUri": "http://onceux.unicornmedia.com/now/ads/vmap/od/auto/9bb68221-9a65-4416-837c-2f5b0da311ca/3a6bd8b9-3d91-4ccf-a0bf-325f8aaeb07a/19c5e818-a4bc-4fb2-9c06-0fa04ebd0800/content.once"
+              };
+              myPlayer.onceux(options);
+          });
+          &lt;/script&gt;
+      &lt;/body&gt;
+
+      &lt;/html&gt;</code></pre>
+</div>
+
+<div class="player-only">
+<pre class="line-numbers">
+      <code class="language-html">&lt;!doctype html&gt;
+      &lt;html&gt;
+
+      &lt;head&gt;
+          &lt;meta charset="UTF-8"&gt;
+          &lt;title&gt;Once UX Plugin&lt;/title&gt;
+          &lt;link href="//players.brightcove.net/videojs-onceux/2/videojs-onceux.min.css" rel="stylesheet"&gt;
+      &lt;/head&gt;
+
+      &lt;body&gt;
+          &lt;video id="myPlayerID"
+            style='width: 640px;height: 360px;'
+            data-account="3676484086001"
+            data-player="0d52b995-92bb-4d5f-9059-e27479550e79"
+            data-embed="default"
+            class="video-js" controls&gt;&lt;/video&gt;
+          &lt;script src="//players.brightcove.net/3676484086001/0d52b995-92bb-4d5f-9059-e27479550e79_default/index.min.js"&gt;&lt;/script&gt;
+          &lt;script src="//players.brightcove.net/videojs-onceux/2/videojs-onceux.min.js"&gt;&lt;/script&gt;
+
+          &lt;!-- custom script --&gt;
+          &lt;script type="text/JavaScript"&gt;
+              videojs("myPlayerID").ready(function() {
+                  var myPlayer = this,
+                      options = { "metadataUri": "http://onceux.unicornmedia.com/now/ads/vmap/od/auto/9bb68221-9a65-4416-837c-2f5b0da311ca/3a6bd8b9-3d91-4ccf-a0bf-325f8aaeb07a/19c5e818-a4bc-4fb2-9c06-0fa04ebd0800/content.once" };
+                  myPlayer.onceux(options); });
+          &lt;/script&gt;
+      &lt;/body&gt;
+
+      &lt;/html&gt;</code></pre>
+</div>
+</section> -->
+
+<section id="glossary" class="bcls-section">
+<h2>Glossary</h2>
+
+<p>This plugin distinguishes the concepts of <strong>absolute</strong> and <strong>content</strong> time within a OnceUX stream. Traditional video players only have a concept of <strong>content</strong> time; times between start and end of the URI it is currently playing. Because a OnceUX stream is essentially a number of <strong>content</strong> streams stiched together we've introduced the concept of <strong>absolute</strong> time which takes into account the complete stitched stream including the video advertisements.</p>
+
+<p>When you see the prefix <strong>absolute</strong> on a property or method, the times expected/returned are relative to the entire stitched stream. When you see the prefix <strong>content</strong>, the times expected/returned are relative only to a particular piece of content that was stitched into the stream (the main content or single linear advertisement).</p>
+
+<ul>
+	<li>
+	<p><strong>Absolute time</strong> : Refers to any given point in the total timeline of an SSAI stream. For example, a <strong>2:00</strong> video with a <strong>0:30</strong> pre-roll ad has a total absolute time of <strong>2:30</strong>. The absolute time of <strong>0:15</strong> is in the pre-roll and the absolute time of <strong>0:31</strong> is the first second of content.</p>
+	</li>
+  <li>
+	<p><strong>Content time</strong> : Refers to the time relative to the current block of media - either content or ad. Expanding on the above, during the pre-roll, the content time <strong>0:15</strong> is synonymous with the absolute time of <strong>0:15</strong>, but the absolute time <strong>0:31</strong> would equate to a content time of <strong>0:01</strong>.</p>
+  <p>
+    Generally, content time is what you see in the player UI and much of the job of this plugin and associated middleware is translating from absolute time to content time.
+  </p>
+	</li>
+
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="changelog">Known issues</h2>
+<ul>
+  <li>
+    Playlists are buggy, but we are working on fixes and hope to have better support in the coming weeks.
+  </li>
+  <li>
+    Dragging on the seek bar while paused during ad playback causes the content video to play.
+  </li>
+  <li>
+    Safari 10/11 sometimes show the last frame of the postroll at the end of the video.
+  </li>
+</ul>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="changelog">Changelog</h2>
+
+<h4>12 Oct 2017</h4>
+
+<p>v1.0.0</p>
+
+<ul>
+	<li>Initial release</li>
+</ul>
+</section>
+
+</article>
