@@ -1,0 +1,231 @@
+<article class="bcls-article">
+<section id="Example_player" class="bcls-section">
+<h2>Example player</h2>
+
+<p>The following demonstrates a player showing an advertisement at a cue point created at the two second mark of the video.</p>
+<iframe src="//players.brightcove.net/1752604059001/rkptuIjul_default/index.html?videoId=5318598744001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="640" height="360"></iframe></section>
+
+<section id="Instructional_video" class="bcls-section">
+<h2>Instructional video</h2>
+
+<p>The following is an instructional video that leads you through the process of using ad cue points to play ads during video playback.</p>
+<iframe src="//players.brightcove.net/20318290001/E16-WGGOe_default/index.html?videoId=5353307007001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="800" height="450"></iframe></section>
+
+<section id="Playing_a_video_non-fullscreen" class="bcls-section">
+<h2>Implementation overview</h2>
+
+<p>To play ads based on ad cue points in the video, you will need to perform the following:</p>
+
+<ul>
+	<li>In Studio's <strong>MEDIA</strong> module, create the ad cue point(s) in the video at your desired time(s).</li>
+	<li>Obtain/create a VAST tag that will serve the desired ads to the video when a cue point triggers a request.</li>
+	<li>Be sure the <strong>IMA3</strong> plugin is loaded in the player. In this document, you will see two ways to perform this task.</li>
+	<li>Configure the <strong>IMA3</strong> plugin to use ad cue points.</li>
+</ul>
+</section>
+
+<section id="Create_ad_cue_points" class="bcls-section">
+<h2>Create ad cue points</h2>
+
+<p>You use Studio's <strong>MEDIA</strong> module to add ad cue points to a video. Click on a video, then perform the following tasks:</p>
+
+<ol>
+	<li>Just below the video, click the <strong>Ad Cue Point</strong> button.</li>
+	<li>Enter the time you want the cue point to be dispatched.</li>
+	<li>Set the <strong>Type</strong> to <strong>ad</strong>.</li>
+	<li>Give the cue point a name.</li>
+</ol>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Create cue point in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-cue-points/studio-create-cue-point.png" /></figure>
+
+<p>You may add multiple cue points. For more information and using cue points in Studio see the <a href="/node/15151">Working with Cue Points in the Media Module</a> document.</p>
+</section>
+
+<section id="Create/obtain_a_VAST_tag" class="bcls-section">
+<h2>Create/obtain a VAST tag</h2>
+
+<p>When configuring the IMA3 plugin you will need to provide a URL to a location of a VAST tag. The VAST tag serves the ad for the player to play. In this example, a static VAST tag (which is actually a URL to a VAST XML document) is used. You may wish to use an ad server to randomly choose from multiple ads to be viewed. Regardless, the IMA3 plugin will need to point to a valid VAST tag.</p>
+
+<p>For this document, a static VAST tag will be used that plays a single advertisement. The VAST XML appears as follows:</p>
+
+<pre class="line-numbers">
+      <code class="language-html">&lt;VAST version="3.0"&gt;
+        &lt;Ad id="1"&gt;
+          &lt;InLine&gt;
+            &lt;AdSystem version="1.0"&gt;Test Ad Server&lt;/AdSystem&gt;
+            &lt;AdTitle&gt;
+              &lt;![CDATA[ Portals ]]&gt;
+            &lt;/AdTitle&gt;
+            &lt;Description&gt;
+              &lt;![CDATA[ Demo ad number 6 ]]&gt;
+            &lt;/Description&gt;
+            &lt;Error&gt;
+              &lt;![CDATA[ ]]&gt;
+            &lt;/Error&gt;
+            &lt;Creatives&gt;
+              &lt;Creative&gt;
+                &lt;Linear&gt;
+                  &lt;Duration&gt;00:00:8&lt;/Duration&gt;
+                  &lt;TrackingEvents/&gt;
+                  &lt;AdParameters&gt;
+                    &lt;![CDATA[ &lt;xml&gt;&lt;/xml&gt; ]]&gt;
+                  &lt;/AdParameters&gt;
+                  &lt;VideoClicks/&gt;
+                  &lt;MediaFiles&gt;
+                    &lt;MediaFile type="video/mp4" width="1280" height="720" delivery="progressive" id="2" bitrate="4316" minBitrate="320" maxBitrate="320" scalable="true" maintainAspectRatio="true"&gt;
+                      &lt;![CDATA[
+                        http://solutions.brightcove.com/bcls/ads/bc-ads/bcls-ad-6-5seconds.mp4
+                      ]]&gt;
+                    &lt;/MediaFile&gt;
+                  &lt;/MediaFiles&gt;
+                &lt;/Linear&gt;
+              &lt;/Creative&gt;
+            &lt;/Creatives&gt;
+            &lt;Extensions&gt;
+              &lt;Extension&gt;
+                &lt;xml&gt;data&lt;/xml&gt;
+              &lt;/Extension&gt;
+            &lt;/Extensions&gt;
+          &lt;/InLine&gt;
+        &lt;/Ad&gt;
+      &lt;/VAST&gt;</code></pre>
+</section>
+
+<section id="Studio_implementation" class="bcls-section">
+<h2>Studio implementation</h2>
+
+<p>You can use Studio to set up ad cue points. From a high-level you do the following:</p>
+
+<ul>
+	<li>Set up the IMA3 plugin using the <strong>ADVERTISING</strong> section in the <strong>PLAYERS</strong> module.</li>
+	<li>Publish your player.</li>
+</ul>
+
+<p>Here are the detailed steps that carry out the set up:</p>
+
+<ol class="bcls-tasklist">
+	<li>In Studio's <strong>PLAYERS</strong> module, <strong>ADVERTISING</strong> section, enable IMA ads.</li>
+	<li>Supply a valid VAST tag, as discussed above, for the <strong>Server URL</strong>.</li>
+	<li>Set the <strong>Request Ads</strong> value to <strong>Use cue point</strong>.</li>
+	<li>Your configuration should appear similar to the following:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Plugin configuration in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-cue-points/studio-plugin-setup.png" /></figure>
+	</li>
+	<li>Click <strong>Save</strong>.</li>
+	<li>At this time you do not need to publish the player as you have another player configuration to perform.</li>
+	<li>Locate the <strong>PLUGINS</strong> section and click the <strong>Edit</strong> button.</li>
+	<li>In the bottom right of the section click the <strong>Show hidden</strong> button.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Plugins - Show Hidden" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-cue-points/show-hidden.png" /></figure>
+	</li>
+	<li>Click the <strong>Name, Options (JSON)</strong> link.</li>
+	<li>In the <strong>ima3</strong> configuration, locate the value for the <code>useMediaCuePoints</code> property, and change the value from <code>false</code> to <code>true</code>.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Plugins - Change usemediacuepoints value to true" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-cue-points/usemediacuepoints.png" /></figure>
+	</li>
+	<li>Click <strong>Save</strong>.</li>
+	<li>Publish the player.</li>
+	<li>Return to the <strong>MEDIA</strong> module and publish a video with ad cue points using the newly configured player.</li>
+</ol>
+</section>
+
+<section id="Plugin_configuration" class="bcls-section">
+<h2>Plugin configuration</h2>
+
+<p>There are configuration settings you must make to the IMA3 plugin to correctly use ad cue points. They are:</p>
+
+<ul>
+	<li><code>useMediaCuePoints</code> must be set to <code>true</code></li>
+	<li><code>requestMode</code> must be set to the string <code>oncue</code></li>
+	<li><code>serverUrl</code> must be set to a valid VAST tag</li>
+</ul>
+
+<p>For complete details on these options, see the <a href="/node/18080#bc-ipnav-4">Advertising with the IMA3 Plugin</a> document's <strong>Options</strong> section.</p>
+</section>
+
+<section id="In-page_embed_implementation" class="bcls-section">
+<h2>In-page embed implementation</h2>
+
+<p>You can also implement ad cue points using the in-page embed player code. In the code below, the IMA3 plugin is loaded and configured all in the HTML page.</p>
+
+<p>The following code is the actual implementation:</p>
+
+<ul>
+	<li>Lines 7-12: Style the size of the player.</li>
+	<li>Line 13: Link to the IMA3 plugin's CSS.</li>
+	<li>Lines 19-27: The player publishing code, with the addition of an <code>id</code> attribute, which will be used in the JavaScript.</li>
+	<li>Line 29 : Include the IMA3 plugin's JavaScript.</li>
+	<li>Lines 32-33, 40: Standard code to wait for the player code to be ready to interact with, and assign a variable the player object.</li>
+	<li>Lines 34-38: Assign the required options their prescribed values.</li>
+	<li>Line 39: Call the <code>ima3</code> plugin, passing the options as a parameter.</li>
+</ul>
+
+<pre class="line-numbers">
+      <code class="language-html">&lt;!doctype html&gt;
+      &lt;html&gt;
+
+      &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;title&gt;Untitled Document&lt;/title&gt;
+        &lt;style&gt;
+          .video-js {
+            height: 344px;
+            width: 610px;
+          }
+        &lt;/style&gt;
+        &lt;link href="//players.brightcove.net/videojs-ima3/2/videojs.ima3.min.css" rel="stylesheet"&gt;
+
+      &lt;/head&gt;
+
+      &lt;body&gt;
+
+        &lt;video id="myPlayerID"
+          data-video-id="4607746980001"
+          data-account="1507807800001"
+          data-player="rkNxoBMOe"
+          data-embed="default"
+          data-application-id
+          class="video-js"
+          controls&gt;&lt;/video&gt;
+        &lt;script src="//players.brightcove.net/1507807800001/rkNxoBMOe_default/index.min.js"&gt;&lt;/script&gt;
+
+        &lt;script src="//players.brightcove.net/videojs-ima3/2/videojs.ima3.min.js"&gt;&lt;/script&gt;
+
+        &lt;script type="text/javascript"&gt;
+          videojs('myPlayerID').ready(function(){
+            var myPlayer = this,
+            <span class="bcls-highlight">options = {
+              useMediaCuePoints: true,
+              requestMode: 'oncue',
+              serverUrl: "//solutions.brightcove.com/bcls/brightcove-player/vmap/simple-vast.xml"
+            };
+            myPlayer.ima3(options);</span>
+          });
+        &lt;/script&gt;
+
+      &lt;/body&gt;
+
+      &lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Known_issues">Known issues</h2>
+
+<p>Consider the following with using ad cue points:</p>
+
+<ul>
+	<li>Postrolls are not currently supported.</li>
+	<li>Cues set at time 0 are considered prerolls and are played only after the <code>play</code> event.</li>
+	<li>On Android, multiple consecutive attempts to scrub (drag along the progress bar) may cause the following issues:
+	<ul>
+		<li>Restarting from the beginning of content</li>
+		<li>Content is paused after ad playback and eventually times out if play is not pressed</li>
+	</ul>
+	</li>
+	<li>Currently a viewer can use the scrubber to skip over ad breaks that are defined by ad cue points. The intended behavior is that the viewer will watch the last ad defined before the point to which the viewer scrub.</li>
+	<li>Currently cue points are not supported on IE11. There will be a fix for this issue sometime in the future.</li>
+	<li>When iOS is in fullscreen, cue points will not display ads.</li>
+	<li>In Chrome, cue points set at 0 seconds (a pre-roll) will not play ads.</li>
+	<li>When a video is configured for autoplay, and a cue point set at 0 seconds (a pre-roll), ads will not always play.</li>
+</ul>
+
+<p>In addition, all the <a href="/node/18080#bc-ipnav-13">know issues for the IMA3 plugin</a> are applicable when using ad cue points.</p>
+</section>
+</article>
