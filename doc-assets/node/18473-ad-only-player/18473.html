@@ -1,0 +1,215 @@
+<article class="bcls-article">
+
+  <section class="bcls-section">
+    <h2 id="Player_example">Player example</h2>
+
+    <!-- UPDATE description -->
+    <p>
+      The sample video demonstrates the use of a player that appears, plays an ad and then disappears. The ad that plays is configured in a VAST XML document. The player is set to autoplay and muted by default, which is the only way it will work in some browsers. You can change these settings if you choose.
+    </p>
+
+    <!-- UPDATE codepen here -->
+    <p data-height="637" data-theme-id="dark" data-slug-hash="QqVOMG" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18065-ad-only-plugin" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/QqVOMG/">18065-ad-only-plugin</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+    <!-- UPDATE link to GitHub source -->
+    <p>View the <a href="https://github.com/BrightcoveLearning/18065-ad-only-plugin">source code</a>.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+    <div class="bcls-expander-content">
+      <p>Here are some tips to effectively use the above CodePen:</p>
+
+      <ul>
+        <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+        <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+        <li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+          <ol>
+            <li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+            <li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+            <li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now
+              be able to follow the code explanations and at the same time view the code.</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+
+    <div class="bcls-expander-content">
+      <p>Here is the recommended development sequence:</p>
+
+      <ol>
+        <li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+        <li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+        <li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+        <li>Use Studio to add the plugin and CSS to your player</li>
+        <li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+      </ol>
+
+      <p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+      <h3>iframe or In-Page embed</h3>
+
+      <p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation.
+        The advantages of using the iframe player are:</p>
+
+      <ul>
+        <li>No collisions with existing JavaScript and/or CSS</li>
+        <li>Automatically responsive</li>
+        <li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+      </ul>
+
+      <p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically,
+        here are some examples:</p>
+
+      <ul>
+        <li>Code in the containing page needs to listen for and act on player events</li>
+        <li>The player uses styles from the containing page</li>
+        <li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+      </ul>
+
+      <p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+    </div>
+    <!-- id="expanderContent" -->
+  </section>
+
+  <!-- UPDATE player and HTML configuration -->
+  <section class="bcls-section">
+    <h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+    <p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+    <h3>Player configuration</h3>
+
+    <p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+    <h3>Other HTML</h3>
+    <p>
+      In your HTML file, you will include the following:
+    </p>
+
+    <ol class="bcls-tasklist">
+      <li>
+        A <code>&lt;div&gt;</code> element with an <code>id</code> attribute assigned to a value of your choice. The JavaScript code will create your Brightcove player within this <code>&lt;div&gt;</code> element.
+        <pre class="line-numbers"><code class="language-html">&lt;div id=&quot;adPlayerDiv&quot;&gt;&lt;/div&gt;</code></pre>
+      </li>
+      <li>
+        <p>
+          The JavaScript file associated with your Brightcove player. It should look similar to this:
+        </p>
+        <pre class="line-numbers"><code class="language-html">&lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+      </li>
+      <li>
+        <p>
+          The JavaScript and CSS files for the IMA3 plugin. This is for ad integration with Google's IMA3 HTML5 SDK.
+        </p>
+        <pre class="line-numbers"><code class="language-html">&lt;link href=&quot;//players.brightcove.net/videojs-ima3/2/videojs.ima3.min.css&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;//players.brightcove.net/videojs-ima3/2/videojs.ima3.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+        <aside class="bcls-aside bcls-aside--tip">You can get a little faster load time if you include these files in your player configuration. For details, see the <a href="#Load_time_optimization">Load-time optimization</a> section.</aside>
+      </li>
+      <li>
+        <p>
+          The ad only player loader script. You can use this file unmodified since it is hosted from Brightcove's player origin and served over CDN. If you choose, you can use this JavaScript code as a guide to create your own loader script and host it on your own server. This file can also be included in your player configuration.
+        </p>
+        <pre class="line-numbers"><code class="language-html">&lt;script src=&quot;//players.brightcove.net/3723496277001/files/adonly.js&quot;&gt;&lt;/script&gt;</code></pre>
+      </li>
+    </ol>
+
+    <p>
+  </section>
+
+  <!-- UPDATE application flow -->
+  <section class="bcls-section">
+    <h2 id="Application_flow">Application flow</h2>
+
+    <p>The basic logic behind this application is:</p>
+
+    <ul>
+      <li>The script expands the div defined within the text block, named <code>adPlayerDiv</code> and dynamically loads a Brightcove player. </li>
+      <li>The player uses in-line VAST to play an ad. You can comment this out and un-comment the ad tag section if you want to use an ad tag adsResponse.</li>
+      <li>
+        When the ads are finished playing, the player is unloaded and removed from the DOM.
+      </li>
+    </ul>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Options">Options</h2>
+
+    <ul>
+      <li><code>muted</code>
+      <ul><li>Optional. Values: <strong>true</strong>, <strong>false</strong>. Default: <strong>true</strong></li>
+      </ul></li>
+      <li><code>autoplay</code>
+      <ul><li>Optional. Values: <strong>true</strong>, <strong>false</strong>. Default: <strong>true</strong></li>
+      </ul></li>
+      <li><code>adTag</code>
+      <ul><li>The ad tag</li>
+      </ul></li>
+      <li><code>adsResponse</code>
+      <ul><li>In-line VAST string - if provided it overrides the ad tag</li>
+      </ul></li>
+      <li><code>height</code>
+      <ul><li>The height in pixels you want to expand the div</li>
+      </ul></li>
+      <li><code>animationDuration</code>
+      <ul><li>How long in ms to take to animate the expansion of the div height</li>
+      </ul></li>
+    </ul>
+  </section>
+
+  <!-- UPDATE CSS description -->
+  <section class="bcls-section">
+    <h2 id="Application_styling">Application styling</h2>
+    <p>This sample uses the CSS styling provided by the IMA3 plugin.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Plugin_code">Plugin code</h2>
+    <p>
+      This sample uses JavaScript code that is already built as a plugin. You can see this code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18065-ad-only-plugin/blob/master/plugin/adonly.js">adonly.js</a>.
+    </p>
+
+    <!-- <p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+
+    <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
+
+    <pre class="line-numbers">
+            <code class="language-javascript">videojs('myPlayerID').ready(function(){
+              var myPlayer = this;
+              ...
+            });</code></pre>
+
+    <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
+
+    <pre class="line-numbers">
+            <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+              var myPlayer = this;
+              ...
+            });</code></pre>
+
+    <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18190-hyperlinked-company-logo/blob/master/plugin/company-logo.js">company-logo.js</a>.</p> -->
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Load_time_optimization">Load-time optimization</h2>
+    <p>This sample uses a Brightcove Player and includes the IMA plugin during runtime. You can use this sample as-is, but changing the player code for your account.</p>
+    <p>
+      To optimize load time slightly, you should include the IMA plugin in the player configuration. To do this, see the following documents:
+    </p>
+    <ul>
+      <li>
+        <a href="/node/18093">Brightcove Player Plugins</a>
+      </li>
+      <li>
+        <a href="/node/14053">Configuring Player Plugins</a>
+      </li>
+    </ul>
+  </section>
+
+</article>
