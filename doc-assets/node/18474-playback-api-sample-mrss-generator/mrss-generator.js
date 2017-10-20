@@ -335,6 +335,9 @@ var BCLS = ( function (window, document) {
     }
 
     function init() {
+        // date pickers
+        rome(fromDate);
+        rome(toDate);
         // event handlers
         makeFeed.addEventListener('click', function() {
             var numVideos;
