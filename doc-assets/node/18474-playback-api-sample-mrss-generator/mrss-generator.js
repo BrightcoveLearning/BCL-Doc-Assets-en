@@ -342,20 +342,18 @@ var BCLS = ( function (window, document) {
         makeFeed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
-            clientId = client_id.value;
-            clientSecret = client_secret.value;
+            policyKey = policy_key.value;
+            accountId = account_id.value;
             // only use entered account id if client id and secret are entered also
-            if (isDefined(clientId) && isDefined(clientSecret)) {
-                if (isDefined(account_id.value)) {
-                    accountId = account_id.value;
-                } else {
-                    window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-                    clientId = '';
-                    clientSecret = '';
-                    accountId = '1752604059001';
+            if (isDefined(accountId)) {
+                if (!isDefined(policyKey)) {
+                    window.alert('To use your own account, you must provide your own policy key - since it is missing, a sample account will be used');
+                    policyKey = default_policyKey;
+                    accountId = default_accountId;
                 }
             } else {
-                accountId = '1752604059001';
+                policyKey = default_policyKey;
+                accountId = default_accountId;
             }
             sort = getSelectedValue(sortSelect);
             sortDirection = getSelectedValue(directionSelect);
@@ -366,16 +364,10 @@ var BCLS = ( function (window, document) {
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
-            // if all videos wanted, get count; otherwise get videos
-            if (numVideos === 'all') {
-                // we need to get the count
-                setRequestData('getCount');
-            } else {
-                totalVideos = parseInt(numVideos);
-                totalCalls = Math.ceil(numVideos / limit);
-                logger.textContent = 'Total videos to retrieve: ' + totalVideos;
-                setRequestData('getVideos');
-            }
+            totalVideos = parseInt(numVideos);
+            totalCalls = Math.ceil(numVideos / limit);
+            logger.textContent = 'Total videos to retrieve: ' + totalVideos;
+            setRequestData('getVideos');
         });
         feedDisplay.addEventListener('click', function() {
             feedDisplay.select();
