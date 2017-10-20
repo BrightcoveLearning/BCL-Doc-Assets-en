@@ -66,7 +66,7 @@ var BCLS = ( function (window, document) {
      * @return {Boolean} true if variable is defined and has a value
      */
     function isDefined(x){
-        if ( x === "" || x === null || x === undefined || x === NaN) {
+        if ( x === '' || x === null || x === undefined) {
             return false;
         }
         return true;
@@ -203,16 +203,6 @@ var BCLS = ( function (window, document) {
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         switch (id) {
-            case 'getCount':
-                endPoint = accountId + '/counts/videos?sort=' + sort;
-                if (isDefined(search)) {
-                    endPoint += '&q=' + search;
-                }
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                getMediaData(requestData, id);
-                break;
             case 'getVideos':
             endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit + '&offset=' + limit * callNumber;
             if (isDefined(search)) {
