@@ -626,7 +626,7 @@ var BCLS = (function(window, document, rome) {
             dateTypeValue = getSelectedValue(dateRangeType);
             fromDateValue = rome(fromDate).getDate();
             if (isDefined(fromDateValue)) {
-                fromDateValue = fromDateValue.toISOString()
+                fromDateValue = fromDateValue.toISOString();
             }
             toDateValue = rome(toDate).getDate();
             if (isDefined(toDateValue)) {
