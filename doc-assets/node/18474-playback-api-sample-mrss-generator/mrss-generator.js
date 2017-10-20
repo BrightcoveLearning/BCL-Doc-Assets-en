@@ -361,6 +361,15 @@ var BCLS = ( function (window, document) {
                 sort = sortDirection + sort;
             }
             search = searchStr.value;
+            dateTypeValue = getSelectedValue(dateRangeType);
+            fromDateValue = rome(fromDate).getDate();
+            if (isDefined(fromDateValue)) {
+                fromDateValue = fromDateValue.toISOString();
+            }
+            toDateValue = rome(toDate).getDate();
+            if (isDefined(toDateValue)) {
+                toDateValue = toDateValue.toISOString();
+            }
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
