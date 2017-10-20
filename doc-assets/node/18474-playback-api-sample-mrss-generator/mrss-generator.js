@@ -26,11 +26,11 @@ var BCLS = ( function (window, document) {
     eMediaTitle = '</media:title>',
     // account stuff
     accountId,
-    clientId,
-    clientSecret,
+    default_accountId = '1752604059001',
+    policyKey,
+    default_policyKey = 'BCpkADawqM2KZhoCftdQooqAvN7vGBxeWbqhorS9KciUZ92NYSveS_vZpn_OI0rK5dfSXWEvonWB9FkXGE_WdtwRNIeU48ZDVVVo0CiqoZrtJ2th7auazdfAYRvqkmT-huknUydUq8KkKBxe',
     // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
-    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
+    baseURL = 'https://edge.api.brightcove.com/playback/v1/accounts/',
     sort,
     sortDirection = "",
     search,
@@ -41,8 +41,7 @@ var BCLS = ( function (window, document) {
     videosArray = [],
     // elements
     account_id = document.getElementById('account_id'),
-    client_id = document.getElementById('client_id'),
-    client_secret = document.getElementById('client_secret'),
+    policy_key = document.getElementById('policy_key'),
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
     numberSelect = document.getElementById('numberSelect'),
