@@ -365,16 +365,22 @@ var BCLS = ( function (window, document) {
             fromDateValue = rome(fromDate).getDate();
             if (isDefined(fromDateValue)) {
                 fromDateValue = fromDateValue.toISOString();
+                search += '+' + dateTypeValue + ':' + fromDateValue + '..';
             }
             toDateValue = rome(toDate).getDate();
             if (isDefined(toDateValue)) {
                 toDateValue = toDateValue.toISOString();
+                if (isDefined(fromDateValue)) {
+                    search += toDateValue;
+                } else {
+                    search += '+' + dateTypeValue + ':..' + toDateValue;
+                }
             }
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
             totalVideos = parseInt(numVideos);
-            totalCalls = Math.ceil(numVideos / limit);
+            totalCalls = numVideos;
             logger.textContent = 'Total videos to retrieve: ' + totalVideos;
             setRequestData('getVideos');
         });
