@@ -211,9 +211,7 @@ var BCLS = ( function (window, document) {
             requestData.url = baseURL + endPoint;
             requestData.requestType = 'GET';
             apiRequest.textContent = requestData.url;
-            getMediaData(requestData, id);
-            break;
-            case 'getVideoSources':
+            getMediaData(requestData, id, callback);
                 var i,
                     iMax = videosArray.length;
                     callback = function(sources) {
@@ -271,15 +269,7 @@ var BCLS = ( function (window, document) {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // check for completion
-                            if (requestID === 'getCount') {
-                                responseRaw = httpRequest.responseText;
-                                parsedData = JSON.parse(responseRaw);
-                                // set total videos
-                                totalVideos = parsedData.count;
-                                totalCalls = Math.ceil(totalVideos / limit);
-                                logger.textContent = 'Total videos: ' + totalVideos;
-                                setRequestData('getVideos');
-                            } else if (requestID === 'getVideos') {
+                            if (requestID === 'getVideos') {
                                 if (httpRequest.responseText === '[]') {
                                     // no video returned
                                     alert('no video returned');
