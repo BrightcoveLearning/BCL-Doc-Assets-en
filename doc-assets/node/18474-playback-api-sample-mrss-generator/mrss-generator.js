@@ -258,7 +258,6 @@ var BCLS = ( function (window, document) {
      */
     function getMediaData(options, requestID, callback) {
         var httpRequest = new XMLHttpRequest(),
-            responseRaw,
             parsedData,
             requestParams,
             dataString,
@@ -273,31 +272,10 @@ var BCLS = ( function (window, document) {
                                 if (httpRequest.responseText === '[]') {
                                     // no video returned
                                     alert('no video returned');
-                                }
-                                responseRaw = httpRequest.responseText;
-                                parsedData = JSON.parse(responseRaw);
-                                videosArray = videosArray.concat(parsedData);
-                                callNumber++;
-                                if (callNumber < totalCalls) {
-                                    logger.textContent = 'Getting video set ' + callNumber;
-                                    setRequestData('getVideos');
                                 } else {
-                                    logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources...';
-                                    callNumber = 0;
-                                    setRequestData('getVideoSources');
+console.log('response', httpRequest.responseText);
+                                    callback(httpRequest.responseText);
                                 }
-                            } else if (requestID === 'getVideoSources') {
-                                if (httpRequest.responseText === '[]') {
-                                    // no video returned
-                                    sources = [];
-                                    callback(sources);
-                                } else {
-                                    responseRaw = httpRequest.responseText;
-                                    sources = JSON.parse(responseRaw);
-                                    // increment offset
-                                    callback(sources);
-                                }
-
                             } else {
                               alert('There was a problem with the request. Request returned ' + httpRequest.status);
                             }
