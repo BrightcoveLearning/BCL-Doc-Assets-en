@@ -205,12 +205,19 @@ var BCLS = ( function (window, document) {
         switch (id) {
             case 'getVideos':
                 callback = function(response) {
-                    var i;
+                    var i,
+                        iMax;
                     videosArray = JSON.parse(response);
                     console.log('videosArray', videosArray);
                     // note that the playback api search request will not
                     // return videos that have no sources
                     // so we don't have to worry about that
+
+                    // for each video, get the best source and set that as source
+                    iMax = videosArray.length;
+                    for (i = 0; i < iMax; i++) {
+                        videosArray[i].source = processSources(videosArray[i].sources);
+                    }
                     addItems();
                 }
             endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit;
