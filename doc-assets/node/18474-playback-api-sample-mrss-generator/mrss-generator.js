@@ -204,7 +204,16 @@ var BCLS = ( function (window, document) {
         disableButtons();
         switch (id) {
             case 'getVideos':
-            endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit + '&offset=' + limit * callNumber;
+                callback = function(response) {
+                    var i;
+                    videosArray = JSON.parse(response);
+                    console.log('videosArray', videosArray);
+                    // note that the playback api search request will not
+                    // return videos that have no sources
+                    // so we don't have to worry about that
+                    addItems();
+                }
+            endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit;
             if (isDefined(search)) {
                 endPoint += '&q=' + search;
             }
@@ -212,41 +221,8 @@ var BCLS = ( function (window, document) {
             requestData.requestType = 'GET';
             apiRequest.textContent = requestData.url;
             getMediaData(requestData, id, callback);
-                var i,
-                    iMax = videosArray.length;
-                    callback = function(sources) {
-                        if (sources.length > 0) {
-                            // get the best MP4 rendition
-                            var source = processSources(sources);
-                            videosArray[callNumber].source = source;
-                        } else {
-                            // video has no sources
-                            videosArray[callNumber].source = null;
-                        }
-                        callNumber++;
-                        if (callNumber < iMax) {
-                            setRequestData('getVideoSources');
-                        } else {
-                            // remove videos with no sources
-                            i = videosArray.length;
-                            while (i > 0) {
-                                i--;
-                                console.log('videosArray[i]', videosArray[i]);
-                                if (!isDefined(videosArray[i].source)) {
-                                    console.log('i', i);
-                                    videosArray.splice(i, 1);
-                                }
-                            }
-                            addItems();
-                        }
-                    };
-                endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/sources';
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                logger.textContent = 'Getting sources for video ' + videosArray[callNumber].name;
-                getMediaData(requestData, id, callback);
                 break;
+            };
         }
     }
 
@@ -285,21 +261,15 @@ console.log('response', httpRequest.responseText);
                   alert('Caught Exception: ' + e);
                 }
             };
-        // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-        }
 
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
-        httpRequest.open('POST', proxyURL);
+        httpRequest.open('GET', options.url);
         // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpRequest.setRequestHeader("Authorization", "BCOV-Policy " + policyKey);
         // open and send request
-        httpRequest.send(requestParams);
+        httpRequest.send();
     }
 
     function init() {
