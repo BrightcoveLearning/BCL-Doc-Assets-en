@@ -309,15 +309,22 @@ console.log('request url', options.url);
             fromDateValue = rome(fromDate).getDate();
             if (isDefined(fromDateValue)) {
                 fromDateValue = fromDateValue.toISOString();
-                search += '+' + dateTypeValue + ':' + fromDateValue + '..';
+                if (isDefined(search)) {
+                    search += '+';
+                }
+                search += dateTypeValue + ':' + fromDateValue + '..';
             }
             toDateValue = rome(toDate).getDate();
             if (isDefined(toDateValue)) {
                 toDateValue = toDateValue.toISOString();
+
                 if (isDefined(fromDateValue)) {
                     search += toDateValue;
                 } else {
-                    search += '+' + dateTypeValue + ':..' + toDateValue;
+                    if (isDefined(search)) {
+                        search += '+';
+                    }
+                    search += dateTypeValue + ':..' + toDateValue;
                 }
             }
             numVideos = getSelectedValue(numberSelect);
