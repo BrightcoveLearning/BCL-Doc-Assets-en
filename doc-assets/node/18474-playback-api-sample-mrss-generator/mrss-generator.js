@@ -251,13 +251,8 @@ var BCLS = ( function (window, document) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // check for completion
                             if (requestID === 'getVideos') {
-                                if (httpRequest.responseText === '[]') {
-                                    // no video returned
-                                    alert('no video returned');
-                                } else {
 console.log('response', httpRequest.responseText);
                                     callback(httpRequest.responseText);
-                                }
                             } else {
                               alert('There was a problem with the request. Request returned ' + httpRequest.status);
                             }
