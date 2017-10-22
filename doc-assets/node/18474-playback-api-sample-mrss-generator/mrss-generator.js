@@ -267,7 +267,7 @@ console.log('response', httpRequest.responseText);
                   alert('Caught Exception: ' + e);
                 }
             };
-
+console.log('request url', options.url);
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
