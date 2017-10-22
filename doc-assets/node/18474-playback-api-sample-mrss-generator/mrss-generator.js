@@ -229,7 +229,6 @@ var BCLS = ( function (window, document) {
             apiRequest.textContent = requestData.url;
             getMediaData(requestData, id, callback);
                 break;
-            };
         }
     }
 
