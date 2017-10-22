@@ -275,6 +275,7 @@ console.log('request url', options.url);
         // set headers
         httpRequest.setRequestHeader("Authorization", "BCOV-Policy " + policyKey);
         httpRequest.setRequestHeader("Access-Control-Allow-Origin'", "*");
+        httpRequest.setRequestHeader("Accept'", "application/json");
         // open and send request
         httpRequest.send();
     }
