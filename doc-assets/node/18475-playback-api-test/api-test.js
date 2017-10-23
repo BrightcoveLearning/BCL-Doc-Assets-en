@@ -10,6 +10,7 @@ var apiRequest = document.getElementById('apiRequest'),
             var response;
             try {
                 if (httpRequest.readyState === 4) {
+    console.log('response', httpRequest.responseText);
                     if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         response = JSON.parse(httpRequest.responseText);
                         apiResponse.textContent = JSON.stringify(response, null, '  ');
