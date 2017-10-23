@@ -28,7 +28,7 @@ var BCLS = ( function (window, document) {
     accountId,
     default_accountId = '1752604059001',
     policyKey,
-    default_policyKey = 'BCpkADawqM2KZhoCftdQooqAvN7vGBxeWbqhorS9KciUZ92NYSveS_vZpn_OI0rK5dfSXWEvonWB9FkXGE_WdtwRNIeU48ZDVVVo0CiqoZrtJ2th7auazdfAYRvqkmT-huknUydUq8KkKBxe',
+    default_policyKey = 'BCpkADawqM1eifBpAkEr4aJrH9i950qErQCg8FvHXBCigF0JjC-zZyhN4T1XGGGBbB0hojevaABtp54BTvT9Er0KplSpC6tqm8YgyCtIzGl5sc77i23GLWYdpLdtF7Aei45EuLqlUznlkiXU',
     // api stuff
     baseURL = 'https://edge.api.brightcove.com/playback/v1/accounts/',
     sort,
