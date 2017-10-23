@@ -322,6 +322,7 @@ console.log('request url', requesturl);
                     search += dateTypeValue + ':..' + toDateValue;
                 }
             }
+            search = encodeURI(search);
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
