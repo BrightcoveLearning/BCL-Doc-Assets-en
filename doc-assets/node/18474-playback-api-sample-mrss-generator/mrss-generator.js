@@ -237,7 +237,7 @@ var BCLS = ( function (window, document) {
      * @param  {String} requestID the type of request = id of the button
      * @param  {Function} [callback] callback function
      */
-    function getMediaData(options, requestID, callback) {
+    function getMediaData(requesturl, requestID, callback) {
         var httpRequest = new XMLHttpRequest(),
             parsedData,
             requestParams,
@@ -261,13 +261,13 @@ console.log('response', httpRequest.responseText);
                   alert('Caught Exception: ' + e);
                 }
             };
-console.log('request url', options.url);
+console.log('request url', requesturl);
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
-        httpRequest.open('GET', options.url);
+        httpRequest.open('GET', requesturl);
         // set headers
-        httpRequest.setRequestHeader("Authorization", "BCOV-Policy " + policyKey);
+        httpRequest.setRequestHeader("BCOV-Policy", policyKey);
         httpRequest.setRequestHeader("Accept'", "application/json;");
         // open and send request
         httpRequest.send();
