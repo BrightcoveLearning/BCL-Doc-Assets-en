@@ -306,7 +306,7 @@ console.log('httpRequest', httpRequest);
             if (isDefined(fromDateValue)) {
                 fromDateValue = fromDateValue.toISOString();
                 if (isDefined(search)) {
-                    search += '+';
+                    search += '%20+';
                 }
                 search += dateTypeValue + ':' + fromDateValue + '..';
             }
@@ -318,7 +318,7 @@ console.log('httpRequest', httpRequest);
                     search += toDateValue;
                 } else {
                     if (isDefined(search)) {
-                        search += '+';
+                        search += '%20+';
                     }
                     search += dateTypeValue + ':..' + toDateValue;
                 }
