@@ -204,7 +204,7 @@ var BCLS = ( function (window, document) {
         disableButtons();
         switch (id) {
             case 'getVideos':
-                callback = function(response) {
+                var callback = function(response) {
                     var i,
                         iMax;
                     videosArray = JSON.parse(response);
@@ -219,7 +219,7 @@ var BCLS = ( function (window, document) {
                         videosArray[i].source = processSources(videosArray[i].sources);
                     }
                     addItems();
-                }
+                };
             endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit;
             if (isDefined(search)) {
                 endPoint += '&q=' + search;
