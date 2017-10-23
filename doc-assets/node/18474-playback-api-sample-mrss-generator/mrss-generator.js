@@ -199,7 +199,7 @@ var BCLS = ( function (window, document) {
      */
     function setRequestData(id) {
         var endPoint = '',
-            requestData = {};
+            requesturl;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         switch (id) {
@@ -224,10 +224,9 @@ var BCLS = ( function (window, document) {
             if (isDefined(search)) {
                 endPoint += '&q=' + search;
             }
-            requestData.url = baseURL + endPoint;
-            requestData.requestType = 'GET';
-            apiRequest.textContent = requestData.url;
-            getMediaData(requestData, id, callback);
+            requesturl = baseURL + endPoint;
+            apiRequest.textContent = requesturl;
+            getMediaData(requesturl, id, callback);
                 break;
         }
     }
