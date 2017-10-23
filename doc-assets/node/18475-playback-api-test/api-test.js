@@ -8,6 +8,7 @@ var apiRequest = document.getElementById('apiRequest'),
         var httpRequest = new XMLHttpRequest();
         function getResponse() {
             var response;
+console.log('httpRequest', httpRequest);
             try {
                 if (httpRequest.readyState === 4) {
     console.log('response', httpRequest.responseText);
