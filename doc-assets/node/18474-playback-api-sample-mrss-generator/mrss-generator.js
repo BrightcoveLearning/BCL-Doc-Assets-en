@@ -267,8 +267,8 @@ console.log('request url', requesturl);
         // open the request
         httpRequest.open('GET', requesturl);
         // set headers
-        httpRequest.setRequestHeader("BCOV-Policy", policyKey);
-        httpRequest.setRequestHeader("Accept'", "application/json;");
+console.log('policyKey', policyKey);
+        httpRequest.setRequestHeader("Accept'", "application/json;pk=" + policyKey);
         // open and send request
         httpRequest.send();
     }
