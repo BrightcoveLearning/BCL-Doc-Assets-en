@@ -217,6 +217,7 @@ var BCLS = ( function (window, document) {
                     iMax = videosArray.length;
                     for (i = 0; i < iMax; i++) {
                         videosArray[i].source = processSources(videosArray[i].sources);
+console.log('source', videosArray[i].source);
                     }
                     addItems();
                 };
