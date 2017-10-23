@@ -269,6 +269,7 @@ console.log('request url', requesturl);
         // set headers
 console.log('policyKey', policyKey);
         httpRequest.setRequestHeader("Accept'", "application/json;pk=" + policyKey);
+console.log('httpRequest', httpRequest);
         // open and send request
         httpRequest.send();
     }
