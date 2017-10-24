@@ -25,25 +25,37 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="obtaincredentials">Obtain credentials</h2>
+<h2 id="Authentication">Authentication</h2>
 
-<p>Like most of Brightcove's RESTful APIs, the CMS API requires OAuth access tokens to authorize requests. In order to get access tokens, you first need to obtain client credentials with permissions for kinds of operations you want to request.</p>
+<p>Requests are authenticated by a policy key, which can be passed in one of three ways:</p>
 
 <ol>
-	<li>To obtain your credentials follow the instructions in <a href="/node/14056">Managing API Credentials</a>. This is the recommended way of obtaining your client credentials. This sample only requires <code>/video/read</code> permissions, but in most cases, you will likely want to get all permissions:
+	<li>In an argument to an <code>Accept</code> header:
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Required Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/getting-started/quick-start/quick-start-required-permissions.png" />
-	<figcaption class="bcls-caption--image">Required Permissions</figcaption>
-	</figure>
+	<pre class="line-numbers">
+<code class="language-http">Accept: application/json;pk={policy_key}</code></pre>
 
-	<p>You can also obtain credentials using the OAuth API, following the instructions in one of the guides listed below:</p>
+	<p>This is the recommended method for a browser-based client, because it allows the request to go ahead without an extra request first as part of the browser CORS "pre-flight" checking. This saves latency on the first time a browser request is made.</p>
+	</li>
+	<li>In an <code>Authorization</code> header using the realm keyword <code>BCOV-Policy</code>:
+	<pre class="line-numbers">
+<code class="language-http">Authorization: BCOV-Policy {policy_key}</code></pre>
+	</li>
+	<li>In a <code>BCOV-Policy</code> header:
+	<pre class="line-numbers">
+<code class="language-http">BCOV-Policy: {policy_key}</code></pre>
 	</li>
 </ol>
 
-<ul>
-	<li><a href="/node/17924">OAuth: Get Client Credentials Using CURL</a></li>
-	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
-</ul>
+<h3>Obtaining a policy key</h3>
+
+<p>There are three ways you can obtain a policy key:</p>
+
+<ol>
+	<li>Every Brightcove player is automatically assigned one. You can find instructions for getting a player's policy key in <a href="/node/18125">this document</a>. Since policy keys are good account-wide, you can use it regardless of whether that player is embedded on the page.</li>
+	<li>You can generate a basic policy key using the <a href="/node/18004">Policy Keys Quick Start</a></li>
+	<li>You can make a request to the <a href="/node/18003">Policy API</a></li>
+</ol>
 </section>
 
 <section class="bcls-section">
@@ -458,16 +470,6 @@
 </code></pre>
 </section>
 
-<section class="bcls-section">
-<h2 id="proxy">Proxy code</h2>
-
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
-</aside>
-</section>
 </article>
 <!-- date picker --><script src="https://learning-services-media.brightcove.com/doc-assets/js/rome/rome.min.js"></script>
 <script src="https://learning-services-media.brightcove.com/doc-assets/node/18474-playback-api-sample-mrss-generator/vkbeautify.0.99.00.beta.js"></script><script src="https://learning-services-media.brightcove.com/doc-assets/node/18474-playback-api-sample-mrss-generator/mrss-generator.js"></script>
