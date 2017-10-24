@@ -210,12 +210,10 @@ var BCLS = ( function (window, document) {
                         parsedData;
                     parsedData = JSON.parse(response);
                     videosArray = parsedData.videos;
-                    console.log('videosArray', videosArray);
                     // for each video, get the best source and set that as source
                     iMax = videosArray.length;
                     for (i = 0; i < iMax; i++) {
                         videosArray[i].source = processSources(videosArray[i].sources);
-console.log('source', videosArray[i].source);
                     }
                     addItems();
                 };
@@ -249,7 +247,6 @@ console.log('source', videosArray[i].source);
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
                             // check for completion
                             if (requestID === 'getVideos') {
-console.log('response', httpRequest.responseText);
                                     callback(httpRequest.responseText);
                             } else {
                               alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -260,15 +257,12 @@ console.log('response', httpRequest.responseText);
                   alert('Caught Exception: ' + e);
                 }
             };
-console.log('request url', requesturl);
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
         httpRequest.open('GET', requesturl);
         // set headers
-console.log('policyKey', policyKey);
         httpRequest.setRequestHeader("BCOV-Policy", policyKey);
-console.log('httpRequest', httpRequest);
         // open and send request
         httpRequest.send();
     }
