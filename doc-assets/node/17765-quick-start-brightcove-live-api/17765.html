@@ -265,12 +265,20 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 <p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove player.</p>
 
 <aside class="bcls-aside bcls-aside--information">In these steps, we set the video up in Video Cloud Studio, but this can also be done using the if you prefer.
-    <p>First, you will need to create a new video by making a <code>POST</code></p>
-
-    The CMS API request will be:
-<pre><code class="language-http"></code></pre>
+    <p>First, you will need to create a new video by making a <code>POST</code> request to:</p>
+<pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre>
+<p>The request body can include several pieces of metadata (see <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">the API reference</a> for details), but the only thing required is a <code>name</code>:</p>
+<pre class="line-numbers"><code class="language-json">{
+    "name": "<span class="bcls-input">some name for your live stream</span>"
+}</code></pre>
+<p>The response will contain all the video metadata, but the important field is the <code>id</code>, which you will need to add the remote asset.</p>
+    To add the HLS stream, you will make another <code>POST</code> request to:
+<pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/assets/hls_manifest</code></pre>
+<p>This time, the request body will be:</p>
+<pre class="line-numbers"><code class="language-json">{
+    "remote_url": "<span class="bcls-input">playback_url for your live stream</span>"
+}</code></pre>
 </aside>
-
 <ol class="bcls-tasklist">
 	<li>Login to Video Cloud Studio.</li>
 	<li>Go to the Media Module.</li>
