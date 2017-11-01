@@ -52,8 +52,22 @@ var BCLS = (function(window, document) {
         return out;
     }
 
-    function addAffiate() {
+    /**
+ * remove spaces from a string
+ * @param {String} str string to process
+ * @return {String} trimmed string
+ */
+function removeSpaces(str) {
+    str= str.replace(/\s/g, '');
+    return str;
+}
 
+    function addAffiate() {
+        if (isDefined(affiliateId.value)) {
+
+        } else {
+            alert('no affiliate id was entered');
+        }
     }
 
     /**
