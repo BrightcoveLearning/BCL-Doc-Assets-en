@@ -32,8 +32,8 @@ var BCLS = (function(window, document) {
             txt;
 
         // set credentials
-        options.client_id     = cid.value;
-        options.client_secret = secret.value;
+        options.client_id     = clientId.value;
+        options.client_secret = clientSecret.value;
 
         switch (type) {
             case 'addAffiliates':
