@@ -6,6 +6,9 @@ var BCLS = (function(window, document) {
         addAffiliateId = document.getElementById('addAffiliateId'),
         affiliateIds = document.getElementById('affiliateIds'),
         addAffiliates = document.getElementById('addAffiliates'),
+        logger = document.getElementById('logger'),
+        apiRequest = document.getElementById('apiRequest'),
+        apiResponse = document.getElementById('apiResponse'),
         affiliate_ids = [];
 
     // add event listeners
