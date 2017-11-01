@@ -39,7 +39,7 @@ var BCLS = (function(window, document) {
             case 'addAffiliates':
                 options.proxyURL    = './profiles-proxy.php';
                 endpoint            = '/profiles';
-                options.url         = ipBaseURL + endpoint;
+                options.url         = cmsBaseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
