@@ -1,15 +1,15 @@
 var BCLS = (function(window, document) {
-    var accountId = document.getElementById('accountId'),
-        clientId = document.getElementById('clientId'),
-        clientSecret = document.getElementById('clientSecret'),
-        affiliateId = document.getElementById('affiliateId'),
+    var accountId      = document.getElementById('accountId'),
+        clientId       = document.getElementById('clientId'),
+        clientSecret   = document.getElementById('clientSecret'),
+        affiliateId    = document.getElementById('affiliateId'),
         addAffiliateId = document.getElementById('addAffiliateId'),
-        affiliateIds = document.getElementById('affiliateIds'),
-        addAffiliates = document.getElementById('addAffiliates'),
-        logger = document.getElementById('logger'),
-        apiRequest = document.getElementById('apiRequest'),
-        apiResponse = document.getElementById('apiResponse'),
-        affiliate_ids = [];
+        affiliateIds   = document.getElementById('affiliateIds'),
+        addAffiliates  = document.getElementById('addAffiliates'),
+        logger         = document.getElementById('logger'),
+        apiRequest     = document.getElementById('apiRequest'),
+        apiResponse    = document.getElementById('apiResponse'),
+        affiliate_ids  = [];
 
     // add event listeners
     addAffiliateId.addEventListener('click', addAffiate),
@@ -39,7 +39,7 @@ var BCLS = (function(window, document) {
      */
     function createRequest(type) {
         var options   = {},
-            cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account.value,
+            cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
             endpoint,
             responseDecoded,
             i,
@@ -50,6 +50,9 @@ var BCLS = (function(window, document) {
         // set credentials
         options.client_id     = clientId.value;
         options.client_secret = clientSecret.value;
+
+        // set proxyURL
+        options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
 
         switch (type) {
             case 'addAffiliates':
