@@ -53,14 +53,14 @@ var BCLS = (function(window, document) {
     }
 
     /**
- * remove spaces from a string
- * @param {String} str string to process
- * @return {String} trimmed string
- */
-function removeSpaces(str) {
-    str= str.replace(/\s/g, '');
-    return str;
-}
+     * remove spaces from a string
+     * @param {String} str string to process
+     * @return {String} trimmed string
+     */
+    function removeSpaces(str) {
+        str= str.replace(/\s/g, '');
+        return str;
+    }
 
     function addAffiate() {
         if (isDefined(affiliateId.value)) {
