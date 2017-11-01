@@ -36,7 +36,7 @@ var BCLS = (function(window, document) {
         options.client_secret = secret.value;
 
         switch (type) {
-            case 'getProfiles':
+            case 'addAffiliates':
                 options.proxyURL    = './profiles-proxy.php';
                 endpoint            = '/profiles';
                 options.url         = ipBaseURL + endpoint;
