@@ -14,8 +14,24 @@ var BCLS = (function(window, document) {
     // add event listeners
     addAffiliateId.addEventListener('click', addAffiate),
     addAffiliates.addEventListener('click', function() {
-        createRequest(addAffiate);
+        if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
+            createRequest(addAffiate);
+        } else {
+            alert('You must submit an account id and client credentials');
+        }
     });
+
+    /**
+     * tests for all the ways a variable might be undefined or not have a value
+     * @param {*} x the variable to test
+     * @return {Boolean} true if variable is defined and has a value
+     */
+    function isDefined(x) {
+        if ( x === '' || x === null || x === undefined) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * createRequest sets up requests, send them to makeRequest(), and handles responses
