@@ -12,7 +12,7 @@ var BCLS = (function(window, document) {
         affiliate_ids  = [];
 
     // add event listeners
-    addAffiliateId.addEventListener('click', addAffiate),
+    addAffiliateId.addEventListener('click', addAffiate);
     addAffiliates.addEventListener('click', function() {
         if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
             createRequest(addAffiate);
