@@ -101,7 +101,6 @@ var BCLS = (function(window, document) {
 
         switch (type) {
             case 'addAffiliates':
-                options.proxyURL    = './profiles-proxy.php';
                 endpoint            = '/profiles';
                 options.url         = cmsBaseURL + endpoint;
                 options.requestType = 'GET';
