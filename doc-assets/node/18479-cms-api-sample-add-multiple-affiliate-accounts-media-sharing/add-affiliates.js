@@ -2,6 +2,8 @@ var BCLS = (function(window, document) {
     var accountId      = document.getElementById('accountId'),
         clientId       = document.getElementById('clientId'),
         clientSecret   = document.getElementById('clientSecret'),
+        getChannels    = document.getElementById('getChannels'),
+        addChannel     = document.getElementById('addChannel'),
         affiliateId    = document.getElementById('affiliateId'),
         addAffiliateId = document.getElementById('addAffiliateId'),
         affiliateIds   = document.getElementById('affiliateIds'),
@@ -12,6 +14,16 @@ var BCLS = (function(window, document) {
         affiliate_ids  = [];
 
     // add event listeners
+    getChannels.addEventListener('click', function() {
+        if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
+            createRequest(getChannels);
+        } else {
+            alert('You must submit an account id and client credentials');
+        }
+    });
+    addChannel.addEventListener('click', function() {
+        createRequest(addChannel);
+    })
     addAffiliateId.addEventListener('click', addAffiate);
     addAffiliates.addEventListener('click', function() {
         if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
@@ -63,6 +75,24 @@ var BCLS = (function(window, document) {
     }
 
     /**
+     * determines whether specified item is in an array
+     *
+     * @param {array} array to check
+     * @param {string} item to check for
+     * @return {boolean} true if item is in the array, else false
+     */
+    function arrayContains(arr, item) {
+        var i,
+            iMax = arr.length;
+        for (i = 0; i < iMax; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * adds new affiliate id to affiliate_ids array
      */
     function addAffiate() {
@@ -100,27 +130,43 @@ var BCLS = (function(window, document) {
         options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
 
         switch (type) {
-            case 'addAffiliates':
-                endpoint            = '/profiles';
+            case 'getChannels':
+                endpoint           = 'channels';
                 options.url         = cmsBaseURL + endpoint;
                 options.requestType = 'GET';
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
-                    if (Array.isArray(responseDecoded)) {
-                        // remove existing options
-                        iMax = profiles.length;
-                        for (i = 0; i < iMax; i++) {
-                            profiles.remove(i);
-                        }
-                        // add new options
-                        iMax = responseDecoded.length;
-                        for (i = 0; i < iMax; i++) {
-                            el = document.createElement('option');
-                            el.setAttribute('value', responseDecoded[i].name);
-                            txt = document.createTextNode(responseDecoded[i].name);
-                            el.appendChild(txt);
-                            profiles.appendChild(el);
-                        }
+                    if (responseDecoded.length === 0) {
+                        logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
+                        addChannel.removeAttribute('disabled');
+                    } else if (!arrayContains(responseDecoded, 'default')) {
+                        logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
+                        addChannel.removeAttribute('disabled');
+                    }
+                break;
+            case 'addChannel':
+                endpoint           = 'channels/default';
+                options.url         = cmsBaseURL + endpoint;
+                options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    responseDecoded = JSON.parse(response);
+                    if (responseDecoded.length === 0) {
+                        logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
+                        addChannel.removeAttribute('disabled');
+                    } else if (!arrayContains(responseDecoded, 'default')) {
+                        logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
+                        addChannel.removeAttribute('disabled');
+                    }
+                break;
+            case 'addAffiliates':
+                endpoint            = '/channels';
+                options.url         = cmsBaseURL + endpoint;
+                options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    responseDecoded = JSON.parse(response);
+                    if (responseDecoded.length === 0) {
+                        logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
+                        addChannel.removeAttribute('disabled');
                     }
                 });
                 break;
