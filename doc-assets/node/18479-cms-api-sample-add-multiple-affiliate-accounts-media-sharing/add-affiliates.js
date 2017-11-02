@@ -62,9 +62,17 @@ var BCLS = (function(window, document) {
         return str;
     }
 
+    /**
+     * adds new affiliate id to affiliate_ids array
+     */
     function addAffiate() {
+        var str;
         if (isDefined(affiliateId.value)) {
-
+            // remove any spaces
+            str = removeSpaces(affiliateId.value);
+            affiliate_ids.push(str);
+            // dedupe in case same affiliate added twice
+            affiliate_ids = dedupe(affiliate_ids);
         } else {
             alert('no affiliate id was entered');
         }
