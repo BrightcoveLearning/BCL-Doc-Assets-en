@@ -142,6 +142,8 @@ var BCLS = (function(window, document) {
                     } else if (!arrayContains(responseDecoded, 'default')) {
                         logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
                         addChannel.removeAttribute('disabled');
+                    } else {
+                        logger.textContent = 'Default channel found - ok to proceed';
                     }
                 break;
             case 'addChannel':
