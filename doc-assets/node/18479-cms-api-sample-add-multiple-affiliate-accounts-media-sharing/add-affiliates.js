@@ -11,7 +11,7 @@ var BCLS = (function (window, document) {
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
     apiResponse = document.getElementById('apiResponse'),
-    affiliate_ids = []
+    affiliate_ids = [];
 
   // add event listeners
   getChannels.addEventListener('click', function () {
@@ -20,26 +20,26 @@ var BCLS = (function (window, document) {
       isDefined(clientId.value) &&
       isDefined(clientSecret.value)
     ) {
-      createRequest(getChannels)
+      createRequest(getChannels);
     } else {
-      alert('You must submit an account id and client credentials')
+      alert('You must submit an account id and client credentials');
     }
-  })
+  });
   addChannel.addEventListener('click', function () {
-    createRequest(addChannel)
-  })
-  addAffiliateId.addEventListener('click', addAffiate)
+    createRequest(addChannel);
+  });
+  addAffiliateId.addEventListener('click', addAffiate);
   addAffiliates.addEventListener('click', function () {
     if (
       isDefined(accountId.value) &&
       isDefined(clientId.value) &&
       isDefined(clientSecret.value)
     ) {
-      createRequest(addAffiate)
+      createRequest(addAffiate);
     } else {
-      alert('You must submit an account id and client credentials')
+      alert('You must submit an account id and client credentials');
     }
-  })
+  });
 
   /**
   * tests for all the ways a variable might be undefined or not have a value
@@ -48,9 +48,9 @@ var BCLS = (function (window, document) {
   */
   function isDefined (x) {
     if (x === '' || x === null || x === undefined) {
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 
   /**
