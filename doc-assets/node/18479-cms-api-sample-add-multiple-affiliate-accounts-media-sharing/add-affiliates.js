@@ -137,12 +137,10 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
-            logger.textContent =
-              'There are no channels; click the Add Default Channel button to create one';
+            logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
           } else if (!arrayContains(responseDecoded, 'default')) {
-            logger.textContent =
-              'The default channel does not exist; click the Add Default Channel button to create one';
+            logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
           } else {
             logger.textContent = 'Default channel found - ok to proceed';
@@ -150,8 +148,8 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'addChannel':
-        endpoint = 'channels/default';
-        options.url = cmsBaseURL + endpoint;
+        endpoint            = 'channels/default';
+        options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
