@@ -157,38 +157,38 @@ var BCLS = (function (window, document) {
           } else {
             logger.textContent = 'Default channel found - ok to proceed';
           }
-        })
-        break
+        });
+        break;
       case 'addChannel':
-        endpoint = 'channels/default'
-        options.url = cmsBaseURL + endpoint
-        options.requestType = 'GET'
+        endpoint = 'channels/default';
+        options.url = cmsBaseURL + endpoint;
+        options.requestType = 'GET';
         makeRequest(options, function (response) {
-          responseDecoded = JSON.parse(response)
+          responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
             logger.textContent =
-              'There are no channels; click the Add Default Channel button to create one'
-            addChannel.removeAttribute('disabled')
+              'There are no channels; click the Add Default Channel button to create one';
+            addChannel.removeAttribute('disabled');
           } else if (!arrayContains(responseDecoded, 'default')) {
             logger.textContent =
-              'The default channel does not exist; click the Add Default Channel button to create one'
-            addChannel.removeAttribute('disabled')
+              'The default channel does not exist; click the Add Default Channel button to create one';
+            addChannel.removeAttribute('disabled');
           }
-        })
-        break
+        });
+        break;
       case 'addAffiliates':
-        endpoint = '/channels'
-        options.url = cmsBaseURL + endpoint
-        options.requestType = 'GET'
+        endpoint = '/channels';
+        options.url = cmsBaseURL + endpoint;
+        options.requestType = 'GET';
         makeRequest(options, function (response) {
-          responseDecoded = JSON.parse(response)
+          responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
             logger.textContent =
-              'There are no channels; click the Add Default Channel button to create one'
-            addChannel.removeAttribute('disabled')
+              'There are no channels; click the Add Default Channel button to create one';
+            addChannel.removeAttribute('disabled');
           }
-        })
-        break
+        });
+        break;
       // additional cases
       default:
         console.log(
