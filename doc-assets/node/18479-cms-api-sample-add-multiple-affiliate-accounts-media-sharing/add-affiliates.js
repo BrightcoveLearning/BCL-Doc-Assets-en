@@ -78,8 +78,8 @@ var BCLS = (function (window, document) {
   * @return {String} trimmed string
   */
   function removeSpaces (str) {
-    str = str.replace(/\s/g, '')
-    return str
+    str = str.replace(/\s/g, '');
+    return str;
   }
 
   /**
@@ -91,28 +91,28 @@ var BCLS = (function (window, document) {
   */
   function arrayContains (arr, item) {
     var i,
-      iMax = arr.length
+      iMax = arr.length;
     for (i = 0; i < iMax; i++) {
       if (arr[i] === item) {
-        return true
+        return true;
       }
     }
-    return false
+    return false;
   }
 
   /**
   * adds new affiliate id to affiliate_ids array
   */
   function addAffiate () {
-    var str
+    var str;
     if (isDefined(affiliateId.value)) {
       // remove any spaces
-      str = removeSpaces(affiliateId.value)
-      affiliate_ids.push(str)
+      str = removeSpaces(affiliateId.value);
+      affiliate_ids.push(str);
       // dedupe in case same affiliate added twice
-      affiliate_ids = dedupe(affiliate_ids)
+      affiliate_ids = dedupe(affiliate_ids);
     } else {
-      alert('no affiliate id was entered')
+      alert('no affiliate id was entered');
     }
   }
 
@@ -129,33 +129,33 @@ var BCLS = (function (window, document) {
       i,
       iMax,
       el,
-      txt
+      txt;
 
     // set credentials
-    options.client_id = clientId.value
-    options.client_secret = clientSecret.value
+    options.client_id = clientId.value;
+    options.client_secret = clientSecret.value;
 
     // set proxyURL
     options.proxyURL =
-      'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php'
+      'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
 
     switch (type) {
       case 'getChannels':
-        endpoint = 'channels'
-        options.url = cmsBaseURL + endpoint
-        options.requestType = 'GET'
+        endpoint = 'channels';
+        options.url = cmsBaseURL + endpoint;
+        options.requestType = 'GET';
         makeRequest(options, function (response) {
-          responseDecoded = JSON.parse(response)
+          responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
             logger.textContent =
-              'There are no channels; click the Add Default Channel button to create one'
-            addChannel.removeAttribute('disabled')
+              'There are no channels; click the Add Default Channel button to create one';
+            addChannel.removeAttribute('disabled');
           } else if (!arrayContains(responseDecoded, 'default')) {
             logger.textContent =
-              'The default channel does not exist; click the Add Default Channel button to create one'
-            addChannel.removeAttribute('disabled')
+              'The default channel does not exist; click the Add Default Channel button to create one';
+            addChannel.removeAttribute('disabled');
           } else {
-            logger.textContent = 'Default channel found - ok to proceed'
+            logger.textContent = 'Default channel found - ok to proceed';
           }
         })
         break
