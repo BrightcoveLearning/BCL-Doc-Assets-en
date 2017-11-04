@@ -193,8 +193,8 @@ var BCLS = (function (window, document) {
       default:
         console.log(
           'Should not be getting to the default case - bad request type sent'
-        )
-        break
+        );
+        break;
     }
   }
 
@@ -220,24 +220,21 @@ var BCLS = (function (window, document) {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
-              response = httpRequest.responseText
+              response = httpRequest.responseText;
               // some API requests return '{null}' for empty responses - breaks JSON.parse
               if (response === '{null}') {
-                response = null
+                response = null;
               }
               // return the response
-              callback(response)
+              callback(response);
             } else {
-              alert(
-                'There was a problem with the request. Request returned ' +
-                  httpRequest.status
-              )
+              alert('There was a problem with the request. Request returned ' + httpRequest.status);
             }
           }
         } catch (e) {
-          alert('Caught Exception: ' + e)
+          alert('Caught Exception: ' + e);
         }
-      }
+      };
     /**
                  * set up request data
                  * the proxy used here takes the following params:
