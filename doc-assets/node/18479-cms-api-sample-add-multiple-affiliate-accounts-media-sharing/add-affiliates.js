@@ -114,8 +114,7 @@ var BCLS = (function (window, document) {
   */
   function createRequest (type) {
     var options = {},
-      cmsBaseURL =
-        'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
+      cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
       endpoint,
       responseDecoded,
       i,
