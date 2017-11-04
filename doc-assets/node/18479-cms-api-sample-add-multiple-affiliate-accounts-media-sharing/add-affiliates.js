@@ -1,17 +1,17 @@
 var BCLS = (function(window, document) {
-  var accountId = document.getElementById('accountId'),
-    clientId = document.getElementById('clientId'),
-    clientSecret = document.getElementById('clientSecret'),
-    getChannels = document.getElementById('getChannels'),
-    addChannel = document.getElementById('addChannel'),
-    affiliateId = document.getElementById('affiliateId'),
+  var accountId    = document.getElementById('accountId'),
+    clientId       = document.getElementById('clientId'),
+    clientSecret   = document.getElementById('clientSecret'),
+    getChannels    = document.getElementById('getChannels'),
+    addChannel     = document.getElementById('addChannel'),
+    affiliateId    = document.getElementById('affiliateId'),
     addAffiliateId = document.getElementById('addAffiliateId'),
-    affiliateIds = document.getElementById('affiliateIds'),
-    addAffiliates = document.getElementById('addAffiliates'),
-    logger = document.getElementById('logger'),
-    apiRequest = document.getElementById('apiRequest'),
-    apiResponse = document.getElementById('apiResponse'),
-    affiliate_ids = [];
+    affiliateIds   = document.getElementById('affiliateIds'),
+    addAffiliates  = document.getElementById('addAffiliates'),
+    logger         = document.getElementById('logger'),
+    apiRequest     = document.getElementById('apiRequest'),
+    apiResponse    = document.getElementById('apiResponse'),
+    affiliate_ids  = [];
 
   // add event listeners
   getChannels.addEventListener('click', function() {
@@ -113,7 +113,7 @@ var BCLS = (function(window, document) {
    * @param  {string} type the request type
    */
   function createRequest(type) {
-    var options = {},
+    var options  = {},
       cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
       endpoint,
       responseDecoded,
@@ -127,8 +127,7 @@ var BCLS = (function(window, document) {
     options.client_secret = clientSecret.value;
 
     // set proxyURL
-    options.proxyURL =
-      'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
+    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
 
     switch (type) {
       case 'getChannels':
@@ -257,7 +256,7 @@ var BCLS = (function(window, document) {
     // open the request
     httpRequest.open('POST', proxyURL);
     // set headers
-    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     // open and send request
     httpRequest.send(requestParams);
   }
