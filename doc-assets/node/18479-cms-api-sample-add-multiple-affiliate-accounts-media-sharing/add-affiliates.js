@@ -131,8 +131,8 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getChannels':
-        endpoint = 'channels';
-        options.url = cmsBaseURL + endpoint;
+        endpoint            = 'channels';
+        options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
