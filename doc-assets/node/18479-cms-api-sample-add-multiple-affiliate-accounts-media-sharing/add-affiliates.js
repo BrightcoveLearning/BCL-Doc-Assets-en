@@ -62,14 +62,14 @@ var BCLS = (function (window, document) {
     var i,
       len = arr.length,
       out = [],
-      obj = {}
+      obj = {};
     for (i = 0; i < len; i++) {
-      obj[arr[i]] = 0
+      obj[arr[i]] = 0;
     }
     for (i in obj) {
-      out.push(i)
+      out.push(i);
     }
-    return out
+    return out;
   }
 
   /**
