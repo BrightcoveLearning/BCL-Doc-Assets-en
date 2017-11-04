@@ -1,4 +1,4 @@
-var BCLS = (function (window, document) {
+var BCLS = (function(window, document) {
   var accountId = document.getElementById('accountId'),
     clientId = document.getElementById('clientId'),
     clientSecret = document.getElementById('clientSecret'),
@@ -14,19 +14,19 @@ var BCLS = (function (window, document) {
     affiliate_ids = [];
 
   // add event listeners
-  getChannels.addEventListener('click', function () {
+  getChannels.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       createRequest(getChannels);
     } else {
       alert('You must submit an account id and client credentials');
     }
   });
-  addChannel.addEventListener('click', function () {
+  addChannel.addEventListener('click', function() {
     createRequest(addChannel);
   });
   addAffiliateId.addEventListener('click', addAffiate);
-  addAffiliates.addEventListener('click', function () {
-    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value) ) {
+  addAffiliates.addEventListener('click', function() {
+    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       createRequest(addAffiate);
     } else {
       alert('You must submit an account id and client credentials');
@@ -34,11 +34,11 @@ var BCLS = (function (window, document) {
   });
 
   /**
-  * tests for all the ways a variable might be undefined or not have a value
-  * @param {*} x the variable to test
-  * @return {Boolean} true if variable is defined and has a value
-  */
-  function isDefined (x) {
+   * tests for all the ways a variable might be undefined or not have a value
+   * @param {*} x the variable to test
+   * @return {Boolean} true if variable is defined and has a value
+   */
+  function isDefined(x) {
     if (x === '' || x === null || x === undefined) {
       return false;
     }
@@ -46,11 +46,11 @@ var BCLS = (function (window, document) {
   }
 
   /**
-  * dedupe a simple array of strings or numbers
-  * @param {array} arr the array to be deduped
-  * @return {array} out the deduped array
-  */
-  function dedupe (arr) {
+   * dedupe a simple array of strings or numbers
+   * @param {array} arr the array to be deduped
+   * @return {array} out the deduped array
+   */
+  function dedupe(arr) {
     var i,
       len = arr.length,
       out = [],
@@ -65,23 +65,23 @@ var BCLS = (function (window, document) {
   }
 
   /**
-  * remove spaces from a string
-  * @param {String} str string to process
-  * @return {String} trimmed string
-  */
-  function removeSpaces (str) {
+   * remove spaces from a string
+   * @param {String} str string to process
+   * @return {String} trimmed string
+   */
+  function removeSpaces(str) {
     str = str.replace(/\s/g, '');
     return str;
   }
 
   /**
-  * determines whether specified item is in an array
-  *
-  * @param {array} array to check
-  * @param {string} item to check for
-  * @return {boolean} true if item is in the array, else false
-  */
-  function arrayContains (arr, item) {
+   * determines whether specified item is in an array
+   *
+   * @param {array} array to check
+   * @param {string} item to check for
+   * @return {boolean} true if item is in the array, else false
+   */
+  function arrayContains(arr, item) {
     var i,
       iMax = arr.length;
     for (i = 0; i < iMax; i++) {
@@ -93,9 +93,9 @@ var BCLS = (function (window, document) {
   }
 
   /**
-  * adds new affiliate id to affiliate_ids array
-  */
-  function addAffiate () {
+   * adds new affiliate id to affiliate_ids array
+   */
+  function addAffiate() {
     var str;
     if (isDefined(affiliateId.value)) {
       // remove any spaces
@@ -109,10 +109,10 @@ var BCLS = (function (window, document) {
   }
 
   /**
-  * createRequest sets up requests, send them to makeRequest(), and handles responses
-  * @param  {string} type the request type
-  */
-  function createRequest (type) {
+   * createRequest sets up requests, send them to makeRequest(), and handles responses
+   * @param  {string} type the request type
+   */
+  function createRequest(type) {
     var options = {},
       cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
       endpoint,
@@ -135,7 +135,7 @@ var BCLS = (function (window, document) {
         endpoint = 'channels';
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
             logger.textContent =
@@ -154,7 +154,7 @@ var BCLS = (function (window, document) {
         endpoint = 'channels/default';
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
             logger.textContent =
@@ -171,7 +171,7 @@ var BCLS = (function (window, document) {
         endpoint = '/channels';
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
             logger.textContent =
@@ -180,7 +180,7 @@ var BCLS = (function (window, document) {
           }
         });
         break;
-      // additional cases
+        // additional cases
       default:
         console.log(
           'Should not be getting to the default case - bad request type sent'
@@ -190,24 +190,24 @@ var BCLS = (function (window, document) {
   }
 
   /**
-             * send API request to the proxy
-             * @param  {Object} options for the request
-             * @param  {String} options.url the full API request URL
-             * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-             * @param  {String} options.proxyURL proxyURL to send the request to
-             * @param  {String} options.client_id client id for the account (default is in the proxy)
-             * @param  {String} options.client_secret client secret for the account (default is in the proxy)
-             * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
-             * @param  {Function} [callback] callback function that will process the response
-             */
-  function makeRequest (options, callback) {
+   * send API request to the proxy
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
+   */
+  function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
       response,
       requestParams,
       dataString,
       proxyURL = options.proxyURL,
       // response handler
-      getResponse = function () {
+      getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -227,14 +227,14 @@ var BCLS = (function (window, document) {
         }
       };
     /**
-                 * set up request data
-                 * the proxy used here takes the following params:
-                 * url - the full API request (required)
-                 * requestType - the HTTP request type (default: GET)
-                 * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-                 * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-                 * requestBody - request body for write requests (optional JSON string)
-                 */
+     * set up request data
+     * the proxy used here takes the following params:
+     * url - the full API request (required)
+     * requestType - the HTTP request type (default: GET)
+     * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
+     * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
+     * requestBody - request body for write requests (optional JSON string)
+     */
     requestParams =
       'url=' +
       encodeURIComponent(options.url) +
@@ -245,23 +245,20 @@ var BCLS = (function (window, document) {
         '&client_id=' +
         options.client_id +
         '&client_secret=' +
-        options.client_secret
+        options.client_secret;
     }
     // add request data if any
     if (options.requestBody) {
-      requestParams += '&requestBody=' + options.requestBody
+      requestParams += '&requestBody=' + options.requestBody;
     }
-    console.log('requestParams', requestParams)
+    console.log('requestParams', requestParams);
     // set response handler
-    httpRequest.onreadystatechange = getResponse
+    httpRequest.onreadystatechange = getResponse;
     // open the request
-    httpRequest.open('POST', proxyURL)
+    httpRequest.open('POST', proxyURL);
     // set headers
-    httpRequest.setRequestHeader(
-      'Content-Type',
-      'application/x-www-form-urlencoded'
-    )
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     // open and send request
-    httpRequest.send(requestParams)
+    httpRequest.send(requestParams);
   }
-})(window, document)
+})(window, document);
