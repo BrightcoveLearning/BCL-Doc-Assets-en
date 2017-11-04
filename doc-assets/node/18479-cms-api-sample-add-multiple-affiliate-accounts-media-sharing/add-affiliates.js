@@ -15,11 +15,7 @@ var BCLS = (function (window, document) {
 
   // add event listeners
   getChannels.addEventListener('click', function () {
-    if (
-      isDefined(accountId.value) &&
-      isDefined(clientId.value) &&
-      isDefined(clientSecret.value)
-    ) {
+    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       createRequest(getChannels);
     } else {
       alert('You must submit an account id and client credentials');
@@ -30,11 +26,7 @@ var BCLS = (function (window, document) {
   });
   addAffiliateId.addEventListener('click', addAffiate);
   addAffiliates.addEventListener('click', function () {
-    if (
-      isDefined(accountId.value) &&
-      isDefined(clientId.value) &&
-      isDefined(clientSecret.value)
-    ) {
+    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value) ) {
       createRequest(addAffiate);
     } else {
       alert('You must submit an account id and client credentials');
@@ -247,8 +239,7 @@ var BCLS = (function (window, document) {
     requestParams =
       'url=' +
       encodeURIComponent(options.url) +
-      '&requestType=' +
-      options.requestType
+      '&requestType=' + options.requestType;
     // only add client id and secret if both were submitted
     if (options.client_id && options.client_secret) {
       requestParams +=
