@@ -94,8 +94,10 @@ var BCLS = (function(window, document) {
     var i,
       iMax = arr.length;
     for (i = 0; i < iMax; i++) {
-      if (arr[i][prop] === item) {
-        return true;
+      if (arr[i].hasOwnProperty(prop)) {
+        if (arr[i][prop] === item) {
+          return true;
+        }
       }
     }
     return false;
