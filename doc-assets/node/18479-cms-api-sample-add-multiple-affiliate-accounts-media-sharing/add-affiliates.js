@@ -116,6 +116,7 @@ var BCLS = (function(window, document) {
     var options  = {},
       cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
       endpoint,
+      body       = {},
       responseDecoded,
       i,
       iMax,
@@ -150,6 +151,9 @@ var BCLS = (function(window, document) {
       case 'addChannel':
         endpoint            = 'channels/default';
         options.url         = cmsBaseURL + endpoint;
+        body.account_id     = accountId.value;
+        body.name           = 'default';
+        options.requestBody = JSON.stringify(body);
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
@@ -163,9 +167,9 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'addAffiliates':
-        endpoint            = '/channels';
+        endpoint            = '/channels/default';
         options.url         = cmsBaseURL + endpoint;
-        options.requestType = 'GET';
+        options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
