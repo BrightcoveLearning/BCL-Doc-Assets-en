@@ -36,8 +36,7 @@ var BCLS = (function(window, document) {
 
   addAffiliates.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      totalCalls = affiliate_ids.length;
-      createRequest('addAffiliate');
+      createRequest('getAffiliates');
     } else {
       alert('You must submit an account id and client credentials');
     }
@@ -115,14 +114,10 @@ var BCLS = (function(window, document) {
     if (isDefined(affiliateId.value)) {
       // remove any spaces
       str = removeSpaces(affiliateId.value);
-      if (arrayContains(existingAffiliates, 'account_id', str)) {
-        alert('The default channel already has affiliate ' + str + '; the affiliate will not be added');
-      } else {
-        affiliate_ids.push(str);
-        // dedupe in case same affiliate added twice
-        affiliate_ids = dedupe(affiliate_ids);
-        affiliateIds.textContent = affiliate_ids.join('\n');
-      }
+      affiliate_ids.push(str);
+      // dedupe in case same affiliate added twice
+      affiliate_ids = dedupe(affiliate_ids);
+      affiliateIds.textContent = affiliate_ids.join('\n');
     } else {
       alert('no affiliate id was entered');
     }
@@ -139,9 +134,7 @@ var BCLS = (function(window, document) {
       body       = {},
       responseDecoded,
       i,
-      iMax,
-      el,
-      txt;
+      iMax;
 
     // set credentials
     options.client_id = clientId.value;
@@ -196,6 +189,15 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
+          i = affiliate_ids.length;
+          while (i > 0) {
+            i--;
+            if (arrayContains(existingAffiliates, 'account_id', affiliate_ids[i])) {
+              affiliate_ids.splice(i, 1);
+            }
+          }
+          totalCalls = affiliate_ids.length;
+          createRequest('addAffiliate');
         });
         break;
       case 'addAffiliate':
