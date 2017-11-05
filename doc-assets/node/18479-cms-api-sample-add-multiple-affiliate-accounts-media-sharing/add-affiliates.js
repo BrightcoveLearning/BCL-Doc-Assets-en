@@ -110,7 +110,7 @@ var BCLS = (function(window, document) {
   /**
    * adds new affiliate id to affiliate_ids array
    */
-  function addAffiate() {
+  function addAffiliate() {
     var str;
     if (isDefined(affiliateId.value)) {
       // remove any spaces
