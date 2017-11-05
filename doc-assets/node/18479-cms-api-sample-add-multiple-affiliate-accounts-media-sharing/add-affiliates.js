@@ -163,23 +163,20 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'addAffiliates':
-        endpoint = '/channels';
-        options.url = cmsBaseURL + endpoint;
+        endpoint            = '/channels';
+        options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
-            logger.textContent =
-              'There are no channels; click the Add Default Channel button to create one';
+            logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
           }
         });
         break;
         // additional cases
       default:
-        console.log(
-          'Should not be getting to the default case - bad request type sent'
-        );
+        console.log('Should not be getting to the default case - bad request type sent');
         break;
     }
   }
@@ -200,9 +197,9 @@ var BCLS = (function(window, document) {
       response,
       requestParams,
       dataString,
-      proxyURL = options.proxyURL,
+      proxyURL      = options.proxyURL,
       // response handler
-      getResponse = function() {
+      getResponse   = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -230,17 +227,10 @@ var BCLS = (function(window, document) {
      * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
      * requestBody - request body for write requests (optional JSON string)
      */
-    requestParams =
-      'url=' +
-      encodeURIComponent(options.url) +
-      '&requestType=' + options.requestType;
+    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
     // only add client id and secret if both were submitted
     if (options.client_id && options.client_secret) {
-      requestParams +=
-        '&client_id=' +
-        options.client_id +
-        '&client_secret=' +
-        options.client_secret;
+      requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
     }
     // add request data if any
     if (options.requestBody) {
