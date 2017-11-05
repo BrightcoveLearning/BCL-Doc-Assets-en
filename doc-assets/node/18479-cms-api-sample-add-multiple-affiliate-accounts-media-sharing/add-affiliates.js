@@ -140,6 +140,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
+          apiResponse.textContent = responseDecoded;
           if (responseDecoded.length === 0) {
             logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
@@ -160,6 +161,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
+          apiResponse.textContent = responseDecoded;
           if (responseDecoded.length === 0) {
             logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
@@ -177,9 +179,13 @@ var BCLS = (function(window, document) {
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
-          if (responseDecoded.length === 0) {
-            logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
+          apiResponse.textContent = responseDecoded;
+          logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
+          callNumber++;
+          if (callNumber < totalCalls) {
+            createRequest('addAffiliates');
+          } else {
+            logger.textContent = 'All affiliates successfully added';
           }
         });
         break;
@@ -236,6 +242,7 @@ var BCLS = (function(window, document) {
      * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
      * requestBody - request body for write requests (optional JSON string)
      */
+    apiRequest.textContent = options.url;
     requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
     // only add client id and secret if both were submitted
     if (options.client_id && options.client_secret) {
