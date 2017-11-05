@@ -1,20 +1,21 @@
 var BCLS = (function(window, document) {
-  var accountId    = document.getElementById('accountId'),
-    clientId       = document.getElementById('clientId'),
-    clientSecret   = document.getElementById('clientSecret'),
-    getChannels    = document.getElementById('getChannels'),
-    addChannel     = document.getElementById('addChannel'),
-    affiliateId    = document.getElementById('affiliateId'),
-    addAffiliateId = document.getElementById('addAffiliateId'),
-    affiliateIds   = document.getElementById('affiliateIds'),
-    addAffiliates  = document.getElementById('addAffiliates'),
-    logger         = document.getElementById('logger'),
-    logger2        = document.getElementById('logger2'),
-    apiRequest     = document.getElementById('apiRequest'),
-    apiResponse    = document.getElementById('apiResponse'),
-    affiliate_ids  = [],
-    callNumber     = 0,
-    totalCalls     = 0;
+  var accountId        = document.getElementById('accountId'),
+    clientId           = document.getElementById('clientId'),
+    clientSecret       = document.getElementById('clientSecret'),
+    getChannels        = document.getElementById('getChannels'),
+    addChannel         = document.getElementById('addChannel'),
+    affiliateId        = document.getElementById('affiliateId'),
+    addAffiliateId     = document.getElementById('addAffiliateId'),
+    affiliateIds       = document.getElementById('affiliateIds'),
+    addAffiliates      = document.getElementById('addAffiliates'),
+    logger             = document.getElementById('logger'),
+    logger2            = document.getElementById('logger2'),
+    apiRequest         = document.getElementById('apiRequest'),
+    apiResponse        = document.getElementById('apiResponse'),
+    affiliate_ids      = [],
+    existingAffiliates = [],
+    callNumber         = 0,
+    totalCalls         = 0;
 
   // *****event listeners*****
   getChannels.addEventListener('click', function() {
@@ -29,7 +30,9 @@ var BCLS = (function(window, document) {
     createRequest('addChannel');
   });
 
-  addAffiliateId.addEventListener('click', addAffiate);
+  addAffiliateId.addEventListener('click', function() {
+    addAffiliate();
+  });
 
   addAffiliates.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
@@ -112,6 +115,9 @@ var BCLS = (function(window, document) {
     if (isDefined(affiliateId.value)) {
       // remove any spaces
       str = removeSpaces(affiliateId.value);
+      if (arrayContains(existingAffiliates, 'account_id', str)) {
+        alert('The default channel already has affiliate ' + str + '; the affiliate will not be added');
+      }
       affiliate_ids.push(str);
       // dedupe in case same affiliate added twice
       affiliate_ids = dedupe(affiliate_ids);
@@ -160,6 +166,7 @@ var BCLS = (function(window, document) {
             addChannel.removeAttribute('style');
           } else {
             logger2.textContent = 'Default channel found - ok to proceed';
+            createRequest('getAffiliates');
           }
         });
         break;
@@ -180,6 +187,14 @@ var BCLS = (function(window, document) {
             logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
           }
+        });
+        break;
+      case 'getAffiliates':
+        endpoint            = '/channels/default/members';
+        options.url         = cmsBaseURL + endpoint;
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+          existingAffiliates = JSON.parse(response);
         });
         break;
       case 'addAffiliate':
