@@ -132,7 +132,7 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getChannels':
-        endpoint            = 'channels';
+        endpoint            = '/channels';
         options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
@@ -149,12 +149,12 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'addChannel':
-        endpoint            = 'channels/default';
+        endpoint            = '/channels/default';
         options.url         = cmsBaseURL + endpoint;
         body.account_id     = accountId.value;
         body.name           = 'default';
         options.requestBody = JSON.stringify(body);
-        options.requestType = 'GET';
+        options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (responseDecoded.length === 0) {
@@ -167,8 +167,10 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'addAffiliates':
-        endpoint            = '/channels/default';
+        endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
         options.url         = cmsBaseURL + endpoint;
+        body.account_id     = affiliate_ids[callNumber];
+        options.requestBody = JSON.stringify(body);
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
