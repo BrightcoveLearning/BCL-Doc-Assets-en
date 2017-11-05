@@ -117,6 +117,7 @@ var BCLS = (function(window, document) {
       str = removeSpaces(affiliateId.value);
       if (arrayContains(existingAffiliates, 'account_id', str)) {
         alert('The default channel already has affiliate ' + str + '; the affiliate will not be added');
+        return;
       }
       affiliate_ids.push(str);
       // dedupe in case same affiliate added twice
