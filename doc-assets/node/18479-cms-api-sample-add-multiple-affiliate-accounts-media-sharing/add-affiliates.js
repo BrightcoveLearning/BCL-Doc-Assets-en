@@ -9,6 +9,7 @@ var BCLS = (function(window, document) {
     affiliateIds   = document.getElementById('affiliateIds'),
     addAffiliates  = document.getElementById('addAffiliates'),
     logger         = document.getElementById('logger'),
+    logger2        = document.getElementById('logger2'),
     apiRequest     = document.getElementById('apiRequest'),
     apiResponse    = document.getElementById('apiResponse'),
     affiliate_ids  = [],
