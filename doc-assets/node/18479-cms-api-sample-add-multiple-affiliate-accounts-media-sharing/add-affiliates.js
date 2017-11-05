@@ -15,7 +15,7 @@ var BCLS = (function(window, document) {
     callNumber     = 0,
     totalCalls     = 0;
 
-  // add event listeners
+  // *****event listeners*****
   getChannels.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       createRequest('getChannels');
@@ -23,10 +23,13 @@ var BCLS = (function(window, document) {
       alert('You must submit an account id and client credentials');
     }
   });
+
   addChannel.addEventListener('click', function() {
     createRequest('addChannel');
   });
+
   addAffiliateId.addEventListener('click', addAffiate);
+
   addAffiliates.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       totalCalls = affiliate_ids.length;
@@ -35,6 +38,8 @@ var BCLS = (function(window, document) {
       alert('You must submit an account id and client credentials');
     }
   });
+
+  // ***** end event listeners *****
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -51,7 +56,7 @@ var BCLS = (function(window, document) {
   /**
    * dedupe a simple array of strings or numbers
    * @param {array} arr the array to be deduped
-   * @return {array} out the deduped array
+   * @return {array} the deduped array
    */
   function dedupe(arr) {
     var i,
@@ -252,14 +257,13 @@ var BCLS = (function(window, document) {
     if (options.requestBody) {
       requestParams += '&requestBody=' + options.requestBody;
     }
-    console.log('requestParams', requestParams);
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
     // set headers
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // open and send request
+    // send request
     httpRequest.send(requestParams);
   }
 })(window, document);
