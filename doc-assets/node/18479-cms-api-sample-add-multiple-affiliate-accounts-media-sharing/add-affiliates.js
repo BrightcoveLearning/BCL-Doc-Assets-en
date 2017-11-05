@@ -11,7 +11,9 @@ var BCLS = (function(window, document) {
     logger         = document.getElementById('logger'),
     apiRequest     = document.getElementById('apiRequest'),
     apiResponse    = document.getElementById('apiResponse'),
-    affiliate_ids  = [];
+    affiliate_ids  = [],
+    callNumber     = 0,
+    totalCalls     = 0;
 
   // add event listeners
   getChannels.addEventListener('click', function() {
@@ -27,6 +29,7 @@ var BCLS = (function(window, document) {
   addAffiliateId.addEventListener('click', addAffiate);
   addAffiliates.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
+      totalCalls = affiliate_ids.length;
       createRequest(addAffiate);
     } else {
       alert('You must submit an account id and client credentials');
