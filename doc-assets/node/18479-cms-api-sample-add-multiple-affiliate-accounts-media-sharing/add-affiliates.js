@@ -18,19 +18,19 @@ var BCLS = (function(window, document) {
   // add event listeners
   getChannels.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest(getChannels);
+      createRequest('getChannels');
     } else {
       alert('You must submit an account id and client credentials');
     }
   });
   addChannel.addEventListener('click', function() {
-    createRequest(addChannel);
+    createRequest('addChannel');
   });
   addAffiliateId.addEventListener('click', addAffiate);
   addAffiliates.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       totalCalls = affiliate_ids.length;
-      createRequest(addAffiate);
+      createRequest('addAffiliate');
     } else {
       alert('You must submit an account id and client credentials');
     }
@@ -171,7 +171,7 @@ var BCLS = (function(window, document) {
           }
         });
         break;
-      case 'addAffiliates':
+      case 'addAffiliate':
         endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
         options.url         = cmsBaseURL + endpoint;
         body.account_id     = affiliate_ids[callNumber];
