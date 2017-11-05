@@ -83,9 +83,10 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * determines whether specified item is in an array
+   * determines whether specified item is in an array of objects
    *
    * @param {array} array to check
+   * @param {string} prop the object property to check
    * @param {string} item to check for
    * @return {boolean} true if item is in the array, else false
    */
@@ -93,7 +94,7 @@ var BCLS = (function(window, document) {
     var i,
       iMax = arr.length;
     for (i = 0; i < iMax; i++) {
-      if (arr[i] === item) {
+      if (arr[i][prop] === item) {
         return true;
       }
     }
