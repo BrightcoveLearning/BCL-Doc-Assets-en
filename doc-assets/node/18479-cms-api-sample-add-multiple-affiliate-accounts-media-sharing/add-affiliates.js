@@ -151,14 +151,14 @@ var BCLS = (function(window, document) {
           responseDecoded = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
           if (responseDecoded.length === 0) {
-            logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
+            logger2.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
-          } else if (!arrayContains(responseDecoded, 'default')) {
-            logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
+          } else if (!arrayContains(responseDecoded, 'name', 'default')) {
+            logger2.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
             addChannel.removeAttribute('style');
           } else {
-            logger.textContent = 'Default channel found - ok to proceed';
+            logger2.textContent = 'Default channel found - ok to proceed';
           }
         });
         break;
