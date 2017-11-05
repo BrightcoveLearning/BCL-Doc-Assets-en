@@ -140,7 +140,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
-          apiResponse.textContent = responseDecoded;
+          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
           if (responseDecoded.length === 0) {
             logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
@@ -161,7 +161,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
-          apiResponse.textContent = responseDecoded;
+          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
           if (responseDecoded.length === 0) {
             logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
             addChannel.removeAttribute('disabled');
@@ -179,7 +179,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
-          apiResponse.textContent = responseDecoded;
+          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
           logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
           callNumber++;
           if (callNumber < totalCalls) {
