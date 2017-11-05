@@ -118,6 +118,7 @@ var BCLS = (function(window, document) {
       // dedupe in case same affiliate added twice
       affiliate_ids = dedupe(affiliate_ids);
       affiliateIds.textContent = affiliate_ids.join('\n');
+      affiliateId.value = '';
     } else {
       alert('no affiliate id was entered');
     }
