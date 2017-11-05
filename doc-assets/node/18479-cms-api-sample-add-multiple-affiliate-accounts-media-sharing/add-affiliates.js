@@ -90,7 +90,7 @@ var BCLS = (function(window, document) {
    * @param {string} item to check for
    * @return {boolean} true if item is in the array, else false
    */
-  function arrayContains(arr, item) {
+  function arrayContains(arr, prop, item) {
     var i,
       iMax = arr.length;
     for (i = 0; i < iMax; i++) {
