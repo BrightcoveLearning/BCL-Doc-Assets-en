@@ -443,12 +443,29 @@ setRequestedOrientation(orientation);
 
 <section class="bcls-section">
 <h2 id="Showing_hiding_video_still_images">Showing/ hiding video still images</h2>
+<p>
+The default behavior when retrieving videos from your Video Cloud library is to display the video still image until playback begins.
+</p>
+<h3>Hiding the video still image</h3>
+<p>
+If you are autoplaying the video, you may want to hide the video still image. To do this, you can listen for the <code>SET_VIDEO_STILL</code> event and prevent the default behavior as follows:
+</p>
 
+<pre class="line-numbers">
+<code class="language-java"><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BaseVideoView.html#seekTo(int)">brightcoveVideoView.getEventEmitter().on(EventType.SET_VIDEO_STILL, new EventListener() {
+@Override
+public void processEvent(Event event) {
+	event.preventDefault();
+	event.stopPropagation();
+}
+});</a></code></pre>
+
+<h3>Showing the video still image</h3>
 <p>You can show the video still at any time by emitting a <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VIDEO_STILL"><code>SET_VIDEO_STILL</code></a> event with a <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/Event.html#VIDEO_STILL"><code>VIDEO_STILL</code></a> property set to the URI of the video still.</p>
 
-<p>Hiding should happen automatically whenever a <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#CUE_POINT"><code>CUE_POINT</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_PLAY"><code>DID_PLAY</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_SEEK_TO"><code>DID_SEEK_TO</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#WILL_INTERRUPT_CONTENT"><code>WILL_INTERRUPT_CONTENT</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ACTIVITY_STOPPED"><code>ACTIVITY_STOPPED</code></a>, or <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#FRAGMENT_STOPPED"><code>FRAGMENT_STOPPED</code></a> event occurs.</p>
+<!-- <p>Hiding should happen automatically whenever a <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#CUE_POINT"><code>CUE_POINT</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_PLAY"><code>DID_PLAY</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_SEEK_TO"><code>DID_SEEK_TO</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#WILL_INTERRUPT_CONTENT"><code>WILL_INTERRUPT_CONTENT</code></a>, <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ACTIVITY_STOPPED"><code>ACTIVITY_STOPPED</code></a>, or <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/event/EventType.html#FRAGMENT_STOPPED"><code>FRAGMENT_STOPPED</code></a> event occurs.</p>
 
-<p>In general, we try to promote doing things via events, rather than direct method calls.</p>
+<p>In general, we try to promote doing things via events, rather than direct method calls.</p> -->
 </section>
 
 <section class="bcls-section">
@@ -590,17 +607,6 @@ public void onClick(View view) {
 You can programmatically mute or unmute the player. Brightcove recommends using the BrightcoveExoPlayerVideoView whenever possible.
 </p>
 <aside class="bcls-aside bcls-aside--information">You need to wait for either the <code>DID_SET_VIDEO</code> or the <code>DID_PLAY</code> event before excuting the code to mute the player. Otherwise, muting will not take affect.</aside>
-<p>
-Below, you will find examples for the following:
-</p>
-<ul>
-<li>
-<a href="#BrightcoveExoPlayerVideoView">BrightcoveExoPlayerVideoView</a>
-</li>
-<li>
-<a href="#BrightcoveVideoView">BrightcoveVideoView</a>
-</li>
-</ul>
 
 <h3 id="BrightcoveExoPlayerVideoView">BrightcoveExoPlayerVideoView</h3>
 
