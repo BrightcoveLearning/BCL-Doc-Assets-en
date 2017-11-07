@@ -1,0 +1,181 @@
+<article class="bcls-article">
+<section id="top" class="bcls-section">
+<aside class="bcls-aside bcls-aside--information">This only applies to Video Cloud customers.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>The Media API is deprecated and will be end-of-life (EOL) as of December 31, 2017. It's replacement, the Playback API, is what you should use for returning video and playlist data from Video Cloud. Learn more in the <a href="https://support.brightcove.com/node/17906">Playback API Overview</a> document.</p>
+<aside class="bcls-aside bcls-aside--warning">The Media API will be end-of-life (EOL) as of December 31, 2017.</aside>
+
+<p>The Playback API supports features not supported by the Media API, including the following:</p>
+
+<ul>
+	<li>WebVTT captions and subtitles</li>
+	<li>FairPlay Streaming content protection for iOS</li>
+	<li>Multiple manifest DASH video content</li>
+	<li>Dynamic Delivery of your video content</li>
+	<li>Many more, including future feature additions and enhancements</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Am_I_using_the_Media_API?">Am I using the Media API?</h2>
+
+<p>You are using the Media API if:</p>
+
+<ul>
+	<li>Your app uses a Media API READ token for authentication. The only way you can create or retieive one is through the Legacy Media API Management module in Video Cloud Studio. Your token will look similar to this:
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Legacy Media token" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/ssai/legacy-media-token.png" />
+	<figcaption class="bcls-caption--image">Legacy Media token</figcaption>
+	</figure>
+	</li>
+	<li>Your app uses one of the following interfaces for retrieving video data:
+	<ul>
+		<li>Android: <code>com.brightcove.player.media.catalog</code></li>
+		<li>iOS: <code>BCOVCatalogService</code></li>
+	</ul>
+	</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Migrating_to_the_Playback_API">Migrating to the Playback API</h2>
+
+<p>To migrate, change the API calls in your apps to use the Playback API instead of the Media API. Follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Use a <strong>Policy Key</strong> instead of the Media READ token.<br />
+	&nbsp;
+	<h3>Authentication</h3>
+
+	<p>While the Media API uses a Media READ token for your account, the Playback API uses a Policy Key for authentication. Policy Keys are used to limit access based on account, IP address and/or geographic location.</p>
+
+	<p>There are three ways you can obtain a Policy Key:</p>
+
+	<ul>
+		<li>Every Brightcove web player is automatically assigned one. If you have a Brightcove player in your account, you can find instructions for getting a <a href="https://support.brightcove.com/node/18125">player's Policy Key</a>. Since policy keys are valid account-wide, you can use it regardless of whether you are using this player.</li>
+		<li>You can generate a basic policy key using the <a href="https://support.brightcove.com/node/18004">Policy Keys Quick Start</a>.</li>
+		<li>You can make a request to the <a href="https://support.brightcove.com/node/18003">Policy API</a>.</li>
+	</ul>
+	</li>
+	<li>Change the API interface to use the <strong>Playback API</strong> as described in the tables below. Notice that the method names remain the same.<br />
+	&nbsp;
+	<h3>API comparison tables</h3>
+
+	<h4>Android</h4>
+
+	<table class="bcls-table">
+		<thead class="bcls-table__head">
+			<tr>
+				<th>API</th>
+				<th>Interface</th>
+				<th>method</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td>Playback API</td>
+				<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.<strong>edge</strong>.catalog</a></td>
+				<td>findPlaylistByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findPlaylistByReferenceID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByReferenceID</td>
+			</tr>
+			<tr>
+				<td>Media API</td>
+				<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/media/Catalog.html">com.brightcove.player.<strong>media</strong>.catalog</a></td>
+				<td>findPlaylistByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findPlaylistByReferenceID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByReferenceID</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>For a code sample that shows how to retrieve video and playlist data from the Playback API, see the <a href="https://support.brightcove.com/node/18251">Android: Working with Media Content</a> document.</p>
+
+	<h4>iOS</h4>
+
+	<table class="bcls-table">
+		<thead class="bcls-table__head">
+			<tr>
+				<th>API</th>
+				<th>Interface</th>
+				<th>method</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td>Playback API</td>
+				<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlaybackService.html">BCOVPlaybackService</a></td>
+				<td>findPlaylistByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findPlaylistByReferenceID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByReferenceID</td>
+			</tr>
+			<tr>
+				<td>Media API</td>
+				<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVCatalogService.html">BCOVCatalogService</a></td>
+				<td>findPlaylistByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findPlaylistByReferenceID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByID</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>findVideoByReferenceID</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>For a code sample that shows how to retrieve video and playlist data from the Playback API, see the <a href="https://support.brightcove.com/node/18232">iOS: Working with Media Content</a> document.</p>
+	</li>
+</ol>
+</section>
+</article>
