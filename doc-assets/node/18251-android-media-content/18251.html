@@ -12,11 +12,12 @@
 
 <h3>Retrieving media data</h3>
 
-<p>The Playback API is the latest and recommended API to use to retrieve your video and playlist data from your Video Cloud library. For details, see the <a href="/node/17906">Playback API Documentation</a>.</p>
+<p>You can retrieve your video and playlist data from your Video Cloud library by using the Playback API. For details about the API, see the <a href="/node/17906">Playback API Overview</a> document.</p>
 
-<ol>
-	<li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class to retrieve your videos and playlists from Brightcove's Playback API. This component's methods allow retrieval of videos and playlists by <code>ID </code> and/or <code>ReferenceID </code>. This service will make the URL requests and parse the returned data.</li>
-	<li>For this option, you will need Policy Key. If you are not familiar with Policy Keys, see <a href="/node/18003">Policy API Overview</a>.</li>
+<ol class="bcls-tasklist">
+  <li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+
+  <li>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.</li>
 </ol>
 
 <p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.edge.Catalog </code> class:</p>
@@ -62,52 +63,6 @@ brightcoveVideoView.start();
 }
 </code>
 </pre>
-<!-- <h4>Using the Media API</h4>
-<p>The Media API is a RESTful API that lets you interact with your Video Cloud media library. For details, see the <a href="//docs.brightcove.com/en/video-cloud/media/index.html">Media API Documentation</a>.</p>
-<aside class="bcls-aside bcls-aside--warning">You should only use the Media API if there is some specific functionality that is not available with the Playback API. Brightcove recommends using the Playback API whenever possible. </aside>
-<ol>
-<li>Use the <a href="../../brightcove-player-sdk-for-android/reference/current/javadoc/com/brightcove/player/media/Catalog.html">com.brightcove.player.media.Catalog</a> class to access your videos and playlists from Brightcove's Media API. This component's methods allow retrieval of videos and playlists by <code>ID</code> and/or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
-<li>For this option, you will need your Media API Token. If you are not familiar with tokens, see <a href="http://support.brightcove.com/en/video-cloud/docs/managing-media-api-tokens">Managing Media API Tokens</a> document.</li>
-</ol>
-<p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.media.Catalog</code> class:</p>
-<pre class="line-numbers"><code class="language-java">package com.brightcove.player.samples.exoplayer.basic;
-import android.os.Bundle;
-import com.brightcove.player.event.EventEmitter;
-import com.brightcove.player.media.Catalog;
-import com.brightcove.player.media.VideoListener;
-import com.brightcove.player.model.Video;
-import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
-import com.brightcove.player.view.BrightcovePlayer;
-/**
-* This app illustrates how to use the ExoPlayer with the Brightcove
-* Native Player SDK for Android.
-*
-* @author Billy Hnath (bhnath@brightcove.com)
-*/
-public class MainActivity extends BrightcovePlayer {
-private final String TAG = this.getClass().getSimpleName();
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-setContentView(R.layout.activity_main);
-brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
-super.onCreate(savedInstanceState);
-// Get the event emitter from the SDK and create a catalog request to fetch a video from the
-// Brightcove Media API, given a video id and account token.
-EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
-Catalog catalog = new Catalog("XGuquNMCweRY0D3tt_VUotzuyIASMAzhUS4F8ZIWa_e0cYlKpA4WtQ..");
-catalog.findVideoByID("1754276206001", new VideoListener() {
-@Override
-public void onVideo(Video video) {
-brightcoveVideoView.add(video);
-brightcoveVideoView.start();
-}
-@Override
-public void onError(String s) {
-throw new RuntimeException(s);
-}
-});
-}
-}</code></pre> -->
 
 <h3>Geo-restricted videos</h3>
 
@@ -142,7 +97,9 @@ error_code: ACCESS_DENIED }
 <h2 id="Brightcove_Player_customers">Brightcove Player customers</h2>
 
 <p>As a Brightcove Player customer, you will supply the URL for your video assets.</p>
-<aside class="bcls-aside bcls-aside--information">For Android SDK Nougat (7.x), the Server Name Indication (SNI) extension in Android uses the <code>toASCII()</code> method to enforce restrictions on characters in hostnames for TLS connections. If you try to load a source with a US_ASCII-non-compliant hostname (e.g. the hostname contains underscores in the subdomain: test_example.example.com), you will get an exception when trying to fetch the stream.<br /><br />
+
+<aside class="bcls-aside bcls-aside--information">For Android SDK Nougat (7.x), the Server Name Indication (SNI) extension in Android uses the <code>toASCII()</code> method to enforce restrictions on characters in hostnames for TLS connections. If you try to load a source with a US_ASCII-non-compliant hostname (e.g. the hostname contains underscores in the subdomain: test_example.example.com), you will get an exception when trying to fetch the stream.<br />
+<br />
 So, when loading your source file over HTTPS, the hostname of the stream must be US_ASCII compliant.</aside>
 
 <p>Here is an example of adding a video to your video view and starting playback:</p>
