@@ -2,121 +2,29 @@
   <section class="bcls-section">
     <h2 id="Overview">Overview</h2>
 
-    <p>DRM (Digital Rights Management) protects your video content by encrypting the video data and unlocking it based on license policies. When the video content is loaded into a Brightcove player, the player calls back to a licensing server and obtains
-      permission to play the video. This transaction is transparent to viewers.</p>
+    <p>DRM (Digital Rights Management) protects your video content by encrypting the video data and unlocking it based on license policies. When the video content is loaded into a Brightcove player, the player calls back to a licensing server and obtains permission to play the video. This transaction is transparent to viewers.</p>
+
+    <p>For a general overview of DRM and Video Cloud support it, see <a href="/node/18436">Overview: Digital Rights Management in Video Cloud</a>.</p>
 
     <p class="BCL-aside">Note: to use DRM or HLS encryption, your account must be enabled for these features. Contact your account manager for more information.</p>
 
-    <p>For additional content security mechanisms that can be set in either the player configuration or video properties, see:</p>
 
-    <ul>
-      <li><a href="/node/15616">Configuring Player Availability</a></li>
-      <li><a href="/node/15476">Configuring Video Availability</a></li>
-      <li><a href="/node/7857">Protecting Videos with HLS Encryption</a></li>
-    </ul>
 
     <aside class="bcls-aside bcls-aside--information">
-      <p>DRM is currently not supported on any mobile OS browsers, but Widevine is supported for Android apps and FairPlay is supported for iOS apps. For details about creating mobile apps, see the <a href="/node/2216">Brightcove Native Player SDKs</a> index
-        page.</p>
+      <p>DRM is currently not supported on any mobile OS browsers, but Widevine is supported for Android apps and FairPlay is supported for iOS apps. For details about creating mobile apps, see the <a href="/node/2216">Brightcove Native Player SDKs</a> index page.</p>
 
-      <p>A DRM player should not be used for mobile devices (iOS or Android) since it would prompt to install SilverLight. <strong>Workaround</strong>: Two players can be created, one with DRM support and one without, and switch between them based on the
-        platform/video.</p>
+      <p>A DRM player should not be used for mobile devices (iOS or Android) since it would prompt to install SilverLight. <strong>Workaround</strong>: Two players can be created, one with DRM support and one without, and switch between them based on the platform/video.</p>
     </aside>
   </section>
 
-  <section class="bcls-section">
-    <h2 id="drm">DRM</h2>
 
-
-    <p>Video Cloud currently supports the several DRM types for different video formats:</p>
-
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Environment</th>
-          <th>Browser / Platform</th>
-          <th>Video Format</th>
-          <th>DRM Type</th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td rowspan="4"><strong>Desktop</strong></td>
-          <td>Chrome</td>
-          <td>DASH</td>
-          <td>Widevine Modular CDM</td>
-        </tr>
-        <tr>
-          <td>IE <sup class="once-red"><strong><a href="#note1-1">[1-1]</a></strong></sup></td>
-          <td>DASH</td>
-          <td>Playready</td>
-        </tr>
-        <tr>
-          <td>Safari</td>
-          <td>HLS</td>
-          <td>FairPlay</td>
-        </tr>
-        <tr>
-          <td>Firefox</td>
-          <td>DASH</td>
-          <td>Widevine Modular CDM</td>
-        </tr>
-        <tr>
-          <td rowspan="2"><strong>Mobile Devices</strong></td>
-          <td>iOS</td>
-          <td>HLS</td>
-          <td>FairPlay</td>
-        </tr>
-        <tr>
-          <td>Android</td>
-          <td>DASH</td>
-          <td>Widevine Modular (may work, but has not been tested and is not currently supported)</td>
-        </tr>
-        <tr>
-          <td rowspan="3"><strong>STB</strong></td>
-          <td>tvOS Apps</td>
-          <td>HLS</td>
-          <td>FairPlay</td>
-        </tr>
-        <tr>
-          <td>Android TV</td>
-          <td>DASH</td>
-          <td>Widevine Modular</td>
-        </tr>
-        <tr>
-          <td>Playstation</td>
-          <td>Smooth Streaming</td>
-          <td>Playready</td>
-        </tr>
-        <tr>
-          <td><strong>Roku</strong></td>
-          <td>&nbsp;</td>
-          <td>DASH/Smooth Streaming</td>
-          <td>Playready</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Notes</h3>
-
-    <ul>
-      <li id="note1-1"><sup><strong>[1-1]</strong></sup> IE11 on Windows 10 and 8.1 and IE11 on Win8 Metro use Native/Shaka-Player<sup>*</sup>. All other IE versions and configurations use the Silverlight plugin.</li>
-      <li>--&gt;</li>
-      <li id="note1-3"><sup class="once-red"><strong>[1-3]</strong></sup> Also supported in legacy mode:
-        <ul>
-          <li>Marlin</li>
-          <li>Adobe Primetime (Access)</li>
-        </ul>
-      </li>
-    </ul>
-
-    <aside class="bcls-aside bcls-aside--information"><sup>*</sup>Shaka-Player provides DASH support. Prior to the Brightcove Player DRM plugin version 4, the playback technology used for DASH support was built on top of Dash.js.</aside>
-  </section>
 
   <section class="bcls-section">
     <h2 id="DRM_for_dynamic_delivery">DRM for Dynamic Delivery</h2>
 
     <p>If your account is enabled for <a href="/node/17949">Dynamic Delivery</a>, then all you need to do to DRM-protect your videos is contact Brightcove Support to configure your account for the kinds of DRM packaging you want.</p>
+
+    <aside class="bcls-aside bcls-aside--information">If you have older videos in a Dynamic Delivery account that were ingested using the legacy ingest system, they will need to be re-transcoded using a Dynamic Delivery profile before DRM will be applied. Existing videos already ingested for Dynamic Delivery <strong>do not need to be re-transcoded</strong> when DRM is enabled for the account.</aside>
 
     <p>If your account is enabled for DRM and you want to deliver some titles without DRM, set the <code>drm_disabled</code> flag via CMS API to <code>true</code> using an <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video request</a>.</p>
 
