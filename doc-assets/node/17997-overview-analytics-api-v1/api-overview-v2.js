@@ -454,7 +454,7 @@ console.log('response', httpRequest.responseText);
                         parsedData = JSON.parse(responseRaw);
                         responseData.textContent = JSON.stringify(parsedData, null, '  ');
                         // Rerun Prism syntax highlighting on the current page
-                        Prism.highlightAll();
+                        // Prism.highlightAll();
                         // re-enable buttons
                         enableButtons();
                     } else {
