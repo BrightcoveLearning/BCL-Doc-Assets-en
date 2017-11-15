@@ -135,74 +135,75 @@
 <h2 id="Produce_DRM_content">Produce DRM content</h2>
 
 <div class="video-cloud-only">
-    <p>There are two steps you must perform to create DRM enabled content:</p>
+<p>There are two steps you must perform to create DRM enabled content:</p>
 
-    <ol>
-        <li>Contact your account manager to have your account(s) DRM-enabled. You can then configure your account with the proper licensing keys and ingest profiles to enable the creation of DRM protected content.</li>
-        <li>
-        <p>Produce DRM protected content. You can choose to either upload new content or re-encode existing content as DRM. This is done by selecting the <strong>Ingest Profile</strong> that produces your desired encryption technology.</p>
+<ol>
+	<li>Contact your account manager to have your account(s) DRM-enabled. You can then configure your account with the proper licensing keys and ingest profiles to enable the creation of DRM protected content.</li>
+	<li>
+	<p>Produce DRM protected content. You can choose to either upload new content or re-encode existing content as DRM. This is done by selecting the <strong>Ingest Profile</strong> that produces your desired encryption technology.</p>
 
-        <aside class="bcls-aside bcls-aside--information">For more information, see the <a href="/node/18038">Content Security (DRM and HLSe)</a> document.</aside>
-        </li>
-    </ol>
+	<aside class="bcls-aside bcls-aside--information">For more information, see the <a href="/node/18038">Content Security (DRM and HLSe)</a> document.</aside>
+	</li>
+</ol>
 </div>
+
 <div class="player-only">
-    <p>You will need to produce DRM protected content which uses either MPEG-DASH manifests with segmented and encrypted videos, or HLS FairPlay content.</p>
+<p>You will need to produce DRM protected content which uses either MPEG-DASH manifests with segmented and encrypted videos, or HLS FairPlay content.</p>
 </div>
 </section>
 
-
 <section class="bcls-section ">
 <h2 id="FairPlay_implementation">FairPlay implementation</h2>
+
 <div class="video-cloud-only">
-    <p>Follow these steps to use the DRM Plugin with FairPlay protected content:</p>
+<p>Follow these steps to use the DRM Plugin with FairPlay protected content:</p>
 
-    <ol>
-        <li>In Studio, open the <strong>Players</strong> module and locate the desired player.</li>
-        <li>Click the link for the player to open the player properties.</li>
-        <li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-        <li>For the <strong>JavaScript URL</strong>, enter:
-            <pre class="line-numbers">
+<ol>
+	<li>In Studio, open the <strong>Players</strong> module and locate the desired player.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
+	<li>For the <strong>JavaScript URL</strong>, enter:
+	<pre class="line-numbers">
                 <code class="language-html">//players.brightcove.net/videojs-drm/4/videojs-drm.min.js</code></pre>
-            </li>
-            <li>For the <strong>CSS URL</strong>, enter:
-                <pre class="line-numbers">
+	</li>
+	<li>For the <strong>CSS URL</strong>, enter:
+	<pre class="line-numbers">
                     <code class="language-html">//players.brightcove.net/videojs-drm/4/videojs-drm.css</code></pre>
-                </li>
-                <li>Enter the plugin <strong>Name</strong> to be <code>eme</code> and the <strong>Options</strong> must supply your FairPlay license credentials.
-                    <figure class="bcls-figure"><img class="bcls-image" alt="Supply options" src="//learning-services-media.brightcove.com/doc-assets/player-development/content-protection-drm/bcp-and-drm/fairplay-plugin-configuration.png" /></figure>
+	</li>
+	<li>Enter the plugin <strong>Name</strong> to be <code>eme</code> and the <strong>Options</strong> must supply your FairPlay license credentials.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Supply options" src="//learning-services-media.brightcove.com/doc-assets/player-development/content-protection-drm/bcp-and-drm/fairplay-plugin-configuration.png" /></figure>
 
-                    <p>Here is the JSON for the options:</p>
+	<p>Here is the JSON for the options:</p>
 
-                    <pre class="line-numbers">
+	<pre class="line-numbers">
                         <code class="language-json">{
                             "applicationId": "<span class="bcls-input">YOUR_APPLICATION_ID</span>",
                             "publisherId": "<span class="bcls-input">YOUR_ACCOUNT_ID</span>"
                         }</code></pre>
 
-                        <aside class="bcls-aside bcls-aside--information">Note that if your account is set up for <a href="/node/17949">Dynamic Delivery</a>, you need to enter <code>1</code> for <strong>both</strong> the <code>applicationId</code> and the <code>account_id</code> value (lines 2-3 above) instead of your own account id.</aside>
-                    </li>
-                    <li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-                </ol>
+	<aside class="bcls-aside bcls-aside--information">Note that if your account is set up for <a href="/node/17949">Dynamic Delivery</a>, you need to enter <code>1</code> for <strong>both</strong> the <code>applicationId</code> and the <code>account_id</code> value (lines 2-3 above) instead of your own account id.</aside>
+	</li>
+	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+</ol>
 
-                <p>You now have a player that can play FairPlay DRM protected videos on all supported desktop browsers and platforms.</p>
+<p>You now have a player that can play FairPlay DRM protected videos on all supported desktop browsers and platforms.</p>
 
-                <h3 class="bcls-expander-head">Implementing FairPlay playback in code</h3>
+<h3 class="bcls-expander-head">Implementing FairPlay playback in code</h3>
 
-                <div class="bcls-expander-content">
-                    <p>If you wish to implement FairPlay playback using the in-page embed code you must follow these steps to use the DRM plugin:</p>
+<div class="bcls-expander-content">
+<p>If you wish to implement FairPlay playback using the in-page embed code you must follow these steps to use the DRM plugin:</p>
 
-                    <ol>
-                        <li>In the header of your HTML page, include the plugin's stylesheet:
-                            <pre class="line-numbers">
+<ol>
+	<li>In the header of your HTML page, include the plugin's stylesheet:
+	<pre class="line-numbers">
                                 <code class="language-html">&lt;link href="//players.brightcove.net/videojs-drm/4/videojs-drm.css" rel="stylesheet"&gt;</code></pre>
-                            </li>
-                            <li>Include the plugin's JavaScript:
-                                <pre class="line-numbers">
+	</li>
+	<li>Include the plugin's JavaScript:
+	<pre class="line-numbers">
                                     <code class="language-html">&lt;script src="//players.brightcove.net/videojs-drm/4/videojs-drm.min.js"&gt;&lt;/script&gt;</code></pre>
-                                </li>
-                                <li>In a JavaScript block in the page, call and configure the EME plugin with FairPlay credential information:
-<pre class="line-numbers">
+	</li>
+	<li>In a JavaScript block in the page, call and configure the EME plugin with FairPlay credential information:
+	<pre class="line-numbers">
     <code class="language-html">&lt;script type="text/javascript"&gt;
         videojs('myPlayerID').ready(function(){
             var myPlayer = this;
@@ -212,24 +213,25 @@
             });
         });
         &lt;/script&gt;</code></pre>
-                                        </li>
-                                    </ol>
-                                </div>
+	</li>
+</ol>
 </div>
-<div class="player-only">
-    <p>Follow these steps to use the DRM Plugin with FairPlay protected content:</p>
+</div>
 
-    <ol>
-        <li>In the header of your HTML page, include the plugin's stylesheet:
-            <pre class="line-numbers">
+<div class="player-only">
+<p>Follow these steps to use the DRM Plugin with FairPlay protected content:</p>
+
+<ol>
+	<li>In the header of your HTML page, include the plugin's stylesheet:
+	<pre class="line-numbers">
                 <code class="language-html">&lt;link href="//players.brightcove.net/videojs-drm/4/videojs-drm.css" rel="stylesheet"&gt;</code></pre>
-            </li>
-            <li>Include the plugin's JavaScript:
-                <pre class="line-numbers">
+	</li>
+	<li>Include the plugin's JavaScript:
+	<pre class="line-numbers">
                     <code class="language-html">&lt;script src="//players.brightcove.net/videojs-drm/4/videojs-drm.min.js"&gt;&lt;/script&gt;</code></pre>
-                </li>
-                <li>In a JavaScript block in the page, call and configure the EME plugin with FairPlay credential information by providing <strong>getCertificate</strong>, <strong>getContentId</strong> and <strong>getLicense</strong> functions to the EME plugin. These functions are specific to your own FairPlay license server implementation, and may be passed directly to the EME plugin before a <strong>src</strong> is set:
-<pre class="line-numbers">
+	</li>
+	<li>In a JavaScript block in the page, call and configure the EME plugin with FairPlay credential information by providing <strong>getCertificate</strong>, <strong>getContentId</strong> and <strong>getLicense</strong> functions to the EME plugin. These functions are specific to your own FairPlay license server implementation, and may be passed directly to the EME plugin before a <strong>src</strong> is set:
+	<pre class="line-numbers">
 <code class="language-html">&lt;script type="text/javascript"&gt;
 videojs('myPlayerID').ready(function(){
 var myPlayer = this;
@@ -254,10 +256,10 @@ myPlayer.eme({
     }
 });
 &lt;/script&gt;</code></pre>
-                            </li>
-                        </ol>
+	</li>
+</ol>
 
-                        <p>Note that the FairPlay information can also be passed as part of each <strong>src</strong> object. The <strong>emeOptions</strong> are provided as a parameter to all functions. They are a reference to plugin options merged with (overwritten by) the source options of the current source. It is available to make it easier to access options so that you don't have to maintain them yourself.</p>
+<p>Note that the FairPlay information can also be passed as part of each <strong>src</strong> object. The <strong>emeOptions</strong> are provided as a parameter to all functions. They are a reference to plugin options merged with (overwritten by) the source options of the current source. It is available to make it easier to access options so that you don't have to maintain them yourself.</p>
 
 <pre class="line-numbers">
     <code class="language-javascript">player.src({
@@ -272,7 +274,7 @@ myPlayer.eme({
         }
     });</code></pre>
 
-                            <p>For example, if you need to use an <strong>applicationId</strong> and <strong>publisherId</strong> for the <strong>getCertificate</strong> request, you can pass in plugin options this way:</p>
+<p>For example, if you need to use an <strong>applicationId</strong> and <strong>publisherId</strong> for the <strong>getCertificate</strong> request, you can pass in plugin options this way:</p>
 
 <pre class="line-numbers">
     <code class="language-javascript">{
@@ -290,7 +292,7 @@ myPlayer.eme({
         publisherId: 'publisher-id'
     }</code></pre>
 
-                                <p>Or, if you need a source-specific <strong>publisherId</strong> you can overwrite it via the source options:</p>
+<p>Or, if you need a source-specific <strong>publisherId</strong> you can overwrite it via the source options:</p>
 
 <pre class="line-numbers">
 <code class="language-javascript">// plugin options
@@ -316,7 +318,7 @@ player.src({
     publisherId: 'source-specific-publisher-id'
 });</code></pre>
 
-                                        <p>The following is an example implementation, passing the options in as <strong>src</strong> options, retrieving the content ID from the hostname, fixed license and certificate URIs, and a license URI that requires a POST with a body of the key message:</p>
+<p>The following is an example implementation, passing the options in as <strong>src</strong> options, retrieving the content ID from the hostname, fixed license and certificate URIs, and a license URI that requires a POST with a body of the key message:</p>
 
 <pre class="line-numbers">
     <code class="language-javascript">var uint8ArrayToString = function(array) {
@@ -385,7 +387,6 @@ player.src({
 </div>
 </section>
 
-
 <section class="bcls-section">
 <h2 id="PlayReady_implementation">PlayReady implementation</h2>
 
@@ -412,31 +413,33 @@ player.src({
 
 <section class="bcls-section ">
 <h2 id="Widevine_implementation">Widevine implementation</h2>
+
 <div class="video-cloud-only">
-    <p>Follow these steps to use the DRM Plugin with Widevine protected content:</p>
+<p>Follow these steps to use the DRM Plugin with Widevine protected content:</p>
 
-    <ol>
-        <li>In Studio, open the <strong>Players</strong> module and locate the desired player.</li>
-        <li>Click the link for the player to open the player properties.</li>
-        <li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-        <li>For the <strong>JavaScript URL</strong>, enter:
-            <pre class="line-numbers">
+<ol>
+	<li>In Studio, open the <strong>Players</strong> module and locate the desired player.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
+	<li>For the <strong>JavaScript URL</strong>, enter:
+	<pre class="line-numbers">
                 <code class="language-html">//players.brightcove.net/videojs-drm/4/videojs-drm.min.js</code></pre>
-            </li>
-            <li>For the <strong>CSS URL</strong>, enter:
-                <pre class="line-numbers">
+	</li>
+	<li>For the <strong>CSS URL</strong>, enter:
+	<pre class="line-numbers">
                     <code class="language-html">//players.brightcove.net/videojs-drm/4/videojs-drm.css</code></pre>
-                </li>
-                <li>You will NOT enter a <strong>Name</strong> or <strong>Options</strong>.</li>
-                <li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-            </ol>
+	</li>
+	<li>You will NOT enter a <strong>Name</strong> or <strong>Options</strong>.</li>
+	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+</ol>
 
-            <p>You now have a player that can play Widevine protected videos on all supported desktop browsers and platforms.</p>
+<p>You now have a player that can play Widevine protected videos on all supported desktop browsers and platforms.</p>
 </div>
-<div class="player-only">
-    <p>For Widevine Modular content, you need to configure your player to use your Widevine licensing server using the player's source handler.</p>
 
-    <p>To update an instance of a player on your web page, you can use the player's source handler. Here is an example of using the <code>keySystemsOptions</code> array with the <code>player.src()</code> function:</p>
+<div class="player-only">
+<p>For Widevine Modular content, you need to configure your player to use your Widevine licensing server using the player's source handler.</p>
+
+<p>To update an instance of a player on your web page, you can use the player's source handler. Here is an example of using the <code>keySystemsOptions</code> array with the <code>player.src()</code> function:</p>
 
 <pre class="line-numbers">
     <code class="language-java">player.src({
@@ -452,9 +455,9 @@ player.src({
         ]
     });</code></pre>
 
-        <p>You can also use the <code>updateSourceData</code> function as follows:</p>
+<p>You can also use the <code>updateSourceData</code> function as follows:</p>
 
-    <pre class="line-numbers">
+<pre class="line-numbers">
         <code class="language-java">videojs.Html5DashJS.updateSourceData = function(source) {
             source.keySystemOptions = [{
                 name: 'com.widevine.alpha',
@@ -465,10 +468,9 @@ player.src({
             return source;
         };</code></pre>
 
-            <p>For more details, see the <a href="https://github.com/videojs/videojs-contrib-dash">videojs-contrib-dash</a> information on GitHub.</p>
+<p>For more details, see the <a href="https://github.com/videojs/videojs-contrib-dash">videojs-contrib-dash</a> information on GitHub.</p>
 </div>
 </section>
-
 
 <section class="bcls-section">
 <h2 id="Enable_debugging">Enable debugging</h2>
@@ -499,13 +501,29 @@ player.src({
 <h2 id="Known_issues">Known issues</h2>
 
 <ul>
-	<li>In most cases if you wish to programmatically interact with the player you would wait for either the <code>ready</code> or <code>loadedmetadate</code> event to be dispatched. However, if you wish to programmatically interact with the player when using the Silverlight tech in IE11, AND playing DRM content, you should wait for the <code>canplay</code> event.</li>
+	<li>In most cases if you wish to programmatically interact with the player you would wait for either the <code>ready</code> or <code>loadedmetadata</code>&nbsp;event to be dispatched. However, if you wish to programmatically interact with the player when using the Silverlight tech in IE11, AND playing DRM content, you should wait for the <code>canplay</code> event.</li>
 </ul>
-
 </section>
 
 <section class="bcls-section">
 <h2 id="changelog">Changelog</h2>
+
+<h4>8 Nov 2017</h4>
+
+<p>v4.4.1</p>
+
+<ul>
+	<li>Fixed issue where loadstart would not fire when using Silverlight</li>
+</ul>
+
+<h4>6 Sep 2017</h4>
+
+<p>v4.4.0</p>
+
+<ul>
+	<li>Parse <strong>ms:laurl</strong> and <strong>mspr:pro</strong> from manifest</li>
+	<li>Fixed issue where text tracks would not be removed on source change</li>
+</ul>
 
 <h4>3 Aug 2017</h4>
 
