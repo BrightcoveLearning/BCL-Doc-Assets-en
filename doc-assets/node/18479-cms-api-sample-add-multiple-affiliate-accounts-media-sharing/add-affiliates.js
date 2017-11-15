@@ -213,7 +213,7 @@ var BCLS = (function(window, document) {
           logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
           callNumber++;
           if (callNumber < totalCalls) {
-            createRequest('addAffiliates');
+            createRequest('addAffiliate');
           } else {
             logger.textContent = 'All affiliates successfully added';
           }
