@@ -107,14 +107,29 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * Add one array to another
+   * @param  {Array} a The array to add another array to
+   * @param  {Array} b The array to add to array a
+   * @return {Array}   Array a with b appended to it
+   */
+  function combineArrays(a, b) {
+    a.push.apply(a, b);
+    return a;
+  }
+
+  /**
    * adds new affiliate id to affiliate_ids array
    */
   function addAffiliate() {
-    var str;
+    var str,
+      tmpArray = [];
     if (isDefined(affiliateId.value)) {
       // remove any spaces
       str = removeSpaces(affiliateId.value);
-      affiliate_ids.push(str);
+      tmpArray = str.split(',');
+      // dedupe in case of repeats
+      tmpArray = dedupe(tmpArray);
+      affiliate_ids = combineArrays(affiliate_ids, tmpArray);
       // dedupe in case same affiliate added twice
       affiliate_ids = dedupe(affiliate_ids);
       affiliateIds.textContent = affiliate_ids.join('\n');
