@@ -8,12 +8,12 @@
 <p><a id="find_videos_by_tags" name="find_videos_by_tags" href=""></a>The following URL will give you a list of videos that match the tag Apes or Monkeys in a raw API output using JSON format:</p>
 
 <pre>
-http://api.brightcove.com/services/library?command=search_videos?any=tags:Apes&amp;any=tags:Monkeys&amp;token=[token]</pre>
+https://api.brightcove.com/services/library?command=search_videos?any=tags:Apes&amp;any=tags:Monkeys&amp;token=[token]</pre>
 
 <p>To view this same query in MRSS format simply add the <code>output=mrss</code> parameter:</p>
 
 <pre>
-http://api.brightcove.com/services/library?command=search_videos<strong>&amp;output=mrss</strong>&amp;any=tags:Apes&amp;any=tags:Monkeys&amp;token=[token]</pre>
+https://api.brightcove.com/services/library?command=search_videos<strong>&amp;output=mrss</strong>&amp;any=tags:Apes&amp;any=tags:Monkeys&amp;token=[token]</pre>
 
 <h2>Working with video search engines and small distribution partners</h2>
 
@@ -23,23 +23,23 @@ http://api.brightcove.com/services/library?command=search_videos<strong>&amp;out
 
 <p>The best way to enable large distribution partners where you will be providing a video player and a feed of content is to use our advanced MRSS feeds and a tag-based approach. For instance, let's say that you want to distribute 400 videos to Brightcove partner Metacafe. First, you'll want to come up with a unique tag to designate which videos in your media library are approved for distribution. This unique tag could be based on the specific partner's name (for example, <code>metacafe</code>) or you might want to use something more generic so that it applies to all of your distribution relationships (for example, <code>approved_for_distribution</code>). You can use the batch editing feature in the Video Cloud Studio Media module to accomplish tagging these 400 videos quite efficiently. Next, <a href="node/1344#get">get your API read token</a>.</p>
 
-<p><a id="find_videos_by_tags_2" name="find_videos_by_tags_2" href=""></a>Now we're ready to jump in to the fun stuff! The following feed will return all videos from your library that are tagged <code>metacafe</code> and returns the output in MRSS format:</p>
+<p>Now we're ready to jump in to the fun stuff! The following feed will return all videos from your library that are tagged <code>metacafe</code> and returns the output in MRSS format:</p>
 
 <pre>
-http://api.brightcove.com/services/library?command=find_videos_by_tags
+https://api.brightcove.com/services/library?command=find_videos_by_tags
   &amp;output=mrss&amp;and_tags=metacafe&amp;token=[insert-token]</pre>
 
 <p>For performance reasons, Media API calls like this are limited to returning 100 videos at a time. As a result, you'll actually need 4 feeds to have complete access to the 400 videos that you have selected for distribution to Metacafe. To return all 400 videos, add the <code>page_number</code> parameter to the feed URL to cycle through the pages:</p>
 
 <pre>
 Page 2:
-http://api.brightcove.com/services/library?command=find_videos_by_tags
+https://api.brightcove.com/services/library?command=find_videos_by_tags
   &amp;output=mrss&amp;and_tags=metacafe&amp;page_number=1&amp;token=[insert-token]
 Page 3:
-http://api.brightcove.com/services/library?command=find_videos_by_tags
+https://api.brightcove.com/services/library?command=find_videos_by_tags
   &amp;output=mrss&amp;and_tags=metacafe&amp;page_number=2&amp;token=[insert-token]
 Page 4:
-http://api.brightcove.com/services/library?command=find_videos_by_tags
+https://api.brightcove.com/services/library?command=find_videos_by_tags
   &amp;output=mrss&amp;and_tags=metacafe&amp;page_number=3&amp;token=[insert-token]</pre>
 
 <p>The other benefit of managing these relationships in this manner is that they only have to process this large index once and then can use the next two feeds to determine what content has been added or deleted from your library.</p>
@@ -49,13 +49,13 @@ http://api.brightcove.com/services/library?command=find_videos_by_tags
 <p>This feed is taking the same feed that they originally indexed above and sorting by the most recently modified – they can add videos to their system from this feed until they reach one that they have already previously processed (and has not been modified) and this will get them caught up with changes to your library:</p>
 
 <pre>
-http://api.brightcove.com/services/library?command=find_videos_by_tags
+https://api.brightcove.com/services/library?command=find_videos_by_tags
 &amp;output=mrss&amp;and_tags=metacafe&amp;sort_by=modified_date
 &amp;sort_order=ASC&amp;page_number=1&amp;token=[insert-token]</pre>
 
 <h3>To find videos that were deleted:</h3>
 
-<p>This feed uses the <a href="http://support.brightcove.com/en/docs/finding-videos-have-changed-media-api">find_modified_videos method</a> to look back to Dec 11th from today and listing all videos that were deleted. Your partner will need to update the "from_date" each time they run this feed to limit the results to the time period since they last ran the feed.</p>
+<p>This feed uses the find_modified_videos method to look back to Dec 11th from today and listing all videos that were deleted. Your partner will need to update the "from_date" each time they run this feed to limit the results to the time period since they last ran the feed.</p>
 
 <pre>
 http://api.brightcove.com/services/library?command=find_modified_videos
