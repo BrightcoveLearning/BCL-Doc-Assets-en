@@ -1,21 +1,22 @@
 var BCLS = (function(window, document) {
-  var accountId        = document.getElementById('accountId'),
-    clientId           = document.getElementById('clientId'),
-    clientSecret       = document.getElementById('clientSecret'),
-    getChannels        = document.getElementById('getChannels'),
-    addChannel         = document.getElementById('addChannel'),
-    affiliateId        = document.getElementById('affiliateId'),
-    addAffiliateId     = document.getElementById('addAffiliateId'),
-    affiliateIds       = document.getElementById('affiliateIds'),
-    addAffiliates      = document.getElementById('addAffiliates'),
-    logger             = document.getElementById('logger'),
-    logger2            = document.getElementById('logger2'),
-    apiRequest         = document.getElementById('apiRequest'),
-    apiResponse        = document.getElementById('apiResponse'),
-    affiliate_ids      = [],
-    existingAffiliates = [],
-    callNumber         = 0,
-    totalCalls         = 0;
+  var accountId           = document.getElementById('accountId'),
+    clientId              = document.getElementById('clientId'),
+    clientSecret          = document.getElementById('clientSecret'),
+    getChannels           = document.getElementById('getChannels'),
+    addChannel            = document.getElementById('addChannel'),
+    existing_affiliateIds = document.getElementById('existing_affiliateIds'),
+    affiliateId           = document.getElementById('affiliateId'),
+    addAffiliateId        = document.getElementById('addAffiliateId'),
+    affiliateIds          = document.getElementById('affiliateIds'),
+    addAffiliates         = document.getElementById('addAffiliates'),
+    logger                = document.getElementById('logger'),
+    logger2               = document.getElementById('logger2'),
+    apiRequest            = document.getElementById('apiRequest'),
+    apiResponse           = document.getElementById('apiResponse'),
+    affiliate_ids         = [],
+    existingAffiliates    = [],
+    callNumber            = 0,
+    totalCalls            = 0;
 
   // *****event listeners*****
   getChannels.addEventListener('click', function() {
@@ -176,7 +177,6 @@ var BCLS = (function(window, document) {
             addChannel.removeAttribute('style');
           } else {
             logger2.textContent = 'Default channel found - ok to proceed';
-            createRequest('getAffiliates');
           }
         });
         break;
@@ -205,6 +205,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
+          existing_affiliateIds.textContent = existingAffiliates.join('\n');
           i = affiliate_ids.length;
           while (i > 0) {
             i--;
