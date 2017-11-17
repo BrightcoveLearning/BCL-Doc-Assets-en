@@ -85,13 +85,23 @@
         &lt;p&gt;Master account id: &lt;input id="accountId" type="text" style="width:50%"&gt;&lt;/p&gt;
         &lt;p&gt;Client id: &lt;input id="clientId" type="text" style="width:50%"&gt;&lt;/p&gt;
         &lt;p&gt;Client secret: &lt;input id="clientSecret" type="text" style="width:50%"&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;button id="getChannels" class="bcls-button"&gt;Get sharing channels&lt;/button&gt; &lt;span id="logger2" style="color:#CF773F;"&gt;&lt;/span&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;button id="addChannel" class="bcls-button" disabled="disabled" style="opacity:.5"&gt;Add Default Channel&lt;/button&gt;&lt;/p&gt;
+
 
         &lt;table style="width:100%"&gt;
             &lt;tr&gt;
                 &lt;td style="padding:1em;"&gt;
-                    Affiliate account id: &lt;input type="text" id="affiliateId"&gt;&nbsp;&lt;button class="bcls-button" id="addAffiliateId"&gt;Add Affiliate &gt;&lt;/button&gt;
+                  &lt;p&gt;&lt;button id="getChannels" class="bcls-button"&gt;Get sharing channels&lt;/button&gt; &lt;span id="logger2" style="color:#CF773F;"&gt;&lt;/span&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;button id="addChannel" class="bcls-button" disabled="disabled" style="opacity:.5"&gt;Add Default Channel&lt;/button&gt;&lt;/p&gt;
+                &lt;/td&gt;
+                &lt;td style="padding:1em;"&gt;
+                    Existing affiliiates:
+                    &lt;p&gt;&lt;textarea id="existing_affiliateIds" rows="4" cols="20"&gt;&lt;/textarea&gt;&lt;/p&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td style="padding:1em;"&gt;
+                    Affiliate account id(s) (comma-delimited list):&lt;br&gt;&lt;input type="text" id="affiliateId" placeholder="12345678,9876543" style="width:100%"&gt;
+                    &lt;br&gt;&lt;button class="bcls-button" id="addAffiliateId"&gt;Add Affiliate(s) &gt;&lt;/button&gt;
                 &lt;/td&gt;
                 &lt;td style="padding:1em;"&gt;
                     Affiliates to be added:
@@ -109,26 +119,28 @@
 &lt;pre&gt;&lt;code id="apiRequest" class="language-http"&gt;API requests will appear here...&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="line-numbers"&gt;&lt;code id="apiResponse" class="language-json"&gt;Responses will appear here...&lt;/code&gt;&lt;/pre&gt;
 &lt;/section&gt;
+&lt;section class="bcls-section"&gt;
 </code></pre>
     <h3>JavaScript</h3>
 <pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document) {
-  var accountId        = document.getElementById('accountId'),
-    clientId           = document.getElementById('clientId'),
-    clientSecret       = document.getElementById('clientSecret'),
-    getChannels        = document.getElementById('getChannels'),
-    addChannel         = document.getElementById('addChannel'),
-    affiliateId        = document.getElementById('affiliateId'),
-    addAffiliateId     = document.getElementById('addAffiliateId'),
-    affiliateIds       = document.getElementById('affiliateIds'),
-    addAffiliates      = document.getElementById('addAffiliates'),
-    logger             = document.getElementById('logger'),
-    logger2            = document.getElementById('logger2'),
-    apiRequest         = document.getElementById('apiRequest'),
-    apiResponse        = document.getElementById('apiResponse'),
-    affiliate_ids      = [],
-    existingAffiliates = [],
-    callNumber         = 0,
-    totalCalls         = 0;
+  var accountId           = document.getElementById('accountId'),
+    clientId              = document.getElementById('clientId'),
+    clientSecret          = document.getElementById('clientSecret'),
+    getChannels           = document.getElementById('getChannels'),
+    addChannel            = document.getElementById('addChannel'),
+    existing_affiliateIds = document.getElementById('existing_affiliateIds'),
+    affiliateId           = document.getElementById('affiliateId'),
+    addAffiliateId        = document.getElementById('addAffiliateId'),
+    affiliateIds          = document.getElementById('affiliateIds'),
+    addAffiliates         = document.getElementById('addAffiliates'),
+    logger                = document.getElementById('logger'),
+    logger2               = document.getElementById('logger2'),
+    apiRequest            = document.getElementById('apiRequest'),
+    apiResponse           = document.getElementById('apiResponse'),
+    affiliate_ids         = [],
+    existingAffiliates    = [],
+    callNumber            = 0,
+    totalCalls            = 0;
 
   // *****event listeners*****
   getChannels.addEventListener('click', function() {
@@ -289,7 +301,6 @@
             addChannel.removeAttribute('style');
           } else {
             logger2.textContent = 'Default channel found - ok to proceed';
-            createRequest('getAffiliates');
           }
         });
         break;
@@ -313,11 +324,18 @@
         });
         break;
       case 'getAffiliates':
+        var existingAffiliateIds = [];
         endpoint            = '/channels/default/members';
         options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
+          // extract the account ids
+          iMax = existingAffiliates.length;
+          for (i = 0; i &lt; iMax; i++) {
+            existingAffiliateIds.push(existingAffiliates[i].account_id);
+          }
+          existing_affiliateIds.textContent = existingAffiliateIds.join('\n');
           i = affiliate_ids.length;
           while (i &gt; 0) {
             i--;
@@ -326,7 +344,11 @@
             }
           }
           totalCalls = affiliate_ids.length;
-          createRequest('addAffiliate');
+          if (totalCalls &gt; 0) {
+            createRequest('addAffiliate');
+          } else {
+            logger.textContent = 'All affiliates have already been added';
+          }
         });
         break;
       case 'addAffiliate':
