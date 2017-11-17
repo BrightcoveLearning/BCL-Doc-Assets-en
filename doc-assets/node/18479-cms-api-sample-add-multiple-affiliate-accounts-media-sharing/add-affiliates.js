@@ -212,11 +212,13 @@ var BCLS = (function(window, document) {
               affiliate_ids.splice(i, 1);
             }
           }
+console.log('affiliate_ids', affiliate_ids);
           totalCalls = affiliate_ids.length;
           createRequest('addAffiliate');
         });
         break;
       case 'addAffiliate':
+console.log('callNumber', callNumber);
         endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
         options.url         = cmsBaseURL + endpoint;
         body.account_id     = affiliate_ids[callNumber];
