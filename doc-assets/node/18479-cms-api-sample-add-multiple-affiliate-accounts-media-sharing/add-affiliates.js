@@ -200,7 +200,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getAffiliates':
-        var existingAffiliateIds
+        var existingAffiliateIds = [];
         endpoint            = '/channels/default/members';
         options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
