@@ -200,12 +200,18 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getAffiliates':
+        var existingAffiliateIds
         endpoint            = '/channels/default/members';
         options.url         = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
-          existing_affiliateIds.textContent = existingAffiliates.join('\n');
+          // extract the account ids
+          iMax = existingAffiliates.length;
+          for (i = 0; i < iMax; i++) {
+            existingAffiliateIds.push(existingAffiliates[i].account_id);
+          }
+          existing_affiliateIds.textContent = existingAffiliateIds.join('\n');
           i = affiliate_ids.length;
           while (i > 0) {
             i--;
