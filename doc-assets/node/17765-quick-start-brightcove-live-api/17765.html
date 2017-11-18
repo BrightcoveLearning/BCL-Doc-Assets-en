@@ -120,59 +120,8 @@
 }</code></pre>
 	</aside>
 	</li>
-	<li>If you are using <a href="/node/17908">cURL</a> to make the request, you can use the following cURL command
-	<pre class="line-numbers">
-<code class="language-bash">## Create Job - Simple
-curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
--H "X-API-KEY: <span class="bcls-input">YOUR_API_KEY_HERE</span>" \
--H "Content-Type: application/json" \
--d $'{
-"live_sliding_window_duration": 57600,
-"outputs": [
-{
-"height": 720,
-"video_bitrate": 2100,
-"segment_seconds": 4,
-"keyframe_interval": 60,
-"width": 1280,
-"video_codec": "h264",
-"label": "hls720p",
-"h264_profile": "high",
-"live_stream": true
-},
-{
-"height": 540,
-"video_bitrate": 1500,
-"segment_seconds": 4,
-"keyframe_interval": 60,
-"width": 960,
-"video_codec": "h264",
-"label": "hls540p",
-"h264_profile": "main",
-"live_stream": true
-},
-{
-"height": 360,
-"video_bitrate": 800,
-"segment_seconds": 4,
-"keyframe_interval": 60,
-"width": 640,
-"video_codec": "h264",
-"label": "hls360p",
-"h264_profile": "main",
-"live_stream": true
-}
-],
-"region": "us-west-2",
-"reconnect_time": 1800,
-"live_stream": true
-}'
-</code>
-</pre>
 
-	<p>Copy this code into a text editor, and replace <code>YOUR_API_KEY_HERE </code> with your own api key. Then copy and paste the code at a command line and run it.</p>
-	</li>
-	<li>If instead you are using a REST client like <a href="/node/17919">Postman</a>, you will need to add the following headers for your request:
+	<li>If you are using a REST client such as <a href="/node/18462">Insomnia</a> or <a href="/node/17919">Postman</a>, you will need to add the following headers for your request:
 	<table class="bcls-table">
 		<thead>
 			<tr>
@@ -193,6 +142,7 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 	</table>
 
 	<p>Use the request body shown in step 1 above, and be sure to send the request using the POST method.</p>
+  <aside class="bcls-aside bcls-aside--information">If you prefer to use cURL, you will find the <a href="#curlCreateLiveJob">equivalent cURL command below</a>.</aside>
 	</li>
 	<li>The response from the API should look similar to this:
 	<pre class="line-numbers">
@@ -288,12 +238,22 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 
 <p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove player.</p>
 
-<aside class="bcls-aside bcls-aside--information">In these steps, we set the video up in Video Cloud Studio, but this can also be done using the <a href="/node/18372">CMS API</a> if you prefer.
+<aside class="bcls-aside bcls-aside--information">In these steps, we set the video up using the <a href="/node/18372">CMS API</a>, but this can also be done in Video Cloud Studio, if you prefer.
 
-<p>First, you will need to create a new video by making a <code>POST</code> request to:</p>
+<p>If you are using Insomnia or Postman, you will need to set up OAuth2 authentication using your client credentials. See one of the following guides if you need help:</p>
+<ul>
+  <li><a href="/node/18462">Use Insomnia for API Requests</a></li>
+  <li><a href="/node/17919">Use Postman for API Requests</a></li>
+</ul>
+
+<ol class="bcls-tasklist">
+  <li><p>First, you will need to create a new video by making a <code>POST</code> request to:</p>
 
 <pre>
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre>
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre></li>
+</ol>
+
+
 
 <p>The request body can include several pieces of metadata (see <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">the API reference</a> for details), but the only thing required is a <code>name</code>:</p>
 
@@ -369,7 +329,7 @@ To add the HLS stream, you will make another <code>POST</code> request to:
 <section class="bcls-section">
   <h2 id="curl_commands">cURL commands</h2>
   <p>This section provides alternative cURL commands for those who do not use a REST client such as Insomnia or Postman.</p>
-  <h3>cURL for creating a live job</h3>
+  <h3 id="curlCreateLiveJob">cURL for creating a live job</h3>
 <pre class="line-numbers"><code class="language-bash">## Create Job - Simple
 curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 -H "X-API-KEY: <span class="bcls-input">YOUR_API_KEY_HERE</span>" \
@@ -415,6 +375,10 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 "reconnect_time": 1800,
 "live_stream": true
 }'</code></pre>
+
+<p>Copy this code into a text editor, and replace <code>YOUR_API_KEY_HERE </code> with your own api key. Then copy and paste the code at a command line and run it.</p>
+
+
 </section>
 <section class="bcls-section">
 <h2 id="conclusion">Conclusion</h2>
