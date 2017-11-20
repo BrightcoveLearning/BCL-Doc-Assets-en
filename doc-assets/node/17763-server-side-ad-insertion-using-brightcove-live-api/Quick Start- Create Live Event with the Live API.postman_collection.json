@@ -1,0 +1,124 @@
+{
+	"info": {
+		"name": "Quick Start: Create Live Event with the Live API",
+		"_postman_id": "478d0fca-bebe-3e23-35d5-391df1f32302",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Live Job",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-KEY",
+						"value": "{{api-key}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"live_stream\": true,\n    \"region\": \"us-east-1\",\n    \"reconnect_time\": 30,\n    \"encryption\": {\n      \"method\":\"aes-128\",\n      \"type\":\"internal\",\n      \"key\": \"01234567890123450123456789012345\"\n    },\n    \"outputs\": [\n        {\n            \"label\": \"hls720p\",\n            \"live_stream\": true,\n            \"width\": 960,\n            \"height\": 540,\n            \"video_codec\": \"h264\",\n            \"h264_profile\": \"main\",\n            \"video_bitrate\": 1843,\n            \"segment_seconds\": 6,\n            \"keyframe_interval\": 60\n        },\n        {\n            \"label\": \"hls480p\",\n            \"live_stream\": true,\n            \"width\": 640,\n            \"height\": 360,\n            \"video_codec\": \"h264\",\n            \"h264_profile\": \"main\",\n            \"video_bitrate\": 819,\n            \"segment_seconds\": 6,\n            \"keyframe_interval\": 60\n        },\n        {\n            \"type\":\"playlist\",\n            \"url\":\"s3://learning-services-media.brightcove.com/live/playlist.m3u8\",\n            \"credentials\":\"BCLS-S3\",\n            \"streams\": [{\"source\": \"hls480p\"},{\"source\": \"hls720p\"}]\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "https://api.bcovlive.io/v1/jobs",
+					"protocol": "https",
+					"host": [
+						"api",
+						"bcovlive",
+						"io"
+					],
+					"path": [
+						"v1",
+						"jobs"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Video",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer ABJZHyLGfWg3kBeL-ziqwevhXELMIY3Sad8AL-EnSK8eN_-NTxxqkSCoZNfiMIBcA00okXWZoMsPQRZsYVliJ2vOYB6eSTuuXUiI7fsKh-G2U8OGApoZ7yiM38Bp14pUjVs5KrmYjOnbbLBZBlgXC8qHnJbCCwCIcUUMxl7V-dt7nrOWmowerv-C0Z-jcUTnaT_7Rvgd9pmfkRJNwga3FsJzszRKUJ9Y9NcJy0DW1dMEY-bLIaiVQbMXgV1MD38sa93PPUIpTGpgsq9TPeOJr6pPbE1yKf7ywcNZFNRoYYEbS5fqxrdaKrQkjxST--pYucteh4zSLkujPi6Qu-uieg5W6LDJsiKddN-nWx8tL7EpaJM7bg92UoTa_NqtEGqaPDQL04y6M4n-J2dyWicq3hi2baSjFQXATwlYIbdtKG2I4JoDwUkQ9Q8Xy1ueX7i00brKxrFHiF-DEyKtbM8O-Tv7e7SxmJBgDdadNi3bfBVyPfIj1c5z6WzI6btUBaIlyu8WFhKdI4FMRsgW2OkAIy7hMVZpGrYQ43L290xeKihKG3RCsqdXi_5ec5XXOKIHmIFSEIcFzsSzgryxMPmSSLXDaubd-EpAEqiXfmbRFjcuHx5-Bl5Qxx7cU8BaxybmONcV2NBkL-42Bqr66RVRznPMtnmHGJgP-Dssyp-XLiUOqX-dOOLQfoL8cCVpEUm6YcuQSCfTcmyEj57iifr7zbzkW9ZhhJEs0SI5XR7IVW-0VS9XTyA4kcIca3Qnc1zzRfKWSz_mFgr3vTP7vcgaMmHdz5Dm20DcaBmkTFcG38_3LdULL9dbFWyCteC177T52Im41MnI66U7EQ96tIoTWqF-IDa22yjgnh65DYCGhSGieegH3RlZ44K1OrCBdFXeRFhDfQpIrKcdNdCDEyfFbBrQhQlBVPb57GIjfZBOPVb9k95Wp7QR0O69mYcQutkPe3xdx-5FoWWs9aX3RV4QJzFI4RQOsiyd1F0F1hr2FTxzKLU76T_AbMIWJ9n6KMaoeXM3Gs07pYhOUh7W_ZC-UEk3LNo5FE9BOtEBHNw9sx2ZIfTZVHVTHhlxUujO5F8ogCNxPBoAk-XgP20FRMcdbJz3ripcYUL5kteJKDdUsqiz2ycdp90paFAbhWqnDBLPjEK2KOzFpzyjfqy6vXeducJPIvH2Vn5HujL7KDurmxkah4u2YuXiBQizLSZpqUiU8EpUYpM-62Kkdl8pACze3CeQPm03--XTOTe4T7mdJGkG9wNfLF5W_VyRgjc4tg_neXeo_hDBNIWonEYK4y2ZPzLLQnL8LUK0u5A6BI-VHcdb2XN0bWGIuDo0BUuYkQnjr7T0FVh1uvRldv2Zqq6Rh1CltWMOw7uvsLo5xq49vTI450j-WWhJVcTPkZGS3E-4XOsUXjJ_6mljPWMKBdT7eIMt8unjPRBho0o15x3zbq067jJDG2t2zRHMWi2v00gRIi9u3lUczc96hpPmR5l1rI64ZcU7T-OBW4908nVQLSREpfYLcS_DW1LtbVchjxMQCRrvgUY7tsAFhtH9-m8oxutU-pCcmLXjLjg7_2iqN4gXiLHw4eilx6BsPOCx1SmmIHSWYPTguZaYXDrWeKLzr-mriKiy6u0uzrckSk4m3gDDa8L_23iccHhbfATK2gYtvYzIAg4nX0V7xS7cJd0JsiAwElAnIe9Xf0UpPwy-ih4uoOjAgjjDRyk-kYhOUxA4eA5zn5jkXcjvtE_rBFM-qlGwDUl6-ORvhPG54EkwLDX0MGLKDXDbKE8VO8hZrOLlcBzo66hlwy4lSfc8qXtt0tv2MBOOb_HPA-nLDuR3TpthIfHMTaH3RXMCiEmC_JPr3n5XwBMTV5bndxcAGVwvWqW0W7UWxbjRmz8XPUJnJgmr0WvXlU_m6taCK-9opXLerCaYZGb42umKoiq-bc_IaBv_4cv5lzUp9wkUmLYxgtPQXpz3Qpd30XPP6kkuY4TeB122SaCcEFlRDX5yDP6GvjfnoNqmopU4Z-W2WLyIRCYIK_21IgbiEH5MTuueW7RgPEuCms0NRzl8OxAesOvdcMITKI32lT4NLUnLMbnoo1rno9Mw9FmLuJupVSrjhI35y2M7b53rWymkWckH0DLR8otNItoTchnBS5IXCNYTVucyyBaxE1HSgXdG5ME3n8qX51nmqT4jWb_R_icx6xeZQxdLMbrTZYibHjo4zaJpEdWRxIRzdGnn6ZBHOV6VYIwOdOkk_8P-jKbURdkUA3vx7oBnr8oGpxmAx9KZezurug4KHZ_ulnzNTJe62bH4GfwexmkVoN1vYbMInRWXbLa6TaQzEBvEDQx3DMaiBG7KsN4H1xMlauaTHyZPW3FHKS_rhu_N1fWBvj1fZlaqOniq13I2KdZRDsmscKMKUliuKWowl-fyXopQJbXoqCvGp5FOWTRYwi00m96ByNZ3iLrtzA1aPtaM4e8zQ1EykH-mFV1EZ7cuAIVQb3uFqt8SlkMaMU6zkePk9jELlzXd2FhFppdFenmMENZ5AaFl7AY5c1Y4EBXSvp7xyBru9KasU1ryPVmyIQLN5ZPnEPpLko94HIwTGaP21TXzSJgO7ZB099mQIEkiexgL8H6TuNBQwh97BfGNLM4li4ImR3LYEl10HK_dO7Wya0UjchJMZrc7zaUlgaN_2UvPqOSttH82uqOsG_gOfusOJfz-4H7cRMcfrNR4-RgCjkD_2YhDTOeER1fvZ9R5ZOdGMh7rfRn61JfU-kUWjOQ5peN4n3ZqsGAU8JKodbDgnfk7c0gTF_lSLWPk5u0XSQJrBlBeM-8gYbS2Lc9aaSzUdeS451FyTINddKiobtVYdN16wW_-HmUHntyrSLGHkRlpVuXslJgYDoB8He0aUxL2DVs46TwJcYvnIKf6I9P6Y_I7I33PiI1E3BwljyFYWgNXhloj_hiLGvHLqyECTI99LF8LXF-5_xLUAt-jouyN92C0LP1s6Q9uTk86Ri_xbmuwpNXgSK0i1aoV1JBQuq8kzMdn0a5NFbR5MV8VAmD5QM5qzNHfjXCoZ32BmyJ-XBvkLbU1AZfsi2d_GgU2Ttz979l57NX695aowh9yqi3v-b7w_cXTOXNqyGiqhziC89HaolmxY28twr5aYxqvsMe90txZsKCQdjq7FkNCR-hDtcAjsHrz9ZEd975rpdzCwEUyviVvnF4B8oRepnNajpTUAJCJxesZRjH8xpSo4y5KedvE3qkhDa3lXTHctYccgIAmb6Iw0FwesH82XzydxDpKTL4d8FwlMAsFKC_6cc7tZxCWWfwP6nI_mqciMrtMXufoBQWnpzkJufBlOQli_X6_y67nP7y3rjOleJ3iZB4U4mFaiLD8QIL6ML_Q6WutRemIb8APjc9ddGbM9bCr-iEvdmIvZqc81de04bGnHqsu4OGcVV84lJnYHe6awH_EwQZC_0voNffZxdqmqDPGhO40yCwnMmId_FyW0KHO1_BDTEcSHcNGaTI6NuPZtGVkArY7eh0UgvJFCxFBVFW3IKLmoQdk4ZnYuaEOr17fhywkVeky2lmBNWdbtwlcTmWPcv5-QM3o5ND-hd5FHm6pdnslR1JDmhNBenCcsiBGUOVdOVwIGwqzjjguEylFS7EZMRyY2dFLN0wALqzB8wjfXh-S_Y4cNQ8d3VYP8qAUr-CxYAED8pyCiS8xNJOjXVufbRXhvtYAX_f1XYq5DAkD0t43RvyENzUOeMykTJpWV-A4iLTtPpjuhnMZZDBlma3CDcRRRqN-e0W2nD8_-aS-ncRVWjws"
+					},
+					{
+						"key": "Content-Type",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Great Blue Heron DD-MAT 2017-04-27\",\n\"custom_fields\": {\"subject\":\"Birds\"},\n\"cue_points\": [\n    {\n      \"name\": \"Ad Cue Point\",\n      \"type\": \"AD\",\n      \"time\": 2.0,\n      \"metadata\": null,\n      \"force_stop\": false\n    },\n    {\n      \"name\": \"Code Cue Point\",\n      \"type\": \"CODE\",\n      \"time\": 4.0,\n      \"metadata\": \"The metadata might be text or the url for an image to display\",\n      \"force_stop\": true\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://cms.api.brightcove.com/v1/accounts/57838016001/videos",
+					"protocol": "https",
+					"host": [
+						"cms",
+						"api",
+						"brightcove",
+						"com"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						"57838016001",
+						"videos"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Remote HLS Manifest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer ANj2avD0JNwRuUaBJP_ayEYbNL64Vf9aNrLxip5f32HGahYZyY0N4_IpvkKOuJCb78nyQc8CqaYCICNarUzvY6Gdmef4koH2DXsu7enagm8GaxFHU-3ne8DOqKLw6xXBJ2_e3uxIhjRw94hniIqFjxQC2amHwXBIpOG63Omc3cszmqyrREO4YNfk3CVLJ6O7lcXdXKxlGnuZ9htyqbFuUiwlZakV4M8OjoZjGEixBAPpYIOt3UaKWLwPoWJsD7WGaiWOoOmSRxZCwRteyqded_FYuMSTiIe0h9jmN16tAJX4VfrjdkSuHt9clEWZW68BY3x-oYyzo1mvEJB61mZN2yrGaeiH9TNFfc1Gr_YBjManu598L-8E2TCbyd9pKgK2x7lANuXqTJY1wrvEA_y72yfv2t-iEW8AxCIyW_f0yUVnGlfwhcig8oonxBwVNzQ-kIQv-HP4i56Plgi4aMJ46BKmDiqE5v88Co__D1Pzcyw7HXzwc2Y9a8BdJD8xfe10CmkHXxJNJoLuJ6xyKF5e2kIm0TjCluIK_aRaABt5ggkrRlEztYX5KLCyoX_j7it_LCE5mOqTxgAMBntZo9XY8K3d0W_Ex2kp1MCibsuT0pwDpVNajPU9wCiiU_58xsFaJpaermJncaOEodDTokkqs_Pd4Adr0iCdCe0UUX_ZBESm-FFkpLj8JVUcWC9fhQ3ok7zC97CcQbB0yF23vDlnTvEwHlfsGgX7NNAZBblfmOzZ8krBIWPOFPdzABDEs96Ob2io_Rrx4-UWY-RdJhVC8HUXIQhc000BmyAD3HXvFRPTcwxTQhBNdLZ2Fu4qB4bDX2FtWiomA5KSGNfiVE1mMCr-Vif3Rh-6CZ8oQDU7bs5zmMAdSFb31BgAazDt2lvB8nQeNo0PJjdKIDAY0ricnct1N_pDgUC1iLDySSLO2HhNgE5HnmwkMNXeOYB4KX24uRATv_W1kI217_7fOE_FQTXCnWwscTLhB_Ml_j_kQIVxs278OtTUGOPmsfUjfiYdDINl1hzk2t-Iji0RbOsk4d0hrrajZOen3Loy_bC98O7qMf9J8iEyNb55PRujNwnVJoOXacHXFseWJAWJuwGlQdNdXBDj6x_Xv9uFYCc_GFY6OZ09Rpf6yS3cplTcBS9DywUl9XtF0g00bNP7mY_Wq4q-qqZoyGofD0YFlKvGP4k4b9ACTGZsxNgCgYVyZmV_wfdM_PCw35mlNTL9hgLLa1nL-dg0P-WyHNG9YissngvMYyTkCvllfJffLwS4iAOG4jZPGXDr0roeQ_6cAM3tmQvxkuZMMHFF3KHpS9dyLxgy_dzMpv3qR9MaoD4xdI1qFpgoPxcFitevy5IBoLilC2dsdk29laQdHuevgush4B1uAmwIW8WAZ7Bqoa0sr8e7wAYr0F1i0jK6spF6lPwRuHjL2B95O-5HxS8XN_LHcr3hFYXH7BW-p2YQ10IVI_ibXnD7Oj5QfJSiqTIyCJXB_hY2-JLOOdcy3gHJ1tefnC-XrythspbIT5JAWnvidyvuhxZSsdWlVOMHEXb-YlOQ90Ty8qqxiEURKBH4HqMGMZONUG0XosvO7TQ-fnSSFHqmsMlmuOV_gJnfNByixpHc0FquSlkP7MrIMMOUi6_4nZWMDDoBIQtEDmHJvVHyVuYH1kF9rxHA1mkuXSUKXnYnu3a8EMBt15aH8i8AB_x9OKXb5HmhtIjTWdFEJnS76QR5LXEZudO0-vDuKNHZEcUx8vw2sUNT4byKOEYCdIxdnzGifeFaVnHP-bxZy4lEgVQqbRHWJJHzSZiy2_qrSHHkCIyLOerLXKV2qm1NRKuNKmSC14omIxEeQb_ki-qTJvYGIFzV3ZLlf08-Mc9JmF-U2kXtvKp0YqzF35EZMVjPVpEP7RYyeBd5cpUHMXueCdIZeS26ePqUYmze_wvl0WTt6oNYKrNUCMB6TbjL7yDCvb5UZ0rgf_jmOSVQk7WchmKev_0B_nL4Y7SaJDexWpix9uc-ezCeDix7O5u5GvtT9hHIhDWpR836am0Rfl4va2sxQ-KPvW-2tnG3VH5Xq5YesvDKlYXtSwsUyasxcfi5RugK2VyqfhjSs4HgU2Du4J6i7DERNbRtA3yIiZstVUzuG2dQ27f8b7m7qz1mKSMYbhRv5Jvp8r4LJ0R-lk8SjQTzwbavCKMUeD9aCvweB4n5iN3AMMMzlAWY-arW772LDVFUOXpXCFcIgaGo3xXIFFHkI4XXqOizrLHn-sBH-V8-OcZZgKQGiz7f_kM-dE4F851rnJaTqEP1p7m202VOrs2wrqvTRNPz3wYz8B5KTFZr1so9WL1ZSM4iGEm3ZBYJnUM4n2Vh6mXl0kS8Hxbq5geJwNhhpqJNxi62Akm7eqH_mWxo1B4BjryTMk5umbGjc1B7kjGsFZjBVvLRGgh2ljw8dODm6YtuIPQmJphdJ7MgMpj2c7QWMGxUjXDzEJ731ukY7D1zPK5Rtlyx7jH8DHf7E6pxqC8VztT8zu7Z1BBMTP-EgnH0b1uXttBYsp71TqB-UXriH4aYPkfaTL3YuUjmwgHEHm6v12pU3c814nm6Rj-wxqfFhrWHuNsng01iqdxSkNdKE93SD8jqxenJA9iHi5Lw_TbtnMizxZBVCrx6gv0cnHDrINFFxfcpibDp-Al4Ssn-lSWHJOr62G2ssrulinGa6oRHEAEh_eF-PUAjA_A9xD-Nkom1ntKNCRZVoOgjpPnWXGfOxHMaWnnUAkWGEZ7q8ozrCwVenChu2Nuwy7joLrU-1K0Dmzc-kJhIQ6mdfc2sqGVmi3ClBSbbeEVSxtTkopzdXo_SylKD5DPj3MLv8eNWxro3K0MJVyqr-oF_QGcIN_BIr2esN92rbhw_SaRJTQvYVKi0wdIRs3xK-cI9gx95BTSo-9Q1o9vziDATG2qFfMSXPbyfsL2THHwcfHxj-Z7MjS9QuOSAW1prG8IdHTX4VCDRZV8ctfS-zU3Za_ZsCax-jMKJrXSZL4JNoKTB8ZfX07D5EibZTDFylY-QUnAh6hnn0-rGa0wDnBTj5_kbngQFhxDMRslmFjoFgkYX1plTGXsngltzbAkBEb3vh3Dk4whuT-Sb7hU562P_Z9dsIqxqtX_uIEsUic78XzVdugnb3BPTABBEO81t1B_RYZwGFwJsckO-YQSAWOvF1sTl7RJuKc8ndDSaFzHMUn8Y-uvCAwBUJgFOHZCA0oOi-FwyFf4cz4q_4CXert0tqxpKO_lbZdUAp8yN5ub5fJ2t2nP-CpVG99RJZBR6_HYevXz5Vk8Tt4jEw3VmFJsDWNKYS9iSvFMYyV0vzxhPZoxme-eJ3_dDzpFmysqBIJ3cGVgCG65VaFFDnoO4nlRqL5yxyUW4vfs-3tvDNwUHWSu3kCc6J1-zh5mxsttQZoRWRJalb0ucEVcfTpViB2mhPPKtIvFfVgsbBl-HR7n2d99ovIFpiiwdS1foUpQ3Y_VyGFc97hANa3yJc_zhONjiGPgjVldk3FVApseHLzou66LiwvDFScpch_bU69gZUNMxLKOzPMvP_BAr4d3PMKbQFEnwAfUmzHEJr_U58tLOD9lwJJf3W_HaZ7vPpdmBO99rWjvfau8B6rfAJBrOu3S8QkSYuaUg_W5vKmvSFO9dBqNRIQtYoUH0R1ZKtCkx7OSTx517cFbWGrHGXlMmlzKe5Fc29oFarZlEiWCwogobTGyreKjDRJsFNLqMtXKc8ESnveZXzoak50sJHLnL_f7F27cu6xW2esO7tpI1-Brj1sqSY198eyaA"
+					},
+					{
+						"key": "Content-Type",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"remote_url\": \"http://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8\",\n    \"video_duration\": 31\n}"
+				},
+				"url": {
+					"raw": "https://cms.api.brightcove.com/v1/accounts/57838016001/videos/5459134583001/assets/hls_manifest",
+					"protocol": "https",
+					"host": [
+						"cms",
+						"api",
+						"brightcove",
+						"com"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						"57838016001",
+						"videos",
+						"5459134583001",
+						"assets",
+						"hls_manifest"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
