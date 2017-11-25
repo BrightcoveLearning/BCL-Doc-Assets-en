@@ -13,7 +13,7 @@ var BCLS = ( function (window, document) {
         cmsURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         videoDataDisplay = document.getElementById("videoData"),
         // Dynamic Ingest API stuff
-        profilesArray = ['high-resolution', 'balanced-nextgen-player', 'screencast-1280', 'mp4-only', 'smart-player-transition', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'Live - Premium HD', 'Live - HD', 'single-bitrate-standard', 'screencast'],
+        profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
         di_url_display = document.getElementById("di_url"),
         di_submit_display = document.getElementById("di_Submit"),
         diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
@@ -32,10 +32,10 @@ var BCLS = ( function (window, document) {
     logging
     *************************/
     function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
+        if (window.console && window.console.log) {
           console.log(context, message);
-        };
-    };
+        }
+    }
 
     // is defined
     function isDefined(x){
@@ -44,7 +44,7 @@ var BCLS = ( function (window, document) {
         } else{
             return true;
         }
-    };
+    }
     // set options for the CMS API request
     function setCMSOptions() {
         var options = {};
@@ -58,7 +58,7 @@ var BCLS = ( function (window, document) {
         bclslog("cmsoptions", options);
         // now submit the request
         submitRequest(options, cmsURL, "cms");
-    };
+    }
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
         var options = {},
@@ -78,11 +78,11 @@ var BCLS = ( function (window, document) {
         bclslog("dioptions", options);
         // now submit the request
         submitRequest(options, diURL, "di");
-    };
+    }
     // function to set the request
     function logResponse(type, data) {
         response.textContent += type + ": " + data + ",\n";
-    };
+    }
 
     // function to submit Request
     function submitRequest(options, proxyURL, type) {
@@ -147,7 +147,7 @@ var BCLS = ( function (window, document) {
         httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         // open and send request
         httpRequest.send(requestData);
-    };
+    }
     di_submit_display.addEventListener("click", function () {
         var i, now = new Date().valueOf();
         videoData = JSON.parse(videoDataDisplay.value);
@@ -176,7 +176,7 @@ var BCLS = ( function (window, document) {
             newOpt = new Option(profilesArray[i]);
             ingest_profile_display.add(newOpt);
         }
-    };
+    }
     // call init to set things up
     init();
 })(window, document);
