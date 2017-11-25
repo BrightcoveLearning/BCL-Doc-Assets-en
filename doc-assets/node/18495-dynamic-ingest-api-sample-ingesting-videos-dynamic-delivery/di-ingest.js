@@ -32,7 +32,7 @@ var BCLS = ( function (window, document) {
     logging
     *************************/
     function bclslog(context, message) {
-        if (window.console && window.console.log) {
+        if (window.console && console.log) {
           console.log(context, message);
         }
     }
@@ -41,9 +41,8 @@ var BCLS = ( function (window, document) {
     function isDefined(x){
         if(x === "" || x === null || x === undefined){
             return false;
-        } else{
-            return true;
         }
+        return true;
     }
     // set options for the CMS API request
     function setCMSOptions() {
