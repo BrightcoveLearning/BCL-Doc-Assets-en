@@ -39,7 +39,7 @@ var BCLS = ( function (window, document) {
 
     // is defined
     function isDefined(x){
-        if(x === "" || x === null || x === undefined){
+        if (x === "" || x === null || x === undefined) {
             return false;
         }
         return true;
