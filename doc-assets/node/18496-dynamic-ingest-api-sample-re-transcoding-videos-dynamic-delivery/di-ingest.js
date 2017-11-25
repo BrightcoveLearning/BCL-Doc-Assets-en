@@ -133,7 +133,7 @@ var BCLS = (function(window, document) {
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
     client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
     client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
-    cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
+    di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + '/:video_id/ingest-requests';
     // set CMS API options for first video
     setDIOptions();
   });
