@@ -9,8 +9,6 @@ var BCLS = (function(window, document) {
     ingest_profile_display = document.getElementById('ingest_profile_display'),
     ingest_profile,
     custom_profile_display = document.getElementById('custom_profile_display'),
-    cms_url_display = document.getElementById('cms_url'),
-    cmsURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
     videoDataDisplay = document.getElementById('videoData'),
     // Dynamic Ingest API stuff
     profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
@@ -39,24 +37,6 @@ var BCLS = (function(window, document) {
       return false;
     }
     return true;
-  }
-  // set options for the CMS API request
-  function setCMSOptions() {
-    var options = {},
-      reqBody = {};
-    // truncate description if too long
-    videoData[videoNumber].description = videoData[videoNumber].description.substr(0, 120) + '...';
-    options.client_id = client_id;
-    options.client_secret = client_secret;
-    reqBody.name = videoData[videoNumber].name;
-    reqBody.description = videoData[videoNumber].description;
-    reqBody.reference_id = videoData[videoNumber].reference_id;
-    reqBody.tags = videoData[videoNumber].tags;
-    options.requestBody = JSON.stringify(reqBody);
-    options.requestType = 'POST';
-    options.url = cms_url_display.value;
-    // now submit the request
-    submitRequest(options, cmsURL, 'cms');
   }
   // set options for the Dynamic Ingest API request
   function setDIOptions() {
@@ -99,16 +79,6 @@ var BCLS = (function(window, document) {
               logResponse(type, httpRequest.responseText);
               responseData = httpRequest.responseText;
               switch (type) {
-                case 'cms':
-                  if (responseData.indexOf('TIMEOUT') > 0) {
-                    // videoNumber++;
-                    t1 = setTimeout(setCMSOptions, 1000);
-                  } else {
-                    parsedData = JSON.parse(responseData);
-                    di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + parsedData.id + '/ingest-requests';
-                    setDIOptions();
-                  }
-                  break;
                 case 'di':
                   totalIngested++;
                   logResponse('totalIngested', totalIngested);
@@ -165,7 +135,7 @@ var BCLS = (function(window, document) {
     client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
     cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
     // set CMS API options for first video
-    setCMSOptions();
+    setDIOptions();
   });
   // initialize
   function init() {
