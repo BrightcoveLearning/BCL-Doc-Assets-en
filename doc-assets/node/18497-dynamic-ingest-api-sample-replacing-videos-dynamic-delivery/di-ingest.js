@@ -1,6 +1,5 @@
 var BCLS = (function(window, document) {
-  var // CMS API stuff
-    account_id_display = document.getElementById('account_id'),
+  var account_id_display = document.getElementById('account_id'),
     account_id,
     client_id_display = document.getElementById('client_id'),
     client_id,
@@ -91,11 +90,11 @@ var BCLS = (function(window, document) {
                     if (currentJobs > 99) {
                       // reset currentJobs
                       currentJobs = 0;
-                      // wait 30 min before resuming
-                      t2 = setTimeout(setCMSOptions, 1800000);
+                      // wait 30 sec before resuming
+                      t2 = setTimeout(setDIOptions, 180000);
                     } else {
-                      // pause to avoid CMS API timeouts
-                      t2 = setTimeout(setCMSOptions, 1000);
+                      // pause to avoid DI API timeouts
+                      t2 = setTimeout(setDIOptions, 1000);
                     }
                   }
                   break;
@@ -134,7 +133,7 @@ var BCLS = (function(window, document) {
     client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
     client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
     di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
-    // set CMS API options for first video
+    // set DI API options for first video
     setDIOptions();
   });
   // initialize
