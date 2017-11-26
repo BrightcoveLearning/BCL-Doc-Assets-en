@@ -16,6 +16,26 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="workflowoverview">Workflow overview</h2>
+
+<p>A number of systems/technologies are used in the overall transcoding and storage of media. They are:</p>
+
+<ul>
+	<li><strong>Content Management System (CMS) API</strong>: Creates a video object for use in the DI API</li>
+	<li><strong>Zencoder</strong>: Transcodes the video creating multiple renditions</li>
+	<li><strong>Amazon S3</strong>: Moves the master and renditions to storage, based on profile settings</li>
+	<li><strong>Catalog</strong>: Stores requisite information associated with the video</li>
+</ul>
+
+<p>After initial transcoding, you have the following actions you can perform on the media:</p>
+
+<ul><!-- the following item on hold indefinitely --><!-- <li><strong>Delete</strong>: Delete, when needed, the master or all items</li> -->
+	<li><strong>Re-transcode</strong>: Create new renditions when master is present (error if master is not present)</li>
+	<li><strong>Replace</strong>: Point to a new master, or replace an existing master</li>
+</ul>
+</section>
+
+<section class="bcls-section">
 <h2 id="operations">Operations</h2>
 
 <p>When you use the DI API you will perform different operations, such as reading an ingest profile and writing ingest information to your account. The following is a complete list of operations required for DI tasks:</p>
@@ -36,7 +56,12 @@
 	</li>
 </ul>
 
-<p>To obtain client credentials, use the Studio <a href="/node/14056">admin tools</a>.</p>
+<p>To obtain client credentials, use the Studio <a href="/node/14056">admin tools</a> or see one of the following documents:</p>
+
+<ul>
+	<li><a href="/node/17924">OAuth: Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+</ul>
 </section>
 
 <section class="bcls-section">
@@ -174,6 +199,8 @@
 	</dd>
 </dl>
 
+<aside class="bcls-aside bcls-aside--information">For more information on the CMS API call to create the video in the Video Cloud system, see the <a href="/node/18034#settingvalues">CMS API Overview</a>. Note that the video <code>name</code> is required, and that the name and any other strings included for video metadata (such as the <code>description</code>) <strong>must be URI-encoded</strong>.</aside>
+
 <p>The response data will include the video <code>id</code>, which is used in the next request.</p>
 
 <h3>Ingest API request</h3>
@@ -200,6 +227,36 @@
 
 <aside class="bcls-aside bcls-aside--information">Note that the <code>callbacks</code> field is optional, but we highly recommend that you use it as the best way to track the progress of ingest jobs. See <a href="#notifications">below</a> for more on notifications.</aside>
 </section>
+
+<section class="bcls-section">
+<h2 id="rateLimiting">Best practices</h2>
+
+<p>To insure good performance and results with Dynamic Ingest, it's important that you follow these best practices!</p>
+
+<aside class="bcls-aside bcls-aside--tip">
+<ul>
+	<li>You may <strong>not</strong> have more than one job processing for a particular video id - for instance, if you ingest a new video, you must wait until processing is complete before submitting a retranscode or replace request for the same video - operations that will generate a new ingest job include:
+
+	<ul>
+		<li>Retranscoding the video</li>
+		<li>Replacing the video</li>
+		<li>Uploading new images for the thumbnail or poster</li>
+		<li>Uploading new text tracks</li>
+	</ul>
+	</li>
+	<li>A 20 request per minute limit on each account for total requests across DI and the CMS API (CMS API or Ingest API requests)</li>
+	<li>A limit of 100 concurrent DI jobs per account</li>
+	<li>Ingest content smaller than 100GBs per file (if you need to ingest larger files please contact your Account Manager)</li>
+	<li>If you are ingesting files in batches, limit batches to 100 and wait for the previous batch to complete processing before continuing</li>
+	<li>Validate <a href="./node/18045">ingest profile</a> changes before ingesting full batches</li>
+</ul>
+
+<p>If the requests exceed either the rate or concurrency limit, a 429 - TOO_MANY_REQUESTS error will be returned.</p>
+</aside>
+
+<p>If you have a high volume of videos to ingest on a regular basis, you will need to combine your ingest app with a <a href="/node/17954">notification receiver</a> to know when you need to pause and resume ingest requests. See <a href="/node/17941">Fallback / Retry Strategy</a> for more details.</p>
+</section>
+
 
 <section class="bcls-section">
 <h2 id="viewingRenditions">Viewing Renditions</h2>
@@ -231,7 +288,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 // request body
 {
     "master": { <strong><em>"use_archived_master": true</em></strong> },
-    "profile": "videocloud-default-v1"
+    "profile": "multi-platform-extended-static"
 }</code></pre>
 
 <aside class="bcls-aside bcls-aside--information">
@@ -254,7 +311,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "profile": "DynamicDeliveryIngestProfile",
+    "profile": "multi-platform-extended-static",
     "poster": {
         "url": "http://bcls@solutions.brightcove.com/bcls/assets/images/great-blue-heron-poster.png",
         "width": 1280,
@@ -313,7 +370,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "profile": "DynamicDeliveryIngestProfile",
+    "profile": "multi-platform-extended-static",
     "text_tracks": [
         {
             "url": "http://solutions.brightcove.com/bcls/assets/vtt/sample.vtt",
