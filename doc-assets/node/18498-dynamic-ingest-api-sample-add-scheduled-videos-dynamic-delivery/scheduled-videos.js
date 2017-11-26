@@ -12,7 +12,7 @@ var BCLS = ( function (window, document) {
         cms_url                = document.getElementById('cms_url'),
         di_submit              = document.getElementById('di_submit'),
         responseEl             = document.getElementById('responseEl'),
-        profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
+        profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
         name,
         video,
         default_video          = 'http://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4',
