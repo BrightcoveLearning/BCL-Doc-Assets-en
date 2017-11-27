@@ -93,11 +93,11 @@
 
 <pre class="line-numbers">
 <code class="language-json">{
-"master":{
-"url":"http://learning-services-media.brightcove.com/videos/mp4/Bird_Woodpecker.mp4"
-},
-"profile":"multi-platform-extended-static",
-"capture-images": true
+  "master":{
+    "url":"http://learning-services-media.brightcove.com/videos/mp4/Bird_Woodpecker.mp4"
+  },
+  "profile":"multi-platform-extended-static",
+  "capture-images": true
 }
 </code>
 </pre>
@@ -121,6 +121,57 @@
 </ul>
 
 <p>However, you can create additional custom ingest profiles, if needed, using the <a href="/node/18045">Ingest Profiles API</a> or using <a href="/node/15628">Video Cloud Studio</a>.</p>
+
+<aside class="bcls-aside bcls-aside--warning">If you retrieve profiles using the <a href="/node/18374">Ingest Profiles API</a> the results for <strong>legacy ingest accounts</strong> will include Dynamic Delivery profiles, but using these will result in errors. You will need to filter these profiles out on the client side. You can recognize Dynamic Delivery profiles by the existence of a <code>dynamic_origin</code> property:
+<pre class="line-numbers"><code class="language-json">{
+		"version": 2,
+		"name": "multi-platform-extended-static",
+		"display_name": "Multiplatform Extended",
+		"description": "Deliver high quality content for a wide range content types and screen sizes including mobile, desktop and large screens.",
+		"account_id": -1,
+		"brightcove_standard": true,
+		"date_created": 1495114240899,
+		"date_last_modified": 1503002227627,
+		"digital_master": {
+			"rendition": "passthrough",
+			"distribute": false
+		},
+		"renditions": [
+		],
+		"packages": [
+		],
+		"<span class="bcls-highlight">dynamic_origin</span>": {
+			"renditions": [
+				"default/audio64",
+				"default/audio128",
+				"default/video3800",
+				"default/video700",
+				"default/video3500",
+				"default/video2000",
+				"default/video1700",
+				"default/video1200",
+				"default/audio96",
+				"default/video450",
+				"default/video900",
+				"default/audio192"
+			],
+			"images": [
+				{
+					"label": "thumbnail",
+					"height": 90,
+					"width": 160
+				},
+				{
+					"label": "poster",
+					"height": 720,
+					"width": 1280
+				}
+			]
+		},
+		"id": "f1b16093e2dc4f81810f1488"
+	}</code></pre>
+</aside>
+
 
 <h4>Adding poster and thumbnail images</h4>
 
