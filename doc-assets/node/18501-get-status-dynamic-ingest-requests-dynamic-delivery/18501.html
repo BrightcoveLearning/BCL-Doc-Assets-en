@@ -232,19 +232,6 @@ var_dump($notificationData);
                 currentIndex = 0;
 
                 /**
-                 * Logging function - safe for IE
-                 * @param  {string} context - description of the data
-                 * @param  {*} message - the data to be logged by the console
-                 * @return {}
-                 */
-                function bclslog(context, message) {
-                    if (window["console"] &amp;&amp; console["log"]) {
-                      console.log(context, message);
-                    }
-                    return;
-                }
-
-                /**
                  * tests for all the ways a variable might be undefined or not have a value
                  * @param {*} x the variable to test
                  * @return {Boolean} true if variable is defined and has a value
@@ -395,7 +382,6 @@ var_dump($notificationData);
                                         case 'notificationData':
                                         var k, kMax, dataArray;
                                         dataArray = JSON.parse(responseData);
-                                        bclslog('dataArray', dataArray);
                                         // process the notifications
                                         kMax = dataArray.length;
                                         for (k = 0; k &lt; kMax; k++) {
@@ -405,7 +391,6 @@ var_dump($notificationData);
                                         break;
                                         case 'video':
                                         parsedData = JSON.parse(responseData);
-                                        bclslog('parsedData', parsedData);
                                         videoDataArray[currentIndex].reference_id = parsedData.reference_id;
                                         videoDataArray[currentIndex].name = parsedData.name;
                                         currentIndex++;
@@ -418,7 +403,7 @@ var_dump($notificationData);
                                         break;
                                     }
                                   } else {
-                                    bclslog("There was a problem with the request. Request returned " + httpRequest.status);
+                                    console.log('There was a problem with the request. Request returned '', httpRequest.status);
                                     if (type === 'video') {
                                         setVideoRequestOptions();
                                     } else {
@@ -428,7 +413,7 @@ var_dump($notificationData);
                                 }
                               }
                               catch(e) {
-                                bclslog('Caught Exception: ' + e);
+                                console.log('Caught Exception: ', e);
                               }
                         };
                     // notifications data is a special case
