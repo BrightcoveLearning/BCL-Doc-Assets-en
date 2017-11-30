@@ -18,7 +18,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="faq">FAQ</h2>
+<h2 id="FAQ">FAQ</h2>
 
 <p>Here are some questions about the Policy API that we commonly get.</p>
 
@@ -33,7 +33,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="baseURL">Base URL</h2>
+<h2 id="Base_URL"></h2>
 
 <p>The base URL for the Policy API is:</p>
 
@@ -49,12 +49,12 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="authenticaion">Authentication</h2>
+<h2 id="Authentication">Authentication</h2>
 
 <p>Requests are authenticated by a access token passed in an <code>Authorization</code> header:</p>
 
 <pre>
-<code>Authorization: Bearer {access_token}</code></pre>
+<code class="language-json">Authorization: Bearer {access_token}</code></pre>
 
 <p>To get access tokens, you will need to have client credentials for the account that have permissions for <code>video-cloud/player/all</code> operations. You can obtain your client credentials (a <code>client_id</code> and <code>client_secret</code>) through <a href="/node/14056">Studio (recommended)</a> or directly via the <a href="/node/17928">Brightcove OAuth API</a>.</p>
 
@@ -62,7 +62,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="createPolicy">Create a policy key</h2>
+<h2 id="Create_a_policy_key">Create a policy key</h2>
 
 <p>To create a new policy key, make a POST request to:</p>
 
@@ -75,8 +75,8 @@
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "key-data": {
-        "account-id": "{account_id}"
+    &quot;key-data&quot;: {
+        &quot;account-id&quot;: &quot;{account_id}&quot;
     }
 }</code></pre>
 
@@ -84,19 +84,19 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="domain-restriction">Domain restriction</h2>
+<h2 id="Domain_restriction">Domain restriction</h2>
 
 <p>In addition to limiting access to the account, you can also limit access to specific domains by adding the <code>allowed-domains</code> key:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "key-data": {
-        "account-id": "123456789001",
-        "allowed-domains": [
-            "http://www.abc.com",
-            "https://www.abc.com",
-            "http://www.xyz.com",
-            "https://www.xyz.com"
+    &quot;key-data&quot;: {
+        &quot;account-id&quot;: &quot;123456789001&quot;,
+        &quot;allowed-domains&quot;: [
+            &quot;http://www.abc.com&quot;,
+            &quot;https://www.abc.com&quot;,
+            &quot;http://www.xyz.com&quot;,
+            &quot;https://www.xyz.com&quot;
         ]
     }
 }</code></pre>
@@ -107,9 +107,10 @@
 	<li>Any key for your account may be used to access the account content via the Playback API, so if you are using domain restriction, we highly recommend that you domain restrict all of your players.</li>
 </ul>
 </aside>
+</section>
 
 <section class="bcls-section">
-<h2 id="geoRestriction">Geo restriction</h2>
+<h2 id="Geo_restriction">Geo restriction</h2>
 
 <p>The Policy API can be used to implement geo-restriction for a player instead of or in addition to <a href="/node/18011">individual videos.</a></p>
 
@@ -126,14 +127,33 @@
 <p>Here is an example whitelist policy set that only allows playback from the US and US territories and military bases:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{"account-id": "8523232323",
- "geo": {
-   "countries": ["us", "usmil", "pr", "gu", "vi", "as", "mp"],
-   "exclude_countries": false
+<code class="language-json">{&quot;account-id&quot;: &quot;8523232323&quot;,
+ &quot;geo&quot;: {
+   &quot;countries&quot;: [&quot;us&quot;, &quot;usmil&quot;, &quot;pr&quot;, &quot;gu&quot;, &quot;vi&quot;, &quot;as&quot;, &quot;mp&quot;],
+   &quot;exclude_countries&quot;: false
  }
 }</code></pre>
 
 <p>To blacklist those countries instead, set <code>exclude_countries</code> to true.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Require_SSAI">Require SSAI</h2>
+
+<p>When working with Server-Side Ad Insertion (SSAI), you may want a way to enforce proper ad configuration in your API requests. You can do this by configuring your policy key to require that an <code>ad_config_id</code> is appended as a URL parameter to all Playback API requests.</p>
+
+<h3>Sample</h3>
+
+<p>Here is an example:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  &quot;key-data&quot;: {
+      &quot;account-id&quot;: &quot;1752604059001&quot;,
+      &quot;require-ad-config&quot;: true
+  }
+}</code></pre>
+
 </section>
 
 <section class="bcls-section">
@@ -143,9 +163,9 @@
 
 <pre class="line-numbers">
 	<code class="language-json">{
-	"key-data": {
-        "account-id": "57838016001",
-		"apis": ["search"]
+	&quot;key-data&quot;: {
+        &quot;account-id&quot;: &quot;57838016001&quot;,
+		&quot;apis&quot;: [&quot;search&quot;]
 	}
 }</code></pre>
 
@@ -153,22 +173,21 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="apiResponse">Response</h2>
+<h2 id="API_Response">API Response</h2>
 
 <p>The response to policy create requests will be JSON that includes the encrypted <code>key-string</code> that you can use to authenticate requests to the Playback API, as well as the policy associated with the key:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "key-data": {
-        "account-id": "57838016001"
+    &quot;key-data&quot;: {
+        &quot;account-id&quot;: &quot;57838016001&quot;
     },
-    "key-string": "BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U"
+    &quot;key-string&quot;: &quot;BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U&quot;
 }</code></pre>
-
 </section>
 
 <section class="bcls-section">
-<h2 id="getPolicy">Policy requests</h2>
+<h2 id="Policy requests">Policy requests</h2>
 
 <p>To retrieve the policy object associated with a <code>key-string</code>, make a GET request to:</p>
 
@@ -179,17 +198,17 @@
 
 <pre class="line-numbers">
 <code class="language-json">{
-    "key-data": {
-        "account-id": "57838016001"
+    &quot;key-data&quot;: {
+        &quot;account-id&quot;: &quot;57838016001&quot;
     },
-    "key-string": "BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U"
+    &quot;key-string&quot;: &quot;BCpkADawqM0NK0Rq8n6sEQyWykemrqeSmIQqqVt3XBrdpl8TYlvqN3hwKphBJRnkPgx6WAbozCW_VgTOBCNf1AQRh8KnmXSXfveQalRc5-pyNlSod5XzP99If2U&quot;
 }</code></pre>
 </section>
 
 <section class="bcls-section">
-<h2 id="revokePolicy">Revoke a policy</h2>
+<h2 id="Revoke_a_policy">Revoke a policy</h2>
 
 <p>If you need to revoke an existing policy, submit a request to <a href="http://support.brightcove.com/en/contact">Brightcove Support</a>. Include the key string for the policy you want to revoke in your request.</p>
 </section>
-</section>
+
 </article>
