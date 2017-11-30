@@ -1,6 +1,6 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="introduction">Introduction</h2>
+<h2 id="Introduction">Introduction</h2>
 
 <p>The Playback API is low-latency API intended for client-side use in fetching video or playlist data from web pages or mobile apps. It is <strong><em>not</em></strong> a general media management API to use in integrating Video Cloud with your CMS or other systems - for that, you should use the <a href="/node/18034">CMS API</a>.</p>
 
@@ -16,7 +16,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="useCases">Use cases</h2>
+<h2 id="Use_cases">Use cases</h2>
 
 <p>The <a href="/node/17251">Brightcove Player</a> and the <a href="/node/16825">Brightcove SDK players</a> include catalog methods identical to methods of the Playback API, and for the most part you can simply use those if you are just retrieving videos or playlists at runtime to play.</p>
 
@@ -28,7 +28,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="generalInfo">General Information</h2>
+<h2 id="General_Information">General Information</h2>
 
 <h3>Base URL</h3>
 
@@ -85,13 +85,13 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="tokenAuthentication">Token authentication</h2>
+<h2 id="Token_authentication">Token authentication</h2>
 
 <p>Token authentication for HLS and DASH content is supported. If you need token authentication, contact your account manager about getting it enabled for your account.</p>
 </section>
 
 <section class="bcls-section">
-<h2 id="methods">Methods</h2>
+<h2 id="Methods">Methods</h2>
 
 <p>The API supports the following GET requests only, of the following types:</p>
 
@@ -105,11 +105,11 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="videoRequests">Video requests</h2>
+<h2 id="Video_requests">Video requests</h2>
 
 <p>A single video object can be retrieved using either the video id or reference id.</p>
 
-<h3 id="getVideoById">Get video by id</h3>
+<h3 id="Get_video_by_id">Get video by id</h3>
 
 <h4>Endpoint</h4>
 
@@ -198,7 +198,7 @@
   ]
 }</code></pre>
 
-<h3 id="getVideoByReferenceId">Get video by reference id</h3>
+<h3 id="Get_video_by_reference_id">Get video by reference id</h3>
 
 <h4>Endpoint</h4>
 
@@ -290,9 +290,8 @@
 
 <section class="bcls-section">
 <h2 id="Search_videos">Search videos</h2>
-<p>
-	Using a <a href="https://support.brightcove.com/overview-policy-api#Search_videos">search-enabled Policy Key</a>, you can search for videos in your Video Cloud library. For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">Playback API Reference</a> document.
-</p>
+
+<p>Using a <a href="https://support.brightcove.com/overview-policy-api#Search_videos">search-enabled Policy Key</a>, you can search for videos in your Video Cloud library. For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">Playback API Reference</a> document.</p>
 
 <h3>Parameters</h3>
 
@@ -326,6 +325,7 @@
 <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos</code></pre>
 
 <h4>Example</h4>
+
 <pre class="line-numbers">
 <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos?q=tags:nature,name:nature</code></pre>
 
@@ -333,8 +333,8 @@
 
 <pre class="line-numbers">
 <code class="language-json">{
-  &quot;count&quot;: 123,
-  &quot;videos&quot;:
+  "count": 123,
+  "videos":
     [
       {&lt;video1 fields&gt;},
       {&lt;video2 fields&gt;},
@@ -344,7 +344,111 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="playlistRequests">Playlist requests</h2>
+  <h2 id="Video_request_with_SSAI">Video request with SSAI</h2>
+  <p>
+    Even if you are NOT using a Brightcove web player or the Brightcove Native SDKs in your application, you can still use Server-Side Ad Insertion (SSAI) with your own player.
+  </p>
+  <aside class="bcls-aside bcls-aside--information">Notes:
+    <ul>
+    	<li>To use SSAI, your Video Cloud account will need to be configured for <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
+    	<li>Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD), and it does not support <a href="https://support.brightcove.com/multiple-audio-tracks">Multiple Audio Tracks</a>.</li>
+    </ul>
+  </aside>
+
+  <h3 id="Get_video_with_SSAI">Get video with SSAI</h3>
+  <p>
+    To return a video with SSAI, append your ad configuration id as a URL parameter to your Playback API request. With this request, you can use either a video Id or a video reference Id.
+  </p>
+  <aside class="bcls-aside bcls-aside--information">
+    To use server-side ad insertion (SSAI), your videos need to be <a href="https://support.brightcove.com/node/16840">ingested for Dynamic Delivery</a>.
+  </aside>
+
+  <h4>Endpoint with URL parameter</h4>
+  <p>
+    Append your <code>ad_config_id</code> to the end of the Playback API request:
+  </p>
+
+<pre class="line-numbers">
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}?ad_config_id={ad_config_id}</code></pre>
+
+  <h4>Example</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5565662146001?ad_config_id=1234abcd</code></pre>
+
+  <p>
+    In the sample response below, you will notice the following:
+  </p>
+  <ul>
+    <li>
+      The response is similar to that if you didn't include an ad config Id.
+    </li>
+    <li>
+      The elements of the <code>sources</code> array will contain a new property called <code>vmap</code>.
+    </li>
+    <li>
+      If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code>vmap</code> property.
+    </li>
+    <li>
+      The <code>src</code> property within the <code>sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code>src</code> will have ads stitched in with the main content.
+    </li>
+  </ul>
+  <p>
+    For more information about te Brightcove Once UX ad service and VMAP files, see the <a href="https://support.brightcove.com/node/17776">Brightcove Once UX Implementation</a> guide.
+  </p>
+
+  <!-- <h3 class="bcls-expander-head">Sample response</h3>
+
+    <div class="bcls-expander-content"> -->
+
+  <h3>Sample response</h3>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  &quot;description&quot;: &quot;The story of a giant rabbit with a heart bigger than himself. &quot;,
+  &quot;poster_sources&quot;: [
+  	{
+      &quot;src&quot;: &quot;https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg&quot;
+  	}
+  ],
+  &quot;tags&quot;: [],
+  &quot;cue_points&quot;: [],
+  &quot;custom_fields&quot;: {},
+  &quot;account_id&quot;: &quot;3723496277001&quot;,
+  &quot;sources&quot;: [
+  	{
+      &quot;ext_x_version&quot;: &quot;4&quot;,
+      <span class="bcls-highlight">&quot;vmap&quot;: &quot;http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D&quot;</span>,
+      &quot;type&quot;: &quot;application/x-mpegURL&quot;,
+      &quot;src&quot;: &quot;http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D&quot;
+  	},
+    ...
+  ],
+  &quot;created_at&quot;: &quot;2017-05-15T17:09:11.171Z&quot;
+}</code></pre>
+
+        <!-- </div> -->
+
+  <h3 id="Require_ad_config_id">Require ad_config_id</h3>
+  <p>
+    Using the Policy API, you can create a policy key that requires you to include the <code>ad_config_id</code> URL parameter when making requests to the Playback API. For details about setting this feature, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/policy-api-stage/v1/doc/index.html#api-Policy-Create_a_Policy_Key">Policy API Reference</a> document.
+  </p>
+  <p>
+    When the policy key is set to require an <code>ad_config_id</code>, and you do not append it to a Playback API request, you will get the following error:
+  </p>
+<pre class="line-numbers">
+<code class="language-json">[
+  {
+  	&quot;error_subcode&quot;: &quot;AD_CONFIG&quot;,
+  	&quot;error_code&quot;: &quot;ACCESS_DENIED&quot;,
+  	&quot;message&quot;: &quot;Missing required ad_config_id parameter&quot;
+  }
+]</code></pre>
+  <br />
+</section>
+
+<section class="bcls-section">
+<h2 id="Playlist_requests">Playlist requests</h2>
 
 <p>A playlist video object can be retrieved using either the playlist id or its reference id.</p>
 
@@ -374,7 +478,7 @@
 
 <p>For example, these parameters appended to your request - ?limit=40&amp;offset=20 - would return videos 21-60 in the playlist (assuming there are that many).</p>
 
-<h3 id="getPlaylistById">Get playlist by id</h3>
+<h3 id="Get_playlist_by_id">Get playlist by id</h3>
 
 <h4>Endpoint</h4>
 
@@ -590,7 +694,7 @@
   ],
 }</code></pre>
 
-<h3 id="getPlaylistByReferenceId">Get playlist by reference id</h3>
+<h3 id="Get_playlist_by_reference_id">Get playlist by reference id</h3>
 
 <h4>Endpoint</h4>
 
