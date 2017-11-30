@@ -30,7 +30,7 @@ var BCLS = (function(window, document) {
       client_id: '37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1',
       client_secret: 'gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ'
     },
-    callbacks = '["http://solutions.brightcove.com/bcls/di-api/di-callbacks.php"]';
+    callbacks = '["http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php"]';
 
 
   // is defined
