@@ -104,7 +104,7 @@ var BCLS = ( function (window, document) {
             options.requestBody.master     = {};
             options.requestBody.master.url = video;
             options.requestBody.profile    = profile;
-            options.requestBody.callbacks  = ['http://solutions.brightcove.com/bcls/di-api/di-callbacks.php'];
+            options.requestBody.callbacks  = ['http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php'];
             di_url.textContent                     = JSON.stringify(options.requestBody, null, '  ');
 
 
