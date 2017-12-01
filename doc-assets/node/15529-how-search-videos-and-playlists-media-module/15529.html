@@ -29,12 +29,12 @@
     </thead>
     <tbody class="bcls-table__body">
         <tr>
-            <td>"Great Blue"</td>
-            <td>Great Blue</td>
+            <td>"great blue"</td>
+            <td>great blue</td>
         </tr>
         <tr>
-            <td>name:"Great Blue"</td>
-            <td>name:Great Blue</td>
+            <td>name:"great blue"</td>
+            <td>name:great blue</td>
         </tr>
     </tbody>
 </table>
@@ -57,7 +57,7 @@
 	<li>Custom fields</li>
 </ul>
 
-<p>Query support for video fields differ. Some fields support partial-word searches and <a href="#stem">stemming searches</a>, and some do not.</p>
+<p>Query support for video fields differ. Some fields support partial-word searches and <a href="#stemming">stemming searches</a>, and some do not.</p>
 
 <table class="bcls-table">
 	<thead class="bcls-table__head">
@@ -71,45 +71,72 @@
 	<tbody class="bcls-table__body">
 		<tr>
 			<td>Name and descriptions</td>
-			<td>exact matches for one or more whole words; <a href="#stem">stemming</a> support</td>
+			<td><strong>exact</strong> matches for one or more whole words; <a href="#stemming">stemming</a> support</td>
 			<td>no partial-word support</td>
+      <td>
+        <strong>name:"great blue"</strong> will match "Great Blue Heron"<br>
+        <strong>name:"great blu"</strong> will <strong>not</strong> match "Great Blue Heron"<br>
+        <strong>name:great blu</strong> will match "Great Blue Heron"<br>
+      </td>
 		</tr>
 		<tr>
 			<td>Video ID</td>
 			<td>exact matches only</td>
-			<td>no partial-word or stemming support</td>
+			<td>no partial-word or <a href="#stemming">stemming</a> support</td>
+      <td>
+        <strong>5591838791001</strong> will match video with id 5591838791001<br>
+        <strong>5591838791</strong> will <strong>not</strong> match that video
+      </td>
 		</tr>
 		<tr>
 			<td>Tags</td>
-			<td>exact matches only for whole words</td>
-			<td>no partial-word or stemming support</td>
+			<td>matches only for whole words</td>
+			<td>no partial-word or <a href="#stemming">stemming</a> support</td>
+      <td>
+        <strong>tags:publ</strong> will <strong>not</strong> match videos with tag "public"
+      </td>
 		</tr>
 		<tr>
 			<td>Reference ID</td>
-			<td>partial string matches that start with the Ref ID (first 3 chars.) and exact matches</td>
+			<td>partial string matches that start with the Ref ID (first 3 chars.) and whole string matches</td>
 			<td>no partial-strings that do not start with the Ref ID</td>
+      <td>
+        <strong>reference_id:myv</strong> matches video with reference id "myvid1"<br>
+        <strong>reference_id:"myv"</strong> does <strong>not</strong> match video with reference id "myvid1"
+      </td>
 		</tr>
 		<tr>
 			<td>Date fields</td>
 			<td>&nbsp;</td>
 			<td>not searchable using the text box, searchable using advanced search</td>
+      <td>&nbsp;</td>
 		</tr>
 		<tr>
 			<td>Individual text custom fields</td>
-			<td>exact matches for one or more whole words and stemming support</td>
+			<td>matches for one or more whole words and <a href="#stemming">stemming</a> support; for <strong>exact</strong> search strings, whole word matches only</td>
 			<td>no partial-word support</td>
+      <td>
+        <strong>custom_fields:place</strong> will match video with a custom field value of "places" <br>
+        <strong>custom_fields:plac</strong> will <strong>not</strong> match video with a custom field value of "places" <br>
+        <strong>custom_fields:"place"</strong> will <strong>not</strong> match video with a custom field value of "places" <br>
+      </td>
 		</tr>
 		<tr>
 			<td>Individual list custom fields</td>
-			<td>exact matches for one or more whole words and stemming support</td>
+			<td>matches for one or more whole words and <a href="#stemming">stemming</a> support; <strong>exact</strong> search stings, whole word matches only</td>
 			<td>no partial-word support</td>
+      <td>
+        <strong>topic:place</strong> will match video with a topic list-type custom field value of "places" <br>
+        <strong>topic:plac</strong> will <strong>not</strong> match video with a topic list-type custom field value of "places" <br>
+        <strong>topic:"place"</strong> will <strong>not</strong> match video with a topic list-type custom field value of "places" <br>
+      </td>
 		</tr>
 	</tbody>
 </table>
 &nbsp;
 
 <div class="BCL-subsection">
-<h3>What is stemming?</h3>
+<h3 id="stemming">What is stemming?</h3>
 
 <p>Video fields that support stemming return words that have the stem of the search word in common. In addition, stemming supports entering whole words only, not partial words:</p>
 
