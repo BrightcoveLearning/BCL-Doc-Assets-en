@@ -344,107 +344,90 @@
 </section>
 
 <section class="bcls-section">
-  <h2 id="Video_request_with_SSAI">Video request with SSAI</h2>
-  <p>
-    Even if you are NOT using a Brightcove web player or the Brightcove Native SDKs in your application, you can still use Server-Side Ad Insertion (SSAI) with your own player.
-  </p>
-  <aside class="bcls-aside bcls-aside--information">Notes:
-    <ul>
-    	<li>To use SSAI, your Video Cloud account will need to be configured for <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
-    	<li>Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD), and it does not support <a href="https://support.brightcove.com/multiple-audio-tracks">Multiple Audio Tracks</a>.</li>
-    </ul>
-  </aside>
+<h2 id="Video_request_with_SSAI">Video request with SSAI</h2>
 
-  <h3 id="Get_video_with_SSAI">Get video with SSAI</h3>
-  <p>
-    To return a video with SSAI, append your ad configuration id as a URL parameter to your Playback API request. With this request, you can use either a video Id or a video reference Id.
-  </p>
-  <aside class="bcls-aside bcls-aside--information">
-    To use server-side ad insertion (SSAI), your videos need to be <a href="https://support.brightcove.com/node/16840">ingested for Dynamic Delivery</a>.
-  </aside>
+<p>Even if you are NOT using a Brightcove web player or the Brightcove Native SDKs in your application, you can still use Server-Side Ad Insertion (SSAI) with your own player.</p>
 
-  <h4>Endpoint with URL parameter</h4>
-  <p>
-    Append your <code>ad_config_id</code> to the end of the Playback API request:
-  </p>
+<aside class="bcls-aside bcls-aside--information">Notes:
+<ul>
+	<li>To use SSAI, your Video Cloud account will need to be configured for <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
+	<li>Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD), and it does not support <a href="https://support.brightcove.com/multiple-audio-tracks">Multiple Audio Tracks</a>.</li>
+</ul>
+</aside>
+
+<h3 id="Get_video_with_SSAI">Get video with SSAI</h3>
+
+<p>To return a video with SSAI, append your ad configuration id as a URL parameter to your Playback API request. With this request, you can use either a video Id or a video reference Id.</p>
+
+<aside class="bcls-aside bcls-aside--information">To use server-side ad insertion (SSAI), your videos need to be <a href="https://support.brightcove.com/node/16840">ingested for Dynamic Delivery</a>.</aside>
+
+<h4>Endpoint with URL parameter</h4>
+
+<p>Append your <code>ad_config_id</code> to the end of the Playback API request:</p>
 
 <pre class="line-numbers">
 <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}?ad_config_id={ad_config_id}</code></pre>
 
-  <h4>Example</h4>
+<h4>Example</h4>
 
 <pre class="line-numbers">
 <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5565662146001?ad_config_id=1234abcd</code></pre>
 
-  <p>
-    In the sample response below, you will notice the following:
-  </p>
-  <ul>
-    <li>
-      The response is similar to that if you didn't include an ad config Id.
-    </li>
-    <li>
-      The elements of the <code>sources</code> array will contain a new property called <code>vmap</code>.
-    </li>
-    <li>
-      If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code>vmap</code> property.
-    </li>
-    <li>
-      The <code>src</code> property within the <code>sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code>src</code> will have ads stitched in with the main content.
-    </li>
-  </ul>
-  <p>
-    For more information about te Brightcove Once UX ad service and VMAP files, see the <a href="https://support.brightcove.com/node/17776">Brightcove Once UX Implementation</a> guide.
-  </p>
+<p>In the sample response below, you will notice the following:</p>
 
-  <!-- <h3 class="bcls-expander-head">Sample response</h3>
+<ul>
+	<li>The response is similar to that if you didn't include an ad config Id.</li>
+	<li>The elements of the <code>sources</code> array will contain a new property called <code>vmap</code>.</li>
+	<li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code>vmap</code> property.</li>
+	<li>The <code>src</code> property within the <code>sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code>src</code> will have ads stitched in with the main content.</li>
+</ul>
+
+<p>For more information about te Brightcove Once UX ad service and VMAP files, see the <a href="https://support.brightcove.com/node/17776">Brightcove Once UX Implementation</a> guide.</p>
+<!-- <h3 class="bcls-expander-head">Sample response</h3>
 
     <div class="bcls-expander-content"> -->
 
-  <h3>Sample response</h3>
+<h3>Sample response</h3>
 
 <pre class="line-numbers">
 <code class="language-json">{
-  &quot;description&quot;: &quot;The story of a giant rabbit with a heart bigger than himself. &quot;,
-  &quot;poster_sources&quot;: [
+  "description": "The story of a giant rabbit with a heart bigger than himself. ",
+  "poster_sources": [
   	{
-      &quot;src&quot;: &quot;https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg&quot;
+      "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg"
   	}
   ],
-  &quot;tags&quot;: [],
-  &quot;cue_points&quot;: [],
-  &quot;custom_fields&quot;: {},
-  &quot;account_id&quot;: &quot;3723496277001&quot;,
-  &quot;sources&quot;: [
+  "tags": [],
+  "cue_points": [],
+  "custom_fields": {},
+  "account_id": "3723496277001",
+  "sources": [
   	{
-      &quot;ext_x_version&quot;: &quot;4&quot;,
-      <span class="bcls-highlight">&quot;vmap&quot;: &quot;http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D&quot;</span>,
-      &quot;type&quot;: &quot;application/x-mpegURL&quot;,
-      &quot;src&quot;: &quot;http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D&quot;
+      "ext_x_version": "4",
+      <span class="bcls-highlight">"vmap": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D"</span>,
+      "type": "application/x-mpegURL",
+      "src": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D"
   	},
     ...
   ],
-  &quot;created_at&quot;: &quot;2017-05-15T17:09:11.171Z&quot;
+  "created_at": "2017-05-15T17:09:11.171Z"
 }</code></pre>
+<!-- </div> -->
 
-        <!-- </div> -->
+<h3 id="Require_ad_config_id">Require ad_config_id</h3>
 
-  <h3 id="Require_ad_config_id">Require ad_config_id</h3>
-  <p>
-    Using the Policy API, you can create a policy key that requires you to include the <code>ad_config_id</code> URL parameter when making requests to the Playback API. For details about setting this feature, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/policy-api-stage/v1/doc/index.html#api-Policy-Create_a_Policy_Key">Policy API Reference</a> document.
-  </p>
-  <p>
-    When the policy key is set to require an <code>ad_config_id</code>, and you do not append it to a Playback API request, you will get the following error:
-  </p>
+<p>Using the Policy API, you can create a policy key that requires you to include the <code>ad_config_id</code> URL parameter when making requests to the Playback API. For details about setting this feature, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/policy-api-stage/v1/doc/index.html#api-Policy-Create_a_Policy_Key">Policy API Reference</a> document.</p>
+
+<p>When the policy key is set to require an <code>ad_config_id</code>, and you do not append it to a Playback API request, you will get the following error:</p>
+
 <pre class="line-numbers">
 <code class="language-json">[
   {
-  	&quot;error_subcode&quot;: &quot;AD_CONFIG&quot;,
-  	&quot;error_code&quot;: &quot;ACCESS_DENIED&quot;,
-  	&quot;message&quot;: &quot;Missing required ad_config_id parameter&quot;
+  	"error_subcode": "AD_CONFIG",
+  	"error_code": "ACCESS_DENIED",
+  	"message": "Missing required ad_config_id parameter"
   }
 ]</code></pre>
-  <br />
 </section>
 
 <section class="bcls-section">
