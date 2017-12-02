@@ -65,6 +65,28 @@
 </section>
 
 <section class="bcls-section">
+  <h2 id="best_practices">Best practices</h2>
+  <aside class="bcls-aside bcls-aside--tip">
+    <ul>
+      <li>A 20 request per second limit on each account for total requests across DI and the CMS API (CMS API or Ingest API requests)</li>
+      <li>A limit of 100 concurrent DI jobs per account (there are additional options for large batches of requests for accounts converted to <a href="/node/17949">Dynamic Delivery</a>)</li>
+      <li>Ingest content smaller than 100GBs per file (if you need to ingest larger files please contact your Account Manager)</li>
+      <li>If you are ingesting files in batches, limit concurrent normal priority jobs to 100 and wait for one job to complete processing before adding another</li>
+      <li>Validate ingest profile changes before ingesting full batches</li>
+      <li>
+        You should <strong>not</strong> have duplicate jobs processing for the same asset. An asset in this instance is defined as a video object, an audio track in a specific language, a text track in a specific language, or a specific image type. Here are some examples to illustrate the point:
+        <ul>
+          <li>UNACCEPTABLE: Submit an ingest request for a video file and then submit another video ingest request with the same Video ID before the first ingest job completes</li>
+          <li>ACCEPTABLE: Submit an ingest request for a video file, then submit an ingest request for a text track in English associated with the same Video ID, and then submit an ingest request for a thumbnail image with the same Video ID</li>
+          <li>ACCEPTABLE: Submit an ingest job for a text track in English and then submit an ingest request for a text track in Spanish in parallel</li>
+          <li>UNACCEPTABLE: Submit a request to ingest a Spanish audio track and then immediately submit a request to ingest another Spanish audio track on the same Video ID</li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+</section>
+
+<section class="bcls-section">
 <h2 id="sourceLocations">Valid source locations</h2>
 
 <p>Dynamic Ingest can pull source video files from: HTTP/HTTPS or S3 - with or without authentication</p>
@@ -169,35 +191,6 @@
 	<li><a href="//solutions.brightcove.com/bcls/assets/images/">Images</a></li>
 	<li><a href="//solutions.brightcove.com/bcls/assets/vtt/">WebVTT Captions</a></li>
 </ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="rateLimiting">Best practices</h2>
-
-<p>To insure good performance and results with Dynamic Ingest, it's important that you follow these best practices!</p>
-
-<aside class="bcls-aside bcls-aside--tip">
-<ul>
-	<li>You may <strong>not</strong> have more than one job processing for a particular video id - for instance, if you ingest a new video, you must wait until processing is complete before submitting a retranscode or replace request for the same video - operations that will generate a new ingest job include:
-
-	<ul>
-		<li>Retranscoding the video</li>
-		<li>Replacing the video</li>
-		<li>Uploading new images for the thumbnail or poster</li>
-		<li>Uploading new text tracks</li>
-	</ul>
-	</li>
-	<li>A 20 request per minute limit on each account for total requests across DI and the CMS API (CMS API or Ingest API requests)</li>
-	<li>A limit of 100 concurrent DI jobs per account</li>
-	<li>Ingest content smaller than 100GBs per file (if you need to ingest larger files please contact your Account Manager)</li>
-	<li>If you are ingesting files in batches, limit batches to 100 and wait for the previous batch to complete processing before continuing</li>
-	<li>Validate <a href="./node/18045">ingest profile</a> changes before ingesting full batches</li>
-</ul>
-
-<p>If the requests exceed either the rate or concurrency limit, a 429 - TOO_MANY_REQUESTS error will be returned.</p>
-</aside>
-
-<p>If you have a high volume of videos to ingest on a regular basis, you will need to combine your ingest app with a <a href="/node/17954">notification receiver</a> to know when you need to pause and resume ingest requests. See <a href="/node/17941">Fallback / Retry Strategy</a> for more details.</p>
 </section>
 
 <section class="bcls-section">
