@@ -248,35 +248,6 @@
 <aside class="bcls-aside bcls-aside--information">Note that the <code>callbacks</code> field is optional, but we highly recommend that you use it as the best way to track the progress of ingest jobs. See <a href="#notifications">below</a> for more on notifications.</aside>
 </section>
 
-<section class="bcls-section">
-<h2 id="rateLimiting">Best practices</h2>
-
-<p>To insure good performance and results with Dynamic Ingest, it's important that you follow these best practices!</p>
-
-<aside class="bcls-aside bcls-aside--tip">
-<ul>
-	<li>You may <strong>not</strong> have more than one job processing for a particular video id - for instance, if you ingest a new video, you must wait until processing is complete before submitting a retranscode or replace request for the same video - operations that will generate a new ingest job include:
-
-	<ul>
-		<li>Retranscoding the video</li>
-		<li>Replacing the video</li>
-		<li>Uploading new images for the thumbnail or poster</li>
-		<li>Uploading new text tracks</li>
-	</ul>
-	</li>
-	<li>A 20 request per minute limit on each account for total requests across DI and the CMS API (CMS API or Ingest API requests)</li>
-	<li>A limit of 100 concurrent DI jobs per account</li>
-	<li>Ingest content smaller than 100GBs per file (if you need to ingest larger files please contact your Account Manager)</li>
-	<li>If you are ingesting files in batches, limit batches to 100 and wait for the previous batch to complete processing before continuing</li>
-	<li>Validate <a href="./node/18045">ingest profile</a> changes before ingesting full batches</li>
-</ul>
-
-<p>If the requests exceed either the rate or concurrency limit, a 429 - TOO_MANY_REQUESTS error will be returned.</p>
-</aside>
-
-<p>If you have a high volume of videos to ingest on a regular basis, you will need to combine your ingest app with a <a href="/node/17954">notification receiver</a> to know when you need to pause and resume ingest requests. See <a href="/node/17941">Fallback / Retry Strategy</a> for more details.</p>
-</section>
-
 
 <section class="bcls-section">
 <h2 id="viewingRenditions">Viewing Renditions</h2>
