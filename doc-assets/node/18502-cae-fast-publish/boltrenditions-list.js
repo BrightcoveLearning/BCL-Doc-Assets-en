@@ -1,4 +1,4 @@
-var renditionlist = [{
+var renditions = [{
     "id": "default/video900",
   },
   {
