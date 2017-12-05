@@ -2,11 +2,10 @@
   <section class="bcls-section">
     <h2 id="encoding_tool">Encoding tool</h2>
     <p>Paste strings into the fields below, then click the button to get the equivalent Base64-encoded strings.</p>
-    <p>First string to encode: <input id="str1" type="text" style="width:70%"></p>
-    <p>Second string to encode: <input id="str2" type="text" style="width:70%"></p>
+    <p>Cliend ID to encode: <input id="str1" type="text" style="width:70%"></p>
+    <p>Client Secret to encode: <input id="str2" type="text" style="width:70%"></p>
     <p><button id="encode" class="bcls-button">Encode Them</button></p>
-    <p>First string encoded:<br><textarea id="str1encoded" rows="2" style="width:80%"></textarea></p>
-    <p>Second string encoded:<br><textarea id="str2encoded" rows="2" style="width:80%"></textarea></p>
+    <p>Encoded authentication string:<br><textarea id="str1encoded" rows="2" style="width:80%"></textarea></p>
   </section>
 </article>
 
@@ -15,18 +14,13 @@ var BCLS = ( function (window, document) {
   var str1 = document.getElementById('str1'),
     str2 = document.getElementById('str2'),
     str1encoded = document.getElementById('str1encoded'),
-    str2encoded = document.getElementById('str2encoded'),
     encode = document.getElementById('encode');
 
     encode.addEventListener('click', function() {
-      str1encoded.value = btoa(str1.value);
-      str2encoded.value = btoa(str2.value);
+      str1encoded.value = btoa(str1.value + ':' + str2.value);
     });
 
     str1encoded.addEventListener('click', function() {
-      this.select();
-    })
-    str2encoded.addEventListener('click', function() {
       this.select();
     })
 })(window, document);
