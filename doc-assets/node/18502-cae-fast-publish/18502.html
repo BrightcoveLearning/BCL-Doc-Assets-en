@@ -187,9 +187,74 @@
 <pre><code class="language-http">https://ingestion.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/profiles</code></pre>
             <p>The request body will be the JSON for the custom profile you created earlier.</p>
             <p>Include a <code>Content-Type: application/json</code> header</p>
-            <p>Set up OAuth2 authentication according to the instructions in the guides to using Insomnia or Postman</p>
+            <p>Set up OAuth2 authentication according to the instructions in the guides to using Insomnia or Postman.</p>
           </li>
+          <li>If you are using cURL, you can use the following request, replacing the account_id and access token values with your own:
+<pre class="line-numbers"><code class="language-bash"><pre class="line-numbers"><code class="language-bash">curl --request POST \
+  --url https://ingestion.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/profiles \
+  --header 'authorization: Bearer <span class="bcls-input">YOUR_ACCESS_TOKEN_HERE</span>' \
+  --header 'content-type: application/json' \
+  --data '{
+  "name": "multi-platform-standard-dynamic-fast-publish",
+  "display_name": "Fast Publish Standard (CAE)",
+  "description": "Deliver a wide range of content types across a variety of platforms on mobile and desktop.",
+  "account_id": "57838016001",
+  "digital_master": {
+    "rendition": "passthrough",
+    "distribute": false
+  },
+  "renditions": [],
+  "packages": [],
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/audio128",
+      "default/audio96"
+    ],
+	"temporary_renditions": [
+      "default/video450",
+      "default/video700",
+      "default/video900"
+    ],
+    "images": [
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+      },
+      {
+        "label": "poster",
+        "height": 720,
+        "width": 1280
+      }
+    ],
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 6,
+      "min_resolution": {
+        "width": 320,
+        "height": 180
+      },
+      "max_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "max_frame_rate": 30,
+      "max_bitrate": 2400,
+      "max_first_rendition_bitrate": 250,
+      "keyframe_rate": 0.5,
+      "select_baseline_profile_configuration": true
+    }
+  }
+}'
+</code></pre></code></pre>
+          </li>
+          <li>After you send the request, you should see your new profile echoed back to you in the response.</li>
         </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="notifications">Notifications</h2>
+    <p></p>
   </section>
 </article>
 <script src="//learning-services-media.brightcove.com/doc-assets/node/18502-cae-fast-publish/boltrenditions-list.js"></script>
