@@ -27,7 +27,7 @@
     <h3>Steps for creating a custom profile</h3>
     <p>Here are the steps for creating a custom fast publish profile with one temporary rendition. In the steps below, we will use the <a href="/node/18436#multi-platform-standard-dynamic"><code>multi-platform-standard-dynamic</code></a> standard profile as the basis for the custom profile, but you can use any of the <strong>CAE</strong> profiles.</p>
     <aside class="bcls-aside bcls-aside--information">You can create as many custom profiles as you like using the procedure below, but we recommend only creating as many as your really need to avoid confusion and user errors.</aside>
-    <h3>Get client credentials for the Ingest Profiles API</h3>
+    <h4>Get client credentials for the Ingest Profiles API</h4>
     </aside>
     <ol class="bcls-tasklist">
       <li>Login to Studio and go to the <a href="https://studio.brightcove.com/products/videocloud/admin/oauthsettings">API Authentication section</a> under Admin (you must be an Admin or get an Admin on the account to do this)</li>
@@ -40,6 +40,150 @@
       </li>
       <li>Save the <strong>Client ID</strong> and <strong>Client Secret</strong> as you will need them for later steps.</li>
     </ol>
+    <h4>Create the JSON for the custom profile</h4>
+    <ol class="bcls-tasklist">
+          <li>Copy the JSON below (for the <strong>multi-platform-standard-dynamic</strong> profile) into a text editor:
+    <pre class="line-numbers"><code class="language-json">{
+      "name": "multi-platform-standard-dynamic",
+      "display_name": "Multiplatform Standard (CAE)",
+      "description": "Deliver a wide range of content types across a variety of platforms on mobile and desktop.",
+      "account_id": null,
+      "digital_master": {
+        "rendition": "passthrough",
+        "distribute": false
+      },
+      "renditions": [],
+      "packages": [],
+      "dynamic_origin": {
+        "renditions": [
+          "default/audio64",
+          "default/audio128",
+          "default/audio96"
+        ],
+        "images": [
+          {
+            "label": "thumbnail",
+            "height": 90,
+            "width": 160
+          },
+          {
+            "label": "poster",
+            "height": 720,
+            "width": 1280
+          }
+        ],
+        "dynamic_profile_options": {
+          "min_renditions": 2,
+          "max_renditions": 6,
+          "min_resolution": {
+            "width": 320,
+            "height": 180
+          },
+          "max_resolution": {
+            "width": 1280,
+            "height": 720
+          },
+          "max_frame_rate": 30,
+          "max_bitrate": 2400,
+          "max_first_rendition_bitrate": 250,
+          "keyframe_rate": 0.5,
+          "select_baseline_profile_configuration": true
+        }
+      }
+    }</code></pre>
+          </li>
+          <li>Change the following values:
+    <ul>
+      <li><code>name</code>: "multi-platform-standard-dynamic-fast-publish"</li>
+      <li><code>display_name</code>: "Fast Publish Standard (CAE)"</li>
+    </ul>
+          </li>
+          <li>After the <code>dynamic_origin&gt;renditions</code> array, add the following array:
+<pre class="line-numbers"><code class="language-json">"temporary_renditions": [
+  "default/video450",
+  "default/video700",
+  "default/video900"
+]</code></pre>
+          </li>
+          <li>The full JSON for your custom profile should now look like this:
+<pre class="line-numbers"><code class="language-json">{
+  "name": "multi-platform-standard-dynamic-fast-publish",
+  "display_name": "Fast Publish Standard (CAE)",
+  "description": "Deliver a wide range of content types across a variety of platforms on mobile and desktop.",
+  "account_id": null,
+  "digital_master": {
+    "rendition": "passthrough",
+    "distribute": false
+  },
+  "renditions": [],
+  "packages": [],
+  "dynamic_origin": {
+    "renditions": [
+      "default/audio64",
+      "default/audio128",
+      "default/audio96"
+    ],
+    "temporary_renditions": [
+      "default/video450",
+      "default/video700",
+      "default/video900"
+    ]
+    "images": [
+      {
+        "label": "thumbnail",
+        "height": 90,
+        "width": 160
+      },
+      {
+        "label": "poster",
+        "height": 720,
+        "width": 1280
+      }
+    ],
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 6,
+      "min_resolution": {
+        "width": 320,
+        "height": 180
+      },
+      "max_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "max_frame_rate": 30,
+      "max_bitrate": 2400,
+      "max_first_rendition_bitrate": 250,
+      "keyframe_rate": 0.5,
+      "select_baseline_profile_configuration": true
+    }
+  }
+}</code></pre>
+          </li>
+        </ol>
+        <h4>Add the custom profile your account</h4>
+        <p>Now we will use the Ingest Profiles API to add the custom profile to your account.</p>
+        <aside class="bcls-aside bcls-aside--information">You can use whatever tool you normally do to make REST API requests - if you need help getting this set up, see our guides to using <a href="/node/18462">Insomnia</a>, <a href="/node/17919">Postman</a>, or <a href="/node/17908">cURL</a>.</aside>
+        <h5>Getting access tokens</h5>
+        <p>Each API request needs to be authenticated using an access token (you will see exactly how in later steps).</p>
+        <ol class="bcls-tasklist">
+          <li>You will need to <a href="/node/17925">get an access token</a> from:
+<pre><code class="language-http">https://oauth.brightcove.com/v4/access_token</code></pre>
+          </li>
+          <li>If you are using <a href="/node/18462">Insomnia</a> or <a href="/node/17919">Postman</a>, then you can set up OAuth2 authentication using the instructions in the linked documents to have them fetch the access tokens for you.</li>
+          <li>If you are using cURL, here is a cURL command you can use to get an access token - you will need to replace the <code>ENCODED_AUTHENTICATION_STRING</code> with a Base64-encoded string consisting of your <code>client_id:client_secret:</code>
+<pre class="line-numbers"><code class="language-bash">curl --request POST \
+  --url 'https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials' \
+  --header 'Authorization: Basic <span class="bcls-input">ENCODED_AUTHENTICATION_STRING</span>' \
+  --header 'Content-Type: application/x-www-form-urlencoded'</code></pre>
+            <aside class="bcls-aside bcls-aside--information">You can use <a href="/node/18506">this utility</a> to get your Base64-encoded authentication string.</aside>
+          </li>
+          <li>Note that access tokens expire after 5 minutes - if that happens, just get a new one (Insomnia will get one for you automatically when it's needed).</li>
+        </ol>
+        <h5>Add the custom ingest profile</h5>
+        <ol class="bcls-tasklist">
+          <li></li>
+        </ol>
   </section>
 </article>
 <script src="//learning-services-media.brightcove.com/doc-assets/node/18502-cae-fast-publish/boltrenditions-list.js"></script>
