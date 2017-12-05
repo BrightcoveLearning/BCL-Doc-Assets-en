@@ -1,5 +1,5 @@
 curl --request POST \
-  --url https://ingestion.api.brightcove.com/v1/accounts/57838016001/profiles \
+  --url https://ingestion.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/profiles \
   --header 'authorization: Bearer <span class="bcls-input">YOUR_ACCESS_TOKEN_HERE</span>' \
   --header 'content-type: application/json' \
   --data '{
