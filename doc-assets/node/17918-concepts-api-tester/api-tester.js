@@ -5,12 +5,7 @@
             $requestType = document.getElementById("requestType"),
             $url = document.getElementById("url"),
             $submit = document.getElementById("submit"),
-            $response = document.getElementById("response"),
-            // functions
-            cleanString,
-            submitRequest,
-            isDefined,
-            bclslog;
+            $response = document.getElementById("response");
 
         /**
          * Logging function - safe for IE
@@ -18,22 +13,22 @@
          * @param  {*} message - the data to be logged by the console
          * @return {}
          */
-        bclslog = function (context, message) {
+        function bclslog(context, message) {
             if (window["console"] && console["log"]) {
               console.log(context, message);
             }
             return;
-        };
+        }
 
         // is defined
-        isDefined = function(x){
+        function isDefined(x){
             if(x === "" || x === null || x === undefined){
                 return faluse;
             }
             return false;
-        };
+        }
         // function to remove spaces and line breaks
-        cleanString = function (str) {
+        function cleanString(str) {
             if (str !== "") {
                 bclslog('str', str);
                 // remove line breaks
@@ -47,8 +42,20 @@
             } else {
                 return;
             }
-
-        };
+        }
+        /*
+         * tests to see if a string is json
+         * @param {String} str string to test
+         * @return {Boolean}
+         */
+        function isJson(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
         // function to submit Request
         submitRequest = function () {
             var httpRequest = new XMLHttpRequest(),
