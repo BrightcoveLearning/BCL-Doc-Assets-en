@@ -67,13 +67,18 @@
                 options.requestBody = cleanString($requestBody.value);
                 options.requestType = $requestType.value;
                 options.url = $url.value;
+console.log('options', options);
                 getResponse = function() {
                         try {
                           if (httpRequest.readyState === 4) {
                             if (httpRequest.status >= 200 && httpRequest.status < 300) {
 console.log('response', httpRequest.responseText);
-                              parsedData = JSON.parse(httpRequest.responseText);
-                              $response.textContent = JSON.stringify(parsedData, null, '  ');
+                              if (isJson(httpRequest.responseText)) {
+                                parsedData = JSON.parse(httpRequest.responseText);
+                                $response.textContent = JSON.stringify(parsedData, null, '  ');
+                              } else {
+                                $response.textContent = httpRequest.responseText;
+                              }
                             } else {
                               alert('There was a problem with the request. Request returned ' + httpRequest.status);
                             }
@@ -83,7 +88,7 @@ console.log('response', httpRequest.responseText);
                         }
                     };
                     // set up request data
-                requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
+                requestParams = 'url=' + encodeURI(options.url) + '&requestType=' + options.requestType;
                 if (options.client_id && options.client_secret) {
                     requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
                 } else {
@@ -93,7 +98,7 @@ console.log('response', httpRequest.responseText);
                 if (options.requestBody) {
                     requestParams += '&requestBody=' + options.requestBody;
                 }
-
+console.log('requestParams', requestParams);
             // set response handler
             httpRequest.onreadystatechange = getResponse;
             // open the request
