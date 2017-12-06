@@ -64,6 +64,7 @@
                         try {
                           if (httpRequest.readyState === 4) {
                             if (httpRequest.status >= 200 && httpRequest.status < 300) {
+console.log('response', httpRequest.responseText);
                               parsedData = JSON.parse(httpRequest.responseText);
                               $response.textContent = JSON.stringify(parsedData, null, '  ');
                             } else {
