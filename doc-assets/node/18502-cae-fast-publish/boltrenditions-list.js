@@ -30,5 +30,17 @@ var renditions = [{
   },
   {
     "id": "default/video1200",
+  },
+  {
+    "id": "default/audio96",
+  },
+  {
+    "id": "default/audio64",
+  },
+  {
+    "id": "default/audio192",
+  },
+  {
+    "id": "default/audio128",
   }
 ];
