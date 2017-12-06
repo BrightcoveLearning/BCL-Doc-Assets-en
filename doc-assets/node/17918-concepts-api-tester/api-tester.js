@@ -88,7 +88,7 @@ console.log('response', httpRequest.responseText);
                         }
                     };
                     // set up request data
-                requestParams = 'url=' + encodeURI(options.url) + '?requestType=' + options.requestType;
+                requestParams = 'url=' + encodeURI(options.url) + '&requestType=' + options.requestType;
                 if (options.client_id && options.client_secret) {
                     requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
                 } else {
