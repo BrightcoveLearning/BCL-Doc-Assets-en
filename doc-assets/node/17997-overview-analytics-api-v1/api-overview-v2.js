@@ -75,7 +75,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             param;
             for (param in aapi_model.urlparams) {
                 thisParam = aapi_model.urlparams[param];
-                str += "<tr><td>" + thisParam.name + "</td><td>" + thisParam.required + "</td><td>" + thisParam.description + "</td><td>" + thisParam.values + "</td><td>" + thisParam.default + "</td></tr>";
+                str += "<tr><td><code>" + thisParam.name + "</code>/td><td>" + thisParam.required + "</td><td>" + thisParam.description + "</td><td>" + thisParam.values + "</td><td>" + thisParam.default + "</td></tr>";
             }
             paramTable.innerHTML = str;
     }
@@ -85,7 +85,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     * @return {Boolean} true if variable is defined and has a value
     **/
     function isDefined(x) {
-        if ( x === "" || x === null || x === undefined || x === NaN) {
+        if ( x === "" || x === null || x === undefined) {
            return false;
         }
         return true;
@@ -235,15 +235,18 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             ul2 = document.createElement('ul'),
             li,
             a,
+            code,
             txt,
             thisDimension;
         for (i = 0; i < iMax; i++) {
             thisDimension = aapi_model.dimensionsArray[i];
             li = document.createElement('li');
             a = document.createElement('a');
+            code = document.createElement('code');
             a.setAttribute('href', '/' + dimensionGuides[thisDimension]);
             txt = document.createTextNode(thisDimension);
-            a.appendChild(txt);
+            a.appendChild(code);
+            code.appendChild(txt);
             li.appendChild(a);
             if (i < half) {
                 ul1.appendChild(li);
@@ -268,7 +271,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             thisDimension = aapi_model.dimensions[d];
             bclslog('thisDimension', thisDimension);
             thisValues = thisDimension.filter_values;
-            str += "<tr><td>" + thisDimension.name + "</td><td><ul>";
+            str += "<tr><td><code>" + thisDimension.name + "</code>/td><td><ul>";
             jMax = thisValues.length;
             for (j = 0; j < jMax; j++) {
                 str += "<li>" + thisValues[j] + "</li>";
@@ -303,6 +306,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             input,
             text,
             label,
+            code,
             d,
             thisDimension,
             count = 0,
@@ -327,7 +331,9 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             label.setAttribute('for', 'dim' + thisDimension.name);
             text = document.createTextNode('  ' + thisDimension.name);
             br = document.createElement('br');
-            label.appendChild(text);
+            code = document.createElement('code');
+            label.appendChild(code);
+            code.appendChild(text);
             if (count < half) {
                 frag1.appendChild(input);
                 frag1.appendChild(label);
@@ -360,6 +366,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             jMax,
             input,
             label,
+            code,
             text,
             br,
             half;
@@ -382,12 +389,15 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             br = document.createElement('br');
             fieldsCol1.appendChild(input);
             fieldsCol1.appendChild(label);
-            label.appendChild(text);
+            code = document.createElement('code');
+            label.appendChild(code);
+            code.appendChild(text);
             fieldsCol1.appendChild(br);
         }
         for (i = half; i < iMax; i += 1) {
             input = document.createElement('input');
             label = document.createElement('label');
+            code = document.createElement('code');
             input.setAttribute('name', 'fieldsChk');
             input.setAttribute('id', 'field' + fieldsArray[i]);
             input.setAttribute('type', 'checkbox');
@@ -397,7 +407,8 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             br = document.createElement('br');
             fieldsCol2.appendChild(input);
             fieldsCol2.appendChild(label);
-            label.appendChild(text);
+            label.appendChild(code);
+            code.appendChild(text);
             fieldsCol2.appendChild(br);
         }
         // get a reference to the checkbox collection
