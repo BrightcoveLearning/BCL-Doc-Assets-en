@@ -119,19 +119,24 @@
 }</span>
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  testCompile 'junit:junit:4.12'
-  compile 'com.android.support:appcompat-v7:23.1.1'
-  compile 'com.android.support:design:23.1.1'
-<span class="bcls-highlight">  compile 'com.brightcove.player:exoplayer:4.+'</span>
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.android.support:appcompat-v7:26.1.0'
+  implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+  testImplementation 'junit:junit:4.12'
+  androidTestImplementation 'com.android.support.test:runner:1.0.1'
+  androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+<span class="bcls-highlight">  compile 'com.brightcove.player:exoplayer:5.+'</span>
 }</code></pre>
 	<!-- <p><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="1-13" data-gist-highlight-line="1-5,12"></code></p> -->
 
 	<aside class="bcls-aside bcls-aside--information">The ExoPlayer dependency includes the Native SDK for Android, so you do not have to include the SDK separately. If you are not using the exoplayer, then use this dependency:<br />
 	<br />
-	<code>compile 'com.brightcove.player:android-sdk:4.+'</code><br />
+	<code>compile 'com.brightcove.player:android-sdk:5.+'</code><br />
 	<br />
 	Remember, it is recommended that you use the ExoPlayer if you can.</aside>
+	</li>
+	<li>
+		Sync the project to pick up the Gradle file changes.
 	</li>
 </ol>
 </section>
@@ -158,26 +163,20 @@ dependencies {
 	<p>Remove the existing <code>TextView</code> section and add a <code>BrightcoveExoPlayerVideoView</code> section so the resulting XML appears as follows. Note for later use the <code>id</code> of the view is named <code>brightcove_video_view</code>.</p>
 
 	<pre class="line-numbers" data-start="1">
-<code class="language-java">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.brightcove.playvideos.MainActivity"
-    tools:showIn="@layout/activity_main"&gt;
+<code class="language-java">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;android.support.constraint.ConstraintLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    tools:context=&quot;com.brightcove.playvideos.MainActivity&quot;&gt;
 
 <span class="bcls-highlight">&lt;com.brightcove.player.view.BrightcoveExoPlayerVideoView
     android:id="@+id/brightcove_video_view"
     android:layout_width="match_parent"
     android:layout_height="280dp"
     android:layout_gravity="center_horizontal|top"/&gt;</span>
-&lt;/RelativeLayout&gt;</code></pre>
+&lt;/android.support.constraint.ConstraintLayout&gt;</code></pre>
 	<!-- <p><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="18-37" data-gist-highlight-line="32-36"></code></p> --></li>
 </ol>
 
@@ -191,7 +190,7 @@ dependencies {
 	<pre class="line-numbers" data-start="1">
 <code class="language-java">&lt;uses-permission android:name="android.permission.INTERNET"/&gt;</code></pre>
 	<!-- <p><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="40"></code></p> --></li>
-	<li>Sync the project now to re-build it.</li>
+	<li>Rebuild the project now to pick up these changes.</li>
 </ol>
 <!-- <h3>Import the appropriate classes</h3>
             <ol class="bcls-tasklist">
