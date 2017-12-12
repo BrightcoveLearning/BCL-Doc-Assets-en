@@ -13,7 +13,7 @@
 *       poster (URL for the video still)
 * Note: this is a sample only, not a supported Brightcove plugin
 */
-(function (videojs, window, document, console) {
+(function (videojs, window, document) {
     "use strict";
     var defaults = {
             "showLog": "true",
@@ -87,13 +87,13 @@
             onTimeUpdate,
             loadVideo,
             logEvent,
-            injectScript,
+            sendData,
             sendAnalyticsEvent,
             wrapPlayer,
             addEventLog,
             init;
         // load the next video into the player
-        loadVideo = function () {
+        function loadVideo() {
             player.src({
                 "type": "video/mp4",
                 "src": settings.videoCollection[currentVideoIndex].src
@@ -121,7 +121,7 @@
          * @param string [pQuery] The query string for the API call to inject
          * @return true
          */
-        injectScript = function (requestURL) {
+        function sendData(requestURL) {
             var scriptElement = document.createElement("script");
             scriptElement.setAttribute("src", requestURL);
             scriptElement.setAttribute("type", "text/javascript");
@@ -129,7 +129,7 @@
             return true;
         };
         // send analytics event
-        sendAnalyticsEvent = function (eventType, evt) {
+        functionsendAnalyticsEvent (eventType, evt) {
             var urlStr = "",
                 time = evt.timeStamp,
                 dateTime = new Date(parseInt(evt.timeStamp)),
@@ -151,7 +151,7 @@
             // add the base URL
             urlStr = baseURL + urlStr;
             // make the request
-            injectScript(urlStr);
+            sendData(urlStr);
             // log that we did this
             if (settings.showLog) {
                 logEvent("analytics-event", eventType, ("Data Collection request: " + urlStr), dateTime.toISOString());
@@ -226,4 +226,4 @@
         init();
         return;
     });
-})(videojs, window, document, console);
+})(videojs, window, document);
