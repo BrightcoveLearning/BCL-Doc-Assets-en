@@ -17,12 +17,12 @@
   "use strict";
   var defaults = {
       "showLog": "true",
-      "accountID": 921483702001,
+      "accountID": 1752604059001,
       "videoCollection": [{
           "video_name": "Forms of Water",
-          "id": 1716964408001,
-          "src": "http://brightcove.vo.llnwd.net/e1/uds/pd/921483702001/921483702001_1717216134001_Water.mp4",
-          "poster": "http://brightcove.vo.llnwd.net/e1/pd/921483702001/921483702001_1717217030001_vs-4ff1fdb256e7b0e42b8ede16-1592194013001.jpg?pubId=921483702001"
+          "id": 4445295617001,
+          "src": "http://f1.media.brightcove.com/12/1752604059001/1752604059001_4445372009001_4445295617001.mp4?pubId=1752604059001&videoId=4445295617001",
+          "poster": "https://httpsak-a.akamaihd.net/1752604059001/1752604059001_4445372001001_4445295617001-vs.jpg?pubId=1752604059001&videoId=4445295617001"
         },
         {
           "video_name": "Birds of a Feather",
