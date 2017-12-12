@@ -333,22 +333,23 @@
 			<pre>
 <code class="language-javascript"><strong>ssto=1234567890</strong></code></pre>
 			</li>
-			<li>Must be a child property of the <code>Html5</code> object. This will be directly applied to the object element if the Html5 ad tech is used.</li>
+			<li>Must be a child property of the <code>Html5</code> object. This will be directly applied to the object element if the Html5 ad tech is used.
+			<aside class="bcls-aside bcls-aside--information">Note: For the <code>subsessionToken</code> to function properly you must also include a capability in the ad request of <code>[flag=+sync]</code> as a parameter.</aside>
+			</li>
 		</ul>
 		</li>
-    <li id="compatibleDimensions"><strong>compatibleDimensions</strong>:
+		<li id="compatibleDimensions"><strong>compatibleDimensions</strong>:
 		<ul>
 			<li>Type: <code>array</code> Default Value: <code>(optional)</code></li>
 			<li>
-        <p>
-          The <code>compatibleDimensions</code> option allows publishers to pass an array of compatible dimensions. For example:
-        </p>
+			<p>The <code>compatibleDimensions</code> option allows publishers to pass an array of compatible dimensions. For example:</p>
+
 			<pre>
 <code class="language-javascript">compatibleDimensions: [ {width: A, height: B}, {width: X, height: Y} ]</code></pre>
-        <p>
-          When set, this value will be passed in the ad request URL as the queryString:
-        </p>
-        <pre>
+
+			<p>When set, this value will be passed in the ad request URL as the queryString:</p>
+
+			<pre>
   <code class="language-javascript"><strong>cd=widthA,heightA|widthX,heightY</strong></code></pre>
 			</li>
 			<li>Must be a child property of the <code>Html5</code> object. This will be directly applied to the object element if the Html5 ad tech is used.</li>
@@ -827,7 +828,7 @@
                 class="video-js"
                 controls></video>
               <script src="//players.brightcove.net/1752604059001/r1bhBb0Pe_default/index.min.js"></script>
-              <ol class="vjs-playlist"></ol> --><iframe src="//players.brightcove.net/1752604059001/r1bhBb0Pe_default/index.html?playlistId=4845949311001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="428" height="150"></iframe></section>
+              <div class="vjs-playlist"></div> --><iframe src="//players.brightcove.net/1752604059001/r1bhBb0Pe_default/index.html?playlistId=4845949311001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="428" height="150"></iframe></section>
 
 <section class="bcls-section">
 <h2 id="Player_Ad_Libraries">Player Ad Libraries</h2>
@@ -909,6 +910,10 @@
 <section class="bcls-section">
 <h2 id="Known_issues">Known issues</h2>
 
+<h3>FreeWheel plugin keeps sending timeupdate events even if connection is lost and playback stops in IE11</h3>
+
+<p>In Internet Explorer 11, timeupdate media events will continue to fire on a &lt;video&gt; element if playback stalls due to loss of network connection or lack of buffering. This is a browser issue beyond the control of the Brightcove Player.</p>
+
 <h3>Resizing player during ad playback</h3>
 
 <p>If the player is resized during ad or video playback, ad content will not resize unless the player's dimensions function is called to resize the player. Resizing the player using other methods (for example: style width and height) will not resize the ad.</p>
@@ -925,9 +930,9 @@ player.trigger('fw-resizeplayer');</code></pre>
 
 <p>If the FreeWheel plugin is rendering an ad in Flash, overlay ads are not clickable. If the FreeWheel plugin is rendering an ad in HTML5, overlays are not displayed at correct coordinates. Clicking on an HTML5 overlay ad will not pause the content player when the click-url is followed.</p>
 
-<h3>FreeWheel live</h3>
+<h3>FreeWheel Live</h3>
 
-<p>FreeWheel ads in a live stream is not currently a supported use case.</p>
+<p>FreeWheel ads in a live stream can be implemented with assistance from <a href="https://www.brightcove.com/en/services">Brightcove Global Services (BGS)</a>.</p>
 
 <h3>VPAID</h3>
 
@@ -945,7 +950,15 @@ player.trigger('fw-resizeplayer');</code></pre>
             </section> -->
 
 <section class="bcls-section">
-<h2 id="Changelog">Changelog</h2>
+<h2 id="changelog">Changelog</h2>
+
+<h4>13 Nov 2017</h4>
+
+<p>v2.8.5</p>
+
+<ul>
+	<li>Fixed an issue with play button when autoplay is blocked due to not meeting autoplay requirements</li>
+</ul>
 
 <h4>12 Oct 2017</h4>
 
