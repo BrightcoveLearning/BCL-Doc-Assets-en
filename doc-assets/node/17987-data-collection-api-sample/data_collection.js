@@ -25,9 +25,9 @@
           "poster": "https://httpsak-a.akamaihd.net/1752604059001/1752604059001_4445372001001_4445295617001-vs.jpg?pubId=1752604059001&videoId=4445295617001"
         },
         {
-          "video_name": "Mother and Child Owls",
+          "video_name": "Great Horned Owl",
           "id": "5566517295001",
-          "src": "http://brightcove.vo.llnwd.net/e1/uds/pd/921483702001/921483702001_1717220805001_BirdsOfAFeather.mp4",
+          "src": "https://f1.media.brightcove.com/4/57838016001/57838016001_5565773114001_5565770450001.mp4?pubId=1752604059001&videoId=5566517295001",
           "poster": "http://f1.media.brightcove.com/8/57838016001/57838016001_5565771700001_5565770450001-vs.jpg?pubId=1752604059001&videoId=5566517295001"
         }
       ]
