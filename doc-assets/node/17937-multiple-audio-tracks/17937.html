@@ -20,8 +20,8 @@
 <p>Below is a simple example of a video with multiple audio tracks.</p>
 <iframe src="//players.brightcove.net/57838016001/default_default/index.html?videoId=5413700943001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="600" height="337.5"></iframe></section>
 
-<section class="bcls-section" id="setup">
-<h2>Setup</h2>
+<section class="bcls-section">
+<h2 id="setup">Setup</h2>
 
 <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, audio tracks, WebVTT files, or all of these:</p>
 
@@ -39,35 +39,44 @@
 	<p>To get access tokens, you will need <strong>client credentials</strong> (see below). For the process of obtaining an access token, see <a href="/node/17925">Get Access Tokens</a>.</p>
 	</dd>
 </dl>
-
-<h3 class="bcls-expander-head">Getting client credentials</h3>
-
-<div class="bcls-expander-content">
-<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
-
-<p>You can also get your credentials via CURL or Postman - see:</p>
-
-<ul>
-	<li>
-	<ul>
-		<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
-	</ul>
-
-	<ul>
-		<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
-		<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
-	</ul>
-	</li>
-</ul>
-</div>
-
 <h3>Note on S3</h3>
 
 <p>If your source files will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/node/17934#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
 </section>
 
-<section class="bcls-section" id="workflow">
-<h2>Workflow</h2>
+<section class="bcls-section">
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+
+<div class="bcls-expander-content">
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+<p>These are the permissions you will need:</p>
+<figure class="bcls-figure">
+  <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/di-permissions.png" alt="Dynamic Ingest Permissions">
+  <figcaption class="bcls-caption--image">Dynamic Ingest Permissions</figcaption>
+</figure>
+
+<p>You can also get your credentials via CURL or Postman - see:</p>
+
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+<pre class="line-numbers"><code class="language-json">[
+  "video-cloud/video/all",
+  "video-cloud/ingest-profiles/profile/read",
+  "video-cloud/ingest-profiles/account/read",
+  "video-cloud/upload-urls/read"
+]</code></pre>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="workflow">Workflow</h2>
 
 <p>There are two primary use cases:</p>
 
@@ -87,8 +96,8 @@
 <p>We will look at the details of the API requests in a section below.</p>
 </section>
 
-<section id="Audio_track_metadata" class="bcls-section">
-<h2>Audio track metadata</h2>
+<section class="bcls-section">
+<h2 id="Audio_track_metadata">Audio track metadata</h2>
 
 <p>There are some metadata fields attached to audio tracks - some of these are set when you ingest the tracks, while others are created by Video Cloud. Some of these fields are read-only, and others can be updated by you. The metadata fields will be detailed below in the context of the relevant API requests, but two particular ones require some explanation here, as they are crucial in determining how the Brightcove Player will handle the multiple audio tracks.</p>
 
