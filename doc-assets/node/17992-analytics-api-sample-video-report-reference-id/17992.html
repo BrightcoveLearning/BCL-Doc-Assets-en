@@ -1,5 +1,4 @@
 <link href="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/js/pikaday/pikaday.css" rel="stylesheet" />
-
 <article class="bcls-article">
 <section id="dependencies" class="bcls-section">
 <h2>Dependencies</h2>
@@ -99,7 +98,8 @@
 
 <h3>JavaScript</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (window, document, Pikaday) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (window, document, Pikaday) {
 "use strict";
 var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by-reference-id-proxy.php",
     useMyAccount = document.getElementById("useMyAccount"),
@@ -141,7 +141,7 @@ var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by
  * @return {}
  */
 function bclslog(context, message) {
-    if (window["console"] && console["log"]) {
+    if (window["console"] &amp;&amp; console["log"]) {
         console.log(context, message);
     }
     return;
@@ -172,7 +172,7 @@ function buildRequest() {
     i,
     iMax;
     iMax = reference_ids.length;
-    for (i = 0; i < iMax; i++) {
+    for (i = 0; i &lt; iMax; i++) {
         reference_ids[i] = 'reference_id:' + encodeURI(reference_ids[i]);
     }
     if (isDefined($client_id.value)) {
@@ -184,20 +184,20 @@ function buildRequest() {
     searchStr = reference_ids.join('+');
     // build the request
     requestOptions.url = "https://analytics.api.brightcove.com/v1";
-    requestOptions.url += "/data?accounts=" + account_id + "&dimensions=video";
+    requestOptions.url += "/data?accounts=" + account_id + "&amp;dimensions=video";
     // check for time filters
     startDate = from.value;
     if (startDate !== " ") {
-        requestOptions.url += "&from=" + startDate;
+        requestOptions.url += "&amp;from=" + startDate;
     }
     endDate = to.value;
     if (endDate !== " ") {
-        requestOptions.url += "&to=" + endDate;
+        requestOptions.url += "&amp;to=" + endDate;
     }
     // add limit and fields
-    requestOptions.url += "&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.reference_id";
+    requestOptions.url += "&amp;limit=all&amp;fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.reference_id";
     // add ref id filter
-    requestOptions.url += "&where=video.q==" + searchStr;
+    requestOptions.url += "&amp;where=video.q==" + searchStr;
     $request.textContent = requestOptions.url;
     $request.setAttribute("value", requestOptions.url);
 }
@@ -216,7 +216,7 @@ function getData(options, callback) {
         getResponse = function() {
             try {
               if (httpRequest.readyState === 4) {
-                if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                   parsedData = JSON.parse(httpRequest.responseText);
                   callback(parsedData);
                 } else {
@@ -228,9 +228,9 @@ function getData(options, callback) {
             }
         };
         // set up request data
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-    if (options.client_id && options.client_secret) {
-        requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+    requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
+    if (options.client_id &amp;&amp; options.client_secret) {
+        requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
     }
 
     // set response handler
@@ -275,7 +275,7 @@ useMyAccount.addEventListener("click", function () {
 });
 // set listener for form fields
 iMax = requestInputs.length;
-for (i = 0; i < iMax; i++) {
+for (i = 0; i &lt; iMax; i++) {
     requestInputs[i].addEventListener("change", buildRequest);
 }
 // send request
