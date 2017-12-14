@@ -45,8 +45,7 @@
 		</tr>
 		<tr>
 			<td class="align-top no-wrap">Client id:</td>
-			<td><input id="client_id" class="required aapi-request" type="text" size="100" value="" /> (must include permissions for Analytics/Read, Videos/Read, and Playlists/Read)
-			</td>
+			<td><input id="client_id" class="required aapi-request" type="text" size="100" value="" /> (must include permissions for Analytics/Read, Videos/Read, and Playlists/Read)</td>
 		</tr>
 		<tr>
 			<td class="align-top no-wrap">Client secret:</td>
@@ -116,7 +115,9 @@
 
 <p>In the <strong>Summary</strong> portion of the response, you will find average values for the playlist.</p>
 
-<pre class="line-numbers"><code id="responseFrame" class="language-json"></code></pre>
+<pre class="line-numbers">
+
+&nbsp;</pre>
 </section>
 
 <section class="bcls-section" id="jscode">
@@ -124,7 +125,8 @@
 
 <p>JavaScript code for this sample:</p>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (window, document, Pikaday) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (window, document, Pikaday) {
     'use strict';
     var // media api stuff
         getPlaylists,
@@ -320,7 +322,7 @@
         i;
 
         // add credentials if submitted
-        if (isDefined(client_id) && isDefined(client_secret)) {
+        if (isDefined(client_id) &amp;&amp; isDefined(client_secret)) {
             requestOptions.client_id = client_id;
             requestOptions.client_secret = client_secret;
         }
@@ -335,13 +337,13 @@
                 break;
             case 'getPlaylists':
             totalPlaylistCalls = Math.ceil(totalPlaylists / limit);
-            requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/playlists?limit=' + limit + '&offset=' + (limit * callNumber);
+            requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/playlists?limit=' + limit + '&amp;offset=' + (limit * callNumber);
             $request.textContent = requestOptions.url;
             getData(requestOptions, type, function(response) {
                 // add the current items array to overall one
                 playlistData = playlistData.concat(response);
                 callNumber++;
-                if (callNumber < totalPlaylistCalls) {
+                if (callNumber &lt; totalPlaylistCalls) {
                     // still have more videos to get
                     buildRequest('getPlaylists');
                 } else {
@@ -366,7 +368,7 @@
             });
                 break;
             case 'getVideos':
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + 'videos?q=' + searchString + '&limit=' + playlistLimit + '&sort=' + playlistSort;
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + 'videos?q=' + searchString + '&amp;limit=' + playlistLimit + '&amp;sort=' + playlistSort;
                 $request.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     response.forEach(function(video, index, response) {
@@ -380,7 +382,7 @@
                 if (format === 'csv') {
                     isJSON = false;
                 }
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&where=video==' + videoIds.join(',') + '&from=' + from.value + '&to=' + to.value + '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view' + '&format=' + format;
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&amp;dimensions=video&amp;where=video==' + videoIds.join(',') + '&amp;from=' + from.value + '&amp;to=' + to.value + '&amp;limit=all&amp;fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view' + '&amp;format=' + format;
                 $request.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     if (format === 'json') {
@@ -408,7 +410,7 @@
             getResponse = function() {
                 try {
                   if (httpRequest.readyState === 4) {
-                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                    if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                         bclslog('responseText', httpRequest.responseText);
                         if (isJSON) {
                             parsedData = JSON.parse(httpRequest.responseText);
@@ -425,9 +427,9 @@
                 }
             };
             // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
+        if (options.client_id &amp;&amp; options.client_secret) {
+            requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
         }
 
         // set response handler
@@ -472,7 +474,7 @@
     $getPlaylists.addEventListener('click', function() {
         if (isDefined($account_id.value)) {
             account_id = $account_id.value;
-            if (isDefined($client_id.value) && isDefined($client_secret.value)) {
+            if (isDefined($client_id.value) &amp;&amp; isDefined($client_secret.value)) {
                 client_id = $client_id.value;
                 client_secret = $client_secret.value;
             } else {
