@@ -1,17 +1,46 @@
 <link href="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/js/pikaday/pikaday.css" rel="stylesheet" />
-<h1>Code Sample: Video Report by Tags</h1>
 
 <article class="bcls-article">
-<header id="bcls_headeer" class="bcls-header">
-<p>In this sample, you will learn how to get reports on videos by the tags assigned to them and return the results in JSON or CSV format.</p>
-</header>
 
-<section id="dependencies" class="bcls-section">
-<h2>Dependencies</h2>
+<section class="bcls-section">
+<h2 id="dependencies">Dependencies</h2>
 
 <p>3rd party libraries used in this sample:</p>
 
 <p><a href="https://github.com/dbushell/Pikaday">Pikaday</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+
+<div class="bcls-expander-content">
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+
+<p>These are the permissions you will need:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Analytics API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-permissions.png" />
+<figcaption class="bcls-caption--image">Analytics API Permissions</figcaption>
+</figure>
+
+<p>You can also get your credentials via CURL or Postman - see:</p>
+
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
+
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
+  "video-cloud/analytics/read",
+  "video-cloud/video/read"
+]</code></pre>
+</div>
 </section>
 
 <section id="Request_Options" class="bcls-section">
@@ -48,7 +77,7 @@
 	</tbody>
 </table>
 
-<p class="small" id="n1"><sup class="red">[1]</sup> See <a href="//docs.brightcove.com/en/video-cloud/analytics-api/guides/managing-api-credentials.html">Managing API Credentials</a> for information on getting client credentials.</p>
+<p class="small" id="n1"><sup class="red">[1]</sup> See <a href="/node/14056">Managing API Authentication Credentials</a> for information on getting client credentials.</p>
 </div>
 </fieldset>
 
@@ -98,7 +127,8 @@
 
 <p>JavaScript code for this sample:</p>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document, Pikaday) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function(window, document, Pikaday) {
   'use strict';
   var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analytics-by-tag.php',
     basicInfo = document.getElementById('basicInfo'),
@@ -141,7 +171,7 @@
    * @return {}
    */
   function bclslog(context, message) {
-    if (window['console'] && console['log']) {
+    if (window['console'] &amp;&amp; console['log']) {
       console.log(context, message);
     }
     ;
@@ -179,19 +209,19 @@
 
     // build the request
     requestOptions.url = 'https://analytics.api.brightcove.com/v1';
-    requestOptions.url += '/data?accounts=' + account_id + '&dimensions=video';
+    requestOptions.url += '/data?accounts=' + account_id + '&amp;dimensions=video';
     // check for time filters
     startDate = from.value || fromISO;
       // startDate = fromPicker.toString('YYYY-MM-DD');
-      requestOptions.url += '&from=' + startDate;
+      requestOptions.url += '&amp;from=' + startDate;
     endDate = to.value || nowISO;
       // endDate = toPicker.toString('YYYY-MM-DD');
-      requestOptions.url += '&to=' + endDate;
+      requestOptions.url += '&amp;to=' + endDate;
 
     // add limit and fields
-    requestOptions.url += '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.tags';
+    requestOptions.url += '&amp;limit=all&amp;fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.tags';
     // add ref id filter
-    requestOptions.url += '&where=video.q==tags:' + removeSpaces(tags);
+    requestOptions.url += '&amp;where=video.q==tags:' + removeSpaces(tags);
     $request.textContent = requestOptions.url;
     $request.setAttribute('value', requestOptions.url);
   }
@@ -210,7 +240,7 @@
           getResponse = function() {
               try {
                 if (httpRequest.readyState === 4) {
-                  if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                  if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                     parsedData = JSON.parse(httpRequest.responseText);
                     callback(parsedData);
                   } else {
@@ -222,9 +252,9 @@
               }
           };
           // set up request data
-      requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-      if (options.client_id && options.client_secret) {
-          requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+      requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
+      if (options.client_id &amp;&amp; options.client_secret) {
+          requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
       }
 
       // set response handler
@@ -268,7 +298,7 @@
 
   // set listener for form fields
   iMax = $requestInputs.length;
-  for (i = 0; i < iMax; i++) {
+  for (i = 0; i &lt; iMax; i++) {
       $requestInputs[i].addEventListener('change', buildRequest);
   }
   // send request
@@ -285,9 +315,10 @@
   // generate initial request
   buildRequest();
 })(window, document, Pikaday);</code></pre>
+
 <h3>Proxy</h3>
 
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+<aside class="bcls-aside bcls-aside--information">In order to build your own version of the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
 <ul>
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
