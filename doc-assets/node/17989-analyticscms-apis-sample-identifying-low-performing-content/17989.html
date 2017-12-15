@@ -97,7 +97,8 @@
 
 <h3>JavaScript</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (window, document) {
     'use strict';
     var videoData = [],
         analyticsData = [],
@@ -149,7 +150,7 @@
      * @return {}
      */
     function bclslog(context, message) {
-        if (window['console'] && console['log']) {
+        if (window['console'] &amp;&amp; console['log']) {
           console.log(context, message);
         }
         return;
@@ -174,14 +175,14 @@
     function trimRequest() {
         if (!requestTrimmed) {
             lastChar = requestURL.charAt((requestURL.length - 1));
-            if (lastChar === '?' || lastChar === '&' || lastChar === ';') {
+            if (lastChar === '?' || lastChar === '&amp;' || lastChar === ';') {
                 requestURL = requestURL.substring(0, (requestURL.length - 1));
                 // recall this function until trim finished
                 trimRequest(requestURL);
-            } else if (requestURL.indexOf('&&') > -1) {
-                requestURL = requestURL.replace('&&', '&');
-            } else if (requestURL.indexOf('?&') > -1) {
-                requestURL = requestURL.replace('?&', '?');
+            } else if (requestURL.indexOf('&amp;&amp;') &gt; -1) {
+                requestURL = requestURL.replace('&amp;&amp;', '&amp;');
+            } else if (requestURL.indexOf('?&amp;') &gt; -1) {
+                requestURL = requestURL.replace('?&amp;', '?');
             } else {
                 requestTrimmed = true;
             }
@@ -199,7 +200,7 @@
     */
     function findObjectInArray(targetArray, objProperty, value) {
         var i, totalItems = targetArray.length, objFound = false;
-        for (i = 0; i < totalItems; i++) {
+        for (i = 0; i &lt; totalItems; i++) {
             if (targetArray[i][objProperty] === value) {
                 objFound = true;
                 return i;
@@ -222,7 +223,7 @@
             videoItem,
             i;
         // add credentials if submitted
-        if (isDefined(client_id) && isDefined(client_secret)) {
+        if (isDefined(client_id) &amp;&amp; isDefined(client_secret)) {
             requestOptions.client_id = client_id;
             requestOptions.client_secret = client_secret;
         }
@@ -237,7 +238,7 @@
                 break;
             case 'getVideos':
                 totalVideoCalls = Math.ceil(totalVideos / limit);
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&limit=' + limit + '&offset=' + (limit * callNumber) + '&sort=published_at';
+                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&amp;limit=' + limit + '&amp;offset=' + (limit * callNumber) + '&amp;sort=published_at';
                 getData(requestOptions, type, function(response) {
                     // add the current item array to overall one
                     response.forEach(function(video, index, response){
@@ -253,7 +254,7 @@
                         videoIdsArray.push(video.id);
                     });
                     callNumber++;
-                    if (callNumber < totalVideoCalls) {
+                    if (callNumber &lt; totalVideoCalls) {
                         // still have more videos to get
                         buildRequest('getVideos');
                     } else {
@@ -270,26 +271,26 @@
                 account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
                 minViews = parseInt($includeVideos.value);
                 requestOptions.url = 'https://analytics.api.brightcove.com/v1';
-                requestOptions.url += '/data?accounts=' + account_id + '&dimensions=video&limit=150';
+                requestOptions.url += '/data?accounts=' + account_id + '&amp;dimensions=video&amp;limit=150';
                 // add where filter
-                requestOptions.url += '&where=video==' + tmpArray.join(',');
+                requestOptions.url += '&amp;where=video==' + tmpArray.join(',');
                 // add from date
-                requestURL += '&from=' + from;
+                requestURL += '&amp;from=' + from;
                 // add fields
-                requestURL += '&fields=video,engagement_score,video_view,video_percent_viewed';
+                requestURL += '&amp;fields=video,engagement_score,video_view,video_percent_viewed';
                 $request.textContent = requestOptions.url;
                 $request.setAttribute('value', requestURL);
                 getData(requestOptions, type, function(response) {
                     analyticsData = analyticsData.concat(response.items);
                     callNumber++;
-                    if (callNumber < totalAnalyticsCalls) {
+                    if (callNumber &lt; totalAnalyticsCalls) {
                         buildRequest('getAnalytics');
                     } else {
                         // remove items with more than the minimum views
                         i = analyticsData.length;
-                        while (i > 0) {
+                        while (i &gt; 0) {
                             i--;
-                            if (analyticsData[i].video_view > minViews) {
+                            if (analyticsData[i].video_view &gt; minViews) {
                                 analyticsData.splice(i, 1);
                             }
                         }
@@ -333,7 +334,7 @@
             getResponse = function() {
                 try {
                   if (httpRequest.readyState === 4) {
-                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                    if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                       parsedData = JSON.parse(httpRequest.responseText);
                       callback(parsedData);
                     } else {
@@ -345,9 +346,9 @@
                 }
             };
             // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
+        if (options.client_id &amp;&amp; options.client_secret) {
+            requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
         }
 
         // set response handler
@@ -377,7 +378,7 @@
         // build rows
         tmpArray = [];
         iMax = videoData.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             video = videoData[i];
             tmpArray = [video.id, video.name, video.published_at,video.video_view,video.engagement_score,video.video_percent_viewed];
             textRows += tmpArray.join(',') + '\n';
