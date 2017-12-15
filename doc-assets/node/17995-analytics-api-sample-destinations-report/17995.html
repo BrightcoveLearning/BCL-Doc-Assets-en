@@ -40,7 +40,7 @@
 	</tbody>
 </table>
 
-<p class="small" id="n1"><sup class="red">[1]</sup> See <a href="//docs.brightcove.com/en/video-cloud/analytics-api/guides/managing-api-credentials.html">Managing API Credentials</a> for information on getting client credentials.</p>
+<p class="small" id="n1"><sup class="red">[1]</sup> See <a href="/node/14056">Managing API Credentials</a> for information on getting client credentials.</p>
 
 <h3>Current API request</h3>
 <textarea id="requestURL" rows="3" cols="200"></textarea></div>
@@ -104,7 +104,8 @@
 
 <h3>JavaScript</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (window, document) {
     'use strict';
     var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/destinations-proxy.php',
         useMyAccount = document.getElementById('useMyAccount'),
@@ -135,7 +136,7 @@
          * @return {}
          */
         function bclslog(context, message) {
-            if (window['console'] && console['log']) {
+            if (window['console'] &amp;&amp; console['log']) {
               console.log(context, message);
             }
             return;
@@ -173,21 +174,21 @@
                 fields,
                 frag;
             // add credentials if submitted
-            if (isDefined(clientId.value) && isDefined(clientSecret.value)) {
+            if (isDefined(clientId.value) &amp;&amp; isDefined(clientSecret.value)) {
                 requestOptions.client_id = clientId.value;
                 requestOptions.client_secret = clientSecret.value;
             }
             gettingDataDisplay.textContent = 'Getting data, please wait....';
             switch (type) {
                 case 'getDesinations':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=destination_domain,destination_path&limit=all&fields=destination_domain,destination_path,video_view&sort=destination_domain&from=alltime';
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&amp;dimensions=destination_domain,destination_path&amp;limit=all&amp;fields=destination_domain,destination_path,video_view&amp;sort=destination_domain&amp;from=alltime';
                 requestURL.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     // create the video selector items from the response items
                     frag = new DocumentFragment();
                     csvStr = '"URL","Video Views"\n';
                     iMax = response.items.length;
-                    for (i = 0; i < iMax; i++) {
+                    for (i = 0; i &lt; iMax; i++) {
                         item = response.items[i];
                         newEl = document.createElement('tr');
                         frag.appendChild(newEl);
@@ -214,14 +215,14 @@
                 case 'getPlayerDomains':
                     // fields to return
                     fields = 'player,player_name,destination_domain,video_view,';
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=player,destination_domain&limit=all&fields=' + fields  + '&sort=player';
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&amp;dimensions=player,destination_domain&amp;limit=all&amp;fields=' + fields  + '&amp;sort=player';
                     requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // display the data
                         frag = new DocumentFragment();
                         csvStr = '"Domain","Player ID","Player Name","Video Views"\n';
                         iMax = response.items.length;
-                        for (i = 0; i < iMax; i++) {
+                        for (i = 0; i &lt; iMax; i++) {
                             item = response.items[i];
                             newEl = document.createElement('tr');
                             frag.appendChild(newEl);
@@ -270,7 +271,7 @@
                 getResponse = function() {
                     try {
                       if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                           parsedData = JSON.parse(httpRequest.responseText);
                           bclslog('response', parsedData);
                           callback(parsedData);
@@ -283,9 +284,9 @@
                     }
                 };
                 // set up request data
-            requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-            if (options.client_id && options.client_secret) {
-                requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+            requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
+            if (options.client_id &amp;&amp; options.client_secret) {
+                requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
             }
 
             // set response handler
@@ -317,11 +318,12 @@
 
     return {};
 })(window, document);</code></pre>
+
 <h3>Proxy</h3>
 
 <p>This app uses a proxy written in PHP to fetch access tokens and make the Analytics API requests.</p>
 
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+<aside class="bcls-aside bcls-aside--information">In order to build your own version of the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
 <ul>
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
