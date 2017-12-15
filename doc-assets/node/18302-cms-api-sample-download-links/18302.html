@@ -1,7 +1,4 @@
 <article class="bcls-article">
-<header id="bcls_header" class="bcls-header">
-<p>In this sample, you will learn how to use the CMS API to generate a table of download links for the best MP4 renditions of your videos.</p>
-</header>
 
 <section id="obtaincredentials" class="bcls-section">
 <h2>Obtain credentials</h2>
@@ -55,7 +52,8 @@
 
 <p>Current API request</p>
 
-<pre class="line-numbers"><code class="language-json" id="apiRequest">API request will appear here...</code></pre>
+<pre class="line-numbers">
+<code class="language-json" id="apiRequest">API request will appear here...</code></pre>
 
 <p>Download links</p>
 
@@ -74,7 +72,8 @@
 
 <p>Below is the JavaScript code used for this app.</p>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = ( function (window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function (window, document) {
     var fragment = document.createDocumentFragment(),
     // account stuff
     accountId,
@@ -230,8 +229,8 @@
             for (i = 0; i &lt; iMax; i += 1) {
                 video = videosArray[i];
                 // video may not have a valid source
-                if (isDefined(video.source) && isDefined(video.source.src)) {
-                    videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
+                if (isDefined(video.source) &amp;&amp; isDefined(video.source.src)) {
+                    videoURL = encodeURI(video.source.src.replace(/&amp;/g, '&amp;'));
                 } else {
                     videoURL = "";
                 }
@@ -282,7 +281,7 @@
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=' + sort;
                 if (isDefined(search)) {
-                    endPoint += '&q=' + search;
+                    endPoint += '&amp;q=' + search;
                 }
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
@@ -290,9 +289,9 @@
                 getMediaData(requestData, id);
                 break;
             case 'getVideos':
-            endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit + '&offset=' + limit * callNumber;
+            endPoint = accountId + '/videos?sort=' + sort + '&amp;limit=' + limit + '&amp;offset=' + limit * callNumber;
             if (isDefined(search)) {
-                endPoint += '&q=' + search;
+                endPoint += '&amp;q=' + search;
             }
             requestData.url = baseURL + endPoint;
             requestData.requestType = 'GET';
@@ -355,7 +354,7 @@
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status &gt;= 200 && httpRequest.status &lt; 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                             // check for completion
                             if (requestID === 'getCount') {
                                 responseRaw = httpRequest.responseText;
@@ -404,10 +403,10 @@
                 }
             };
         // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+        if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
+            requestParams += '&amp;client_id=' + clientId + '&amp;client_secret=' + clientSecret;
         }
 
         // set response handler
@@ -428,7 +427,7 @@
             clientId = client_id.value;
             clientSecret = client_secret.value;
             // only use entered account id if client id and secret are entered also
-            if (isDefined(clientId) && isDefined(clientSecret)) {
+            if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
                     accountId = account_id.value;
                 } else {
@@ -477,7 +476,6 @@
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
 </ul>
 </aside>
-
 </section>
 </article>
 <script src="//learning-services-media.brightcove.com/doc-assets/node/18302-cms-api-sample-download-links/download-links.js"></script>
