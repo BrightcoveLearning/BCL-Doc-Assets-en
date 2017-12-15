@@ -1,14 +1,72 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="The_player">The player sample</h2>
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
 
-<p>The following shows a player with the number of video views displayed in the <code>spacer</code> section of the controlbar. Note that because of caching issues with the Analytics API, the total will NOT always increment on a video view then an immediate page reload. See the <a href="/node/17962">Overview: Video Data Endpoint</a> document for more information.</p>
-
-<aside class="bcls-aside bcls-aside--information">This sample works for Video Cloud only.</aside>
-<iframe src="//players.brightcove.net/1752604059001/rk2CEuV9x_default/index.html?videoId=3851380732001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="640" height="360"></iframe></section>
+<p>When you start this video playing you will see in the right hand side of the controlbar a label and number for the number of times this video has been viewed. There may be a slight delay before the views information displays as the Analytics API is asynchronously queried for the data.</p>
 
 <section class="bcls-section">
-<h2 id="Development_sequence" class="bcls-expander-head">Development sequence</h2>
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+
+<div class="bcls-expander-content">
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+
+<p>These are the permissions you will need:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Analytics API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-permissions.png" />
+<figcaption class="bcls-caption--image">Analytics API Permissions</figcaption>
+</figure>
+
+<p>You can also get your credentials via CURL or Postman - see:</p>
+
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
+
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
+  "video-cloud/analytics/read",
+  "video-cloud/video/read"
+]</code></pre>
+</div>
+</section>
+<!-- UPDATE codepen here -->
+
+<p data-height="432" data-theme-id="dark" data-slug-hash="dVoaOe" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="18170-display-views-controlbar" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/dVoaOe/">18170-display-views-controlbar</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18170-display-views-controlbar">source code</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
 
 <div class="bcls-expander-content">
 <p>Here is the recommended development sequence:</p>
@@ -21,7 +79,7 @@
 	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
 </ol>
 
-<p>For details about these steps, review the <a href="/node/18081">Quick Start to Plugin Development</a> guide.</p>
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
 
 <h3>iframe or In-Page embed</h3>
 
@@ -43,59 +101,52 @@
 
 <p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
 </div>
-<!-- class="bcls-expander-content" --></section>
+<!-- id="expanderContent" --></section>
 
 <section class="bcls-section">
-<h2 id="Select_implementation_iframe">Select implementation</h2>
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
 
-<p>In this sample, the functionality is contained in the code and CSS with no dependencies on the parent page, so a plugin is a good choice for this functionality.</p>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>API Methods</th>
+			<th>API Events</th>
+			<th>API Properties</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:loadstart">loadstart</a></td>
+			<td><a href="/node/18085">mediainfo</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--tip">This code sample uses Brightcove's REST based Analytics API. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside>
 </section>
+<!-- UPDATE player and HTML configuration -->
 
 <section class="bcls-section">
-<h2 id="API_resources_used">API/Plugin resources used</h2>
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
 
-<p>The following sections detail resources used from various APIs/plugins.</p>
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
 
-<h3>Brightcove player API events</h3>
+<h3>Player configuration</h3>
 
-<ul>
-	<li><code>loadstart</code></li>
-</ul>
+<p>No special configuration is required for the Brightcove Player you create for this sample.</p>
 
-<h3>APIs</h3>
+<h3>Other HTML</h3>
 
-<p>This sample uses the Analytics API with the <code>https://analytics.api.brightcove.com/v1/alltime/accounts/{$account_id}/videos/{$video_id}</code> endpoint. Also, a proxy is used so private credentials are not passed from the client. The <a href="/node/17925#codeSamples">Code Samples</a> section of the <strong>Getting Access Tokens</strong> details the proxy.</p>
+<p>No other HTML elements are added to the page.</p>
 </section>
+<!-- UPDATE application flow -->
 
 <section class="bcls-section">
-<h2 id="How_it_works">How it works</h2>
+<h2 id="Application_flow">Application flow</h2>
 
-<p>The following sections explain the player, JavaScript and CSS code used in the example.</p>
-
-<h3>Create the player</h3>
-
-<p>This is standard player code with the addition of an <code>id</code> attribute assigned the value <code>myPlayerID</code>. Also, the <code>width</code> and <code>height</code> are set.</p>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;video <span class="bcls-highlight">id="myPlayerID"</span>
-  data-video-id="3851380732001"
-  data-account="1752604059001"
-  data-player="HkXoLm7cg"
-  data-embed="default"
-  data-application-id
-  class="video-js"
-  controls
-  width="640"
-  height="360"&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/1752604059001/HkXoLm7cg_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
-
-<h3 id="HTMLCode">The HTML code</h3>
-
-<p>No other HTML is required.</p>
-
-<h3>The JavaScript code</h3>
-
-<p>At a very high level the code performs the following tasks:</p>
+<p>The basic logic behind this application is:</p>
 
 <ul>
 	<li>Creates and populates an <code>options</code> object that is passed to the <code>makeRequest()</code> function that calls the Analytics API.</li>
@@ -104,222 +155,83 @@
 	<li>Performs a request to the Analytics API. When the data is returned it is passed to the callback function.</li>
 	<li>Calls the <code>placeCountInControlbar()</code> function at the end of the callback function. This function places the views data in the control bar.</li>
 </ul>
+<!-- UPDATE task 1 -->
 
-<p>Key sections of the code are detailed here:</p>
+<h3>Build the URL for the Analytics API request</h3>
 
-<ul>
-	<li>Lines 15-19: After waiting for the <code>loadstart</code> event to be dispatched, which means <code>mediainfo</code> is populated, the code extracts the <code>accountId</code> and <code>videoId</code> and dynamically builds the proper endpoint. At this point, just before calling <code>makeRequest</code>, your <code>options</code> object appears as follows:
+<p>Find the code which is labeled:</p>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Options object" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/views-in-controlbar/options-object.png" /></figure>
-	</li>
-	<li>Lines 22-28: Calls <code>makeRequest</code>. In the callback function, note that <code>viewsRaw</code> is the parameter, and hence where the returned data will be assigned. The returned, raw JSON needs to be manipulated to extract the views. As the diagram below shows, raw JSON is returned, then you need to parse it to convert into a JavaScript object, and finally use simple <strong>object.property</strong> notation to grab the value.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Views transformation" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/views-in-controlbar/views-transformation.png" /></figure>
-	</li>
-	<li>Line 41: Creates a <code>&lt;div&gt;</code> element that will eventually be placed in the controlbar's <code>spacer</code> element.</li>
-	<li>Line 43: Places the needed content in the dynamically created <code>&lt;div&gt;</code> element.</li>
-	<li>Line 45: Retrieves the <code>spacer</code> element from the DOM.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Spacer in DOM" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/views-in-controlbar/spacer-in-dom.png" /></figure>
-	</li>
-	<li>Line 47: Styles the <code>spacer</code> element so content is right-justified and given a top margin.</li>
-	<li>Line 49: Places the dynamically created <code>&lt;div&gt;</code> in the <code>spacer</code>.</li>
-</ul>
+<pre>
+<code class="language-javascript">// ### Setup for video views Analytics API request ###</code></pre>
 
-<pre class="line-numbers">
-<code class="language-javascript">  &lt;script type="text/javascript"&gt;
-    var myPlayer,
-      viewsCount,
-      options =[],
-      viewsObject = [];
+<p>Use information from the <code>mediainfo</code> object to build the proper endpoint.</p>
+<!-- UPDATE task 2 -->
 
-    videojs('myPlayerID').ready(function(){
-      myPlayer =this,
-      options.requestType='GET',
-      options.proxyURL = 'http://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php',
-      options.requestBody = '',
-      options.callback = '';
-      // Wait for loadstart event so mediainfo is populated
-      // and the video ID and account ID can be retrieved
-      myPlayer.on('loadstart',function(){
-        var videoID = myPlayer.mediainfo.id,
-          accountID = myPlayer.mediainfo.accountId;
-        // Build the Analytics API endpoint
-        options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + accountID + '/videos/' + videoID;
-        // Make the request to the Analytics API
-        // Extract views from data returned by Analytics API
-        makeRequest(options, function(viewsRaw){
-          // Remove console.log command for production code
-          console.log('viewRaw', viewsRaw);
-          viewsObject = JSON.parse(viewsRaw);
-          console.log('viewsObject',viewsObject);
-          viewsCount = viewsObject.alltime_video_views;
-          console.log('views',viewsCount);
-          // Call function to place data in controlbar
-          placeCountInControlbar();
-        });
-      });
-    });
+<h3>Request the views data from the Analytics API</h3>
 
-    /**
-     * Dynamically built a div that is then
-     * placed in the controlbar's spacer element
-     */
-    function placeCountInControlbar(){
-      var spacer,
-        newElement = document.createElement('div');
-      //Place data in div
-      newElement.innerHTML = "Total Views: " + viewsCount;
-      //Get the spacer in the controlbar
-      spacer = document.getElementsByClassName('vjs-spacer')[0];
-      //Right justify content in the spacer and add top margin
-      spacer.setAttribute('style', 'justify-content: flex-end; margin-top: 10px');
-      //Add the dynacmially built div to the spacer in the controlbar
-      spacer.appendChild(newElement);
-    }
+<p>Find the code which is labeled:</p>
 
-    /**
-     * send API request to the proxy
-     * @param  {Object} options for the request
-     * @param  {String} options.url the full API request URL
-     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-     * @param  {String} options.proxyURL proxyURL to send the request to
-     * @param  {String} options.client_id client id for the account (default is in the proxy)
-     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
-     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
-     * @param  {Function} [callback] callback function that will process the response
-     */
-    function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-        response,
-        requestParams,
-        dataString,
-        proxyURL = options.proxyURL,
-        // response handler
-        getResponse = function () {
-          try {
-            if (httpRequest.readyState === 4) {
-              if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
+<pre>
+<code class="language-javascript">// ### Make the request to the Analytics API ###</code></pre>
 
-<h3 id="CSSCode">The stylesheet</h3>
+<p>They key point here is that the anonymous function is the callback function used where the actual request to the Analytics API is used. At the end of this function the returned value of video views is passed to the <code>placeCountInControlbar</code> method for display in the controlbar.</p>
+<!-- UPDATE task 3 -->
 
-<p>No stylesheet is used in this sample.</p>
+<h3>Place count in controlbar</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Build and place count in controlbar ###</code></pre>
+
+<p>Here an HTML <code>div</code> element is created and populated with the view information. Lastly, that <code>div</code> is placed in the controlbar's <code>spacer</code> element.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Make call to Analytics API</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Standard functionality for Analytics API call ###</code></pre>
+
+<p>This mostly standard code that make calls to Brightcove's REST APIs. See the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document for details.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>No CSS is needed for this code sample.</p>
 </section>
 
 <section class="bcls-section">
-<h2 id="plugin">Use a plugin</h2>
+<h2 id="Plugin_code">Plugin code</h2>
 
-<p>It is a best practice to use a plugin so that you can easily add the JavaScript code's functionality to multiple players.</p>
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
 
-<h3>Create the JavaScript file</h3>
-
-<p>Move the plugin's JavaScript code into a file and place it in an Internet accessible URL.</p>
-
-<ul>
-	<li>Lines 1, 113: Use the standard syntax to begin and end a Brightcove Player plugin.</li>
-	<li>Line 1: The first argument of the function call is the name of the function defined in the plugin code, in this case <code>viewsInControlbar</code>.</li>
-	<li>Lines 2-9: Initial variable declarations and assignments are slightly altered.</li>
-	<li>Line 113: The trailing semicolon is required.</li>
-</ul>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>ready</code> method is removed.</aside>
+<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">videojs.plugin('viewsInControlbar', function() {
-  var myPlayer = this,
-    viewsCount,
-    options =[],
-    viewsObject = [];
-    options.requestType = 'GET',
-    options.proxyURL = 'http://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php',
-    options.requestBody = '',
-    options.callback = '';
-    // Wait for loadstart event so mediainfo is populated
-    // and the video ID and account ID can be retrieved
-    myPlayer.on('loadstart',function(){
-      var videoID = myPlayer.mediainfo.id,
-        accountID = myPlayer.mediainfo.accountId;
-      // Build the Analytics API endpoint
-      options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + accountID + '/videos/' + videoID;
-      // Make the request to the Analytics API
-      // Extract views from data returned by Analytics API
-      makeRequest(options, function(viewsRaw){
-        // Remove console.log command for production code
-        console.log('viewsRaw', viewsRaw);
-        viewsObject = JSON.parse(viewsRaw);
-        console.log('viewsObject',viewsObject);
-        viewsCount = viewsObject.alltime_video_views;
-        console.log('views',viewsCount);
-        // Call function to place data in controlbar
-        placeCountInControlbar();
-      });
-    });
+<code class="language-javascript">videojs('myPlayerID').ready(function(){
+  var myPlayer = this;
+  ...
+});</code></pre>
 
-  /**
-   * Dynamically built a div that is then
-   * placed in the controlbar's spacer element
-   */
-  function placeCountInControlbar(){
-    var spacer,
-      newElement = document.createElement('div');
-    //Place data in div
-    newElement.innerHTML = "Total Views: " + viewsCount;
-    //Get the spacer in the controlbar
-    spacer = document.getElementsByClassName('vjs-spacer')[0];
-    //Right justify content in the spacer and add top margin
-    spacer.setAttribute('style', 'justify-content: flex-end; margin-top: 10px');
-    //Add the dynacmially built div to the spacer in the controlbar
-    spacer.appendChild(newElement);
-  }
-
-  /**
-   * send API request to the proxy
-   * @param  {Object} options for the request
-   * @param  {String} options.url the full API request URL
-   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-   * @param  {String} options.proxyURL proxyURL to send the request to
-   * @param  {String} options.client_id client id for the account (default is in the proxy)
-   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
-   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
-   * @param  {Function} [callback] callback function that will process the response
-   */
-  function makeRequest(options, callback) {
-    var httpRequest = new XMLHttpRequest(),
-      response,
-      requestParams,
-      dataString,
-      proxyURL = options.proxyURL,
-      // response handler
-      getResponse = function () {
-        try {
-          if (httpRequest.readyState === 4) {
-            if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
-
-<h3>Deploy plugin</h3>
-
-<p>You must load the JavaScript file for the custom plugin.</p>
-
-<p>To deploy the <strong>viewsInControlbar</strong> plugin using the Players module, follow these steps:</p>
-
-<ol class="bcls-tasklist__restart">
-	<li>In Video Cloud Studio, open the <strong>Players</strong> module and either locate a player to which you wish to add the plugin, or create a new player.</li>
-	<li>Click the link for the player to open the player properties.</li>
-	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-	<li>For the <strong>JavaScript URL</strong>, enter the URL which specifies the location of where you saved your plugin's JavaScript.</li>
-	<li>For the <strong>Name</strong>, enter <strong>viewsInControlbar</strong>.</li>
-	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-</ol>
-</section>
-
-<section class="bcls-section">
-<h2 id="useiframe">Use iframe</h2>
-
-<p>It is a best practice to use the iframe player implementation. Since you can create this functionality as a plugin, replace the in-page implementation with the iframe implementation.</p>
+<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
 <pre class="line-numbers">
-<code class="language-html">&lt;iframe src="//players.brightcove.net/1752604059001/rk2CEuV9x_default/index.html?videoId=3851380732001"
-  allowfullscreen
-  webkitallowfullscreen
-  mozallowfullscreen
-  width="640"
-  height="360"&gt;&lt;/iframe&gt;</code></pre>
+<code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+  var myPlayer = this;
+  ...
+});</code></pre>
+<!-- UPDATE path to plugin's JavaScript -->
+
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18170-display-views-controlbar/blob/master/plugin/views-in-controlbar.js">views-in-controlbar.js</a>.</p>
+
+<h3>Using the plugin with a player</h3>
+
+<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
+
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
 </section>
 </article>
