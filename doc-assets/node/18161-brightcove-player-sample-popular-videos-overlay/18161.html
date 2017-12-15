@@ -80,14 +80,15 @@
 <section id="The_player" class="bcls-section">
 <h2>The player</h2>
 
-<p>The player is embedded in the JSFiddle below. The overlay will appear when you pause a video, or the video ends. The request to the Analytics API to get the 6 most viewed videos in the past 24 hours is shown, along with the API response.</p>
+<p>The player is embedded in the CodePen below. The overlay will appear when you pause a video, or the video ends. The request to the Analytics API to get the 6 most viewed videos in the past 24 hours is shown, along with the API response.</p>
 
-<script async src="//jsfiddle.net/Brightcove_Learning/b624r00b/embed/result,js,html,css/dark/"></script>
+<p data-height="800" data-theme-id="14832" data-slug-hash="GpBWmm" data-default-tab="result" data-user="bcls" class="codepen">See the Pen <a href="http://codepen.io/team/bcls/pen/GpBWmm/">Popular Videos Overlay/Endscreen</a> by Brightcove Learning Services (<a href="http://codepen.io/bcls">@bcls</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script></section>
 
 <section id="How_it_works" class="bcls-section">
 <h2>How it works</h2>
 
-<p>The following sections explain the player, JavaScript and CSS code used in the example. The code is all contained in the JSFiddle, except for the proxy used to make the Analytics API request. The proxy is required to get an access token used to authenticate the request. The code for the proxy is shown <a href="#proxy_code">below</a>.</p>
+<p>The following sections explain the player, JavaScript and CSS code used in the example. The code is all contained in the CodePen, except for the proxy used to make the Analytics API request. The proxy is required to get an access token used to authenticate the request. The code for the proxy is shown <a href="#proxy_code">below</a>.</p>
 
 <h3>Create the player</h3>
 
@@ -103,7 +104,7 @@
 	<aside class="bcls-aside bcls-aside--tip">For details on how to get this embed code, see the <a href="/node/18209">Quick Start to Brightcove Player</a> document.</aside>
 	</li>
 	<li>
-	<p>See the HTML in the JSFiddle to see the player embed code. You need to include the CSS file:</p>
+	<p>See the HTML in the CodePen to see the player embed code. You need to include the CSS file:</p>
 	<textarea class="bcls-code">&lt;link href="//players.brightcove.net/videojs-overlay/1/videojs-overlay.css" rel='stylesheet'&gt;</textarea></li>
 	<li>
 	<p>You also need to include the JS file:</p>
@@ -113,21 +114,134 @@
 	</li>
 </ol>
 
+<h3 id="HTMLCode">The HTML code</h3>
+
+<p>No other HTML is required. The display of the Analytics API request and response in the CodePen is just there to show you what they look like.</p>
+
+<h3 id="JSCode">The JavaScript code</h3>
+
+<p>All of the JavaScript is contained in the CodePen. Because the sequence of processing is fairly complex, there in an anonymous event handler listening for the <code>loadstart</code> event, that acts as kind of controller for the rest of the script.</p>
+
 <p>Here is the basic logic:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="Script logic" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/overlays/popular-videos/logic.png" />
 <figcaption class="bcls-caption--image">Script logic</figcaption>
 </figure>
 
+<h3 id="CSSCode">The stylesheet</h3>
+
+<p>This example uses CSS styles for the overlay. The CSS is in the CodePen, but there is some additional CSS just for the CodePen itself. The rules that are essential using this overlay are:</p>
+
+<pre class="line-numbers" data-start="1">
+<code class="language-html">/* styling for the video thumbnails */
+  .video-thumbnail {
+    margin: 0;
+    padding: 0;
+    width: 190px;
+    height: 107px;
+    cursor: pointer;
+  }
+  /*override some of the default overlay styling*/
+  div.vjs-overlay.vjs-overlay-top {
+    width: 100%;
+    left: 0;
+    margin-left: -10px;
+  }</code></pre>
 </section>
 
 <section class="bcls-section">
 <h2 id="Proxy_code">Proxy code</h2>
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-    <ul>
-        <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-        <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-    </ul>
-</aside>
-</section>
+
+<p>Below is the code for the proxy used with this sample. You can use it as is if you insert your <code>client_id</code> and <code>client_secret</code> values on lines 22-23, and deploy the file to a server where PHP is running. Or you can use this as a model for building a proxy in whatever language you like. If you are creating a server-side app, you can simply build the logic to get <a href="/node/17925">access tokens</a> into your app.</p>
+
+<pre class="line-numbers" data-start="1">
+<code class="language-php">&lt;?php
+/**
+ * proxy for Brightcove RESTful APIs
+ * gets an access token, makes the request, and returns the response
+ *
+ * Method: POST
+ * include header: "Content-Type", "application/x-www-form-urlencoded"
+ *
+ * @post {string} url - the URL for the API request
+ * @post {string} [requestType=GET] - HTTP method for the request
+ * @post {string} [requestBody=null] - JSON data to be sent with write requests
+ *
+ * @returns {string} $response - JSON response received from the API
+ */
+// CORS enablement
+header("Access-Control-Allow-Origin: *");
+// set up request for access token
+$data = array();
+$client_id     = ‘YOUR_CLIENT_ID’;
+$client_secret = ‘YOUR_CLIENT_SECRET’;
+$auth_string   = "{$client_id}:{$client_secret}";
+$request       = "https://oauth.brightcove.com/v3/access_token?grant_type=client_credentials";
+$ch            = curl_init($request);
+curl_setopt_array($ch, array(
+	CURLOPT_POST           =&gt; TRUE,
+	CURLOPT_RETURNTRANSFER =&gt; TRUE,
+	CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+	CURLOPT_USERPWD        =&gt; $auth_string,
+	CURLOPT_HTTPHEADER     =&gt; array(
+		'Content-type: application/x-www-form-urlencoded',
+	),
+	CURLOPT_POSTFIELDS =&gt; $data
+));
+$response = curl_exec($ch);
+curl_close($ch);
+// Check for errors
+if ($response === FALSE) {
+	die(curl_error($ch));
+}
+// Decode the response
+$responseData = json_decode($response, TRUE);
+$access_token = $responseData["access_token"];
+// set up the API call
+// get data
+if ($_POST["requestBody"]) {
+	$data = json_decode($_POST["requestBody"]);
+} else {
+	$data = array();
+}
+// get request type or default to GET
+if ($_POST["requestType"]) {
+	$method = $_POST["requestType"];
+} else {
+	$method = "GET";
+}
+// get the URL and authorization info from the form data
+$request = $_POST["url"];
+//send the http request
+$ch = curl_init($request);
+curl_setopt_array($ch, array(
+		CURLOPT_CUSTOMREQUEST  =&gt; $method,
+		CURLOPT_RETURNTRANSFER =&gt; TRUE,
+		CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+		CURLOPT_HTTPHEADER     =&gt; array(
+			'Content-type: application/json',
+			"Authorization: Bearer {$access_token}",
+		),
+		CURLOPT_POSTFIELDS =&gt; json_encode($data)
+	));
+$response = curl_exec($ch);
+curl_close($ch);
+// Check for errors
+if ($response === FALSE) {
+	$logEntry = "\nError:\n".
+	"\n".date("Y-m-d H:i:s")." UTC \n"
+	.$response;
+	$logFileLocation = "log.txt";
+	$fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+	fwrite($fileHandle, $logEntry);
+	fclose($fileHandle);
+	echo "Error: there was a problem with your API call"+
+	die(curl_error($ch));
+}
+// Decode the response
+// $responseData = json_decode($response, TRUE);
+// return the response to the AJAX caller
+echo $response;
+?&gt;</code></pre>
+<!-- <p><script src="https://gist.github.com/8b18129a418cf0a080c0.js"></script></p> --></section>
 </article>
