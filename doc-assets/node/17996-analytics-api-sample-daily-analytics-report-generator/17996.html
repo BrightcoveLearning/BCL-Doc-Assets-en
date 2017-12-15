@@ -73,7 +73,8 @@
 
 <h3>Javascript</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function(window, document) {
     var accountId,
         clientId,
         clientSecret,
@@ -148,7 +149,7 @@
     function disableButtons() {
         var i,
             iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             allButtons[i].setAttribute('disabled', 'disabled');
             allButtons[i].setAttribute('style', 'opacity:.4');
             allButtons[i].textContent = 'Please wait, processing...';
@@ -161,7 +162,7 @@
     function enableButtons() {
         var i,
             iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             allButtons[i].removeAttribute('disabled');
             allButtons[i].setAttribute('style', 'opacity:1');
         }
@@ -180,7 +181,7 @@
         if (isDefined(isoString)) {
             arr = isoString.split('-');
             iMax = arr.length;
-            for (i = 0; i < iMax; i++) {
+            for (i = 0; i &lt; iMax; i++) {
                 arr[i] = parseInt(arr[i]);
                 if (i === 1) {
                     if (arr[i] === 0) {
@@ -240,11 +241,11 @@
         var i,
             iMax,
             item;
-        if (videosArray.length > 0) {
+        if (videosArray.length &gt; 0) {
             // console.log('videoNumber', videoNumber);
             // console.log('video', videosArray[videoNumber]);
             iMax = videosArray[videoNumber].items.length;
-            for (i = 0; i < iMax; i += 1) {
+            for (i = 0; i &lt; iMax; i += 1) {
                 item = videosArray[videoNumber].items[i];
                 // console.log('item', item);
                 // generate the video detail row
@@ -255,7 +256,7 @@
             spanCompletedVideos.textContent = videosCompleted;
             videosCompleted++;
             spanCompletedVideos.textContent = videosCompleted;
-            if (videosCompleted < totalVideos) {
+            if (videosCompleted &lt; totalVideos) {
                 makeReport.textContent = 'Process the next video';
                 warning.textContent = 'Before processing the next video, be sure to copy and save the CSV data!';
                 videoNumber++;
@@ -278,14 +279,14 @@
         disableButtons();
         switch (id) {
             case 'getStartDate':
-                endPoint = '/status?accounts=' + accountId + '&dimensions=video&fields=' + fields;
+                endPoint = '/status?accounts=' + accountId + '&amp;dimensions=video&amp;fields=' + fields;
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
                 getMediaData(requestData, id);
                 break;
             case 'getVideoIds':
-                endPoint = '?accounts=' + accountId + '&dimensions=video&limit=all&fields=video&sort=-video_view&from=alltime';
+                endPoint = '?accounts=' + accountId + '&amp;dimensions=video&amp;limit=all&amp;fields=video&amp;sort=-video_view&amp;from=alltime';
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -301,7 +302,7 @@
                     videoNumber++;
                     setRequestData('getVideoDays');
                 }
-                endPoint = '?accounts=' + accountId + '&dimensions=video&where=video==' + videosArray[videoNumber].video + '&from=' + currentDateISO + '&to=' + currentDateISO + '&fields=' + fields;
+                endPoint = '?accounts=' + accountId + '&amp;dimensions=video&amp;where=video==' + videosArray[videoNumber].video + '&amp;from=' + currentDateISO + '&amp;to=' + currentDateISO + '&amp;fields=' + fields;
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -329,7 +330,7 @@
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                             // check for completion
                             if (requestID === 'getStartDate') {
                                 responseRaw = httpRequest.responseText;
@@ -356,7 +357,7 @@
                                 videosArray = parsedData.items;
                                 // console.log('videosData', videosArray);
                                 totalVideos = videosArray.length;
-                                for (i = 0; i < totalVideos; i++) {
+                                for (i = 0; i &lt; totalVideos; i++) {
                                     videosArray[i].items = [];
                                 }
                                 if (videoNumber === 0) {
@@ -376,7 +377,7 @@
                                 // console.log('response', httpRequest.responseText);
                                 if (!isDefined(httpRequest.responseText)) {
                                     // no data returned
-                                    if (dayNumber < daysTotal) {
+                                    if (dayNumber &lt; daysTotal) {
                                         dayNumber++;
                                         spanDaysCount.textContent = dayNumber + 1;
                                         setRequestData('getVideoDays');
@@ -384,13 +385,13 @@
                                 } else {
                                     responseRaw = httpRequest.responseText;
                                     parsedData = JSON.parse(responseRaw);
-                                    if (parsedData.item_count > 0) {
+                                    if (parsedData.item_count &gt; 0) {
                                         parsedData.items[0].date = currentDateISO;
                                         // console.log('data item', parsedData.items[0]);
                                         videosArray[videoNumber].items.push(parsedData.items[0]);
                                     }
                                     dayNumber++;
-                                    if (dayNumber < totalDays) {
+                                    if (dayNumber &lt; totalDays) {
                                         currentDateISO = addOneDay(currentDate);
                                         currentDate = getDateFromIsoString(currentDateISO);
                                         setRequestData('getVideoDays');
@@ -410,10 +411,10 @@
                 }
             };
         // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+        if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
+            requestParams += '&amp;client_id=' + clientId + '&amp;client_secret=' + clientSecret;
         }
 
         // set response handler
@@ -468,7 +469,7 @@
             clientId = client_id.value;
             clientSecret = client_secret.value;
             // only use entered account id if client id and secret are entered also
-            if (isDefined(clientId) && isDefined(clientSecret)) {
+            if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
                 if (isDefined(account_id.value)) {
                     accountId = account_id.value;
                 } else {
@@ -505,6 +506,7 @@
 
     init();
 })(window, document);</code></pre>
+
 <h3>Proxy</h3>
 
 <aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
