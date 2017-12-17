@@ -57,8 +57,8 @@
 
 <p>API request:<textarea id="apiRequest" class="bcls-code"></textarea></p>
 
-<pre><code id="response">Response will appear here...</code></pre>
-
+<pre>
+<code id="response">Response will appear here...</code></pre>
 </fieldset>
 </section>
 
@@ -71,7 +71,8 @@
 
 <h3>JavaScript code:</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = ( function (window, document, creds) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function (window, document, creds) {
     var account_id_field = document.getElementById("account_id"),
         account_id,
         client_id_field = document.getElementById("client_id"),
@@ -101,7 +102,7 @@
         init;
     // is defined
     isDefined = function(x){
-        if(x !== "" && x !== null && x !== undefined){
+        if(x !== "" &amp;&amp; x !== null &amp;&amp; x !== undefined){
             return true;
         } else{
             return false;
@@ -117,10 +118,10 @@
     cleanUpData = function () {
         var i, iMax, item;
         iMax = videoData.length;
-        for (i = 0; i < iMax; i++) {
+        for (i = 0; i &lt; iMax; i++) {
             item = videoData[i];
             // truncate over-long descriptions
-            if (item.description.length > 120) {
+            if (item.description.length &gt; 120) {
                 item.description = item.description.substr(0, 250) + "...";
             }
             // use name for missing descriptions
@@ -145,7 +146,8 @@
     };
     // function to set the request
     logResponse = function (data) {
-        response.innerHTML += data + ",<br />";
+        response.innerHTML += data + ",
+";
     };
     // function to make API request
     submitRequest = function () {
@@ -155,9 +157,9 @@
             getResponse = function () {
                 try {
                     if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                      if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                         logResponse(httpRequest.responseText);
-                        if (callNumber < totalVideos) {
+                        if (callNumber &lt; totalVideos) {
                             callNumber++;
                             setRequest();
                         }
@@ -177,7 +179,7 @@
         // get latest request URL in case use edited it
         apiRequest = cleanString(apiRequest_field.value);
         // set up request data
-        requestData = "client_id=" + client_id + "&client_secret=" + client_secret + "&url=" + encodeURIComponent(apiRequest) + "&requestBody=" + encodeURIComponent(requestBody) + "&requestType=PATCH";
+        requestData = "client_id=" + client_id + "&amp;client_secret=" + client_secret + "&amp;url=" + encodeURIComponent(apiRequest) + "&amp;requestBody=" + encodeURIComponent(requestBody) + "&amp;requestType=PATCH";
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
