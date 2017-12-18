@@ -9,7 +9,35 @@
 
 <p>Also note that this app produces code for a single video player only, and if you are embedding the schema code manually, you should update it periodically, as URLs can change</p>
 </aside>
+</section>
 
+<section class="bcls-section">
+<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+
+<div class="bcls-expander-content">
+<p>To use the CMS API you will need proper credentials.</p>
+
+<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+<figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+</figure>
+
+<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+
+<pre class="line-numbers">
+<code class="language-json">"operations": [
+  "video-cloud/video/all",
+  "video-cloud/playlist/all",
+  "video-cloud/sharing-relationships/all",
+  "video-cloud/notifications/all"
+]</code></pre>
+
+<ul>
+	<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+</ul>
+</div>
 </section>
 
 <section class="bcls-section">
@@ -95,7 +123,8 @@
 <div class="bcls-section" id="codeJS">
 <h2>Code: JavaScript</h2>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (document, Handlebars) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (document, Handlebars) {
     "use strict";
     var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/schema-tool-proxy.php',
         accountID = document.getElementById('accountID'),
@@ -176,7 +205,7 @@
             getResponse = function () {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status &gt;= 200 && httpRequest.status &lt; 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                             // add/remove folder video return no data
                             callback(httpRequest.responseText);
                             // re-enable the buttons
@@ -189,7 +218,7 @@
                 }
             };
         // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
 
         // set response handler
         httpRequest.onreadystatechange = getResponse;
@@ -277,3 +306,5 @@
     init();
 })(document, Handlebars);
 </code></pre>
+</div>
+</article>
