@@ -23,7 +23,7 @@
 <h2 id="Terminology">Terminology</h2>
 
 <p>In media sharing, there is a relationship between a Master account (that shares videos) and one or more Affiliate accounts (that receive shared videos) involved:</p>
-
+<!-- table 1 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Media Sharing Terminology</caption>
 	<thead class="bcls-table__head">
@@ -165,7 +165,7 @@ video-cloud/sharing-relationships/delete</code></pre>
     </figure> -->
 
 <p>Below is a summary of the operations for setting up a relationship (click on the operation name for more details):</p>
-
+<!-- table 2 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Setup Operations</caption>
 	<thead class="bcls-table__head">
@@ -248,7 +248,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <p>Video sharing operations are performed by the Master account. The Affiliate account can accept the share (if <code>auto_accept</code> is set to <code>false</code>) and can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</p>
 
 <p>Here are the sharing operations that can be performed once a relationship is set up (click on an operation name for more details):</p>
-
+<!-- table 3 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Sharing Operations</caption>
 	<thead class="bcls-table__head">
@@ -309,7 +309,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 <p>This section lists the CMS API operations involved in setting up media sharing.</p>
 
 <h3>Master operations</h3>
-<!-- <h4 id="list_channels">List channel(s)</h4>
+<h4 id="list_channels">List channel(s)</h4>
+<!-- table 4 -->
 <table class="bcls-table">
     <caption class="bcls-caption--table">List Channels</caption>
     <tbody class="bcls-table__body">
@@ -333,14 +334,11 @@ video-cloud/sharing-relationships/delete</code></pre>
 	{
 		"account_id": "57838016001",
 		"name": "default",
+		"enforce_custom_fields": false,
+		"enforce_geo": false,
+		"account_name": "BrightcoveLearning",
 		"created_at": "2017-08-23T17:11:18.474Z",
 		"updated_at": "2017-08-23T17:11:18.474Z"
-	},
-	{
-		"account_id": "57838016001",
-		"name": "test",
-		"created_at": "2017-08-23T19:05:56.502Z",
-		"updated_at": "2017-08-23T19:05:56.502Z"
 	}
 ]</code></pre>
             </td>
@@ -348,6 +346,7 @@ video-cloud/sharing-relationships/delete</code></pre>
     </tbody>
 </table>
 <h4 id="Get_channel_details">Get channel details</h4>
+<!-- table 5 -->
 <table class="bcls-table">
     <caption class="bcls-caption--table">Get channel details</caption>
     <tbody class="bcls-table__body">
@@ -357,7 +356,7 @@ video-cloud/sharing-relationships/delete</code></pre>
         </tr>
         <tr>
             <th>Endpoint</th>
-            <td>https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span></td>
+            <td>https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span><sup><strong><a href="#note5-1">[5-1]</a></strong></sup></td>
         </tr>
         <tr>
             <th>Request body</th>
@@ -368,16 +367,24 @@ video-cloud/sharing-relationships/delete</code></pre>
             <th>Sample response</th>
             <td>
 <pre class="line-numbers"><code class="language-json">{
-	"account_id": "57838016001",
-	"name": "default",
-	"updated_at": "2017-08-23T17:11:18.474Z",
-	"created_at": "2017-08-23T17:11:18.474Z"
+  "account_id": "57838016001",
+  "name": "default",
+  "enforce_custom_fields": false,
+  "enforce_geo": false,
+  "account_name": "BrightcoveLearning",
+  "created_at": "2017-08-23T17:11:18.474Z",
+  "updated_at": "2017-08-23T17:11:18.474Z"
 }</code></pre>
             </td>
         </tr>
     </tbody>
 </table>
-<h4 id="create_channel">Create channel</h4>
+<h5>Notes</h5>
+<ul>
+  <li id="note5-1"><sup><strong>[5-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
+</ul>
+<!-- table 6 -->
+<!-- <h4 id="create_channel">Create channel</h4>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Create Channel</caption>
     <tbody class="bcls-table__body">
@@ -410,8 +417,44 @@ video-cloud/sharing-relationships/delete</code></pre>
             </td>
         </tr>
     </tbody>
+</table> -->
+<h4 id="create_channel">Update channel</h4>
+<!-- table 7 -->
+<table class="bcls-table">
+    <caption class="bcls-caption--table">Create Channel</caption>
+    <tbody class="bcls-table__body">
+        <tr>
+            <th>Method</th>
+            <td>PATCH</td>
+        </tr>
+        <tr>
+            <th>Endpoint</th>
+            <td>/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span><sup><strong><a href="#note7-1">[7-1]</a></strong></sup></td>
+        </tr>
+        <tr>
+            <th>Request body</th>
+            <td>
+<pre class="line-numbers"><code class="language-json">{
+	"enforce_custom_fields" : true,
+	"enforce_geo" : true<sup><strong><a href="#note7-2">[7-2]</a></strong></sup>
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <th>Sample response</th>
+            <td>
+<pre class="line-numbers"><code class="language-json"></code></pre>
+            </td>
+        </tr>
+    </tbody>
 </table>
-<h4 id="Remove_channel">Remove channel</h4>
+<h5>Notes</h5>
+<ul>
+  <li id="note7-1"><sup><strong>[7-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
+  <li id="note7-2"><sup><strong>[7-2]</strong></sup> <code>enforce_geo</code> is currently ignored, but enforcement of geo-filtering in the Affiliate account if present in the Master account will be implemented in the future</li>
+</ul>
+<!-- table 8 -->
+<!-- <h4 id="Remove_channel">Remove channel</h4>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Remove Channel</caption>
     <tbody class="bcls-table__body">
@@ -441,7 +484,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <aside class="bcls-aside bcls-aside--warning">Note that this operation will fail if all affiliates have <strong>not</strong> been removed from the channel.</aside> -->
 
 <h4 id="List_channel_affiliates">List affiliates for channel</h4>
-
+<!-- table 9 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">List Channel Affiliates</caption>
 	<tbody class="bcls-table__body">
@@ -483,7 +526,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <p>The value of the <code>approved</code> field indicates whether or not the Affiliate has approved the contract.</p>
 
 <h4 id="Add_affiliates">Add affiliate to channel</h4>
-
+<!-- table 10 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Add Affiliate</caption>
 	<tbody class="bcls-table__body">
@@ -517,7 +560,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 </table>
 
 <h4 id="Remove_affiliate">Remove affiliate from channel</h4>
-
+<!-- table 11 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Remove Affiliate</caption>
 	<tbody class="bcls-table__body">
@@ -543,7 +586,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <h3>Affiliate operations</h3>
 
 <h3 id="List_available_contracts">List available contracts</h3>
-
+<!-- table 12 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">List Contracts</caption>
 	<tbody class="bcls-table__body">
@@ -592,7 +635,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <p>We will see how to update the contract below.</p>
 
 <h4 id="Get_specific_contract">Get contract for a specific account</h4>
-
+<!-- table 13 -->
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Get Contract</caption>
 	<tbody class="bcls-table__body">
