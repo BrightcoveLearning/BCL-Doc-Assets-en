@@ -42,6 +42,19 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function selectAllCheckboxes(checkboxCollection) {
+      var i,
+          iMax = checkboxCollection.length;
+      for (i = 0; i < iMax; i += 1) {
+          checkboxCollection[i].setAttribute('checked', 'checked');
+      }
+      return targetArray;
+  }
+
+  /**
    * dedupe a simple array of strings or numbers
    * @param {array} arr the array to be deduped
    * @return {array} the deduped array
