@@ -2,25 +2,22 @@ var BCLS = (function(window, document) {
   var accountId        = document.getElementById('accountId'),
     clientId           = document.getElementById('clientId'),
     clientSecret       = document.getElementById('clientSecret'),
-    getChannels        = document.getElementById('getChannels'),
-    addChannel         = document.getElementById('addChannel'),
-    affiliateId        = document.getElementById('affiliateId'),
-    addAffiliateId     = document.getElementById('addAffiliateId'),
-    affiliateIds       = document.getElementById('affiliateIds'),
-    addAffiliates      = document.getElementById('addAffiliates'),
+    getVideos          = document.getElementById('getVideos'),
+    shareVideos        = document.getElementById('addChannel'),
     logger             = document.getElementById('logger'),
     logger2            = document.getElementById('logger2'),
     apiRequest         = document.getElementById('apiRequest'),
     apiResponse        = document.getElementById('apiResponse'),
     affiliate_ids      = [],
+    videosToShare      = [],
     existingAffiliates = [],
     callNumber         = 0,
     totalCalls         = 0;
 
   // *****event listeners*****
-  getChannels.addEventListener('click', function() {
+  getVideos.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest('getChannels');
+      createRequest('getVideoCount');
     } else {
       alert('You must submit an account id and client credentials');
     }
