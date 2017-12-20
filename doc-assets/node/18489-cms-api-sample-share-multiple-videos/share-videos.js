@@ -23,20 +23,8 @@ var BCLS = (function(window, document) {
     }
   });
 
-  addChannel.addEventListener('click', function() {
-    createRequest('addChannel');
-  });
-
-  addAffiliateId.addEventListener('click', function() {
-    addAffiliate();
-  });
-
-  addAffiliates.addEventListener('click', function() {
-    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest('getAffiliates');
-    } else {
-      alert('You must submit an account id and client credentials');
-    }
+  shareVideos.addEventListener('click', function() {
+    createRequest('shareVideos');
   });
 
   // ***** end event listeners *****
