@@ -2,44 +2,29 @@ var BCLS = (function(window, document) {
   var accountId        = document.getElementById('accountId'),
     clientId           = document.getElementById('clientId'),
     clientSecret       = document.getElementById('clientSecret'),
-    getChannels        = document.getElementById('getChannels'),
-    addChannel         = document.getElementById('addChannel'),
-    affiliateId        = document.getElementById('affiliateId'),
-    addAffiliateId     = document.getElementById('addAffiliateId'),
-    affiliateIds       = document.getElementById('affiliateIds'),
-    addAffiliates      = document.getElementById('addAffiliates'),
+    getVideos          = document.getElementById('getVideos'),
+    shareVideos        = document.getElementById('addChannel'),
     logger             = document.getElementById('logger'),
     logger2            = document.getElementById('logger2'),
     apiRequest         = document.getElementById('apiRequest'),
     apiResponse        = document.getElementById('apiResponse'),
     affiliate_ids      = [],
+    videosToShare      = [],
     existingAffiliates = [],
     callNumber         = 0,
     totalCalls         = 0;
 
   // *****event listeners*****
-  getChannels.addEventListener('click', function() {
+  getVideos.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest('getChannels');
+      createRequest('getVideoCount');
     } else {
       alert('You must submit an account id and client credentials');
     }
   });
 
-  addChannel.addEventListener('click', function() {
-    createRequest('addChannel');
-  });
-
-  addAffiliateId.addEventListener('click', function() {
-    addAffiliate();
-  });
-
-  addAffiliates.addEventListener('click', function() {
-    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest('getAffiliates');
-    } else {
-      alert('You must submit an account id and client credentials');
-    }
+  shareVideos.addEventListener('click', function() {
+    createRequest('shareVideos');
   });
 
   // ***** end event listeners *****
@@ -57,22 +42,16 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * dedupe a simple array of strings or numbers
-   * @param {array} arr the array to be deduped
-   * @return {array} the deduped array
+   * selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
    */
-  function dedupe(arr) {
-    var i,
-      len = arr.length,
-      out = [],
-      obj = {};
-    for (i = 0; i < len; i++) {
-      obj[arr[i]] = 0;
-    }
-    for (i in obj) {
-      out.push(i);
-    }
-    return out;
+  function selectAllCheckboxes(checkboxCollection) {
+      var i,
+          iMax = checkboxCollection.length;
+      for (i = 0; i < iMax; i += 1) {
+          checkboxCollection[i].setAttribute('checked', 'checked');
+      }
+      return targetArray;
   }
 
   /**

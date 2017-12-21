@@ -15,11 +15,8 @@
 <p>You can retrieve your video and playlist data from your Video Cloud library by using the Playback API. For details about the API, see the <a href="/node/17906">Playback API Overview</a> document.</p>
 
 <ol class="bcls-tasklist">
-  <li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
-
-  <li>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.</li>
-</ol>
-
+<li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+<li>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
 <p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.edge.Catalog </code> class:</p>
 
 <pre class="line-numbers">
@@ -35,34 +32,65 @@ import com.brightcove.player.view.BrightcovePlayer;
 /**
 * This app illustrates how to use the ExoPlayer with the Brightcove
 * Native Player SDK for Android.
-*
-* @author Billy Hnath (bhnath@brightcove.com)
 */
 public class MainActivity extends BrightcovePlayer {
 private final String TAG = this.getClass().getSimpleName();
 @Override
+
 protected void onCreate(Bundle savedInstanceState) {
 setContentView(R.layout.activity_main);
 brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
 super.onCreate(savedInstanceState);
+
 // Get the event emitter from the SDK and create a catalog request to fetch a video from the
 // Brightcove Edge service, given a video id, an account id and a policy key.
 EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
 Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
+
 catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
-// Add the video found to the queue with add().
-// Start playback of the video with start().
-@Override
-public void onVideo(Video video) {
-Log.v(TAG, "onVideo: video = " + video);
-brightcoveVideoView.add(video);
-brightcoveVideoView.start();
-}
+  // Add the video found to the queue with add().
+  // Start playback of the video with start().
+  @Override
+  public void onVideo(Video video) {
+    Log.v(TAG, "onVideo: video = " + video);
+    brightcoveVideoView.add(video);
+    brightcoveVideoView.start();
+  }
 });
 }
 }
-</code>
-</pre>
+</code></pre>
+</li>
+</ol>
+
+
+<ol class="bcls-tasklist">
+<li>The <code>Video</code> object provides methods to retrieve media information as shown below:
+  <pre class="line-numbers">
+<code class="language-java">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
+@Override
+public void onVideo(Video video) {
+<span class="bcls-highlight">       Log.v(TAG, &quot;onVideo: video = &quot; + video);
+  Log.v(TAG, &quot;onVideo: videoID = &quot; + video.getId());
+  Log.v(TAG, &quot;onVideo: videoName = &quot; + video.getName());
+  Log.v(TAG, &quot;onVideo: videoDescription = &quot; + video.getDescription());
+  Log.v(TAG, &quot;onVideo: videoImage = &quot; + video.getStillImageUri());</span>
+  brightcoveVideoView.add(video);
+  brightcoveVideoView.start();
+}
+});</code></pre>
+<p>
+  The above <code>Log()</code> methods return the following media information:
+</p>
+<figure class="bcls-figure">
+  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/getting-started/media-content/video-object.png" alt="Video object">
+  <figcaption class="bcls-caption--image">Video object</figcaption>
+</figure>
+<p>
+  For a complete list of methods, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Video.html">Video object reference</a>.
+</p>
+</li>
+</ol>
 
 <h3>Geo-restricted videos</h3>
 
@@ -70,16 +98,16 @@ brightcoveVideoView.start();
 
 <aside class="bcls-aside bcls-aside--warning">Notes:
 <ul>
-	<li>You need to use the Playback API when working with geo-restricted videos.</li>
-	<li>The playback service will only return an error if your video is geo-restricted in Video Cloud. The error will be null if your video is geo-retricted at the CDN level.</li>
+<li>You need to use the Playback API when working with geo-restricted videos.</li>
+<li>The playback service will only return an error if your video is geo-restricted in Video Cloud. The error will be null if your video is geo-retricted at the CDN level.</li>
 </ul>
 </aside>
 
 <p>There are two ways you can add geo-restrictions to your videos to control which countries they can (or cannot) be viewed in:</p>
 
 <ul>
-	<li><a href="/node/18034">Brightcove's CMS API</a></li>
-	<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
+<li><a href="/node/18034">Brightcove's CMS API</a></li>
+<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
 </ul>
 
 <p>In your Android app, when you retrieve a video using Brightcove's edge <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">Catalog</a> object (Playback API) in a country which is geo-restricted for that video, you should see this message:</p>
@@ -89,8 +117,7 @@ brightcoveVideoView.start();
 client_geo: us
 error_subcode: CLIENT_GEO
 error_code: ACCESS_DENIED }
-</code>
-</pre>
+</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -115,15 +142,16 @@ protected void onCreate(Bundle savedInstanceState) {
 super.onCreate(savedInstanceState);
 setContentView(R.layout.activity_main);
 BrightcoveVideoView brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
+
 Analytics analytics = brightcoveVideoView.getAnalytics();
 analytics.setAccount("123456789");
+
 MediaController controller = new MediaController(this);
 brightcoveVideoView.setMediaController(controller);
 brightcoveVideoView.add(Video.createVideo("http://solutions.brightcove.com/bcls/assets/videos/Bird_Titmouse.mp4", DeliveryType.MP4));
 brightcoveVideoView.start();
 }
-</code>
-</pre>
+</code></pre>
 </section>
 &nbsp;
 
