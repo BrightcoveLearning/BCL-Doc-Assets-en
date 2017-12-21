@@ -21,7 +21,7 @@ var BCLS = (function(window, document) {
     affiliate_ids    = [],
     videosToShare    = [],
     limit            = 20,
-    offset           = 2,
+    offset           = 0,
     callNumber       = 0,
     totalCalls       = 0;
 
