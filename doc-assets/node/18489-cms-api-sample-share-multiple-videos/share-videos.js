@@ -42,6 +42,11 @@ var BCLS = (function(window, document) {
       if (isDefined(searchTags.value)) {
         searchString += '%2Btags:"' + removeSpaces(searchTags.value) + '"';
       }
+      if (isDefined(searchFieldValue)) {
+        if (isDefined(searchField)) {
+          searchString += '%20%2B' + searchField.value + ':' +
+        }
+      }
 
       fromDateValue = rome(fromDate).getDate();
       if (isDefined(fromDateValue)) {
@@ -114,6 +119,16 @@ var BCLS = (function(window, document) {
    */
   function removeSpaces(str) {
     str = str.replace(/\s/g, '');
+    return str;
+  }
+
+  /**
+   * remove spaces from a string
+   * @param {String} str string to process
+   * @return {String} trimmed string
+   */
+  function converSpaces(str) {
+    str = str.replace(/\s/g, '%20');
     return str;
   }
 
