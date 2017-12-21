@@ -60,6 +60,23 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value,
+          txt = selected.textContent,
+          idx = e.selectedIndex;
+      return {
+          value: val,
+          text: txt,
+          index: idx
+      };
+  }
+
+  /**
    * selects all checkboxes in a collection
    * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
    */
