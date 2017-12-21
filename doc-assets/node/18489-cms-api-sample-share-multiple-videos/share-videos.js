@@ -18,6 +18,9 @@ var BCLS = (function(window, document) {
     fromDateValue,
     toDateValue,
     searchString,
+    account_id,
+    client_id,
+    client_secret,
     affiliate_ids    = [],
     videosToShare    = [],
     limit            = 20,
@@ -28,6 +31,10 @@ var BCLS = (function(window, document) {
   // *****event listeners*****
   getVideos.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
+      // get inputs
+      account_id = accountId.value;
+      client_id = clientId.value;
+      client_secret = clientSecret.value;
       createRequest('getVideoCount');
     } else {
       alert('You must submit an account id and client credentials');
