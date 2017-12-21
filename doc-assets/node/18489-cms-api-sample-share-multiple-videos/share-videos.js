@@ -43,13 +43,13 @@ var BCLS = (function(window, document) {
       client_id     = clientId.value;
       client_secret = clientSecret.value;
       if (isDefined(searchTags.value)) {
-        tagsSearchString += '%2Btags:"' + removeSpaces(searchTags.value) + '"+';
+        tagsSearchString = '%2Btags:"' + removeSpaces(searchTags.value) + '"+';
       }
       if (isDefined(searchFieldValue.value)) {
         if (isDefined(searchField.value)) {
-          fieldsSearchString += '%20%2B' + searchField.value + ':"' + converSpaces(searchFieldValue.value) + '"'
+          fieldsSearchString = '%2B' + searchField.value + ':"' + converSpaces(searchFieldValue.value) + '"';
         } else {
-          
+          fieldsSearchString =
         }
       }
 
