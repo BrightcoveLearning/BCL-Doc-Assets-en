@@ -55,25 +55,6 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * dedupe a simple array of strings or numbers
-   * @param {array} arr the array to be deduped
-   * @return {array} the deduped array
-   */
-  function dedupe(arr) {
-    var i,
-      len = arr.length,
-      out = [],
-      obj = {};
-    for (i = 0; i < len; i++) {
-      obj[arr[i]] = 0;
-    }
-    for (i in obj) {
-      out.push(i);
-    }
-    return out;
-  }
-
-  /**
    * remove spaces from a string
    * @param {String} str string to process
    * @return {String} trimmed string
