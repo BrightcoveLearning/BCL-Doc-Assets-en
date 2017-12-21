@@ -36,11 +36,11 @@ var BCLS = (function(window, document) {
   getVideos.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
       // get inputs
-      account_id = accountId.value;
-      client_id = clientId.value;
+      account_id    = accountId.value;
+      client_id     = clientId.value;
       client_secret = clientSecret.value;
       if (isDefined(searchTags.value)) {
-        searchString += '%2Btags:' + removeSpaces(searchTags.value);
+        searchString += '%2Btags:"' + removeSpaces(searchTags.value) + '"';
       }
 
       fromDateValue = rome(fromDate).getDate();
