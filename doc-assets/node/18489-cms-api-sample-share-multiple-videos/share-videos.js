@@ -17,6 +17,9 @@ var BCLS = (function(window, document) {
     dateTypeValue,
     fromDateValue,
     toDateValue,
+    tagsSearchString,
+    fieldsSearchString,
+    dateSearchString,
     searchString,
     account_id,
     client_id,
@@ -40,11 +43,11 @@ var BCLS = (function(window, document) {
       client_id     = clientId.value;
       client_secret = clientSecret.value;
       if (isDefined(searchTags.value)) {
-        searchString += '%2Btags:"' + removeSpaces(searchTags.value) + '"';
+        searchString += '%2Btags:"' + removeSpaces(searchTags.value) + '"+';
       }
-      if (isDefined(searchFieldValue)) {
-        if (isDefined(searchField)) {
-          searchString += '%20%2B' + searchField.value + ':' +
+      if (isDefined(searchFieldValue.value)) {
+        if (isDefined(searchField.value)) {
+          searchString += '%20%2B' + searchField.value + ':"' + converSpaces(searchFieldValue.value) + '"'
         }
       }
 
@@ -123,7 +126,7 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * remove spaces from a string
+   * convert spaces in a string to %20 for URI encoding
    * @param {String} str string to process
    * @return {String} trimmed string
    */
