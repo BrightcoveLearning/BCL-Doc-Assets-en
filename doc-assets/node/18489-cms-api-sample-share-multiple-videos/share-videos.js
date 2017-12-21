@@ -28,6 +28,10 @@ var BCLS = (function(window, document) {
     callNumber       = 0,
     totalCalls       = 0;
 
+    // date pickers
+    rome(fromDate);
+    rome(toDate);
+
   // *****event listeners*****
   getVideos.addEventListener('click', function() {
     if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
@@ -35,6 +39,17 @@ var BCLS = (function(window, document) {
       account_id = accountId.value;
       client_id = clientId.value;
       client_secret = clientSecret.value;
+
+      fromDateValue = rome(fromDate).getDate();
+      if (isDefined(fromDateValue)) {
+          fromDateValue = fromDateValue.toISOString();
+      }
+      toDateValue = rome(toDate).getDate();
+      if (isDefined(toDateValue)) {
+          toDateValue = toDateValue.toISOString();
+      }
+      searchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+
       createRequest('getVideoCount');
     } else {
       alert('You must submit an account id and client credentials');
