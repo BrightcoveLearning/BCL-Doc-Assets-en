@@ -49,7 +49,7 @@ var BCLS = (function(window, document) {
         if (isDefined(searchField.value)) {
           fieldsSearchString = '%2B' + searchField.value + ':"' + converSpaces(searchFieldValue.value) + '"';
         } else {
-          fieldsSearchString =
+          fieldsSearchString = '%2Bcustom_fields:"' + converSpaces(searchFieldValue.value) + '"';
         }
       }
 
