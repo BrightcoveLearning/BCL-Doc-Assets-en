@@ -427,10 +427,18 @@
 
 <p>Using <a href="https://stuff.mit.edu/afs/sipb/project/android/docs/tools/help/proguard.html">ProGuard</a> allows you to create more secure apps, making them harder to reverse engineer. ProGuard is integrated into the Android build system, so you can choose to enable it or build without it.</p>
 
-<p>If you receive an error when ProGuard is enabled in Gradle, try adding an exclusion rule for the Brightcove Native SDK as follows:</p>
+<p>If you receive an error when ProGuard is enabled in Gradle, try adding the following exclusion rules:</p>
 
 <pre class="line-numbers">
-<code class="language-java">-keep class com.brightcove.player.** { *; }</code></pre>
+<code class="language-java">-dontwarn com.google.**
+-dontwarn android.media.**
+
+-keep class android.media.** { *; }
+-keep class com.google.** { *; }
+-keep interface com.google.** { *; }
+
+-keep class com.google.ads.interactivemedia.** { *; }
+-keep interface com.google.ads.interactivemedia.** { *; }</code></pre>
 
 <p>For a complete list of ProGuard rules used by the Brightcove Native SDK, download and unzip the <a href="#Download_the_SDK">current Native SDK for Android</a>. Open the <strong>sdk</strong> folder and view the <code>proguard.txt</code> file.</p>
 </section>
