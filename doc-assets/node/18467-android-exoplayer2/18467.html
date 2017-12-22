@@ -1,5 +1,10 @@
 <article class="bcls-article">
 <section class="bcls-section"><!-- <h2 id="Player_example">Player example</h2> -->
+	<aside class="bcls-aside bcls-aside--information">
+	<p>The Brightcove Native SDK for Android using ExoPlayer 1 has been deprecated.</p>
+
+	<p>If you need to, you can view the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/exoplayer1/javadoc/index.html">the ExoPlayer 1 reference documentation</a>, but it is recommended that you <a href="/node/18467">migrate to the ExoPlayer 2 Framework</a>.</p>
+	</aside>
 
 <p>Learn how to migrate for the following project types:</p>
 
@@ -10,7 +15,7 @@
 </ul>
 
 <p>Refer to the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/ExoPlayer2/brightcove-exoplayer">ExoPlayer sample applications</a> for additional guidance on integrating the <a href="https://medium.com/google-exoplayer/exoplayer-2-x-new-package-and-class-names-ef8e1d9ba96f">ExoPlayer 2</a> framework into your project.</p>
-<aside class="bcls-aside bcls-aside--information">When compiling the <code>exoplayer2</code> in the <code>dependencies</code> section of the <strong>build.gradle</strong> file, the <code>transitive</code> option must be set to <code>true</code> so that gradle will automatically include other dependencies such as the offline-playback plugin.</aside>
+
 </section>
 
 <section class="bcls-section">
@@ -25,6 +30,8 @@
 <code class="language-java">dependencies {
 compile "com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}" {transitive = true}
 }</code></pre>
+
+<aside class="bcls-aside bcls-aside--tip">Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin.</aside>
 	</li>
 	<li>If you are using an evironment variable for the SDK version, then open the <strong>gradle.properties</strong> file, and set the current version value for the Native SDK for Android beta. It should look similar to this:
 	<pre class="line-numbers">
@@ -81,6 +88,7 @@ compile "com.brightcove.player:exoplayer:${brightcoveAndroidSdkVersion}"
 compile "com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}" {transitive = true}
 }
 </code></pre>
+<aside class="bcls-aside bcls-aside--tip">Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin.</aside>
 	</li>
 	<li>If you are using an evironment variable for the SDK version, then open the <strong>gradle.properties</strong> file, and set the current version value for the Native SDK for Android beta. It should look similar to this:
 	<pre class="line-numbers">
@@ -103,6 +111,7 @@ compile "com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}" {trans
 <code class="language-java">dependencies {
 compile "com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}" {transitive = true}
 }</code></pre>
+<aside class="bcls-aside bcls-aside--tip">Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin.</aside>
 	</li>
 	<li>If you are using an evironment variable for the SDK version, then open the <strong>gradle.properties</strong> file, and set the current version value for the Native SDK for Android beta. It should look similar to this:
 	<pre class="line-numbers">
@@ -116,55 +125,51 @@ compile "com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}" {trans
 <h2 id="Breaking_changes">Breaking changes</h2>
 
 <p>The following changes to the Brightcove Native SDK for Android are breaking changes with the ExoPlayer 2. Use of the ExoPlayer 1 has been deprecated with the Brightcove Native SDK.</p>
+
 <h3>ExoPlayerVideoDisplayComponent internal listeners</h3>
-<p>
-	The <code>ExoPlayerVideoDisplayComponent</code> class allows you to set listeners to get the status of the ExoPlayer components. Below is a list of some of the listeners:
-</p>
+
+<p>The <code>ExoPlayerVideoDisplayComponent</code> class allows you to set listeners to get the status of the ExoPlayer components. Below is a list of some of the listeners:</p>
+
 <table class="bcls-table">
-		<thead class="bcls-table__head">
-				<tr>
-						<th>Set the listener</th>
-						<th>Receive status info about</th>
-				</tr>
-		</thead>
-		<tbody class="bcls-table__body">
-				<tr>
-						<td>setDebugListener</td>
-						<td>InfoListener</td>
-				</tr>
-				<tr>
-						<td>setCaptionListener</td>
-						<td>CaptionListener</td>
-				</tr>
-				<tr>
-						<td>setMetadataListener</td>
-						<td>MetadataListener</td>
-				</tr>
-				<tr>
-						<td>setInternalErrorListener</td>
-						<td>InternalErrorListener</td>
-				</tr>
-		</tbody>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Set the listener</th>
+			<th>Receive status info about</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>setDebugListener</td>
+			<td>InfoListener</td>
+		</tr>
+		<tr>
+			<td>setCaptionListener</td>
+			<td>CaptionListener</td>
+		</tr>
+		<tr>
+			<td>setMetadataListener</td>
+			<td>MetadataListener</td>
+		</tr>
+		<tr>
+			<td>setInternalErrorListener</td>
+			<td>InternalErrorListener</td>
+		</tr>
+	</tbody>
 </table>
-<p>
-	Below are recommendations for using the ExoPlayer 2.
-</p>
+
+<p>Below are recommendations for using the ExoPlayer 2.</p>
 
 <h4>InfoListener</h4>
-<p>
-	For the <code>InfoListener</code> interface, the following changes were made:
-</p>
+
+<p>For the <code>InfoListener</code> interface, the following changes were made:</p>
+
 <ul>
-	<li>
-		The <code>onAvailableRangeChanged</code> method was removed
-	</li>
-	<li>
-		The <code>onLoadStarted</code> method has an additional <code>length</code> parameter
-	</li>
+	<li>The <code>onAvailableRangeChanged</code> method was removed</li>
+	<li>The <code>onLoadStarted</code> method has an additional <code>length</code> parameter</li>
 </ul>
-<p>
-	Example: ExoPlayerVideoDisplayComponent using ExoPlayer 2
-</p>
+
+<p>Example: ExoPlayerVideoDisplayComponent using ExoPlayer 2</p>
+
 <pre class="line-numbers">
 <code class="language-java">public interface InfoListener {
 void onVideoFormatEnabled(Format format, int trigger, long mediaTimeMs);
@@ -179,33 +184,31 @@ void onDecoderInitialized(String decoderName, long initializedTimestampMs,
 				long initializationDurationMs);
 }</code></pre>
 
-	<h4>CaptionListener</h4>
-	<p>
-		The <code>CaptionListener</code> interface is unchanged.
-	</p>
-	<p>
-	Example: ExoPlayerVideoDisplayComponent using ExoPlayer v2
-</p>
-	<pre class="line-numbers">
+<h4>CaptionListener</h4>
+
+<p>The <code>CaptionListener</code> interface is unchanged.</p>
+
+<p>Example: ExoPlayerVideoDisplayComponent using ExoPlayer v2</p>
+
+<pre class="line-numbers">
 <code class="language-java">public interface CaptionListener {
 void onCues(List&lt;Cue&gt; cues);
 }</code></pre>
 
-	<h4>MetadataListener</h4>
-	<p>
-		The <code>MetadataListener</code> interface was introduced with ExoPlayer v2. The previous use of the <code>Id3MetadataListener</code> is now deprecated.
-	</p>
-	<p>
-	Example: ExoPlayerVideoDisplayComponent using ExoPlayer v2
-	</p>
-	<pre class="line-numbers">
+<h4>MetadataListener</h4>
+
+<p>The <code>MetadataListener</code> interface was introduced with ExoPlayer v2. The previous use of the <code>Id3MetadataListener</code> is now deprecated.</p>
+
+<p>Example: ExoPlayerVideoDisplayComponent using ExoPlayer v2</p>
+
+<pre class="line-numbers">
 <code class="language-java">public interface MetadataListener {
 void onMetadata(Metadata metadata);
 }</code></pre>
-	<p>
-		With the new <code>MetadataListener</code> you will receive a <code>Metadadata</code> object in the <code>onMetadata</code> callback. With the deprecated <code>Id3MetadataListener</code>, you received a list of <code></code>Id3Frame objects. With the new listener, you can still get a list of <code>Id3Frame</code> objects as shown below:
-	</p>
-	<pre class="line-numbers">
+
+<p>With the new <code>MetadataListener</code> you will receive a <code>Metadadata</code> object in the <code>onMetadata</code> callback. With the deprecated <code>Id3MetadataListener</code>, you received a list of Id3Frame objects. With the new listener, you can still get a list of <code>Id3Frame</code> objects as shown below:</p>
+
+<pre class="line-numbers">
 <code class="language-java">exoPlayerVideoDisplayComponent.setMetadataListener(new ExoPlayerVideoDisplayComponent.MetadataListener() {
 @Override
 public void onMetadata(Metadata metadata) {
@@ -219,14 +222,13 @@ public void onMetadata(Metadata metadata) {
 });
 </code></pre>
 
-	<h4>InternalErrorListener</h4>
-	<p>
-		The <code>InternalErrorListener</code> interface has many changes. Please check the code below for comparison:
-	</p>
-	<p>
-	ExoPlayerVideoDisplayComponent using ExoPlayer v2
-	</p>
-	<pre class="line-numbers">
+<h4>InternalErrorListener</h4>
+
+<p>The <code>InternalErrorListener</code> interface has many changes. Please check the code below for comparison:</p>
+
+<p>ExoPlayerVideoDisplayComponent using ExoPlayer v2</p>
+
+<pre class="line-numbers">
 <code class="language-java">public interface InternalErrorListener {
 void onPlayerError(Exception e);
 void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs);
@@ -234,10 +236,10 @@ void onLoadError(int sourceId, IOException e);
 void onDrmSessionManagerError(Exception e);
 }
 </code></pre>
-	<p>
-	ExoPlayerVideoDisplayComponent using ExoPlayer v1 (<strong>deprecated</strong>)
-	</p>
-	<pre class="line-numbers">
+
+<p>ExoPlayerVideoDisplayComponent using ExoPlayer v1 (<strong>deprecated</strong>)</p>
+
+<pre class="line-numbers">
 <code class="language-java">public interface InternalErrorListener {
 void onRendererInitializationError(Exception e);
 void onAudioTrackInitializationError(AudioTrack.InitializationException e);
@@ -250,72 +252,50 @@ void onDrmSessionManagerError(Exception e);
 }
 </code></pre>
 
-	<p>
-		When using ExoPlayer 2, the type of exception you get in <code>onPlayerError(Exception e)</code> is <code>com.google.android.exoplayer2.ExoPlaybackException</code>, but this may change in the future.
-	</p>
-	<p>
-		By using com.google.android.exoplayer2.ExoPlaybackException, you can get the following exception types:
-	</p>
-	<ul>
-		<li>
-			<code>ExoPlaybackException.TYPE_SOURCE</code>
-		</li>
-		<li>
-			<code>ExoPlaybackException.TYPE_RENDERER</code>
-		</li>
-		<li>
-			<code>ExoPlaybackException.TYPE_UNEXPECTED</code>
-		</li>
-	</ul>
-	<p>
-		You can also retrieve the cause of the error by getting the <code>Throwable</code> object with <code>ExoPlaybackException.getSourceException()</code>.
-	</p>
+<p>When using ExoPlayer 2, the type of exception you get in <code>onPlayerError(Exception e)</code> is <code>com.google.android.exoplayer2.ExoPlaybackException</code>, but this may change in the future.</p>
 
-	<h3>Offline playback support</h3>
-	<p>
-		If your project is using the <code>MediaDownloadable.setConfigurationBundle(Bundle)</code> method to specify the download preferences such as video bitrate, then please update your code as follows:
-	</p>
-	<p>
-	Old format (deprecated)
-	</p>
-	<pre class="line-numbers">
+<p>By using com.google.android.exoplayer2.ExoPlaybackException, you can get the following exception types:</p>
+
+<ul>
+	<li><code>ExoPlaybackException.TYPE_SOURCE</code></li>
+	<li><code>ExoPlaybackException.TYPE_RENDERER</code></li>
+	<li><code>ExoPlaybackException.TYPE_UNEXPECTED</code></li>
+</ul>
+
+<p>You can also retrieve the cause of the error by getting the <code>Throwable</code> object with <code>ExoPlaybackException.getSourceException()</code>.</p>
+
+<h3>Offline playback support</h3>
+
+<p>If your project is using the <code>MediaDownloadable.setConfigurationBundle(Bundle)</code> method to specify the download preferences such as video bitrate, then please update your code as follows:</p>
+
+<p>Old format (deprecated)</p>
+
+<pre class="line-numbers">
 <code class="language-java">com.google.android.exoplayer.MediaFormat
 </code></pre>
-	<p>
-	New format
-	</p>
-	<pre class="line-numbers">
+
+<p>New format</p>
+
+<pre class="line-numbers">
 <code class="language-java">com.brightcove.player.model.MediaFormat
 </code></pre>
 
-	<h3>Legacy Media API classes</h3>
-	<p>
-		The deprecated legacy Media API classes, in the <code>com.brightcove.player.media package</code>, were removed from the Brightcove Native SDK for Android.
-	</p>
-	<p>
-		If you were using the Media classes, you need to migrate and start using the <code>com.brightcove.player.edge.Catalog</code> class.
-	</p>
-	<p>
-		The following classes were moved from <code>com.brightcove.player.media</code> to <code>com.brightcove.player.model</code>:
-	</p>
-	<ul>
-		<li>
-			<code>DeliveryType.java</code>
-		</li>
-		<li>
-			<code>CaptionType.java</code>
-		</li>
-		<li>
-			<code>ErrorFields.java</code>
-		</li>
-		<li>
-			<code>VideoFields.java</code>
-		</li>
-	</ul>
-		<aside class="bcls-aside bcls-aside--tip">If you are using any of these four classes, you only need to replace the import package and you will be all set.</aside>
+<h3>Legacy Media API classes</h3>
 
+<p>The deprecated legacy Media API classes, in the <code>com.brightcove.player.media package</code>, were removed from the Brightcove Native SDK for Android.</p>
 
+<p>If you were using the Media classes, you need to migrate and start using the <code>com.brightcove.player.edge.Catalog</code> class.</p>
 
+<p>The following classes were moved from <code>com.brightcove.player.media</code> to <code>com.brightcove.player.model</code>:</p>
+
+<ul>
+	<li><code>DeliveryType.java</code></li>
+	<li><code>CaptionType.java</code></li>
+	<li><code>ErrorFields.java</code></li>
+	<li><code>VideoFields.java</code></li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--tip">If you are using any of these four classes, you only need to replace the import package and you will be all set.</aside>
 </section>
 
 <section class="bcls-section">
