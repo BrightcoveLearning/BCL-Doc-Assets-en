@@ -61,7 +61,15 @@ var BCLS = (function(window, document) {
       if (isDefined(toDateValue)) {
           toDateValue = toDateValue.toISOString();
       }
-      searchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+      dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+
+      // define the whole search string
+      if (isDefined(tagsSearchString)) {
+        searchString = tagsSearchString;
+        if (isDefined(fieldsSearchString)) {
+          searchString += '%20' + fieldsSearchString;
+        }
+      }
 
       createRequest('getVideoCount');
     } else {
