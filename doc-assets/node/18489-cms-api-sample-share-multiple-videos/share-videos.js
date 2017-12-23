@@ -31,9 +31,9 @@ var BCLS = (function(window, document) {
     callNumber       = 0,
     totalCalls       = 0;
 
-    // date pickers
-    rome(fromDate);
-    rome(toDate);
+  // date pickers
+  rome(fromDate);
+  rome(toDate);
 
   // *****event listeners*****
   getVideos.addEventListener('click', function() {
@@ -55,11 +55,11 @@ var BCLS = (function(window, document) {
 
       fromDateValue = rome(fromDate).getDate();
       if (isDefined(fromDateValue)) {
-          fromDateValue = fromDateValue.toISOString();
+        fromDateValue = fromDateValue.toISOString();
       }
       toDateValue = rome(toDate).getDate();
       if (isDefined(toDateValue)) {
-          toDateValue = toDateValue.toISOString();
+        toDateValue = toDateValue.toISOString();
       }
       dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
 
@@ -80,7 +80,7 @@ var BCLS = (function(window, document) {
       } else if (isDefined(dateSearchString)) {
         searchString = dateSearchString;
       }
-console.log('searchString', searchString);
+      console.log('searchString', searchString);
       createRequest('getVideoCount');
     } else {
       alert('You must submit an account id and client credentials');
@@ -111,15 +111,38 @@ console.log('searchString', searchString);
    * @return {Object} object containing the `value`, text, and selected `index`
    */
   function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
+    var selected = e.options[e.selectedIndex],
+      val = selected.value,
+      txt = selected.textContent,
+      idx = e.selectedIndex;
+    return {
+      value: val,
+      text: txt,
+      index: idx
+    };
+  }
+
+  /**
+   * get array of values for checked boxes in a collection
+   * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+   * @return {Array} array of the values of the checked boxes
+   */
+  function getCheckedBoxValues(checkBoxCollection) {
+    var checkedValues = [],
+      i,
+      iMax;
+    if (checkBoxCollection) {
+      iMax = checkBoxCollection.length;
+      for (i = 0; i < iMax; i++) {
+        if (checkBoxCollection[i].check === true) {
+          checkedValues.push(checkBoxCollection[i].value);
+        }
+      }
+      return checkedValues;
+    } else {
+      console.log('Error: no input recieved');
+      return null;
+    }
   }
 
   /**
@@ -127,12 +150,12 @@ console.log('searchString', searchString);
    * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
    */
   function selectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i < iMax; i += 1) {
-          checkboxCollection[i].setAttribute('checked', 'checked');
-      }
-      return targetArray;
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].setAttribute('checked', 'checked');
+    }
+    return targetArray;
   }
 
   /**
@@ -181,10 +204,10 @@ console.log('searchString', searchString);
    * @param  {string} type the request type
    */
   function createRequest(type) {
-    var options  = {},
+    var options = {},
       cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
       endpoint,
-      body       = {},
+      body = {},
       responseDecoded,
       i,
       iMax;
@@ -198,8 +221,8 @@ console.log('searchString', searchString);
 
     switch (type) {
       case 'getChannels':
-        endpoint            = '/channels';
-        options.url         = cmsBaseURL + endpoint;
+        endpoint = '/channels';
+        options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
@@ -218,10 +241,10 @@ console.log('searchString', searchString);
         });
         break;
       case 'addChannel':
-        endpoint            = '/channels/default';
-        options.url         = cmsBaseURL + endpoint;
-        body.account_id     = accountId.value;
-        body.name           = 'default';
+        endpoint = '/channels/default';
+        options.url = cmsBaseURL + endpoint;
+        body.account_id = accountId.value;
+        body.name = 'default';
         options.requestBody = JSON.stringify(body);
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
@@ -237,8 +260,8 @@ console.log('searchString', searchString);
         });
         break;
       case 'getAffiliates':
-        endpoint            = '/channels/default/members';
-        options.url         = cmsBaseURL + endpoint;
+        endpoint = '/channels/default/members';
+        options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
@@ -254,9 +277,9 @@ console.log('searchString', searchString);
         });
         break;
       case 'addAffiliate':
-        endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
-        options.url         = cmsBaseURL + endpoint;
-        body.account_id     = affiliate_ids[callNumber];
+        endpoint = '/channels/default/members/' + affiliate_ids[callNumber];
+        options.url = cmsBaseURL + endpoint;
+        body.account_id = affiliate_ids[callNumber];
         options.requestBody = JSON.stringify(body);
         options.requestType = 'PUT';
         makeRequest(options, function(response) {
@@ -294,9 +317,9 @@ console.log('searchString', searchString);
       response,
       requestParams,
       dataString,
-      proxyURL      = options.proxyURL,
+      proxyURL = options.proxyURL,
       // response handler
-      getResponse   = function() {
+      getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
