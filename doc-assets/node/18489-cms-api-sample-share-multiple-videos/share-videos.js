@@ -209,6 +209,7 @@ var BCLS = (function(window, document) {
       endpoint,
       body = {},
       responseDecoded,
+      fragment = document.createDocumentFragment(),
       i,
       iMax;
 
@@ -228,16 +229,11 @@ var BCLS = (function(window, document) {
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          existingAffiliates = JSON.parse(response);
-          i = affiliate_ids.length;
-          while (i > 0) {
-            i--;
-            if (arrayContains(existingAffiliates, 'account_id', affiliate_ids[i])) {
-              affiliate_ids.splice(i, 1);
-            }
+          affiliate_ids = JSON.parse(response);
+          iMax = affiliate_ids.length;
+          for (i = 0; i < iMax; i++) {
+
           }
-          totalCalls = affiliate_ids.length;
-          createRequest('addAffiliate');
         });
         break;
         // additional cases
