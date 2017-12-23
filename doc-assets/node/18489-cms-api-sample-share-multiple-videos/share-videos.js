@@ -24,7 +24,7 @@ var BCLS = (function(window, document) {
     account_id,
     client_id,
     client_secret,
-    affiliate_ids    = [],
+    affiliates       = [],
     videosToShare    = [],
     limit            = 20,
     offset           = 0,
@@ -210,6 +210,9 @@ var BCLS = (function(window, document) {
       body = {},
       responseDecoded,
       fragment = document.createDocumentFragment(),
+      inputs,
+      label,
+      br,
       i,
       iMax;
 
@@ -229,10 +232,18 @@ var BCLS = (function(window, document) {
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          affiliate_ids = JSON.parse(response);
-          iMax = affiliate_ids.length;
+        affiliates = JSON.parse(response);
+          iMax = affiliates.length;
           for (i = 0; i < iMax; i++) {
-
+            input = document.createElement('input');
+            label = document.createElement('label');
+            input.setAttribute('name', 'affiliatesChk');
+            input.setAttribute('id', 'field' + fieldsArray[i]);
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', fieldsArray[i]);
+            label.setAttribute('for', 'field' + fieldsArray[i]);
+            text = document.createTextNode(' ' + fieldsArray[i]);
+            br = document.createElement('br');
           }
         });
         break;
