@@ -205,7 +205,7 @@ var BCLS = (function(window, document) {
    */
   function createRequest(type) {
     var options = {},
-      cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
+      cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       body = {},
       responseDecoded,
@@ -213,51 +213,15 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    options.client_id = clientId.value;
-    options.client_secret = clientSecret.value;
+    options.client_id = client_id;
+    options.client_secret = client_secret;
 
     // set proxyURL
     options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
 
     switch (type) {
-      case 'getChannels':
-        endpoint = '/channels';
-        options.url = cmsBaseURL + endpoint;
-        options.requestType = 'GET';
-        makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          if (responseDecoded.length === 0) {
-            logger2.textContent = 'There are no channels; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-          } else if (!arrayContains(responseDecoded, 'name', 'default')) {
-            logger2.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-            addChannel.removeAttribute('style');
-          } else {
-            logger2.textContent = 'Default channel found - ok to proceed';
-            createRequest('getAffiliates');
-          }
-        });
-        break;
-      case 'addChannel':
-        endpoint = '/channels/default';
-        options.url = cmsBaseURL + endpoint;
-        body.account_id = accountId.value;
-        body.name = 'default';
-        options.requestBody = JSON.stringify(body);
-        options.requestType = 'PUT';
-        makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          if (responseDecoded.length === 0) {
-            logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-          } else if (!arrayContains(responseDecoded, 'default')) {
-            logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-          }
-        });
+      case 'getVideoCount':
+        endpoint = '/counts/videos/q=' + searchString;
         break;
       case 'getAffiliates':
         endpoint = '/channels/default/members';
@@ -274,24 +238,6 @@ var BCLS = (function(window, document) {
           }
           totalCalls = affiliate_ids.length;
           createRequest('addAffiliate');
-        });
-        break;
-      case 'addAffiliate':
-        endpoint = '/channels/default/members/' + affiliate_ids[callNumber];
-        options.url = cmsBaseURL + endpoint;
-        body.account_id = affiliate_ids[callNumber];
-        options.requestBody = JSON.stringify(body);
-        options.requestType = 'PUT';
-        makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
-          callNumber++;
-          if (callNumber < totalCalls) {
-            createRequest('addAffiliate');
-          } else {
-            logger.textContent = 'All affiliates successfully added';
-          }
         });
         break;
         // additional cases
