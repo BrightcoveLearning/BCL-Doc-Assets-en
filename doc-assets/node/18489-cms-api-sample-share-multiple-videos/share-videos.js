@@ -238,7 +238,7 @@ var BCLS = (function(window, document) {
             input = document.createElement('input');
             label = document.createElement('label');
             input.setAttribute('name', 'affiliatesChk');
-            input.setAttribute('id', 'field' + fieldsArray[i]);
+            input.setAttribute('id', 'field' + affiliates[i].id);
             input.setAttribute('type', 'checkbox');
             input.setAttribute('value', fieldsArray[i]);
             label.setAttribute('for', 'field' + fieldsArray[i]);
