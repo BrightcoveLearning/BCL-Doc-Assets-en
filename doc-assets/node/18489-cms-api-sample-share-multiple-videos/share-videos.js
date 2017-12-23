@@ -43,11 +43,11 @@ var BCLS = (function(window, document) {
       client_id     = clientId.value;
       client_secret = clientSecret.value;
       if (isDefined(searchTags.value)) {
-        tagsSearchString = '%2Btags:"' + removeSpaces(searchTags.value) + '"+';
+        tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
       }
       if (isDefined(searchFieldValue.value)) {
         if (isDefined(searchField.value)) {
-          fieldsSearchString = '%2B' + searchField.value + ':"' + converSpaces(searchFieldValue.value) + '"';
+          fieldsSearchString = '%2B' + searchField.value + ':' + converSpaces(searchFieldValue.value);
         } else {
           fieldsSearchString = '%2Bcustom_fields:"' + converSpaces(searchFieldValue.value) + '"';
         }
@@ -67,10 +67,20 @@ var BCLS = (function(window, document) {
       if (isDefined(tagsSearchString)) {
         searchString = tagsSearchString;
         if (isDefined(fieldsSearchString)) {
-          searchString += '%20' + fieldsSearchString;
+          searchString += '%20+' + fieldsSearchString;
         }
+        if (isDefined(dateSearchString)) {
+          searchString += '%20+' + dateSearchString;
+        }
+      } else if (isDefined(fieldsSearchString)) {
+        searchString = fieldsSearchString;
+        if (isDefined(dateSearchString)) {
+          searchString += '%20+' + dateSearchString;
+        }
+      } else if (isDefined(dateSearchString)) {
+        searchString = dateSearchString;
       }
-
+console.log('searchString', searchString);
       createRequest('getVideoCount');
     } else {
       alert('You must submit an account id and client credentials');
@@ -164,24 +174,6 @@ var BCLS = (function(window, document) {
       }
     }
     return false;
-  }
-
-  /**
-   * adds new affiliate id to affiliate_ids array
-   */
-  function addAffiliate() {
-    var str;
-    if (isDefined(affiliateId.value)) {
-      // remove any spaces
-      str = removeSpaces(affiliateId.value);
-      affiliate_ids.push(str);
-      // dedupe in case same affiliate added twice
-      affiliate_ids = dedupe(affiliate_ids);
-      affiliateIds.textContent = affiliate_ids.join('\n');
-      affiliateId.value = '';
-    } else {
-      alert('no affiliate id was entered');
-    }
   }
 
   /**
