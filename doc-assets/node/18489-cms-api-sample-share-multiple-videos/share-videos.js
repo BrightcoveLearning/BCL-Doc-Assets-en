@@ -19,7 +19,6 @@ var BCLS = (function(window, document) {
     affiliatesToShareWith = [],
     videos                = [],
     videosToShare         = [],
-    videoShareBody        = [],
     limit                 = 20,
     videoCount            = 0,
     videoCallNumber       = 0,
@@ -113,8 +112,10 @@ var BCLS = (function(window, document) {
     if (videosToShare.length === 0) {
       alert('Please select some videos to share and try again');
     } else if (affiliatesToShareWith.length === 0) {
-      alert('Please select some affiliates to share with and try again')
+      alert('Please select some affiliates to share with and try again');
     } else {
+      totalShareCalls = videosToShare.length;
+      shareCallNumber = 0;
       createRequest('shareVideos');
     }
   });
@@ -246,7 +247,7 @@ var BCLS = (function(window, document) {
     var options = {},
       cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
-      body = {},
+      body = [],
       responseDecoded,
       fragment = document.createDocumentFragment(),
       input,
