@@ -8,8 +8,10 @@ var BCLS = (function(window, document) {
     dateRangeType    = document.getElementById('dateRangeType'),
     fromDate         = document.getElementById('fromDate'),
     toDate           = document.getElementById('toDate'),
+    videosBlock      = document.getElementById('videosBlock'),
+    affiliatesBlock  = document.getElementById('affiliatesBlock'),
     getVideos        = document.getElementById('getVideos'),
-    shareVideos      = document.getElementById('addChannel'),
+    shareVideos      = document.getElementById('addChannel'),ß
     logger           = document.getElementById('logger'),
     logger2          = document.getElementById('logger2'),
     apiRequest       = document.getElementById('apiRequest'),
@@ -19,15 +21,16 @@ var BCLS = (function(window, document) {
     toDateValue,
     tagsSearchString,
     fieldsSearchString,
-    dateSearchString,
+    dateSearchString,ß
     searchString,
     account_id,
     client_id,
     client_secret,
     affiliates       = [],
+    videos           = [],
     videosToShare    = [],
     limit            = 20,
-    offset           = 0,
+    videoCount       = 0,
     callNumber       = 0,
     totalCalls       = 0;
 
@@ -210,7 +213,8 @@ var BCLS = (function(window, document) {
       body = {},
       responseDecoded,
       fragment = document.createDocumentFragment(),
-      inputs,
+      input,
+      space,
       label,
       br,
       i,
@@ -225,7 +229,7 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getVideoCount':
-        endpoint = '/counts/videos/q=' + searchString;
+        endpoint = '/counts/videos?q=' + searchString;
         break;
       case 'getAffiliates':
         endpoint = '/channels/default/members';
@@ -236,18 +240,51 @@ var BCLS = (function(window, document) {
           iMax = affiliates.length;
           for (i = 0; i < iMax; i++) {
             input = document.createElement('input');
+            space = document.createTextNode(' ');
             label = document.createElement('label');
             input.setAttribute('name', 'affiliatesChk');
             input.setAttribute('id', 'field' + affiliates[i].id);
             input.setAttribute('type', 'checkbox');
             input.setAttribute('value', affiliates[i].id);
-            label.setAttribute('for', 'field' + affiliates[i]);
-            text = document.createTextNode(' ' + affiliates[i]);
+            label.setAttribute('for', 'field' + affiliates[i].id);
+            text = document.createTextNode(affiliates[i].account_name);
+            label.appendChild(text);
             br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
           }
+          affiliatesBlock.appendChild(fragment);
         });
         break;
-        // additional cases
+      case 'getVideos':
+        endpoint = '/videos?q=' + searchString + '&limit=' + limit + '&offset=' + (limit * callnumber);
+        options.url = cmsBaseURL + endpoint;
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+        videos = JSON.parse(response);
+          iMax = affiliates.length;
+          for (i = 0; i < iMax; i++) {
+            input = document.createElement('input');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'affiliatesChk');
+            input.setAttribute('id', 'field' + affiliates[i].id);
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', affiliates[i].id);
+            label.setAttribute('for', 'field' + affiliates[i].id);
+            text = document.createTextNode(affiliates[i].account_name);
+            label.appendChild(text);
+            br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
+          }
+          affiliatesBlock.appendChild(fragment);
+        });
+        break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
         break;
