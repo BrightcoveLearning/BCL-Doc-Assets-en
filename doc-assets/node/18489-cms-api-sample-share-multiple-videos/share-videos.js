@@ -240,9 +240,9 @@ var BCLS = (function(window, document) {
             input.setAttribute('name', 'affiliatesChk');
             input.setAttribute('id', 'field' + affiliates[i].id);
             input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', fieldsArray[i]);
-            label.setAttribute('for', 'field' + fieldsArray[i]);
-            text = document.createTextNode(' ' + fieldsArray[i]);
+            input.setAttribute('value', affiliates[i].id);
+            label.setAttribute('for', 'field' + affiliates[i]);
+            text = document.createTextNode(' ' + affiliates[i]);
             br = document.createElement('br');
           }
         });
