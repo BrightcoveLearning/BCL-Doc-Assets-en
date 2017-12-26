@@ -392,7 +392,15 @@ var BCLS = (function(window, document) {
         });
         break;
         case 'shareVideos':
-
+        endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
+        options.url = cmsBaseURL + endpoint;
+        options.requestType = 'POST';
+        iMax = affiliatesToShareWith.length;
+        for (i = 0; i < iMax; i++) {
+          var o = {};
+          o.id = affiliatesToShareWith[i];
+          body.push[o];
+        }
           break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
