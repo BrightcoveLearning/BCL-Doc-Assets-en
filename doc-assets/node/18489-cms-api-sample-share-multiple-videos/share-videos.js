@@ -286,6 +286,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           affiliates = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           if (affiliates.length === 0) {
             logger.textContent = 'There are no affiliate accounts set up for sharing; please add one or more affiliates and try again';
           } else {
@@ -345,54 +346,55 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-        videos = JSON.parse(response);
-        input = document.createElement('input');
-        space = document.createTextNode(' ');
-        label = document.createElement('label');
-        input.setAttribute('name', 'videosChkAll');
-        input.setAttribute('id', 'videosChkAll');
-        input.setAttribute('type', 'checkbox');
-        input.setAttribute('value', 'all');
-        label.setAttribute('for', 'videosChkAll');
-        text = document.createTextNode('Select All');
-        label.appendChild(text);
-        br = document.createElement('br');
-        fragment.appendChild(input);
-        fragment.appendChild(space);
-        fragment.appendChild(label);
-        fragment.appendChild(br);
-          iMax = videos.length;
-          for (i = 0; i < iMax; i++) {
-            input = document.createElement('input');
-            space = document.createTextNode(' ');
-            label = document.createElement('label');
-            input.setAttribute('name', 'videosChk');
-            input.setAttribute('id', 'field' + videos[i].id);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', videos[i].id);
-            label.setAttribute('for', 'field' + videos[i].id);
-            text = document.createTextNode(videos[i].name);
-            label.appendChild(text);
-            br = document.createElement('br');
-            fragment.appendChild(input);
-            fragment.appendChild(space);
-            fragment.appendChild(label);
-            fragment.appendChild(br);
-          }
-          videosBlock.appendChild(fragment);
-          // get references to checkboxes
-          videosCollection = document.getElementsByName('videosChk');
-          videosSelectAll = document.getElementById('videosChkAll');
-          // add event listener for select allows
-          videosSelectAll.addEventListener('change', function() {
-            if (this.checked) {
-              selectAllCheckboxes(videosCollection);
-            } else {
-              deselectAllCheckboxes(videosCollection);
+          videos = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(videos, null, '  ');
+          input = document.createElement('input');
+          space = document.createTextNode(' ');
+          label = document.createElement('label');
+          input.setAttribute('name', 'videosChkAll');
+          input.setAttribute('id', 'videosChkAll');
+          input.setAttribute('type', 'checkbox');
+          input.setAttribute('value', 'all');
+          label.setAttribute('for', 'videosChkAll');
+          text = document.createTextNode('Select All');
+          label.appendChild(text);
+          br = document.createElement('br');
+          fragment.appendChild(input);
+          fragment.appendChild(space);
+          fragment.appendChild(label);
+          fragment.appendChild(br);
+            iMax = videos.length;
+            for (i = 0; i < iMax; i++) {
+              input = document.createElement('input');
+              space = document.createTextNode(' ');
+              label = document.createElement('label');
+              input.setAttribute('name', 'videosChk');
+              input.setAttribute('id', 'field' + videos[i].id);
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', videos[i].id);
+              label.setAttribute('for', 'field' + videos[i].id);
+              text = document.createTextNode(videos[i].name);
+              label.appendChild(text);
+              br = document.createElement('br');
+              fragment.appendChild(input);
+              fragment.appendChild(space);
+              fragment.appendChild(label);
+              fragment.appendChild(br);
             }
+            videosBlock.appendChild(fragment);
+            // get references to checkboxes
+            videosCollection = document.getElementsByName('videosChk');
+            videosSelectAll = document.getElementById('videosChkAll');
+            // add event listener for select allows
+            videosSelectAll.addEventListener('change', function() {
+              if (this.checked) {
+                selectAllCheckboxes(videosCollection);
+              } else {
+                deselectAllCheckboxes(videosCollection);
+              }
+            });
           });
-        });
-        break;
+          break;
         case 'shareVideos':
           endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
           options.url = cmsBaseURL + endpoint;
