@@ -406,7 +406,9 @@ var BCLS = (function(window, document) {
           }
           options.requestBody = JSON.stringify(body);
           makeRequest(options, function(response) {
-
+            responseDecoded = JSON.parse(response);
+            apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
+            logger.textContent = 'Selected videos were shared with selected affiliates; fetching more videos (if any)'
           })
           break;
       default:
