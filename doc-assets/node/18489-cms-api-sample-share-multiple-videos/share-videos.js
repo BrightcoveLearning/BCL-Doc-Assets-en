@@ -1,38 +1,41 @@
 var BCLS = (function(window, document) {
-  var accountId      = document.getElementById('accountId'),
-    clientId         = document.getElementById('clientId'),
-    clientSecret     = document.getElementById('clientSecret'),
-    searchTags       = document.getElementById('searchTags'),
-    searchField      = document.getElementById('searchField'),
-    searchFieldValue = document.getElementById('searchFieldValue'),
-    dateRangeType    = document.getElementById('dateRangeType'),
-    fromDate         = document.getElementById('fromDate'),
-    toDate           = document.getElementById('toDate'),
-    videosBlock      = document.getElementById('videosBlock'),
-    affiliatesBlock  = document.getElementById('affiliatesBlock'),
-    getVideos        = document.getElementById('getVideos'),
-    shareVideos      = document.getElementById('addChannel'),ß
-    logger           = document.getElementById('logger'),
-    logger2          = document.getElementById('logger2'),
-    apiRequest       = document.getElementById('apiRequest'),
-    apiResponse      = document.getElementById('apiResponse'),
+  var accountId           = document.getElementById('accountId'),
+    clientId              = document.getElementById('clientId'),
+    clientSecret          = document.getElementById('clientSecret'),
+    searchTags            = document.getElementById('searchTags'),
+    searchField           = document.getElementById('searchField'),
+    searchFieldValue      = document.getElementById('searchFieldValue'),
+    dateRangeType         = document.getElementById('dateRangeType'),
+    fromDate              = document.getElementById('fromDate'),
+    toDate                = document.getElementById('toDate'),
+    videosBlock           = document.getElementById('videosBlock'),
+    affiliatesBlock       = document.getElementById('affiliatesBlock'),
+    getVideos             = document.getElementById('getVideos'),
+    shareVideos           = document.getElementById('shareVideos'),
+    logger                = document.getElementById('logger'),
+    logger2               = document.getElementById('logger2'),
+    apiRequest            = document.getElementById('apiRequest'),
+    apiResponse           = document.getElementById('apiResponse'),
+    affiliates            = [],
+    affiliatesToShareWith = [],
+    videos                = [],
+    videosToShare         = [],
+    limit                 = 20,
+    videoCount            = 0,
+    videoCallNumber       = 0,
+    shareCallNumber       = 0,
+    totalVideoCalls       = 0,
+    totalShareCalls       = 0,
     dateTypeValue,
     fromDateValue,
     toDateValue,
     tagsSearchString,
     fieldsSearchString,
-    dateSearchString,ß
+    dateSearchString,
     searchString,
     account_id,
     client_id,
-    client_secret,
-    affiliates       = [],
-    videos           = [],
-    videosToShare    = [],
-    limit            = 20,
-    videoCount       = 0,
-    callNumber       = 0,
-    totalCalls       = 0;
+    client_secret;
 
   // date pickers
   rome(fromDate);
@@ -91,6 +94,7 @@ var BCLS = (function(window, document) {
   });
 
   shareVideos.addEventListener('click', function() {
+    shareVideos.textContent = 'Get Next Set of Videos';
     createRequest('shareVideos');
   });
 
@@ -237,16 +241,31 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
         affiliates = JSON.parse(response);
+        input = document.createElement('input');
+        space = document.createTextNode(' ');
+        label = document.createElement('label');
+        input.setAttribute('name', 'affiliatesChkAll');
+        input.setAttribute('id', 'affiliatesChkAll');
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('value', 'all');
+        label.setAttribute('for', 'affiliatesChkAll');
+        text = document.createTextNode('Select All');
+        label.appendChild(text);
+        br = document.createElement('br');
+        fragment.appendChild(input);
+        fragment.appendChild(space);
+        fragment.appendChild(label);
+        fragment.appendChild(br);
           iMax = affiliates.length;
           for (i = 0; i < iMax; i++) {
             input = document.createElement('input');
             space = document.createTextNode(' ');
             label = document.createElement('label');
             input.setAttribute('name', 'affiliatesChk');
-            input.setAttribute('id', 'field' + affiliates[i].id);
+            input.setAttribute('id', affiliates[i].id);
             input.setAttribute('type', 'checkbox');
             input.setAttribute('value', affiliates[i].id);
-            label.setAttribute('for', 'field' + affiliates[i].id);
+            label.setAttribute('for', affiliates[i].id);
             text = document.createTextNode(affiliates[i].account_name);
             label.appendChild(text);
             br = document.createElement('br');
@@ -264,7 +283,22 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
         videos = JSON.parse(response);
-          iMax = affiliates.length;
+        input = document.createElement('input');
+        space = document.createTextNode(' ');
+        label = document.createElement('label');
+        input.setAttribute('name', 'affiliatesChkAll');
+        input.setAttribute('id', 'affiliatesChkAll');
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('value', 'all');
+        label.setAttribute('for', 'affiliatesChkAll');
+        text = document.createTextNode('Select All');
+        label.appendChild(text);
+        br = document.createElement('br');
+        fragment.appendChild(input);
+        fragment.appendChild(space);
+        fragment.appendChild(label);
+        fragment.appendChild(br);
+          iMax = videos.length;
           for (i = 0; i < iMax; i++) {
             input = document.createElement('input');
             space = document.createTextNode(' ');
