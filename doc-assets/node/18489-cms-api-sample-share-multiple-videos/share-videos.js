@@ -282,6 +282,7 @@ var BCLS = (function(window, document) {
       case 'getAffiliates':
         endpoint = '/channels/default/members';
         options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           affiliates = JSON.parse(response);
@@ -341,6 +342,7 @@ var BCLS = (function(window, document) {
       case 'getVideos':
         endpoint = '/videos?q=' + searchString + '&limit=' + limit + '&offset=' + (limit * callnumber);
         options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
         videos = JSON.parse(response);
@@ -392,15 +394,20 @@ var BCLS = (function(window, document) {
         });
         break;
         case 'shareVideos':
-        endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
-        options.url = cmsBaseURL + endpoint;
-        options.requestType = 'POST';
-        iMax = affiliatesToShareWith.length;
-        for (i = 0; i < iMax; i++) {
-          var o = {};
-          o.id = affiliatesToShareWith[i];
-          body.push[o];
-        }
+          endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
+          options.url = cmsBaseURL + endpoint;
+          apiRequest.textContent = options.url;
+          options.requestType = 'POST';
+          iMax = affiliatesToShareWith.length;
+          for (i = 0; i < iMax; i++) {
+            var o = {};
+            o.id = affiliatesToShareWith[i];
+            body.push[o];
+          }
+          options.requestBody = JSON.stringify(body);
+          makeRequest(options, function(response) {
+
+          })
           break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
