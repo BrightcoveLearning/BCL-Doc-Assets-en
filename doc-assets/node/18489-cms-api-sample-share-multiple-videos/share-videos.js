@@ -13,7 +13,6 @@ var BCLS = (function(window, document) {
     getVideos             = document.getElementById('getVideos'),
     shareVideos           = document.getElementById('shareVideos'),
     logger                = document.getElementById('logger'),
-    logger2               = document.getElementById('logger2'),
     apiRequest            = document.getElementById('apiRequest'),
     apiResponse           = document.getElementById('apiResponse'),
     affiliates            = [],
@@ -47,53 +46,62 @@ var BCLS = (function(window, document) {
 
   // *****event listeners*****
   getVideos.addEventListener('click', function() {
-    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      // get inputs
-      account_id    = accountId.value;
-      client_id     = clientId.value;
-      client_secret = clientSecret.value;
-      if (isDefined(searchTags.value)) {
-        tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
-      }
-      if (isDefined(searchFieldValue.value)) {
-        if (isDefined(searchField.value)) {
-          fieldsSearchString = '%2B' + searchField.value + ':' + converSpaces(searchFieldValue.value);
-        } else {
-          fieldsSearchString = '%2Bcustom_fields:"' + converSpaces(searchFieldValue.value) + '"';
+    if (videoCount === 0) {
+      if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
+        // get inputs
+        account_id    = accountId.value;
+        client_id     = clientId.value;
+        client_secret = clientSecret.value;
+        if (isDefined(searchTags.value)) {
+          tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
         }
-      }
+        if (isDefined(searchFieldValue.value)) {
+          if (isDefined(searchField.value)) {
+            fieldsSearchString = '%2B' + searchField.value + ':' + converSpaces(searchFieldValue.value);
+          } else {
+            fieldsSearchString = '%2Bcustom_fields:"' + converSpaces(searchFieldValue.value) + '"';
+          }
+        }
 
-      fromDateValue = rome(fromDate).getDate();
-      if (isDefined(fromDateValue)) {
-        fromDateValue = fromDateValue.toISOString();
-      }
-      toDateValue = rome(toDate).getDate();
-      if (isDefined(toDateValue)) {
-        toDateValue = toDateValue.toISOString();
-      }
-      dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+        fromDateValue = rome(fromDate).getDate();
+        if (isDefined(fromDateValue)) {
+          fromDateValue = fromDateValue.toISOString();
+        }
+        toDateValue = rome(toDate).getDate();
+        if (isDefined(toDateValue)) {
+          toDateValue = toDateValue.toISOString();
+        }
+        dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
 
-      // define the whole search string
-      if (isDefined(tagsSearchString)) {
-        searchString = tagsSearchString;
-        if (isDefined(fieldsSearchString)) {
-          searchString += '%20+' + fieldsSearchString;
+        // define the whole search string
+        if (isDefined(tagsSearchString)) {
+          searchString = tagsSearchString;
+          if (isDefined(fieldsSearchString)) {
+            searchString += '%20+' + fieldsSearchString;
+          }
+          if (isDefined(dateSearchString)) {
+            searchString += '%20+' + dateSearchString;
+          }
+        } else if (isDefined(fieldsSearchString)) {
+          searchString = fieldsSearchString;
+          if (isDefined(dateSearchString)) {
+            searchString += '%20+' + dateSearchString;
+          }
+        } else if (isDefined(dateSearchString)) {
+          searchString = dateSearchString;
         }
-        if (isDefined(dateSearchString)) {
-          searchString += '%20+' + dateSearchString;
-        }
-      } else if (isDefined(fieldsSearchString)) {
-        searchString = fieldsSearchString;
-        if (isDefined(dateSearchString)) {
-          searchString += '%20+' + dateSearchString;
-        }
-      } else if (isDefined(dateSearchString)) {
-        searchString = dateSearchString;
+        console.log('searchString', searchString);
+        createRequest('getVideoCount');
+      } else {
+        alert('You must submit an account id and client credentials');
       }
-      console.log('searchString', searchString);
-      createRequest('getVideoCount');
     } else {
-      alert('You must submit an account id and client credentials');
+      videoCallNumber++;
+      if (videoCallNumber < totalVideoCalls) {
+        createRequest('getVideos');
+      } else {
+        logger.textContent = 'No more videos - finished.';
+      }
     }
   });
 
@@ -249,6 +257,12 @@ var BCLS = (function(window, document) {
     switch (type) {
       case 'getVideoCount':
         endpoint = '/counts/videos?q=' + searchString;
+        options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+
+        });
         break;
       case 'getAffiliates':
         endpoint = '/channels/default/members';
@@ -289,12 +303,18 @@ var BCLS = (function(window, document) {
             fragment.appendChild(label);
             fragment.appendChild(br);
           }
-          // get references to checkboxes
           affiliatesBlock.appendChild(fragment);
+          // get references to checkboxes
           affiliatesCollection = document.getElementsByName('affiliatesChk');
           affiliatesSelectAll = document.getElementById('affiliatesChkAll');
           // add event listener for select allows
-          affiliatesSelectAll.addEventListener('change', function() {})
+          affiliatesSelectAll.addEventListener('change', function() {
+            if (this.checked) {
+              selectAllCheckboxes(affiliatesCollection);
+            } else {
+              deselectAllCheckboxes(affiliatesCollection);
+            }
+          });
 
         });
         break;
@@ -329,7 +349,7 @@ var BCLS = (function(window, document) {
             input.setAttribute('type', 'checkbox');
             input.setAttribute('value', videos[i].id);
             label.setAttribute('for', 'field' + videos[i].id);
-            text = document.createTextNode(affiliates[i].name);
+            text = document.createTextNode(videos[i].name);
             label.appendChild(text);
             br = document.createElement('br');
             fragment.appendChild(input);
@@ -338,6 +358,17 @@ var BCLS = (function(window, document) {
             fragment.appendChild(br);
           }
           videosBlock.appendChild(fragment);
+          // get references to checkboxes
+          videosCollection = document.getElementsByName('videosChk');
+          videosSelectAll = document.getElementById('videosChkAll');
+          // add event listener for select allows
+          videosSelectAll.addEventListener('change', function() {
+            if (this.checked) {
+              selectAllCheckboxes(videosCollection);
+            } else {
+              deselectAllCheckboxes(videosCollection);
+            }
+          });
         });
         break;
       default:
