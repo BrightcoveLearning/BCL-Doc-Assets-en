@@ -107,7 +107,15 @@ var BCLS = (function(window, document) {
 
   shareVideos.addEventListener('click', function() {
     shareVideos.textContent = 'Get Next Set of Videos';
-    createRequest('shareVideos');
+    videosToShare = getCheckedBoxValues(videosCollection);
+    affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
+    if (videosToShare.length === 0) {
+      alert('Please select some videos to share and try again');
+    } else if (affiliatesToShareWith.length === 0) {
+      alert('Please select some affiliates to share with and try again')
+    } else {
+      createRequest('shareVideos');
+    }
   });
 
   // ***** end event listeners *****
@@ -261,7 +269,12 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-
+          videoCount = JSON.parse(response).count;
+          if (videoCount === 0) {
+            logger.textContent = 'The search returned no videos - try using different search criteria (or none at all)';
+          } else {
+            createRequest('getAffiliates');
+          }
         });
         break;
       case 'getAffiliates':
@@ -269,53 +282,58 @@ var BCLS = (function(window, document) {
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-        affiliates = JSON.parse(response);
-        input = document.createElement('input');
-        space = document.createTextNode(' ');
-        label = document.createElement('label');
-        input.setAttribute('name', 'affiliatesChkAll');
-        input.setAttribute('id', 'affiliatesChkAll');
-        input.setAttribute('type', 'checkbox');
-        input.setAttribute('value', 'all');
-        label.setAttribute('for', 'affiliatesChkAll');
-        text = document.createTextNode('Select All');
-        label.appendChild(text);
-        br = document.createElement('br');
-        fragment.appendChild(input);
-        fragment.appendChild(space);
-        fragment.appendChild(label);
-        fragment.appendChild(br);
-          iMax = affiliates.length;
-          for (i = 0; i < iMax; i++) {
+          affiliates = JSON.parse(response);
+          if (affiliates.length === 0) {
+            logger.textContent = 'There are no affiliate accounts set up for sharing; please add one or more affiliates and try again';
+          } else {
             input = document.createElement('input');
             space = document.createTextNode(' ');
             label = document.createElement('label');
-            input.setAttribute('name', 'affiliatesChk');
-            input.setAttribute('id', affiliates[i].id);
+            input.setAttribute('name', 'affiliatesChkAll');
+            input.setAttribute('id', 'affiliatesChkAll');
             input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', affiliates[i].id);
-            label.setAttribute('for', affiliates[i].id);
-            text = document.createTextNode(affiliates[i].account_name);
+            input.setAttribute('value', 'all');
+            label.setAttribute('for', 'affiliatesChkAll');
+            text = document.createTextNode('Select All');
             label.appendChild(text);
             br = document.createElement('br');
             fragment.appendChild(input);
             fragment.appendChild(space);
             fragment.appendChild(label);
             fragment.appendChild(br);
-          }
-          affiliatesBlock.appendChild(fragment);
-          // get references to checkboxes
-          affiliatesCollection = document.getElementsByName('affiliatesChk');
-          affiliatesSelectAll = document.getElementById('affiliatesChkAll');
-          // add event listener for select allows
-          affiliatesSelectAll.addEventListener('change', function() {
-            if (this.checked) {
-              selectAllCheckboxes(affiliatesCollection);
-            } else {
-              deselectAllCheckboxes(affiliatesCollection);
+            iMax = affiliates.length;
+            for (i = 0; i < iMax; i++) {
+              input = document.createElement('input');
+              space = document.createTextNode(' ');
+              label = document.createElement('label');
+              input.setAttribute('name', 'affiliatesChk');
+              input.setAttribute('id', affiliates[i].id);
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', affiliates[i].id);
+              label.setAttribute('for', affiliates[i].id);
+              text = document.createTextNode(affiliates[i].account_name);
+              label.appendChild(text);
+              br = document.createElement('br');
+              fragment.appendChild(input);
+              fragment.appendChild(space);
+              fragment.appendChild(label);
+              fragment.appendChild(br);
             }
-          });
-
+            affiliatesBlock.appendChild(fragment);
+            // get references to checkboxes
+            affiliatesCollection = document.getElementsByName('affiliatesChk');
+            affiliatesSelectAll = document.getElementById('affiliatesChkAll');
+            // add event listener for select allows
+            affiliatesSelectAll.addEventListener('change', function() {
+              if (this.checked) {
+                selectAllCheckboxes(affiliatesCollection);
+              } else {
+                deselectAllCheckboxes(affiliatesCollection);
+              }
+            });
+          }
+          // get some videos
+          createRequest('getVideos');
         });
         break;
       case 'getVideos':
@@ -371,6 +389,9 @@ var BCLS = (function(window, document) {
           });
         });
         break;
+        case 'shareVideos':
+
+          break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
         break;
