@@ -408,7 +408,13 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-            logger.textContent = 'Selected videos were shared with selected affiliates; fetching more videos (if any)'
+            logger.textContent = 'Selected videos were shared with selected affiliates; fetching more videos (if any)';
+            videoCallNumber++;
+            if (videoCallNumber < totalVideoCalls) {
+              createRequest('getVideos');
+            } else {
+              logger.textContent = 'There are no more videos';
+            }
           })
           break;
       default:
