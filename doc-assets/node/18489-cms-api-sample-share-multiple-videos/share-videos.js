@@ -19,6 +19,7 @@ var BCLS = (function(window, document) {
     affiliatesToShareWith = [],
     videos                = [],
     videosToShare         = [],
+    videoShareBody        = [],
     limit                 = 20,
     videoCount            = 0,
     videoCallNumber       = 0,
