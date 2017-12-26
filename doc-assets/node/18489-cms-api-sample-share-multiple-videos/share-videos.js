@@ -35,7 +35,11 @@ var BCLS = (function(window, document) {
     searchString,
     account_id,
     client_id,
-    client_secret;
+    client_secret,
+    videosCollection,
+    affiliatesCollection,
+    videosSelectAll,
+    affiliatesSelectAll;
 
   // date pickers
   rome(fromDate);
@@ -180,7 +184,7 @@ var BCLS = (function(window, document) {
    * @param {String} str string to process
    * @return {String} trimmed string
    */
-  function converSpaces(str) {
+  function convertSpaces(str) {
     str = str.replace(/\s/g, '%20');
     return str;
   }
@@ -275,6 +279,8 @@ var BCLS = (function(window, document) {
             fragment.appendChild(br);
           }
           affiliatesBlock.appendChild(fragment);
+          affiliatesCollection = document.getElementsByName('affiliatesChk');
+          affiliatesSelectAll = document.getElementById('affiliatesChkAll');
         });
         break;
       case 'getVideos':
@@ -286,11 +292,11 @@ var BCLS = (function(window, document) {
         input = document.createElement('input');
         space = document.createTextNode(' ');
         label = document.createElement('label');
-        input.setAttribute('name', 'affiliatesChkAll');
-        input.setAttribute('id', 'affiliatesChkAll');
+        input.setAttribute('name', 'videosChkAll');
+        input.setAttribute('id', 'videosChkAll');
         input.setAttribute('type', 'checkbox');
         input.setAttribute('value', 'all');
-        label.setAttribute('for', 'affiliatesChkAll');
+        label.setAttribute('for', 'videosChkAll');
         text = document.createTextNode('Select All');
         label.appendChild(text);
         br = document.createElement('br');
@@ -303,12 +309,12 @@ var BCLS = (function(window, document) {
             input = document.createElement('input');
             space = document.createTextNode(' ');
             label = document.createElement('label');
-            input.setAttribute('name', 'affiliatesChk');
-            input.setAttribute('id', 'field' + affiliates[i].id);
+            input.setAttribute('name', 'videosChk');
+            input.setAttribute('id', 'field' + videos[i].id);
             input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', affiliates[i].id);
-            label.setAttribute('for', 'field' + affiliates[i].id);
-            text = document.createTextNode(affiliates[i].account_name);
+            input.setAttribute('value', videos[i].id);
+            label.setAttribute('for', 'field' + videos[i].id);
+            text = document.createTextNode(affiliates[i].name);
             label.appendChild(text);
             br = document.createElement('br');
             fragment.appendChild(input);
@@ -316,7 +322,7 @@ var BCLS = (function(window, document) {
             fragment.appendChild(label);
             fragment.appendChild(br);
           }
-          affiliatesBlock.appendChild(fragment);
+          videosBlock.appendChild(fragment);
         });
         break;
       default:
