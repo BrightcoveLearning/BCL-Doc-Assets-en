@@ -319,10 +319,10 @@ var BCLS = (function(window, document) {
               space = document.createTextNode(' ');
               label = document.createElement('label');
               input.setAttribute('name', 'affiliatesChk');
-              input.setAttribute('id', affiliates[i].id);
+              input.setAttribute('id', affiliates[i].account_id);
               input.setAttribute('type', 'checkbox');
-              input.setAttribute('value', affiliates[i].id);
-              label.setAttribute('for', affiliates[i].id);
+              input.setAttribute('value', affiliates[i].account_id);
+              label.setAttribute('for', affiliates[i].account_id);
               text = document.createTextNode(affiliates[i].account_name);
               label.appendChild(text);
               br = document.createElement('br');
