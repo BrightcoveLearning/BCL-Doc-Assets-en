@@ -73,7 +73,7 @@ var BCLS = (function(window, document) {
           toDateValue = toDateValue.toISOString();
         }
         if (isDefined(fromDateValue) || isDefined(toDateValue)) {
-          dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+          dateSearchString = dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
         }
 
         // define the whole search string
