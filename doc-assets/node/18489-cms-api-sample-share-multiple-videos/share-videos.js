@@ -423,7 +423,7 @@ var BCLS = (function(window, document) {
             lineBreak = document.createElement(br);
             apiResponse.appendChild(lineBreak);
             apiResponse.textContent += JSON.stringify(responseDecoded, null, '  ');
-            logMessage('Selected videos were shared with selected affiliates (see response to check for errors)');
+            logMessage('Video was shared with selected affiliates (see response to check for errors)');
             shareCallNumber++;
             if (shareCallNumber < totalShareCalls) {
               createRequest('shareVideos');
