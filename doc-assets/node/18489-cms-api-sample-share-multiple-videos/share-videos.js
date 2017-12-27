@@ -275,7 +275,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           videoCount = JSON.parse(response).count;
-          apiResponse.textContent = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(JSON.parse(response), null, '  ');
           if (videoCount === 0) {
             logger.textContent = 'The search returned no videos - try using different search criteria (or none at all)';
           } else {
