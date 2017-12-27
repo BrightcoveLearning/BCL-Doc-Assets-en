@@ -26,6 +26,8 @@ var BCLS = (function(window, document) {
     shareCallNumber       = 0,
     totalVideoCalls       = 0,
     totalShareCalls       = 0,
+    lineBreak,
+    message,
     dateTypeValue,
     fromDateValue,
     toDateValue,
@@ -102,12 +104,13 @@ var BCLS = (function(window, document) {
       if (videoCallNumber < totalVideoCalls) {
         createRequest('getVideos');
       } else {
-        logger.textContent = 'No more videos - finished.';
+        logMessage('No more videos - finished.');
       }
     }
   });
 
   shareVideos.addEventListener('click', function() {
+    apiResponse.textContent = '';
     videosToShare = getCheckedBoxValues(videosCollection);
     affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
     if (videosToShare.length === 0) {
@@ -220,24 +223,15 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * determines whether specified item is in an array of objects
-   *
-   * @param {array} array to check
-   * @param {string} prop the object property to check
-   * @param {string} item to check for
-   * @return {boolean} true if item is in the array, else false
+   * adds a new message to the logging element
+   * @param  {string} message string to add
    */
-  function arrayContains(arr, prop, item) {
-    var i,
-      iMax = arr.length;
-    for (i = 0; i < iMax; i++) {
-      if (arr[i].hasOwnProperty(prop)) {
-        if (arr[i][prop] === item) {
-          return true;
-        }
-      }
-    }
-    return false;
+  function logMessage(message) {
+    lineBreak = document.createElement('br');
+    logger.appendChild(lineBreak);
+    message = document.createTextNode(message);
+    logger.appendChild(message);
+
   }
 
   /**
@@ -279,7 +273,7 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(JSON.parse(response), null, '  ');
           videoCountDisplay.textContent = videoCount;
           if (videoCount === 0) {
-            logger.textContent = 'The search returned no videos - try using different search criteria (or none at all)';
+            logMessage('The search returned no videos - try using different search criteria (or none at all)');
           } else {
             totalVideoCalls = Math.ceil(videoCount / limit);
             createRequest('getAffiliates');
@@ -295,9 +289,9 @@ var BCLS = (function(window, document) {
           affiliates = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           if (affiliates.length === 0) {
-            logger.textContent = 'There are no affiliate accounts set up for sharing; please add one or more affiliates and try again';
+            logMessage('There are no affiliate accounts set up for sharing; please add one or more affiliates and try again');
           } else {
-            logger.textContent = 'Affiliates retrieved';
+            logMessage('Affiliates retrieved');
             input = document.createElement('input');
             space = document.createTextNode(' ');
             label = document.createElement('label');
@@ -360,7 +354,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           getVideos.textContent = 'Get Next Set of Videos';
           videos = JSON.parse(response);
-          logger.textContent = videos.length + ' videos retrieved';
+          logMessage(videos.length + ' videos retrieved');
           apiResponse.textContent = JSON.stringify(videos, null, '  ');
           input = document.createElement('input');
           space = document.createTextNode(' ');
@@ -426,8 +420,10 @@ var BCLS = (function(window, document) {
           options.requestBody = JSON.stringify(body);
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
-            apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-            logger.textContent = 'Selected videos were shared with selected affiliates (see response to check for errors)';
+            lineBreak = document.createElement(br);
+            apiResponse.appendChild(lineBreak);
+            apiResponse.textContent += JSON.stringify(responseDecoded, null, '  ');
+            logMessage('Selected videos were shared with selected affiliates (see response to check for errors)');
             shareCallNumber++;
             if (shareCallNumber < totalShareCalls) {
               createRequest('shareVideos');
@@ -436,7 +432,7 @@ var BCLS = (function(window, document) {
               if (videoCallNumber < totalVideoCalls) {
                 createRequest('getVideos');
               } else {
-                logger.textContent = 'There are no more videos';
+                logMessage('There are no more videos');
               }
             }
           });
