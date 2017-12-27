@@ -299,6 +299,7 @@ var BCLS = (function(window, document) {
           if (affiliates.length === 0) {
             logger.textContent = 'There are no affiliate accounts set up for sharing; please add one or more affiliates and try again';
           } else {
+            logger.textContent = 'Affiliates retrieved';
             input = document.createElement('input');
             space = document.createTextNode(' ');
             label = document.createElement('label');
@@ -360,6 +361,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           getVideos.textContent = 'Get Next Set of Videos';
           videos = JSON.parse(response);
+          logger.textContent = videos.length + ' videos retrieved';
           apiResponse.textContent = JSON.stringify(videos, null, '  ');
           input = document.createElement('input');
           space = document.createTextNode(' ');
@@ -423,12 +425,17 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-            logger.textContent = 'Selected videos were shared with selected affiliates (see response to check for errors); fetching more videos (if any)';
-            videoCallNumber++;
-            if (videoCallNumber < totalVideoCalls) {
-              createRequest('getVideos');
+            logger.textContent = 'Selected videos were shared with selected affiliates (see response to check for errors)';
+            shareCallNumber++;
+            if (shareCallNumber < totalShareCalls) {
+              makeRequest('shareVideos');
             } else {
-              logger.textContent = 'There are no more videos';
+              videoCallNumber++;
+              if (videoCallNumber < totalVideoCalls) {
+                createRequest('getVideos');
+              } else {
+                logger.textContent = 'There are no more videos';
+              }
             }
           });
           break;
