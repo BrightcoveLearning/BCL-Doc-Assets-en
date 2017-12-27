@@ -405,7 +405,7 @@ var BCLS = (function(window, document) {
           for (i = 0; i < iMax; i++) {
             var o = {};
             o.id = affiliatesToShareWith[i];
-            body.push[o];
+            body.push(o);
           }
           options.requestBody = JSON.stringify(body);
           makeRequest(options, function(response) {
