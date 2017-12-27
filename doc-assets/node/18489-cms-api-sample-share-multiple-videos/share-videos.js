@@ -418,7 +418,7 @@ var BCLS = (function(window, document) {
             } else {
               logger.textContent = 'There are no more videos';
             }
-          })
+          });
           break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
