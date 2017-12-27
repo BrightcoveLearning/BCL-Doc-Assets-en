@@ -93,7 +93,6 @@ var BCLS = (function(window, document) {
         } else if (isDefined(dateSearchString)) {
           searchString = dateSearchString;
         }
-        console.log('searchString', searchString);
         createRequest('getVideoCount');
       } else {
         alert('You must submit an account id and client credentials');
@@ -111,7 +110,6 @@ var BCLS = (function(window, document) {
   shareVideos.addEventListener('click', function() {
     videosToShare = getCheckedBoxValues(videosCollection);
     affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
-    console.log('affiliates', affiliatesToShareWith);
     if (videosToShare.length === 0) {
       alert('Please select some videos to share and try again');
     } else if (affiliatesToShareWith.length === 0) {
@@ -172,7 +170,7 @@ var BCLS = (function(window, document) {
       }
       return checkedValues;
     } else {
-      console.log('Error: no input recieved');
+      console.log('Error: no input received');
       return null;
     }
   }
@@ -415,7 +413,6 @@ var BCLS = (function(window, document) {
           });
           break;
         case 'shareVideos':
-console.log('videosToShare', videosToShare);
           endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
           options.url = cmsBaseURL + endpoint;
           apiRequest.textContent = options.url;
