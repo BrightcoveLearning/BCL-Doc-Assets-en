@@ -62,7 +62,7 @@ var BCLS = (function(window, document) {
             fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
           }
         }
-
+        dateTypeValue = getSelectedValue(dateRangeType);
         fromDateValue = rome(fromDate).getDate();
         if (isDefined(fromDateValue)) {
           fromDateValue = fromDateValue.toISOString();
@@ -71,7 +71,9 @@ var BCLS = (function(window, document) {
         if (isDefined(toDateValue)) {
           toDateValue = toDateValue.toISOString();
         }
-        dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+        if (isDefined(fromDateValue) || isDefined(toDateValue)) {
+          dateSearchString += dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+        }
 
         // define the whole search string
         if (isDefined(tagsSearchString)) {
