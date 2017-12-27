@@ -283,6 +283,7 @@ var BCLS = (function(window, document) {
           if (videoCount === 0) {
             logger.textContent = 'The search returned no videos - try using different search criteria (or none at all)';
           } else {
+            totalVideoCalls = Math.ceil(videoCount / limit);
             createRequest('getAffiliates');
           }
         });
@@ -422,7 +423,7 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-            logger.textContent = 'Selected videos were shared with selected affiliates; fetching more videos (if any)';
+            logger.textContent = 'Selected videos were shared with selected affiliates (see response to check for errors); fetching more videos (if any)';
             videoCallNumber++;
             if (videoCallNumber < totalVideoCalls) {
               createRequest('getVideos');
