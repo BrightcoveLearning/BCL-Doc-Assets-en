@@ -266,7 +266,10 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getVideoCount':
-        endpoint = '/counts/videos?q=' + searchString;
+        endpoint = '/counts/videos';
+        if (isDefined(searchString)) {
+          endpoint += '?q=' + searchString;
+        }
         options.url = cmsBaseURL + endpoint;
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
