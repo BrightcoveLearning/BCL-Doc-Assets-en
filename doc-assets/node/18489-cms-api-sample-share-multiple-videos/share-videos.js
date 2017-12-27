@@ -433,7 +433,7 @@ console.log('videosToShare', videosToShare);
             logger.textContent = 'Selected videos were shared with selected affiliates (see response to check for errors)';
             shareCallNumber++;
             if (shareCallNumber < totalShareCalls) {
-              makeRequest('shareVideos');
+              createRequest('shareVideos');
             } else {
               videoCallNumber++;
               if (videoCallNumber < totalVideoCalls) {
