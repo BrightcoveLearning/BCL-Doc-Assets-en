@@ -166,7 +166,7 @@ var BCLS = (function(window, document) {
     if (checkBoxCollection) {
       iMax = checkBoxCollection.length;
       for (i = 0; i < iMax; i++) {
-        if (checkBoxCollection[i].check === true) {
+        if (checkBoxCollection[i].checked === true) {
           checkedValues.push(checkBoxCollection[i].value);
         }
       }
