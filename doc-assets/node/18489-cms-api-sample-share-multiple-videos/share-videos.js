@@ -109,7 +109,6 @@ var BCLS = (function(window, document) {
   });
 
   shareVideos.addEventListener('click', function() {
-    shareVideos.textContent = 'Get Next Set of Videos';
     videosToShare = getCheckedBoxValues(videosCollection);
     affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
     if (videosToShare.length === 0) {
@@ -357,6 +356,7 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
+          getVideos.textContent = 'Get Next Set of Videos';
           videos = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(videos, null, '  ');
           input = document.createElement('input');
