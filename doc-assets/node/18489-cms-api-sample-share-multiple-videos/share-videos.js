@@ -308,6 +308,7 @@ var BCLS = (function(window, document) {
             input.setAttribute('type', 'checkbox');
             input.setAttribute('value', 'all');
             label.setAttribute('for', 'affiliatesChkAll');
+            label.setAttribute('style', 'color:#F3951D;');
             text = document.createTextNode('Select All');
             label.appendChild(text);
             br = document.createElement('br');
@@ -371,6 +372,7 @@ var BCLS = (function(window, document) {
           input.setAttribute('type', 'checkbox');
           input.setAttribute('value', 'all');
           label.setAttribute('for', 'videosChkAll');
+          label.setAttribute('style', 'color:#F3951D;');
           text = document.createTextNode('Select All');
           label.appendChild(text);
           br = document.createElement('br');
@@ -396,6 +398,8 @@ var BCLS = (function(window, document) {
               fragment.appendChild(label);
               fragment.appendChild(br);
             }
+            // clear videos videos
+            videosBlock.innerHTML = '';
             videosBlock.appendChild(fragment);
             // get references to checkboxes
             videosCollection = document.getElementsByName('videosChk');
@@ -411,6 +415,7 @@ var BCLS = (function(window, document) {
           });
           break;
         case 'shareVideos':
+console.log('videosToShare', videosToShare);
           endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
           options.url = cmsBaseURL + endpoint;
           apiRequest.textContent = options.url;
