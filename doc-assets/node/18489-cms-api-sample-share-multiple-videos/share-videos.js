@@ -57,9 +57,9 @@ var BCLS = (function(window, document) {
         }
         if (isDefined(searchFieldValue.value)) {
           if (isDefined(searchField.value)) {
-            fieldsSearchString = '%2B' + searchField.value + ':' + converSpaces(searchFieldValue.value);
+            fieldsSearchString = '%2B' + searchField.value + ':' + convertSpaces(searchFieldValue.value);
           } else {
-            fieldsSearchString = '%2Bcustom_fields:"' + converSpaces(searchFieldValue.value) + '"';
+            fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
           }
         }
 
