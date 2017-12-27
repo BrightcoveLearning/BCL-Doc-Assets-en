@@ -63,7 +63,7 @@ var BCLS = (function(window, document) {
             fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
           }
         }
-        dateTypeValue = getSelectedValue(dateRangeType);
+        dateTypeValue = getSelectedValue(dateRangeType).value;
         fromDateValue = rome(fromDate).getDate();
         if (isDefined(fromDateValue)) {
           fromDateValue = fromDateValue.toISOString();
