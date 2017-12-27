@@ -428,12 +428,7 @@ var BCLS = (function(window, document) {
             if (shareCallNumber < totalShareCalls) {
               createRequest('shareVideos');
             } else {
-              videoCallNumber++;
-              if (videoCallNumber < totalVideoCalls) {
-                createRequest('getVideos');
-              } else {
-                logMessage('There are no more videos');
-              }
+                logMessage('Share complete - click Get Next Set of Videos to share more videos');
             }
           });
           break;
