@@ -111,6 +111,7 @@ var BCLS = (function(window, document) {
   shareVideos.addEventListener('click', function() {
     videosToShare = getCheckedBoxValues(videosCollection);
     affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
+    console.log('affiliates', affiliatesToShareWith);
     if (videosToShare.length === 0) {
       alert('Please select some videos to share and try again');
     } else if (affiliatesToShareWith.length === 0) {
