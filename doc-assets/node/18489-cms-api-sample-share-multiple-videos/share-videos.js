@@ -345,7 +345,10 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideos':
-        endpoint = '/videos?q=' + searchString + '&limit=' + limit + '&offset=' + (limit * callnumber);
+        endpoint = '/videos?limit=' + limit + '&offset=' + (limit * callnumber);
+        if (isDefined(searchString)) {
+          endpoint += '&q=' + searchString;
+        }
         options.url = cmsBaseURL + endpoint;
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
