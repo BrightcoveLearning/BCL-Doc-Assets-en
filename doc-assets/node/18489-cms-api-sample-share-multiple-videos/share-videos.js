@@ -8,6 +8,7 @@ var BCLS = (function(window, document) {
     dateRangeType         = document.getElementById('dateRangeType'),
     fromDate              = document.getElementById('fromDate'),
     toDate                = document.getElementById('toDate'),
+    videoCountDisplay     = document.getElementById('videoCountDisplay'),
     videosBlock           = document.getElementById('videosBlock'),
     affiliatesBlock       = document.getElementById('affiliatesBlock'),
     getVideos             = document.getElementById('getVideos'),
@@ -278,6 +279,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           videoCount = JSON.parse(response).count;
           apiResponse.textContent = JSON.stringify(JSON.parse(response), null, '  ');
+          videoCountDisplay.textContent = videoCount;
           if (videoCount === 0) {
             logger.textContent = 'The search returned no videos - try using different search criteria (or none at all)';
           } else {
@@ -347,7 +349,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideos':
-        endpoint = '/videos?limit=' + limit + '&offset=' + (limit * callnumber);
+        endpoint = '/videos?limit=' + limit + '&offset=' + (limit * videoCallNumber);
         if (isDefined(searchString)) {
           endpoint += '&q=' + searchString;
         }
