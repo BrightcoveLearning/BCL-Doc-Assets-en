@@ -231,7 +231,6 @@ var BCLS = (function(window, document) {
     logger.appendChild(lineBreak);
     message = document.createTextNode(message);
     logger.appendChild(message);
-
   }
 
   /**
