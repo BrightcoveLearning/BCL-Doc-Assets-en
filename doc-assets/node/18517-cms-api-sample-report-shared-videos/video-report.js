@@ -13,10 +13,10 @@ var BCLS = (function(window, document) {
     videosCompleted     = 0,
     videosArray         = [],
     sharedVideos        = [],
+    sharedVideoData     = [],
     summaryData         = {},
     csvStr,
     summaryCsvStr,
-    customFields        = [],
     // elements
     account_id          = document.getElementById('account_id'),
     client_id           = document.getElementById('client_id'),
@@ -238,7 +238,11 @@ var BCLS = (function(window, document) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
               var o = {};
+              if (isDefined(videosArray[i].sharing)) {
+                o.id = videosArray[i].id;
+                o.name = videosArray[i].name;
 
+              }
             }
             logMessage('All videos retrieved; checking for shares...');
           }
