@@ -241,9 +241,10 @@ var BCLS = (function(window, document) {
               if (isDefined(videosArray[i].sharing)) {
                 o.id = videosArray[i].id;
                 o.name = videosArray[i].name;
-
+                sharedVideos.push(o);
               }
             }
+            totalSharedVideos = sharedVideos.length;
             logMessage('All videos retrieved; checking for shares...');
           }
         });
