@@ -3,40 +3,56 @@ var BCLS = (function(window, document) {
         clientId,
         clientSecret,
         // api stuff
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/shares-proxy.php',
-        baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-        limit = 25,
-        totalVideos = 0,
-        totalCalls = 0,
-        callNumber = 0,
-        videosCompleted = 0,
-        videosArray = [],
-        summaryData = {},
+        proxyURL              = 'https://solutions.brightcove.com/bcls/bcls-proxy/shares-proxy.php',
+        baseURL               = 'https://cms.api.brightcove.com/v1/accounts/',
+        limit                 = 25,
+        totalVideos           = 0,
+        totalCalls            = 0,
+        callNumber            = 0,
+        videosCompleted       = 0,
+        videosArray           = [],
+        summaryData           = {},
         csvStr,
         summaryCsvStr,
-        customFields = [],
+        customFields          = [],
         // elements
-        account_id = document.getElementById('account_id'),
-        client_id = document.getElementById('client_id'),
-        client_secret = document.getElementById('client_secret'),
-        tag = document.getElementById('tag'),
-        videoCount = document.getElementById('videoCount'),
-        makeReport = document.getElementById('makeReport'),
+        account_id            = document.getElementById('account_id'),
+        client_id             = document.getElementById('client_id'),
+        client_secret         = document.getElementById('client_secret'),
+        searchTags            = document.getElementById('searchTags'),
+        searchField           = document.getElementById('searchField'),
+        searchFieldValue      = document.getElementById('searchFieldValue'),
+        dateRangeType         = document.getElementById('dateRangeType'),
+        fromDate              = document.getElementById('fromDate'),
+        toDate                = document.getElementById('toDate'),
+        videoCount            = document.getElementById('videoCount'),
+        makeReport            = document.getElementById('makeReport'),
         content,
-        logger = document.getElementById('logger'),
-        logText = document.getElementById('logText'),
-        csvData = document.getElementById('csvData'),
-        apiRequest = document.getElementById('apiRequest'),
-        allButtons = document.getElementsByName('button'),
-        pLogGettingVideos = document.createElement('p'),
+        logger                = document.getElementById('logger'),
+        logText               = document.getElementById('logText'),
+        csvData               = document.getElementById('csvData'),
+        apiRequest            = document.getElementById('apiRequest'),
+        allButtons            = document.getElementsByName('button'),
+        pLogGettingVideos     = document.createElement('p'),
         pLogGettingRenditions = document.createElement('p'),
-        pLogFinish = document.createElement('p'),
-        spanIntro2 = document.createElement('span'),
-        spanOf2 = document.createElement('span'),
-        spanRenditionsTotal = document.createElement('span'),
-        spanRenditionsCount = document.createElement('span'),
+        pLogFinish            = document.createElement('p'),
+        spanIntro2            = document.createElement('span'),
+        spanOf2               = document.createElement('span'),
+        spanRenditionsTotal   = document.createElement('span'),
+        spanRenditionsCount   = document.createElement('span'),
+        dateTypeValue,
+        fromDateValue,
+        toDateValue,
+        tagsSearchString,
+        fieldsSearchString,
+        dateSearchString,
+        searchString,
         spanRenditionsTotalEl,
         spanRenditionsCountEl;
+
+      // date pickers
+      rome(fromDate);
+      rome(toDate);
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -454,6 +470,47 @@ var BCLS = (function(window, document) {
         clientId = client_id.value;
         clientSecret = client_secret.value;
         totalVideos = getSelectedValue(videoCount);
+        // check for search terms
+        if (isDefined(searchTags.value)) {
+          tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
+        }
+        if (isDefined(searchFieldValue.value)) {
+          if (isDefined(searchField.value)) {
+            fieldsSearchString = '%2B' + searchField.value + ':' + convertSpaces(searchFieldValue.value);
+          } else {
+            fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
+          }
+        }
+        dateTypeValue = getSelectedValue(dateRangeType).value;
+        fromDateValue = rome(fromDate).getDate();
+        if (isDefined(fromDateValue)) {
+          fromDateValue = fromDateValue.toISOString();
+        }
+        toDateValue = rome(toDate).getDate();
+        if (isDefined(toDateValue)) {
+          toDateValue = toDateValue.toISOString();
+        }
+        if (isDefined(fromDateValue) || isDefined(toDateValue)) {
+          dateSearchString = dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+        }
+
+        // define the whole search string
+        if (isDefined(tagsSearchString)) {
+          searchString = tagsSearchString;
+          if (isDefined(fieldsSearchString)) {
+            searchString += '%20+' + fieldsSearchString;
+          }
+          if (isDefined(dateSearchString)) {
+            searchString += '%20+' + dateSearchString;
+          }
+        } else if (isDefined(fieldsSearchString)) {
+          searchString = fieldsSearchString;
+          if (isDefined(dateSearchString)) {
+            searchString += '%20+' + dateSearchString;
+          }
+        } else if (isDefined(dateSearchString)) {
+          searchString = dateSearchString;
+        }
         // only use entered account id if client id and secret are entered also
         if (isDefined(clientId) && isDefined(clientSecret)) {
             if (isDefined(account_id.value)) {
