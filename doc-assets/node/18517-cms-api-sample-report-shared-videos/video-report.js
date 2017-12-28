@@ -235,6 +235,11 @@ var BCLS = (function(window, document) {
           if (callNumber < totalCalls) {
             setRequestData('getVideos');
           } else {
+            iMax = videosArray.length;
+            for (i = 0; i < iMax; i++) {
+              var o = {};
+
+            }
             logMessage('All videos retrieved; checking for shares...');
           }
         });
