@@ -230,7 +230,13 @@ var BCLS = (function(window, document) {
         requestData.requestType = 'GET';
         apiRequest.textContent = requestData.url;
         getMediaData(requestData, id, function(response) {
-
+          videosArray = videosArray.concat(JSON.parse(response));
+          callNumber++;
+          if (callNumber < totalCalls) {
+            setRequestData('getVideos');
+          } else {
+            logMessage('All videos retrieved; checking for shares...');
+          }
         });
         break;
       case 'getVideoRenditions':
