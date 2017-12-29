@@ -195,7 +195,7 @@ var BCLS = (function(window, document) {
    */
   function setRequestData(id) {
     var endPoint = '',
-      requestData = {},
+      options = {},
       responseParsed,
       i,
       iMax;
@@ -220,10 +220,10 @@ var BCLS = (function(window, document) {
         if (isDefined(searchString)) {
           endPoint += '&q=' + searchString;
         }
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        makeRequest(requestData, id, function(response) {
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, id, function(response) {
           responseParsed = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           totalVideos = responseParsed.count;
@@ -242,10 +242,10 @@ var BCLS = (function(window, document) {
         if (isDefined(searchString)) {
           endPoint += '&q=' + searchString;
         }
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        makeRequest(requestData, id, function(response) {
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, id, function(response) {
           videosArray = videosArray.concat(JSON.parse(response));
           callNumber++;
           if (callNumber < totalCalls) {
@@ -269,10 +269,10 @@ var BCLS = (function(window, document) {
         break;
       case 'getShares':
         endPoint = accountId + '/videos/' + sharedVideos[callNumber].id + '/shares';
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        makeRequest(requestData, id, function(response) {
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, id, function(response) {
           responseParsed = JSON.parse(response);
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
@@ -290,7 +290,7 @@ var BCLS = (function(window, document) {
 
   /**
    * send API request to the proxy
-   * @param  {Object} requestData options for the request
+   * @param  {Object} options options for the request
    * @param  {String} requestID the type of request = id of the button
    * @param  {Function} [callback] callback function
    */
