@@ -164,29 +164,10 @@ function findObjectInArray(targetArray, objProperty, value) {
       j,
       jMax,
       video;
-    if (videosArray.length > 0) {
+    if (sharedVideoData.length > 0) {
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
-        video = videosArray[i];
-        // generate the video detail row
-        hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
-        hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
-        mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
-        mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
-        flvLowRate = (video.flvRenditions.length > 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
-        flvHighRate = (video.flvRenditions.length > 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
-        if (video.flvRenditions.length > 0) {
-          rendition = video.flvRenditions[video.flvRenditions.length - 1];
-        } else if (video.mp4Renditions.length > 0) {
-          rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
-        } else if (video.hlsRenditions.length > 0) {
-          rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
-        } else {
-          rendition.frame_width = "unknown";
-          rendition.frame_height = "unknown";
-        }
-        resWidth = rendition.frame_width;
-        resHeight = rendition.frame_height;
+        video = sharedVideoData[i];
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",';
         if (customFields) {
