@@ -169,24 +169,12 @@ function findObjectInArray(targetArray, objProperty, value) {
       for (i = 0; i < iMax; i += 1) {
         video = sharedVideoData[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",';
-        if (customFields) {
-          jMax = customFields.length;
-          for (j = 0; j < jMax; j++) {
-            if (video.custom_fields.hasOwnProperty(customFields[j])) {
-              csvStr += '"' + video.custom_fields[customFields[j]] + '",';
-            } else {
-              csvStr += '"",';
-            }
-          }
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.affiliate_id + '","' + video.affiliate_name + '","' + video.affiliate_video_id + '","' + video.share_status + '","' ;
           csvStr += '\r\n';
-        } else {
-          csvStr += '\r\n';
-        }
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
-      pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
+      pLogFinish.textContent = 'Finished! Get the CSV data below.';
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
     }
