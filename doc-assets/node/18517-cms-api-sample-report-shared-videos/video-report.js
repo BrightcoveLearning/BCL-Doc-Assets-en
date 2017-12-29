@@ -246,56 +246,13 @@ var BCLS = (function(window, document) {
             }
             totalSharedVideos = sharedVideos.length;
             logMessage('All videos retrieved; checking for shares...');
+            callNumber = 0;
+            setRequestData('getShares');
           }
         });
         break;
-      case 'getVideoRenditions':
-        var i,
-          iMax = videosArray.length,
-          callback = function(renditions) {
-            if (renditions.length > 0) {
-              // get the best MP4 rendition
-              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions) {
-                if (hlsRenditions.length > 0) {
-                  sortArray(hlsRenditions, 'encoding_rate');
-                }
-
-                videosArray[callNumber].hlsRenditions = hlsRenditions;
-                if (mp4Renditions.length > 0) {
-                  sortArray(mp4Renditions, 'encoding_rate');
-                }
-                videosArray[callNumber].mp4Renditions = mp4Renditions;
-                if (flvRenditions.length > 0) {
-                  sortArray(flvRenditions, 'encoding_rate');
-                }
-                videosArray[callNumber].flvRenditions = flvRenditions;
-                // if (otherRenditions.length > 0) {
-                //     sortArray(otherRenditions, 'encoding_rate');
-                // }
-                // videosArray[callNumber].otherRenditions = otherRenditions;
-              });
-            } else {
-              videosArray[callNumber].hlsRenditions = [];
-              videosArray[callNumber].mp4Renditions = [];
-              videosArray[callNumber].flvRenditions = [];
-            }
-            videosCompleted++;
-            logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-            callNumber++;
-            if (callNumber < totalVideos) {
-              setRequestData('getVideoRenditions');
-            } else {
-              // create csv headings
-              startCSVStrings();
-              // write the report
-              writeReport();
-            }
-          };
-        videosArray[callNumber].hlsRenditions = [];
-        videosArray[callNumber].mp4Renditions = [];
-        videosArray[callNumber].flvRenditions = [];
-        videosArray[callNumber].otherRenditions = [];
-        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+      case 'getShares':
+        endPoint = accountId + '/videos/' + sharedVideos[callNumber].id + '/assets/renditions';
         requestData.url = baseURL + endPoint;
         requestData.requestType = 'GET';
         apiRequest.textContent = requestData.url;
