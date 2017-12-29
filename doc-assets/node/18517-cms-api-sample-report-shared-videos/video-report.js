@@ -267,6 +267,10 @@ var BCLS = (function(window, document) {
 console.log('sharedVideos', sharedVideos);
               }
             }
+            if (sharedVideos.length === 0) {
+              alert('None of the returned videos are shared');
+              return;
+            }
             totalSharedVideos = sharedVideos.length;
             logMessage('All videos retrieved; checking for shares...');
             callNumber = 0;
