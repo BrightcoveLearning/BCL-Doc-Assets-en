@@ -264,10 +264,10 @@ var BCLS = (function(window, document) {
                 o.id = videosArray[i].id;
                 o.name = videosArray[i].name;
                 sharedVideos.push(o);
+console.log('sharedVideos', sharedVideos);
               }
             }
             totalSharedVideos = sharedVideos.length;
-console.log('sharedVideos', sharedVideos);
             logMessage('All videos retrieved; checking for shares...');
             callNumber = 0;
             createRequest('getShares');
