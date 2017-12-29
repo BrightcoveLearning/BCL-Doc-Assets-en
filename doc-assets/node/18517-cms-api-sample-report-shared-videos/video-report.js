@@ -284,7 +284,7 @@ function findObjectInArray(targetArray, objProperty, value) {
           }
           callNumber++;
           if (callNumber < totalSharedVideos) {
-            makeRequest('getShares')
+            makeRequest('getShares');
           } else {
             writeReport();
           }
