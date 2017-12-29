@@ -257,7 +257,6 @@ var BCLS = (function(window, document) {
           if (callNumber < totalCalls) {
             createRequest('getVideos');
           } else {
-console.log('videosArray', videosArray);
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
               var o = {};
@@ -286,7 +285,7 @@ console.log('videosArray', videosArray);
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
             var o = {};
-            o.id = sharedVideos[callNumber].id;
+            o.id = sharedVideos[i].id;
             o.name = sharedVideos[callNumber].name;
             o.affiliate_id = responseParsed[i].affiliate_id;
             // look up affiliate name from get affiliates response
