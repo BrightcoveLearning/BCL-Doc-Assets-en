@@ -14,6 +14,7 @@ var BCLS = (function(window, document) {
     videosArray         = [],
     sharedVideos        = [],
     sharedVideoData     = [],
+    affiliates          = [],
     summaryData         = {},
     csvStr,
     summaryCsvStr,
@@ -34,6 +35,7 @@ var BCLS = (function(window, document) {
     logText             = document.getElementById('logText'),
     csvData             = document.getElementById('csvData'),
     apiRequest          = document.getElementById('apiRequest'),
+    apiResponse         = document.getElementById('apiResponse'),
     allButtons          = document.getElementsByName('button'),
     pLogGettingVideos   = document.createElement('p'),
     gettingVideoShares  = document.createElement('p'),
@@ -200,6 +202,19 @@ var BCLS = (function(window, document) {
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
     switch (id) {
+      case 'getAffiliates':
+        endpoint = '/channels/default/members';
+        options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+          affiliates = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
+          logMessage('Affiliates retrieved');
+          // get some videos
+          setRequestData('getCount');
+        });
+        break;
       case 'getCount':
         endPoint = accountId + '/counts/videos';
         if (isDefined(searchString)) {
@@ -208,8 +223,9 @@ var BCLS = (function(window, document) {
         requestData.url = baseURL + endPoint;
         requestData.requestType = 'GET';
         apiRequest.textContent = requestData.url;
-        getMediaData(requestData, id, function(response) {
+        makeRequest(requestData, id, function(response) {
           responseParsed = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           totalVideos = responseParsed.count;
           if (totalVideos === 0) {
             alert('No videos found; try changing or removing the search criteria');
@@ -229,7 +245,7 @@ var BCLS = (function(window, document) {
         requestData.url = baseURL + endPoint;
         requestData.requestType = 'GET';
         apiRequest.textContent = requestData.url;
-        getMediaData(requestData, id, function(response) {
+        makeRequest(requestData, id, function(response) {
           videosArray = videosArray.concat(JSON.parse(response));
           callNumber++;
           if (callNumber < totalCalls) {
@@ -252,12 +268,22 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getShares':
-        endPoint = accountId + '/videos/' + sharedVideos[callNumber].id + '/assets/renditions';
+        endPoint = accountId + '/videos/' + sharedVideos[callNumber].id + '/shares';
         requestData.url = baseURL + endPoint;
         requestData.requestType = 'GET';
         apiRequest.textContent = requestData.url;
-        spanRenditionsCountEl.textContent = callNumber + 1;
-        getMediaData(requestData, id, callback);
+        makeRequest(requestData, id, function(response) {
+          responseParsed = JSON.parse(response);
+          iMax = responseParsed.length;
+          for (i = 0; i < iMax; i++) {
+            var o = {};
+            o.id = sharedVideos[callNumber].id;
+            o.name = sharedVideos[callNumber].name;
+          }
+        });
+        break;
+      default:
+        console.log('Something wrong; should never get here');
         break;
     }
   }
@@ -268,7 +294,7 @@ var BCLS = (function(window, document) {
    * @param  {String} requestID the type of request = id of the button
    * @param  {Function} [callback] callback function
    */
-  function getMediaData(options, requestID, callback) {
+  function makeRequest(options, requestID, callback) {
     var httpRequest = new XMLHttpRequest(),
       responseRaw,
       parsedData,
