@@ -79,6 +79,28 @@ var BCLS = (function(window, document) {
   }
 
   /**
+ * find index of an object in array of objects
+ * based on some property value
+ *
+ * @param {array} targetArray array to search
+ * @param {string} objProperty object property to search
+ * @param {string} value of the property to search for
+ * @return {integer} index of first instance if found, otherwise returns -1
+*/
+function findObjectInArray(targetArray, objProperty, value) {
+    var i, totalItems = targetArray.length, objFound = false;
+    for (i = 0; i < totalItems; i++) {
+        if (targetArray[i][objProperty] === value) {
+            objFound = true;
+            return i;
+        }
+    }
+    if (objFound === false) {
+        return -1;
+    }
+}
+
+  /**
    * disables all buttons so user can't submit new request until current one finishes
    */
   function disableButtons() {
@@ -193,7 +215,7 @@ var BCLS = (function(window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setRequestData(id) {
+  function createRequest(id) {
     var endPoint = '',
       options = {},
       responseParsed,
@@ -212,7 +234,7 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           logMessage('Affiliates retrieved');
           // get some videos
-          setRequestData('getCount');
+          createRequest('getCount');
         });
         break;
       case 'getCount':
@@ -233,7 +255,7 @@ var BCLS = (function(window, document) {
             totalVideos = getSelectedValue(videoCount);
           }
           totalCalls = Math.ceil(totalVideos / limit);
-          setRequestData('getVideos');
+          createRequest('getVideos');
         });
         break;
       case 'getVideos':
@@ -243,13 +265,15 @@ var BCLS = (function(window, document) {
           endPoint += '&q=' + searchString;
         }
         options.url = baseURL + endPoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, id, function(response) {
           videosArray = videosArray.concat(JSON.parse(response));
+          apiResponse.textContent = JSON.stringify(videosArray, null, '  ');
           callNumber++;
           if (callNumber < totalCalls) {
-            setRequestData('getVideos');
+            createRequest('getVideos');
           } else {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
@@ -263,22 +287,30 @@ var BCLS = (function(window, document) {
             totalSharedVideos = sharedVideos.length;
             logMessage('All videos retrieved; checking for shares...');
             callNumber = 0;
-            setRequestData('getShares');
+            createRequest('getShares');
           }
         });
         break;
       case 'getShares':
         endPoint = accountId + '/videos/' + sharedVideos[callNumber].id + '/shares';
         options.url = baseURL + endPoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, id, function(response) {
           responseParsed = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
             var o = {};
             o.id = sharedVideos[callNumber].id;
             o.name = sharedVideos[callNumber].name;
+            o.affiliate_id = responseParsed[i].affiliate_id;
+            // look up affiliate name from get affiliates response
+            o.affiliate_name = affiliates[findObjectInArray(affiliates, 'account_id', responseParsed[i].affiliate_id)].account_name;
+            o.affiliate_video_id = responseParsed[i].affiliate_video_id;
+            o.share_status = responseParsed[i].affiliate_id.status;
+            sharedVideoData.push(o);
           }
         });
         break;
@@ -420,7 +452,7 @@ var BCLS = (function(window, document) {
       accountId = '57838016001';
     }
     // get video count
-    setRequestData('getCount');
+    createRequest('getCount');
 
   });
 
