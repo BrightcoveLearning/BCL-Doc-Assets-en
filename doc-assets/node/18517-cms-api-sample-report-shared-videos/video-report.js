@@ -186,6 +186,7 @@ function findObjectInArray(targetArray, objProperty, value) {
    */
   function createRequest(id) {
     var endPoint = '',
+      cmsBaseURL = baseURL + accountId,
       options = {},
       responseParsed,
       i,
