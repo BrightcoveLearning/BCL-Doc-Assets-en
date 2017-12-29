@@ -216,7 +216,7 @@ console.log('affiliates', affiliates);
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, id, function(response) {
+        makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           totalVideos = responseParsed.count;
@@ -239,7 +239,7 @@ console.log('affiliates', affiliates);
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, id, function(response) {
+        makeRequest(options, function(response) {
           videosArray = videosArray.concat(JSON.parse(response));
           apiResponse.textContent = JSON.stringify(videosArray, null, '  ');
           callNumber++;
@@ -268,7 +268,7 @@ console.log('affiliates', affiliates);
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, id, function(response) {
+        makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           iMax = responseParsed.length;
