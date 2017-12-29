@@ -208,11 +208,11 @@ function findObjectInArray(targetArray, objProperty, value) {
         });
         break;
       case 'getCount':
-        endPoint = accountId + '/counts/videos';
+        endPoint = '/counts/videos';
         if (isDefined(searchString)) {
           endPoint += '&q=' + searchString;
         }
-        options.url = baseURL + endPoint;
+        options.url = cmsBaseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
@@ -230,11 +230,11 @@ function findObjectInArray(targetArray, objProperty, value) {
         break;
       case 'getVideos':
         var offset = (limit * callNumber);
-        endPoint = accountId + '/videos?limit=' + limit + '&offset=' + offset;
+        endPoint = '/videos?limit=' + limit + '&offset=' + offset;
         if (isDefined(searchString)) {
           endPoint += '&q=' + searchString;
         }
-        options.url = baseURL + endPoint;
+        options.url = cmsBaseURL + endPoint;
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -262,8 +262,8 @@ function findObjectInArray(targetArray, objProperty, value) {
         });
         break;
       case 'getShares':
-        endPoint = accountId + '/videos/' + sharedVideos[callNumber].id + '/shares';
-        options.url = baseURL + endPoint;
+        endPoint = '/videos/' + sharedVideos[callNumber].id + '/shares';
+        options.url = cmsBaseURL + endPoint;
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
