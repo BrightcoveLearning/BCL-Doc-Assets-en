@@ -201,7 +201,6 @@ function findObjectInArray(targetArray, objProperty, value) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           affiliates = JSON.parse(response);
-console.log('affiliates', affiliates);
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           logMessage('Affiliates retrieved');
           // get some videos
@@ -282,6 +281,12 @@ console.log('affiliates', affiliates);
             o.affiliate_video_id = responseParsed[i].affiliate_video_id;
             o.share_status = responseParsed[i].affiliate_id.status;
             sharedVideoData.push(o);
+          }
+          callNumber++;
+          if (callNumber < totalSharedVideos) {
+            makeRequest('getShares')
+          } else {
+            writeReport();
           }
         });
         break;
