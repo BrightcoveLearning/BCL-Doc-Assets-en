@@ -267,6 +267,7 @@ var BCLS = (function(window, document) {
               }
             }
             totalSharedVideos = sharedVideos.length;
+console.log('sharedVideos', sharedVideos);
             logMessage('All videos retrieved; checking for shares...');
             callNumber = 0;
             createRequest('getShares');
@@ -285,7 +286,7 @@ var BCLS = (function(window, document) {
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
             var o = {};
-            o.id = sharedVideos[i].id;
+            o.id = sharedVideos[callNumber].id;
             o.name = sharedVideos[callNumber].name;
             o.affiliate_id = responseParsed[i].affiliate_id;
             // look up affiliate name from get affiliates response
