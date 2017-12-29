@@ -78,26 +78,38 @@ var BCLS = (function(window, document) {
   }
 
   /**
- * find index of an object in array of objects
- * based on some property value
- *
- * @param {array} targetArray array to search
- * @param {string} objProperty object property to search
- * @param {string} value of the property to search for
- * @return {integer} index of first instance if found, otherwise returns -1
-*/
-function findObjectInArray(targetArray, objProperty, value) {
-    var i, totalItems = targetArray.length, objFound = false;
-    for (i = 0; i < totalItems; i++) {
-        if (targetArray[i][objProperty] === value) {
-            objFound = true;
-            return i;
-        }
-    }
-    if (objFound === false) {
-        return -1;
-    }
-}
+   * remove spaces from a string
+   * @param {String} str string to process
+   * @return {String} trimmed string
+   */
+  function removeSpaces(str) {
+    str = str.replace(/\s/g, '');
+    return str;
+  }
+
+
+
+  /**
+   * find index of an object in array of objects
+   * based on some property value
+   *
+   * @param {array} targetArray array to search
+   * @param {string} objProperty object property to search
+   * @param {string} value of the property to search for
+   * @return {integer} index of first instance if found, otherwise returns -1
+  */
+  function findObjectInArray(targetArray, objProperty, value) {
+      var i, totalItems = targetArray.length, objFound = false;
+      for (i = 0; i < totalItems; i++) {
+          if (targetArray[i][objProperty] === value) {
+              objFound = true;
+              return i;
+          }
+      }
+      if (objFound === false) {
+          return -1;
+      }
+  }
 
   /**
    * disables all buttons so user can't submit new request until current one finishes
@@ -216,7 +228,7 @@ function findObjectInArray(targetArray, objProperty, value) {
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
-          logMessage('Video count retrieved')
+          logMessage('Video count retrieved');
           apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           totalVideos = responseParsed.count;
           if (totalVideos === 0) {
@@ -286,7 +298,7 @@ function findObjectInArray(targetArray, objProperty, value) {
           if (callNumber < totalSharedVideos) {
             createRequest('getShares');
           } else {
-            logMessage('Video sharing info retrieved; writing report...')
+            logMessage('Video sharing info retrieved; writing report...');
             writeReport();
           }
         });
