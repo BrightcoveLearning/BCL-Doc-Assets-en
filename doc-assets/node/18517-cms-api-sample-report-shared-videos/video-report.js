@@ -201,6 +201,7 @@ function findObjectInArray(targetArray, objProperty, value) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           affiliates = JSON.parse(response);
+console.log('affiliates', affiliates);
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           logMessage('Affiliates retrieved');
           // get some videos
