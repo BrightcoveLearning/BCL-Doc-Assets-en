@@ -421,7 +421,7 @@ function findObjectInArray(targetArray, objProperty, value) {
       accountId = '57838016001';
     }
     // get video count
-    createRequest('getCount');
+    createRequest('getAffiliates');
 
   });
 
