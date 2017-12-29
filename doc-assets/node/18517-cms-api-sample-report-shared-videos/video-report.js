@@ -296,7 +296,7 @@ function findObjectInArray(targetArray, objProperty, value) {
    * @param  {String} requestID the type of request = id of the button
    * @param  {Function} [callback] callback function
    */
-  function makeRequest(options, requestID, callback) {
+  function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
       responseRaw,
       parsedData,
