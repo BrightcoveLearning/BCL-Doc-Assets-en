@@ -32,7 +32,6 @@ var BCLS = (function(window, document) {
     makeReport          = document.getElementById('makeReport'),
     content,
     logger              = document.getElementById('logger'),
-    logText             = document.getElementById('logText'),
     csvData             = document.getElementById('csvData'),
     apiRequest          = document.getElementById('apiRequest'),
     apiResponse         = document.getElementById('apiResponse'),
@@ -174,7 +173,7 @@ function findObjectInArray(targetArray, objProperty, value) {
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
-      pLogFinish.textContent = 'Finished! Get the CSV data below.';
+      logMessage('Finished! Get the CSV data below.');
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
     }
@@ -217,6 +216,7 @@ function findObjectInArray(targetArray, objProperty, value) {
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
+          logMessage('Video count retrieved')
           apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
           totalVideos = responseParsed.count;
           if (totalVideos === 0) {
@@ -286,6 +286,7 @@ function findObjectInArray(targetArray, objProperty, value) {
           if (callNumber < totalSharedVideos) {
             createRequest('getShares');
           } else {
+            logMessage('Video sharing info retrieved; writing report...')
             writeReport();
           }
         });
@@ -320,7 +321,6 @@ function findObjectInArray(targetArray, objProperty, value) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               // check for completion
               responseRaw = httpRequest.responseText;
-console.log('response', responseRaw);
               callback(responseRaw);
             }
           }
@@ -351,21 +351,6 @@ console.log('response', responseRaw);
       this.select();
     });
     // set up the log elements
-    content = document.createTextNode('Getting renditions for video ');
-    spanIntro2.appendChild(content);
-    content = document.createTextNode(' of ');
-    spanOf2.appendChild(content);
-    spanRenditionsCount.setAttribute('id', 'spanRenditionsCount');
-    spanRenditionsTotal.setAttribute('id', 'spanRenditionsTotal');
-    gettingVideoShares.appendChild(spanIntro2);
-    gettingVideoShares.appendChild(spanRenditionsCount);
-    gettingVideoShares.appendChild(spanOf2);
-    gettingVideoShares.appendChild(spanRenditionsTotal);
-    logger.appendChild(gettingVideoShares);
-    spanRenditionsCountEl = document.getElementById('spanRenditionsCount');
-    spanRenditionsTotalEl = document.getElementById('spanRenditionsTotal');
-    logger.appendChild(pLogFinish);
-
   }
 
   // button event handlers
