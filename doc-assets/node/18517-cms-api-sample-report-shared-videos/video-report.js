@@ -163,7 +163,7 @@ var BCLS = (function(window, document) {
     logger.appendChild(message);
   }
 
-  function startCSVStrings() {
+  function startCSVString() {
     var i = 0,
       iMax;
     csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
@@ -430,6 +430,8 @@ console.log('sharedVideos', sharedVideos);
     } else {
       accountId = '57838016001';
     }
+    // start the CSV string
+    startCSVString();
     // get video count
     createRequest('getAffiliates');
 
