@@ -291,7 +291,7 @@ console.log('sharedVideos', sharedVideos);
             // look up affiliate name from get affiliates response
             o.affiliate_name = affiliates[findObjectInArray(affiliates, 'account_id', responseParsed[i].affiliate_id)].account_name;
             o.affiliate_video_id = responseParsed[i].affiliate_video_id;
-            o.share_status = responseParsed[i].affiliate_id.status;
+            o.share_status = responseParsed[i].status;
             sharedVideoData.push(o);
           }
           callNumber++;
