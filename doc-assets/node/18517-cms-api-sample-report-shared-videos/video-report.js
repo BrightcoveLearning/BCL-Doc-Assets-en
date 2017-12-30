@@ -163,12 +163,6 @@ var BCLS = (function(window, document) {
     logger.appendChild(message);
   }
 
-  function startCSVString() {
-    var i = 0,
-      iMax;
-    csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
-  }
-
   function writeReport() {
     var i,
       iMax,
@@ -176,6 +170,7 @@ var BCLS = (function(window, document) {
       jMax,
       video;
     if (sharedVideoData.length > 0) {
+      csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
         video = sharedVideoData[i];
@@ -430,8 +425,6 @@ console.log('sharedVideos', sharedVideos);
     } else {
       accountId = '57838016001';
     }
-    // start the CSV string
-    startCSVString();
     // get video count
     createRequest('getAffiliates');
 
