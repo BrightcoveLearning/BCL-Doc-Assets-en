@@ -94,7 +94,7 @@ var BCLS = ( function (window, document) {
       options.requestBody = JSON.stringify(body);
       options.apiKey = live_key.value;
       makeRequest(options, function(response) {
-        if (isJson(reponse)) {
+        if (isJson(response)) {
           responseDecoded = JSON.parse(response);
           iMax = responseDecoded.outputs.length;
           for (i = 0; i < iMax; i++) {
