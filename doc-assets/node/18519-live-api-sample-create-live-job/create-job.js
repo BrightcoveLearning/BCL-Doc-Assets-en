@@ -5,6 +5,14 @@ var BCLS = ( function (window, document) {
     requestURL = 'https://api.bcovlive.io/v1/jobs';
 
 
+  function createRequest() {
+    var options = {};
+    options.url = requestURL;
+    options.requestBody = body;
+    makeRequest(options, function(response) {
+      
+    })
+  }
 
   /**
    * send API request to the proxy
@@ -38,7 +46,7 @@ var BCLS = ( function (window, document) {
       // set response handler
       httpRequest.onreadystatechange = getResponse;
       // open the request
-      httpRequest.open('GET', options.requesturl);
+      httpRequest.open('GET', options.url);
       // set headers
       httpRequest.setRequestHeader("X-API-KEY", apiKey);
       httpRequest.setRequestHeader("Content-Type", 'application/json');
