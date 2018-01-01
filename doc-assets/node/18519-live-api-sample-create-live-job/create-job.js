@@ -1,9 +1,16 @@
 var BCLS = ( function (window, document) {
   var live_key = document.getElementById('live_key'),
     apiResponse = document.getElementById('apiResponse'),
+    sendButton = document.getElementById('sendButton'),
     apiKey = '6aaXAZSSzRatgbVo7P12v7g13ovsuemr3y0CLGkR',
     body = {"live_stream":true,"region":"us-west-2","reconnect_time":20,"live_sliding_window_duration":30,"outputs":[{"label":"hls1080p","live_stream":true,"width":1920,"height":1080,"video_codec":"h264","h264_profile":"main","video_bitrate":2400,"segment_seconds":6,"keyframe_interval":60},{"label":"hls720p","live_stream":true,"width":1280,"height":720,"video_codec":"h264","h264_profile":"main","video_bitrate":1843,"segment_seconds":6,"keyframe_interval":60},{"label":"hls480p","live_stream":true,"width":640,"height":360,"video_codec":"h264","h264_profile":"main","video_bitrate":819,"segment_seconds":6,"keyframe_interval":60}]},
     requestURL = 'https://api.bcovlive.io/v1/jobs';
+
+    // event handlers
+
+    sendButton.addEventListener('click', function() {
+      createRequest();
+    });
 
 
   function createRequest() {
