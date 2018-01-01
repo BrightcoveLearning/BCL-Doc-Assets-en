@@ -97,6 +97,7 @@ var BCLS = ( function (window, document) {
       makeRequest(options, function(response) {
         if (isJson(response)) {
           responseDecoded = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
           iMax = responseDecoded.outputs.length;
           for (i = 0; i < iMax; i++) {
             if (isDefined(responseDecoded.outputs[i].type)) {
@@ -108,7 +109,6 @@ var BCLS = ( function (window, document) {
               }
             }
           }
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
         } else {
           apiResponse.textContent = response;
         }
