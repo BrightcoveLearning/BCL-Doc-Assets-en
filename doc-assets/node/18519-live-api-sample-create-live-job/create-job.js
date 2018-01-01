@@ -1,63 +1,142 @@
 var BCLS = ( function (window, document) {
-  var live_key = document.getElementById('live_key'),
-    apiResponse = document.getElementById('apiResponse'),
-    sendButton = document.getElementById('sendButton'),
-    apiKey = '6aaXAZSSzRatgbVo7P12v7g13ovsuemr3y0CLGkR',
-    body = {"live_stream":true,"region":"us-west-2","reconnect_time":20,"live_sliding_window_duration":30,"outputs":[{"label":"hls1080p","live_stream":true,"width":1920,"height":1080,"video_codec":"h264","h264_profile":"main","video_bitrate":2400,"segment_seconds":6,"keyframe_interval":60},{"label":"hls720p","live_stream":true,"width":1280,"height":720,"video_codec":"h264","h264_profile":"main","video_bitrate":1843,"segment_seconds":6,"keyframe_interval":60},{"label":"hls480p","live_stream":true,"width":640,"height":360,"video_codec":"h264","h264_profile":"main","video_bitrate":819,"segment_seconds":6,"keyframe_interval":60}]},
-    requestURL = 'https://api.bcovlive.io/v1/jobs';
+  var live_key       = document.getElementById('live_key'),
+    regionSelect     = document.getElementById('regionSelect'),
+    stream_url       = document.getElementById('stream_url'),
+    playback_url     = document.getElementById('playback_url').
+    playback_url_dvr = document.getElementById('playback_url_dvr'),
+    apiResponse      = document.getElementById('apiResponse'),
+    sendButton       = document.getElementById('sendButton'),
+    proxyURL         = 'https://solutions.brightcove.com/bcls/bcls-proxy/live-proxy.php',
+    regions          = ['us-west-1', 'us-west-2', 'us-east-1', 'us-east-2', 'eu-west-1', 'eu-west-2', 'ap-southeast-2', 'ap-northeast-1', 'ap-southeast-1', 'eu-central-1', 'sa-east-1', 'ap-south-1'],
+    apiKey           = '6aaXAZSSzRatgbVo7P12v7g13ovsuemr3y0CLGkR',
+    body             = JSON.parse('{"live_stream":true,"region":"us-west-2","reconnect_time":20,"live_sliding_window_duration":30,"outputs":[{"label":"hls1080p","live_stream":true,"width":1920,"height":1080,"video_codec":"h264","h264_profile":"main","video_bitrate":2400,"segment_seconds":6,"keyframe_interval":60},{"label":"hls720p","live_stream":true,"width":1280,"height":720,"video_codec":"h264","h264_profile":"main","video_bitrate":1843,"segment_seconds":6,"keyframe_interval":60},{"label":"hls480p","live_stream":true,"width":640,"height":360,"video_codec":"h264","h264_profile":"main","video_bitrate":819,"segment_seconds":6,"keyframe_interval":60}]}'),
+    requestURL       = 'https://api.bcovlive.io/v1/jobs',
+    fragment         = document.createDocumentFragment(),
+    option,
+    i,
+    iMax;
 
-    // event handlers
+  // build select options
+  iMax = regions.length;
+  for (i = 0; i < iMax; i++) {
+    option = document.createElement('option');
+    option.setAttribute('value', regions[i]);
+    option.textContent = regions[i];
+    if (regions[i] === 'us-west-2') {
+      option.setAttribute('selected', 'selected');
+    }
+    fragment.appendChild(option);
+  }
+  regionSelect.appendChild(fragment);
 
-    sendButton.addEventListener('click', function() {
+  // event handlers
+
+  sendButton.addEventListener('click', function() {
+    if (isDefined(live_key.value)) {
       createRequest();
-    });
+    } else {
+      alert('You must provide a Live API Key');
+    }
+  });
 
-
-  function createRequest() {
-    var options = {},
-      responseDecoded;
-    options.url = requestURL;
-    options.requestBody = body;
-    makeRequest(options, function(response) {
-      responseDecoded = JSON.parse(response);
-      apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-    });
+  /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value,
+          txt = selected.textContent,
+          idx = e.selectedIndex;
+      return {
+          value: val,
+          text: txt,
+          index: idx
+      };
   }
 
   /**
+   * tests for all the ways a variable might be undefined or not have a value
+   * @param {*} x the variable to test
+   * @return {Boolean} true if variable is defined and has a value
+   */
+  function isDefined(x) {
+      if ( x === '' || x === null || x === undefined) {
+          return false;
+      }
+      return true;
+  }
+  /**
+   * prepares the api request and handles the response
+   */
+    function createRequest() {
+      var options = {},
+        responseDecoded,
+        playlist;
+      body.region = getSelectedValue(regionSelect).value;
+      options.url = requestURL;
+      options.requestBody = JSON.stringify(body);
+      options.apiKey = apiKey;
+      makeRequest(options, function(response) {
+        responseDecoded = JSON.parse(response);
+        iMax = responseDecoded.outputs.length;
+        for (i = 0; i < iMax; i++) {
+          if (isDefined(responseDecoded.outputs[i].type)) {
+            if (responseDecoded.outputs[i].type === 'playlist') {
+              playlist = responseDecoded.outputs[i];
+              stream_url.textContent = playlist.stream_url;
+              playback_url.textContent = playlist.playback_url;
+              playback_url_dvr.textContent = playlist.playback_url_dvr;
+            }
+          }
+        }
+        apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
+      });
+    }
+
+
+  /**
    * send API request to the proxy
-   * @param  {Object} requestData options for the request
+   * @param  {Object} options options for the request
    * @param  {String} requestID the type of request = id of the button
    * @param  {Function} [callback] callback function
    */
   function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-          parsedData,
-          requestParams,
-          dataString,
-          sources,
-          // response handler
-          getResponse = function() {
-              try {
-                  if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-console.log('response', httpRequest.responseText);
-                        callback(httpRequest.responseText);
-                      }
-                  }
-              } catch (e) {
-                alert('Caught Exception: ' + e);
-              }
-          };
-      // set response handler
-      httpRequest.onreadystatechange = getResponse;
-      // open the request
-      httpRequest.open('GET', options.url);
-      // set headers
-      httpRequest.setRequestHeader("X-API-KEY", apiKey);
-      httpRequest.setRequestHeader("Content-Type", 'application/json');
-      // open and send request
-      httpRequest.send(options.requestBody);
+    var httpRequest = new XMLHttpRequest(),
+      responseRaw,
+      parsedData,
+      requestParams,
+      dataString,
+      renditions,
+      field,
+      i = 0,
+      iMax,
+      // response handler
+      getResponse = function() {
+        try {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+              // check for completion
+              responseRaw = httpRequest.responseText;
+              callback(responseRaw);
+            }
+          }
+        } catch (e) {
+          alert('Caught Exception: ' + e);
+        }
+      };
+    // set up request data
+    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&apiKey=' + options.apiKey;
+
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // set headers
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // open and send request
+    httpRequest.send(requestParams);
   }
 
 })(window, document);
