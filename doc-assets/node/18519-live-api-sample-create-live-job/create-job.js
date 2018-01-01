@@ -34,12 +34,8 @@ var BCLS = ( function (window, document) {
               try {
                   if (httpRequest.readyState === 4) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                          // check for completion
-                          if (requestID === 'getVideos') {
-                                  callback(httpRequest.responseText);
-                          } else {
-                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                          }
+console.log('response', httpRequest.responseText);
+                        callback(httpRequest.responseText);
                       }
                   }
               } catch (e) {
