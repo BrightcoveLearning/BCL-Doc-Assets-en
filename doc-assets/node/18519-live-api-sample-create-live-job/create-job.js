@@ -6,6 +6,7 @@ var BCLS = ( function (window, document) {
     playback_url_dvr = document.getElementById('playback_url_dvr'),
     apiResponse      = document.getElementById('apiResponse'),
     sendButton       = document.getElementById('sendButton'),
+    reqBody          = document.getElementById('reqBody'),
     proxyURL         = 'https://solutions.brightcove.com/bcls/bcls-proxy/live-proxy.php',
     regions          = ['us-west-1', 'us-west-2', 'us-east-1', 'us-east-2', 'eu-west-1', 'eu-west-2', 'ap-southeast-2', 'ap-northeast-1', 'ap-southeast-1', 'eu-central-1', 'sa-east-1', 'ap-south-1'],
     apiKey           = '6aaXAZSSzRatgbVo7P12v7g13ovsuemr3y0CLGkR',
@@ -91,7 +92,7 @@ var BCLS = ( function (window, document) {
         playlist;
       body.region = getSelectedValue(regionSelect).value;
       options.url = requestURL;
-console.log('body', body);
+      reqBody.textContent = JSON.stringify(body);
       options.requestBody = JSON.stringify(body);
       options.requestType = 'POST';
       options.apiKey = live_key.value;
