@@ -127,6 +127,7 @@ console.log('response', responseRaw);
           alert('Caught Exception: ' + e);
         }
       };
+console.log('options', options);
     // set up request data
     requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&apiKey=' + options.apiKey;
 
