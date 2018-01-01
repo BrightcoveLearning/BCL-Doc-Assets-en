@@ -77,7 +77,7 @@ var BCLS = ( function (window, document) {
       body.region = getSelectedValue(regionSelect).value;
       options.url = requestURL;
       options.requestBody = JSON.stringify(body);
-      options.apiKey = apiKey;
+      options.apiKey = live_key.value;
       makeRequest(options, function(response) {
         responseDecoded = JSON.parse(response);
         iMax = responseDecoded.outputs.length;
