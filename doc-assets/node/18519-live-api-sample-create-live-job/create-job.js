@@ -92,6 +92,7 @@ var BCLS = ( function (window, document) {
       body.region = getSelectedValue(regionSelect).value;
       options.url = requestURL;
       options.requestBody = JSON.stringify(body);
+      options.requestType = 'POST';
       options.apiKey = live_key.value;
       makeRequest(options, function(response) {
         if (isJson(response)) {
