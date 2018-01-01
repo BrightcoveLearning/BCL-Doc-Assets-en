@@ -67,6 +67,21 @@ var BCLS = ( function (window, document) {
       }
       return true;
   }
+
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
+
   /**
    * prepares the api request and handles the response
    */
@@ -79,19 +94,23 @@ var BCLS = ( function (window, document) {
       options.requestBody = JSON.stringify(body);
       options.apiKey = live_key.value;
       makeRequest(options, function(response) {
-        responseDecoded = JSON.parse(response);
-        iMax = responseDecoded.outputs.length;
-        for (i = 0; i < iMax; i++) {
-          if (isDefined(responseDecoded.outputs[i].type)) {
-            if (responseDecoded.outputs[i].type === 'playlist') {
-              playlist = responseDecoded.outputs[i];
-              stream_url.textContent = playlist.stream_url;
-              playback_url.textContent = playlist.playback_url;
-              playback_url_dvr.textContent = playlist.playback_url_dvr;
+        if (isJson(reponse)) {
+          responseDecoded = JSON.parse(response);
+          iMax = responseDecoded.outputs.length;
+          for (i = 0; i < iMax; i++) {
+            if (isDefined(responseDecoded.outputs[i].type)) {
+              if (responseDecoded.outputs[i].type === 'playlist') {
+                playlist = responseDecoded.outputs[i];
+                stream_url.textContent = playlist.stream_url;
+                playback_url.textContent = playlist.playback_url;
+                playback_url_dvr.textContent = playlist.playback_url_dvr;
+              }
             }
           }
+          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
+        } else {
+          apiResponse.textContent = response;
         }
-        apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
       });
     }
 
