@@ -91,6 +91,7 @@ var BCLS = ( function (window, document) {
         playlist;
       body.region = getSelectedValue(regionSelect).value;
       options.url = requestURL;
+console.log('body', body);
       options.requestBody = JSON.stringify(body);
       options.requestType = 'POST';
       options.apiKey = live_key.value;
