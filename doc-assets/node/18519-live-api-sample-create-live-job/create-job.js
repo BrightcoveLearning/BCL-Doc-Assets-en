@@ -119,6 +119,7 @@ var BCLS = ( function (window, document) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               // check for completion
               responseRaw = httpRequest.responseText;
+console.log('response', responseRaw);
               callback(responseRaw);
             }
           }
