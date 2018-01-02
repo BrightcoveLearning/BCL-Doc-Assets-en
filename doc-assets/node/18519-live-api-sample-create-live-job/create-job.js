@@ -101,6 +101,7 @@ var BCLS = ( function (window, document) {
           responseDecoded = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
           stream_url.textContent = responseDecoded.stream_url;
+console.log('playback_url', responseDecoded.playback_url);
           playback_url.textContent = responseDecoded.playback_url;
           playback_url_dvr.textContent = responseDecoded.playback_url_dvr;
         } else {
