@@ -100,17 +100,9 @@ var BCLS = ( function (window, document) {
         if (isJson(response)) {
           responseDecoded = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          iMax = responseDecoded.outputs.length;
-          for (i = 0; i < iMax; i++) {
-            if (isDefined(responseDecoded.outputs[i].type)) {
-              if (responseDecoded.outputs[i].type === 'playlist') {
-                playlist = responseDecoded.outputs[i];
-                stream_url.textContent = playlist.stream_url;
-                playback_url.textContent = playlist.playback_url;
-                playback_url_dvr.textContent = playlist.playback_url_dvr;
-              }
-            }
-          }
+          stream_url.textContent = stream_url;
+          playback_url.textContent = playback_url;
+          playback_url_dvr.textContent = playback_url_dvr;
         } else {
           apiResponse.textContent = response;
         }
