@@ -4,7 +4,7 @@ var BCLS = ( function (window, document) {
     submitButton = document.getElementById('submitButton'),
     accessToken  = document.getElementById('accessToken'),
     apiResponse  = document.getElementById('apiResponse'),
-    options      = {}.
+    options      = {},
     access_token;
 
 // event handlers
