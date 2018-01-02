@@ -5,7 +5,7 @@ var BCLS = ( function (window, document) {
     accessToken  = document.getElementById('accessToken'),
     apiResponse  = document.getElementById('apiResponse'),
     options      = {},
-    proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/accesaccess-token-proxy.php',
+    proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/access-token-proxy.php',
     access_token;
 
 // event handlers
