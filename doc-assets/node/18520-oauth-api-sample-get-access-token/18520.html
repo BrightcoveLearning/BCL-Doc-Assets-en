@@ -50,9 +50,123 @@
 <section class="bcls-section">
   <h2 id="code">Code for the app</h2>
   <h3>HTML</h3>
-<pre class="line-numbers"><code class="language-html"></code></pre>
+<pre class="line-numbers"><code class="language-html">&lt;section class="bcls-section"&gt;
+  &lt;h2 id="app"&gt;The app&lt;/h2&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Inputs&lt;/legend&gt;
+    &lt;p&gt;Client ID: &lt;input id="clientId" type="text" size="50"&gt;&lt;/p&gt;
+    &lt;p&gt;Client Secret: &lt;input id="clientSecret" type="text" size="50"&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;button id="submitButton" class="bcls-button"&gt;Get Access Token&lt;/button&gt;&lt;/p&gt;
+  &lt;/fieldset&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Output&lt;/legend&gt;
+    &lt;h3&gt;Access token&lt;/h3&gt;
+    &lt;textarea name="accessToken" id="accessToken" class="bcls-code"&gt;Access token will appear here...&lt;/textarea&gt;
+    &lt;h3&gt;Full response&lt;/h3&gt;
+  &lt;pre class="line-numbers"&gt;&lt;code id="apiResponse" class="language-json"&gt;Full API response will appear here...&lt;/code&gt;&lt;/pre&gt;
+  &lt;/fieldset&gt;
+&lt;/section&gt;
+</code></pre>
   <h3>JavaScript</h3>
-<pre class="line-numbers"><code class="language-javascript"></code></pre>
+<pre class="line-numbers"><code class="language-javascript">var BCLS = ( function (window, document) {
+  var clientId   = document.getElementById('clientId'),
+    clientSecret = document.getElementById('clientSecret'),
+    submitButton = document.getElementById('submitButton'),
+    accessToken  = document.getElementById('accessToken'),
+    apiResponse  = document.getElementById('apiResponse'),
+    options      = {},
+    proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/access-token-proxy.php',
+    access_token;
+
+// event handlers
+submitButton.addEventListener('click', function() {
+  var responseParsed;
+  if (isDefined(clientId.value) &amp;&amp; isDefined(clientSecret.value)) {
+    options.client_id     = clientId.value;
+    options.client_secret = clientSecret.value;
+    makeRequest(options, function(response) {
+      if (isJson(response)) {
+        responseParsed          = JSON.parse(response);
+        access_token            = responseParsed.access_token;
+        accessToken.textContent = access_token;
+        apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+      }
+    });
+  } else {
+    // didn't get JSON back, just dump responseRaw
+    apiResponse.textContent = response;
+  }
+});
+
+accessToken.addEventListener('click', function() {
+  this.select();
+});
+
+/**
+ * tests for all the ways a variable might be undefined or not have a value
+ * @param {*} x the variable to test
+ * @return {Boolean} true if variable is defined and has a value
+ */
+function isDefined(x) {
+    if ( x === '' || x === null || x === undefined) {
+        return false;
+    }
+    return true;
+}
+
+/*
+ * tests to see if a string is json
+ * @param {String} str string to test
+ * @return {Boolean}
+ */
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * send API request to the proxy
+ * @param  {Object} options options for the request
+ * @param  {String} requestID the type of request = id of the button
+ * @param  {Function} [callback] callback function
+ */
+function makeRequest(options, callback) {
+  var httpRequest = new XMLHttpRequest(),
+    responseRaw,
+    requestParams,
+    // response handler
+    getResponse = function() {
+      try {
+        if (httpRequest.readyState === 4) {
+          if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+            // check for completion
+            responseRaw = httpRequest.responseText;
+            callback(responseRaw);
+          }
+        }
+      } catch (e) {
+        alert('Caught Exception: ' + e);
+      }
+    };
+  // set up request data
+  requestParams = 'client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
+
+  // set response handler
+  httpRequest.onreadystatechange = getResponse;
+  // open the request
+  httpRequest.open('POST', proxyURL);
+  // set headers
+  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  // open and send request
+  httpRequest.send(requestParams);
+}
+
+})(window, document);
+</code></pre>
   <h3>Proxy (PHP)</h3>
 <pre class="line-numbers"><code class="language-php"></code></pre>
 </section>

@@ -28,6 +28,10 @@ submitButton.addEventListener('click', function() {
   }
 });
 
+accessToken.addEventListener('click', function() {
+  this.select();
+});
+
 /**
  * tests for all the ways a variable might be undefined or not have a value
  * @param {*} x the variable to test
