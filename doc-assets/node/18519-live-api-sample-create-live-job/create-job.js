@@ -109,7 +109,6 @@ var BCLS = ( function (window, document) {
       });
     }
 
-
   /**
    * send API request to the proxy
    * @param  {Object} options options for the request
