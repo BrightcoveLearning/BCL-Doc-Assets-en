@@ -151,7 +151,7 @@ console.log('response', responseRaw);
       };
 console.log('options', options);
     // set up request data
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&apiKey=' + options.apiKey;
+    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&apiKey=' + options.apiKey + '&requestBody=' + options.requestBody;
 
     // set response handler
     httpRequest.onreadystatechange = getResponse;
