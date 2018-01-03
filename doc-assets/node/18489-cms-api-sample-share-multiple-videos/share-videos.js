@@ -417,6 +417,7 @@ console.log('affiliatesToShareWith', affiliatesToShareWith);
             o.id = affiliatesToShareWith[i];
             body.push(o);
           }
+console.log('body', body);
           options.requestBody = JSON.stringify(body);
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
