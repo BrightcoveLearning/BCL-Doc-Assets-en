@@ -1,12 +1,16 @@
 var BCLS = ( function (window, document) {
-  var clientId   = document.getElementById('clientId'),
-    clientSecret = document.getElementById('clientSecret'),
+  var bcToken   = document.getElementById('bcToken'),
+    accountIds = document.getElementById('accountIds'),
+    operationsList = document.getElementById('operationsList'),
     submitButton = document.getElementById('submitButton'),
-    accessToken  = document.getElementById('accessToken'),
+    clientId  = document.getElementById('clientId'),
+    clientSecret = document.getElementById('clientSecret'),
     apiResponse  = document.getElementById('apiResponse'),
     options      = {},
     proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/access-token-proxy.php',
-    access_token;
+    bc_token,
+    client_id,
+    client_secret;
 
 // event handlers
 submitButton.addEventListener('click', function() {
