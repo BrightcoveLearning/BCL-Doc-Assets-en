@@ -16,12 +16,15 @@ var BCLS = ( function (window, document) {
     client_id,
     client_secret;
 
+// generate operations options
+
 // event handlers
 submitButton.addEventListener('click', function() {
   var responseParsed;
   if (isDefined(bcToken.value) && isDefined(accountIds.value)) {
     options.bc_token     = bcToken.value;
-    accountsStr = removeSpaces(accountIds.value)
+    accountsStr = removeSpaces(accountIds.value);
+    accounts = accountsStr.split(',');
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
