@@ -8,15 +8,65 @@ var BCLS = ( function (window, document) {
     clientSecret = document.getElementById('clientSecret'),
     apiResponse  = document.getElementById('apiResponse'),
     options      = {},
+    request_body = {},
     accountsStr,
     accounts = [],
     operations = [],
+    selectOperations = [],
     proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/client-credentials-proxy.php',
     bc_token,
     client_id,
     client_secret;
 
 // generate operations options
+//             input = document.createElement('input');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'operationsChkAll');
+            input.setAttribute('id', 'operationsChkAll');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', 'all');
+            label.setAttribute('for', 'operationsChkAll');
+            label.setAttribute('style', 'color:#F3951D;');
+            text = document.createTextNode('Select All');
+            label.appendChild(text);
+            br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
+            iMax = operations.length;
+            for (i = 0; i < iMax; i++) {
+              input = document.createElement('input');
+              space = document.createTextNode(' ');
+              label = document.createElement('label');
+              input.setAttribute('name', 'operationsChk');
+              input.setAttribute('id', operations[i].account_id);
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', operations[i].account_id);
+              label.setAttribute('for', operations[i].account_id);
+              text = document.createTextNode(operations[i].account_name);
+              label.appendChild(text);
+              br = document.createElement('br');
+              fragment.appendChild(input);
+              fragment.appendChild(space);
+              fragment.appendChild(label);
+              fragment.appendChild(br);
+            }
+            operationsBlock.appendChild(fragment);
+            // get references to checkboxes
+            operationsCollection = document.getElementsByName('operationsChk');
+            operationsSelectAll = document.getElementById('operationsChkAll');
+            // add event listener for select allows
+            operationsSelectAll.addEventListener('change', function() {
+              if (this.checked) {
+                selectAllCheckboxes(operationsCollection);
+              } else {
+                deselectAllCheckboxes(operationsCollection);
+              }
+            });
+          }
+
 
 // event handlers
 submitButton.addEventListener('click', function() {
@@ -80,6 +130,54 @@ function removeSpaces(str) {
     str= str.replace(/\s/g, '');
     return str;
 }
+
+/**
+ * get array of values for checked boxes in a collection
+ * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+ * @return {Array} array of the values of the checked boxes
+ */
+function getCheckedBoxValues(checkBoxCollection) {
+  var checkedValues = [],
+    i,
+    iMax;
+  if (checkBoxCollection) {
+    iMax = checkBoxCollection.length;
+    for (i = 0; i < iMax; i++) {
+      if (checkBoxCollection[i].checked === true) {
+        checkedValues.push(checkBoxCollection[i].value);
+      }
+    }
+    return checkedValues;
+  } else {
+    console.log('Error: no input received');
+    return null;
+  }
+}
+
+/**
+ * selects all checkboxes in a collection
+ * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+ */
+function selectAllCheckboxes(checkboxCollection) {
+  var i,
+    iMax = checkboxCollection.length;
+  for (i = 0; i < iMax; i += 1) {
+    checkboxCollection[i].setAttribute('checked', 'checked');
+  }
+}
+
+/**
+ * deselects all checkboxes in a collection
+ * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+ */
+function deselectAllCheckboxes(checkboxCollection) {
+  var i,
+    iMax = checkboxCollection.length;
+  for (i = 0; i < iMax; i += 1) {
+    checkboxCollection[i].removeAttribute('checked');
+  }
+}
+
 
 /**
  * send API request to the proxy
