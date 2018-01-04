@@ -13,59 +13,67 @@ var BCLS = ( function (window, document) {
     accounts = [],
     operations = [],
     selectOperations = [],
+    operationsSelectAll,
+    operationsCollection,
     proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/client-credentials-proxy.php',
     bc_token,
     client_id,
-    client_secret;
+    client_secret,
+    input,
+    space,
+    br,
+    label,
+    fragment = document.createFragment(),
+    i,
+    iMax;
 
 // generate operations options
-//             input = document.createElement('input');
-            space = document.createTextNode(' ');
-            label = document.createElement('label');
-            input.setAttribute('name', 'operationsChkAll');
-            input.setAttribute('id', 'operationsChkAll');
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', 'all');
-            label.setAttribute('for', 'operationsChkAll');
-            label.setAttribute('style', 'color:#F3951D;');
-            text = document.createTextNode('Select All');
-            label.appendChild(text);
-            br = document.createElement('br');
-            fragment.appendChild(input);
-            fragment.appendChild(space);
-            fragment.appendChild(label);
-            fragment.appendChild(br);
-            iMax = operations.length;
-            for (i = 0; i < iMax; i++) {
-              input = document.createElement('input');
-              space = document.createTextNode(' ');
-              label = document.createElement('label');
-              input.setAttribute('name', 'operationsChk');
-              input.setAttribute('id', operations[i].account_id);
-              input.setAttribute('type', 'checkbox');
-              input.setAttribute('value', operations[i].account_id);
-              label.setAttribute('for', operations[i].account_id);
-              text = document.createTextNode(operations[i].account_name);
-              label.appendChild(text);
-              br = document.createElement('br');
-              fragment.appendChild(input);
-              fragment.appendChild(space);
-              fragment.appendChild(label);
-              fragment.appendChild(br);
-            }
-            operationsBlock.appendChild(fragment);
-            // get references to checkboxes
-            operationsCollection = document.getElementsByName('operationsChk');
-            operationsSelectAll = document.getElementById('operationsChkAll');
-            // add event listener for select allows
-            operationsSelectAll.addEventListener('change', function() {
-              if (this.checked) {
-                selectAllCheckboxes(operationsCollection);
-              } else {
-                deselectAllCheckboxes(operationsCollection);
-              }
-            });
-          }
+input = document.createElement('input');
+space = document.createTextNode(' ');
+label = document.createElement('label');
+input.setAttribute('name', 'operationsChkAll');
+input.setAttribute('id', 'operationsChkAll');
+input.setAttribute('type', 'checkbox');
+input.setAttribute('value', 'all');
+label.setAttribute('for', 'operationsChkAll');
+label.setAttribute('style', 'color:#F3951D;');
+text = document.createTextNode('Select All');
+label.appendChild(text);
+br = document.createElement('br');
+fragment.appendChild(input);
+fragment.appendChild(space);
+fragment.appendChild(label);
+fragment.appendChild(br);
+iMax = operations.length;
+for (i = 0; i < iMax; i++) {
+  input = document.createElement('input');
+  space = document.createTextNode(' ');
+  label = document.createElement('label');
+  input.setAttribute('name', 'operationsChk');
+  input.setAttribute('id', operations[i].account_id);
+  input.setAttribute('type', 'checkbox');
+  input.setAttribute('value', operations[i].account_id);
+  label.setAttribute('for', operations[i].account_id);
+  text = document.createTextNode(operations[i].account_name);
+  label.appendChild(text);
+  br = document.createElement('br');
+  fragment.appendChild(input);
+  fragment.appendChild(space);
+  fragment.appendChild(label);
+  fragment.appendChild(br);
+}
+operationsList.appendChild(fragment);
+// get references to checkboxes
+operationsCollection = document.getElementsByName('operationsChk');
+operationsSelectAll = document.getElementById('operationsChkAll');
+// add event listener for select allows
+operationsSelectAll.addEventListener('change', function() {
+  if (this.checked) {
+    selectAllCheckboxes(operationsCollection);
+  } else {
+    deselectAllCheckboxes(operationsCollection);
+  }
+});
 
 
 // event handlers
