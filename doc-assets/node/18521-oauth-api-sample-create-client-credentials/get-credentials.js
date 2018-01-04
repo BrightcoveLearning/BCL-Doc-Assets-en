@@ -27,6 +27,10 @@ var BCLS = ( function (window, document) {
     i,
     iMax;
 
+// set initial requestBody properties
+requestBody.type = 'credential';
+requestBody.maximum_scope = [];
+
 // generate operations options
 input = document.createElement('input');
 space = document.createTextNode(' ');
