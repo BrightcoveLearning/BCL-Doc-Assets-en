@@ -8,6 +8,7 @@ var BCLS = ( function (window, document) {
     clientSecret = document.getElementById('clientSecret'),
     apiResponse  = document.getElementById('apiResponse'),
     options      = {},
+    accountsStr,
     accounts = [],
     operations = [],
     proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/client-credentials-proxy.php',
@@ -18,20 +19,22 @@ var BCLS = ( function (window, document) {
 // event handlers
 submitButton.addEventListener('click', function() {
   var responseParsed;
-  if (isDefined(clientId.value) && isDefined(clientSecret.value)) {
-    options.client_id     = clientId.value;
-    options.client_secret = clientSecret.value;
+  if (isDefined(bcToken.value) && isDefined(accountIds.value)) {
+    options.bc_token     = bcToken.value;
+    accountsStr = removeSpaces(accountIds.value)
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
         access_token            = responseParsed.access_token;
         accessToken.textContent = access_token;
         apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+      } else {
+        // didn't get JSON back, just dump responseRaw
+        apiResponse.textContent = response;
       }
     });
   } else {
-    // didn't get JSON back, just dump responseRaw
-    apiResponse.textContent = response;
+    alert('A BC_TOKEN and at least one account id are required.');
   }
 });
 
@@ -63,6 +66,16 @@ function isJson(str) {
         return false;
     }
     return true;
+}
+
+/**
+ * remove spaces from a string
+ * @param {String} str string to process
+ * @return {String} trimmed string
+ */
+function removeSpaces(str) {
+    str= str.replace(/\s/g, '');
+    return str;
 }
 
 /**

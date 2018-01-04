@@ -20,11 +20,13 @@ submitButton.addEventListener('click', function() {
         access_token            = responseParsed.access_token;
         accessToken.textContent = access_token;
         apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+      } else {
+        // didn't get JSON back, just dump responseRaw
+        apiResponse.textContent = response;
       }
     });
   } else {
-    // didn't get JSON back, just dump responseRaw
-    apiResponse.textContent = response;
+    alert('Client id and secret are required.');
   }
 });
 
