@@ -88,11 +88,12 @@ operationsSelectAll.addEventListener('change', function() {
 submitButton.addEventListener('click', function() {
   var responseParsed,
     maximum_scope_template = {};
+  if (isDefined(bcToken.value) && isDefined(accountIds.value)) {
+    requestBody.name = (isDefined(credentialsName.value)) ? credentialsName.value : defaultName;
     maximum_scope_template.operations = [];
-    accountsStr = removeSpaces(accountIds.value);
     maximum_scope_template.operations = getCheckedBoxValues(operationsCollection);
-  if (isDefined(bcToken.value) && isDefined(accountsStr) && (maximum_scope_template.operations.length > 0)) {
     options.bc_token     = bcToken.value;
+    accountsStr = removeSpaces(accountIds.value);
     accounts = accountsStr.split(',');
     makeRequest(options, function(response) {
       if (isJson(response)) {
