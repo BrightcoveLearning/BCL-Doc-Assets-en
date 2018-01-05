@@ -97,7 +97,8 @@ submitButton.addEventListener('click', function() {
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
-        access_token            = responseParsed.access_token;
+        client_id            = responseParsed.client_id;
+        client_secret            = responseParsed.client_secret;
         accessToken.textContent = access_token;
         apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
       } else {
