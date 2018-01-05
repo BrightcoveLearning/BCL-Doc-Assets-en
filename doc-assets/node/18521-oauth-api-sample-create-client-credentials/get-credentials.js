@@ -1,5 +1,6 @@
 var BCLS = ( function (window, document) {
   var bcToken   = document.getElementById('bcToken'),
+    credentialsName = document.getElementById('credentialsName'),
     accountIds = document.getElementById('accountIds'),
     operationsList = document.getElementById('operationsList'),
     submitButton = document.getElementById('submitButton'),
@@ -88,8 +89,8 @@ submitButton.addEventListener('click', function() {
     maximum_scope_template = {};
     maximum_scope_template.operations = [];
     accountsStr = removeSpaces(accountIds.value);
-    selectedOperations = getCheckedBoxValues(operationsCollection);
-  if (isDefined(bcToken.value) && isDefined(accountsStr) && ) {
+    maximum_scope_template.operations = getCheckedBoxValues(operationsCollection);
+  if (isDefined(bcToken.value) && isDefined(accountsStr) && (maximum_scope_template.operations.length > 0)) {
     options.bc_token     = bcToken.value;
     accounts = accountsStr.split(',');
     makeRequest(options, function(response) {
