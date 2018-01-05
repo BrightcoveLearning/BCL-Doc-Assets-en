@@ -101,6 +101,11 @@ submitButton.addEventListener('click', function() {
     if (accounts.length === 0) {
       alert('You must enter at least one account id');
       return;
+    } else {
+      iMax = accounts.length;
+      for (i = 0; i < iMax; i++) {
+
+      }
     }
     makeRequest(options, function(response) {
       if (isJson(response)) {
