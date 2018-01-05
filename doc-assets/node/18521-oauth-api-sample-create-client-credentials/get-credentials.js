@@ -12,7 +12,7 @@ var BCLS = ( function (window, document) {
     accountsStr,
     accounts = [],
     operations = ['video-cloud/analytics/read', 'video-cloud/audience/read', 'video-cloud/audience/write', 'video-cloud/player/read', 'video-cloud/player/all', 'video-cloud/ingest-profiles/profile/read', 'video-cloud/ingest-profiles/profile/write', 'video-cloud/ingest-profiles/account/read', 'video-cloud/ingest-profiles/account/write', 'video-cloud/upload-urls/read',  'video-cloud/video/all', 'video-cloud/video/read', 'video-cloud/video/create', 'video-cloud/video/update', 'video-cloud/video/delete', 'video-cloud/asset/delete', 'video-cloud/playlist/all', 'video-cloud/playlist/read', 'video-cloud/playlist/create', 'video-cloud/playlist/update', 'video-cloud/playlist/delete', 'video-cloud/sharing-relationships/read', 'video-cloud/sharing-relationships/create', 'video-cloud/sharing-relationships/update', 'video-cloud/sharing-relationships/delete', 'video-cloud/sharing-relationships/all', 'video-cloud/notifications/all'],
-    selectOperations = [],
+    selectedOperations = [],
     operationsSelectAll,
     operationsCollection,
     proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/client-credentials-proxy.php',
@@ -30,6 +30,8 @@ var BCLS = ( function (window, document) {
 // set initial requestBody properties
 requestBody.type = 'credential';
 requestBody.maximum_scope = [];
+maximum_scope_template = {};
+maximum_scope_template.operations = [];
 
 // generate operations options
 input = document.createElement('input');
@@ -82,10 +84,13 @@ operationsSelectAll.addEventListener('change', function() {
 
 // event handlers
 submitButton.addEventListener('click', function() {
-  var responseParsed;
-  if (isDefined(bcToken.value) && isDefined(accountIds.value)) {
-    options.bc_token     = bcToken.value;
+  var responseParsed,
+    maximum_scope_template = {};
+    maximum_scope_template.operations = [];
     accountsStr = removeSpaces(accountIds.value);
+    selectedOperations = getCheckedBoxValues(operationsCollection);
+  if (isDefined(bcToken.value) && isDefined(accountsStr) && ) {
+    options.bc_token     = bcToken.value;
     accounts = accountsStr.split(',');
     makeRequest(options, function(response) {
       if (isJson(response)) {
