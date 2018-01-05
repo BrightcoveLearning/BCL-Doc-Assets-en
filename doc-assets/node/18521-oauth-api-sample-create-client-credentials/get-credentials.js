@@ -8,6 +8,7 @@ var BCLS = ( function (window, document) {
     clientId  = document.getElementById('clientId'),
     clientSecret = document.getElementById('clientSecret'),
     apiResponse  = document.getElementById('apiResponse'),
+    defaultName = 'Credentials from Learning Services App',
     options      = {},
     request_body = {},
     accountsStr,
