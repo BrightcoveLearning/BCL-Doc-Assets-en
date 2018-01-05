@@ -90,11 +90,18 @@ submitButton.addEventListener('click', function() {
     maximum_scope_template = {};
   if (isDefined(bcToken.value) && isDefined(accountIds.value)) {
     requestBody.name = (isDefined(credentialsName.value)) ? credentialsName.value : defaultName;
-    maximum_scope_template.operations = [];
     maximum_scope_template.operations = getCheckedBoxValues(operationsCollection);
-    options.bc_token     = bcToken.value;
-    accountsStr = removeSpaces(accountIds.value);
-    accounts = accountsStr.split(',');
+    if (maximum_scope_template.operations.length === 0) {
+      alert('You must select at least one API operation to enable');
+      return;
+    }
+    options.bc_token = bcToken.value;
+    accountsStr      = removeSpaces(accountIds.value);
+    accounts         = accountsStr.split(',');
+    if (accounts.length === 0) {
+      alert('You must enter at least one account id');
+      return;
+    }
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
