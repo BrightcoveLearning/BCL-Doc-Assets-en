@@ -4,13 +4,13 @@ var BCLS = ( function (window, document) {
     accountIds = document.getElementById('accountIds'),
     operationsList = document.getElementById('operationsList'),
     submitButton = document.getElementById('submitButton'),
-    requestBody = document.getElementById('requestBody'),
+    apiRequest = document.getElementById('apiRequest'),
     clientId  = document.getElementById('clientId'),
     clientSecret = document.getElementById('clientSecret'),
     apiResponse  = document.getElementById('apiResponse'),
     defaultName = 'Credentials from Learning Services App',
     options      = {},
-    request_body = {},
+    requestBody = {},
     accountsStr,
     accounts = [],
     operations = ['video-cloud/analytics/read', 'video-cloud/audience/read', 'video-cloud/audience/write', 'video-cloud/player/read', 'video-cloud/player/all', 'video-cloud/ingest-profiles/profile/read', 'video-cloud/ingest-profiles/profile/write', 'video-cloud/ingest-profiles/account/read', 'video-cloud/ingest-profiles/account/write', 'video-cloud/upload-urls/read',  'video-cloud/video/all', 'video-cloud/video/read', 'video-cloud/video/create', 'video-cloud/video/update', 'video-cloud/video/delete', 'video-cloud/asset/delete', 'video-cloud/playlist/all', 'video-cloud/playlist/read', 'video-cloud/playlist/create', 'video-cloud/playlist/update', 'video-cloud/playlist/delete', 'video-cloud/sharing-relationships/read', 'video-cloud/sharing-relationships/create', 'video-cloud/sharing-relationships/update', 'video-cloud/sharing-relationships/delete', 'video-cloud/sharing-relationships/all', 'video-cloud/notifications/all'],
@@ -112,13 +112,14 @@ submitButton.addEventListener('click', function() {
     }
     options.url = 'https://oauth.brightcove.com/v4/client_credentials';
     options.requestType = "POST";
-    options.requestBody = requestBody;
+    options.requestBody = JSON.stringify(requestBody);
+    apiRequest.
     options.bc_token = bc_token;
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
-        client_id            = responseParsed.client_id;
-        client_secret            = responseParsed.client_secret;
+        client_id               = responseParsed.client_id;
+        client_secret           = responseParsed.client_secret;
         apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
         clientId.textContent = client_id;
         clientSecret.textContent = client_secret;
