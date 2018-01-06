@@ -264,9 +264,7 @@ function makeRequest(options, callback) {
       }
     };
   // set up request data
-console.log('options', options);
   requestParams = 'url=' + encodeURIComponent(options.url) + '&bc_token=' + options.bc_token + '&requestType=' + options.requestType + '&requestBody=' + options.requestBody;
-console.log('requestParams', requestParams);
   // set response handler
   httpRequest.onreadystatechange = getResponse;
   // open the request
