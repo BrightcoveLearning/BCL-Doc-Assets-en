@@ -18,7 +18,6 @@ var BCLS = ( function (window, document) {
     operationsSelectAll,
     operationsCollection,
     proxyURL     = 'https://solutions.brightcove.com/bcls/bcls-proxy/client-credentials-proxy.php',
-    bc_token,
     client_id,
     client_secret,
     input,
@@ -92,7 +91,6 @@ submitButton.addEventListener('click', function() {
       alert('You must select at least one API operation to enable');
       return;
     }
-    options.bc_token = bcToken.value;
     accountsStr      = removeSpaces(accountIds.value);
     accounts         = accountsStr.split(',');
     if (accounts.length === 0) {
@@ -114,7 +112,7 @@ submitButton.addEventListener('click', function() {
     options.requestType = "POST";
     options.requestBody = JSON.stringify(requestBody);
     apiRequest.textContent = JSON.stringify(requestBody, null, '  ');
-    options.bc_token = bc_token;
+    options.bc_token = bcToken.value;
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
