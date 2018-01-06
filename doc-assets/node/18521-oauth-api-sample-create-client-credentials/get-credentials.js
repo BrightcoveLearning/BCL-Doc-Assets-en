@@ -132,7 +132,11 @@ submitButton.addEventListener('click', function() {
   }
 });
 
-accessToken.addEventListener('click', function() {
+clientId.addEventListener('click', function() {
+  this.select();
+});
+
+clientSecret.addEventListener('click', function() {
   this.select();
 });
 
