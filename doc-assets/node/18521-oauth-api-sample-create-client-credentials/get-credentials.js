@@ -266,7 +266,7 @@ function makeRequest(options, callback) {
       }
     };
   // set up request data
-  requestParams = 'client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+  requestParams = 'url=' + encodeURIComponent(options.url) + '&bc_token=' + options.bc_token + '&requestType=' + options.requestType + '&requestBody=' + options.requestBody;
 
   // set response handler
   httpRequest.onreadystatechange = getResponse;
