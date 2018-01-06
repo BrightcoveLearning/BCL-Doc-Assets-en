@@ -113,7 +113,7 @@ submitButton.addEventListener('click', function() {
     options.url = 'https://oauth.brightcove.com/v4/client_credentials';
     options.requestType = "POST";
     options.requestBody = JSON.stringify(requestBody);
-    apiRequest.
+    apiRequest.textContent = JSON.stringify(requestBody, null, '  ');
     options.bc_token = bc_token;
     makeRequest(options, function(response) {
       if (isJson(response)) {
