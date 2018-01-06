@@ -56,11 +56,11 @@ for (i = 0; i < iMax; i++) {
   space = document.createTextNode(' ');
   label = document.createElement('label');
   input.setAttribute('name', 'operationsChk');
-  input.setAttribute('id', operations[i].account_id);
+  input.setAttribute('id', operations[i]);
   input.setAttribute('type', 'checkbox');
-  input.setAttribute('value', operations[i].account_id);
-  label.setAttribute('for', operations[i].account_id);
-  text = document.createTextNode(operations[i].account_name);
+  input.setAttribute('value', operations[i]);
+  label.setAttribute('for', operations[i]);
+  text = document.createTextNode(operations[i]);
   label.appendChild(text);
   br = document.createElement('br');
   fragment.appendChild(input);
