@@ -32,8 +32,6 @@ var BCLS = ( function (window, document) {
 // set initial requestBody properties
 requestBody.type = 'credential';
 requestBody.maximum_scope = [];
-maximum_scope_template = {};
-maximum_scope_template.operations = [];
 
 // generate operations options
 input = document.createElement('input');
@@ -86,12 +84,11 @@ operationsSelectAll.addEventListener('change', function() {
 
 // event handlers
 submitButton.addEventListener('click', function() {
-  var responseParsed,
-    maximum_scope_template = {};
+  var responseParsed;
   if (isDefined(bcToken.value) && isDefined(accountIds.value)) {
     requestBody.name = (isDefined(credentialsName.value)) ? credentialsName.value : defaultName;
-    maximum_scope_template.operations = getCheckedBoxValues(operationsCollection);
-    if (maximum_scope_template.operations.length === 0) {
+    selectedOperations = getCheckedBoxValues(operationsCollection);
+    if (selectedOperations.length === 0) {
       alert('You must select at least one API operation to enable');
       return;
     }
@@ -104,16 +101,27 @@ submitButton.addEventListener('click', function() {
     } else {
       iMax = accounts.length;
       for (i = 0; i < iMax; i++) {
-
+        var
+          maximum_scope_template = {};
+          maximum_scope_template.identity = {};
+          maximum_scope_template.identity.type = getSelectedValue(accountTypeSelector).value;
+          maximum_scope_template.identity['account-id'] = parseInt(accounts[i], 10);
+          maximum_scope_template.operations = selectedOperations;
+          requestBody.maximum_scope.push(maximum_scope_template);
       }
     }
+    options.url = 'https://oauth.brightcove.com/v4/client_credentials';
+    options.requestType = "POST";
+    options.requestBody = requestBody;
+    options.bc_token = bc_token;
     makeRequest(options, function(response) {
       if (isJson(response)) {
         responseParsed          = JSON.parse(response);
         client_id            = responseParsed.client_id;
         client_secret            = responseParsed.client_secret;
-        accessToken.textContent = access_token;
         apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+        clientId.textContent = client_id;
+        clientSecret.textContent = client_secret;
       } else {
         // didn't get JSON back, just dump responseRaw
         apiResponse.textContent = response;
@@ -211,6 +219,22 @@ function deselectAllCheckboxes(checkboxCollection) {
   }
 }
 
+/**
+ * get selected value for single select element
+ * @param {htmlElement} e the select element
+ * @return {Object} object containing the `value`, text, and selected `index`
+ */
+function getSelectedValue(e) {
+    var selected = e.options[e.selectedIndex],
+        val = selected.value,
+        txt = selected.textContent,
+        idx = e.selectedIndex;
+    return {
+        value: val,
+        text: txt,
+        index: idx
+    };
+}
 
 /**
  * send API request to the proxy
