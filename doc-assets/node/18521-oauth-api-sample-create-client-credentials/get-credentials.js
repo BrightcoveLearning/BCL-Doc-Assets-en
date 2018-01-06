@@ -25,7 +25,7 @@ var BCLS = ( function (window, document) {
     space,
     br,
     label,
-    fragment = document.createFragment(),
+    fragment = document.createDocumentFragment(),
     i,
     iMax;
 
