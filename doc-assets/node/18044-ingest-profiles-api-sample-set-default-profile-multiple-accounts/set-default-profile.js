@@ -7,7 +7,6 @@ var BCLS = ( function (window, document) {
         newProfile,
         // api stuff
         ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip-proxy.php',
-        oauthURL = 'https://oauth.brightcove.com/v4/client_credentials',
         ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
         ipURLsuffix = '/configuration',
         totalCalls = 0,
@@ -195,7 +194,7 @@ var BCLS = ( function (window, document) {
             opt = document.createElement('option');
             opt.value = profilesArray[i];
             opt.text = profilesArray[i];
-            profileSelect.add(opt, null)
+            profileSelect.add(opt, null);
         }
         // event handlers
         setDefaults.addEventListener('click', function() {
