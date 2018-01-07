@@ -1,26 +1,43 @@
 <article class="bcls-article">
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <p>Getting client credentials is a one-time prerequisite for getting access tokens, which the majority of Brightcove APIs use ato authenticate requests.</p>
-    <p>For a full explanation of client credentials, see <a href="/node/17928">how the Brightcove OAuth service works</a>.</p>
-    <p>This sample shows you how to get client credentials from a web app. Because the OAuth API is not CORS-enabled and requests must be made from the server side, the app sends necessary information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
+    <p>In most cases, the <a href="/node/18386">Standard Ingest Profiles</a> should work well for you videos. In case you do need to create a custom profile, however, this sample allows you to do it using the Ingest Profiles API.</p>
+    <aside class="bcls-aside bcls-aside--information">Note that you can also create and update profiles in Studio: see <a href="/node/15628">Managing Ingest Profiles</a>.</aside>
+    <p>This sample shows you how to use the Ingest Profiles API from a web app. Because the Brightcove APIs are not CORS-enabled and requests must be made from the server side, the app sends necessary information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
   </section>
-  <section class="bcls-section">
-<h2 id="gettingCredentials" class="bcls-expander-head">Getting your BC_TOKEN</h2>
 
-<div class="bcls-expander-content">
-<p>To get a <code>client_id</code> and <code>client_secret</code> via the OAuth API, you will need a <code>BC_TOKEN</code> to authenticate your request. Your BC_TOKEN is set as a cookie when you login to Studio. You can get that cookie any way you like, but to make it easier, we have created the following JavaScript snippet - you can paste it into the developer console when you are logged into Studio, press <strong>return</strong>, and a prompt will appear containing the BC_TOKEN:</p>
-<textarea class="bcls-code">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
-for (i = 0; i < cookiesArray.length; i++) {
-    tmpArray = cookiesArray[i].split("=");
-    if (tmpArray[0].indexOf('BC_TOKEN') > -1) {
-        cookiesObj.BC_TOKEN = tmpArray[1];
-    }
-}
-window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</textarea>
-<aside class="bcls-aside bcls-aside--information">Note that you must be an admin for your account (or get an admin's BC_TOKEN) in order to create client credentials. If you do not have an admin BC_TOKEN, the request below will return an error.</aside>
-</div>
-</section>
+  <section class="bcls-section">
+    <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+
+    <div class="bcls-expander-content">
+      <p>To use the CMS API you will need proper credentials.</p>
+
+      <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases,
+        you probably just want to get permissions for all Ingest Profiles API operation:</p>
+
+      <figure class="bcls-figure"><img class="bcls-image" alt="Ingest Profiles API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/ingest-profiles-permissions.png" />
+        <figcaption class="bcls-caption--image">Ingest Profiles API Permissions</figcaption>
+      </figure>
+
+      <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need
+        to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the Ingest Profiles API:</p>
+
+      <pre class="line-numbers">
+  <code class="language-json">"operations": [
+    "video-cloud/ingest-profiles/profile/read",
+    "video-cloud/ingest-profiles/profile/write",
+    "video-cloud/ingest-profiles/account/read",
+    "video-cloud/ingest-profiles/account/write"
+  ]</code></pre>
+
+      <ul>
+        <li><a href="/node/18521">OAuth API Sample: Create Client Credentials</a></li>
+        <li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+        <li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+      </ul>
+    </div>
+  </section>
+
 <section class="bcls-section">
   <h2 id="app">The app</h2>
   <fieldset>

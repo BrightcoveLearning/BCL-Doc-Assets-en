@@ -6,7 +6,6 @@ var BCLS = ( function (window, document) {
         clientSecret,
         newProfile,
         // api stuff
-        oauthProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/oauth-proxy.php',
         ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip-proxy.php',
         oauthURL = 'https://oauth.brightcove.com/v4/client_credentials',
         ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
@@ -17,13 +16,8 @@ var BCLS = ( function (window, document) {
         accountsArray = [],
         defaultAccounts = ['57838016001', '921483702001', '1937897674001'],
         profilesArray = ['smart-player-transition', 'videocloud-default-v1', 'high-resolution', 'screencast-1280', 'single-bitrate-high', 'single-bitrate-standard'],
-        operationsArray = ['video-cloud/ingest-profiles/profile/read', 'video-cloud/ingest-profiles/profile/write', 'video-cloud/ingest-profiles/account/read', 'video-cloud/ingest-profiles/account/write'],
         // elements
-        bc_token = document.getElementById('bc_token'),
-        // getCredentials = document.getElementById('getCredentials'),
         account_ids = document.getElementById('account_ids'),
-        bc_token = document.getElementById('bc_token'),
-        account_ids_cred = document.getElementById('account_ids_cred'),
         client_id = document.getElementById('client_id'),
         client_secret = document.getElementById('client_secret'),
         profileSelect = document.getElementById('profileSelect'),
@@ -31,19 +25,6 @@ var BCLS = ( function (window, document) {
         logger = document.getElementById('logger'),
         apiRequest = document.getElementById('apiRequest'),
         apiResponse = document.getElementById('apiResponse');
-
-    /**
-     * Logging function - safe for IE
-     * @param  {string} context - description of the data
-     * @param  {*} message - the data to be logged by the console
-     * @return {}
-     */
-    bclslog = function (context, message) {
-        if (window["console"] && console["log"]) {
-          console.log(context, message);
-        }
-        return;
-    };
 
 
     /**
@@ -61,7 +42,7 @@ var BCLS = ( function (window, document) {
      * @return {Boolean} true if variable is defined and has a value
      */
     function isDefined(x){
-        if ( x === "" || x === null || x === undefined || x === NaN) {
+        if ( x === "" || x === null || x === undefined) {
             return false;
         }
         return true;
@@ -102,34 +83,6 @@ var BCLS = ( function (window, document) {
             iMax,
             requestData = {};
         switch (id) {
-            case 'getCredentials':
-                var dataStr2 = '{"identity": {"type": "video-cloud-account","account-id":',
-                    maxScope = [],
-                    callback = function (credentials) {
-                        client_id.value = credentials.client_id;
-                        client_secret.value = credentials.client_secret;
-                        account_ids.value = account_ids_cred.value;
-                        disableButton(getCredentials);
-                    };
-                // proxy url
-                proxyURL = oauthProxyURL;
-                // set up data
-                requestData.requestType = type;
-                requestData.name = 'Set_Defaults_App';
-                requestData.bc_token = bcToken;
-                requestData.maximum_scope = '[';
-                iMax = accountsArray.length;
-                for (i = 0; i < iMax; i++) {
-                    maxScope[i] = {};
-                    maxScope[i].identity = {};
-                    maxScope[i].identity.type = 'video-cloud-account';
-                    maxScope[i].identity['account-id'] = parseInt(accountsArray[i]);
-                    maxScope[i].operations = operationsArray;
-                }
-                requestData.maximum_scope = JSON.stringify(maxScope);
-                requestData.url = oauthURL;
-                sendRequest(requestData, proxyURL, id, callback);
-                break;
             case 'setDefaults':
                 var reqBody = {}, now,
                     callback = function(response) {
