@@ -20,6 +20,7 @@ var BCLS = (function(window, document) {
     thumbnailHeight = document.getElementById('thumbnailHeight'),
     thumbnailWidth = document.getElementById('thumbnailWidth'),
     renditionsList = document.getElementById('renditionsList'),
+    submitButton = document.getElementById('submitButton'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
     apiResponse = document.getElementById('apiResponse');
