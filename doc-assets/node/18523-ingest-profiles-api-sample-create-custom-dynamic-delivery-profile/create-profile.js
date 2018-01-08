@@ -36,6 +36,55 @@ var BCLS = (function(window, document) {
     i,
     iMax;
 
+    // generate renditions options
+    input = document.createElement('input');
+    space = document.createTextNode(' ');
+    label = document.createElement('label');
+    input.setAttribute('name', 'renditionsChkAll');
+    input.setAttribute('id', 'renditionsChkAll');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('value', 'all');
+    label.setAttribute('for', 'renditionsChkAll');
+    label.setAttribute('style', 'color:#F3951D;');
+    text = document.createTextNode('Select All');
+    label.appendChild(text);
+    br = document.createElement('br');
+    fragment.appendChild(input);
+    fragment.appendChild(space);
+    fragment.appendChild(label);
+    fragment.appendChild(br);
+    iMax = availableRenditions.length;
+    for (i = 0; i < iMax; i++) {
+      input = document.createElement('input');
+      space = document.createTextNode(' ');
+      label = document.createElement('label');
+      input.setAttribute('name', 'renditionsChk');
+      input.setAttribute('id', availableRenditions[i]);
+      input.setAttribute('type', 'checkbox');
+      input.setAttribute('value', availableRenditions[i]);
+      label.setAttribute('for', availableRenditions[i]);
+      text = document.createTextNode(availableRenditions[i]);
+      label.appendChild(text);
+      br = document.createElement('br');
+      fragment.appendChild(input);
+      fragment.appendChild(space);
+      fragment.appendChild(label);
+      fragment.appendChild(br);
+    }
+    renditionsList.appendChild(fragment);
+    // get references to checkboxes
+    renditionsCollection = document.getElementsByName('renditionsChk');
+    renditionsSelectAll = document.getElementById('renditionsChkAll');
+    // add event listener for select allows
+    renditionsSelectAll.addEventListener('change', function() {
+      if (this.checked) {
+        selectAllCheckboxes(renditionsCollection);
+      } else {
+        deselectAllCheckboxes(renditionsCollection);
+      }
+    });
+
+
 
   /**
    * remove spaces from a string
