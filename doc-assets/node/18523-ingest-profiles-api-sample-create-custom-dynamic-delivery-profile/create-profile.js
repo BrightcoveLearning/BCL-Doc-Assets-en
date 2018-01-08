@@ -5,6 +5,9 @@ var BCLS = (function(window, document) {
     client_secret,
     newProfile = {},
     availableRenditions = ["video450", "video700", "video900", "video1200", "video1700", "video2000", "video3500"],
+    selectedRenditions = [],
+    renditionsSelectAll,
+    renditionsCollection,
     // api stuff
     ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
