@@ -305,47 +305,4 @@ function sendRequest(options, proxyURL, requestID, callback) {
   httpRequest.send(requestParams);
 }
 
-function init() {
-  var i,
-    iMax,
-    opt;
-  // set up profiles selector
-  iMax = profilesArray.length;
-  for (i = 0; i < iMax; i++) {
-    opt = document.createElement('option');
-    opt.value = profilesArray[i];
-    opt.text = profilesArray[i];
-    profileSelect.add(opt, null);
-  }
-  // event handlers
-  setDefaults.addEventListener('click', function() {
-    var accountIds;
-    // get the inputs
-    clientId = client_id.value;
-    clientSecret = client_secret.value;
-    newProfile = getSelectedValue(profileSelect);
-    // only use entered account id if client id and secret are entered also
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      if (isDefined(account_ids.value)) {
-        accountIds = removeSpaces(account_ids.value);
-        accountsArray = accountIds.split(',');
-      } else {
-        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        clientId = '';
-        clientSecret = '';
-        accountsArray = defaultAccounts;
-      }
-    } else {
-      accountsArray = defaultAccounts;
-    }
-    totalCalls = accountsArray.length;
-    setRequestData('setDefaults', 'POST');
-  });
-
-  apiResponse.addEventListener('click', function() {
-    apiResponse.select();
-  });
-}
-// kick things off
-init();
 })(window, document);
