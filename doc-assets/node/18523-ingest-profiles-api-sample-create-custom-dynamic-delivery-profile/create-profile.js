@@ -27,7 +27,14 @@ var BCLS = (function(window, document) {
     submitButton = document.getElementById('submitButton'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
-    apiResponse = document.getElementById('apiResponse');
+    apiResponse = document.getElementById('apiResponse'),
+    input,
+    space,
+    br,
+    label,
+    fragment = document.createDocumentFragment(),
+    i,
+    iMax;
 
 
   /**
