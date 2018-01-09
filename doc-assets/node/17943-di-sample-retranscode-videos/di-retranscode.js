@@ -32,7 +32,7 @@ var BCLS = ( function (window, document) {
             return true;
         }
         return false;
-    };
+    }
 
     /**
      * determines if checkbox is checked * @param  {htmlElement}  e the checkbox to check
@@ -61,20 +61,18 @@ var BCLS = ( function (window, document) {
         body.master = {};
         body.master.use_archived_master = true;
         body.profile = ingest_profile;
-        if (!isChecked(capture_images_display)) {
-          body["capture-images"] = false;
-        }
+          body["capture-images"] = capture_images_display;
         console.log('body', body);
         options.requestBody = JSON.stringify(body);
         options.requestType = "POST";
         options.url = di_url_display.value;
         // now submit the request
         submitRequest(options, diURL, "di");
-    };
+    }
     // function to set the request
     function logResponse(type, data) {
         response.textContent += type + ": " + data + ",\n";
-    };
+    }
 
     // function to submit Request
     function submitRequest(options, proxyURL, type) {
