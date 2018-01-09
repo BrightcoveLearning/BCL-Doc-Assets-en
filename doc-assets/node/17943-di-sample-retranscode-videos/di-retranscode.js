@@ -9,6 +9,7 @@ var BCLS = ( function (window, document) {
         ingest_profile_display = document.getElementById("ingest_profile_display"),
         ingest_profile,
         custom_profile_display = document.getElementById("custom_profile_display"),
+        capture_images_display = document.getElementById('capture_images_display'),
         videoDataDisplay = document.getElementById("videoData"),
         // Dynamic Ingest API stuff
         profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
