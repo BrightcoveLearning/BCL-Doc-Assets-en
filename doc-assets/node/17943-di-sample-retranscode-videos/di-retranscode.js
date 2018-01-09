@@ -94,7 +94,7 @@ console.log('status', videoNumber + ', ' + totalVideos);
                         videoNumber++;
                         currentJobs++;
 console.log('status', videoNumber + ', ' + totalVideos);
-                        if (videoNumber < totalVideos) {
+                        if (videoNumber < totalVideos - 1) {
                             logResponse('Processing video number', videoNumber);
                             logResponse('Current jobs: ', currentJobs);
                             // if currentJobs is > 99, need to pause
