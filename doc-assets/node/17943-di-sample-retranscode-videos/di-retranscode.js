@@ -18,7 +18,7 @@ var BCLS = ( function (window, document) {
         diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         response = document.getElementById("response"),
         videoData = [],
-        totalVideos,
+        totalVideos = 0,
         videoNumber = 0,
         currentJobs = 0,
         t2,
@@ -61,7 +61,7 @@ var BCLS = ( function (window, document) {
         body.master = {};
         body.master.use_archived_master = true;
         body.profile = ingest_profile;
-          body["capture-images"] = capture_images_display;
+        body["capture-images"] = isChecked(capture_images_display);
         console.log('body', body);
         options.requestBody = JSON.stringify(body);
         options.requestType = "POST";
@@ -132,7 +132,7 @@ var BCLS = ( function (window, document) {
         httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         // open and send request
         httpRequest.send(requestData);
-    };
+    }
     di_submit_display.addEventListener("click", function () {
         videoData = JSON.parse(videoDataDisplay.value);
         totalVideos = videoData.length;
