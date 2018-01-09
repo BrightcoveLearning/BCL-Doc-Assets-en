@@ -90,9 +90,9 @@ var BCLS = ( function (window, document) {
                             // handle the response
                         totalIngested++;
                         logResponse("totalIngested", totalIngested);
-                        if (videoNumber < totalVideos - 1) {
-                            videoNumber++;
-                            currentJobs++;
+                        videoNumber++;
+                        currentJobs++;
+                        if (videoNumber < totalVideos) {
                             logResponse('Processing video number', videoNumber);
                             logResponse('Current jobs: ', currentJobs);
                             // if currentJobs is > 99, need to pause
