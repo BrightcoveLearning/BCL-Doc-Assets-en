@@ -47,6 +47,7 @@ var BCLS = ( function (window, document) {
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
         var options = {},
+            body = {},
             custom_profile_display_value = custom_profile_display.value;
         // get the ingest profile
         if (isDefined(custom_profile_display_value)) {
@@ -57,7 +58,13 @@ var BCLS = ( function (window, document) {
         options.client_id = client_id;
         options.client_secret = client_secret;
         di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
-        options.requestBody = '{"master":{"use_archived_master": true },"profile":"' + ingest_profile + '"}';
+        body.master = {};
+        body.master.use_archived_master = true;
+        body.profile = ingest_profile;
+        if (!isChecked(capture_images_display)) {
+          body["capture-images"] = false;
+        }
+        options.requestBody = JSON.stringify(body);
         options.requestType = "POST";
         options.url = di_url_display.value;
         // now submit the request
