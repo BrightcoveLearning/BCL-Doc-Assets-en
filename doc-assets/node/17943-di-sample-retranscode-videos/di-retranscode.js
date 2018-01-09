@@ -92,7 +92,7 @@ var BCLS = ( function (window, document) {
                         logResponse("totalIngested", totalIngested);
                         videoNumber++;
                         currentJobs++;
-console.log('status'. videoNumber + ', ' + totalVideos);
+console.log('status', videoNumber + ', ' + totalVideos);
                         if (videoNumber < totalVideos) {
                             logResponse('Processing video number', videoNumber);
                             logResponse('Current jobs: ', currentJobs);
