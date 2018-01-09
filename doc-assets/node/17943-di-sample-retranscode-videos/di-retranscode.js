@@ -23,40 +23,29 @@ var BCLS = ( function (window, document) {
         currentJobs = 0,
         t2,
         totalIngested = 0,
-        defaults = {account_id: 57838016001,client_id: "37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1",client_secret: "gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ"},
-        // functions
-        isDefined,
-        bclslog,
-        logResponse,
-        doIngest,
-        submitRequest,
-        setDIOptions,
-        init;
-
-    /**
-     * Logging function - safe for IE
-     * @param  {string} context - description of the data
-     * @param  {*} message - the data to be logged by the console
-     * @return {}
-     */
-    bclslog = function (context, message) {
-        if (window.console && console.log) {
-          console.log(context, message);
-        }
-        return;
-    };
+        defaults = {account_id: 57838016001,client_id: "37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1",client_secret: "gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ"};
 
 
     // is defined
-    isDefined = function(x){
-        if (x !== "" && x !== null && x !== undefined){
+    function isDefined(x){
+        if (x === "" || x === null || x === undefined){
             return true;
-        } else{
-            return false;
         }
+        return false;
     };
+
+    /**
+     * determines if checkbox is checked * @param  {htmlElement}  e the checkbox to check
+     * @return {Boolean}  true if box is checked
+     */
+    function isChecked(e) {
+        if (e.checked) {
+            return true;
+        }
+        return false;
+    }
     // set options for the Dynamic Ingest API request
-    setDIOptions = function () {
+    function setDIOptions() {
         var options = {},
             custom_profile_display_value = custom_profile_display.value;
         // get the ingest profile
@@ -71,17 +60,16 @@ var BCLS = ( function (window, document) {
         options.requestBody = '{"master":{"use_archived_master": true },"profile":"' + ingest_profile + '"}';
         options.requestType = "POST";
         options.url = di_url_display.value;
-        bclslog('options', options);
         // now submit the request
         submitRequest(options, diURL, "di");
     };
     // function to set the request
-    logResponse = function (type, data) {
+    function logResponse(type, data) {
         response.textContent += type + ": " + data + ",\n";
     };
 
     // function to submit Request
-    submitRequest = function (options, proxyURL, type) {
+    function submitRequest(options, proxyURL, type) {
         var httpRequest = new XMLHttpRequest(),
             requestData,
             responseData,
@@ -128,7 +116,6 @@ var BCLS = ( function (window, document) {
                     alert('Caught Exception: ' + e);
                   }
             };
-        bclslog('options', options);
         // set up request data
         requestData = "client_id=" + options.client_id + "&client_secret=" + options.client_secret + "&url=" + encodeURIComponent(options.url) + "&requestBody=" + encodeURIComponent(options.requestBody) + "&requestType=" + options.requestType;
         // set response handler
@@ -141,12 +128,9 @@ var BCLS = ( function (window, document) {
         httpRequest.send(requestData);
     };
     di_submit_display.addEventListener("click", function () {
-        bclslog("in button handler", videoDataDisplay.value);
         videoData = JSON.parse(videoDataDisplay.value);
         totalVideos = videoData.length;
-        bclslog("videoData length");
         // to insure uniqueness,
-        bclslog("totalVideos", totalVideos);
         // in case of stop/start, reset videoNumber to 0
         videoNumber = 0;
         // get account inputs
@@ -157,7 +141,7 @@ var BCLS = ( function (window, document) {
         setDIOptions();
     });
     // initialize
-    init = function () {
+    function init() {
         var i,
             iMax = profilesArray.length,
             newOpt;
