@@ -1,29 +1,89 @@
 var BCLS = (function(window, document) {
   var // account stuff
-    accountId,
-    bcToken,
-    clientId,
-    clientSecret,
-    newProfile,
+    account_id,
+    client_id,
+    client_secret,
+    newProfile = {},
+    availableRenditions = ["video450", "video700", "video900", "video1200", "video1700", "video2000", "video3500"],
+    selectedRenditions = [],
+    renditionsSelectAll,
+    renditionsCollection,
     // api stuff
-    ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip-proxy.php',
+    ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
-    ipURLsuffix = '/configuration',
-    totalCalls = 0,
-    callNumber = 0,
-    responseArray = [],
-    accountsArray = [],
-    defaultAccounts = ['57838016001', '921483702001', '1937897674001'],
-    profilesArray = ['smart-player-transition', 'videocloud-default-v1', 'high-resolution', 'screencast-1280', 'single-bitrate-high', 'single-bitrate-standard'],
+    ipURLsuffix = '/profiles',
     // elements
-    account_ids = document.getElementById('account_ids'),
-    client_id = document.getElementById('client_id'),
-    client_secret = document.getElementById('client_secret'),
-    profileSelect = document.getElementById('profileSelect'),
-    setDefaults = document.getElementById('setDefaults'),
+    accountId = document.getElementById('accountId'),
+    clientId = document.getElementById('clientId'),
+    clientSecret = document.getElementById('client_secret'),
+    archiveMaster = document.getElementById('archiveMaster'),
+    distributeMaster = document.getElementById('distributeMaster'),
+    captureImages = document.getElementById('captureImages'),
+    posterHeight = document.getElementById('posterHeight'),
+    posterWidth = document.getElementById('posterWidth'),
+    thumbnailHeight = document.getElementById('thumbnailHeight'),
+    thumbnailWidth = document.getElementById('thumbnailWidth'),
+    renditionsList = document.getElementById('renditionsList'),
+    submitButton = document.getElementById('submitButton'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
-    apiResponse = document.getElementById('apiResponse');
+    apiResponse = document.getElementById('apiResponse'),
+    input,
+    space,
+    br,
+    label,
+    fragment = document.createDocumentFragment(),
+    i,
+    iMax;
+
+    // generate renditions options
+    input = document.createElement('input');
+    space = document.createTextNode(' ');
+    label = document.createElement('label');
+    input.setAttribute('name', 'renditionsChkAll');
+    input.setAttribute('id', 'renditionsChkAll');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('value', 'all');
+    label.setAttribute('for', 'renditionsChkAll');
+    label.setAttribute('style', 'color:#F3951D;');
+    text = document.createTextNode('Select All');
+    label.appendChild(text);
+    br = document.createElement('br');
+    fragment.appendChild(input);
+    fragment.appendChild(space);
+    fragment.appendChild(label);
+    fragment.appendChild(br);
+    iMax = availableRenditions.length;
+    for (i = 0; i < iMax; i++) {
+      input = document.createElement('input');
+      space = document.createTextNode(' ');
+      label = document.createElement('label');
+      input.setAttribute('name', 'renditionsChk');
+      input.setAttribute('id', availableRenditions[i]);
+      input.setAttribute('type', 'checkbox');
+      input.setAttribute('value', availableRenditions[i]);
+      label.setAttribute('for', availableRenditions[i]);
+      text = document.createTextNode(availableRenditions[i]);
+      label.appendChild(text);
+      br = document.createElement('br');
+      fragment.appendChild(input);
+      fragment.appendChild(space);
+      fragment.appendChild(label);
+      fragment.appendChild(br);
+    }
+    renditionsList.appendChild(fragment);
+    // get references to checkboxes
+    renditionsCollection = document.getElementsByName('renditionsChk');
+    renditionsSelectAll = document.getElementById('renditionsChkAll');
+    // add event listener for select allows
+    renditionsSelectAll.addEventListener('change', function() {
+      if (this.checked) {
+        selectAllCheckboxes(renditionsCollection);
+      } else {
+        deselectAllCheckboxes(renditionsCollection);
+      }
+    });
+
 
 
   /**
@@ -37,15 +97,78 @@ var BCLS = (function(window, document) {
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
-   * @param {String|Number} x the variable to test
+   * @param {*} x the variable to test
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-    if (x === "" || x === null || x === undefined) {
-      return false;
-    }
-    return true;
+      if ( x === '' || x === null || x === undefined) {
+          return false;
+      }
+      return true;
   }
+
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
+
+  /**
+   * get array of values for checked boxes in a collection
+   * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+   * @return {Array} array of the values of the checked boxes
+   */
+  function getCheckedBoxValues(checkBoxCollection) {
+    var checkedValues = [],
+      i,
+      iMax;
+    if (checkBoxCollection) {
+      iMax = checkBoxCollection.length;
+      for (i = 0; i < iMax; i++) {
+        if (checkBoxCollection[i].checked === true) {
+          checkedValues.push(checkBoxCollection[i].value);
+        }
+      }
+      return checkedValues;
+    } else {
+      console.log('Error: no input received');
+      return null;
+    }
+  }
+
+  /**
+   * selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function selectAllCheckboxes(checkboxCollection) {
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].setAttribute('checked', 'checked');
+    }
+  }
+
+  /**
+   * deselects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function deselectAllCheckboxes(checkboxCollection) {
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].removeAttribute('checked');
+    }
+  }
+
+
 
   /**
    * get selected value for single select element
@@ -59,25 +182,23 @@ var BCLS = (function(window, document) {
   /**
    * disables a button so user can't submit new request until current one finishes
    */
-  function disableButton(button) {
-    button.setAttribute('disabled', 'disabled');
-    button.setAttribute('style', 'opacity:.5,cursor:not-allowed;');
+  function hideElement(element) {
+    element.setAttribute('style', 'opacity:.5;');
   }
 
   /**
    * enables a button
    * @param {htmlElement} button - the button to enable
    */
-  function enableButton(button) {
-    button.removeAttribute('disabled');
-    button.setAttribute('style', 'opacity:1;cursor:pointer;');
+  function showElement(element) {
+    element.removeAttribute('style');
   }
 
   /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setRequestData(id, type, configId) {
+  function setRequestData(type) {
     var i,
       iMax,
       requestData = {};
@@ -184,47 +305,4 @@ function sendRequest(options, proxyURL, requestID, callback) {
   httpRequest.send(requestParams);
 }
 
-function init() {
-  var i,
-    iMax,
-    opt;
-  // set up profiles selector
-  iMax = profilesArray.length;
-  for (i = 0; i < iMax; i++) {
-    opt = document.createElement('option');
-    opt.value = profilesArray[i];
-    opt.text = profilesArray[i];
-    profileSelect.add(opt, null);
-  }
-  // event handlers
-  setDefaults.addEventListener('click', function() {
-    var accountIds;
-    // get the inputs
-    clientId = client_id.value;
-    clientSecret = client_secret.value;
-    newProfile = getSelectedValue(profileSelect);
-    // only use entered account id if client id and secret are entered also
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      if (isDefined(account_ids.value)) {
-        accountIds = removeSpaces(account_ids.value);
-        accountsArray = accountIds.split(',');
-      } else {
-        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        clientId = '';
-        clientSecret = '';
-        accountsArray = defaultAccounts;
-      }
-    } else {
-      accountsArray = defaultAccounts;
-    }
-    totalCalls = accountsArray.length;
-    setRequestData('setDefaults', 'POST');
-  });
-
-  apiResponse.addEventListener('click', function() {
-    apiResponse.select();
-  });
-}
-// kick things off
-init();
 })(window, document);
