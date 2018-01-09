@@ -102,8 +102,7 @@ var BCLS = ( function (window, document) {
                                 // wait 30 min before resuming
                                 t2 = setTimeout(setDIOptions, 1800000);
                             } else {
-                                // pause to avoid CMS API timeouts
-                                t2 = setTimeout(setDIOptions, 1000);
+                                setDIOptions();
                             }
                         }
                     } else {
