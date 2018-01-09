@@ -46,6 +46,7 @@ var BCLS = ( function (window, document) {
     }
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
+console.log('status', videoNumber + ', ' + totalVideos);
         var options = {},
             body = {},
             custom_profile_display_value = custom_profile_display.value;
