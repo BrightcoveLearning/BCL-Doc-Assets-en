@@ -64,6 +64,7 @@ var BCLS = ( function (window, document) {
         if (!isChecked(capture_images_display)) {
           body["capture-images"] = false;
         }
+        console.log('body', body);
         options.requestBody = JSON.stringify(body);
         options.requestType = "POST";
         options.url = di_url_display.value;
