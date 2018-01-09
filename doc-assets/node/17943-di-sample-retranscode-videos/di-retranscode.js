@@ -46,7 +46,6 @@ var BCLS = ( function (window, document) {
     }
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
-console.log('status', videoNumber + ', ' + totalVideos);
         var options = {},
             body = {},
             custom_profile_display_value = custom_profile_display.value;
@@ -63,7 +62,6 @@ console.log('status', videoNumber + ', ' + totalVideos);
         body.master.use_archived_master = true;
         body.profile = ingest_profile;
         body["capture-images"] = isChecked(capture_images_display);
-        console.log('body', body);
         options.requestBody = JSON.stringify(body);
         options.requestType = "POST";
         options.url = di_url_display.value;
@@ -93,7 +91,6 @@ console.log('status', videoNumber + ', ' + totalVideos);
                         logResponse("totalIngested", totalIngested);
                         videoNumber++;
                         currentJobs++;
-console.log('status', videoNumber + ', ' + totalVideos);
                         if (videoNumber < totalVideos - 1) {
                             logResponse('Processing video number', videoNumber);
                             logResponse('Current jobs: ', currentJobs);
