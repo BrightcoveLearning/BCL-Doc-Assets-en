@@ -1,48 +1,68 @@
 <article class="bcls-article">
-    <section class="bcls-section">
-        <h2 id="Introduction">Introduction</h2>
-        <p>This is a simple example of how to use the Playlist API to get the data for a Video Cloud playlist and present it either as JSON or MRSS data that you could pass to a syndication partner.</p>
-        <aside class="bcls-aside bcls-aside--information">Note that as is typical for syndication feeds, the feed data returned by this app includes <strong>the video data only, not the playlist metadata</strong>.</aside>
-    </section>
-    <section class="bcls-section">
-        <h2 id="Requirements">Requirements</h2>
-        <p>To build this yourself, you need two things:</p>
-        <ul>
-            <li>A Video Cloud playlist id, which you can obtain from <a href="/node/15152">Studio</a></li>
-            <li>A policy key for your Video Cloud account, which you can obtain from any <a href="/node/18125">Brightcove Player</a> in your account, or from the <a href="/node/18004">Policy API</a></li>
-        </ul>
-        <h3><strong>Optional</strong></h3>
-        <p>You don't need to do this for any functional reason, but to prettify the MRSS code and make it easier to read, we have included the <a href="https://github.com/vkiryukhin/vkBeautify">vkBeautify</a> JavaScript library.</p>
-        <p>The rest is a little bit of HTML and JavaScript, explained in detail in the <a href="#How_its_done">How it's done</a> section below.</p>
-    </section>
-    <section class="bcls-section">
-        <h2 id="The_feed">The feed</h2>
-        <h3>Optional inputs</h3>
-        <p>If you don't include values below, a Brightcove sample account will be used.</p>
-        <p>Account id: <input type="text" id="account_id_input" style="width:40%;"></p>
-        <p>Policy key: <input type="text" id="policy_key_input" style="width:70%;"></p>
-        <p>Playlist id: <input type="text" id="playlist_id_input" style="width:40%;"></p>
-        <button id="showJSON" class="bcls-button">Show JSON</button> <button id="showMRSS" class="bcls-button">Show MRSS</button>
-        <div>
-            <textarea id="feed" class="bcls-code" style="height:400px;">Feed will appear here...</textarea>
-        </div>
-    </section>
-    <section class="bcls-section">
-        <h2 id="How_its_done">How it's done</h2>
-        <h3>HTML</h3>
-        <p>You only need a few HTML elements for this app, but they must have the ids shown below. You can add whatever styling you want to.</p>
-        <ul>
-            <li><code>&lt;input type="text" id="account_id_input"&gt;</code></li>
-            <li><code>&lt;input type="text" id="policy_key_input"&gt;</code></li>
-            <li><code>&lt;input type="text" id="playlist_id_input"&gt;</code></li>
-            <li><code>&lt;button id="showJSON"&gt;Show JSON&lt;/button&gt;</code></li>
-            <li><code>&lt;button id="showMRSS"&gt;Show JSON&lt;/button&gt;</code></li>
-            <li><code>&lt;textarea id="feed"&gt;&lt;/textarea&gt;</code></li>
-        </ul>
-        <h3>JavaScript</h3>
-        <p>The JavaScript is a little more involved, but the only change you need to make in the code shown below to a make a sample that will work in your own account is the substitution of your own default <strong>account id</strong>, <strong>playlist id</strong>,
-            and <strong>policy key</strong> for the highlighted text in lines 13-15.</p>
-<pre class="line-numbers"><code class="language-json">var BCLS = (function(window, document) {
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>This is a simple example of how to use the Playlist API to get the data for a Video Cloud playlist and present it either as JSON or MRSS data that you could pass to a syndication partner.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note that as is typical for syndication feeds, the feed data returned by this app includes <strong>the video data only, not the playlist metadata</strong>.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Requirements">Requirements</h2>
+
+<p>To build this yourself, you need two things:</p>
+
+<ul>
+	<li>A Video Cloud playlist id, which you can obtain from <a href="/node/15152">Studio</a></li>
+	<li>A policy key for your Video Cloud account, which you can obtain from any <a href="/node/18125">Brightcove Player</a> in your account, or from the <a href="/node/18004">Policy API</a></li>
+</ul>
+
+<h3><strong>Optional</strong></h3>
+
+<p>You don't need to do this for any functional reason, but to prettify the MRSS code and make it easier to read, we have included the <a href="https://github.com/vkiryukhin/vkBeautify">vkBeautify</a> JavaScript library.</p>
+
+<p>The rest is a little bit of HTML and JavaScript, explained in detail in the <a href="#How_its_done">How it's done</a> section below.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="The_feed">The feed</h2>
+
+<h3>Optional inputs</h3>
+
+<p>If you don't include values below, a Brightcove sample account will be used.</p>
+
+<p>Account id: <input type="text" id="account_id_input" style="width:40%;" /></p>
+
+<p>Policy key: <input type="text" id="policy_key_input" style="width:70%;" /></p>
+
+<p>Playlist id: <input type="text" id="playlist_id_input" style="width:40%;" /></p>
+<button id="showJSON" class="bcls-button">Show JSON</button><button id="showMRSS" class="bcls-button">Show MRSS</button>
+
+<div><textarea id="feed" class="bcls-code" style="height:400px;">Feed will appear here...</textarea></div>
+</section>
+
+<section class="bcls-section">
+<h2 id="How_its_done">How it's done</h2>
+
+<h3>HTML</h3>
+
+<p>You only need a few HTML elements for this app, but they must have the ids shown below. You can add whatever styling you want to.</p>
+
+<ul>
+	<li><code>&lt;input type="text" id="account_id_input"&gt;</code></li>
+	<li><code>&lt;input type="text" id="policy_key_input"&gt;</code></li>
+	<li><code>&lt;input type="text" id="playlist_id_input"&gt;</code></li>
+	<li><code>&lt;button id="showJSON"&gt;Show JSON&lt;/button&gt;</code></li>
+	<li><code>&lt;button id="showMRSS"&gt;Show MRSS&lt;/button&gt;</code></li>
+	<li><code>&lt;textarea id="feed"&gt;&lt;/textarea&gt;</code></li>
+</ul>
+
+<h3>JavaScript</h3>
+
+<p>The JavaScript is a little more involved, but the only change you need to make in the code shown below to a make a sample that will work in your own account is the substitution of your own default <strong>account id</strong>, <strong>playlist id</strong>, and <strong>policy key</strong> for the highlighted text in lines 13-15.</p>
+
+<pre class="line-numbers">
+<code class="language-json">var BCLS = (function(window, document) {
     var showJSON = document.getElementById('showJSON'),
         showMRSS = document.getElementById('showMRSS'),
         feed = document.getElementById('feed'),
@@ -89,7 +109,7 @@
         // get media data if we haven't already
         if (!isDefined(videoData)) {
             // check inputs to see if we use those or default values
-            if (isDefined(account_id_input.value) && isDefined(policy_key_input.value) && isDefined(playlist_id_input.value)) {
+            if (isDefined(account_id_input.value) &amp;&amp; isDefined(policy_key_input.value) &amp;&amp; isDefined(playlist_id_input.value)) {
                 account_id = removeSpaces(account_id_input.value);
                 policyKey = removeSpaces(policy_key_input.value);
                 playlist_id = removeSpaces(playlist_id_input.value);
@@ -112,7 +132,7 @@
         // get media data if we haven't already
         if (!isDefined(videoData)) {
             // check inputs to see if we use those or default values
-            if (isDefined(account_id_input.value) && isDefined(policy_key_input.value) && isDefined(playlist_id_input.value)) {
+            if (isDefined(account_id_input.value) &amp;&amp; isDefined(policy_key_input.value) &amp;&amp; isDefined(playlist_id_input.value)) {
                 account_id = removeSpaces(account_id_input.value);
                 policyKey = removeSpaces(policy_key_input.value);
                 playlist_id = removeSpaces(playlist_id_input.value);
@@ -224,16 +244,16 @@
             for (i = 0; i &lt; iMax; i += 1) {
                 video = videoData[i];
                 // video may not have a valid source
-                if (isDefined(video.source) && isDefined(video.source.src)) {
-                    videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
+                if (isDefined(video.source) &amp;&amp; isDefined(video.source.src)) {
+                    videoURL = encodeURI(video.source.src.replace(/&amp;/g, '&amp;'));
                 } else {
                     videoURL = "";
                 }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
-                if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
-                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
+                if (isDefined(video.images) &amp;&amp; isDefined(video.images.thumbnail)) {
+                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&amp;/g, '&amp;'));
                 } else if (isDefined(video.thumbnail)) {
-                    thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
+                    thumbnailURL = encodeURI(video.thumbnail.replace(/&amp;/g, '&amp;'));
                 } else {
                     doThumbnail = false;
                 }
@@ -256,7 +276,7 @@
                     }
                 }
                 mrssStr += eMediaContent;
-                if (isDefined(video.schedule) && video.schedule.ends_at) {
+                if (isDefined(video.schedule) &amp;&amp; video.schedule.ends_at) {
                     eItem = eItemStart + video.schedule.ends_at + eItemEnd;
                 } else {
                     eItem = eItemStart + defaultEndDate + eItemEnd;
@@ -284,7 +304,7 @@
         getResponse = function() {
             try {
                 if (httpRequest.readyState === 4) {
-                    if (httpRequest.status &gt;= 200 && httpRequest.status &lt; 300) {
+                    if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                         responseData = httpRequest.responseText;
                         parsedData = JSON.parse(responseData);
                         videoData = parsedData.videos;
@@ -308,12 +328,9 @@
     }
 })(window, document);
 </code></pre>
-        </section>
+</section>
 </article>
-
-<!-- the first script below is just a utility to beautify XML (for the MRSS feed); it's the second script that does the main work -->
-<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/code-samples/mrss-generator/vkbeautify.0.99.00.beta.js"></script>
-<script>
+<!-- the first script below is just a utility to beautify XML (for the MRSS feed); it's the second script that does the main work --><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/code-samples/mrss-generator/vkbeautify.0.99.00.beta.js"></script><script>
     var BCLS = (function(window, document) {
         var showJSON = document.getElementById('showJSON'),
             showMRSS = document.getElementById('showMRSS'),
