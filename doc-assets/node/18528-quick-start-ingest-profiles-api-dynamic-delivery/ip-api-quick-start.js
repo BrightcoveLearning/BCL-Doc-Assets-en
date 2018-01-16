@@ -15,17 +15,30 @@ var BCLS = (function(window, document) {
     api_response = document.getElementById('api_response'),
     renditions = ['default/audio64', 'default/audio96', 'default/audio128', 'default/audio192', 'default/video450', 'default/video700', 'default/video900', 'default/video1200', 'default/video1700', 'default/video2000', 'default/video3500', 'default/video3800'],
     profiles = [],
+    account_id,
+    client_id,
+    client_secret,
     selectAll,
     checkBoxCollection;
 
   // event listeners
   get_profiles.addEventListener('click', function() {
+    getAccountInfo();
     createRequest('get_profiles');
   });
 
   create_profile.addEventListener('click', function() {
 
   });
+
+  /**
+   * get account info from input fields
+   */
+  function getAccountInfo() {
+    account_id    = account_id_input.value;
+    client_id     = client_id_input.value;
+    client_secret = client_secret_input.value;
+  }
 
   /**
    * get array of values for checked boxes in a collection
@@ -190,20 +203,6 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           if (Array.isArray(responseDecoded)) {
-            // remove existing options
-            iMax = profiles.length;
-            for (i = 0; i < iMax; i++) {
-              profiles.remove(i);
-            }
-            // add new options
-            iMax = responseDecoded.length;
-            for (i = 0; i < iMax; i++) {
-              el = document.createElement('option');
-              el.setAttribute('value', responseDecoded[i].name);
-              txt = document.createTextNode(responseDecoded[i].name);
-              el.appendChild(txt);
-              profiles.appendChild(el);
-            }
           }
         });
         break;
