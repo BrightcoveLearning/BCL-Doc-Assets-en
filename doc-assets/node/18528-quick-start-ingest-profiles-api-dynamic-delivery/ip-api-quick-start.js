@@ -16,7 +16,7 @@ var BCLS = (function(window, document) {
     renditions = ['default/audio64', 'default/audio96', 'default/audio128', 'default/audio192', 'default/video450', 'default/video700', 'default/video900', 'default/video1200', 'default/video1700', 'default/video2000', 'default/video3500', 'default/video3800'],
     profiles = [],
     selectAll,
-    renditionsCollection;
+    checkBoxCollection;
 
   // event listeners
   get_profiles.addEventListener('click', function() {
@@ -59,6 +59,18 @@ var BCLS = (function(window, document) {
           iMax = checkboxCollection.length;
       for (i = 0; i < iMax; i += 1) {
           checkboxCollection[i].setAttribute('checked', 'checked');
+      }
+  }
+
+  /**
+   * de-selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function unselectAllCheckboxes(checkboxCollection) {
+      var i,
+          iMax = checkboxCollection.length;
+      for (i = 0; i < iMax; i += 1) {
+          checkboxCollection[i].removeAttribute('checked');
       }
   }
 
@@ -120,7 +132,7 @@ var BCLS = (function(window, document) {
         input             = document.createElement('input');
         input.setAttribute('type', 'checkbox');
         input.setAttribute('value', valuesArray[i].value);
-        input.setAttribute('id', valuesArray[i].value);
+        input.setAttribute('name', 'checkBoxCollection');
         txt               = document.createTextNode('&nbsp;');
         label             = document.createElement('label');
         label.setAttribute('for', valuesArray[i].value);
@@ -134,8 +146,15 @@ var BCLS = (function(window, document) {
       parentElement.appendChild(fragment);
 
       // set up select all option
+      checkBoxCollection = document.getElementsByName('checkBoxCollection');
       selectAll = document.getElementById('selectAll');
-      selectAll.addEventListener('change', )
+      selectAll.addEventListener('change', function() {
+        if (this.checked) {
+          selectAllCheckboxes(checkBoxCollection);
+        } else {
+          unselectAllCheckboxes(checkBoxCollection);
+        }
+      });
     } else {
       console.log('function addCheckboxes: no parameters provided');
     }
@@ -149,9 +168,8 @@ var BCLS = (function(window, document) {
   function createRequest(type) {
     var options = {},
       requestBody = {},
-      proxyURL = 'https:/solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php'
-      ipBaseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account.value,
-      diBaseURL = 'https://ingest.api.brightcove.com/v1/accounts/' + account.value,
+      proxyURL = 'https:/solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
+      baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
       i,
