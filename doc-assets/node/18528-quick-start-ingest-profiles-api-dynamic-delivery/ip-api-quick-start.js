@@ -17,13 +17,16 @@ var BCLS = (function(window, document) {
     profiles = [];
 
   // event listeners
-  //
-  //
+  get_profiles.addEventListener('click', function() {
+    createRequest('get_profiles');
+  });
+
+  create_profile.addEventListener('click' function() {});
 
   /**
    * adds options to a select element from an array of valuesArray
    * @param {HTMLelement} selectElement the select element reference
-   * @param {Array} valuesArray the array of option values
+   * @param {Array} valuesArray the array of option values e.g. ['a','b','c']
    */
   function addOptions(selectElement, valuesArray) {
     var i,
@@ -35,6 +38,31 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i++) {
         option = document.createElement('option');
         option.setAttribute('value', valuesArray[i]);
+        option.textContent = valuesArray[i];
+        fragment.appendChild(option);
+      }
+      selectElement.appendChild(option);
+    } else {
+      console.log('function addOptions: no parameters provided');
+    }
+  }
+
+  /**
+   * adds options to a select element from an array of valuesArray
+   * @param {HTMLelement} parentElement the parent element for the checkboxes
+   * @param {Array} valuesArray the array of value/labels  e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
+   */
+  function addCheckboxes (parentElement, valuesArray) {
+    var i,
+      iMax,
+      input,
+      label,
+      fragment = document.createDocumentFragment;
+    if (selectElement && valuesArray) {
+      iMax = valuesArray.length;
+      for (i = 0; i < iMax; i++) {
+        input = document.createElement('input');
+        option.setAttribute('value', valuesArray[i].value);
         option.textContent = valuesArray[i];
         fragment.appendChild(option);
       }
