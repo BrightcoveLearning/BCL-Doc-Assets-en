@@ -13,8 +13,36 @@ var BCLS = (function(window, document) {
     api_request_display = document.getElementById('api_request_display'),
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
-    renditions = [],
+    renditions = ['default/audio64', 'default/audio96', 'default/audio128', 'default/audio192', 'default/video450', 'default/video700', 'default/video900', 'default/video1200', 'default/video1700', 'default/video2000', 'default/video3500', 'default/video3800'],
     profiles = [];
+
+  // event listeners
+  //
+  //
+
+  /**
+   * adds options to a select element from an array of valuesArray
+   * @param {HTMLelement} selectElement the select element reference
+   * @param {Array} valuesArray the array of option values
+   */
+  function addOptions(selectElement, valuesArray) {
+    var i,
+      iMax,
+      option,
+      fragment = document.createDocumentFragment;
+    if (selectElement && valuesArray) {
+      iMax = valuesArray.length;
+      for (i = 0; i < iMax; i++) {
+        option = document.createElement('option');
+        option.setAttribute('value', valuesArray[i]);
+        option.textContent = valuesArray[i];
+        fragment.appendChild(option);
+      }
+      selectElement.appendChild(option);
+    } else {
+      console.log('function addOptions: no parameters provided');
+    }
+  }
 
 
   /**
