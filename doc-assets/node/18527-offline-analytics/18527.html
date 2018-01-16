@@ -1,7 +1,7 @@
 <article class="bcls-article">
   <section class="bcls-section">
   <p>
-    With the increasing demand to download video content on mobile devices and watch it when not connected to WiFi, the ability to understand users viewing behavior can be a challenge.
+    With the increasing demand to download video content on mobile devices and watch it without any connection, the ability to understand users viewing behavior can be a challenge.
   </p>
   <p>
     The Brightcove Native Player SDKs for Android and iOS allow you to track and learn about user behavior by providing analytics related to offline playback.
@@ -9,7 +9,6 @@
   <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Video views"   src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/analytics/video-views.png" />
   <figcaption class="bcls-caption--image">Video views</figcaption>
   </figure>
-
   </section>
 
   <section class="bcls-section">
@@ -17,7 +16,10 @@
     <p>Analytics data associated with offline playback includes both video download and offline playback metrics. The Native Player SDKs handle these metrics as follows:</p>
     <ul>
       <li>
-        We store analytics data locally on your device until it is connected to a network.
+        Download data is sent to Brightcove during video download.
+      </li>
+      <li>
+        Offline playback data is stored locally on your device until it is connected to a network.
       </li>
       <li>
         As the app developer, you can choose to let the SDK upload data with a mobile connection or limit uploads to WIFI only.
@@ -29,8 +31,10 @@
         Retry logic exists for all events, but we prioritize video views and send them first.
       </li>
     </ul>
+  </section>
 
-    <h3>Video download data</h3>
+  <section class="bcls-section">
+    <h2 id="Video_download_data">Video download data</h2>
     <p>
       Metrics include:
     </p>
@@ -49,34 +53,7 @@
       </li>
     </ul>
 
-    <h3>Offline playback data</h3>
-    <p>
-      Metrics include:
-    </p>
-    <ul>
-      <li>
-        Device type, manufacturer, OS, OS version
-      </li>
-      <li>
-        Geographic location
-      </li>
-      <li>
-        Domain
-      </li>
-      <li>
-        Video ID
-      </li>
-      <li>
-        Video views (number of offline video views)
-      </li>
-      <li>
-        Video engagement (percent of video viewed)
-      </li>
-    </ul>
-  </section>
-
-  <section class="bcls-section">
-    <h2 id="Viewing_analytics_data">Viewing analytics data</h2>
+    <h3 id="Viewing_analytics_data">Viewing analytics</h3>
     <p>
       Using the <a href="/node/17997">Analytics API</a>, you can view the following download metrics:
     </p>
@@ -107,13 +84,13 @@
       </tbody>
   </table>
 
-  <h3>Sample request</h3>
+  <h4>Sample request</h4>
   <p>
     To return data for the download-specific fields, your HTTP GET request to the Analytics API will look similar to this:
   </p>
 <pre><code class="language-url">https://analytics.api.brightcove.com/v1/data?accounts=<span class="bcls-input">your account id</span>&amp;dimensions=video&amp;fields=video_download_request,video_download_complete,video_download_cancellation,video_download_error</code></pre>
 
-  <h3>Sample response</h3>
+  <h4>Sample response</h4>
   <p>
     Below is the JSON response from the request above:
   </p>
@@ -142,9 +119,39 @@
     <p>
       For details about viewing these download metrics from the Analytics API, see the <a href="/node/17961">Dimension: video</a> document.
     </p>
-    <p>
-      In the future, more analytics data associated with offline playback will be exposed through the Analytics API.
-    </p>
 
   </section>
+
+  <section class="bcls-section">
+    <h2>Offline playback data</h2>
+    <p>
+      Metrics include:
+    </p>
+    <ul>
+      <li>
+        Device type, manufacturer, OS, OS version
+      </li>
+      <li>
+        Geographic location
+      </li>
+      <li>
+        Domain
+      </li>
+      <li>
+        Video ID
+      </li>
+      <li>
+        Video views (number of offline video views)
+      </li>
+      <li>
+        Video engagement (percent of video viewed)
+      </li>
+    </ul>
+
+    <h3 id="Viewing_analytics_data">Viewing analytics</h3>
+    <p>
+      In the future, analytics data associated with offline playback will be exposed through the Analytics API.
+    </p>
+  </section>
+  <br />
 </article>
