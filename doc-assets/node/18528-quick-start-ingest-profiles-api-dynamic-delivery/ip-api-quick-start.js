@@ -9,6 +9,12 @@ var BCLS = (function(window, document) {
     rendition_select = document.getElementById('rendition_select'),
     profile_selector = document.getElementById('profile_selector'),
     profile_select = document.getElementById('profile_select'),
+    logger = document.getElementById('logger'),
+    api_request_display = document.getElementById('api_request_display'),
+    api_request_body_display = document.getElementById('api_request_body_display'),
+    api_response = document.getElementById('api_response'),
+    renditions = [],
+    profiles = [];
 
 
   /**
