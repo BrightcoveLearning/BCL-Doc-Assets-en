@@ -207,7 +207,7 @@ var BCLS = (function(window, document) {
           }
         });
         break;
-      case :'ingestVideo'
+      case 'ingestVideo':
       endpoint = '/profiles';
       options.url = ipBaseURL + endpoint;
       options.requestType = 'POST';;
