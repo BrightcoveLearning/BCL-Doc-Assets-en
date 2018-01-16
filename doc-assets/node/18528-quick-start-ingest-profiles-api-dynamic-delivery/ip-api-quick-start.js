@@ -14,14 +14,55 @@ var BCLS = (function(window, document) {
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
     renditions = ['default/audio64', 'default/audio96', 'default/audio128', 'default/audio192', 'default/video450', 'default/video700', 'default/video900', 'default/video1200', 'default/video1700', 'default/video2000', 'default/video3500', 'default/video3800'],
-    profiles = [];
+    profiles = [],
+    selectAll,
+    renditionsCollection;
 
   // event listeners
   get_profiles.addEventListener('click', function() {
     createRequest('get_profiles');
   });
 
-  create_profile.addEventListener('click' function() {});
+  create_profile.addEventListener('click', function() {
+
+  });
+
+  /**
+   * get array of values for checked boxes in a collection
+   * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+   * @return {Array} array of the values of the checked boxes
+   */
+  function getCheckedBoxValues(checkBoxCollection) {
+    var checkedValues = [],
+      i,
+      iMax;
+    if (checkBoxCollection) {
+      iMax = checkBoxCollection.length;
+      for (i = 0; i < iMax; i++) {
+        if (checkBoxCollection[i].checked === true) {
+          checkedValues.push(checkBoxCollection[i].value);
+        }
+      }
+      return checkedValues;
+    } else {
+      console.log('Error: no input recieved');
+      return null;
+    }
+  }
+
+  /**
+   * selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function selectAllCheckboxes(checkboxCollection) {
+      var i,
+          iMax = checkboxCollection.length;
+      for (i = 0; i < iMax; i += 1) {
+          checkboxCollection[i].setAttribute('checked', 'checked');
+      }
+  }
+
+
 
   /**
    * adds options to a select element from an array of valuesArray
@@ -41,7 +82,7 @@ var BCLS = (function(window, document) {
         option.textContent = valuesArray[i];
         fragment.appendChild(option);
       }
-      selectElement.appendChild(option);
+      selectElement.appendChild(fragment);
     } else {
       console.log('function addOptions: no parameters provided');
     }
@@ -57,18 +98,46 @@ var BCLS = (function(window, document) {
       iMax,
       input,
       label,
+      br,
+      txt,
       fragment = document.createDocumentFragment;
     if (selectElement && valuesArray) {
       iMax = valuesArray.length;
+      // add select all option
+      input             = document.createElement('input');
+      input.setAttribute('type', 'checkbox');
+      input.setAttribute('id', 'checkAll');
+      txt               = document.createTextNode('&nbsp;');
+      label             = document.createElement('label');
+      label.setAttribute('for', 'checkAll');
+      label.textContent = 'Select All';
+      br                = document.createElement('br');
+      fragment.appendChild(input);
+      fragment.appendChild(txt);
+      fragment.appendChild(label);
+      fragment.appendChild(br);
       for (i = 0; i < iMax; i++) {
-        input = document.createElement('input');
-        option.setAttribute('value', valuesArray[i].value);
-        option.textContent = valuesArray[i];
-        fragment.appendChild(option);
+        input             = document.createElement('input');
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('value', valuesArray[i].value);
+        input.setAttribute('id', valuesArray[i].value);
+        txt               = document.createTextNode('&nbsp;');
+        label             = document.createElement('label');
+        label.setAttribute('for', valuesArray[i].value);
+        label.textContent = valuesArray[i].label;
+        br                = document.createElement('br');
+        fragment.appendChild(input);
+        fragment.appendChild(txt);
+        fragment.appendChild(label);
+        fragment.appendChild(br);
       }
-      selectElement.appendChild(option);
+      parentElement.appendChild(fragment);
+
+      // set up select all option
+      selectAll = document.getElementById('selectAll');
+      selectAll.addEventListener('change', )
     } else {
-      console.log('function addOptions: no parameters provided');
+      console.log('function addCheckboxes: no parameters provided');
     }
   }
 
