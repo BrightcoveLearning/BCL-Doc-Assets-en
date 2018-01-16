@@ -210,7 +210,7 @@ var BCLS = (function(window, document) {
       case 'ingestVideo':
       endpoint = '/profiles';
       options.url = ipBaseURL + endpoint;
-      options.requestType = 'POST';;
+      options.requestType = 'POST';
       requestBocy.master = {};
       requestBody.master.url = 'http://myvideos.com/foo.mp4';
       // add more properties
