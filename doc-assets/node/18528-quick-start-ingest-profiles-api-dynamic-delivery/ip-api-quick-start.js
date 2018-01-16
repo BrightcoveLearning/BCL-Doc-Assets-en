@@ -28,7 +28,13 @@ var BCLS = (function(window, document) {
   });
 
   create_profile.addEventListener('click', function() {
+    getAccountInfo();
+    renditions = getCheckedBoxValues(checkboxCollection);
+    if (renditions.length === 0) {
+      alert('Please select the renditions you want to include and click this button again')
+    } else {
 
+    }
   });
 
   /**
