@@ -19,6 +19,7 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     selectAll,
+    selectedProfile,
     checkBoxCollection;
 
   // event listeners
@@ -28,12 +29,22 @@ var BCLS = (function(window, document) {
   });
 
   create_profile.addEventListener('click', function() {
-    getAccountInfo();
     renditions = getCheckedBoxValues(checkboxCollection);
     if (renditions.length === 0) {
-      alert('Please select the renditions you want to include and click this button again')
+      alert('Please select the renditions you want to include and click this button again');
     } else {
+      getAccountInfo();
+      createRequest('create_profile');
+    }
+  });
 
+  set_default_profile.addEventListener('click', function() {
+    selectedProfile = getSelectedValue(profile_select).value;
+    if (isDefined(selectedProfile)) {
+      getAccountInfo();
+      createRequest('set_default_profile');
+    } else {
+      alert('Please select a profile and click this button again');
     }
   });
 
@@ -44,6 +55,35 @@ var BCLS = (function(window, document) {
     account_id    = account_id_input.value;
     client_id     = client_id_input.value;
     client_secret = client_secret_input.value;
+  }
+
+  /**
+   * tests for all the ways a variable might be undefined or not have a value
+   * @param {*} x the variable to test
+   * @return {Boolean} true if variable is defined and has a value
+   */
+  function isDefined(x) {
+      if ( x === '' || x === null || x === undefined) {
+          return false;
+      }
+      return true;
+  }
+
+  /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value,
+          txt = selected.textContent,
+          idx = e.selectedIndex;
+      return {
+          value: val,
+          text: txt,
+          index: idx
+      };
   }
 
   /**
@@ -187,18 +227,16 @@ var BCLS = (function(window, document) {
   function createRequest(type) {
     var options = {},
       requestBody = {},
-      proxyURL = 'https:/solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
+      proxyURL = 'https:/solutions.brightcove.com/bcls/bcls-proxy/ip2-proxy.php',
       baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
       i,
-      iMax,
-      el,
-      txt;
+      iMax;
 
     // set credentials
-    options.client_id = cid.value;
-    options.client_secret = secret.value;
+    options.client_id = client_id;
+    options.client_secret = client_secret;
     options.proxyURL = proxyURL;
 
     switch (type) {
