@@ -5,6 +5,7 @@ var BCLS = (function(window, document) {
     get_profiles = document.getElementById('get_profiles'),
     create_profile = document.getElementById('create_profile'),
     set_default_profile = document.getElementById('set_default_profile'),
+    update_default_profile = document.getElementById('update_default_profile'),
     rendition_selector = document.getElementById('rendition_selector'),
     rendition_select = document.getElementById('rendition_select'),
     profile_selector = document.getElementById('profile_selector'),
