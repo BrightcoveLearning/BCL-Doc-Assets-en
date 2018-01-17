@@ -58,6 +58,12 @@ var BCLS = (function(window, document) {
     client_secret = client_secret_input.value;
   }
 
+  function logMessage(message) {
+    var br = document.createElement('br');
+    logger.textContent += message;
+    logger.appendChild(br);
+  }
+
   /**
    * tests for all the ways a variable might be undefined or not have a value
    * @param {*} x the variable to test
@@ -153,7 +159,7 @@ var BCLS = (function(window, document) {
   /**
    * adds options to a select element from an array of valuesArray
    * @param {HTMLelement} selectElement the select element reference
-   * @param {Array} valuesArray the array of option values e.g. ['a','b','c']
+   * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
   function addOptions(selectElement, valuesArray) {
     var i,
@@ -164,8 +170,8 @@ var BCLS = (function(window, document) {
       iMax = valuesArray.length;
       for (i = 0; i < iMax; i++) {
         option = document.createElement('option');
-        option.setAttribute('value', valuesArray[i]);
-        option.textContent = valuesArray[i];
+        option.setAttribute('value', valuesArray[i].value);
+        option.textContent = valuesArray[i].label;
         fragment.appendChild(option);
       }
       selectElement.appendChild(fragment);
@@ -246,6 +252,8 @@ var BCLS = (function(window, document) {
       baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
+      today = new Date().toISOString(),
+      tmpArray = [],
       i,
       iMax;
 
@@ -255,31 +263,77 @@ var BCLS = (function(window, document) {
     options.proxyURL = proxyURL;
 
     switch (type) {
-      case 'getProfiles':
+      case 'get_profiles':
+        logMessage('Getting profiles');
         endpoint = '/profiles';
-        options.url = ipBaseURL + endpoint;
+        options.url = baseURL + endpoint;
+        api_request_display.textContent = options.url;
+        api_request_body_display.textContent = 'no request body for this operation';
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
+          if (isJson(response)) {
+            responseDecoded = JSON.parse(response);
+            api_request_display.textContent = JSON.stringify(responseDecoded, null, '  ');
+          } else {
+            api_response.textContent = response;
+            logMessage('The get profiles operation failed; see the API Response for the error');
+            return;
+          }
           if (Array.isArray(responseDecoded)) {
+            iMax = responseDecoded.length;
+            for (i = 0; i < iMax; i++) {
+              var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
+              tmpArray.push(o);
+            }
+            addOptions(profile_selector, tmpArray);
           }
         });
         break;
-      case 'ingestVideo':
-      endpoint = '/profiles';
-      options.url = ipBaseURL + endpoint;
-      options.requestType = 'POST';
-      requestBocy.master = {};
-      requestBody.master.url = 'http://myvideos.com/foo.mp4';
-      // add more properties
-      options.requestBody = JSON.stringify(requestBody);
-      makeRequest(options, function(response) {
-        responseDecoded = JSON.parse(response);
-        // do more stuff
-      });
-      break;
-
-      // additional cases
+      case 'create_profile':
+        logMessage('Creating profile');
+        endpoint = '/profiles';
+        options.url = baseURL + endpoint;
+        api_request_display.textContent = options.url;
+        options.requestType = 'POST';
+        requestBody.name = 'test_dynamic_delivery_profile' + today;
+        requestBody.description = 'Test profile created from Ingest Profiles API Quick Start - delete if you do not need it';
+        requestBody.account_id = account_id;
+        requestBody.digital_master = {};
+        requestBody.digital_master.rendition = 'passthrough';
+        requestBody.digital_master.distribute = true;
+        requestBody.dynamic_origin = {};
+        requestBody.dynamic_origin.renditions = selectedRenditions;
+        requestBody.images = [];
+        requestBody.images.push({label:'poster', height: 720, width: 1280});
+        requestBody.images.push({label:'thumbnail', height: 90, width: 160});
+        api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
+        // add more properties
+        options.requestBody = JSON.stringify(requestBody);
+        makeRequest(options, function(response) {
+          if (isJson(response)) {
+            responseDecoded = JSON.parse(response);
+            api_request_display.textContent = JSON.stringify(responseDecoded, null, '  ');
+          } else {
+            api_response.textContent = response;
+            logMessage('The create profile operation failed; see the API Response for the error');
+            return;
+          }
+        });
+        break;
+      case 'set_default_profile':
+        logMessage('Setting the default profile');
+        endpoint = '/configuration';
+        options.url = baseURL + endpoint;
+        api_request_display.textContent = options.url;
+        options.requestType = 'POST';
+        break;
+      case 'update_default_profile':
+        logMessage('Setting the default profile');
+        endpoint = '/configuration';
+        options.url = baseURL + endpoint;
+        api_request_display.textContent = options.url;
+        options.requestType = 'POST';
+        break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
         break;
