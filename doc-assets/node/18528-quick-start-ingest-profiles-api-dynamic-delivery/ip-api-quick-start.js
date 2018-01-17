@@ -176,7 +176,7 @@ var BCLS = (function(window, document) {
     var i,
       iMax,
       option,
-      fragment = document.createDocumentFragment;
+      fragment = document.createDocumentFragment();
     if (selectElement && valuesArray) {
       iMax = valuesArray.length;
       for (i = 0; i < iMax; i++) {
@@ -203,7 +203,7 @@ var BCLS = (function(window, document) {
       label,
       br,
       txt,
-      fragment = document.createDocumentFragment;
+      fragment = document.createDocumentFragment();
     if (parentElement && valuesArray) {
       iMax = valuesArray.length;
       // add select all option
