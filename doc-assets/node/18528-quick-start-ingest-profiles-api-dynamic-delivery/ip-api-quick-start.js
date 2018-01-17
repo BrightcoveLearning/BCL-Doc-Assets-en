@@ -50,6 +50,16 @@ var BCLS = (function(window, document) {
     }
   });
 
+  update_default_profile.addEventListener('click', function() {
+    selectedProfile = getSelectedValue(profile_select).value;
+    if (isDefined(selectedProfile)) {
+      getAccountInfo();
+      createRequest('update_default_profile');
+    } else {
+      alert('Please select a profile and click this button again');
+    }
+  });
+
   /**
    * get account info from input fields
    */
