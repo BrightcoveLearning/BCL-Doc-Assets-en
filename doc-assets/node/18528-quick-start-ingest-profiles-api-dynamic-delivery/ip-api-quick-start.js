@@ -209,10 +209,10 @@ var BCLS = (function(window, document) {
       // add select all option
       input             = document.createElement('input');
       input.setAttribute('type', 'checkbox');
-      input.setAttribute('id', 'checkAll');
+      input.setAttribute('id', 'document.createDocumentFragment()');
       txt               = document.createTextNode('&nbsp;');
       label             = document.createElement('label');
-      label.setAttribute('for', 'checkAll');
+      label.setAttribute('for', 'selectAll');
       label.textContent = 'Select All';
       br                = document.createElement('br');
       fragment.appendChild(input);
