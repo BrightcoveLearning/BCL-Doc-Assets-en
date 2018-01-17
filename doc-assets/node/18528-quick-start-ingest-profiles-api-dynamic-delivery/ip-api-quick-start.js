@@ -204,7 +204,7 @@ var BCLS = (function(window, document) {
       br,
       txt,
       fragment = document.createDocumentFragment;
-    if (selectElement && valuesArray) {
+    if (parentElement && valuesArray) {
       iMax = valuesArray.length;
       // add select all option
       input             = document.createElement('input');
