@@ -19,6 +19,7 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     selectAll,
+    selectedRenditions = [],
     selectedProfile,
     checkBoxCollection;
 
@@ -29,7 +30,7 @@ var BCLS = (function(window, document) {
   });
 
   create_profile.addEventListener('click', function() {
-    renditions = getCheckedBoxValues(checkboxCollection);
+    selectedRenditions = getCheckedBoxValues(checkboxCollection);
     if (renditions.length === 0) {
       alert('Please select the renditions you want to include and click this button again');
     } else {
@@ -285,5 +286,10 @@ var BCLS = (function(window, document) {
     }
   }
 
+function init() {
+  addCheckboxes(rendition_selector, renditions);
+}
+
+init();
 
 })(window, document);
