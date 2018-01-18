@@ -396,6 +396,7 @@ var BCLS = (function(window, document) {
    * @param  {Function} [callback] callback function that will process the response
    */
   function makeRequest(options, callback) {
+console.log('options', options);
       var httpRequest = new XMLHttpRequest(),
           response,
           requestParams,
