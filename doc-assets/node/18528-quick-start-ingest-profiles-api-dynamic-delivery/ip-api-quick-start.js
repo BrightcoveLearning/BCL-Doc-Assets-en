@@ -301,7 +301,7 @@ console.log('valuesArray', valuesArray);
                 var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
                 tmpArray.push(o);
               }
-              addOptions(profile_selector, tmpArray);
+              addOptions(profile_select, tmpArray);
               }
           }
         });
