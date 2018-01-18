@@ -64,7 +64,7 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    account_id    = account_id_input.value;
+    account_id    = (isDefined(account_id_input.value)) ? account_id_input.value : '57838016001';
     client_id     = client_id_input.value;
     client_secret = client_secret_input.value;
   }
