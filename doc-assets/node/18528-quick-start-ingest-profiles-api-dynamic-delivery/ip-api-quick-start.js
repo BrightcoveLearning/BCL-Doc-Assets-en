@@ -22,7 +22,7 @@ var BCLS = (function(window, document) {
     selectAll,
     selectedRenditions = [],
     selectedProfile,
-    checkBoxCollection;
+    checkboxCollection;
 
   // event listeners
   get_profiles.addEventListener('click', function() {
@@ -120,18 +120,18 @@ var BCLS = (function(window, document) {
 
   /**
    * get array of values for checked boxes in a collection
-   * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+   * @param {htmlElementCollection} elementCollection collection of checkbox elements
    * @return {Array} array of the values of the checked boxes
    */
-  function getCheckedBoxValues(checkBoxCollection) {
+  function getCheckedBoxValues(elementCollection) {
     var checkedValues = [],
       i,
       iMax;
-    if (checkBoxCollection) {
-      iMax = checkBoxCollection.length;
+    if (elementCollection) {
+      iMax = elementCollection.length;
       for (i = 0; i < iMax; i++) {
-        if (checkBoxCollection[i].checked === true) {
-          checkedValues.push(checkBoxCollection[i].value);
+        if (elementCollection[i].checked === true) {
+          checkedValues.push(elementCollection[i].value);
         }
       }
       return checkedValues;
@@ -225,7 +225,7 @@ console.log('valuesArray', valuesArray);
         input             = document.createElement('input');
         input.setAttribute('type', 'checkbox');
         input.setAttribute('value', valuesArray[i].value);
-        input.setAttribute('name', 'checkBoxCollection');
+        input.setAttribute('name', 'checkboxCollection');
         txt               = document.createTextNode(' ');
         label             = document.createElement('label');
         label.setAttribute('for', valuesArray[i].value);
@@ -239,13 +239,13 @@ console.log('valuesArray', valuesArray);
       parentElement.appendChild(fragment);
 
       // set up select all option
-      checkBoxCollection = document.getElementsByName('checkBoxCollection');
+      checkboxCollection = document.getElementsByName('checkboxCollection');
       selectAll = document.getElementById('selectAll');
       selectAll.addEventListener('change', function() {
         if (this.checked) {
-          selectAllCheckboxes(checkBoxCollection);
+          selectAllCheckboxes(checkboxCollection);
         } else {
-          unselectAllCheckboxes(checkBoxCollection);
+          unselectAllCheckboxes(checkboxCollection);
         }
       });
     } else {
