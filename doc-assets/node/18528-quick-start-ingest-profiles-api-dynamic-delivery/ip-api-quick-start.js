@@ -269,8 +269,10 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    options.client_id = client_id;
-    options.client_secret = client_secret;
+    if (isDefined(client_id)) P{
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
     options.proxyURL = proxyURL;
 
     switch (type) {
