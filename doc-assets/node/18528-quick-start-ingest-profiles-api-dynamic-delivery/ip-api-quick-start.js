@@ -224,7 +224,7 @@ var BCLS = (function(window, document) {
         input.setAttribute('type', 'checkbox');
         input.setAttribute('value', valuesArray[i].value);
         input.setAttribute('name', 'checkBoxCollection');
-        txt               = document.createTextNode('&nbsp;');
+        txt               = document.createTextNode(' ');
         label             = document.createElement('label');
         label.setAttribute('for', valuesArray[i].value);
         label.textContent = valuesArray[i].label;
