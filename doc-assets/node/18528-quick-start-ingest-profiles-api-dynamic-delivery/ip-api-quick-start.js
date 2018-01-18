@@ -173,6 +173,8 @@ var BCLS = (function(window, document) {
    * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
   function addOptions(selectElement, valuesArray) {
+console.log('selectElement', selectElement);
+console.log('valuesArray', valuesArray);
     var i,
       iMax,
       option,
@@ -295,10 +297,12 @@ var BCLS = (function(window, document) {
           if (Array.isArray(responseDecoded)) {
             iMax = responseDecoded.length;
             for (i = 0; i < iMax; i++) {
-              var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
-              tmpArray.push(o);
-            }
-            addOptions(profile_selector, tmpArray);
+              if (responseDecoded[i].hasOwnProperty('dynamic_origin')) {
+                var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
+                tmpArray.push(o);
+              }
+              addOptions(profile_selector, tmpArray);
+              }
           }
         });
         break;
