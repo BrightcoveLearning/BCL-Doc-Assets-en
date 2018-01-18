@@ -440,7 +440,7 @@ console.log('options', options);
       if (options.requestBody) {
           requestParams += '&requestBody=' + options.requestBody;
       }
-      console.log('requestParams', requestParams);
+console.log('requestParams', requestParams);
       // set response handler
       httpRequest.onreadystatechange = getResponse;
       // open the request
