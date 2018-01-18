@@ -185,6 +185,8 @@ console.log('valuesArray', valuesArray);
         option.setAttribute('value', valuesArray[i].value);
         option.textContent = valuesArray[i].label;
         fragment.appendChild(option);
+console.log('i', i);
+console.log('fragment', fragment);
       }
       selectElement.appendChild(fragment);
     } else {
