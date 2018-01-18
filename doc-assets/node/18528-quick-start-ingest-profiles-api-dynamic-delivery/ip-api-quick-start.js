@@ -173,6 +173,7 @@ var BCLS = (function(window, document) {
    * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
   function addOptions(selectElement, valuesArray) {
+console.log(valuesArray);
     var i,
       iMax;
     if (selectElement && valuesArray) {
