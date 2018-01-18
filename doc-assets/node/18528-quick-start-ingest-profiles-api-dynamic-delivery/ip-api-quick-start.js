@@ -297,8 +297,8 @@ console.log(valuesArray);
                 var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
                 tmpArray.push(o);
               }
-              addOptions(profile_select, tmpArray);
-              }
+            }
+            addOptions(profile_select, tmpArray);
           }
         });
         break;
