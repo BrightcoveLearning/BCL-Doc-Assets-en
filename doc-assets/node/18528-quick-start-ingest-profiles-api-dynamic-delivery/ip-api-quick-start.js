@@ -324,7 +324,7 @@ console.log(valuesArray);
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_request_display.textContent = JSON.stringify(responseDecoded, null, '  ');
+            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
           } else {
             api_response.textContent = response;
             logMessage('The create profile operation failed; see the API Response for the error');
@@ -345,7 +345,7 @@ console.log(valuesArray);
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_request_display.textContent = JSON.stringify(responseDecoded, null, '  ');
+            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
             // check for conflict - means default has already been set
             if (Array.isArray(responseDecoded) && responseDecoded[0].code === 'CONFLICT') {
               alert('The request failed because the default profile for the account has already been set - use Update Default Profile instead');
@@ -370,7 +370,7 @@ console.log(valuesArray);
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_request_display.textContent = JSON.stringify(responseDecoded, null, '  ');
+            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
           } else {
             api_response.textContent = response;
             logMessage('The set default profile operation failed; see the API Response for the error');
