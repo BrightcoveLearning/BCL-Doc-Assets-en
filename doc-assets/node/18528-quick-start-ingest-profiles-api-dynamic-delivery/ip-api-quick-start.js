@@ -177,12 +177,11 @@ console.log('selectElement', selectElement);
 console.log('valuesArray', valuesArray);
     var i,
       iMax,
-      option,
       fragment = document.createDocumentFragment();
     if (selectElement && valuesArray) {
       iMax = valuesArray.length;
       for (i = 0; i < iMax; i++) {
-        option = document.createElement('option');
+        var option = document.createElement('option');
         option.setAttribute('value', valuesArray[i].value);
         option.textContent = valuesArray[i].label;
         fragment.appendChild(option);
