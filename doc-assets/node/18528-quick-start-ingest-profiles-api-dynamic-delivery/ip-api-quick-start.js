@@ -269,7 +269,7 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    if (isDefined(client_id)) P{
+    if (isDefined(client_id)) {
       options.client_id = client_id;
       options.client_secret = client_secret;
     }
