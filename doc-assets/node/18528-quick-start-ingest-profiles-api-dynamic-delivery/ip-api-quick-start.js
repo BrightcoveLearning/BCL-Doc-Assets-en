@@ -173,7 +173,6 @@ var BCLS = (function(window, document) {
    * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
   function addOptions(selectElement, valuesArray) {
-console.log(valuesArray);
     var i,
       iMax;
     if (selectElement && valuesArray) {
@@ -396,7 +395,6 @@ console.log(valuesArray);
    * @param  {Function} [callback] callback function that will process the response
    */
   function makeRequest(options, callback) {
-console.log('options', options);
       var httpRequest = new XMLHttpRequest(),
           response,
           requestParams,
@@ -440,7 +438,6 @@ console.log('options', options);
       if (options.requestBody) {
           requestParams += '&requestBody=' + options.requestBody;
       }
-console.log('requestParams', requestParams);
       // set response handler
       httpRequest.onreadystatechange = getResponse;
       // open the request
