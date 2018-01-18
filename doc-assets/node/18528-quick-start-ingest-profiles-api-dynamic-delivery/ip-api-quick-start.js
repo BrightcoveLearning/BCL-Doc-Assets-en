@@ -173,8 +173,6 @@ var BCLS = (function(window, document) {
    * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
   function addOptions(selectElement, valuesArray) {
-console.log('selectElement', selectElement);
-console.log('valuesArray', valuesArray);
     var i,
       iMax;
     if (selectElement && valuesArray) {
@@ -184,8 +182,6 @@ console.log('valuesArray', valuesArray);
         option.setAttribute('value', valuesArray[i].value);
         option.textContent = valuesArray[i].label;
         selectElement.add(option);
-console.log('i', i);
-console.log('fragment', fragment);
       }
       selectElement.appendChild(fragment);
     } else {
