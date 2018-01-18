@@ -14,7 +14,7 @@ var BCLS = (function(window, document) {
     api_request_display = document.getElementById('api_request_display'),
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
-    renditions = ['default/audio64', 'default/audio96', 'default/audio128', 'default/audio192', 'default/video450', 'default/video700', 'default/video900', 'default/video1200', 'default/video1700', 'default/video2000', 'default/video3500', 'default/video3800'],
+    renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'}, {value:'default/video450', label:'default/video450'}, {value:'default/video700', label:'default/video700'}, {value:'default/video900', label:'default/video900'}, {value:'default/video1200', label:'default/video1200'}, {value:'default/video1700', label:'default/video1700'}, {value:'default/video2000', label:'default/video2000'}, {value:'default/video3500', label:'default/video3500'}, {value:'default/video3800', label:'default/video3800'} ],
     profiles = [],
     account_id,
     client_id,
@@ -209,8 +209,8 @@ var BCLS = (function(window, document) {
       // add select all option
       input             = document.createElement('input');
       input.setAttribute('type', 'checkbox');
-      input.setAttribute('id', 'document.createDocumentFragment()');
-      txt               = document.createTextNode('&nbsp;');
+      input.setAttribute('id', 'selectAll');
+      txt               = document.createTextNode(' ');
       label             = document.createElement('label');
       label.setAttribute('for', 'selectAll');
       label.textContent = 'Select All';
