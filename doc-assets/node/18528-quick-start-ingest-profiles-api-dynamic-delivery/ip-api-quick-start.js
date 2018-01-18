@@ -284,7 +284,7 @@ console.log(valuesArray);
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_request_display.textContent = JSON.stringify(responseDecoded, null, '  ');
+            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
           } else {
             api_response.textContent = response;
             logMessage('The get profiles operation failed; see the API Response for the error');
