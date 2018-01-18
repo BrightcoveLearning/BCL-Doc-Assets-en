@@ -183,7 +183,6 @@ var BCLS = (function(window, document) {
         option.textContent = valuesArray[i].label;
         selectElement.add(option);
       }
-      selectElement.appendChild(fragment);
     } else {
       console.log('function addOptions: no parameters provided');
     }
