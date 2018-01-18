@@ -176,15 +176,14 @@ var BCLS = (function(window, document) {
 console.log('selectElement', selectElement);
 console.log('valuesArray', valuesArray);
     var i,
-      iMax,
-      fragment = document.createDocumentFragment();
+      iMax;
     if (selectElement && valuesArray) {
       iMax = valuesArray.length;
       for (i = 0; i < iMax; i++) {
         var option = document.createElement('option');
         option.setAttribute('value', valuesArray[i].value);
         option.textContent = valuesArray[i].label;
-        fragment.appendChild(option);
+        selectElement.add(option);
 console.log('i', i);
 console.log('fragment', fragment);
       }
