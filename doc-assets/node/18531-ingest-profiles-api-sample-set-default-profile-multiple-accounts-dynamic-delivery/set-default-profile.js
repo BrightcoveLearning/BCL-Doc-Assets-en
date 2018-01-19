@@ -2,6 +2,7 @@ var BCLS = (function(window, document) {
   var account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
+    get_profiles = document.getElementById('get_profiles'),
     set_default_profile = document.getElementById('set_default_profile'),
     update_default_profile = document.getElementById('update_default_profile'),
     profile_selector = document.getElementById('profile_selector'),
@@ -17,10 +18,17 @@ var BCLS = (function(window, document) {
     selectedProfile;
 
   // event listeners
+  get_profiles.addEventListener('click', function() {
+    if  (getAccountInfo()) {
+      createRequest('get_profiles');
+    } else {
+      alert('Account ID, Client ID, and Client Secret are required');
+    }
+  });
+
   set_default_profile.addEventListener('click', function() {
     selectedProfile = getSelectedValue(profile_select).value;
     if (isDefined(selectedProfile)) {
-      getAccountInfo();
       createRequest('set_default_profile');
     } else {
       alert('Please select a profile and click this button again');
@@ -30,7 +38,6 @@ var BCLS = (function(window, document) {
   update_default_profile.addEventListener('click', function() {
     selectedProfile = getSelectedValue(profile_select).value;
     if (isDefined(selectedProfile)) {
-      getAccountInfo();
       createRequest('update_default_profile');
     } else {
       alert('Please select a profile and click this button again');
@@ -45,8 +52,9 @@ var BCLS = (function(window, document) {
       account_id    = account_id_input.value;
       client_id     = client_id_input.value;
       client_secret = client_secret_input.value;
+      return true;
     } else {
-      alert('Account ID, Client ID, and Client Secret are required');
+      return false;
     }
   }
 
