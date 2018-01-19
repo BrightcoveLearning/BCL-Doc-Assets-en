@@ -127,15 +127,26 @@ video-cloud/sharing-relationships/delete</code></pre>
   "affiliate_id": "47509719001",
   "affiliate_video_id": null,
   "status": "PROCESSING",
-  <span class="bcls-higlight">"error_message": "[{"error_code":"MISSING_CUSTOM_FIELDS","error_message":"Affiliate account is missing custom fields: [subject]"}]",</span>
+  <span class="bcls-higlight">"error_message": [{"error_code":"MISSING_CUSTOM_FIELDS","error_message":"Affiliate account is missing custom fields: [subject]"}],</span>
   "shared_at": "2018-01-03T16:29:19.080Z",
   "updated_at": "2018-01-03T16:29:19.080Z"
 }</code></pre>
 
 <h3>Geo-filtering matching</h3>
 
+<p>If geo-filtering matching is enabled for a channel, videos cannot be shared if the master account has geo-filtering enabled and the affiliate account does not. The error will look like this:</p>
 
-<p>See <a href="#update_channel">Update channel</a> below to see how you update a channel to enforce custom field matching.</p>
+<pre class="line-numbers">
+<code class="language-json">{
+  "video_id": "5691312273001",
+  "affiliate_id": "47509719001",
+  "affiliate_video_id": null,
+  "status": "PROCESSING",
+  <span class="bcls-higlight">"error_message": [{"error_code":"CONFLICT","error_message":"Affiliate account is not configured for geo restriction."}],</span>
+  "shared_at": "2018-01-03T16:29:19.080Z",
+  "updated_at": "2018-01-03T16:29:19.080Z"
+
+<p>See <a href="#update_channel">Update channel</a> below to see how you update a channel to enforce custom field and/or geo-filtering matching.</p>
 </section>
 
 <section class="bcls-section">
@@ -489,7 +500,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 			<pre class="line-numbers">
 <code class="language-json">{
 	"enforce_custom_fields" : true,
-	"enforce_geo" : true<sup><strong><a href="#note6-2">[6-2]</a></strong></sup>
+	"enforce_geo" : true</sup>
 }</code></pre>
 			</td>
 		</tr>
@@ -515,7 +526,6 @@ video-cloud/sharing-relationships/delete</code></pre>
 
 <ul>
 	<li id="note6-1"><sup><strong>[6-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
-	<li id="note6-2"><sup><strong>[6-2]</strong></sup> <code>enforce_geo</code> is currently ignored, but enforcement of geo-filtering in the Affiliate account if present in the Master account will be implemented in the future</li>
 </ul>
 <!-- table 8 --><!-- <h4 id="Remove_channel">Remove channel</h4>
 <table class="bcls-table">
