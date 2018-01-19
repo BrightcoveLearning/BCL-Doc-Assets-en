@@ -1,45 +1,22 @@
 var BCLS = (function(window, document) {
-  var account_id_input = document.getElementById('account_id_input'),
+  var account_ids_input = document.getElementById('account_ids_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
-    get_profiles = document.getElementById('get_profiles'),
-    create_profile = document.getElementById('create_profile'),
     set_default_profile = document.getElementById('set_default_profile'),
     update_default_profile = document.getElementById('update_default_profile'),
-    rendition_selector = document.getElementById('rendition_selector'),
-    rendition_select = document.getElementById('rendition_select'),
     profile_selector = document.getElementById('profile_selector'),
     profile_select = document.getElementById('profile_select'),
     logger = document.getElementById('logger'),
     api_request_display = document.getElementById('api_request_display'),
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
-    renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'}, {value:'default/video450', label:'default/video450'}, {value:'default/video700', label:'default/video700'}, {value:'default/video900', label:'default/video900'}, {value:'default/video1200', label:'default/video1200'}, {value:'default/video1700', label:'default/video1700'}, {value:'default/video2000', label:'default/video2000'}, {value:'default/video3500', label:'default/video3500'}, {value:'default/video3800', label:'default/video3800'} ],
     profiles = [],
-    account_id,
+    account_ids = [],
     client_id,
     client_secret,
-    selectAll,
-    selectedRenditions = [],
-    selectedProfile,
-    checkboxCollection;
+    selectedProfile;
 
   // event listeners
-  get_profiles.addEventListener('click', function() {
-    getAccountInfo();
-    createRequest('get_profiles');
-  });
-
-  create_profile.addEventListener('click', function() {
-    selectedRenditions = getCheckedBoxValues(checkboxCollection);
-    if (renditions.length === 0) {
-      alert('Please select the renditions you want to include and click this button again');
-    } else {
-      getAccountInfo();
-      createRequest('create_profile');
-    }
-  });
-
   set_default_profile.addEventListener('click', function() {
     selectedProfile = getSelectedValue(profile_select).value;
     if (isDefined(selectedProfile)) {
@@ -64,9 +41,14 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    account_id    = (isDefined(account_id_input.value)) ? account_id_input.value : '57838016001';
-    client_id     = client_id_input.value;
-    client_secret = client_secret_input.value;
+    if (isDefined(account_ids_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
+      account_ids_string = removeSpaces(account_ids_input.value);
+      account_ids        = account_ids_string.split(',');
+      client_id          = client_id_input.value;
+      client_secret      = client_secret_input.value;
+    } else {
+      alert('Account ID, Client ID, and Client Secret are required');
+    }
   }
 
   function logMessage(message) {
@@ -99,6 +81,16 @@ var BCLS = (function(window, document) {
           return false;
       }
       return true;
+  }
+
+  /**
+   * remove spaces from a string
+   * @param {String} str string to process
+   * @return {String} trimmed string
+   */
+  function removeSpaces(str) {
+      str= str.replace(/\s/g, '');
+      return str;
   }
 
   /**
