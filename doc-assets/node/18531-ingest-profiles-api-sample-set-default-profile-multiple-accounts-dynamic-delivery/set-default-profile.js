@@ -49,9 +49,9 @@ var BCLS = (function(window, document) {
    */
   function getAccountInfo() {
     if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
-      account_id    = account_id_input.value;
-      client_id     = client_id_input.value;
-      client_secret = client_secret_input.value;
+      account_id    = removeSpaces(account_id_input.value);
+      client_id     = removeSpaces(client_id_input.value);
+      client_secret = removeSpaces(client_secret_input.value);
       return true;
     } else {
       return false;
@@ -98,6 +98,24 @@ var BCLS = (function(window, document) {
   function removeSpaces(str) {
       str= str.replace(/\s/g, '');
       return str;
+  }
+
+  /**
+   * enable a button element
+   * @param  {HTMLelement} button a reference to a button element
+   */
+  function enableButton(button) {
+    button.removeAttribute('disabled');
+    button.setAttribute('style', 'opacity:1;');
+  }
+
+  /**
+   * disable a button element
+   * @param  {HTMLelement} button a reference to a button element
+   */
+  function disableButton(button) {
+    button.setAttribute('disabled', 'disabled');
+    button.setAttribute('style', 'opacity:.6;');
   }
 
   /**
