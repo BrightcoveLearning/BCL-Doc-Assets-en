@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var account_ids_input = document.getElementById('account_ids_input'),
+  var account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     set_default_profile = document.getElementById('set_default_profile'),
@@ -41,11 +41,10 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    if (isDefined(account_ids_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
-      account_ids_string = removeSpaces(account_ids_input.value);
-      account_ids        = account_ids_string.split(',');
-      client_id          = client_id_input.value;
-      client_secret      = client_secret_input.value;
+    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
+      account_id    = account_id_input.value;
+      client_id     = client_id_input.value;
+      client_secret = client_secret_input.value;
     } else {
       alert('Account ID, Client ID, and Client Secret are required');
     }
@@ -111,55 +110,6 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * get array of values for checked boxes in a collection
-   * @param {htmlElementCollection} elementCollection collection of checkbox elements
-   * @return {Array} array of the values of the checked boxes
-   */
-  function getCheckedBoxValues(elementCollection) {
-    var checkedValues = [],
-      i,
-      iMax;
-    if (elementCollection) {
-      iMax = elementCollection.length;
-      for (i = 0; i < iMax; i++) {
-        if (elementCollection[i].checked === true) {
-          checkedValues.push(elementCollection[i].value);
-        }
-      }
-      return checkedValues;
-    } else {
-      console.log('Error: no input recieved');
-      return null;
-    }
-  }
-
-  /**
-   * selects all checkboxes in a collection
-   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
-   */
-  function selectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i < iMax; i += 1) {
-          checkboxCollection[i].setAttribute('checked', 'checked');
-      }
-  }
-
-  /**
-   * de-selects all checkboxes in a collection
-   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
-   */
-  function unselectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i < iMax; i += 1) {
-          checkboxCollection[i].removeAttribute('checked');
-      }
-  }
-
-
-
-  /**
    * adds options to a select element from an array of valuesArray
    * @param {HTMLelement} selectElement the select element reference
    * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
@@ -181,67 +131,6 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * creates a set of checkboxes with labels from an array of valuesArray
-   * @param {HTMLelement} parentElement the parent element for the checkboxes
-   * @param {Array} valuesArray the array of value/labels  e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
-   */
-  function addCheckboxes (parentElement, valuesArray) {
-    var i,
-      iMax,
-      input,
-      label,
-      br,
-      txt,
-      fragment = document.createDocumentFragment();
-    if (parentElement && valuesArray) {
-      iMax = valuesArray.length;
-      // add select all option
-      input             = document.createElement('input');
-      input.setAttribute('type', 'checkbox');
-      input.setAttribute('id', 'selectAll');
-      txt               = document.createTextNode(' ');
-      label             = document.createElement('label');
-      label.setAttribute('for', 'selectAll');
-      label.textContent = 'Select All';
-      br                = document.createElement('br');
-      fragment.appendChild(input);
-      fragment.appendChild(txt);
-      fragment.appendChild(label);
-      fragment.appendChild(br);
-      for (i = 0; i < iMax; i++) {
-        input             = document.createElement('input');
-        input.setAttribute('type', 'checkbox');
-        input.setAttribute('value', valuesArray[i].value);
-        input.setAttribute('name', 'checkboxCollection');
-        txt               = document.createTextNode(' ');
-        label             = document.createElement('label');
-        label.setAttribute('for', valuesArray[i].value);
-        label.textContent = valuesArray[i].label;
-        br                = document.createElement('br');
-        fragment.appendChild(input);
-        fragment.appendChild(txt);
-        fragment.appendChild(label);
-        fragment.appendChild(br);
-      }
-      parentElement.appendChild(fragment);
-
-      // set up select all option
-      checkboxCollection = document.getElementsByName('checkboxCollection');
-      selectAll = document.getElementById('selectAll');
-      selectAll.addEventListener('change', function() {
-        if (this.checked) {
-          selectAllCheckboxes(checkboxCollection);
-        } else {
-          unselectAllCheckboxes(checkboxCollection);
-        }
-      });
-    } else {
-      console.log('function addCheckboxes: no parameters provided');
-    }
-  }
-
-
-  /**
    * createRequest sets up requests, send them to makeRequest(), and handles responses
    * @param  {string} type the request type
    */
@@ -258,10 +147,8 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    if (isDefined(client_id)) {
-      options.client_id = client_id;
-      options.client_secret = client_secret;
-    }
+    options.client_id = client_id;
+    options.client_secret = client_secret;
     options.proxyURL = proxyURL;
 
     switch (type) {
@@ -290,36 +177,6 @@ var BCLS = (function(window, document) {
               }
             }
             addOptions(profile_select, tmpArray);
-          }
-        });
-        break;
-      case 'create_profile':
-        logMessage('Creating profile');
-        endpoint = '/profiles';
-        options.url = baseURL + endpoint;
-        api_request_display.textContent = options.url;
-        options.requestType = 'POST';
-        requestBody.name = 'test_dynamic_delivery_profile' + today;
-        requestBody.description = 'Test profile created from Ingest Profiles API Quick Start - delete if you do not need it';
-        requestBody.account_id = account_id;
-        requestBody.digital_master = {};
-        requestBody.digital_master.rendition = 'passthrough';
-        requestBody.digital_master.distribute = true;
-        requestBody.dynamic_origin = {};
-        requestBody.dynamic_origin.renditions = selectedRenditions;
-        requestBody.images = [];
-        requestBody.images.push({label:'poster', height: 720, width: 1280});
-        requestBody.images.push({label:'thumbnail', height: 90, width: 160});
-        api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
-        options.requestBody = JSON.stringify(requestBody);
-        makeRequest(options, function(response) {
-          if (isJson(response)) {
-            responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
-          } else {
-            api_response.textContent = response;
-            logMessage('The create profile operation failed; see the API Response for the error');
-            return;
           }
         });
         break;
