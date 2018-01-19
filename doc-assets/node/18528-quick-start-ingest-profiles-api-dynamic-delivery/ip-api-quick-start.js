@@ -189,7 +189,7 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * adds options to a select element from an array of valuesArray
+   * creates a set of checkboxes with labels from an array of valuesArray
    * @param {HTMLelement} parentElement the parent element for the checkboxes
    * @param {Array} valuesArray the array of value/labels  e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
