@@ -44,6 +44,20 @@ var BCLS = (function(window, document) {
 
 
   /**
+   * get account info from input fields
+   */
+  function getAccountInfo() {
+    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
+      account_id    = removeSpaces(account_id_input.value);
+      client_id     = removeSpaces(client_id_input.value);
+      client_secret = removeSpaces(client_secret_input.value);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * add a log message to the page
    * (inside an element with id="logger")
    * @param  {string} message the message to insert
