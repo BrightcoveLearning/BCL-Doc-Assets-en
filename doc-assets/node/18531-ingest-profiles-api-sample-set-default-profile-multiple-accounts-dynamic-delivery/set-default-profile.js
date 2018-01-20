@@ -59,9 +59,8 @@ var BCLS = (function(window, document) {
   }
 
   function logMessage(message) {
-    var br = document.createElement('br');
+    logger.insertAdjacentHTML('beforeend', '<br>');
     logger.textContent += message;
-    logger.appendChild(br);
   }
 
   /**
