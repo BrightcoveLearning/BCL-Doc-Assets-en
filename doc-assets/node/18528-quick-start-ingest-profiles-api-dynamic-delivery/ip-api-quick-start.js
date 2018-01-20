@@ -70,7 +70,7 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * add a log message into the page
+   * add a log message to the page
    * (inside an element with id="logger")
    * @param  {string} message the message to insert
    */
