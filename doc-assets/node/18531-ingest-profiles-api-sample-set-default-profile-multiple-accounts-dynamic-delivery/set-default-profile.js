@@ -203,6 +203,7 @@ var BCLS = (function(window, document) {
               }
             }
             addOptions(profile_select, tmpArray);
+            enableButton(set_default_profile);
           }
         });
         break;
@@ -223,6 +224,7 @@ var BCLS = (function(window, document) {
             // check for conflict - means default has already been set
             if (Array.isArray(responseDecoded) && responseDecoded[0].code === 'CONFLICT') {
               alert('The request failed because the default profile for the account has already been set - use Update Default Profile instead');
+              enableButton(update_default_profile);
             }
           } else {
             api_response.textContent = response;
