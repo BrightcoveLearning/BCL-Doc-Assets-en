@@ -138,8 +138,6 @@ var BCLS = (function(window, document) {
       }
   }
 
-
-
   /**
    * adds options to a select element from an array of valuesArray
    * @param {HTMLelement} selectElement the select element reference
