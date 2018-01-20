@@ -69,10 +69,16 @@ var BCLS = (function(window, document) {
     client_secret = client_secret_input.value;
   }
 
+  /**
+   * add a log message into the page
+   * (inside an element with id="logger")
+   * @param  {string} message the message to insert
+   */
   function logMessage(message) {
-    var br = document.createElement('br');
-    logger.textContent += message;
-    logger.appendChild(br);
+    var p = document.createElement('p'),
+        txt = document.createTextNode(message);
+    p.appendChild(txt);
+    logger.appendChild(p);
   }
 
   /**
