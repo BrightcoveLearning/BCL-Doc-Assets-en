@@ -139,27 +139,6 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * adds options to a select element from an array of valuesArray
-   * @param {HTMLelement} selectElement the select element reference
-   * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
-   */
-  function addOptions(selectElement, valuesArray) {
-    var i,
-      iMax;
-    if (selectElement && valuesArray) {
-      iMax = valuesArray.length;
-      for (i = 0; i < iMax; i++) {
-        var option = document.createElement('option');
-        option.setAttribute('value', valuesArray[i].value);
-        option.textContent = valuesArray[i].label;
-        selectElement.add(option);
-      }
-    } else {
-      console.log('function addOptions: no parameters provided');
-    }
-  }
-
-  /**
    * creates a set of checkboxes with labels from an array of valuesArray
    * @param {HTMLelement} parentElement the parent element for the checkboxes
    * @param {Array} valuesArray the array of value/labels  e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
