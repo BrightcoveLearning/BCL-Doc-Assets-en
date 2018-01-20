@@ -325,10 +325,4 @@ var BCLS = (function(window, document) {
       httpRequest.send(requestParams);
   }
 
-  function init() {
-    addCheckboxes(rendition_selector, renditions);
-  }
-
-  init();
-
 })(window, document);
