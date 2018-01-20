@@ -7,13 +7,18 @@ var BCLS = (function(window, document) {
     profile_description_input = document.getElementById('profile_description_input'),
     archive_master_input = document.getElementById('archive_master_input'),
     distribute_master_input = document.getElementById('distribute_master_input'),
+    capture_images_input = document.getElementById('capture_images_input'),
+    poster_height_input = document.getElementById('poster_height_input'),
+    poster_width_input = document.getElementById('poster_height_input'),
+    thumbnail_height_input = document.getElementById('thumbnail_height_input'),
+    thumbnail_width_input = document.getElementById('thumbnail_width_input'),
     create_profile = document.getElementById('create_profile'),
     logger = document.getElementById('logger'),
     api_request_display = document.getElementById('api_request_display'),
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
     renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'}, {value:'default/video450', label:'default/video450'}, {value:'default/video700', label:'default/video700'}, {value:'default/video900', label:'default/video900'}, {value:'default/video1200', label:'default/video1200'}, {value:'default/video1700', label:'default/video1700'}, {value:'default/video2000', label:'default/video2000'}, {value:'default/video3500', label:'default/video3500'}, {value:'default/video3800', label:'default/video3800'} ],
-    profiles = [],
+    profile_names = [],
     account_id,
     client_id,
     client_secret,
@@ -23,6 +28,10 @@ var BCLS = (function(window, document) {
     checkboxCollection;
 
   // event listeners
+  capture_images_input.addEventListener('click', function() {
+
+  });
+
   create_profile.addEventListener('click', function() {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
     if (renditions.length === 0) {
@@ -56,6 +65,16 @@ var BCLS = (function(window, document) {
           return false;
       }
       return true;
+  }
+
+  /**
+   * remove spaces from a string
+   * @param {String} str string to process
+   * @return {String} trimmed string
+   */
+  function removeSpaces(str) {
+      str= str.replace(/\s/g, '');
+      return str;
   }
 
   /*

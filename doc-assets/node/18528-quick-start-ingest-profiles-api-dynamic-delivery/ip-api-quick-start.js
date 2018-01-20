@@ -64,9 +64,9 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    account_id    = (isDefined(account_id_input.value)) ? account_id_input.value : '57838016001';
-    client_id     = client_id_input.value;
-    client_secret = client_secret_input.value;
+    account_id    = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : '57838016001';
+    client_id     = removeSpaces(client_id_input.value);
+    client_secret = removeSpaces(client_secret_input.value);
   }
 
   /**
@@ -106,6 +106,18 @@ var BCLS = (function(window, document) {
       }
       return true;
   }
+
+  /**
+   * remove spaces from a string
+   * @param {String} str string to process
+   * @return {String} trimmed string
+   */
+  function removeSpaces(str) {
+      str= str.replace(/\s/g, '');
+      return str;
+  }
+
+
 
   /**
    * get selected value for single select element
