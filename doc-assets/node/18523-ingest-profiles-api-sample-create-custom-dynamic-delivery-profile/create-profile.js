@@ -259,7 +259,7 @@ var BCLS = (function(window, document) {
       txt               = document.createTextNode(' ');
       label             = document.createElement('label');
       label.setAttribute('for', 'selectAll');
-      label.textContent = 'Select All';
+      label.textContent = ' Select All';
       br                = document.createElement('br');
       fragment.appendChild(input);
       fragment.appendChild(txt);
@@ -273,7 +273,7 @@ var BCLS = (function(window, document) {
         txt               = document.createTextNode(' ');
         label             = document.createElement('label');
         label.setAttribute('for', valuesArray[i].value);
-        label.textContent = valuesArray[i].label;
+        label.textContent = ' ' + valuesArray[i].label;
         br                = document.createElement('br');
         fragment.appendChild(input);
         fragment.appendChild(txt);
