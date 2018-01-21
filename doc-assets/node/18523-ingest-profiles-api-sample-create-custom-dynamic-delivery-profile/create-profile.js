@@ -56,13 +56,24 @@ var BCLS = (function(window, document) {
       account_id    = removeSpaces(account_id_input.value);
       client_id     = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
+      profile_name = (profile_name_input.value);
       archive_master = isChecked(archive_master_input);
       distribute_master = isChecked(distribute_master_input);
+      if (distribute_master && !archive_master) {
+        // to distribute the master, you must archive it
+        archive_master = true;
+      }
       capture_images = isChecked(capture_images_input);
       poster_width = removeSpaces(poster_width_input.value);
       poster_height = removeSpaces(poster_height_input.value);
       thumbnail_width = removeSpaces(thumbnail_width_input.value);
       thumbnail_height = removeSpaces(thumbnail_height_input.value);
+      if (capture_images) {
+        if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
+          alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
+          return false;
+        }
+      }
       return true;
     } else {
       return false;
@@ -100,6 +111,16 @@ var BCLS = (function(window, document) {
    */
   function removeSpaces(str) {
       str= str.replace(/\s/g, '');
+      return str;
+  }
+
+  /**
+   * replace spaces in a string with underscores
+   * @param {String} str string to process
+   * @return {String} processed string
+   */
+  function replaceSpaces(str) {
+      str= str.replace(/\s/g, '_');
       return str;
   }
 
