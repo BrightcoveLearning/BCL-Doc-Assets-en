@@ -22,6 +22,12 @@ var BCLS = (function(window, document) {
     account_id,
     client_id,
     client_secret,
+    archive_master = true,
+    distribute_master = true,
+    capture_images = true,
+    poster_width,
+    poster_height,
+    thumbnail_width,
     selectAll,
     selectedRenditions = [],
     selectedProfile,
@@ -51,6 +57,7 @@ var BCLS = (function(window, document) {
       account_id    = removeSpaces(account_id_input.value);
       client_id     = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
+
       return true;
     } else {
       return false;
