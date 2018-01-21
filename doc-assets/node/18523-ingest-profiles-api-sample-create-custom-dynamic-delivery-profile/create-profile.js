@@ -130,6 +130,20 @@ var BCLS = (function(window, document) {
   }
 
   /**
+ * determines if checkbox is checked
+   * @param  {htmlElement}  e the checkbox to check
+   * @return {Boolean}  true if box is checked
+   */
+  function isChecked(e) {
+    if (e.checked) {
+      return true;
+    }
+    return false;
+  }
+
+
+
+  /**
    * get array of values for checked boxes in a collection
    * @param {htmlElementCollection} elementCollection collection of checkbox elements
    * @return {Array} array of the values of the checked boxes
