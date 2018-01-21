@@ -338,13 +338,12 @@ var BCLS = (function(window, document) {
           if (Array.isArray(responseDecoded)) {
             iMax = responseDecoded.length;
             for (i = 0; i < iMax; i++) {
-              if (responseDecoded[i].hasOwnProperty('dynamic_origin')) {
-                existingProfileNames.push(responseDecoded[i].name);
-              }
+              existingProfileNames.push(responseDecoded[i].name);
             }
             // check to see if input name already exists
-            if (arrayContains(existingProfileNames,))
-            enableButton(set_default_profile);
+            if (arrayContains(existingProfileNames, profile_name)) {
+              alert('The profile name you entered is already in use in this account; please enter a different name and try again');
+            }
           }
         });
         break;
