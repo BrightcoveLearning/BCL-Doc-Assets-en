@@ -18,10 +18,11 @@ var BCLS = (function(window, document) {
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
     renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'}, {value:'default/video450', label:'default/video450'}, {value:'default/video700', label:'default/video700'}, {value:'default/video900', label:'default/video900'}, {value:'default/video1200', label:'default/video1200'}, {value:'default/video1700', label:'default/video1700'}, {value:'default/video2000', label:'default/video2000'}, {value:'default/video3500', label:'default/video3500'}, {value:'default/video3800', label:'default/video3800'} ],
-    profile_names = [],
     account_id,
     client_id,
     client_secret,
+    profile_name,
+    profile_description,
     archive_master = true,
     distribute_master = true,
     capture_images = true,
@@ -32,13 +33,10 @@ var BCLS = (function(window, document) {
     selectAll,
     selectedRenditions = [],
     selectedProfile,
+    existingProfileNames = [],
     checkboxCollection;
 
   // event listeners
-  capture_images_input.addEventListener('click', function() {
-
-  });
-
   create_profile.addEventListener('click', function() {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
     if (renditions.length === 0) {
@@ -117,6 +115,24 @@ var BCLS = (function(window, document) {
           return false;
       }
       return true;
+  }
+
+  /**
+   * determines whether specified item is in an array
+   *
+   * @param {array} array to check
+   * @param {string} item to check for
+   * @return {boolean} true if item is in the array, else false
+   */
+  function arrayContains(arr, item) {
+      var i,
+          iMax = arr.length;
+      for (i = 0; i < iMax; i++) {
+          if (arr[i] === item) {
+              return true;
+          }
+      }
+      return false;
   }
 
   /**
@@ -282,6 +298,35 @@ var BCLS = (function(window, document) {
     options.proxyURL = proxyURL;
 
     switch (type) {
+      case 'get_profiles':
+        logMessage('Getting existing profiles');
+        endpoint = '/profiles';
+        options.url = baseURL + endpoint;
+        api_request_display.textContent = options.url;
+        api_request_body_display.textContent = 'no request body for this operation';
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+          if (isJson(response)) {
+            responseDecoded = JSON.parse(response);
+            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+          } else {
+            api_response.textContent = response;
+            logMessage('The get profiles operation failed; see the API Response for the error');
+            return;
+          }
+          if (Array.isArray(responseDecoded)) {
+            iMax = responseDecoded.length;
+            for (i = 0; i < iMax; i++) {
+              if (responseDecoded[i].hasOwnProperty('dynamic_origin')) {
+                existingProfileNames.push(responseDecoded[i].name);
+              }
+            }
+            // check to see if input name already exists
+            if (arrayContains(existingProfileNames,))
+            enableButton(set_default_profile);
+          }
+        });
+        break;
       case 'create_profile':
         logMessage('Creating profile');
         endpoint = '/profiles';
