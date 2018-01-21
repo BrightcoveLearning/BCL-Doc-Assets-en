@@ -320,7 +320,7 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'get_profiles':
-        logMessage('Getting existing profiles');
+        logMessage('Checking existing profiles to see if name is already used');
         endpoint = '/profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
@@ -343,6 +343,8 @@ var BCLS = (function(window, document) {
             // check to see if input name already exists
             if (arrayContains(existingProfileNames, profile_name)) {
               alert('The profile name you entered is already in use in this account; please enter a different name and try again');
+            } else {
+              createRequest('create_profile');
             }
           }
         });
