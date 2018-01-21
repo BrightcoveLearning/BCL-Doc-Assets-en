@@ -367,7 +367,7 @@ var BCLS = (function(window, document) {
         requestBody.dynamic_origin = {};
         requestBody.dynamic_origin.renditions = selectedRenditions;
         if (capture_images) {
-          requestBody.images = [];
+          requestBody.dynamic_origin.images = [];
           requestBody.images.push({label:'poster', height: poster_height, width: poster_width});
           requestBody.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
         }
