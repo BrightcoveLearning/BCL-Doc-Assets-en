@@ -309,16 +309,12 @@ var BCLS = (function(window, document) {
       baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
-      today = new Date().toISOString(),
-      tmpArray = [],
       i,
       iMax;
 
     // set credentials
-    if (isDefined(client_id)) {
-      options.client_id = client_id;
-      options.client_secret = client_secret;
-    }
+    options.client_id = client_id;
+    options.client_secret = client_secret;
     options.proxyURL = proxyURL;
 
     switch (type) {
@@ -358,12 +354,16 @@ var BCLS = (function(window, document) {
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
         options.requestType = 'POST';
-        requestBody.name = 'test_dynamic_delivery_profile' + today;
-        requestBody.description = 'Test profile created from Ingest Profiles API Quick Start - delete if you do not need it';
+        requestBody.name = profile_name;
+        if (isDefined(profile_description)) {
+          requestBody.description = profile_description;
+        }
         requestBody.account_id = account_id;
-        requestBody.digital_master = {};
-        requestBody.digital_master.rendition = 'passthrough';
-        requestBody.digital_master.distribute = true;
+        if (archive_master) {
+          requestBody.digital_master = {};
+          requestBody.digital_master.rendition = 'passthrough';
+          requestBody.digital_master.distribute = true;
+        }
         requestBody.dynamic_origin = {};
         requestBody.dynamic_origin.renditions = selectedRenditions;
         requestBody.images = [];
