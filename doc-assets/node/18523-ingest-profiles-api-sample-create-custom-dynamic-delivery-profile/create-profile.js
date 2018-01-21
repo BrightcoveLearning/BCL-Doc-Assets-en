@@ -28,6 +28,7 @@ var BCLS = (function(window, document) {
     poster_width,
     poster_height,
     thumbnail_width,
+    thumbnail_height,
     selectAll,
     selectedRenditions = [],
     selectedProfile,
@@ -57,7 +58,13 @@ var BCLS = (function(window, document) {
       account_id    = removeSpaces(account_id_input.value);
       client_id     = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
-
+      archive_master = isChecked(archive_master_input);
+      distribute_master = isChecked(distribute_master_input);
+      capture_images = isChecked(capture_images_input);
+      poster_width = removeSpaces(poster_width_input.value);
+      poster_height = removeSpaces(poster_height_input.value);
+      thumbnail_width = removeSpaces(thumbnail_width_input.value);
+      thumbnail_height = removeSpaces(thumbnail_height_input.value);
       return true;
     } else {
       return false;
