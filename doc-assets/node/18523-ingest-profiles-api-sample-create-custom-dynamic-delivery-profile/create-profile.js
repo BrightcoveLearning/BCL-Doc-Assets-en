@@ -368,8 +368,8 @@ var BCLS = (function(window, document) {
         requestBody.dynamic_origin.renditions = selectedRenditions;
         if (capture_images) {
           requestBody.dynamic_origin.images = [];
-          requestBody.images.push({label:'poster', height: poster_height, width: poster_width});
-          requestBody.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
+          requestBody.dynamic_origin.images.push({label:'poster', height: poster_height, width: poster_width});
+          requestBody.dynamic_origin.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
         }
         api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
         options.requestBody = JSON.stringify(requestBody);
