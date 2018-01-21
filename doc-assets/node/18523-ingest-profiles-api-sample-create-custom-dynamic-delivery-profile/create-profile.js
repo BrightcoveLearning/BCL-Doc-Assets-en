@@ -42,8 +42,11 @@ var BCLS = (function(window, document) {
     if (renditions.length === 0) {
       alert('Please select the renditions you want to include and click this button again');
     } else {
-      getAccountInfo();
-      createRequest('create_profile');
+      if (getAccountInfo()) {
+        createRequest('get_profiles');
+      } else {
+        alert('Account id, client id, client secret, and a name for the new profile are required');
+      }
     }
   });
 
@@ -52,7 +55,7 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
+    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value) && isDefined(profile_name_input.value)) {
       account_id    = removeSpaces(account_id_input.value);
       client_id     = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
