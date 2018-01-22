@@ -377,9 +377,10 @@ var BCLS = (function(window, document) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+            logMessage('Profile create operation complete - check the response below to sure there were no errors');
           } else {
             api_response.textContent = response;
-            logMessage('The create profile operation failed; see the API Response for the error');
+            logMessage('The create profile operation failed; see the response below for the error');
             return;
           }
         });
