@@ -1,33 +1,33 @@
 var BCLS = (function(window, document) {
-  var account_id_input = document.getElementById('account_id_input'),
-    client_id_input = document.getElementById('client_id_input'),
-    client_secret_input = document.getElementById('client_secret_input'),
-    rendition_selector = document.getElementById('rendition_selector'),
-    profile_name_input = document.getElementById('profile_name_input'),
-    profile_description_input = document.getElementById('profile_description_input'),
-    archive_master_input = document.getElementById('archive_master_input'),
-    capture_images_input = document.getElementById('capture_images_input'),
-    poster_height_input = document.getElementById('poster_height_input'),
-    poster_width_input = document.getElementById('poster_height_input'),
-    thumbnail_height_input = document.getElementById('thumbnail_height_input'),
-    thumbnail_width_input = document.getElementById('thumbnail_width_input'),
-    min_renditions_input = document.getElementById('min_renditions_input'),
-    max_renditions_input = document.getElementById('max_renditions_input'),
-    min_resolution_width_input = document.getElementById('min_resolution_width_input'),
-    min_resolution_height_input = document.getElementById('min_resolution_height_input'),
-    max_resolution_width_input = document.getElementById('max_resolution_width_input'),
-    max_resolution_height_input = document.getElementById('max_resolution_height_input'),
-    max_bitrate_input = document.getElementById('max_bitrate_input'),
-    max_first_rendition_bitrate_input = document.getElementById('max_first_rendition_bitrate_input'),
-    max_frame_rate_input = document.getElementById('max_frame_rate'),
-    keyframe_rate_input = document.getElementById('keyframe_rate'),
+  var account_id_input                          = document.getElementById('account_id_input'),
+    client_id_input                             = document.getElementById('client_id_input'),
+    client_secret_input                         = document.getElementById('client_secret_input'),
+    rendition_selector                          = document.getElementById('rendition_selector'),
+    profile_name_input                          = document.getElementById('profile_name_input'),
+    profile_description_input                   = document.getElementById('profile_description_input'),
+    archive_master_input                        = document.getElementById('archive_master_input'),
+    capture_images_input                        = document.getElementById('capture_images_input'),
+    poster_height_input                         = document.getElementById('poster_height_input'),
+    poster_width_input                          = document.getElementById('poster_height_input'),
+    thumbnail_height_input                      = document.getElementById('thumbnail_height_input'),
+    thumbnail_width_input                       = document.getElementById('thumbnail_width_input'),
+    min_renditions_input                        = document.getElementById('min_renditions_input'),
+    max_renditions_input                        = document.getElementById('max_renditions_input'),
+    min_resolution_width_input                  = document.getElementById('min_resolution_width_input'),
+    min_resolution_height_input                 = document.getElementById('min_resolution_height_input'),
+    max_resolution_width_input                  = document.getElementById('max_resolution_width_input'),
+    max_resolution_height_input                 = document.getElementById('max_resolution_height_input'),
+    max_bitrate_input                           = document.getElementById('max_bitrate_input'),
+    max_first_rendition_bitrate_input           = document.getElementById('max_first_rendition_bitrate_input'),
+    max_frame_rate_input                        = document.getElementById('max_frame_rate'),
+    keyframe_rate_input                         = document.getElementById('keyframe_rate'),
     select_baseline_profile_configuration_input = document.getElementById('select_baseline_profile_configuration'),
-    create_profile = document.getElementById('create_profile'),
-    logger = document.getElementById('logger'),
-    api_request_display = document.getElementById('api_request_display'),
-    api_request_body_display = document.getElementById('api_request_body_display'),
-    api_response = document.getElementById('api_response'),
-    renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'} ],
+    create_profile                              = document.getElementById('create_profile'),
+    logger                                      = document.getElementById('logger'),
+    api_request_display                         = document.getElementById('api_request_display'),
+    api_request_body_display                    = document.getElementById('api_request_body_display'),
+    api_response                                = document.getElementById('api_response'),
+    renditions                                  = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'} ],
     account_id,
     client_id,
     client_secret,
@@ -58,14 +58,10 @@ var BCLS = (function(window, document) {
   // event listeners
   create_profile.addEventListener('click', function() {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
-    if (renditions.length === 0) {
-      alert('Please select the renditions you want to include and click this button again');
+    if (getAccountInfo()) {
+      createRequest('get_profiles');
     } else {
-      if (getAccountInfo()) {
-        createRequest('get_profiles');
-      } else {
-        alert('Account id, client id, client secret, and a name for the new profile are required');
-      }
+      alert('Account id, client id, client secret, and a name for the new profile are required');
     }
   });
 
@@ -75,15 +71,15 @@ var BCLS = (function(window, document) {
    */
   function getAccountInfo() {
     if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value) && isDefined(profile_name_input.value)) {
-      account_id    = removeSpaces(account_id_input.value);
-      client_id     = removeSpaces(client_id_input.value);
-      client_secret = removeSpaces(client_secret_input.value);
-      profile_name = (profile_name_input.value);
-      archive_master = isChecked(archive_master_input);
-      capture_images = isChecked(capture_images_input);
-      poster_width = parseInt(removeSpaces(poster_width_input.value), 10);
-      poster_height = parseInt(removeSpaces(poster_height_input.value), 10);
-      thumbnail_width = parseInt(removeSpaces(thumbnail_width_input.value), 10);
+      account_id       = removeSpaces(account_id_input.value);
+      client_id        = removeSpaces(client_id_input.value);
+      client_secret    = removeSpaces(client_secret_input.value);
+      profile_name     = (profile_name_input.value);
+      archive_master   = isChecked(archive_master_input);
+      capture_images   = isChecked(capture_images_input);
+      poster_width     = parseInt(removeSpaces(poster_width_input.value), 10);
+      poster_height    = parseInt(removeSpaces(poster_height_input.value), 10);
+      thumbnail_width  = parseInt(removeSpaces(thumbnail_width_input.value), 10);
       thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
       if (capture_images) {
         if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
@@ -91,17 +87,17 @@ var BCLS = (function(window, document) {
           return false;
         }
       }
-      min_renditions = parseInt(removeSpaces(min_renditions_input.value), 10);
-      max_renditions = parseInt(removeSpaces(max_renditions_input.value), 10);
-      min_resolution_width = parseInt(removeSpaces(min_resolution_width.value), 10);
-      min_resolution_height,
-      max_resolution_width,
-      max_resolution_height,
-      max_bitrate,
-      max_first_rendition_bitrate,
-      max_frame_rate,
-      keyframe_rate,
-      select_baseline_profile_configuration
+      min_renditions                        = parseInt(removeSpaces(min_renditions_input.value), 10);
+      max_renditions                        = parseInt(removeSpaces(max_renditions_input.value), 10);
+      min_resolution_width                  = parseInt(removeSpaces(min_resolution_width_input.value), 10);
+      min_resolution_height                 = parseInt(removeSpaces(min_resolution_height_input.value), 10);
+      max_resolution_width                  = parseInt(removeSpaces(max_resolution_width_input.value), 10);
+      max_resolution_height                 = parseInt(removeSpaces(max_resolution_height_input.value), 10);
+      max_bitrate                           = parseInt(removeSpaces(max_bitrate_input.value), 10);
+      max_first_rendition_bitrate           = parseInt(removeSpaces(max_first_rendition_bitrate_input.value), 10);
+      max_frame_rate                        = parseInt(removeSpaces(max_frame_rate_input.value), 10);
+      keyframe_rate                         = parseFloat(removeSpaces(keyframe_rate_input.value));
+      select_baseline_profile_configuration = isChecked(select_baseline_profile_configuration_input);
       return true;
     } else {
       return false;
