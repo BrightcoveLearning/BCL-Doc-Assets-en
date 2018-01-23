@@ -34,7 +34,6 @@ var BCLS = (function(window, document) {
     profile_name,
     profile_description,
     archive_master = true,
-    distribute_master = true,
     capture_images = true,
     poster_width,
     poster_height,
