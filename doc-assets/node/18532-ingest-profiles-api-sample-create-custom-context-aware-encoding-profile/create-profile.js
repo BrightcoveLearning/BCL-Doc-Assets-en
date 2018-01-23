@@ -122,7 +122,7 @@ var BCLS = (function(window, document) {
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-      if ( x === '' || x === null || x === undefined) {
+      if ( x === '' || x === null || x === undefined || x === NaN) {
           return false;
       }
       return true;
