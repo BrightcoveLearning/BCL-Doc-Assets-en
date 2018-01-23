@@ -6,7 +6,6 @@ var BCLS = (function(window, document) {
     profile_name_input = document.getElementById('profile_name_input'),
     profile_description_input = document.getElementById('profile_description_input'),
     archive_master_input = document.getElementById('archive_master_input'),
-    distribute_master_input = document.getElementById('distribute_master_input'),
     capture_images_input = document.getElementById('capture_images_input'),
     poster_height_input = document.getElementById('poster_height_input'),
     poster_width_input = document.getElementById('poster_height_input'),
@@ -61,11 +60,6 @@ var BCLS = (function(window, document) {
       client_secret = removeSpaces(client_secret_input.value);
       profile_name = (profile_name_input.value);
       archive_master = isChecked(archive_master_input);
-      distribute_master = isChecked(distribute_master_input);
-      if (distribute_master && !archive_master) {
-        // to distribute the master, you must archive it
-        archive_master = true;
-      }
       capture_images = isChecked(capture_images_input);
       poster_width = removeSpaces(poster_width_input.value);
       poster_height = removeSpaces(poster_height_input.value);
@@ -362,7 +356,6 @@ var BCLS = (function(window, document) {
         if (archive_master) {
           requestBody.digital_master = {};
           requestBody.digital_master.rendition = 'passthrough';
-          requestBody.digital_master.distribute = true;
         }
         requestBody.dynamic_origin = {};
         requestBody.dynamic_origin.renditions = selectedRenditions;
