@@ -81,16 +81,27 @@ var BCLS = (function(window, document) {
       profile_name = (profile_name_input.value);
       archive_master = isChecked(archive_master_input);
       capture_images = isChecked(capture_images_input);
-      poster_width = removeSpaces(poster_width_input.value);
-      poster_height = removeSpaces(poster_height_input.value);
-      thumbnail_width = removeSpaces(thumbnail_width_input.value);
-      thumbnail_height = removeSpaces(thumbnail_height_input.value);
+      poster_width = parseInt(removeSpaces(poster_width_input.value), 10);
+      poster_height = parseInt(removeSpaces(poster_height_input.value), 10);
+      thumbnail_width = parseInt(removeSpaces(thumbnail_width_input.value), 10);
+      thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
       if (capture_images) {
         if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
           alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
           return false;
         }
       }
+      min_renditions = parseInt(removeSpaces(min_renditions_input.value), 10);
+      max_renditions = parseInt(removeSpaces(max_renditions_input.value), 10);
+      min_resolution_width = parseInt(removeSpaces(min_resolution_width.value), 10);
+      min_resolution_height,
+      max_resolution_width,
+      max_resolution_height,
+      max_bitrate,
+      max_first_rendition_bitrate,
+      max_frame_rate,
+      keyframe_rate,
+      select_baseline_profile_configuration
       return true;
     } else {
       return false;
