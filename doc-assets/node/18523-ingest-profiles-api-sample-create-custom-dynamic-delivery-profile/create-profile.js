@@ -32,7 +32,6 @@ var BCLS = (function(window, document) {
     thumbnail_height,
     selectAll,
     selectedRenditions = [],
-    selectedProfile,
     existingProfileNames = [],
     checkboxCollection;
 
