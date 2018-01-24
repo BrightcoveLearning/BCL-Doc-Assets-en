@@ -305,54 +305,69 @@
 &lt;/section&gt;</code></pre>
   <h3>JavaScript</h3>
 <pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document) {
-  var account_id_input = document.getElementById('account_id_input'),
-    client_id_input = document.getElementById('client_id_input'),
-    client_secret_input = document.getElementById('client_secret_input'),
-    rendition_selector = document.getElementById('rendition_selector'),
-    profile_name_input = document.getElementById('profile_name_input'),
-    profile_description_input = document.getElementById('profile_description_input'),
-    archive_master_input = document.getElementById('archive_master_input'),
-    distribute_master_input = document.getElementById('distribute_master_input'),
-    capture_images_input = document.getElementById('capture_images_input'),
-    poster_height_input = document.getElementById('poster_height_input'),
-    poster_width_input = document.getElementById('poster_height_input'),
-    thumbnail_height_input = document.getElementById('thumbnail_height_input'),
-    thumbnail_width_input = document.getElementById('thumbnail_width_input'),
-    create_profile = document.getElementById('create_profile'),
-    logger = document.getElementById('logger'),
-    api_request_display = document.getElementById('api_request_display'),
-    api_request_body_display = document.getElementById('api_request_body_display'),
-    api_response = document.getElementById('api_response'),
-    renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'}, {value:'default/video450', label:'default/video450'}, {value:'default/video700', label:'default/video700'}, {value:'default/video900', label:'default/video900'}, {value:'default/video1200', label:'default/video1200'}, {value:'default/video1700', label:'default/video1700'}, {value:'default/video2000', label:'default/video2000'}, {value:'default/video3500', label:'default/video3500'}, {value:'default/video3800', label:'default/video3800'} ],
+  var account_id_input                          = document.getElementById('account_id_input'),
+    client_id_input                             = document.getElementById('client_id_input'),
+    client_secret_input                         = document.getElementById('client_secret_input'),
+    rendition_selector                          = document.getElementById('rendition_selector'),
+    profile_name_input                          = document.getElementById('profile_name_input'),
+    profile_description_input                   = document.getElementById('profile_description_input'),
+    archive_master_input                        = document.getElementById('archive_master_input'),
+    capture_images_input                        = document.getElementById('capture_images_input'),
+    poster_height_input                         = document.getElementById('poster_height_input'),
+    poster_width_input                          = document.getElementById('poster_height_input'),
+    thumbnail_height_input                      = document.getElementById('thumbnail_height_input'),
+    thumbnail_width_input                       = document.getElementById('thumbnail_width_input'),
+    min_renditions_input                        = document.getElementById('min_renditions_input'),
+    max_renditions_input                        = document.getElementById('max_renditions_input'),
+    min_resolution_width_input                  = document.getElementById('min_resolution_width_input'),
+    min_resolution_height_input                 = document.getElementById('min_resolution_height_input'),
+    max_resolution_width_input                  = document.getElementById('max_resolution_width_input'),
+    max_resolution_height_input                 = document.getElementById('max_resolution_height_input'),
+    max_bitrate_input                           = document.getElementById('max_bitrate_input'),
+    max_first_rendition_bitrate_input           = document.getElementById('max_first_rendition_bitrate_input'),
+    max_frame_rate_input                        = document.getElementById('max_frame_rate_input'),
+    keyframe_rate_input                         = document.getElementById('keyframe_rate_input'),
+    select_baseline_profile_configuration_input = document.getElementById('select_baseline_profile_configuration_input'),
+    create_profile                              = document.getElementById('create_profile'),
+    logger                                      = document.getElementById('logger'),
+    api_request_display                         = document.getElementById('api_request_display'),
+    api_request_body_display                    = document.getElementById('api_request_body_display'),
+    api_response                                = document.getElementById('api_response'),
+    renditions                                  = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'} ],
     account_id,
     client_id,
     client_secret,
     profile_name,
     profile_description,
     archive_master = true,
-    distribute_master = true,
     capture_images = true,
     poster_width,
     poster_height,
     thumbnail_width,
     thumbnail_height,
+    min_renditions,
+    max_renditions,
+    min_resolution_width,
+    min_resolution_height,
+    max_resolution_width,
+    max_resolution_height,
+    max_bitrate,
+    max_first_rendition_bitrate,
+    max_frame_rate,
+    keyframe_rate,
+    select_baseline_profile_configuration = true,
     selectAll,
     selectedRenditions = [],
-    selectedProfile,
     existingProfileNames = [],
     checkboxCollection;
 
   // event listeners
   create_profile.addEventListener('click', function() {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
-    if (renditions.length === 0) {
-      alert('Please select the renditions you want to include and click this button again');
+    if (getAccountInfo()) {
+      createRequest('get_profiles');
     } else {
-      if (getAccountInfo()) {
-        createRequest('get_profiles');
-      } else {
-        alert('Account id, client id, client secret, and a name for the new profile are required');
-      }
+      alert('Account id, client id, client secret, and a name for the new profile are required');
     }
   });
 
@@ -362,26 +377,36 @@
    */
   function getAccountInfo() {
     if (isDefined(account_id_input.value) &amp;&amp; isDefined(client_id_input.value) &amp;&amp; isDefined(client_secret_input.value) &amp;&amp; isDefined(profile_name_input.value)) {
-      account_id    = removeSpaces(account_id_input.value);
-      client_id     = removeSpaces(client_id_input.value);
-      client_secret = removeSpaces(client_secret_input.value);
-      profile_name = (profile_name_input.value);
-      archive_master = isChecked(archive_master_input);
-      distribute_master = isChecked(distribute_master_input);
-      if (distribute_master &amp;&amp; !archive_master) {
-        // to distribute the master, you must archive it
-        archive_master = true;
-      }
-      capture_images = isChecked(capture_images_input);
-      poster_width = removeSpaces(poster_width_input.value);
-      poster_height = removeSpaces(poster_height_input.value);
-      thumbnail_width = removeSpaces(thumbnail_width_input.value);
-      thumbnail_height = removeSpaces(thumbnail_height_input.value);
+      account_id       = removeSpaces(account_id_input.value);
+      client_id        = removeSpaces(client_id_input.value);
+      client_secret    = removeSpaces(client_secret_input.value);
+      profile_name     = (profile_name_input.value);
+      archive_master   = isChecked(archive_master_input);
+      capture_images   = isChecked(capture_images_input);
+      poster_width     = parseInt(removeSpaces(poster_width_input.value), 10);
+      poster_height    = parseInt(removeSpaces(poster_height_input.value), 10);
+      thumbnail_width  = parseInt(removeSpaces(thumbnail_width_input.value), 10);
+      thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
       if (capture_images) {
         if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
           alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
           return false;
         }
+      }
+      min_renditions                        = parseInt(removeSpaces(min_renditions_input.value), 10);
+      max_renditions                        = parseInt(removeSpaces(max_renditions_input.value), 10);
+      min_resolution_width                  = parseInt(removeSpaces(min_resolution_width_input.value), 10);
+      min_resolution_height                 = parseInt(removeSpaces(min_resolution_height_input.value), 10);
+      max_resolution_width                  = parseInt(removeSpaces(max_resolution_width_input.value), 10);
+      max_resolution_height                 = parseInt(removeSpaces(max_resolution_height_input.value), 10);
+      max_bitrate                           = parseInt(removeSpaces(max_bitrate_input.value), 10);
+      max_first_rendition_bitrate           = parseInt(removeSpaces(max_first_rendition_bitrate_input.value), 10);
+      max_frame_rate                        = parseInt(removeSpaces(max_frame_rate_input.value), 10);
+      keyframe_rate                         = parseFloat(removeSpaces(keyframe_rate_input.value));
+      select_baseline_profile_configuration = isChecked(select_baseline_profile_configuration_input);
+      if (!isDefined(min_renditions) || !isDefined(max_renditions)) {
+        alert('The minimum and maximum number of renditions are required');
+        return false;
       }
       return true;
     } else {
@@ -407,7 +432,7 @@
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-      if ( x === '' || x === null || x === undefined) {
+      if ( x === '' || x === null || x === undefined || x === NaN) {
           return false;
       }
       return true;
@@ -668,7 +693,6 @@
         if (archive_master) {
           requestBody.digital_master = {};
           requestBody.digital_master.rendition = 'passthrough';
-          requestBody.digital_master.distribute = true;
         }
         requestBody.dynamic_origin = {};
         requestBody.dynamic_origin.renditions = selectedRenditions;
@@ -677,6 +701,40 @@
           requestBody.dynamic_origin.images.push({label:'poster', height: poster_height, width: poster_width});
           requestBody.dynamic_origin.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
         }
+        requestBody.dynamic_origin.dynamic_profile_options = {};
+        requestBody.dynamic_origin.dynamic_profile_options.min_renditions = min_renditions;
+        requestBody.dynamic_origin.dynamic_profile_options.max_renditions = max_renditions;
+        if (isDefined(min_resolution_width) || isDefined(min_resolution_height)) {
+          requestBody.dynamic_origin.dynamic_profile_options.min_resolution = {};
+          if (isDefined(min_resolution_width)) {
+            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.width = min_resolution_width;
+          }
+          if (isDefined(min_resolution_height)) {
+            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
+          }
+        }
+        if (isDefined(max_resolution_width) || isDefined(max_resolution_height)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_resolution = {};
+          if (isDefined(max_resolution_width)) {
+            requestBody.dynamic_origin.dynamic_profile_options.max_resolution.width = max_resolution_width;
+          }
+          if (isDefined(min_resolution_height)) {
+            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
+          }
+        }
+        if (isDefined(max_bitrate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_bitrate = max_bitrate;
+        }
+        if (isDefined(max_first_rendition_bitrate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_first_rendition_bitrate = max_first_rendition_bitrate;
+        }
+        if (isDefined(max_frame_rate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_frame_rate = max_frame_rate;
+        }
+        if (isDefined(keyframe_rate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.keyframe_rate = keyframe_rate;
+        }
+        requestBody.dynamic_origin.dynamic_profile_options.select_baseline_profile_configuration = select_baseline_profile_configuration;
         api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
         options.requestBody = JSON.stringify(requestBody);
         makeRequest(options, function(response) {
