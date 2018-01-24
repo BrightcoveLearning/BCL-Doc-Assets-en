@@ -691,6 +691,19 @@ console.log('item', item);
                     ul.appendChild(li);
                     td.appendChild(ul);
                     tr.appendChild(td);
+                } else if (prop === 'min_resolution') {
+                  var ul = createEl('ul'),
+                      li;
+                  li = createEl('li');
+                  text = document.createTextNode('width: ' + profile.dynamic_origin.dynamic_profile_options.min_resolution.width);
+                  li.appendChild(text);
+                  ul.appendChild(li);
+                  li = createEl('li');
+                  text = document.createTextNode('height: ' + profile.dynamic_origin.dynamic_profile_options.min_resolution.height);
+                  li.appendChild(text);
+                  ul.appendChild(li);
+                  td.appendChild(ul);
+                  tr.appendChild(td);
                 } else {
                     text = document.createTextNode(profile.dynamic_origin.dynamic_profile_options[prop]);
                     td.appendChild(text);
