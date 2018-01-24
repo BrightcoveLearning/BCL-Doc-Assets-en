@@ -395,6 +395,18 @@ var BCLS = (function(window, document) {
           requestBody.dynamic_origin.images.push({label:'poster', height: poster_height, width: poster_width});
           requestBody.dynamic_origin.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
         }
+        requestBody.dynamic_origin.dynamic_profile_options = {};
+        requestBody.dynamic_origin.dynamic_profile_options.min_renditions = min_renditions;
+        requestBody.dynamic_origin.dynamic_profile_options.max_renditions = max_renditions;
+        if (isDefined(min_resolution_width) || isDefined(min_resolution_height)) {
+          requestBody.dynamic_origin.dynamic_profile_options.min_resolution = {};
+          if (isDefined(min_resolution_width)) {
+            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.width = min_resolution_width;
+          }
+          if (isDefined(min_resolution_height)) {
+            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
+          }
+        }
         api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
         options.requestBody = JSON.stringify(requestBody);
         makeRequest(options, function(response) {
