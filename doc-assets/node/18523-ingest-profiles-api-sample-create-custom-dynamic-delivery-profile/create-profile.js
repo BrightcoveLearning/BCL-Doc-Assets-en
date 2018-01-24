@@ -66,10 +66,10 @@ var BCLS = (function(window, document) {
         archive_master = true;
       }
       capture_images = isChecked(capture_images_input);
-      poster_width = removeSpaces(poster_width_input.value);
-      poster_height = removeSpaces(poster_height_input.value);
-      thumbnail_width = removeSpaces(thumbnail_width_input.value);
-      thumbnail_height = removeSpaces(thumbnail_height_input.value);
+      poster_width     = parseInt(removeSpaces(poster_width_input.value), 10);
+      poster_height    = parseInt(removeSpaces(poster_height_input.value), 10);
+      thumbnail_width  = parseInt(removeSpaces(thumbnail_width_input.value), 10);
+      thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
       if (capture_images) {
         if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
           alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
