@@ -98,6 +98,10 @@ var BCLS = (function(window, document) {
       max_frame_rate                        = parseInt(removeSpaces(max_frame_rate_input.value), 10);
       keyframe_rate                         = parseFloat(removeSpaces(keyframe_rate_input.value));
       select_baseline_profile_configuration = isChecked(select_baseline_profile_configuration_input);
+      if (!isDefined(min_renditions) || !isDefined(max_renditions)) {
+        alert('The minimum and maximum number of renditions are required');
+        return false;
+      }
       return true;
     } else {
       return false;
