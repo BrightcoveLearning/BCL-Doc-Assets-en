@@ -407,6 +407,28 @@ var BCLS = (function(window, document) {
             requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
           }
         }
+        if (isDefined(max_resolution_width) || isDefined(max_resolution_height)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_resolution = {};
+          if (isDefined(max_resolution_width)) {
+            requestBody.dynamic_origin.dynamic_profile_options.max_resolution.width = max_resolution_width;
+          }
+          if (isDefined(min_resolution_height)) {
+            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
+          }
+        }
+        if (isDefined(max_bitrate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_bitrate = max_bitrate;
+        }
+        if (isDefined(max_first_rendition_bitrate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_first_rendition_bitrate = max_first_rendition_bitrate;
+        }
+        if (isDefined(max_frame_rate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.max_frame_rate = max_frame_rate;
+        }
+        if (isDefined(keyframe_rate)) {
+          requestBody.dynamic_origin.dynamic_profile_options.keyframe_rate = keyframe_rate;
+        }
+        requestBody.dynamic_origin.dynamic_profile_options.select_baseline_profile_configuration = select_baseline_profile_configuration;
         api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
         options.requestBody = JSON.stringify(requestBody);
         makeRequest(options, function(response) {
