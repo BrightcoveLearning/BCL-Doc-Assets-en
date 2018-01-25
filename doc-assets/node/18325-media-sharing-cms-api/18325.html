@@ -111,12 +111,16 @@ video-cloud/sharing-relationships/delete</code></pre>
 
 <section class="bcls-section">
 <h2 id="restrictions_on_sharing">Restrictions on sharing</h2>
+
 <p>By default, all videos can be shared. You can, however, prevent sharing if:</p>
+
 <ul>
-  <li>The affiliate account does not a have a custom field for which a value is set on the video in the master account</li>
-  <li>The master account has geo-filtering enabled, but the affiliate account does not</li>
+	<li>The affiliate account does not a have a custom field for which a value is set on the video in the master account</li>
+	<li>The master account has geo-filtering enabled, but the affiliate account does not</li>
 </ul>
+
 <h3>Custom field matching</h3>
+
 <p>You can enforce custom field matching for a channel, which means that video shares will fail <strong>if the video has values for custom fields that are not present in the affiliate account</strong>. Videos will still share successfully if the video does not have values for any non-matching custom fields</p>
 
 <p>If a video share fails because of non-matching custom fields, you will see an error like this in the response:</p>
@@ -146,91 +150,104 @@ video-cloud/sharing-relationships/delete</code></pre>
   "shared_at": "2018-01-03T16:29:19.080Z",
   "updated_at": "2018-01-03T16:29:19.080Z"
 
-<p>See <a href="#update_channel">Update channel</a> below to see how you update a channel to enforce custom field and/or geo-filtering matching.</p>
+</code></pre>
+
+<p><code class="language-json">See <a href="#update_channel">Update channel</a> below to see how you update a channel to enforce custom field and/or geo-filtering matching.</code></p>
 </section>
 
 <section class="bcls-section">
-<h2 id="what_is_shared">What is shared?</h2>
+<h2 id="what_is_shared"><code class="language-json">What is shared?</code></h2>
 
-<p>This section explains what gets shared, and how subsequent changes to the video are handled.</p>
+<p><code class="language-json">This section explains what gets shared, and how subsequent changes to the video are handled.</code></p>
 
-<h3>When the video is shared</h3>
+<h3><code class="language-json">When the video is shared</code></h3>
 
-<p>Most of the video metadata fields are copied from the Master to the Affiliate account when the video is shared. The notable exceptions are:</p>
+<p><code class="language-json">Most of the video metadata fields are copied from the Master to the Affiliate account when the video is shared. The notable exceptions are:</code></p>
 
 <ul>
-	<li><code>id</code> - the video will have its own unique id in the Affiliate account</li>
-	<li>date fields such as <code>created_at</code> and <code>updated_at</code></li>
+	<li><code class="language-json"><code>id</code> - the video will have its own unique id in the Affiliate account</code></li>
+	<li><code class="language-json">date fields such as <code>created_at</code> and <code>updated_at</code></code></li>
 </ul>
 
-<p>All the video assets (renditions, images, text_tracks, etc.) are used by the Affiliate accounts for playback.</p>
-<!-- <aside class="bcls-aside bcls-aside--information">Note that billing will still be based on the account that the video is played back from, not the account where the assets reside.</aside> -->
+<p><code class="language-json">All the video assets (renditions, images, text_tracks, etc.) are used by the Affiliate accounts for playback.</code></p>
+<code class="language-json"><!-- <aside class="bcls-aside bcls-aside--information">Note that billing will still be based on the account that the video is played back from, not the account where the assets reside.</aside> --> </code>
 
-<h3>After the video is shared</h3>
+<h3><code class="language-json">After the video is shared</code></h3>
+<code class="language-json"> </code>
 
-<p>After the video has been shared, some changes to the video in the Master account are automatically inherited by the Affiliate accounts, and some are not.</p>
+<p><code class="language-json">After the video has been shared, some changes to the video in the Master account are automatically inherited by the Affiliate accounts, and some are not.</code></p>
+<code class="language-json"> </code>
 
-<h4>Video assets</h4>
+<h4><code class="language-json">Video assets</code></h4>
+<code class="language-json"> </code>
 
-<p><strong>Except for images</strong>, Master changes to the video assets are <strong>always</strong> inherited by Affiliates. Affiliates <strong>cannot change assets</strong> such as renditions, manifests, text tracks, or the digital master.</p>
+<p><code class="language-json"><strong>Except for images</strong>, Master changes to the video assets are <strong>always</strong> inherited by Affiliates. Affiliates <strong>cannot change assets</strong> such as renditions, manifests, text tracks, or the digital master.</code></p>
+<code class="language-json"> </code>
 
-<p>Changes to images by the Master are inherited by the Affiliate <strong>unless the Affiliate has replaced the image(s)</strong>. Once an Affiliate changes an image, that image will no longer be inherited from the Master.</p>
+<p><code class="language-json">Changes to images by the Master are inherited by the Affiliate <strong>unless the Affiliate has replaced the image(s)</strong>. Once an Affiliate changes an image, that image will no longer be inherited from the Master.</code></p>
+<code class="language-json"> </code>
 
-<h4>Video metadata</h4>
+<h4><code class="language-json">Video metadata</code></h4>
+<code class="language-json"> </code>
 
-<p>Any video metadata (such as the name, description, and reference id) can be modified by the Affiliate, and changes made on the Master video are <strong>not</strong> inherited by the Affiliate.</p>
+<p><code class="language-json">Any video metadata (such as the name, description, and reference id) can be modified by the Affiliate, and changes made on the Master video are <strong>not</strong> inherited by the Affiliate.</code></p>
+<code class="language-json"> </code>
 
-<h5 id="Resharing_videos">Resharing videos</h5>
+<h5 id="Resharing_videos"><code class="language-json">Resharing videos</code></h5>
+<code class="language-json"> </code>
 
-<p>Note, however, that if the Master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to Affiliates, <strong>overwriting any changes the Affiliates have made</strong>.</p>
+<p><code class="language-json">Note, however, that if the Master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to Affiliates, <strong>overwriting any changes the Affiliates have made</strong>.</code></p>
+<code class="language-json"> </code>
 
-<aside class="bcls-aside bcls-aside--information">Note that there are two ways to re-share, that have different consequences:
+<aside class="bcls-aside bcls-aside--information"><code class="language-json">Note that there are two ways to re-share, that have different consequences: </code>
+
 <dl>
-	<dt>Master <em>un-shares</em> and then <em>re-shares</em> the video</dt>
-	<dd>In this case, the video shared earlier will be deleted from all Affiliate accounts on the un-share. When the Master shares the video again, a <em>new</em> video with a <em>new</em> unique id will be added to each affiliate account, bringing metadata and assets from the Master account as on the original share.</dd>
-	<dt>Master <em>re-shares</em> the video <strong>without</strong> un-sharing it</dt>
-	<dd>In this case, all metadata and images from the Master copy of the video will be pushed to the Affiliate version, overwriting Affiliate changes, but the Affiliate video ids will <strong>not</strong> change.</dd>
+	<dt><code class="language-json">Master <em>un-shares</em> and then <em>re-shares</em> the video</code></dt>
+	<dd><code class="language-json">In this case, the video shared earlier will be deleted from all Affiliate accounts on the un-share. When the Master shares the video again, a <em>new</em> video with a <em>new</em> unique id will be added to each affiliate account, bringing metadata and assets from the Master account as on the original share.</code></dd>
+	<dt><code class="language-json">Master <em>re-shares</em> the video <strong>without</strong> un-sharing it</code></dt>
+	<dd><code class="language-json">In this case, all metadata and images from the Master copy of the video will be pushed to the Affiliate version, overwriting Affiliate changes, but the Affiliate video ids will <strong>not</strong> change.</code></dd>
 </dl>
-</aside>
+<code class="language-json"> </code></aside>
+<code class="language-json"> </code>
 
-<aside class="bcls-aside bcls-aside--warning">Before you re-share a video, be sure that this is what you want to do, and that your Affiliates know what is going to happen!</aside>
-</section>
+<aside class="bcls-aside bcls-aside--warning"><code class="language-json">Before you re-share a video, be sure that this is what you want to do, and that your Affiliates know what is going to happen!</code></aside>
+<code class="language-json"> </code></section>
 
 <section class="bcls-section">
-<h2 id="overview_media_sharing_steps">Overview of media sharing steps</h2>
+<h2 id="overview_media_sharing_steps"><code class="language-json">Overview of media sharing steps</code></h2>
 
-<h3>Setting up a relationship</h3>
-<!-- <p>Here is the logical flow for setting up a sharing relationship:</p>
+<h3><code class="language-json">Setting up a relationship</code></h3>
+<code class="language-json"><!-- <p>Here is the logical flow for setting up a sharing relationship:</p>
     <figure class="bcls-figure">
         <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18325-media-sharing-cms-api/18325-admin-flow-v2.svg" alt="Set Up Sharing">
         <figcaption class="bcls-caption--image">Set Up Sharing</figcaption>
-    </figure> -->
+    </figure> --> </code>
 
-<p>Below is a summary of the operations for setting up a relationship (click on the operation name for more details):</p>
-<!-- table 2 -->
+<p><code class="language-json">Below is a summary of the operations for setting up a relationship (click on the operation name for more details):</code></p>
+<code class="language-json"> <!-- table 2 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Setup Operations</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Setup Operations</code></caption>
 	<thead class="bcls-table__head">
 		<tr>
-			<th colspan="3">Master operations</th>
+			<th colspan="3"><code class="language-json">Master operations</code></th>
 		</tr>
 		<tr>
-			<th>Operation</th>
-			<th>Method/Endpoint</th>
-			<th>Description</th>
+			<th><code class="language-json">Operation</code></th>
+			<th><code class="language-json">Method/Endpoint</code></th>
+			<th><code class="language-json">Description</code></th>
 		</tr>
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="#list_channels">List channels</a></td>
-			<td>GET <code>/accounts/<span class="bcls-input">master_account_id</span>/channels</code></td>
-			<td>Get a list of channels for the account</td>
+			<td><code class="language-json"><a href="#list_channels">List channels</a></code></td>
+			<td><code class="language-json">GET <code>/accounts/<span class="bcls-input">master_account_id</span>/channels</code></code></td>
+			<td><code class="language-json">Get a list of channels for the account</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Get_channel_details">Get channel details</a></td>
-			<td>GET <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span></code><sup><strong><a href="#note2-1">[2-1]</a></strong></sup></td>
-			<td>Get details of a channel</td>
+			<td><code class="language-json"><a href="#Get_channel_details">Get channel details</a></code></td>
+			<td><code class="language-json">GET <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span></code><sup><strong><a href="#note2-1">[2-1]</a></strong></sup></code></td>
+			<td><code class="language-json">Get details of a channel</code></td>
 		</tr>
 		<!-- <tr>
                 <td><a href="#create_channel">Create channel</a></td>
@@ -238,9 +255,9 @@ video-cloud/sharing-relationships/delete</code></pre>
                 <td>Creates a new channel for the account</td>
             </tr> -->
 		<tr>
-			<td><a href="#update_channel">Update channel</a></td>
-			<td>POST <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span></code></td>
-			<td>Update channels settings</td>
+			<td><code class="language-json"><a href="#update_channel">Update channel</a></code></td>
+			<td><code class="language-json">POST <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span></code></code></td>
+			<td><code class="language-json">Update channels settings</code></td>
 		</tr>
 		<!-- <tr>
                 <td><a href="#Remove_channel">Remove channel</a></td>
@@ -248,90 +265,95 @@ video-cloud/sharing-relationships/delete</code></pre>
                 <td>Removes channel from the account</td>
             </tr> -->
 		<tr>
-			<td><a href="#List_channel_affiliates">List channel affiliates</a></td>
-			<td>GET <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members</code></td>
-			<td>Get the affiliates for a channel</td>
+			<td><code class="language-json"><a href="#List_channel_affiliates">List channel affiliates</a></code></td>
+			<td><code class="language-json">GET <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members</code></code></td>
+			<td><code class="language-json">Get the affiliates for a channel</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Add_affiliates">Add affiliates</a></td>
-			<td>PUT <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members</code></td>
-			<td>Add affiliates to a channel</td>
+			<td><code class="language-json"><a href="#Add_affiliates">Add affiliates</a></code></td>
+			<td><code class="language-json">PUT <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members</code></code></td>
+			<td><code class="language-json">Add affiliates to a channel</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Remove_affiliate">Remove affiliate</a></td>
-			<td>DELETE <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members/<span class="bcls-input">affiliate_account_id</span></code></td>
-			<td>Removes an affiliate from a channel</td>
+			<td><code class="language-json"><a href="#Remove_affiliate">Remove affiliate</a></code></td>
+			<td><code class="language-json">DELETE <code>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members/<span class="bcls-input">affiliate_account_id</span></code></code></td>
+			<td><code class="language-json">Removes an affiliate from a channel</code></td>
 		</tr>
 	</tbody>
 	<thead class="bcls-table__head">
 		<tr>
-			<th colspan="3">Affiliate operations</th>
+			<th colspan="3"><code class="language-json">Affiliate operations</code></th>
 		</tr>
 		<tr>
-			<th>Operation</th>
-			<th>Method/Endpoint</th>
-			<th>Description</th>
+			<th><code class="language-json">Operation</code></th>
+			<th><code class="language-json">Method/Endpoint</code></th>
+			<th><code class="language-json">Description</code></th>
 		</tr>
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="#List_available_contracts">List available contracts</a></td>
-			<td>GET <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code></td>
-			<td>Gets all contracts available to the account</td>
+			<td><code class="language-json"><a href="#List_available_contracts">List available contracts</a></code></td>
+			<td><code class="language-json">GET <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code></code></td>
+			<td><code class="language-json">Gets all contracts available to the account</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Get_specific_contract">Get contract for a specific account</a></td>
-			<td>GET <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code>/<span class="bcls-input">master_account_id</span></td>
-			<td>Gets a contract, if any, from a specific account</td>
+			<td><code class="language-json"><a href="#Get_specific_contract">Get contract for a specific account</a></code></td>
+			<td><code class="language-json">GET <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code>/<span class="bcls-input">master_account_id</span></code></td>
+			<td><code class="language-json">Gets a contract, if any, from a specific account</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Accept_contract">Approve a contract</a></td>
-			<td>PATCH <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code>/<span class="bcls-input">master_account_id</span></td>
-			<td>Accept and configure acceptance conditions of contract</td>
+			<td><code class="language-json"><a href="#Accept_contract">Approve a contract</a></code></td>
+			<td><code class="language-json">PATCH <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code>/<span class="bcls-input">master_account_id</span></code></td>
+			<td><code class="language-json">Accept and configure acceptance conditions of contract</code></td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h4>Notes</h4>
+<h4><code class="language-json">Notes</code></h4>
+<code class="language-json"> </code>
 
 <ul>
-	<li id="note2-1"><sup><strong>[2-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
+	<li id="note2-1"><code class="language-json"><sup><strong>[2-1]</strong></sup> Currently there is only one channel named <code>default</code></code></li>
 </ul>
+<code class="language-json"> </code>
 
-<h3>Sharing videos</h3>
+<h3><code class="language-json">Sharing videos</code></h3>
+<code class="language-json"> </code>
 
-<p>Video sharing operations are performed by the Master account. The Affiliate account can accept the share (if <code>auto_accept</code> is set to <code>false</code>) and can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</p>
+<p><code class="language-json">Video sharing operations are performed by the Master account. The Affiliate account can accept the share (if <code>auto_accept</code> is set to <code>false</code>) and can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</code></p>
+<code class="language-json"> </code>
 
-<p>Here are the sharing operations that can be performed once a relationship is set up (click on an operation name for more details):</p>
-<!-- table 3 -->
+<p><code class="language-json">Here are the sharing operations that can be performed once a relationship is set up (click on an operation name for more details):</code></p>
+<code class="language-json"> <!-- table 3 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Sharing Operations</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Sharing Operations</code></caption>
 	<thead class="bcls-table__head">
 		<tr>
-			<th colspan="3">Master operations</th>
+			<th colspan="3"><code class="language-json">Master operations</code></th>
 		</tr>
 		<tr>
-			<th>Operation</th>
-			<th>Method/Endpoint</th>
-			<th>Description</th>
+			<th><code class="language-json">Operation</code></th>
+			<th><code class="language-json">Method/Endpoint</code></th>
+			<th><code class="language-json">Description</code></th>
 		</tr>
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="#List_shares">List existing shares</a></td>
-			<td>GET <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
-			<td>Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="Resharing_videos">re-sharing a video</a> when it has already be shared</td>
+			<td><code class="language-json"><a href="#List_shares">List existing shares</a></code></td>
+			<td><code class="language-json">GET <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></code></td>
+			<td><code class="language-json">Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="Resharing_videos">re-sharing a video</a> when it has already be shared</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Share_video">Share a video</a></td>
-			<td>POST <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
-			<td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a> - that is probably <strong>not</strong> what you want to do</td>
+			<td><code class="language-json"><a href="#Share_video">Share a video</a></code></td>
+			<td><code class="language-json">POST <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></code></td>
+			<td><code class="language-json">Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a> - that is probably <strong>not</strong> what you want to do</code></td>
 		</tr>
 		<tr>
-			<td><a href="#Unshare_video_affiliate">Un-share a video for an Affiliate</a></td>
-			<td>DELETE <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
-			<td>Un-shares a video for a specific Affiliates - note that un-sharing and re-sharing will result in the shared video having a new video id in the Affiliate account</td>
+			<td><code class="language-json"><a href="#Unshare_video_affiliate">Un-share a video for an Affiliate</a></code></td>
+			<td><code class="language-json">DELETE <code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></code></td>
+			<td><code class="language-json">Un-shares a video for a specific Affiliates - note that un-sharing and re-sharing will result in the shared video having a new video id in the Affiliate account</code></td>
 		</tr>
 		<!-- <tr>
                 <td><a href="#Unshare_video">Un-share a video for all Affiliates</a></td>
@@ -341,53 +363,54 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 	<thead class="bcls-table__head">
 		<tr>
-			<th colspan="3">Affiliate operations</th>
+			<th colspan="3"><code class="language-json">Affiliate operations</code></th>
 		</tr>
 		<tr>
-			<th>Operation</th>
-			<th>Method/Endpoint</th>
-			<th>Description</th>
+			<th><code class="language-json">Operation</code></th>
+			<th><code class="language-json">Method/Endpoint</code></th>
+			<th><code class="language-json">Description</code></th>
 		</tr>
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="#Accept_share">Accept a shared video</a></td>
-			<td>PATCH <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/videos/<span class="bcls-input">video_id</span></code></td>
-			<td>Accept a shared video (if <code>auto_accept</code> is turned off)</td>
+			<td><code class="language-json"><a href="#Accept_share">Accept a shared video</a></code></td>
+			<td><code class="language-json">PATCH <code>/accounts/<span class="bcls-input">affiliate_account_id</span>/videos/<span class="bcls-input">video_id</span></code></code></td>
+			<td><code class="language-json">Accept a shared video (if <code>auto_accept</code> is turned off)</code></td>
 		</tr>
 	</tbody>
 </table>
-</section>
+<code class="language-json"> </code></section>
 
 <section class="bcls-section">
-<h2 id="CMS_API_operations">CMS API requests - setup</h2>
+<h2 id="CMS_API_operations"><code class="language-json">CMS API requests - setup</code></h2>
 
-<p>This section lists the CMS API operations involved in setting up media sharing.</p>
+<p><code class="language-json">This section lists the CMS API operations involved in setting up media sharing.</code></p>
 
-<h3>Master operations</h3>
+<h3><code class="language-json">Master operations</code></h3>
 
-<h4 id="list_channels">List channel(s)</h4>
-<!-- table 4 -->
+<h4 id="list_channels"><code class="language-json">List channel(s)</code></h4>
+<code class="language-json"><!-- table 4 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">List Channels</caption>
+	<caption class="bcls-caption--table"><code class="language-json">List Channels</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>GET</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">GET</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/channels</td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/channels</code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
 	{
 		"account_id": "57838016001",
@@ -398,34 +421,36 @@ video-cloud/sharing-relationships/delete</code></pre>
 		"created_at": "2017-08-23T17:11:18.474Z",
 		"updated_at": "2017-08-23T17:11:18.474Z"
 	}
-]</code></pre>
+]</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h4 id="Get_channel_details">Get channel details</h4>
-<!-- table 5 -->
+<h4 id="Get_channel_details"><code class="language-json">Get channel details</code></h4>
+<code class="language-json"> <!-- table 5 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Get channel details</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Get channel details</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>GET</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">GET</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span><sup><strong><a href="#note5-1">[5-1]</a></strong></sup></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span><sup><strong><a href="#note5-1">[5-1]</a></strong></sup></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
   "account_id": "57838016001",
   "name": "default",
@@ -434,18 +459,20 @@ video-cloud/sharing-relationships/delete</code></pre>
   "account_name": "BrightcoveLearning",
   "created_at": "2017-08-23T17:11:18.474Z",
   "updated_at": "2017-08-23T17:11:18.474Z"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h5>Notes</h5>
+<h5><code class="language-json">Notes</code></h5>
+<code class="language-json"> </code>
 
 <ul>
-	<li id="note5-1"><sup><strong>[5-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
+	<li id="note5-1"><code class="language-json"><sup><strong>[5-1]</strong></sup> Currently there is only one channel named <code>default</code></code></li>
 </ul>
-<!-- table 6 --><!-- <h4 id="create_channel">Create channel</h4>
+<code class="language-json"> <!-- table 6 --><!-- <h4 id="create_channel">Create channel</h4>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Create Channel</caption>
     <tbody class="bcls-table__body">
@@ -478,36 +505,38 @@ video-cloud/sharing-relationships/delete</code></pre>
             </td>
         </tr>
     </tbody>
-</table> -->
+</table> --> </code>
 
-<h4 id="update_channel">Update channel</h4>
-<!-- table 7 -->
+<h4 id="update_channel"><code class="language-json">Update channel</code></h4>
+<code class="language-json"> <!-- table 7 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Create Channel</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Create Channel</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>PATCH</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">PATCH</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span><sup><strong><a href="#note6-1">[6-1]</a></strong></sup></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/channels/<span class="bcls-input">channel_name</span><sup><strong><a href="#note6-1">[6-1]</a></strong></sup></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
+			<th><code class="language-json">Request body</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 	"enforce_custom_fields" : true,
-	"enforce_geo" : true</sup>
-}</code></pre>
+	"enforce_geo" : true
+}</code></code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 	"account_id": "57838016001",
 	"name": "default",
@@ -516,18 +545,20 @@ video-cloud/sharing-relationships/delete</code></pre>
 	"account_name": "BrightcoveLearning",
 	"created_at": "2017-08-23T17:11:18.474Z",
 	"updated_at": "2017-12-30T15:06:27.015Z"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h5>Notes</h5>
+<h5><code class="language-json">Notes</code></h5>
+<code class="language-json"> </code>
 
 <ul>
-	<li id="note6-1"><sup><strong>[6-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
+	<li id="note6-1"><code class="language-json"><sup><strong>[6-1]</strong></sup> Currently there is only one channel named <code>default</code></code></li>
 </ul>
-<!-- table 8 --><!-- <h4 id="Remove_channel">Remove channel</h4>
+<code class="language-json"> <!-- table 8 --><!-- <h4 id="Remove_channel">Remove channel</h4>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Remove Channel</caption>
     <tbody class="bcls-table__body">
@@ -554,30 +585,31 @@ video-cloud/sharing-relationships/delete</code></pre>
         </tr>
     </tbody>
 </table>
-<aside class="bcls-aside bcls-aside--warning">Note that this operation will fail if all affiliates have <strong>not</strong> been removed from the channel.</aside> -->
+<aside class="bcls-aside bcls-aside--warning">Note that this operation will fail if all affiliates have <strong>not</strong> been removed from the channel.</aside> --> </code>
 
-<h4 id="List_channel_affiliates">List affiliates for channel</h4>
-<!-- table 9 -->
+<h4 id="List_channel_affiliates"><code class="language-json">List affiliates for channel</code></h4>
+<code class="language-json"> <!-- table 9 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">List Channel Affiliates</caption>
+	<caption class="bcls-caption--table"><code class="language-json">List Channel Affiliates</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>GET</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">GET</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members</td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members</code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
 	{
 		"account_id": "20318290001",
@@ -594,98 +626,106 @@ video-cloud/sharing-relationships/delete</code></pre>
 		"approved": true,
     "account_name": "BC Training Videos"
 	}
-]</code></pre>
+]</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<p>The value of the <code>approved</code> field indicates whether or not the Affiliate has approved the contract.</p>
+<p><code class="language-json">The value of the <code>approved</code> field indicates whether or not the Affiliate has approved the contract.</code></p>
+<code class="language-json"> </code>
 
-<h4 id="Add_affiliates">Add affiliate to channel</h4>
-<!-- table 10 -->
+<h4 id="Add_affiliates"><code class="language-json">Add affiliate to channel</code></h4>
+<code class="language-json"> <!-- table 10 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Add Affiliate</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Add Affiliate</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>PUT</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">PUT</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members/<span class="bcls-input">affiliate_account_id</span></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members/<span class="bcls-input">affiliate_account_id</span></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
+			<th><code class="language-json">Request body</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
   "account_id":"<span class="bcls-input">affiliate_account_id</span>"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 	"account_id": "1485884786001"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h4 id="Remove_affiliate">Remove affiliate from channel</h4>
-<!-- table 11 -->
+<h4 id="Remove_affiliate"><code class="language-json">Remove affiliate from channel</code></h4>
+<code class="language-json"> <!-- table 11 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Remove Affiliate</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Remove Affiliate</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>DELETE</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">DELETE</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members/<span class="bcls-input">affiliate_account_id</span></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/channels/default/members/<span class="bcls-input">affiliate_account_id</span></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
-			<td>204 NO CONTENT (empty response body)</td>
+			<th><code class="language-json">Sample response</code></th>
+			<td><code class="language-json">204 NO CONTENT (empty response body)</code></td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h3>Affiliate operations</h3>
+<h3><code class="language-json">Affiliate operations</code></h3>
+<code class="language-json"> </code>
 
-<h3 id="List_available_contracts">List available contracts</h3>
-<!-- table 12 -->
+<h3 id="List_available_contracts"><code class="language-json">List available contracts</code></h3>
+<code class="language-json"> <!-- table 12 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">List Contracts</caption>
+	<caption class="bcls-caption--table"><code class="language-json">List Contracts</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>GET</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">GET</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts</code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
 	{
 		"account_id": "1485884786001",
@@ -699,43 +739,48 @@ video-cloud/sharing-relationships/delete</code></pre>
 		"updated_at": "2017-08-23T17:45:41.556Z",
 		"created_at": "2017-08-23T17:45:41.556Z"
 	}
-]</code></pre>
+]</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<p>The two essential fields in the response are:</p>
+<p><code class="language-json">The two essential fields in the response are:</code></p>
+<code class="language-json"> </code>
 
 <ul>
-	<li><code>approved</code> - when set to true, the contract is accepted by the Affiliate</li>
-	<li><code>auto-accept</code> - when set to true, videos shared through this contract will be automatically accepted by the Affiliate; otherwise, they must be approved one by one</li>
+	<li><code class="language-json"><code>approved</code> - when set to true, the contract is accepted by the Affiliate</code></li>
+	<li><code class="language-json"><code>auto-accept</code> - when set to true, videos shared through this contract will be automatically accepted by the Affiliate; otherwise, they must be approved one by one</code></li>
 </ul>
+<code class="language-json"> </code>
 
-<p>We will see how to update the contract below.</p>
+<p><code class="language-json">We will see how to update the contract below.</code></p>
+<code class="language-json"> </code>
 
-<h4 id="Get_specific_contract">Get contract for a specific account</h4>
-<!-- table 13 -->
+<h4 id="Get_specific_contract"><code class="language-json">Get contract for a specific account</code></h4>
+<code class="language-json"> <!-- table 13 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Get Contract</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Get Contract</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>GET</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">GET</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts/<span class="bcls-input">master_account_id</span></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts/<span class="bcls-input">master_account_id</span></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 	"account_id": "1485884786001",
 	"channel": {
@@ -747,40 +792,43 @@ video-cloud/sharing-relationships/delete</code></pre>
 	"approved_at": null,
 	"created_at": "2017-08-23T17:45:41.556Z",
 	"updated_at": "2017-08-23T17:45:41.556Z"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h4 id="Accept_contract">Approve contract</h4>
-<!-- table 14 -->
+<h4 id="Accept_contract"><code class="language-json">Approve contract</code></h4>
+<code class="language-json"> <!-- table 14 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Approve Contract</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Approve Contract</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>PATCH</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">PATCH</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts/<span class="bcls-input">master_account_id</span></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">affiliate_account_id</span>/contracts/<span class="bcls-input">master_account_id</span></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
+			<th><code class="language-json">Request body</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
   "approved": true,
   "auto_accept": true
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 	"account_id": "1485884786001",
 	"channel": {
@@ -792,48 +840,50 @@ video-cloud/sharing-relationships/delete</code></pre>
 	"approved_at": "2017-08-27T12:27:21.582Z",
 	"created_at": "2017-08-23T17:45:41.556Z",
 	"updated_at": "2017-08-27T12:27:21.582Z"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<p>If you include only <code>"approved":true</code>, each video will have to be approved individually.</p>
-</section>
+<p><code class="language-json">If you include only <code>"approved":true</code>, each video will have to be approved individually.</code></p>
+<code class="language-json"> </code></section>
 
 <section class="bcls-section">
-<h2 id="cms_operations_sharing">CMS API requests - sharing</h2>
+<h2 id="cms_operations_sharing"><code class="language-json">CMS API requests - sharing</code></h2>
 
-<p>This section details the CMS API requests used in sharing videos. Media sharing operations are performed by the Master account. The Affilate account can accept shares if <code>auto_accept</code> is turned off.</p>
+<p><code class="language-json">This section details the CMS API requests used in sharing videos. Media sharing operations are performed by the Master account. The Affilate account can accept shares if <code>auto_accept</code> is turned off.</code></p>
 
-<h3>Master operations</h3>
+<h3><code class="language-json">Master operations</code></h3>
 
-<h4 id="List_shares">List existing shares</h4>
+<h4 id="List_shares"><code class="language-json">List existing shares</code></h4>
 
-<p>To find out if a video has already been shared to other accounts, you can use the request below.</p>
+<p><code class="language-json">To find out if a video has already been shared to other accounts, you can use the request below.</code></p>
 
-<aside class="bcls-aside bcls-aside--information">This is important, because sharing a video to an account that you have already shared it to is a <strong>reshare</strong> that will overwrite any metadata changes that the Affiliate has made!</aside>
-<!-- table 15 -->
+<aside class="bcls-aside bcls-aside--information"><code class="language-json">This is important, because sharing a video to an account that you have already shared it to is a <strong>reshare</strong> that will overwrite any metadata changes that the Affiliate has made!</code></aside>
+<code class="language-json"><!-- table 15 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">List Shares</caption>
+	<caption class="bcls-caption--table"><code class="language-json">List Shares</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>GET</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">GET</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
 	{
 		"video_id": "5553744346001",
@@ -851,46 +901,51 @@ video-cloud/sharing-relationships/delete</code></pre>
 		"shared_at": "2017-08-27T14:34:34.919Z",
 		"updated_at": "2017-08-27T14:35:25.212Z"
 	}
-]</code></pre>
+]</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<h4 id="Share_video">Sharing (or resharing) a video</h4>
+<h4 id="Share_video"><code class="language-json">Sharing (or resharing) a video</code></h4>
+<code class="language-json"> </code>
 
-<p>The request described below will share a video to one or more Affiliate accounts.</p>
+<p><code class="language-json">The request described below will share a video to one or more Affiliate accounts.</code></p>
+<code class="language-json"> </code>
 
-<aside class="bcls-aside bcls-aside--information">Remember that if the video has already been shared to an Affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the Affiliate has made to the video metadata!</aside>
-<!-- table 16 -->
+<aside class="bcls-aside bcls-aside--information"><code class="language-json">Remember that if the video has already been shared to an Affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the Affiliate has made to the video metadata!</code></aside>
+<code class="language-json"> <!-- table 16 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Share Video</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Share Video</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>POST</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">POST</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
+			<th><code class="language-json">Request body</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
   { "id": "<span class="bcls-input">affiliate_account_id_1</span>" },
   { "id": "<span class="bcls-input">affiliate_account_id_2</span>" }
-]</code></pre>
+]</code></code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
-			<p>Success response</p>
+			<p><code class="language-json">Success response</code></p>
 
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
 	{
 		"video_id": "5553744346001",
@@ -900,12 +955,13 @@ video-cloud/sharing-relationships/delete</code></pre>
 		"shared_at": "2017-08-27T14:25:55.710Z",
 		"updated_at": "2017-08-27T14:25:55.710Z"
 	}
-]</code></pre>
+]</code></code></pre>
 
-			<p>Failure response</p>
-			\
+			<p><code class="language-json">Failure response</code></p>
+			<code class="language-json">\ </code>
 
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 "video_id": "5553744346001",
 "affiliate_id": "1485884786001",
@@ -914,56 +970,61 @@ video-cloud/sharing-relationships/delete</code></pre>
 "error_message": "[{\"error_code\":\"MISSING_CUSTOM_FIELDS\",\"error_message\":\"Affiliate account is missing custom fields: [myfieldname]\"}]",
 "shared_at": "2017-10-23T15:21:38.541Z",
 "updated_at": "2017-10-23T15:22:58.519Z"
-}</code></pre>
-			</td>
+}</code></code></pre>
+			<code class="language-json"> </code></td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<p>Sharing will create a new video in the Affiliate's account. The <code>state</code> of the video share will be <code>PROCESSING</code> until the share is complete <strong>and</strong> the video is created in the Affiliate account. The Affiliate may still need to accept the video (if <code>auto_accept</code> is set to <code>false</code> on the contract by the Affiliate - see the previous section on setting up sharing).</p>
+<p><code class="language-json">Sharing will create a new video in the Affiliate's account. The <code>state</code> of the video share will be <code>PROCESSING</code> until the share is complete <strong>and</strong> the video is created in the Affiliate account. The Affiliate may still need to accept the video (if <code>auto_accept</code> is set to <code>false</code> on the contract by the Affiliate - see the previous section on setting up sharing).</code></p>
+<code class="language-json"> </code>
 
-<aside class="bcls-aside bcls-aside--information">A GET shares request by the Master account will not return the Affiliate video id until the share status is <code>COMPLETE</code>.</aside>
+<aside class="bcls-aside bcls-aside--information"><code class="language-json">A GET shares request by the Master account will not return the Affiliate video id until the share status is <code>COMPLETE</code>.</code></aside>
+<code class="language-json"> </code>
 
 <aside class="bcls-aside bcls-aside--warning">
-<p>Important notes:</p>
+<p><code class="language-json">Important notes:</code></p>
 
 <ul>
-	<li>This operation will re-share a video if it has already been shared with the affiliate(s) - be sure to read <a href="#Resharing_videos">Resharing Videos</a> before you do that!</li>
+	<li><code class="language-json">This operation will re-share a video if it has already been shared with the affiliate(s) - be sure to read <a href="#Resharing_videos">Resharing Videos</a> before you do that!</code></li>
 	<li>
-	<p>If the <code>reference_id</code> for the Master video is already in use in the Affiliate account, the share will fail. The Master and Affiliate will need to resolve the issue by changing the <code>reference_id</code> in one of the accounts and then retry the share.</p>
+	<p><code class="language-json">If the <code>reference_id</code> for the Master video is already in use in the Affiliate account, the share will fail. The Master and Affiliate will need to resolve the issue by changing the <code>reference_id</code> in one of the accounts and then retry the share.</code></p>
 
-	<p>Because sharing is an asynchronous operation, no error will be returned on the share requests. However, the GET shares request (see above) will show an error for the account.</p>
+	<p><code class="language-json">Because sharing is an asynchronous operation, no error will be returned on the share requests. However, the GET shares request (see above) will show an error for the account.</code></p>
 	</li>
 </ul>
 </aside>
+<code class="language-json"> </code>
 
-<h4 id="Unshare_video_affiliate">Unsharing a video for an Affiliate</h4>
-<!-- table 17 -->
+<h4 id="Unshare_video_affiliate"><code class="language-json">Unsharing a video for an Affiliate</code></h4>
+<code class="language-json"> <!-- table 17 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Unshare Video</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Unshare Video</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>DELETE</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">DELETE</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares/<span class="bcls-input">affiliate_account_id</span></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares/<span class="bcls-input">affiliate_account_id</span></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
-			<td>&nbsp;</td>
+			<th><code class="language-json">Request body</code></th>
+			<td><code class="language-json">&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
-			<td>202 ACCEPTED (empty response body) - the response indicates that the request has been accepted for processing, but the operation may not be completed for a couple of minutes</td>
+			<th><code class="language-json">Sample response</code></th>
+			<td><code class="language-json">202 ACCEPTED (empty response body) - the response indicates that the request has been accepted for processing, but the operation may not be completed for a couple of minutes</code></td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<aside class="bcls-aside bcls-aside--warning">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</aside>
-<!-- table 18 --><!-- <h4 id="Unshare_video">Unsharing a video for all Affiliates</h4>
+<aside class="bcls-aside bcls-aside--warning"><code class="language-json">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</code></aside>
+<code class="language-json"> <!-- table 18 --><!-- <h4 id="Unshare_video">Unsharing a video for all Affiliates</h4>
     <table class="bcls-table">
     <caption class="bcls-caption--table">Unshare Video</caption>
     <tbody class="bcls-table__body">
@@ -986,42 +1047,46 @@ video-cloud/sharing-relationships/delete</code></pre>
         </tr>
     </tbody>
 </table>
-<aside class="bcls-aside bcls-aside--warning">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</aside> -->
+<aside class="bcls-aside bcls-aside--warning">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</aside> --> </code>
 
-<h3>Affiliate operations</h3>
+<h3><code class="language-json">Affiliate operations</code></h3>
+<code class="language-json"> </code>
 
-<h4 id="Accept_share">Accept shared video</h4>
+<h4 id="Accept_share"><code class="language-json">Accept shared video</code></h4>
+<code class="language-json"> </code>
 
-<p>To accept a shared video, the Affiliate updates the shared video, setting its <code>state</code> to <code>ACTIVE</code>. (Setting the <code>state</code> to <code>INACTIVE</code> rejects the share.)</p>
-<!-- table 19 -->
+<p><code class="language-json">To accept a shared video, the Affiliate updates the shared video, setting its <code>state</code> to <code>ACTIVE</code>. (Setting the <code>state</code> to <code>INACTIVE</code> rejects the share.)</code></p>
+<code class="language-json"> <!-- table 19 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Accept Shared Video</caption>
+	<caption class="bcls-caption--table"><code class="language-json">Accept Shared Video</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th>Method</th>
-			<td>PATCH</td>
+			<th><code class="language-json">Method</code></th>
+			<td><code class="language-json">PATCH</code></td>
 		</tr>
 		<tr>
-			<th>Endpoint</th>
-			<td>/accounts/<span class="bcls-input">affiliate_account_id</span>/videos/<span class="bcls-input">affiliate_video_id</span></td>
+			<th><code class="language-json">Endpoint</code></th>
+			<td><code class="language-json">/accounts/<span class="bcls-input">affiliate_account_id</span>/videos/<span class="bcls-input">affiliate_video_id</span></code></td>
 		</tr>
 		<tr>
-			<th>Request body</th>
+			<th><code class="language-json">Request body</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">
 	{
 	  "state": "ACTIVE"
 	}
 
-</code></pre>
+</code></code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th>Sample response</th>
+			<th><code class="language-json">Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">{
 	"id": "5557656136001",
 	"account_id": "1485884786001",
@@ -1100,27 +1165,32 @@ video-cloud/sharing-relationships/delete</code></pre>
 	"text_tracks": [
 	],
 	"updated_at": "2017-08-30T13:41:14.075Z"
-}</code></pre>
+}</code></code></pre>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<code class="language-json"> </code>
 
-<p>Set the <code>state</code> to <code>INACTIVE</code> to reject the share.</p>
+<p><code class="language-json">Set the <code>state</code> to <code>INACTIVE</code> to reject the share.</code></p>
+<code class="language-json"> </code>
 
-<p>Note that there is no special notification indicating that a video has been shared to your account. However, if you <a href="/node/18005">search videos</a> for <code>state:pending</code>, that will find any unaccepted shares. Alternatively, you can use the Shares Pending list in the Studio Media module to see and accept/reject pending shares:</p>
+<p><code class="language-json">Note that there is no special notification indicating that a video has been shared to your account. However, if you <a href="/node/18005">search videos</a> for <code>state:pending</code>, that will find any unaccepted shares. Alternatively, you can use the Shares Pending list in the Studio Media module to see and accept/reject pending shares:</code></p>
+<code class="language-json"> </code>
 
-<figure class="bcls-figure"><img class="bcls-image" alt="Pending Shares" src="//learning-services-media.brightcove.com/doc-assets/node/18325-media-sharing-cms-api/18325-pending-share.png" />
-<figcaption class="bcls-caption--image">Pending Shares</figcaption>
-</figure>
-</section>
+<figure class="bcls-figure"><code class="language-json"><img class="bcls-image" alt="Pending Shares" src="//learning-services-media.brightcove.com/doc-assets/node/18325-media-sharing-cms-api/18325-pending-share.png" /> </code>
+
+<figcaption class="bcls-caption--image"><code class="language-json">Pending Shares</code></figcaption>
+<code class="language-json"> </code></figure>
+<code class="language-json"> </code></section>
 
 <section class="bcls-section">
-<h2 id="Errors">Errors</h2>
+<h2 id="Errors"><code class="language-json">Errors</code></h2>
 
-<p>Media sharing errors are not returned as a separate error response to the API request, but rather in an <code>error_message</code> field in the normal reponse:</p>
+<p><code class="language-json">Media sharing errors are not returned as a separate error response to the API request, but rather in an <code>error_message</code> field in the normal reponse:</code></p>
 
 <pre class="line-numbers">
+<code class="language-json">
 <code class="language-json">[
   {
     "video_id" : "1239817239128",
@@ -1131,18 +1201,18 @@ video-cloud/sharing-relationships/delete</code></pre>
     "updated_at" : "2017-12-11T18:03:32.789Z",
     "error_message" : <span class="bcls-highlight">"[{"error_code":"MISSING_CUSTOM_FIELDS","error_message":"Affiliate account is missing custom fields: [whisky]"}]"</span>
   }
-]</code></pre>
+]</code></code></pre>
 
-<p>See <a href="/node/18022#Media_sharing_errors">the CMS API Error Reference</a> for more details.</p>
+<p><code class="language-json">See <a href="/node/18022#Media_sharing_errors">the CMS API Error Reference</a> for more details.</code></p>
 </section>
 
 <section class="bcls-section">
-<h2 id="Limitations">Limitations</h2>
+<h2 id="Limitations"><code class="language-json">Limitations</code></h2>
 
-<p>Currently, media sharing has the following limitations:</p>
+<p><code class="language-json">Currently, media sharing has the following limitations:</code></p>
 
 <ul>
-	<li>DRM: media sharing via the CMS API is currently not supported for DRM-enabled accounts. <!-- <table class="bcls-table">
+	<li><code class="language-json">DRM: media sharing via the CMS API is currently not supported for DRM-enabled accounts. <!-- <table class="bcls-table">
 		<caption class="bcls-caption--table">DRM and Media Sharing</caption>
 		<thead class="bcls-table__head">
 			<tr>
@@ -1190,7 +1260,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 				<td>Video is shared and playable in the Affiliate account, but without DRM.</td>
 			</tr>
 		</tbody>
-	</table> --></li>
+	</table> --></code></li>
 </ul>
 </section>
 </article>
