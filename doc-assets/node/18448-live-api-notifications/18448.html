@@ -318,4 +318,40 @@
     "jvod_state": "processing"
 }</code></pre>
 </section>
+<section class="bcls-section">
+  <h2 id="handling_notifications">Handling notifications</h2>
+  <p>To receive notifications, you simply need an app that can receive HTTP/HTTPS <code>POST</code> requests. The app can then parse the JSON notications and do whatever you want based on their contents.</p>
+  <p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write them to a text file.</p>
+  <pre class="line-numbers"><code class="language-php"><?php
+  // POST won't work for JSON data
+  $problem = "No errors";
+  $notificationType = null;
+  try {
+      $json    = file_get_contents('php://input');
+      $decoded = json_decode($json, true);
+      // turn notification into pretty printed JSON
+      $notification = json_encode($decoded, JSON_PRETTY_PRINT);
+  } catch (Exception $e) {
+      $problem = $e->getMessage();
+      $notification = $json;
+  }
+
+  // $notification = $json;
+
+
+
+  $logEntry = $notification."\n \n";
+
+  // Lastly, tell PHP where it can find the log file and tell PHP to open it
+  // and add the string we created earlier to it.
+  // 2016-09-15: turning off CMS API notifications for now
+      $logFileLocation = "live-log.txt";
+      $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+      fwrite($fileHandle, $logEntry);
+      fclose($fileHandle);
+
+  // line below is displayed when you browse the app directly
+  echo "Live callback app is running";
+</code></pre>
+</section>
 </article>
