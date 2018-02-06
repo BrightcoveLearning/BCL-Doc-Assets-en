@@ -113,7 +113,7 @@ var BCLS = (function(window, document) {
         // separate renditions by type
         for (i = 0; i < iMax; i += 1) {
           if (renditions[i].hasOwnProperty('size')) {
-            totalSize += renditions[i].size;
+            totalSize += renditions[i].size / 1000000;
           }
             if (renditions[i].video_container === 'M2TS') {
                 hlsRenditions.push(renditions[i]);
