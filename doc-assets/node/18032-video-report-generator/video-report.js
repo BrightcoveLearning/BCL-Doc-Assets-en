@@ -113,7 +113,7 @@ var BCLS = (function(window, document) {
         // separate renditions by type
         for (i = 0; i < iMax; i += 1) {
           if (renditions[i].hasOwnProperty('size')) {
-            totalSize += renditions[i].size / 1000000;
+            totalSize += renditions[i].size;
           }
             if (renditions[i].video_container === 'M2TS') {
                 hlsRenditions.push(renditions[i]);
@@ -212,7 +212,7 @@ var BCLS = (function(window, document) {
                 resWidth = rendition.frame_width;
                 resHeight = rendition.frame_height;
                 // add csv row
-                csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + video.totalSize  + '",';
+                csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000)  + '",';
                 if (customFields) {
                     jMax = customFields.length;
                     for (j = 0; j < jMax; j++) {
