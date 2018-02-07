@@ -108,9 +108,13 @@ var BCLS = (function(window, document) {
             hlsRenditions = [],
             mp4Renditions = [],
             flvRenditions = [],
-            otherRenditions = [];
+            otherRenditions = [],
+            totalSize = 0;
         // separate renditions by type
         for (i = 0; i < iMax; i += 1) {
+          if (renditions[i].hasOwnProperty('size')) {
+            totalSize += renditions[i].size;
+          }
             if (renditions[i].video_container === 'M2TS') {
                 hlsRenditions.push(renditions[i]);
             } else if (renditions[i].video_container === 'MP4') {
@@ -122,7 +126,7 @@ var BCLS = (function(window, document) {
             }
         }
         // sort renditions by encoding rate
-        callback(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions);
+        callback(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize);
     }
 
     /**
@@ -155,7 +159,7 @@ var BCLS = (function(window, document) {
 
     function startCSVStrings() {
         var i = 0, iMax;
-        csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)",';
+        csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",';
         if (customFields) {
             iMax = customFields.length;
             for (i; i < iMax; i++) {
@@ -208,7 +212,7 @@ var BCLS = (function(window, document) {
                 resWidth = rendition.frame_width;
                 resHeight = rendition.frame_height;
                 // add csv row
-                csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",';
+                csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000)  + '",';
                 if (customFields) {
                     jMax = customFields.length;
                     for (j = 0; j < jMax; j++) {
@@ -275,7 +279,7 @@ var BCLS = (function(window, document) {
                     callback = function(renditions) {
                         if (renditions.length > 0) {
                             // get the best MP4 rendition
-                            processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions) {
+                            processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
                                 if (hlsRenditions.length > 0) {
                                     sortArray(hlsRenditions, 'encoding_rate');
                                 }
@@ -293,6 +297,7 @@ var BCLS = (function(window, document) {
                                 //     sortArray(otherRenditions, 'encoding_rate');
                                 // }
                                 // videosArray[callNumber].otherRenditions = otherRenditions;
+                                videosArray[callNumber].totalSize = totalSize;
                             });
                         } else {
                             videosArray[callNumber].hlsRenditions = [];

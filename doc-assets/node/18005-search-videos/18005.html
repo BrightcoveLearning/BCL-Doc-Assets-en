@@ -247,12 +247,12 @@
 <ul>
 	<li id="note2-1"><sup><strong>[2-1]</strong></sup> It is <strong>not</strong> possible to search for videos that have a custom field that has no value or a value of <code>null</code>, because unless the field has been given a value, it is not included in the video metadata at all.</li>
 	<li id="note2-2"><sup><strong>[2-2]</strong></sup> when you create a new video, the <code>complete</code> property is automatically set to <code>false</code>. As soon as one rendition exists for the video, the <code>complete</code> property will be automatically set to <code>true</code>.</li>
-  <li id="note2-3"><sup><strong>[2-3]</strong></sup> The following limitations apply to searching for DELETED videos:
-    <ul>
-      <li>Search for deleted videos is <strong>only</strong> available using the CMS API; the Playback API will <strong>not</strong> return deleted videos</li>
-      <li>Only <strong>videos deleted during the previous 10 days will be returned</strong></li>
-    </ul>
-  </li>
+	<li id="note2-3"><sup><strong>[2-3]</strong></sup> The following limitations apply to searching for DELETED videos:
+	<ul>
+		<li>Search for deleted videos is <strong>only</strong> available using the CMS API; the Playback API will <strong>not</strong> return deleted videos</li>
+		<li>Only <strong>videos deleted during the previous 10 days (the current time minus 10 days) will be returned</strong></li>
+	</ul>
+	</li>
 </ul>
 
 <aside class="bcls-aside bcls-aside--information">The fields that use a string value perform a text search against that field.</aside>
@@ -508,10 +508,16 @@ q=my_field:"foo"</code></pre>
 <section class="bcls-section">
 <h2 id="searchByState">Search by state</h2>
 
-<p>You can perform or filter searches by the state of the video using the paramater:</p>
+<p>You can perform or filter searches by the state of the video using the parameter:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING)</code></pre>
+<code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING | DELETED)<sup><strong><a href="#note3">[3]</a></strong></sup></code></pre>
+
+<h3>Notes</h3>
+
+<ul>
+	<li id="note3"><sup><strong>[3]</strong></sup> Search for DELETED videos is only available for videos deleted in the past 10 days (the current time minus 10 days), and only through the CMS API (not the Playback API).</li>
+</ul>
 </section>
 
 <section class="bcls-section">

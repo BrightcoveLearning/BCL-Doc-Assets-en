@@ -1,12 +1,12 @@
 <article class="bcls-article">
 <div class="bcls-section" id="cmsAPI">
-<h2>CMS API notifications</h2>
+<h2>Overview</h2>
 
-<p>You can receive notifications when <code>video_change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling HTTP POST requests.</p>
+<p>You can receive notifications when <code>video_change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span class=”notranslate”>HTTP</span> <code>POST</code> requests.</p>
 
 <h3>Setup</h3>
 
-<p>You can specify up to 10 endpoints to receive notifications by making a POST request to <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions</code> and including JSON in the request body like this:</p>
+<p>You can specify up to 10 endpoints to receive notifications by making a <code>POST</code> request to <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions</code> and including JSON in the request body like this:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -37,11 +37,11 @@
 	<tbody class="bcls-table__body">
 		<tr>
 			<td><code>timestamp</code></td>
-			<td>time when the event occurred in Epoch milliseconds</td>
+			<td>time when the event occurred in <span class=”notranslate”>Epoch</span> milliseconds</td>
 		</tr>
 		<tr>
 			<td><code>account_id</code></td>
-			<td>the Video Cloud account id</td>
+			<td>the <span class=”notranslate”>Video Cloud</span> account id</td>
 		</tr>
 		<tr>
 			<td><code>event</code></td>
@@ -58,7 +58,7 @@
 	</tbody>
 </table>
 
-<p>Requests to create a subscription will receive an HTTP 422 error response for the following conditions:</p>
+<p>Requests to create a subscription will receive an <span class=”notranslate”>HTTP</span> 422 error response for the following conditions:</p>
 
 <ul>
 	<li>The <code>endpoint</code> or <code>events</code> field is missing from the request body</li>
@@ -69,7 +69,7 @@
 
 <h3>Notification failures</h3>
 
-<p>The notification system treats any 4xx or 5xx return from the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.</p>
+<p>The notification system treats any <code>4xx</code> or <code>5xx</code> return from the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.</p>
 
 <aside class="bcls-aside bcls-aside--information"><code>video_change</code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</aside>
 
@@ -84,14 +84,14 @@
 
 <h3 id="createSubscription">Create a new subscription</h3>
 
-<p>To create a new subscription, submit a POST request with a request body including the endpoint that you want notifications delivered to and <code>video-change</code> as the single item in an <code>events</code> array:</p>
+<p>To create a new subscription, submit a <code>POST</code> request with a request body including the endpoint that you want notifications delivered to and <code>video-change</code> as the single item in an <code>events</code> array:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{ "endpoint": "http://solutions.brightcove.com:9002", "events": [ "video-change" ] }</code></pre>
 
 <h3 id="getSubscriptions">Get a list of your subscriptions</h3>
 
-<p>To get a list of all your subscriptions, send a GET request to the subscriptions endpoint.</p>
+<p>To get a list of all your subscriptions, send a <code>GET</code> request to the subscriptions endpoint.</p>
 
 <h3 id="getSubscription">Get or Delete a single subscription</h3>
 
@@ -102,22 +102,14 @@
 <pre class="line-numbers">
 <code class="language-http">/accounts/{account_id}/subscriptions/{subscription_id}</code></pre>
 
-<p>A GET request will retrieve the subscription. A DELETE request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
+<p>A <code>GET</code> request will retrieve the subscription. A <code>DELETE</code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
 </div>
 
 <section id="What_triggers" class="bcls-section">
 <h2>What triggers notifications?</h2>
 
-<p><code>video-change</code> events are triggered by any change in the video metadata. This includes any change to the video made in Studio or through a CMS write method. There are also system events, such as moving assets to a different location, that will trigger <code>video-change</code> events.</p>
+<p><code>video-change</code> events are triggered by any change in the video metadata. This includes any change to the video made in Studio or through a <span class=”notranslate”>CMS API</span> write method. There are also system events, such as moving assets to a different location, that will trigger <code>video-change</code> events.</p>
 
 <p>What will <strong>not</strong> trigger a <code>video-change</code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no <code>video-change</code> event will occur, and no notification will be sent.</p>
 </section>
-<!-- <div class="bcls-section" id="sampleApp">
-                    <h2>Basic Sample app</h2>
-                    <p>Below is code for a simple logging app that will work for both CMS API and Dynamic Ingest API notification (which fields get populated will depend on where the notification originated). This app is written in PHP, but you can use any language, as long as the app has a public-facing URL and can handle http(s) POST requests.</p>
-                    <p>
-                        You can see the log file that this app generates <a href="//solutions.brightcove.com/bcls/di-api/di-log.txt">here.</a>
-                    </p>
-                    <p class="BCL-aside">Note: if you try to implement this app for yourself, you will need to make sure that the app has permission to write to your log file. Also remember that the log file can grow quickly - you will probably want to empty it on a regular basis.</p>
-                    <script src="https://gist.github.com/bcls/da693cff4205ff80f91e.js"></script>
-                </div> --></article>
+</article>
