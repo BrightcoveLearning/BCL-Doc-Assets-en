@@ -68,16 +68,30 @@ catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
 
 	<pre class="line-numbers">
 <code class="language-java">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
-@Override
-public void onVideo(Video video) {
-<span class="bcls-highlight">  Log.v(TAG, "onVideo: video = " + video);
-  Log.v(TAG, "onVideo: videoID = " + video.getId());
-  Log.v(TAG, "onVideo: videoName = " + video.getName());
-  Log.v(TAG, "onVideo: videoDescription = " + video.getDescription());
-  Log.v(TAG, "onVideo: videoImage = " + video.getStillImageUri());</span>
-  brightcoveVideoView.add(video);
-  brightcoveVideoView.start();
-}
+  // Add the video found to the queue with add().
+  // Start playback of the video with start().
+  @
+  Override
+  public void onVideo(Video video) {
+<span class="bcls-highlight">    Log.v(TAG, &quot;onVideo: video = &quot; + video);
+    Log.v(TAG, &quot;onVideo: videoID = &quot; + video.getId());
+    Log.v(TAG, &quot;onVideo: videoName = &quot; + video.getName());
+    Log.v(TAG, &quot;onVideo: videoDescription = &quot; + video.getDescription());
+    Log.v(TAG, &quot;onVideo: videoImage = &quot; + video.getStillImageUri());
+    Log.v(TAG, &quot;onVideo: sourceCollections = &quot; + video.getSourceCollections());
+    SourceCollection dashCollection = video.getSourceCollections().get(DeliveryType.DASH);
+    if (dashCollection != null) {
+      Set &lt; Source &gt; sources = dashCollection.getSources();
+      for (Source source: sources) {
+        if (!TextUtils.isEmpty(source.getUrl())) {
+          Log.v(TAG, &quot;onVideo: DASH source = &quot; + source.getUrl());
+        }
+      }
+    }</span>
+		
+    brightcoveVideoView.add(video);
+    brightcoveVideoView.start();
+  }
 });</code></pre>
 
 	<p>The above <code>Log()</code> methods return the following media information:</p>
