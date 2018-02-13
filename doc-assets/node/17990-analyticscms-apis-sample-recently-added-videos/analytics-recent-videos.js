@@ -1,7 +1,7 @@
 var BCLS = (function(window, document, aapi_model) {
   var cmsBaseURL              = 'https://cms.api.brightcove.com/v1/accounts/',
       aapiBaseURL             = 'https://analytics.api.brightcove.com/v1/data',
-      proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/aapi-proxy.php',
+      proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
       videoIds                = [],
       videoIdSets             = [],
       dimension,
@@ -39,7 +39,6 @@ var BCLS = (function(window, document, aapi_model) {
       generatedContent        = document.getElementById('generatedContent'),
       responseData            = document.getElementById('responseData'),
       logger                  = document.getElementById('logger'),
-      videoIds = [],
       i,
       iMax;
 
@@ -343,46 +342,51 @@ var BCLS = (function(window, document, aapi_model) {
      */
     function setRequestData(id) {
         var endPoint = searchString,
-            requestData = {},
+            options = {},
             baseURL;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        options.account_id = accountId;
+        if (isDefined(clientId) && isDefined(clientSecret)) {
+          options.client_id = clientId;
+          options.client_secret = clientSecret
+        }
         switch (id) {
             case 'getCount':
                 baseURL = cmsBaseURL + accountId + '/counts/videos?';
                 endPoint = searchString;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                apiMethod.textContent = options.requestType;
+                getMediaData(options, id);
                 break;
             case 'getVideos':
                 baseURL = cmsBaseURL + accountId + '/videos?';
                 endPoint = searchString + '&limit=' + pageSize + '&sort=created_at&offset=' + pageSize * videoCallNumber;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                apiMethod.textContent = options.requestType;
+                getMediaData(options, id);
                 break;
             case 'getAnalytics':
                 var videoIdStr = videoIdSets[analyticsCallNumber].join(',');
                 baseURL = aapiBaseURL;
                 dimension = selectedDimensions.join(',');
                 endPoint = '?accounts=' + accountId + '&dimensions=' + dimension + '&where=video==' + videoIdStr + '&fields=' + fieldsToReturn.join(',');
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                apiMethod.textContent = options.requestType;
+                getMediaData(options, id);
                 break;
         }
     }
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
+     * @param  {Object} options options for the request
      * @param  {String} requestID the type of request = id of the button
      */
     function getMediaData(options, requestID) {
@@ -469,20 +473,15 @@ var BCLS = (function(window, document, aapi_model) {
                   alert('Caught Exception: ' + e);
                 }
             };
-        // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-        }
 
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
         httpRequest.open('POST', proxyURL);
         // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpRequest.setRequestHeader("Content-Type", "application/json");
         // open and send request
-        httpRequest.send(requestParams);
+        httpRequest.send(JSON.stringify(options));
     }
 
     function init() {
