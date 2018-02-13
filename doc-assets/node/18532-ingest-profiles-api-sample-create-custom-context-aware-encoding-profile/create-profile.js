@@ -529,7 +529,7 @@ var BCLS = (function(window, document) {
     // open the request
     httpRequest.open('POST', proxyURL);
     // set headers
-    httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpRequest.setRequestHeader("Content-Type", "application/json");
     // open and send request
     httpRequest.send(requestParams);
   }
