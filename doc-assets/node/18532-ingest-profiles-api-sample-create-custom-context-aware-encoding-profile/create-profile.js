@@ -342,7 +342,7 @@ var BCLS = (function(window, document) {
   function createRequest(type) {
     var options = {},
       requestBody = {},
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip2-proxy.php',
+      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
       baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
@@ -515,15 +515,6 @@ var BCLS = (function(window, document) {
      * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
      * requestBody - request body for write requests (optional JSON string)
      */
-    requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-    // only add client id and secret if both were submitted
-    if (options.client_id && options.client_secret) {
-      requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-    }
-    // add request data if any
-    if (options.requestBody) {
-      requestParams += '&requestBody=' + options.requestBody;
-    }
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
@@ -531,7 +522,7 @@ var BCLS = (function(window, document) {
     // set headers
     httpRequest.setRequestHeader("Content-Type", "application/json");
     // open and send request
-    httpRequest.send(requestParams);
+    httpRequest.send(JSON.stringify(options));
   }
 
   function init() {
