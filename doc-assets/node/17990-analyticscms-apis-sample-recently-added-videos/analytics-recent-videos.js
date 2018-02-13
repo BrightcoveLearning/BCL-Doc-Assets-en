@@ -479,7 +479,7 @@ var BCLS = (function(window, document, aapi_model) {
         // open the request
         httpRequest.open('POST', proxyURL);
         // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/json");
+        // httpRequest.setRequestHeader("Content-Type", "application/json");
         // open and send request
         httpRequest.send(JSON.stringify(options));
     }
