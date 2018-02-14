@@ -22,5 +22,238 @@
     <p>
       Zencoder also supports generating CBCS-encrypted fragmented MP4, HLS outputs with necessary headers for integrating with Fairplay DRM. For each output, specify <a href="/node/17871">Encryption</a> options. Once you have those keys, the Zencoder API structure for a single rendition
       is:
-    </p>  </section>
+    </p>
+<pre class="line-numbers"><code class="language-json">{
+  "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
+  "outputs": [
+    {
+      "skip_audio": true,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 900,
+      "decoder_buffer_size": 2400,
+      "filename": "file-640k.m3u8",
+      "max_frame_rate": 30,
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 600,
+      "width": 400,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "max_hls_protocol_version" : 7,
+      "byte_range_segmenting" : "true",
+      "drm_method" : "fairplay",
+      "encryption_method": "cbcs",
+      "encryption_key_url":"http://example.com/encryption.key",
+      "encryption_key": "a5f6a7d6ef5d6a7a02a23dd35dd56a63",
+      "encryption_iv" : "6345216ef5d6a7a02a23dd35d456987"
+    }
+  ]
+}</code></pre>
+    <h3>Notes</h3>
+    <ul>
+      <li>It is recommended to do audio only and video only segmented outputs  and use alternate audio while generating playlist.</li>
+      <li>In playlist output DO NOT mix <code>ts</code> and <code>m4f</code> outputs (Causes audio video sync issues).</li>
+      <li>Captions with fragmented mp4 HLS outputs are not supported in zencoder yet.</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+  <h2 id="complete_example">Complete example</h2>
+  <p>Multiple outputs of different bitrates may be specified and referenced by the playlist. These settings match the guidelines given in our <a href="/node/17788">iOS encoding guide</a>.</p>
+  <h3>Audio outputs</h3>
+<pre class="line-numbers"><code class="language-json">{
+  "outputs":[
+    {
+      "label": "hls-audio-64",
+      "audio_bitrate": 64,
+      "base_url": "s3://my-bucket/",
+      "filename": "file-audio-64k.m3u8",
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "byte_range_segmenting" : "true",
+      "skip_video":"true",
+      "public": 1,
+      "type": "segmented"
+    },
+    {
+      "label": "hls-audio-128",
+      "audio_bitrate": 128,
+      "base_url": "s3://my-bucket/",
+      "filename": "file-audio-128k.m3u8",
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "byte_range_segmenting" : "true",
+      "skip_video":"true",
+      "public": 1,
+      "type": "segmented"
+    }
+  ]
+}</code></pre>
+  <h3>Video outputs</h3>
+p<pre class="line-numbers"><code class="language-json">{
+  "outputs":[
+    {
+      "label": "hls-240",
+      "audio_bitrate": 56,
+      "audio_sample_rate": 22050,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 300,
+      "decoder_buffer_size": 800,
+      "filename": "file-240k.m3u8",
+      "max_frame_rate": 15,
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 200,
+      "width": 400,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "byte_range_segmenting" : "true",
+      "skip_audio":"true"
+    },
+    {
+      "label": "hls-440",
+      "audio_bitrate": 56,
+      "audio_sample_rate": 22050,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 600,
+      "decoder_buffer_size": 1600,
+      "filename": "file-440k.m3u8",
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 400,
+      "width": 400,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "skip_audio":"true"
+    },
+    {
+      "label": "hls-640",
+      "audio_bitrate": 56,
+      "audio_sample_rate": 22050,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 900,
+      "decoder_buffer_size": 2400,
+      "filename": "file-640k.m3u8",
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 600,
+      "width": 480,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "byte_range_segmenting" : "true",
+      "skip_audio":"true"
+    },
+    {
+      "label": "hls-1040",
+      "audio_bitrate": 56,
+      "audio_sample_rate": 22050,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 1500,
+      "decoder_buffer_size": 4000,
+      "filename": "file-1040k.m3u8",
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 1000,
+      "width": 640,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "skip_audio":"true"
+    },
+    {
+      "label": "hls-1540",
+      "audio_bitrate": 56,
+      "audio_sample_rate": 22050,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 2250,
+      "decoder_buffer_size": 6000,
+      "filename": "file-1540k.m3u8",
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 1500,
+      "width": 960,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "byte_range_segmenting" : "true",
+      "skip_audio":"true"
+    },
+    {
+      "label": "hls-2040",
+      "audio_bitrate": 56,
+      "audio_sample_rate": 22050,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 3000,
+      "decoder_buffer_size": 8000,
+      "filename": "file-2040k.m3u8",
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 2000,
+      "width": 1024,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "byte_range_segmenting" : "true",
+      "skip_audio":"true"
+    }
+  ]
+}</code></pre>
+  <h3>Playlist outputs</h3>
+<pre class="line-numbers"><code class="language-json">{
+  "outputs":[
+    {
+      "base_url": "s3://my-bucket/",
+      "filename": "playlist.m3u8",
+      "type": "playlist",
+      "hls_protocol_version" : 7,
+      "public": 1,
+      "alternate_audio": {
+        "audio_64k": {
+          "path": "file-audio-64k.m3u8",
+          "language": "en",
+          "default": true,
+          "source": "hls-audio-64"
+        },
+        "audio_128k": {
+          "path": "file-audio-128k.m3u8",
+          "language": "en",
+          "source": "hls-audio-64"
+        }
+      },
+      "streams": [
+        {
+          "source": "hls-2040",
+          "path": "file-2040k.m3u8",
+          "audio": "audio_128k"
+        },
+        {
+          "source": "hls-1540",
+          "path": "file-1540k.m3u8",
+          "audio": "audio_128k"
+        },
+        {
+          "source": "hls-1040",
+          "path": "file-1040k.m3u8",
+          "audio": "audio_128k"
+        },
+        {
+          "source": "hls-640",
+          "path": "file-640k.m3u8",
+          "audio": "audio_128k"
+        },
+        {
+          "source": "hls-440",
+          "path": "file-440k.m3u8"
+          "audio": "audio_64k"
+        },
+        {
+          "source": "hls-240",
+          "path": "file-240k.m3u8",
+          "audio": "audio_64k"
+        },
+        {
+          "source": "hls-audio-64",
+          "path": "file-audio-64k.m3u8"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+</section>
 </article>
