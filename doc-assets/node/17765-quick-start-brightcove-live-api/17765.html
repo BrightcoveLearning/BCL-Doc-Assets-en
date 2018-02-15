@@ -7,7 +7,7 @@
 <ul>
 	<li>An account set up for the Live API</li>
 	<li>An api key for the Live API (provided to you when the account is set up)</li>
-	<li>A Video Cloud account (not required to create the live stream job, but needed to set up playback in the Brightcove player)</li>
+	<li>A Video Cloud account (not required to create the live stream job, but needed to set up playback in the Brightcove Player)</li>
 	<li>If you will be using the CMS API to create the Video Cloud video rather than Studio, you will need client credentials with video/read and video/write permissions - if you are not familiar with the process of getting client credentials, see the <a href="#authentication">authentication</a> section below.</li>
 	<li>The ability to make REST API requests either via <a href="/node/17924">cURL</a> or a REST client such as <a href="/node/18462">Insomnia</a> or <a href="/node/17923">Postman</a>.
 	<p>To help you, we've prepared some Insomnia and Postman imports you can use for the exercise (at Brightcove Learning Services, we prefer and use Insomnia, but Postman will also work if that is what you have):</p>
@@ -19,7 +19,7 @@
 		<li><a href="//learning-services-media.brightcove.com/doc-assets/node/17765-quick-start-brightcove-live-api/postman-imports.zip">Postman Collection and Environment import</a></li>
 	</ul>
 	</li>
-	<li>To create an actual live stream, you will need either a software or hardware encoder for live streaming. The instructions below will include steps for setting up the live stream in Wirecast - if you are using a different encoder, the process will be different, but should be similar in terms of the information you need from the Live API response.</li>
+	<li>To create an actual live stream, you will need either a software or hardware encoder for live streaming. The instructions below will include steps for setting up the live stream using Wirecast (<a href="http://www.telestream.net/controls/wirecast/download-wirecast.htm">sign up for a trial</a>). If you are using a different encoder, the process will be different but should be similar in terms of the information you need from the Live API response.</li>
 </ul>
 </section>
 
@@ -251,7 +251,7 @@
 <section class="bcls-section">
 <h2 id="Set_up_Video_Cloud_video">Set up Video Cloud video</h2>
 
-<p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove player.</p>
+<p>Now that we have the live stream information, we will set up a remote video in Video Cloud so that we can play it in a Brightcove Player.</p>
 
 <div>In these steps, we set the video up using the <a href="/node/18372">CMS API</a>, but this can also be done in Video Cloud Studio, if you prefer - see the <a href="#useStudio">alternative steps below</a>.
 
@@ -307,7 +307,7 @@
 
 <ol class="bcls-tasklist">
 	<li>Create a simple HTML page to test the live stream player. You can include any other content you like, or none at all.</li>
-	<li>In the Studio Media Module, select the video created in the previous steps and click <strong>Publish&gt;Web Player</strong>:
+	<li>In the Studio Media Module, select the video created in the previous steps and click <strong>Publish and Embed &gt; Web Player</strong>:
 	<figure class="bcls-figure"><img class="bcls-image" alt="Publish Video" src="//learning-services-media.brightcove.com/doc-assets/node/17765-quick-start-brightcove-live-api/17765-publish-video.png" />
 	<figcaption class="bcls-caption--image">Publish Video</figcaption>
 	</figure>
@@ -412,13 +412,48 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 </section>
 
 <section class="bcls-section">
+<h2 id="wirecast">Use Wirecast to stream an event</h2>
+
+<p>In this section, we will configure and use the Telestream Wirecast encoder to support a live streaming event. Telestream Wirecast software is a desktop application that captures input from your camera and produces a stream that can be delivered by a CDN. Note that there are hardware and other software based encoding solutions available that may be better suited for delivering your live streaming event. You can download a trial version of the Wirecast software from the <a href="http://www.telestream.net/controls/wirecast/download-wirecast.htm">Telestream website</a>.</p>
+
+<p class="BCL-aside">Note: You should have the Wirecast software installed and a camera connected to your computer before proceeding.</p>
+
+<p>To configure Wirecast for a live event, follow these steps.</p>
+
+<ol class="bcls-tasklist">
+	<li>Open Wirecast.</li>
+	<li>Hover over the <strong>+,</strong> click <strong>Capture Devices</strong> and then select your camera.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Select camera" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/wirecast-camera-select.png" />
+	<figcaption class="bcls-caption--image">Selecting a camera</figcaption>
+	</figure>
+	</li>
+	<li>Click the arrow button (<img alt="" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/arrow-icon.png" />) to make the camera shot the live shot.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Camera setup" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/wirecast-camera-setup.png" />
+	<figcaption class="bcls-caption--image">Wirecast camera configuration</figcaption>
+	</figure>
+	</li>
+	<li>Click the <strong>Stream</strong> button (<img alt="" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/stream-icon.png" />). You will be prompted to configure the output settings.</li>
+	<li>Set the <strong>Destination</strong> to <strong>RTMP Server</strong>. Click <strong>OK</strong>.</li>
+	<li>For the <strong>Address</strong>, use the <strong>stream_url</strong> returned from the Live API (step 3).</li>
+	<li>For the <strong>Stream</strong>, use alive.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Output settings" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/output-settings.png" />
+	<figcaption class="bcls-caption--image">Wirecast output settings</figcaption>
+	</figure>
+	</li>
+	<li><strong>(Optional)</strong> To create additional output streams, click <strong>Add...</strong> When creating additional output streams, you may wish to create your own custom encoding profile to control the output bitrate. Make sure that the <strong>Stream</strong> name reflects the new bitrate.</li>
+	<li>Click <strong>OK</strong> to save the output settings.</li>
+	<li>Click the <strong>Stream</strong> button (<img alt="" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/stream-icon.png" />). The live stream should begin.</li>
+</ol>
+</section>
+
+<section class="bcls-section">
 <h2 id="conclusion">Conclusion</h2>
 
 <p>You are now ready to create a live streaming session. You need to add the following to your encoder configuration:</p>
 
 <ul>
-  <li><code>stream_url</code>: add the <code>stream_url</code> from your job (the <code>rtmp</code> address)</li>
-  <li><code>stream_name</code>: the stream name must be <code>alive</code></li>
+	<li><code>stream_url</code>: add the <code>stream_url</code> from your job (the <code>rtmp</code> address)</li>
+	<li><code>stream_name</code>: the stream name must be <code>alive</code></li>
 </ul>
 
 <p>Once you start the live stream, you should see it show up in the Brightcove player you created in the earlier steps.</p>
