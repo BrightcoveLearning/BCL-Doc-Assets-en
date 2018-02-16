@@ -274,6 +274,10 @@ var BCLS = (function(window, document) {
                 getMediaData(requestData, id);
                 break;
             case 'getDigitalMaster':
+            endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+            requestData.url = baseURL + endPoint;
+            requestData.requestType = 'GET';
+            apiRequest.textContent = requestData.url;
 
               break;
             case 'getVideoRenditions':
