@@ -50,6 +50,20 @@ var BCLS = (function(window, document) {
     return true;
   }
 
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
+
   /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
@@ -318,7 +332,13 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-
+          if (isJson(response)) {
+            responseDecoded = JSON.parse(response);
+            videosArray[callNumber].totalSize += responseDecoded.size;
+            createRequest('getVideoRenditions');
+          } else {
+            createRequest('getVideoRenditions');
+          }
         })
         break;
       case 'getVideoRenditions':
@@ -373,7 +393,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         spanRenditionsCountEl.textContent = callNumber + 1;
-        makeRequest(options, id, function(response) {
+        makeRequest(options, function(response) {
 
         });
         break;
