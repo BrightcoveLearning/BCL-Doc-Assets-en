@@ -355,33 +355,34 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
-          if (renditions.length > 0) {
+          if (isJson(response)) {
             var renditions = JSON.parse(response);
-            processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
-              if (hlsRenditions.length > 0) {
-                sortArray(hlsRenditions, 'encoding_rate');
-              }
+            if (renditions.length > 0) {
+              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
+                if (hlsRenditions.length > 0) {
+                  sortArray(hlsRenditions, 'encoding_rate');
+                }
 
-              videosArray[callNumber].hlsRenditions = hlsRenditions;
-              if (mp4Renditions.length > 0) {
-                sortArray(mp4Renditions, 'encoding_rate');
-              }
-              videosArray[callNumber].mp4Renditions = mp4Renditions;
-              if (flvRenditions.length > 0) {
-                sortArray(flvRenditions, 'encoding_rate');
-              }
-              videosArray[callNumber].flvRenditions = flvRenditions;
-              // if (otherRenditions.length > 0) {
-              //     sortArray(otherRenditions, 'encoding_rate');
-              // }
-              // videosArray[callNumber].otherRenditions = otherRenditions;
-              videosArray[callNumber].totalSize += totalSize;
+                videosArray[callNumber].hlsRenditions = hlsRenditions;
+                if (mp4Renditions.length > 0) {
+                  sortArray(mp4Renditions, 'encoding_rate');
+                }
+                videosArray[callNumber].mp4Renditions = mp4Renditions;
+                if (flvRenditions.length > 0) {
+                  sortArray(flvRenditions, 'encoding_rate');
+                }
+                videosArray[callNumber].flvRenditions = flvRenditions;
+                // if (otherRenditions.length > 0) {
+                //     sortArray(otherRenditions, 'encoding_rate');
+                // }
+                // videosArray[callNumber].otherRenditions = otherRenditions;
+                videosArray[callNumber].totalSize += totalSize;
+            } else {
+              videosArray[callNumber].hlsRenditions = [];
+              videosArray[callNumber].mp4Renditions = [];
+              videosArray[callNumber].flvRenditions = [];
+            }
             });
-          } else {
-            videosArray[callNumber].hlsRenditions = [];
-            videosArray[callNumber].mp4Renditions = [];
-            videosArray[callNumber].flvRenditions = [];
-          }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
