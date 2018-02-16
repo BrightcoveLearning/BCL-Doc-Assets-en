@@ -323,6 +323,7 @@ var BCLS = (function(window, document) {
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
             createRequest('getDigitalMaster');
+          }
         });
         break;
       case 'getDigitalMaster':
