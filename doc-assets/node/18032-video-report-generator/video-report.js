@@ -376,12 +376,12 @@ var BCLS = (function(window, document) {
                 // }
                 // videosArray[callNumber].otherRenditions = otherRenditions;
                 videosArray[callNumber].totalSize += totalSize;
-            } else {
+            });
+          } else {
               videosArray[callNumber].hlsRenditions = [];
               videosArray[callNumber].mp4Renditions = [];
               videosArray[callNumber].flvRenditions = [];
-            });
-          }
+            }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
