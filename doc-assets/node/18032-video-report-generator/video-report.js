@@ -3,7 +3,7 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
     limit = 25,
     totalVideos = 0,
@@ -343,47 +343,7 @@ var BCLS = (function(window, document) {
         break;
       case 'getVideoRenditions':
         var i,
-          iMax = videosArray.length,
-          callback = function(renditions) {
-            if (renditions.length > 0) {
-              // get the best MP4 rendition
-              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
-                if (hlsRenditions.length > 0) {
-                  sortArray(hlsRenditions, 'encoding_rate');
-                }
-
-                videosArray[callNumber].hlsRenditions = hlsRenditions;
-                if (mp4Renditions.length > 0) {
-                  sortArray(mp4Renditions, 'encoding_rate');
-                }
-                videosArray[callNumber].mp4Renditions = mp4Renditions;
-                if (flvRenditions.length > 0) {
-                  sortArray(flvRenditions, 'encoding_rate');
-                }
-                videosArray[callNumber].flvRenditions = flvRenditions;
-                // if (otherRenditions.length > 0) {
-                //     sortArray(otherRenditions, 'encoding_rate');
-                // }
-                // videosArray[callNumber].otherRenditions = otherRenditions;
-                videosArray[callNumber].totalSize = totalSize;
-              });
-            } else {
-              videosArray[callNumber].hlsRenditions = [];
-              videosArray[callNumber].mp4Renditions = [];
-              videosArray[callNumber].flvRenditions = [];
-            }
-            videosCompleted++;
-            logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-            callNumber++;
-            if (callNumber < totalVideos) {
-              createRequest('getVideoRenditions');
-            } else {
-              // create csv headings
-              startCSVStrings();
-              // write the report
-              writeReport();
-            }
-          };
+          iMax = videosArray.length;
         videosArray[callNumber].hlsRenditions = [];
         videosArray[callNumber].mp4Renditions = [];
         videosArray[callNumber].flvRenditions = [];
@@ -394,7 +354,44 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
+          if (renditions.length > 0) {
+            var renditions = JSON.parse(response);
+            processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
+              if (hlsRenditions.length > 0) {
+                sortArray(hlsRenditions, 'encoding_rate');
+              }
 
+              videosArray[callNumber].hlsRenditions = hlsRenditions;
+              if (mp4Renditions.length > 0) {
+                sortArray(mp4Renditions, 'encoding_rate');
+              }
+              videosArray[callNumber].mp4Renditions = mp4Renditions;
+              if (flvRenditions.length > 0) {
+                sortArray(flvRenditions, 'encoding_rate');
+              }
+              videosArray[callNumber].flvRenditions = flvRenditions;
+              // if (otherRenditions.length > 0) {
+              //     sortArray(otherRenditions, 'encoding_rate');
+              // }
+              // videosArray[callNumber].otherRenditions = otherRenditions;
+              videosArray[callNumber].totalSize += totalSize;
+            });
+          } else {
+            videosArray[callNumber].hlsRenditions = [];
+            videosArray[callNumber].mp4Renditions = [];
+            videosArray[callNumber].flvRenditions = [];
+          }
+          videosCompleted++;
+          logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
+          callNumber++;
+          if (callNumber < totalVideos) {
+            createRequest('getVideoRenditions');
+          } else {
+            // create csv headings
+            startCSVStrings();
+            // write the report
+            writeReport();
+          }
         });
         break;
     }
