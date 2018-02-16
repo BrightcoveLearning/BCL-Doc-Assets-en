@@ -328,7 +328,7 @@ var BCLS = (function(window, document) {
         break;
       case 'getDigitalMaster':
         videosArray[callNumber].totalSize = 0;
-        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/digital_master';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -422,7 +422,6 @@ console.log('totalSize', videosArray[callNumber].totalSize);
                   if (httpRequest.readyState === 4) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           response = httpRequest.responseText;
-console.log('response', response);
                           // some API requests return '{null}' for empty responses - breaks JSON.parse
                           if (response === '{null}') {
                               response = null;
