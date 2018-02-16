@@ -267,7 +267,7 @@ var BCLS = (function(window, document) {
     disableButtons();
     switch (id) {
       case 'getCount':
-        endPoint = accountId + '/counts/videos?sort=created_at';
+        endPoint = account_id + '/counts/videos?sort=created_at';
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
         }
@@ -289,7 +289,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getCustomFields':
-        endPoint = accountId + '/video_fields';
+        endPoint = account_id + '/video_fields';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -305,7 +305,7 @@ var BCLS = (function(window, document) {
         break;
       case 'getVideos':
         var offset = (limit * callNumber);
-        endPoint = accountId + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+        endPoint = account_id + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
         }
@@ -328,7 +328,7 @@ var BCLS = (function(window, document) {
         break;
       case 'getDigitalMaster':
         videosArray[callNumber].totalSize = 0;
-        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/digital_master';
+        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/digital_master';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -349,7 +349,7 @@ var BCLS = (function(window, document) {
         videosArray[callNumber].mp4Renditions = [];
         videosArray[callNumber].flvRenditions = [];
         videosArray[callNumber].otherRenditions = [];
-        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -482,7 +482,7 @@ var BCLS = (function(window, document) {
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
       window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        accountId = '1752604059001';
+        account_id = '1752604059001';
     }
     // get video count
     createRequest('getCount');
