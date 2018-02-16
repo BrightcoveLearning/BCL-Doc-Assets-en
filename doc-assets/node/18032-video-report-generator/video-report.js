@@ -355,7 +355,6 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
-          if (isJson(response)) {
             var renditions = JSON.parse(response);
             if (renditions.length > 0) {
               processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
@@ -382,6 +381,7 @@ var BCLS = (function(window, document) {
               videosArray[callNumber].mp4Renditions = [];
               videosArray[callNumber].flvRenditions = [];
             });
+          }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
