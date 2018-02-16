@@ -330,11 +330,12 @@ var BCLS = (function(window, document) {
         videosArray[callNumber].totalSize = 0;
         endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/digital_master';
         options.url = baseURL + endPoint;
+console.log('dm request', options.url);
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          if (response !== '[{error_code: "RESOURCE_NOT_FOUND"}]') {
             responseDecoded = JSON.parse(response);
+            if (!isDefined(responseDecoded.length)) {
 console.log('dm response', responseDecoded);
             videosArray[callNumber].totalSize += responseDecoded.size;
 console.log('totalSize', videosArray[callNumber].totalSize);
