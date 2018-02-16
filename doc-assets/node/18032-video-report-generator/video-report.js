@@ -388,7 +388,7 @@ console.log('totalSize', videosArray[callNumber].totalSize);
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
           if (callNumber < totalVideos) {
-            createRequest('getVideoRenditions');
+            createRequest('getDigitalMaster');
           } else {
             // create csv headings
             startCSVStrings();
