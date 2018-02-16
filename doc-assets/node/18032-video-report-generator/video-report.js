@@ -242,6 +242,7 @@ var BCLS = (function(window, document) {
    */
   function createRequest(id) {
     var endPoint = '',
+      parsedData,
       options = {};
       options.proxyURL = proxyURL;
       if (isDefined(client_id) && isDefined(client_secret)) {
@@ -259,8 +260,18 @@ var BCLS = (function(window, document) {
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, id, function(response) {
-
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(responseRaw);
+          // set total videos
+          videoCount = parsedData.count;
+          if (totalVideos === "All") {
+            totalVideos = videoCount;
+          } else {
+            totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
+          }
+          totalCalls = Math.ceil(totalVideos / limit);
+          logText.textContent = totalVideos + ' videos found; getting account custom fields';
+          createRequest('getCustomFields');
         });
         break;
       case 'getCustomFields':
@@ -268,7 +279,15 @@ var BCLS = (function(window, document) {
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, id);
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(responseRaw);
+          for (field in parsedData.custom_fields) {
+            customFields.push(field);
+          }
+          logText.textContent = 'Custom fields retrieved; getting videos...';
+          spanRenditionsTotalEl.textContent = totalVideos;
+          createRequest('getVideos');
+        });
         break;
       case 'getVideos':
         var offset = (limit * callNumber);
@@ -279,14 +298,28 @@ var BCLS = (function(window, document) {
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, id);
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(responseRaw);
+          videosArray = videosArray.concat(parsedData);
+          callNumber++;
+          if (callNumber < totalCalls) {
+            createRequest('getVideos');
+          } else {
+            callNumber = 0;
+            spanRenditionsCountEl.textContent = callNumber + 1;
+            spanRenditionsTotalEl.textContent = totalVideos;
+            createRequest('getDigitalMaster');
+        });
         break;
       case 'getDigitalMaster':
+        videosArray[callnumber].totalSize = 0;
         endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
+        makeRequest(options, function(response) {
 
+        })
         break;
       case 'getVideoRenditions':
         var i,
@@ -349,103 +382,55 @@ var BCLS = (function(window, document) {
 
   /**
    * send API request to the proxy
-   * @param  {Object} options options for the request
-   * @param  {String} requestID the type of request = id of the button
-   * @param  {Function} [callback] callback function
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
    */
-  function makeRequest(options, requestID, callback) {
-    var httpRequest = new XMLHttpRequest(),
-      responseRaw,
-      parsedData,
-      requestParams,
-      dataString,
-      renditions,
-      field,
-      i = 0,
-      iMax,
-      // response handler
-      getResponse = function() {
-        var videoCount;
-        try {
-          if (httpRequest.readyState === 4) {
-            if (httpRequest.status >= 200 && httpRequest.status < 300) {
-              // check for completion
-              if (requestID === 'getCount') {
-                responseRaw = httpRequest.responseText;
-                parsedData = JSON.parse(responseRaw);
-                // set total videos
-                videoCount = parsedData.count;
-                if (totalVideos === "All") {
-                  totalVideos = videoCount;
-                } else {
-                  totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
-                }
-                totalCalls = Math.ceil(totalVideos / limit);
-                logText.textContent = totalVideos + ' videos found; getting account custom fields';
-                createRequest('getCustomFields');
-              } else if (requestID === 'getCustomFields') {
-                responseRaw = httpRequest.responseText;
-                parsedData = JSON.parse(responseRaw);
-                for (field in parsedData.custom_fields) {
-                  customFields.push(field);
-                }
-                logText.textContent = 'Custom fields retrieved; getting videos...';
-                spanRenditionsTotalEl.textContent = totalVideos;
-                createRequest('getVideos');
-              } else if (requestID === 'getVideos') {
-                if (httpRequest.responseText === '[]') {
-                  // no video returned
-                  alert('no video returned');
-                }
-                responseRaw = httpRequest.responseText;
-                parsedData = JSON.parse(responseRaw);
-                videosArray = videosArray.concat(parsedData);
-                callNumber++;
-                if (callNumber < totalCalls) {
-                  createRequest('getVideos');
-                } else {
-                  callNumber = 0;
-                  spanRenditionsCountEl.textContent = callNumber + 1;
-                  spanRenditionsTotalEl.textContent = totalVideos;
-                  createRequest('getDigitalMaster');
-                }
-              } else if (requestID === 'getVideoRenditions') {
-                if (httpRequest.responseText === '[]') {
-                  // no video returned
-                  renditions = [];
-                  callback(renditions);
-                } else {
-                  responseRaw = httpRequest.responseText;
-                  renditions = JSON.parse(responseRaw);
-                  // increment offset
-                  callback(renditions);
-                }
-
-              } else {
-                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+  function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+          response,
+          requestParams,
+          dataString,
+          proxyURL    = options.proxyURL,
+          // response handler
+          getResponse = function() {
+              try {
+                  if (httpRequest.readyState === 4) {
+                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                          response = httpRequest.responseText;
+console.log('response', response);
+                          // some API requests return '{null}' for empty responses - breaks JSON.parse
+                          if (response === '{null}') {
+                              response = null;
+                          }
+                          // return the response
+                          callback(response);
+                      } else {
+                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                      }
+                  }
+              } catch (e) {
+                  alert('Caught Exception: ' + e);
               }
-            }
-          }
-        } catch (e) {
-          alert('Caught Exception: ' + e);
-        }
-      };
-    // set up request data
-    requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-    // only add client id and secret if both were submitted
-    if (isDefined(client_id) && isDefined(client_secret)) {
-      requestParams += '&client_id=' + client_id + '&client_secret=' + client_secret;
-    }
-
-    // set response handler
-    httpRequest.onreadystatechange = getResponse;
-    // open the request
-    httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // open and send request
-    httpRequest.send(requestParams);
+          };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.strinify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
   }
+
 
   function init() {
     // event listeners
