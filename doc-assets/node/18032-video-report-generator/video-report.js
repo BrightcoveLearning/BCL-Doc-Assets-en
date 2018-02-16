@@ -273,6 +273,9 @@ var BCLS = (function(window, document) {
                 apiRequest.textContent = requestData.url;
                 getMediaData(requestData, id);
                 break;
+            case 'getDigitalMaster':
+
+              break;
             case 'getVideoRenditions':
                 var i,
                     iMax = videosArray.length,
