@@ -334,7 +334,7 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
-            if (!isDefined(responseDecoded.length)) {
+            if (isDefined(responseDecoded) && !isDefined(responseDecoded.length)) {
             videosArray[callNumber].totalSize += responseDecoded.size;
             createRequest('getVideoRenditions');
           } else {
