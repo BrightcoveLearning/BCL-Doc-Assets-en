@@ -333,7 +333,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          if (isJson(response)) {
+          if (response !== '[{error_code: "RESOURCE_NOT_FOUND"}]') {
             responseDecoded = JSON.parse(response);
 console.log('dm response', responseDecoded);
             videosArray[callNumber].totalSize += responseDecoded.size;
