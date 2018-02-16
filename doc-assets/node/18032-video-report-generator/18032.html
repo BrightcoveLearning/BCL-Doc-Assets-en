@@ -80,157 +80,55 @@
 
 <pre class="line-numbers">
 <code class="language-javascript">var BCLS = (function(window, document) {
-  var account_id_input                          = document.getElementById('account_id_input'),
-    client_id_input                             = document.getElementById('client_id_input'),
-    client_secret_input                         = document.getElementById('client_secret_input'),
-    rendition_selector                          = document.getElementById('rendition_selector'),
-    profile_name_input                          = document.getElementById('profile_name_input'),
-    profile_description_input                   = document.getElementById('profile_description_input'),
-    archive_master_input                        = document.getElementById('archive_master_input'),
-    capture_images_input                        = document.getElementById('capture_images_input'),
-    poster_height_input                         = document.getElementById('poster_height_input'),
-    poster_width_input                          = document.getElementById('poster_height_input'),
-    thumbnail_height_input                      = document.getElementById('thumbnail_height_input'),
-    thumbnail_width_input                       = document.getElementById('thumbnail_width_input'),
-    min_renditions_input                        = document.getElementById('min_renditions_input'),
-    max_renditions_input                        = document.getElementById('max_renditions_input'),
-    min_resolution_width_input                  = document.getElementById('min_resolution_width_input'),
-    min_resolution_height_input                 = document.getElementById('min_resolution_height_input'),
-    max_resolution_width_input                  = document.getElementById('max_resolution_width_input'),
-    max_resolution_height_input                 = document.getElementById('max_resolution_height_input'),
-    max_bitrate_input                           = document.getElementById('max_bitrate_input'),
-    max_first_rendition_bitrate_input           = document.getElementById('max_first_rendition_bitrate_input'),
-    max_frame_rate_input                        = document.getElementById('max_frame_rate_input'),
-    keyframe_rate_input                         = document.getElementById('keyframe_rate_input'),
-    select_baseline_profile_configuration_input = document.getElementById('select_baseline_profile_configuration_input'),
-    create_profile                              = document.getElementById('create_profile'),
-    logger                                      = document.getElementById('logger'),
-    api_request_display                         = document.getElementById('api_request_display'),
-    api_request_body_display                    = document.getElementById('api_request_body_display'),
-    api_response                                = document.getElementById('api_response'),
-    renditions                                  = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'} ],
-    account_id,
+  var account_id,
     client_id,
     client_secret,
-    profile_name,
-    profile_description,
-    archive_master = true,
-    capture_images = true,
-    poster_width,
-    poster_height,
-    thumbnail_width,
-    thumbnail_height,
-    min_renditions,
-    max_renditions,
-    min_resolution_width,
-    min_resolution_height,
-    max_resolution_width,
-    max_resolution_height,
-    max_bitrate,
-    max_first_rendition_bitrate,
-    max_frame_rate,
-    keyframe_rate,
-    select_baseline_profile_configuration = true,
-    selectAll,
-    selectedRenditions = [],
-    existingProfileNames = [],
-    checkboxCollection;
-
-  // event listeners
-  create_profile.addEventListener('click', function() {
-    selectedRenditions = getCheckedBoxValues(checkboxCollection);
-    if (getAccountInfo()) {
-      createRequest('get_profiles');
-    } else {
-      alert('Account id, client id, client secret, and a name for the new profile are required');
-    }
-  });
-
-
-  /**
-   * get account info from input fields
-   */
-  function getAccountInfo() {
-    if (isDefined(account_id_input.value) &amp;&amp; isDefined(client_id_input.value) &amp;&amp; isDefined(client_secret_input.value) &amp;&amp; isDefined(profile_name_input.value)) {
-      account_id       = removeSpaces(account_id_input.value);
-      client_id        = removeSpaces(client_id_input.value);
-      client_secret    = removeSpaces(client_secret_input.value);
-      profile_name     = (profile_name_input.value);
-      archive_master   = isChecked(archive_master_input);
-      capture_images   = isChecked(capture_images_input);
-      poster_width     = parseInt(removeSpaces(poster_width_input.value), 10);
-      poster_height    = parseInt(removeSpaces(poster_height_input.value), 10);
-      thumbnail_width  = parseInt(removeSpaces(thumbnail_width_input.value), 10);
-      thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
-      if (capture_images) {
-        if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
-          alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
-          return false;
-        }
-      }
-      min_renditions                        = parseInt(removeSpaces(min_renditions_input.value), 10);
-      max_renditions                        = parseInt(removeSpaces(max_renditions_input.value), 10);
-      min_resolution_width                  = parseInt(removeSpaces(min_resolution_width_input.value), 10);
-      min_resolution_height                 = parseInt(removeSpaces(min_resolution_height_input.value), 10);
-      max_resolution_width                  = parseInt(removeSpaces(max_resolution_width_input.value), 10);
-      max_resolution_height                 = parseInt(removeSpaces(max_resolution_height_input.value), 10);
-      max_bitrate                           = parseInt(removeSpaces(max_bitrate_input.value), 10);
-      max_first_rendition_bitrate           = parseInt(removeSpaces(max_first_rendition_bitrate_input.value), 10);
-      max_frame_rate                        = parseInt(removeSpaces(max_frame_rate_input.value), 10);
-      keyframe_rate                         = parseFloat(removeSpaces(keyframe_rate_input.value));
-      select_baseline_profile_configuration = isChecked(select_baseline_profile_configuration_input);
-      if (!isDefined(min_renditions) || !isDefined(max_renditions)) {
-        alert('The minimum and maximum number of renditions are required');
-        return false;
-      }
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * add a log message to the page
-   * (inside an element with id="logger")
-   * @param  {string} message the message to insert
-   */
-  function logMessage(message) {
-    var p = document.createElement('p'),
-        txt = document.createTextNode(message);
-    p.appendChild(txt);
-    logger.appendChild(p);
-  }
+    // api stuff
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
+    limit = 25,
+    totalVideos = 0,
+    totalCalls = 0,
+    callNumber = 0,
+    videosCompleted = 0,
+    videosArray = [],
+    summaryData = {},
+    csvStr,
+    summaryCsvStr,
+    customFields = [],
+    // elements
+    account_id_element = document.getElementById('account_id'),
+    client_id_element = document.getElementById('client_id'),
+    client_secret_element = document.getElementById('client_secret'),
+    tag = document.getElementById('tag'),
+    videoCount = document.getElementById('videoCount'),
+    makeReport = document.getElementById('makeReport'),
+    content,
+    logger = document.getElementById('logger'),
+    logText = document.getElementById('logText'),
+    csvData = document.getElementById('csvData'),
+    apiRequest = document.getElementById('apiRequest'),
+    allButtons = document.getElementsByName('button'),
+    pLogGettingVideos = document.createElement('p'),
+    pLogGettingRenditions = document.createElement('p'),
+    pLogFinish = document.createElement('p'),
+    spanIntro2 = document.createElement('span'),
+    spanOf2 = document.createElement('span'),
+    spanRenditionsTotal = document.createElement('span'),
+    spanRenditionsCount = document.createElement('span'),
+    spanRenditionsTotalEl,
+    spanRenditionsCountEl;
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
-   * @param {*} x the variable to test
+   * @param {String|Number} x the variable to test
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-      if ( x === '' || x === null || x === undefined || x === NaN) {
-          return false;
-      }
-      return true;
-  }
-
-  /**
-   * remove spaces from a string
-   * @param {String} str string to process
-   * @return {String} trimmed string
-   */
-  function removeSpaces(str) {
-      str= str.replace(/\s/g, '');
-      return str;
-  }
-
-  /**
-   * replace spaces in a string with underscores
-   * @param {String} str string to process
-   * @return {String} processed string
-   */
-  function replaceSpaces(str) {
-      str= str.replace(/\s/g, '_');
-      return str;
+    if (x === '' || x === null || x === undefined) {
+      return false;
+    }
+    return true;
   }
 
   /*
@@ -248,6 +146,85 @@
   }
 
   /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   */
+  function getSelectedValue(e) {
+    return e.options[e.selectedIndex].value;
+  }
+
+  /**
+   * disables all buttons so user can't submit new request until current one finishes
+   */
+  function disableButtons() {
+    var i,
+      iMax = allButtons.length;
+    for (i = 0; i &lt; iMax; i++) {
+      allButtons[i].setAttribute('disabled', 'disabled');
+    }
+  }
+
+  /**
+   * re-enables all buttons
+   */
+  function enableButtons() {
+    var i,
+      iMax = allButtons.length;
+    for (i = 0; i &lt; iMax; i++) {
+      allButtons[i].removeAttribute('disabled');
+    }
+  }
+
+  /**
+   * sort an array of objects based on an object property
+   * @param {array} targetArray - array to be sorted
+   * @param {string|number} objProperty - object property to sort on
+   * @return sorted array
+   */
+  function sortArray(targetArray, objProperty) {
+    targetArray.sort(function(a, b) {
+      var propA = a[objProperty],
+        propB = b[objProperty];
+      // sort ascending; reverse propA and propB to sort descending
+      if (propA &lt; propB) {
+        return -1;
+      } else if (propA &gt; propB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return targetArray;
+  }
+
+  function processRenditions(renditions, callback) {
+    var i,
+      iMax = renditions.length,
+      hlsRenditions = [],
+      mp4Renditions = [],
+      flvRenditions = [],
+      otherRenditions = [],
+      totalSize = 0;
+    // separate renditions by type
+    for (i = 0; i &lt; iMax; i += 1) {
+      if (renditions[i].hasOwnProperty('size')) {
+        totalSize += renditions[i].size;
+      }
+      if (renditions[i].video_container === 'M2TS') {
+        hlsRenditions.push(renditions[i]);
+      } else if (renditions[i].video_container === 'MP4') {
+        mp4Renditions.push(renditions[i]);
+      } else if (renditions[i].video_container === 'FLV') {
+        flvRenditions.push(renditions[i]);
+      } else {
+        otherRenditions.push(renditions[i]);
+      }
+    }
+    // sort renditions by encoding rate
+    callback(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize);
+  }
+
+  /**
    * determines whether specified item is in an array
    *
    * @param {array} array to check
@@ -255,277 +232,249 @@
    * @return {boolean} true if item is in the array, else false
    */
   function arrayContains(arr, item) {
-      var i,
-          iMax = arr.length;
-      for (i = 0; i &lt; iMax; i++) {
-          if (arr[i] === item) {
-              return true;
-          }
+    var i,
+      iMax = arr.length;
+    for (i = 0; i &lt; iMax; i++) {
+      if (arr[i] === item) {
+        return true;
       }
-      return false;
-  }
-
-  /**
-   * get selected value for single select element
-   * @param {htmlElement} e the select element
-   * @return {Object} object containing the `value`, text, and selected `index`
-   */
-  function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
-  }
-
-  /**
- * determines if checkbox is checked
-   * @param  {htmlElement}  e the checkbox to check
-   * @return {Boolean}  true if box is checked
-   */
-  function isChecked(e) {
-    if (e.checked) {
-      return true;
     }
     return false;
   }
 
-
-
-  /**
-   * get array of values for checked boxes in a collection
-   * @param {htmlElementCollection} elementCollection collection of checkbox elements
-   * @return {Array} array of the values of the checked boxes
-   */
-  function getCheckedBoxValues(elementCollection) {
-    var checkedValues = [],
-      i,
-      iMax;
-    if (elementCollection) {
-      iMax = elementCollection.length;
-      for (i = 0; i &lt; iMax; i++) {
-        if (elementCollection[i].checked === true) {
-          checkedValues.push(elementCollection[i].value);
-        }
+  function processCustomFields(fields) {
+    var field;
+    for (field in fields) {
+      if (!arrayContains(customFields, field)) {
+        customFields.push(field);
       }
-      return checkedValues;
-    } else {
-      console.log('Error: no input recieved');
-      return null;
     }
   }
 
-  /**
-   * selects all checkboxes in a collection
-   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
-   */
-  function selectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i &lt; iMax; i += 1) {
-          checkboxCollection[i].setAttribute('checked', 'checked');
+
+  function startCSVStrings() {
+    var i = 0,
+      iMax;
+    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",';
+    if (customFields) {
+      iMax = customFields.length;
+      for (i; i &lt; iMax; i++) {
+        csvStr += '"' + customFields[i] + '",';
       }
+    }
+    csvStr += '\r\n';
   }
 
-  /**
-   * de-selects all checkboxes in a collection
-   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
-   */
-  function unselectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i &lt; iMax; i += 1) {
-          checkboxCollection[i].removeAttribute('checked');
-      }
-  }
-
-  /**
-   * creates a set of checkboxes with labels from an array of valuesArray
-   * @param {HTMLelement} parentElement the parent element for the checkboxes
-   * @param {Array} valuesArray the array of value/labels  e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
-   */
-  function addCheckboxes (parentElement, valuesArray) {
+  function writeReport() {
     var i,
       iMax,
-      input,
-      label,
-      br,
-      txt,
-      fragment = document.createDocumentFragment();
-    if (parentElement &amp;&amp; valuesArray) {
-      iMax = valuesArray.length;
-      // add select all option
-      input             = document.createElement('input');
-      input.setAttribute('type', 'checkbox');
-      input.setAttribute('id', 'selectAll');
-      txt               = document.createTextNode(' ');
-      label             = document.createElement('label');
-      label.setAttribute('for', 'selectAll');
-      label.textContent = ' Select All';
-      br                = document.createElement('br');
-      fragment.appendChild(input);
-      fragment.appendChild(txt);
-      fragment.appendChild(label);
-      fragment.appendChild(br);
-      for (i = 0; i &lt; iMax; i++) {
-        input             = document.createElement('input');
-        input.setAttribute('type', 'checkbox');
-        input.setAttribute('value', valuesArray[i].value);
-        input.setAttribute('name', 'checkboxCollection');
-        txt               = document.createTextNode(' ');
-        label             = document.createElement('label');
-        label.setAttribute('for', valuesArray[i].value);
-        label.textContent = ' ' + valuesArray[i].label;
-        br                = document.createElement('br');
-        fragment.appendChild(input);
-        fragment.appendChild(txt);
-        fragment.appendChild(label);
-        fragment.appendChild(br);
-      }
-      parentElement.appendChild(fragment);
-
-      // set up select all option
-      checkboxCollection = document.getElementsByName('checkboxCollection');
-      selectAll = document.getElementById('selectAll');
-      selectAll.addEventListener('change', function() {
-        if (this.checked) {
-          selectAllCheckboxes(checkboxCollection);
-        } else {
-          unselectAllCheckboxes(checkboxCollection);
+      j,
+      jMax,
+      video,
+      hlsLowRate,
+      hlsHighRate,
+      mp4LowRate,
+      mp4HighRate,
+      flvLowRate,
+      flvHighRate,
+      resWidth,
+      resHeight,
+      rendition = {};
+    if (videosArray.length &gt; 0) {
+      iMax = videosArray.length;
+      for (i = 0; i &lt; iMax; i += 1) {
+        video = videosArray[i];
+        // replace any line breaks in description, as that will break the CSV
+        if (video.description) {
+          video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
         }
-      });
-    } else {
-      console.log('function addCheckboxes: no parameters provided');
+        // generate the video detail row
+        hlsLowRate = (video.hlsRenditions.length &gt; 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
+        hlsHighRate = (video.hlsRenditions.length &gt; 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
+        mp4LowRate = (video.mp4Renditions.length &gt; 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
+        mp4HighRate = (video.mp4Renditions.length &gt; 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
+        flvLowRate = (video.flvRenditions.length &gt; 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
+        flvHighRate = (video.flvRenditions.length &gt; 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
+        if (video.flvRenditions.length &gt; 0) {
+          rendition = video.flvRenditions[video.flvRenditions.length - 1];
+        } else if (video.mp4Renditions.length &gt; 0) {
+          rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
+        } else if (video.hlsRenditions.length &gt; 0) {
+          rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
+        } else {
+          rendition.frame_width = "unknown";
+          rendition.frame_height = "unknown";
+        }
+        resWidth = rendition.frame_width;
+        resHeight = rendition.frame_height;
+        // add csv row
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",';
+        if (customFields) {
+          jMax = customFields.length;
+          for (j = 0; j &lt; jMax; j++) {
+            if (video.custom_fields.hasOwnProperty(customFields[j])) {
+              csvStr += '"' + video.custom_fields[customFields[j]] + '",';
+            } else {
+              csvStr += '"",';
+            }
+          }
+          csvStr += '\r\n';
+        } else {
+          csvStr += '\r\n';
+        }
+      }
+      csvData.textContent += csvStr;
+      // content = document.createTextNode('Finished! See the results or get the CSV data below.');
+      pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
+      // reportDisplay.innerHTML = summaryReportStr + reportStr;
+      enableButtons();
     }
   }
 
-
   /**
-   * createRequest sets up requests, send them to makeRequest(), and handles responses
-   * @param  {string} type the request type
+   * sets up the data for the API request
+   * @param {String} id the id of the button that was clicked
    */
-  function createRequest(type) {
-    var options = {},
-      requestBody = {},
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip2-proxy.php',
-      baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
-      endpoint,
-      responseDecoded,
-      i,
-      iMax;
-
-    // set credentials
-    options.client_id = client_id;
-    options.client_secret = client_secret;
-    options.proxyURL = proxyURL;
-
-    switch (type) {
-      case 'get_profiles':
-        logMessage('Checking existing profiles to see if name is already used');
-        endpoint = '/profiles';
-        options.url = baseURL + endpoint;
-        api_request_display.textContent = options.url;
-        api_request_body_display.textContent = 'no request body for this operation';
+  function createRequest(id) {
+    var endPoint = '',
+      parsedData,
+      options = {};
+      options.proxyURL = proxyURL;
+      if (isDefined(client_id) &amp;&amp; isDefined(client_secret)) {
+        options.client_id = client_id;
+        options.client_secret = client_secret;
+      }
+    // disable buttons to prevent a new request before current one finishes
+    disableButtons();
+    switch (id) {
+      case 'getCount':
+        endPoint = accountId + '/counts/videos?sort=created_at';
+        if (isDefined(tag.value)) {
+          endPoint += '&amp;q=%2Btags:' + tag.value;
+        }
+        options.url = baseURL + endPoint;
         options.requestType = 'GET';
+        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          if (isJson(response)) {
-            responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+          parsedData = JSON.parse(response);
+          // set total videos
+          videoCount = parsedData.count;
+          if (totalVideos === "All") {
+            totalVideos = videoCount;
           } else {
-            api_response.textContent = response;
-            logMessage('The get profiles operation failed; see the API Response for the error');
-            return;
+            totalVideos = (totalVideos &lt; videoCount) ? totalVideos : videoCount;
           }
-          if (Array.isArray(responseDecoded)) {
-            iMax = responseDecoded.length;
-            for (i = 0; i &lt; iMax; i++) {
-              existingProfileNames.push(responseDecoded[i].name);
-            }
-            // check to see if input name already exists
-            if (arrayContains(existingProfileNames, profile_name)) {
-              alert('The profile name you entered is already in use in this account; please enter a different name and try again');
-            } else {
-              createRequest('create_profile');
-            }
+          totalCalls = Math.ceil(totalVideos / limit);
+          logText.textContent = totalVideos + ' videos found; getting account custom fields';
+          createRequest('getCustomFields');
+        });
+        break;
+      case 'getCustomFields':
+        endPoint = accountId + '/video_fields';
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(response);
+          for (field in parsedData.custom_fields) {
+            customFields.push(field);
+          }
+          logText.textContent = 'Custom fields retrieved; getting videos...';
+          spanRenditionsTotalEl.textContent = totalVideos;
+          createRequest('getVideos');
+        });
+        break;
+      case 'getVideos':
+        var offset = (limit * callNumber);
+        endPoint = accountId + '/videos?sort=created_at&amp;limit=' + limit + '&amp;offset=' + offset;
+        if (isDefined(tag.value)) {
+          endPoint += '&amp;q=%2Btags:' + tag.value;
+        }
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(response);
+          videosArray = videosArray.concat(parsedData);
+          callNumber++;
+          if (callNumber &lt; totalCalls) {
+            createRequest('getVideos');
+          } else {
+            callNumber = 0;
+            spanRenditionsCountEl.textContent = callNumber + 1;
+            spanRenditionsTotalEl.textContent = totalVideos;
+            createRequest('getDigitalMaster');
           }
         });
         break;
-      case 'create_profile':
-        logMessage('Creating profile');
-        endpoint = '/profiles';
-        options.url = baseURL + endpoint;
-        api_request_display.textContent = options.url;
-        options.requestType = 'POST';
-        requestBody.name = profile_name;
-        if (isDefined(profile_description)) {
-          requestBody.description = profile_description;
-        }
-        requestBody.account_id = account_id;
-        if (archive_master) {
-          requestBody.digital_master = {};
-          requestBody.digital_master.rendition = 'passthrough';
-        }
-        requestBody.dynamic_origin = {};
-        requestBody.dynamic_origin.renditions = selectedRenditions;
-        if (capture_images) {
-          requestBody.dynamic_origin.images = [];
-          requestBody.dynamic_origin.images.push({label:'poster', height: poster_height, width: poster_width});
-          requestBody.dynamic_origin.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
-        }
-        requestBody.dynamic_origin.dynamic_profile_options = {};
-        requestBody.dynamic_origin.dynamic_profile_options.min_renditions = min_renditions;
-        requestBody.dynamic_origin.dynamic_profile_options.max_renditions = max_renditions;
-        if (isDefined(min_resolution_width) || isDefined(min_resolution_height)) {
-          requestBody.dynamic_origin.dynamic_profile_options.min_resolution = {};
-          if (isDefined(min_resolution_width)) {
-            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.width = min_resolution_width;
-          }
-          if (isDefined(min_resolution_height)) {
-            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
-          }
-        }
-        if (isDefined(max_resolution_width) || isDefined(max_resolution_height)) {
-          requestBody.dynamic_origin.dynamic_profile_options.max_resolution = {};
-          if (isDefined(max_resolution_width)) {
-            requestBody.dynamic_origin.dynamic_profile_options.max_resolution.width = max_resolution_width;
-          }
-          if (isDefined(min_resolution_height)) {
-            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
-          }
-        }
-        if (isDefined(max_bitrate)) {
-          requestBody.dynamic_origin.dynamic_profile_options.max_bitrate = max_bitrate;
-        }
-        if (isDefined(max_first_rendition_bitrate)) {
-          requestBody.dynamic_origin.dynamic_profile_options.max_first_rendition_bitrate = max_first_rendition_bitrate;
-        }
-        if (isDefined(max_frame_rate)) {
-          requestBody.dynamic_origin.dynamic_profile_options.max_frame_rate = max_frame_rate;
-        }
-        if (isDefined(keyframe_rate)) {
-          requestBody.dynamic_origin.dynamic_profile_options.keyframe_rate = keyframe_rate;
-        }
-        requestBody.dynamic_origin.dynamic_profile_options.select_baseline_profile_configuration = select_baseline_profile_configuration;
-        api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
-        options.requestBody = JSON.stringify(requestBody);
+      case 'getDigitalMaster':
+        videosArray[callNumber].totalSize = 0;
+        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/digital_master';
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
-            logMessage('Profile create operation complete - check the response below to sure there were no errors');
+            if (!isDefined(responseDecoded.length)) {
+            videosArray[callNumber].totalSize += responseDecoded.size;
+            createRequest('getVideoRenditions');
           } else {
-            api_response.textContent = response;
-            logMessage('The create profile operation failed; see the response below for the error');
-            return;
+            createRequest('getVideoRenditions');
+          }
+        })
+        break;
+      case 'getVideoRenditions':
+        var i,
+          iMax = videosArray.length;
+        videosArray[callNumber].hlsRenditions = [];
+        videosArray[callNumber].mp4Renditions = [];
+        videosArray[callNumber].flvRenditions = [];
+        videosArray[callNumber].otherRenditions = [];
+        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        spanRenditionsCountEl.textContent = callNumber + 1;
+        makeRequest(options, function(response) {
+            var renditions = JSON.parse(response);
+            if (renditions.length &gt; 0) {
+              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
+                if (hlsRenditions.length &gt; 0) {
+                  sortArray(hlsRenditions, 'encoding_rate');
+                }
+
+                videosArray[callNumber].hlsRenditions = hlsRenditions;
+                if (mp4Renditions.length &gt; 0) {
+                  sortArray(mp4Renditions, 'encoding_rate');
+                }
+                videosArray[callNumber].mp4Renditions = mp4Renditions;
+                if (flvRenditions.length &gt; 0) {
+                  sortArray(flvRenditions, 'encoding_rate');
+                }
+                videosArray[callNumber].flvRenditions = flvRenditions;
+                // if (otherRenditions.length &gt; 0) {
+                //     sortArray(otherRenditions, 'encoding_rate');
+                // }
+                // videosArray[callNumber].otherRenditions = otherRenditions;
+                videosArray[callNumber].totalSize += totalSize;
+            });
+          } else {
+              videosArray[callNumber].hlsRenditions = [];
+              videosArray[callNumber].mp4Renditions = [];
+              videosArray[callNumber].flvRenditions = [];
+            }
+          videosCompleted++;
+          logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
+          callNumber++;
+          if (callNumber &lt; totalVideos) {
+            createRequest('getDigitalMaster');
+          } else {
+            // create csv headings
+            startCSVStrings();
+            // write the report
+            writeReport();
           }
         });
-        break;
-      default:
-        console.log('Should not be getting to the default case - bad request type sent');
         break;
     }
   }
@@ -569,38 +518,59 @@
           };
       /**
        * set up request data
-       * the proxy used here takes the following params:
-       * url - the full API request (required)
-       * requestType - the HTTP request type (default: GET)
-       * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-       * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-       * requestBody - request body for write requests (optional JSON string)
+       * the proxy used here takes the following request body:
+       * JSON.strinify(options)
        */
-      requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
-      // only add client id and secret if both were submitted
-      if (options.client_id &amp;&amp; options.client_secret) {
-          requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
-      }
-      // add request data if any
-      if (options.requestBody) {
-          requestParams += '&amp;requestBody=' + options.requestBody;
-      }
       // set response handler
       httpRequest.onreadystatechange = getResponse;
       // open the request
       httpRequest.open('POST', proxyURL);
-      // set headers
-      httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       // open and send request
-      httpRequest.send(requestParams);
+      httpRequest.send(JSON.stringify(options));
   }
+
 
   function init() {
-    addCheckboxes(rendition_selector, renditions);
+    // event listeners
+    csvData.addEventListener('click', function() {
+      this.select();
+    });
+    // set up the log elements
+    content = document.createTextNode('Getting renditions for video ');
+    spanIntro2.appendChild(content);
+    content = document.createTextNode(' of ');
+    spanOf2.appendChild(content);
+    spanRenditionsCount.setAttribute('id', 'spanRenditionsCount');
+    spanRenditionsTotal.setAttribute('id', 'spanRenditionsTotal');
+    pLogGettingRenditions.appendChild(spanIntro2);
+    pLogGettingRenditions.appendChild(spanRenditionsCount);
+    pLogGettingRenditions.appendChild(spanOf2);
+    pLogGettingRenditions.appendChild(spanRenditionsTotal);
+    logger.appendChild(pLogGettingRenditions);
+    spanRenditionsCountEl = document.getElementById('spanRenditionsCount');
+    spanRenditionsTotalEl = document.getElementById('spanRenditionsTotal');
+    logger.appendChild(pLogFinish);
+
   }
 
-  init();
+  // button event handlers
+  makeReport.addEventListener('click', function() {
+    // get the inputs
+    client_id = client_id_element.value;
+    client_secret = client_secret_element.value;
+    account_id = account_id_element.value
+    totalVideos = getSelectedValue(videoCount);
+    // only use entered account id if client id and secret are entered also
+    if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
+      window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+        accountId = '1752604059001';
+    }
+    // get video count
+    createRequest('getCount');
 
+  });
+
+  init();
 })(window, document);
 </code></pre>
 
