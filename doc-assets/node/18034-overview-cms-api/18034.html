@@ -3,19 +3,13 @@
 <h2 id="Notes_on_usage">Notes on usage</h2>
 
 <aside class="bcls-aside bcls-aside--information">
-<p>The <span class=”notranslate”>CMS API</span>
- is intended for integrations and publishing workflows. You cannot make client-side calls to this API from a public web page, as doing so would involve exposing your client credentials for the API (for that reason, the API is not CORS-enabled). You can make calls from a client-side (web) app, provided that you route the API calls through a server-side proxy. <span class=”notranslate”>Brightcove Learning Services</span>
- provides several <a href="/node/18372">sample apps</a> that use this approach, and a <a href="/node/18132">guide to building this kind of app</a>.</p>
+<p>The <span class="”notranslate”">CMS API</span> is intended for integrations and publishing workflows. You cannot make client-side calls to this API from a public web page, as doing so would involve exposing your client credentials for the API (for that reason, the API is not CORS-enabled). You can make calls from a client-side (web) app, provided that you route the API calls through a server-side proxy. <span class="”notranslate”">Brightcove Learning Services</span> provides several <a href="/node/18372">sample apps</a> that use this approach, and a <a href="/node/18132">guide to building this kind of app</a>.</p>
 
 <p>If you are going to be retrieving all your videos or large sets of videos, be sure to see the <a href="#largeDataSets">note on large data sets</a>.</p>
 
 <h4>Avoid hard-coded URLS</h4>
 
-<p>URLs for thumbnails, posters, video files, and other media should never be hard-coded in your pages or applications. The <span class=”notranslate”>CMS API</span>
- will always return the current current URLs for media files, but the URLs themselves are subject to change. You should use <span class=”notranslate”>CMS API</span>
- (or <span class=”notranslate”>CMS API</span>
-<span class=”notranslate”>Playback API</span>
-) calls to retrieve these URLs each time the page loads, or cache them for no more than six hours.</p>
+<p>URLs for thumbnails, posters, video files, and other media should never be hard-coded in your pages or applications. The <span class="”notranslate”">CMS API</span> will always return the current current URLs for media files, but the URLs themselves are subject to change. You should use <span class="”notranslate”">CMS API</span> (or <span class="”notranslate”">CMS API</span> or <span class="”notranslate”">Playback API</span> ) requests to retrieve these URLs each time the page loads, or cache them for no more than six hours.</p>
 
 <h5>Caching video and image URLs</h5>
 
@@ -24,39 +18,34 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="generalInfo">General Information</h2>
+<h2 id="General_Information">General Information</h2>
 
 <h3>Base URL</h3>
 
-<p>The base URL for the <span class=”notranslate”>CMS API</span>
- is:</p>
+<p>The base URL for the <span class="”notranslate”">CMS API</span> is:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1</code></pre>
+  <code class="language-http">https://cms.api.brightcove.com/v1</code></pre>
 
 <h4>Account path</h4>
 
-<p>In all cases, requests will be made for a specific <span class=”notranslate”>Video Cloud</span>
- Account. So, you will always add the term <code>accounts</code> followed by your account id to the base URL:</p>
+<p>In all cases, requests will be made for a specific <span class="”notranslate”">Video Cloud</span> Account. So, you will always add the term <code>accounts</code> followed by your account id to the base URL:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
+  <code class="language-http">https://cms.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
 
 <h3>Authentication</h3>
 
-<p>Authentication for requests requires an <span class=”notranslate”>Authorization header</span>
-:</p>
+<p>Authentication for requests requires an <span class="”notranslate”">Authorization header</span> :</p>
 
 <pre class="line-numbers">
-<code class="language-http">Authorization: Bearer {access_token}</code></pre>
+  <code class="language-http">Authorization: Bearer {access_token}</code></pre>
 
-<p>The <code>access_token</code> is a temporary OAuth2 access token that must be obtained from the <span class=”notranslate”>Brightcove OAuth</span>
- service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
+<p>The <code>access_token</code> is a temporary OAuth2 access token that must be obtained from the <span class="”notranslate”">Brightcove OAuth</span> service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
 
 <h3>Operations</h3>
 
-<p>When you request client credentials, you will need to specify the type of account access or operations that you want. The following is a list of the currently supported operations for the <span class=”notranslate”>CMS API</span>
-:</p>
+<p>When you request client credentials, you will need to specify the type of account access or operations that you want. The following is a list of the currently supported operations for the <span class="”notranslate”">CMS API</span> :</p>
 
 <ul>
 	<li>Video data:
@@ -64,7 +53,7 @@
 	<code>video-cloud/video/create</code><br />
 	<code>video-cloud/video/update</code><br />
 	<code>video-cloud/video/delete</code><br />
-  or <br>
+	or<br />
 	<code>video-cloud/video/all</code><br />
 	<code>video-cloud/video/assets/delete</code> (only needed if you want to delete digital masters)</p>
 	</li>
@@ -73,7 +62,7 @@
 	<code>video-cloud/playlist/create</code><br />
 	<code>video-cloud/playlist/update</code><br />
 	<code>video-cloud/playlist/delete</code><br />
-  or <br>
+	or<br />
 	<code>video-cloud/playlist/all</code></p>
 	</li>
 	<li>Notifications:
@@ -87,29 +76,21 @@
 <section class="bcls-section">
 <h2 id="Rate_limiting">Rate limiting</h2>
 
-<p>This <span class=”notranslate”>CMS API</span>
- provides uncached read access to the data. This is important for time-sensitive publishing workflows because you make changes to videos and playlists using the <span class=”notranslate”>CMS API</span>
- and quickly read the data to verify that is correct.</p>
+<p>This <span class="”notranslate”">CMS API</span> provides uncached read access to the data. This is important for time-sensitive publishing workflows because you make changes to videos and playlists using the <span class="”notranslate”">CMS API</span> and quickly read the data to verify that is correct.</p>
 
-<p>The <span class=”notranslate”>CMS API</span>
- is not appropriate for high scale runtime usage (such as accessing videos on a high traffic public web page). For high traffic applications, you must use a cached interface such as : the <span class=”notranslate”>CMS API</span>
-<span class=”notranslate”>Playback API</span>
-, Gallery, Players, or the Native SDK's.</p>
+<p>The <span class="”notranslate”">CMS API</span> is not appropriate for high scale runtime usage (such as accessing videos on a high traffic public web page). For high traffic applications, you must use a cached interface such as : the <span class="”notranslate”">Playback API</span> , Gallery, Players, or the Native SDK's.</p>
 
-<p>To ensure the performance of the <span class=”notranslate”>Video Cloud</span>
- system, no more than 20 concurrent calls to the <span class=”notranslate”>CMS API</span>
- are allowed per account. Access frequency should be less than 10 requests per second.</p>
+<p>To ensure the performance of the <span class="”notranslate”">Video Cloud</span> system, no more than 20 concurrent calls to the <span class="”notranslate”">CMS API</span> are allowed per account. Access frequency should be less than 10 requests per second.</p>
 
 <aside class="bcls-aside bcls-aside--information">Concurrent calls occurs when multiple processes or apps running in parallel are making API requests. Since a request may take more than a second to complete, you may exceed the concurrency limit even though you are not making more than 10 requests per second.</aside>
 
-<p>If multiple applications will be integrating to the <span class=”notranslate”>CMS API</span>
- for an account, then these applications should have back-off and retry logic to handle instances where concurrency limits or rate limits are reached.</p>
+<p>If multiple applications will be integrating to the <span class="”notranslate”">CMS API</span> for an account, then these applications should have back-off and retry logic to handle instances where concurrency limits or rate limits are reached.</p>
 
 <p>If either the rate or concurrency limit is exceeded, a <code>429 - TOO_MANY_REQUESTS</code> error will be returned.</p>
 </section>
 
 <section class="bcls-section">
-<h2 id="methods">Methods</h2>
+<h2 id="Methods">Methods</h2>
 
 <p>Currently the API supports the following request types:</p>
 
@@ -123,7 +104,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="parameters">Parameters</h2>
+<h2 id="Parameters">Parameters</h2>
 
 <p>Note that all parameters are <strong>optional</strong>. Except where noted, they apply to <code>GET</code> requests for videos and playlists.</p>
 
@@ -157,15 +138,12 @@
 
 <h3 id="search">Search videos</h3>
 
-<p>Brightcove's <span class=”notranslate”>CMS API</span>
- provides a programmatic way to search for videos in your <span class=”notranslate”><span class=”notranslate”>Video Cloud</span>
-</span>
- library.</p>
+<p>Brightcove's <span class="”notranslate”">CMS API</span> provides a programmatic way to search for videos in your <span class="”notranslate”"><span class="”notranslate”">Video Cloud</span> </span> library.</p>
 
 <p>To perform basic and complex searches on your video data, you will use the <code>q</code> parameter:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?<strong>q={search terms}</strong></code></pre>
+  <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?<strong>q={search terms}</strong></code></pre>
 
 <p>For details on how to search for videos, see the <a href="/node/18005">Search Videos</a> document.</p>
 
@@ -184,7 +162,7 @@
 <aside class="bcls-aside bcls-aside--information">Note the search term <code>playable:true/false</code> that you can use to return only videos that are playable (or not):
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/:account_id/videos?q=%2Bplayable:true</code></pre>
+  <code class="language-http">https://cms.api.brightcove.com/v1/accounts/:account_id/videos?q=%2Bplayable:true</code></pre>
 
 <p>This query requires that returned videos be playable (not deactivated, not scheduled, and not lacking playable renditions).</p>
 
@@ -193,16 +171,38 @@
 
 <h3 id="paging">Paging results</h3>
 
-<p>Use the <code>limit</code> parameter to specify how many items you want to return on a request - up to 100. You can then use the <code>offset</code> parameter to page through result sets that are larger than the <code>limit</code>. The <code>offset</code>is the number of items to skip. For example, for a search like this:</p>
+<p>Use the <code><a href="#Parameters">limit</a></code> parameter to specify how many items you want to return on a request - up to 100. You can then use the <code><a href="#Parameters">offset</a></code> parameter to page through result sets that are larger than the <code>limit</code>. The <code>offset</code> is the number of items to skip.</p>
+
+<p>For example, the following search returns videos 51-75 of the total result set, assuming the total result set has at least 75 videos:</p>
 
 <pre class="line-numbers">
-<code class="language-http">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
+  <code class="language-http">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
 
-<p>This will return videos 51-75 of the total result set, assuming the total result set has at least 75 videos.</p>
-
-<p><code>limit</code> and <code>offset</code> can be used for both videos and playlists.</p>
+<p>The <code>limit</code> and <code>offset</code> parameters can be used for both videos and playlists.</p>
 
 <aside class="bcls-aside bcls-aside--information">Note: <code>limit</code> and <code>offset</code> do <strong>not</strong> work when you are requesting the videos belonging to a playlist - this request will always return all videos in the playlist.</aside>
+
+<h4>Paging best practice</h4>
+
+<p>Because there may be concurrent modification operations going on with the CMS API, it is recommended to following these steps when paging through your result set:</p>
+
+<ol class="bcls-tasklist">
+	<li>Make a <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Count">count</a></code> request to get the total number of videos in your result set.
+
+	<pre class="line-numbers">
+<code class="language-http">/accounts/578380111111/counts/videos?q=tags:nature</code></pre>
+	</li>
+	<li>Use the <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">limit</a></code> and <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">offset</a></code> parameters to return groups of data from your result set.
+	<pre class="line-numbers">
+<code class="language-http">/accounts/578380111111/videos?q=tags:nature&amp;limit=20&amp;offset=50</code></pre>
+	</li>
+	<li>Note that some pages may have fewer than 20 videos. You will know you have reached the end of the result set when you have asked for as many videos as in the first <code>count</code> request.</li>
+</ol>
+
+<p>To summarize, keep retrieving pages until you get a video count equal the the original <code>count</code> request, since this number should err on the side of overestimation. Ask for:</p>
+
+<pre class="line-numbers">
+<code class="language-http">count / page-size + 1 page</code></pre>
 
 <h3>Sorting video results</h3>
 
@@ -262,7 +262,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="Video_Operations">Video operations</h2>
+<h2 id="Video_operations">Video operations</h2>
 
 <p>Video operations include:</p>
 
@@ -281,7 +281,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="Playlist_Operations">Playlist operations</h2>
+<h2 id="Playlist_operations">Playlist operations</h2>
 
 <p>Playlist operations include:</p>
 
@@ -297,11 +297,9 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="assets">Assets</h2>
+<h2 id="Assets">Assets</h2>
 
-<p>Asset operations allow you to manage assets including renditions, manifests, images, and text tracks. To ingest assets, you must use the <a href="/node/18373">Dynamic Ingest API</a>. The POST and PATCH operations for the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-assetGroup"><span class=”notranslate”>CMS API</span>
-</a> <code>/assets</code> can be used to add and update <strong>remote assets</strong>. <span class=”notranslate”>CMS API</span>
- GET operations will work for <strong>both</strong> ingested and remote assets.</p>
+<p>Asset operations allow you to manage assets including renditions, manifests, images, and text tracks. To ingest assets, you must use the <a href="/node/18373">Dynamic Ingest API</a>. The POST and PATCH operations for the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-assetGroup"><span class="”notranslate”">CMS API</span> </a> <code>/assets</code> can be used to add and update <strong>remote assets</strong>. <span class="”notranslate”">CMS API</span> GET operations will work for <strong>both</strong> ingested and remote assets.</p>
 
 <ul>
 	<li>Add, update, or delete renditions</li>
@@ -315,7 +313,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="Custom_Field_Operations">Custom field operations</h2>
+<h2 id="Custom_field_operations">Custom field operations</h2>
 
 <p>There is currently one custom field operation:</p>
 
@@ -327,7 +325,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="Folder_Operations">Folder operations</h2>
+<h2 id="Folder_operations">Folder operations</h2>
 
 <p>Folder operations allow you to:</p>
 
@@ -347,7 +345,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="notifications">Notifications</h2>
+<h2 id="Notifications">Notifications</h2>
 
 <p>You can receive notifications when <code>video_change</code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling HTTP POST requests.</p>
 
