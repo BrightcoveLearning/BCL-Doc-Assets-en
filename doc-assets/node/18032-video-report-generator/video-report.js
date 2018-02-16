@@ -328,7 +328,7 @@ var BCLS = (function(window, document) {
         break;
       case 'getDigitalMaster':
         videosArray[callNumber].totalSize = 0;
-        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/digital_master';
+        endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/digital_master';
         options.url = baseURL + endPoint;
 console.log('dm request', options.url);
         options.requestType = 'GET';
