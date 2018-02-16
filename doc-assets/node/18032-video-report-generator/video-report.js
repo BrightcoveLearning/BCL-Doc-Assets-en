@@ -381,7 +381,6 @@ var BCLS = (function(window, document) {
               videosArray[callNumber].hlsRenditions = [];
               videosArray[callNumber].mp4Renditions = [];
               videosArray[callNumber].flvRenditions = [];
-            }
             });
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
