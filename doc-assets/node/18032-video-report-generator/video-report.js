@@ -330,15 +330,12 @@ var BCLS = (function(window, document) {
         videosArray[callNumber].totalSize = 0;
         endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/digital_master';
         options.url = baseURL + endPoint;
-console.log('dm request', options.url);
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
             if (!isDefined(responseDecoded.length)) {
-console.log('dm response', responseDecoded);
             videosArray[callNumber].totalSize += responseDecoded.size;
-console.log('totalSize', videosArray[callNumber].totalSize);
             createRequest('getVideoRenditions');
           } else {
             createRequest('getVideoRenditions');
