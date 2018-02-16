@@ -327,7 +327,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getDigitalMaster':
-        videosArray[callnumber].totalSize = 0;
+        videosArray[callNumber].totalSize = 0;
         endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
