@@ -1,7 +1,7 @@
 var BCLS = (function(window, document) {
-  var accountId,
-    clientId,
-    clientSecret,
+  var account_id,
+    client_id,
+    client_secret,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -16,9 +16,9 @@ var BCLS = (function(window, document) {
     summaryCsvStr,
     customFields = [],
     // elements
-    account_id = document.getElementById('account_id'),
-    client_id = document.getElementById('client_id'),
-    client_secret = document.getElementById('client_secret'),
+    account_id_element = document.getElementById('account_id'),
+    client_id_element = document.getElementById('client_id'),
+    client_secret_element = document.getElementById('client_secret'),
     tag = document.getElementById('tag'),
     videoCount = document.getElementById('videoCount'),
     makeReport = document.getElementById('makeReport'),
@@ -240,9 +240,14 @@ var BCLS = (function(window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setRequestData(id) {
+  function createRequest(id) {
     var endPoint = '',
-      requestData = {};
+      options = {};
+      options.proxyURL = proxyURL;
+      if (isDefined(client_id) && isDefined(client_secret)) {
+        options.client_id = client_id;
+        options.client_secret = client_secret;
+      }
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
     switch (id) {
@@ -251,17 +256,19 @@ var BCLS = (function(window, document) {
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
         }
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        getMediaData(requestData, id);
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, id, function(response) {
+
+        });
         break;
       case 'getCustomFields':
         endPoint = accountId + '/video_fields';
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        getMediaData(requestData, id);
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, id);
         break;
       case 'getVideos':
         var offset = (limit * callNumber);
@@ -269,16 +276,16 @@ var BCLS = (function(window, document) {
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
         }
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        getMediaData(requestData, id);
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, id);
         break;
       case 'getDigitalMaster':
         endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
 
         break;
       case 'getVideoRenditions':
@@ -316,7 +323,7 @@ var BCLS = (function(window, document) {
             logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
             callNumber++;
             if (callNumber < totalVideos) {
-              setRequestData('getVideoRenditions');
+              createRequest('getVideoRenditions');
             } else {
               // create csv headings
               startCSVStrings();
@@ -329,22 +336,24 @@ var BCLS = (function(window, document) {
         videosArray[callNumber].flvRenditions = [];
         videosArray[callNumber].otherRenditions = [];
         endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
         spanRenditionsCountEl.textContent = callNumber + 1;
-        getMediaData(requestData, id, callback);
+        makeRequest(options, id, function(response) {
+
+        });
         break;
     }
   }
 
   /**
    * send API request to the proxy
-   * @param  {Object} requestData options for the request
+   * @param  {Object} options options for the request
    * @param  {String} requestID the type of request = id of the button
    * @param  {Function} [callback] callback function
    */
-  function getMediaData(options, requestID, callback) {
+  function makeRequest(options, requestID, callback) {
     var httpRequest = new XMLHttpRequest(),
       responseRaw,
       parsedData,
@@ -373,7 +382,7 @@ var BCLS = (function(window, document) {
                 }
                 totalCalls = Math.ceil(totalVideos / limit);
                 logText.textContent = totalVideos + ' videos found; getting account custom fields';
-                setRequestData('getCustomFields');
+                createRequest('getCustomFields');
               } else if (requestID === 'getCustomFields') {
                 responseRaw = httpRequest.responseText;
                 parsedData = JSON.parse(responseRaw);
@@ -382,7 +391,7 @@ var BCLS = (function(window, document) {
                 }
                 logText.textContent = 'Custom fields retrieved; getting videos...';
                 spanRenditionsTotalEl.textContent = totalVideos;
-                setRequestData('getVideos');
+                createRequest('getVideos');
               } else if (requestID === 'getVideos') {
                 if (httpRequest.responseText === '[]') {
                   // no video returned
@@ -393,12 +402,12 @@ var BCLS = (function(window, document) {
                 videosArray = videosArray.concat(parsedData);
                 callNumber++;
                 if (callNumber < totalCalls) {
-                  setRequestData('getVideos');
+                  createRequest('getVideos');
                 } else {
                   callNumber = 0;
                   spanRenditionsCountEl.textContent = callNumber + 1;
                   spanRenditionsTotalEl.textContent = totalVideos;
-                  setRequestData('getVideoRenditions');
+                  createRequest('getDigitalMaster');
                 }
               } else if (requestID === 'getVideoRenditions') {
                 if (httpRequest.responseText === '[]') {
@@ -424,8 +433,8 @@ var BCLS = (function(window, document) {
     // set up request data
     requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
     // only add client id and secret if both were submitted
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      requestParams += '&client_id=' + client_id + '&client_secret=' + client_secret;
     }
 
     // set response handler
@@ -464,24 +473,17 @@ var BCLS = (function(window, document) {
   // button event handlers
   makeReport.addEventListener('click', function() {
     // get the inputs
-    clientId = client_id.value;
-    clientSecret = client_secret.value;
+    client_id = client_id_element.value;
+    client_secret = client_secret_element.value;
+    account_id = account_id_element.value
     totalVideos = getSelectedValue(videoCount);
     // only use entered account id if client id and secret are entered also
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      if (isDefined(account_id.value)) {
-        accountId = account_id.value;
-      } else {
-        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        clientId = '';
-        clientSecret = '';
+    if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
+      window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
         accountId = '1752604059001';
-      }
-    } else {
-      accountId = '1752604059001';
     }
     // get video count
-    setRequestData('getCount');
+    createRequest('getCount');
 
   });
 
