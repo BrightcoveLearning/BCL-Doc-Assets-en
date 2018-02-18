@@ -178,6 +178,7 @@ var BCLS = (function(window, document) {
             addChannel.removeAttribute('style');
           } else {
             logger2.textContent = 'Default channel found - ok to proceed';
+            createRequest('getAffiliates');
           }
         });
         break;
