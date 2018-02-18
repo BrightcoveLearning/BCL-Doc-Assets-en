@@ -129,9 +129,10 @@ var BCLS = (function (window, document) {
             txt;
 console.log('account_id', account_id);
         // set credentials and proxy url
+        options.account_id    = account_id;
         options.client_id     = cid.value;
         options.client_secret = secret.value;
-        options.proxyURL      = '//solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php';
+        options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
 
         switch (type) {
             case 'getVideos':
@@ -185,7 +186,7 @@ console.log('account_id', account_id);
      * send API request to the proxy
      * @param  {Object} options for the request
      * @param  {String} options.url the full API request URL
-     * @param  {String="GET","POST","PATCH","PUT","DELETE"} [options.requestType="GET"] HTTP type for the request
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
      * @param  {String} options.proxyURL proxyURL to send the request to
      * @param  {String} options.client_id client id for the account (default is in the proxy)
      * @param  {String} options.client_secret client secret for the account (default is in the proxy)
@@ -220,31 +221,18 @@ console.log('account_id', account_id);
             };
         /**
          * set up request data
-         * the proxy used here takes the following params:
-         * url - the full API request (required)
-         * requestType - the HTTP request type (default: GET)
-         * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-         * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-         * requestData - request body for write requests (optional JSON string)
+         * the proxy used here takes the following request body:
+         * JSON.strinify(options)
          */
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        // only add client id and secret if both were submitted
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-        }
-        // add request data if any
-        if (options.requestBody) {
-            requestParams += '&requestBody=' + options.requestBody;
-        }
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
         httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // set headers if there is a set header line, remove it
         // open and send request
-        httpRequest.send(requestParams);
+        httpRequest.send(JSON.stringify(options));
     }
+
 
     function init() {
         // array for cue point data
