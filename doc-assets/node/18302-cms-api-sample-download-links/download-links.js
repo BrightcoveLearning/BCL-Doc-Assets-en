@@ -225,7 +225,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          parsedData = JSON.parse(responseRaw);
+          parsedData = JSON.parse(response);
           // set total videos
           totalVideos = parsedData.count;
           totalCalls = Math.ceil(totalVideos / limit);
@@ -242,7 +242,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          parsedData = JSON.parse(responseRaw);
+          parsedData = JSON.parse(response);
           videosArray = videosArray.concat(parsedData);
           callNumber++;
           if (callNumber < totalCalls) {
