@@ -25,9 +25,9 @@ var BCLS = ( function (window, document) {
     sMediaTitle = '<media:title>',
     eMediaTitle = '</media:title>',
     // account stuff
-    accountId,
-    clientId,
-    clientSecret,
+    account_id,
+    client_id,
+    client_secret,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -40,9 +40,9 @@ var BCLS = ( function (window, document) {
     callNumber = 0,
     videosArray = [],
     // elements
-    account_id = document.getElementById('account_id'),
-    client_id = document.getElementById('client_id'),
-    client_secret = document.getElementById('client_secret'),
+    account_id_input = document.getElementById('account_id'),
+    client_id_input = document.getElementById('client_id'),
+    client_secret_input = document.getElementById('client_secret'),
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
     playlist_id = document.getElementById('playlist_id'),
@@ -147,10 +147,10 @@ var BCLS = ( function (window, document) {
 
                 pubdate = new Date(video.created_at).toGMTString();
                 mrssStr += sItem;
-                mrssStr += sLink + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eLink;
+                mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
                 mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
-                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
+                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
                 mrssStr += sMediaDescription + video.description + eMediaDescription;
                 if (doThumbnail) {
@@ -187,7 +187,7 @@ var BCLS = ( function (window, document) {
         disableButtons();
         switch (id) {
             case 'getVideos':
-            endPoint = accountId + '/playlists/' + playlist + '/videos';
+            endPoint = account_id + '/playlists/' + playlist + '/videos';
 
             requestData.url = baseURL + endPoint;
             requestData.requestType = 'GET';
@@ -201,7 +201,7 @@ var BCLS = ( function (window, document) {
             case 'getVideoSources':
                 var i,
                     iMax = videosArray.length;
-                    endpoint = accountId + '/videos/' + videosArray[callNumber].id + '/sources';
+                    endpoint = account_id + '/videos/' + videosArray[callNumber].id + '/sources';
                     callback = function(response) {
                         sources = JSON.parse(response);
                         if (sources.length > 0) {
@@ -229,7 +229,7 @@ var BCLS = ( function (window, document) {
                             addItems();
                         }
                     };
-                endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/sources';
+                endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/sources';
                 requestData.url = baseURL + endPoint;
                 requestData.requestType = 'GET';
                 apiRequest.textContent = requestData.url;
@@ -280,8 +280,8 @@ var BCLS = ( function (window, document) {
         // set up request data
         requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
         // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+        if (isDefined(client_id) && isDefined(client_secret)) {
+            requestParams += '&client_id=' + client_id + '&client_secret=' + client_secret;
         }
 
         // set response handler
@@ -299,20 +299,20 @@ var BCLS = ( function (window, document) {
         makeFeed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
-            clientId = client_id.value;
-            clientSecret = client_secret.value;
+            client_id = client_id_input.value;
+            client_secret = client_secret_input.value;
             // only use entered account id if client id and secret are entered also
-            if (isDefined(clientId) && isDefined(clientSecret)) {
-                if (isDefined(account_id.value)) {
-                    accountId = account_id.value;
+            if (isDefined(client_id) && isDefined(client_secret)) {
+                if (isDefined(account_id_input.value)) {
+                    account_id = account_id_input.value;
                 } else {
                     window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-                    clientId = '';
-                    clientSecret = '';
-                    accountId = '57838016001';
+                    client_id = '';
+                    client_secret = '';
+                    account_id = '57838016001';
                 }
             } else {
-                accountId = '57838016001';
+                account_id = '57838016001';
             }
             playlist = (playlist_id.value) ? playlist_id.value : 5317603116001;
             // add title and description
