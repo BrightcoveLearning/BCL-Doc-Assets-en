@@ -242,6 +242,7 @@ var BCLS = ( function (window, document) {
                   logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources...';
                   callNumber = 0;
                   createRequest('getVideoSources');
+                }
             });
             break;
             case 'getVideoSources':
