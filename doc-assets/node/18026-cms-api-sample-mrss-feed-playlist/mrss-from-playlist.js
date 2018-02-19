@@ -185,6 +185,12 @@ var BCLS = ( function (window, document) {
             options = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        options.proxyURL = proxyURL;
+        options.account_id = account_id;
+        if (isDefined(client_id) && isDefined(client_secret)) {
+          options.client_id = client_id;
+          options.client_secret = client_secret;
+        }
 
         switch (id) {
             case 'getVideos':
