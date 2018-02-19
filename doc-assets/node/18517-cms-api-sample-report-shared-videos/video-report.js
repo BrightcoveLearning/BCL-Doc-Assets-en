@@ -421,15 +421,15 @@ console.log('sharedVideos', sharedVideos);
     if (isDefined(tagsSearchString)) {
       searchString = tagsSearchString;
       if (isDefined(fieldsSearchString)) {
-        searchString += '%20+' + fieldsSearchString;
+        searchString += '+%2B' + fieldsSearchString;
       }
       if (isDefined(dateSearchString)) {
-        searchString += '%20+' + dateSearchString;
+        searchString += '+%2B' + dateSearchString;
       }
     } else if (isDefined(fieldsSearchString)) {
       searchString = fieldsSearchString;
       if (isDefined(dateSearchString)) {
-        searchString += '%20+' + dateSearchString;
+        searchString += '+%2B' + dateSearchString;
       }
     } else if (isDefined(dateSearchString)) {
       searchString = dateSearchString;
