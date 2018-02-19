@@ -25,11 +25,11 @@ var BCLS = ( function (window, document) {
     sMediaTitle = '<media:title>',
     eMediaTitle = '</media:title>',
     // account stuff
-    accountId,
-    clientId,
-    clientSecret,
+    account_id,
+    client_id,
+    client_secret,
     // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
     sort,
     sortDirection = "",
@@ -40,9 +40,9 @@ var BCLS = ( function (window, document) {
     callNumber = 0,
     videosArray = [],
     // elements
-    account_id = document.getElementById('account_id'),
-    client_id = document.getElementById('client_id'),
-    client_secret = document.getElementById('client_secret'),
+    account_id_input = document.getElementById('account_id'),
+    client_id_input = document.getElementById('client_id'),
+    client_secret_input = document.getElementById('client_secret'),
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
     numberSelect = document.getElementById('numberSelect'),
@@ -159,10 +159,10 @@ var BCLS = ( function (window, document) {
 
                 pubdate = new Date(video.created_at).toGMTString();
                 mrssStr += sItem;
-                mrssStr += sLink + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eLink;
+                mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
                 mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
-                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
+                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
                 mrssStr += sMediaDescription + video.description + eMediaDescription;
                 if (doThumbnail) {
@@ -192,151 +192,146 @@ var BCLS = ( function (window, document) {
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
      */
-    function setRequestData(id) {
+    function createRequest(id) {
         var endPoint = '',
-            requestData = {};
+            options = {},
+            parsedData;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        options.proxyURL = proxyURL;
+        options.account_id = account_id;
+        if (isDefined(client_id) && isDefined(client_secret)) {
+          options.client_id = client_id;
+          options.client_secret = client_secret;
+        }
+
         switch (id) {
             case 'getCount':
-                endPoint = accountId + '/counts/videos?sort=' + sort;
+                endPoint = account_id + '/counts/videos?sort=' + sort;
                 if (isDefined(search)) {
                     endPoint += '&q=' + search;
                 }
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                  // set total videos
+                  totalVideos = parsedData.count;
+                  totalCalls = Math.ceil(totalVideos / limit);
+                  logger.textContent = 'Total videos: ' + totalVideos;
+                  createRequest('getVideos');
+                });
                 break;
             case 'getVideos':
-            endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit + '&offset=' + limit * callNumber;
+            endPoint = account_id + '/videos?sort=' + sort + '&limit=' + limit + '&offset=' + limit * callNumber;
             if (isDefined(search)) {
                 endPoint += '&q=' + search;
             }
-            requestData.url = baseURL + endPoint;
-            requestData.requestType = 'GET';
-            apiRequest.textContent = requestData.url;
-            getMediaData(requestData, id);
+            options.url = baseURL + endPoint;
+            options.requestType = 'GET';
+            apiRequest.textContent = options.url;
+            makeRequest(options, function(response) {
+              parsedData = JSON.parse(response);
+              videosArray = videosArray.concat(parsedData);
+              callNumber++;
+              if (callNumber < totalCalls) {
+                  logger.textContent = 'Getting video set ' + callNumber;
+                  createRequest('getVideos');
+              } else {
+                  logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources...';
+                  callNumber = 0;
+                  createRequest('getVideoSources');
+            });
             break;
             case 'getVideoSources':
                 var i,
                     iMax = videosArray.length;
-                    callback = function(sources) {
-                        if (sources.length > 0) {
-                            // get the best MP4 rendition
-                            var source = processSources(sources);
-                            videosArray[callNumber].source = source;
-                        } else {
-                            // video has no sources
-                            videosArray[callNumber].source = null;
-                        }
-                        callNumber++;
-                        if (callNumber < iMax) {
-                            setRequestData('getVideoSources');
-                        } else {
-                            // remove videos with no sources
-                            i = videosArray.length;
-                            while (i > 0) {
-                                i--;
-                                console.log('videosArray[i]', videosArray[i]);
-                                if (!isDefined(videosArray[i].source)) {
-                                    console.log('i', i);
-                                    videosArray.splice(i, 1);
-                                }
-                            }
-                            addItems();
-                        }
-                    };
-                endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/sources';
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
+                endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/sources';
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
                 logger.textContent = 'Getting sources for video ' + videosArray[callNumber].name;
-                getMediaData(requestData, id, callback);
+                makeRequest(options, id, function(response) {
+                  sources = JSON.parse(response);
+                  if (sources.length > 0) {
+                      // get the best MP4 rendition
+                      var source = processSources(sources);
+                      videosArray[callNumber].source = source;
+                  } else {
+                      // video has no sources
+                      videosArray[callNumber].source = null;
+                  }
+                  callNumber++;
+                  if (callNumber < iMax) {
+                      createRequest('getVideoSources');
+                  } else {
+                      // remove videos with no sources
+                      i = videosArray.length;
+                      while (i > 0) {
+                          i--;
+                          console.log('videosArray[i]', videosArray[i]);
+                          if (!isDefined(videosArray[i].source)) {
+                              console.log('i', i);
+                              videosArray.splice(i, 1);
+                          }
+                      }
+                      addItems();
+                  }
+                });
                 break;
         }
     }
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
-     * @param  {String} requestID the type of request = id of the button
-     * @param  {Function} [callback] callback function
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function getMediaData(options, requestID, callback) {
-        var httpRequest = new XMLHttpRequest(),
-            responseRaw,
-            parsedData,
-            requestParams,
-            dataString,
-            sources,
-            // response handler
-            getResponse = function() {
-                try {
-                    if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                            // check for completion
-                            if (requestID === 'getCount') {
-                                responseRaw = httpRequest.responseText;
-                                parsedData = JSON.parse(responseRaw);
-                                // set total videos
-                                totalVideos = parsedData.count;
-                                totalCalls = Math.ceil(totalVideos / limit);
-                                logger.textContent = 'Total videos: ' + totalVideos;
-                                setRequestData('getVideos');
-                            } else if (requestID === 'getVideos') {
-                                if (httpRequest.responseText === '[]') {
-                                    // no video returned
-                                    alert('no video returned');
-                                }
-                                responseRaw = httpRequest.responseText;
-                                parsedData = JSON.parse(responseRaw);
-                                videosArray = videosArray.concat(parsedData);
-                                callNumber++;
-                                if (callNumber < totalCalls) {
-                                    logger.textContent = 'Getting video set ' + callNumber;
-                                    setRequestData('getVideos');
-                                } else {
-                                    logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources...';
-                                    callNumber = 0;
-                                    setRequestData('getVideoSources');
-                                }
-                            } else if (requestID === 'getVideoSources') {
-                                if (httpRequest.responseText === '[]') {
-                                    // no video returned
-                                    sources = [];
-                                    callback(sources);
-                                } else {
-                                    responseRaw = httpRequest.responseText;
-                                    sources = JSON.parse(responseRaw);
-                                    // increment offset
-                                    callback(sources);
-                                }
-
-                            } else {
-                              alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                            }
-                        }
-                    }
-                } catch (e) {
-                  alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        requestParams,
+        dataString,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-        }
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
 
     function init() {
@@ -344,20 +339,20 @@ var BCLS = ( function (window, document) {
         makeFeed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
-            clientId = client_id.value;
-            clientSecret = client_secret.value;
+            client_id = client_id_input.value;
+            client_secret = client_secret_input.value;
             // only use entered account id if client id and secret are entered also
-            if (isDefined(clientId) && isDefined(clientSecret)) {
-                if (isDefined(account_id.value)) {
-                    accountId = account_id.value;
+            if (isDefined(client_id) && isDefined(client_secret)) {
+                if (isDefined(account_id_input.value)) {
+                    account_id = account_id_input.value;
                 } else {
                     window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-                    clientId = '';
-                    clientSecret = '';
-                    accountId = '1752604059001';
+                    client_id = '';
+                    client_secret = '';
+                    account_id = '1752604059001';
                 }
             } else {
-                accountId = '1752604059001';
+                account_id = '1752604059001';
             }
             sort = getSelectedValue(sortSelect);
             sortDirection = getSelectedValue(directionSelect);
@@ -371,12 +366,12 @@ var BCLS = ( function (window, document) {
             // if all videos wanted, get count; otherwise get videos
             if (numVideos === 'all') {
                 // we need to get the count
-                setRequestData('getCount');
+                createRequest('getCount');
             } else {
                 totalVideos = parseInt(numVideos);
                 totalCalls = Math.ceil(numVideos / limit);
                 logger.textContent = 'Total videos to retrieve: ' + totalVideos;
-                setRequestData('getVideos');
+                createRequest('getVideos');
             }
         });
         feedDisplay.addEventListener('click', function() {
