@@ -1,9 +1,9 @@
 var BCLS = (function(window, document) {
-  var accountId,
-    clientId,
-    clientSecret,
+  var account_id,
+    client_id,
+    client_secret,
     // api stuff
-    proxyURL            = 'https://solutions.brightcove.com/bcls/bcls-proxy/shares-proxy.php',
+    proxyURL            = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     baseURL             = 'https://cms.api.brightcove.com/v1/accounts/',
     limit               = 25,
     totalVideos         = 0,
@@ -19,9 +19,9 @@ var BCLS = (function(window, document) {
     csvStr,
     summaryCsvStr,
     // elements
-    account_id          = document.getElementById('account_id'),
-    client_id           = document.getElementById('client_id'),
-    client_secret       = document.getElementById('client_secret'),
+    account_id_input          = document.getElementById('account_id'),
+    client_id_input           = document.getElementById('client_id'),
+    client_secret_input       = document.getElementById('client_secret'),
     searchTags          = document.getElementById('searchTags'),
     searchField         = document.getElementById('searchField'),
     searchFieldValue    = document.getElementById('searchFieldValue'),
@@ -192,13 +192,22 @@ var BCLS = (function(window, document) {
    */
   function createRequest(id) {
     var endPoint = '',
-      cmsBaseURL = baseURL + accountId,
+      cmsBaseURL = baseURL + account_id,
       options = {},
       responseParsed,
       i,
       iMax;
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
+
+    // set general options
+    options.account_id = account_id;
+    options.proxyURL = proxyURL;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
+
     switch (id) {
       case 'getAffiliates':
         endpoint = '/channels/default/members';
@@ -311,41 +320,54 @@ console.log('sharedVideos', sharedVideos);
 
   /**
    * send API request to the proxy
-   * @param  {Object} options options for the request
-   * @param  {String} requestID the type of request = id of the button
-   * @param  {Function} [callback] callback function
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
    */
   function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
-      responseRaw,
-      parsedData,
+      response,
       requestParams,
       dataString,
-      renditions,
-      field,
-      i = 0,
-      iMax,
+      proxyURL = options.proxyURL,
       // response handler
       getResponse = function() {
-        var videoCount;
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
-              // check for completion
-              responseRaw = httpRequest.responseText;
-              callback(responseRaw);
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '{null}') {
+                response = null;
+              }
+              // return the response
+              callback(response);
+            } else {
+              alert('There was a problem with the request. Request returned ' + httpRequest.status);
             }
           }
         } catch (e) {
           alert('Caught Exception: ' + e);
         }
       };
-    // set up request data
-    requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-    // only add client id and secret if both were submitted
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-    }
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
+  }
 
     // set response handler
     httpRequest.onreadystatechange = getResponse;
@@ -368,8 +390,8 @@ console.log('sharedVideos', sharedVideos);
   // button event handlers
   makeReport.addEventListener('click', function() {
     // get the inputs
-    clientId     = client_id.value;
-    clientSecret = client_secret.value;
+    client_id     = client_id_input.value;
+    client_secret = client_secret_input.value;
     totalVideos  = getSelectedValue(videoCount);
     // check for search terms
     if (isDefined(searchTags.value)) {
@@ -413,17 +435,17 @@ console.log('sharedVideos', sharedVideos);
       searchString = dateSearchString;
     }
     // only use entered account id if client id and secret are entered also
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      if (isDefined(account_id.value)) {
-        accountId = account_id.value;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      if (isDefined(account_id_input.value)) {
+        account_id = account_id_input.value;
       } else {
         window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        clientId     = '';
-        clientSecret = '';
-        accountId    = '57838016001';
+        client_id     = '';
+        client_secret = '';
+        account_id    = '57838016001';
       }
     } else {
-      accountId = '57838016001';
+      account_id = '57838016001';
     }
     // get video count
     createRequest('getAffiliates');
