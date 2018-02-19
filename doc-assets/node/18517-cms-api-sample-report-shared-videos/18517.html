@@ -1,23 +1,21 @@
 <!-- date picker styles -->
 <link rel="stylesheet" href="https://learning-services-media.brightcove.com/doc-assets/js/rome/rome.min.css" />
-
 <article class="bcls-article">
+<section class="bcls-section">
+<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
 
-  <section class="bcls-section">
-  <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+<div class="bcls-expander-content">
+<p>To use the CMS API you will need proper credentials.</p>
 
-  <div class="bcls-expander-content">
-  <p>To use the CMS API you will need proper credentials.</p>
+<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
 
-  <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+<figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+<figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+</figure>
 
-  <figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-  <figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
-  </figure>
+<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
 
-  <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
-
-  <pre class="line-numbers">
+<pre class="line-numbers">
   <code class="language-json">"operations": [
     "video-cloud/video/all",
     "video-cloud/playlist/all",
@@ -25,12 +23,12 @@
     "video-cloud/notifications/all"
   ]</code></pre>
 
-  <ul>
-    <li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
-    <li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
-  </ul>
-  </div>
-  </section>
+<ul>
+	<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+</ul>
+</div>
+</section>
 
 <section class="bcls-section" id="workingSample">
 <h2>Video report generator</h2>
@@ -46,31 +44,30 @@
 <p>Client secret: <input id="client_secret" type="text" size="60" value="" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWK" /></p>
 
 <h4>Limit response by search (optional)</h4>
-<p><strong>Limit search by tag(s):</strong>  <input id="searchTags" type="text" style="width:50%" placeholder="bird"></p>
-<p><strong>Limit search by custom field value:</strong> </p>
-<p>Field (default:any): <input id="searchField" type="text" style="width:50%"></p>
-<p>Field value: <input id="searchFieldValue" type="text" style="width:50%"></</p>
+
+<p><strong>Limit search by tag(s):</strong> <input id="searchTags" type="text" style="width:50%" placeholder="bird" /></p>
+
+<p><strong>Limit search by custom field value:</strong></p>
+
+<p>Field (default:any): <input id="searchField" type="text" style="width:50%" /></p>
+
+<p>Field value: <input id="searchFieldValue" type="text" style="width:50%" /><!--</p--></p>
+
 <p><strong>Limit search by dates:</strong></p>
+
 <table class="bcls-table">
-  <tbody class="bcls-table__body">
-    <tr>
-      <td>Date type</td>
-      <td>From date</td>
-      <td>To date</td>
-    </tr>
-    <tr>
-      <td>
-        <select class="date-field" id="dateRangeType" style="width:200px;font-size:1.3rem;">
-          <option value="created_at" selected="selected">created_at</option>
-          <option value="updated_at">updated_at</option>
-          <option value="published_at">published_at</option><option value="schedule.starts_at">schedule.starts_at</option>
-          <option value="schedule.ends_at">schedule.ends_at</option>
-       </select>
-     </td>
-      <td><input id="fromDate" class="date-field" style="width:200px;font-size:1.3rem;" /></td>
-      <td><input id="toDate" class="date-field" style="width:200px;font-size:1.3rem;" /></td>
-    </tr>
-  </tbody>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Date type</td>
+			<td>From date</td>
+			<td>To date</td>
+		</tr>
+		<tr>
+			<td><select class="date-field" id="dateRangeType" style="width:200px;font-size:1.3rem;"><option value="created_at" selected="selected">created_at</option><option value="updated_at">updated_at</option><option value="published_at">published_at</option><option value="schedule.starts_at">schedule.starts_at</option><option value="schedule.ends_at">schedule.ends_at</option> </select></td>
+			<td><input id="fromDate" class="date-field" style="width:200px;font-size:1.3rem;" /></td>
+			<td><input id="toDate" class="date-field" style="width:200px;font-size:1.3rem;" /></td>
+		</tr>
+	</tbody>
 </table>
 
 <p>Videos to retrieve: <select name="videoCount" id="videoCount"><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="500">500</option><option value="All">All</option></select></p>
@@ -82,9 +79,7 @@
 
 <fieldset class="bcls-fieldset"><legend>Log</legend>
 
-<div id="logger" style="color:rgb(237, 104, 38)">
-Waiting for input <br>
-</div>
+<div id="logger" style="color:rgb(237, 104, 38)">Waiting for input</div>
 
 <p>Current API request</p>
 
@@ -92,7 +87,9 @@ Waiting for input <br>
 <code id="apiRequest" class="language-http">API requests will appear here...</code></pre>
 
 <p>Current API response</p>
-<pre class="line-numbers"><code id="apiResponse" class="language-json">API resonses will appear here...</code></pre>
+
+<pre class="line-numbers">
+<code id="apiResponse" class="language-json">API resonses will appear here...</code></pre>
 </fieldset>
 </section>
 
@@ -107,7 +104,8 @@ Waiting for input <br>
 
 <h3>HTML</h3>
 
-<pre class="line-numbers"><code class="language-html">&lt;section class="bcls-section" id="workingSample"&gt;
+<pre class="line-numbers">
+<code class="language-html">&lt;section class="bcls-section" id="workingSample"&gt;
 &lt;h2&gt;Video report generator&lt;/h2&gt;
 
 &lt;fieldset class="bcls-fieldset"&gt;&lt;legend&gt;Input&lt;/legend&gt;
@@ -399,7 +397,7 @@ Waiting for input &lt;br&gt;
       case 'getCount':
         endPoint = '/counts/videos';
         if (isDefined(searchString)) {
-          endPoint += '&q=' + searchString;
+          endPoint += '&amp;q=' + searchString;
         }
         options.url = cmsBaseURL + endPoint;
         options.requestType = 'GET';
@@ -420,9 +418,9 @@ Waiting for input &lt;br&gt;
         break;
       case 'getVideos':
         var offset = (limit * callNumber);
-        endPoint = '/videos?limit=' + limit + '&offset=' + offset;
+        endPoint = '/videos?limit=' + limit + '&amp;offset=' + offset;
         if (isDefined(searchString)) {
-          endPoint += '&q=' + searchString;
+          endPoint += '&amp;q=' + searchString;
         }
         options.url = cmsBaseURL + endPoint;
         apiRequest.textContent = options.url;
@@ -513,7 +511,7 @@ console.log('sharedVideos', sharedVideos);
         var videoCount;
         try {
           if (httpRequest.readyState === 4) {
-            if (httpRequest.status &gt;= 200 && httpRequest.status &lt; 300) {
+            if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
               // check for completion
               responseRaw = httpRequest.responseText;
               callback(responseRaw);
@@ -524,10 +522,10 @@ console.log('sharedVideos', sharedVideos);
         }
       };
     // set up request data
-    requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
+    requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
     // only add client id and secret if both were submitted
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
+    if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
+      requestParams += '&amp;client_id=' + clientId + '&amp;client_secret=' + clientSecret;
     }
 
     // set response handler
@@ -596,7 +594,7 @@ console.log('sharedVideos', sharedVideos);
       searchString = dateSearchString;
     }
     // only use entered account id if client id and secret are entered also
-    if (isDefined(clientId) && isDefined(clientSecret)) {
+    if (isDefined(clientId) &amp;&amp; isDefined(clientSecret)) {
       if (isDefined(account_id.value)) {
         accountId = account_id.value;
       } else {
@@ -627,7 +625,4 @@ console.log('sharedVideos', sharedVideos);
 </aside>
 </section>
 </article>
-<!-- date picker script-->
-<script src="https://learning-services-media.brightcove.com/doc-assets/js/rome/rome.min.js"></script>
-
-<script src="//learning-services-media.brightcove.com/doc-assets/node/18517-cms-api-sample-report-shared-videos/video-report.js"></script>
+<!-- date picker script--><script src="https://learning-services-media.brightcove.com/doc-assets/js/rome/rome.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/node/18517-cms-api-sample-report-shared-videos/video-report.js"></script>
