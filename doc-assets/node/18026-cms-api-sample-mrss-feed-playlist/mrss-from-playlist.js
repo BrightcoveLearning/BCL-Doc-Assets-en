@@ -193,7 +193,7 @@ var BCLS = ( function (window, document) {
             options.url = baseURL + endPoint;
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
-            getMediaData(options, function(response) {
+            makeRequest(options, function(response) {
                 videosArray = JSON.parse(response);
                 console.log('videosArray', videosArray);
                 createRequest('getVideoSources');
@@ -210,7 +210,7 @@ var BCLS = ( function (window, document) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 logger.textContent = 'Getting sources for video ' + videosArray[callNumber].name;
-                getMediaData(options, function(response) {
+                makeRequest(options, function(response) {
                   sources = JSON.parse(response);
                   if (sources.length > 0) {
                       // get the best MP4 rendition
