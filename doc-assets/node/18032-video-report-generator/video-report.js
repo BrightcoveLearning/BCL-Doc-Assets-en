@@ -259,6 +259,7 @@ var BCLS = (function(window, document) {
       parsedData,
       options = {};
       options.proxyURL = proxyURL;
+      options.account_id = account_id;
       if (isDefined(client_id) && isDefined(client_secret)) {
         options.client_id = client_id;
         options.client_secret = client_secret;
