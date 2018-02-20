@@ -75,22 +75,22 @@ var BCLS = (function(window, document) {
           toDateValue = toDateValue.toISOString();
         }
         if (isDefined(fromDateValue) || isDefined(toDateValue)) {
-          dateSearchString = dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+          dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
         }
 
         // define the whole search string
         if (isDefined(tagsSearchString)) {
           searchString = tagsSearchString;
           if (isDefined(fieldsSearchString)) {
-            searchString += '%20+' + fieldsSearchString;
+            searchString += '+' + fieldsSearchString;
           }
           if (isDefined(dateSearchString)) {
-            searchString += '%20+' + dateSearchString;
+            searchString += '+' + dateSearchString;
           }
         } else if (isDefined(fieldsSearchString)) {
           searchString = fieldsSearchString;
           if (isDefined(dateSearchString)) {
-            searchString += '%20+' + dateSearchString;
+            searchString += '+' + dateSearchString;
           }
         } else if (isDefined(dateSearchString)) {
           searchString = dateSearchString;
