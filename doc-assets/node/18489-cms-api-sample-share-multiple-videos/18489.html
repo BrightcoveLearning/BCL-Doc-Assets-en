@@ -247,22 +247,22 @@
           toDateValue = toDateValue.toISOString();
         }
         if (isDefined(fromDateValue) || isDefined(toDateValue)) {
-          dateSearchString = dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+          dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
         }
 
         // define the whole search string
         if (isDefined(tagsSearchString)) {
           searchString = tagsSearchString;
           if (isDefined(fieldsSearchString)) {
-            searchString += '%20+' + fieldsSearchString;
+            searchString += '+' + fieldsSearchString;
           }
           if (isDefined(dateSearchString)) {
-            searchString += '%20+' + dateSearchString;
+            searchString += '+' + dateSearchString;
           }
         } else if (isDefined(fieldsSearchString)) {
           searchString = fieldsSearchString;
           if (isDefined(dateSearchString)) {
-            searchString += '%20+' + dateSearchString;
+            searchString += '+' + dateSearchString;
           }
         } else if (isDefined(dateSearchString)) {
           searchString = dateSearchString;
@@ -285,6 +285,7 @@
     apiResponse.textContent = '';
     videosToShare = getCheckedBoxValues(videosCollection);
     affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
+console.log('affiliatesToShareWith', affiliatesToShareWith);
     if (videosToShare.length === 0) {
       alert('Please select some videos to share and try again');
     } else if (affiliatesToShareWith.length === 0) {
@@ -403,7 +404,6 @@
     logger.appendChild(lineBreak);
     message = document.createTextNode(message);
     logger.appendChild(message);
-
   }
 
   /**
@@ -589,6 +589,7 @@
             o.id = affiliatesToShareWith[i];
             body.push(o);
           }
+console.log('body', body);
           options.requestBody = JSON.stringify(body);
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
@@ -649,31 +650,16 @@
       };
     /**
      * set up request data
-     * the proxy used here takes the following params:
-     * url - the full API request (required)
-     * requestType - the HTTP request type (default: GET)
-     * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * requestBody - request body for write requests (optional JSON string)
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
      */
-    apiRequest.textContent = options.url;
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=' + options.requestType;
-    // only add client id and secret if both were submitted
-    if (options.client_id &amp;&amp; options.client_secret) {
-      requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
-    }
-    // add request data if any
-    if (options.requestBody) {
-      requestParams += '&amp;requestBody=' + options.requestBody;
-    }
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // send request
-    httpRequest.send(requestParams);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 })(window, document);
 </code></pre>
