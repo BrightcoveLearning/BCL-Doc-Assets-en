@@ -478,30 +478,15 @@ console.log('body', body);
       };
     /**
      * set up request data
-     * the proxy used here takes the following params:
-     * url - the full API request (required)
-     * requestType - the HTTP request type (default: GET)
-     * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * requestBody - request body for write requests (optional JSON string)
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
      */
-    apiRequest.textContent = options.url;
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-    // only add client id and secret if both were submitted
-    if (options.client_id && options.client_secret) {
-      requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-    }
-    // add request data if any
-    if (options.requestBody) {
-      requestParams += '&requestBody=' + options.requestBody;
-    }
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // send request
-    httpRequest.send(requestParams);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 })(window, document);
