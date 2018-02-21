@@ -209,7 +209,7 @@ var BCLS = (function(window, document) {
                 options.requestType = 'PATCH';
                 options.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
                 logMessage(apiRequest, options.url, false);
-                logMessage(apiData, JSON.stringify(options.requestBody), false);
+                logMessage(apiData, JSON.stringify(options.requestBody, null, '  '), false);
                 logMessage(apiMethod, options.requestType, false);
                 makeRequest(options, function(response) {
                   parsedData = JSON.parse(response);
