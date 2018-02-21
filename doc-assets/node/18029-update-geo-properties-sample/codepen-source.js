@@ -258,7 +258,7 @@ var BCLS = (function(window, document) {
                 // return the response
                 callback(response);
               } else {
-                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                console.log('There was a problem with the request. Request returned ' + httpRequest.status);
               }
             }
           } catch (e) {
