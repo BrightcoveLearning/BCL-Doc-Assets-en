@@ -235,34 +235,34 @@ completion:^(BCOVPlaylist *playlist, NSDictionary *jsonResponse, NSError *error)
 {
 [self.service findVideoWithVideoID:kViewControllerVideoID parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
 
-if (video)
-{
+  if (video)
+  {
 <span class="bcls-highlight">// Get the video duration from the properties dictionary
  NSNumber *durationNumber = video.properties[@&quot;duration&quot;]; // milliseconds
  float duration = durationNumber.floatValue / 1000.0; // convert to seconds
 
-video = [video update:^(id&lt;BCOVMutableVideo&gt; mutableVideo)
-{
-	// Add quarterly interval cue points of your own type
-	BCOVCuePoint *cp1 = [[BCOVCuePoint alloc] initWithType:@<span class="bcls-input">your cue point type</span> position:CMTimeMake(duration * 250, 1000)];
-	BCOVCuePoint *cp2 = [[BCOVCuePoint alloc] initWithType:@<span class="bcls-input">your cue point type</span> position:CMTimeMake(duration * 500, 1000)];
-	BCOVCuePoint *cp3 = [[BCOVCuePoint alloc] initWithType:@<span class="bcls-input">your cue point type</span> position:CMTimeMake(duration * 750, 1000)];
-	BCOVCuePoint *cp4 = [[BCOVCuePoint alloc] initWithType:@<span class="bcls-input">your cue point type</span> position:CMTimeMake(duration * 1000, 1000)];
-	// Create new cue point collection using existing cue points and new cue points
-	NSMutableArray *newCuePoints = [[NSMutableArray alloc] initWithArray:mutableVideo.cuePoints.array];
-	[newCuePoints addObject:cp1];
-	[newCuePoints addObject:cp2];
-	[newCuePoints addObject:cp3];
-	[newCuePoints addObject:cp4];
-	mutableVideo.cuePoints = [[BCOVCuePointCollection alloc] initWithArray:newCuePoints];
-}];</span>
+  video = [video update:^(id&lt;BCOVMutableVideo&gt; mutableVideo)
+  {
+	  // Add quarterly interval cue points of your own type
+	  BCOVCuePoint *cp1 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 250, 1000)];
+	  BCOVCuePoint *cp2 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 500, 1000)];
+	  BCOVCuePoint *cp3 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 750, 1000)];
+	  BCOVCuePoint *cp4 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 1000, 1000)];
+	  // Create new cue point collection using existing cue points and new cue points
+	  NSMutableArray *newCuePoints = [[NSMutableArray alloc] initWithArray:mutableVideo.cuePoints.array];
+	  [newCuePoints addObject:cp1];
+	  [newCuePoints addObject:cp2];
+	  [newCuePoints addObject:cp3];
+	  [newCuePoints addObject:cp4];
+	  mutableVideo.cuePoints = [[BCOVCuePointCollection alloc] initWithArray:newCuePoints];
+  }];</span>
 
-[self.playbackController setVideos:@[ video ]];
-}
-else
-{
-NSLog(@&quot;ViewController Debug - Error retrieving video: `%@`&quot;, error);
-}
+  [self.playbackController setVideos:@[ video ]];
+  }
+  else
+  {
+    NSLog(@&quot;ViewController Debug - Error retrieving video: `%@`&quot;, error);
+  }
 
 }];
 }</a></code></pre>
@@ -277,13 +277,13 @@ If you are using cue points with the IMA plugin, learn more about it in the <a h
 
 <pre class="line-numbers"><code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVCuePoint.html">// listen for cue points and display them
 -(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didPassCuePoints:(NSDictionary *)cuePointInfo {
-BCOVCuePointCollection *cpc = cuePointInfo[@"kBCOVPlaybackSessionEventKeyCuePoints"];
-for (BCOVCuePoint *cp in cpc) {
-	 if ([cp.type isEqualToString:@"Your Cue Point Type"])
-	 {
-			 NSLog(@"Found your cue point at %f", CMTimeGetSeconds(cp.position));
-	 }
-}
+  BCOVCuePointCollection *cpc = cuePointInfo[@&quot;kBCOVPlaybackSessionEventKeyCuePoints&quot;];
+  for (BCOVCuePoint *cp in cpc) {
+	  if ([cp.type isEqualToString:@&quot;<span class="bcls-input">your cue point type</span>&quot;])
+    {
+      NSLog(@&quot;Found your cue point at %f&quot;, CMTimeGetSeconds(cp.position));
+	  }
+  }
 }</a></code></pre>
 </section>
 <!-- <section class="bcls-section" id="Setting_the_buffer_size">
