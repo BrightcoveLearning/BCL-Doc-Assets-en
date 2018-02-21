@@ -176,7 +176,7 @@ var BCLS = (function(window, document) {
                 endPoint = '/counts/videos';
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
-                logMessage(apiRequest., options.url, false);
+                logMessage(apiRequest, options.url, false);
                 logMessage(apiMethod, options.requestType, false);
                 makeRequest(options, function(response) {
                   parsedData = JSON.parse(response);
@@ -190,7 +190,7 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos?limit=1&sort=created_at&offset=' + offset;
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
-                logMessage(apiRequest., options.url, false);
+                logMessage(apiRequest, options.url, false);
                 logMessage(apiMethod, options.requestType, false);
                 makeRequest(options, function(response) {
                   parsedData = JSON.parse(response);
@@ -207,7 +207,7 @@ var BCLS = (function(window, document) {
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
                 options.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
-                logMessage(apiRequest., options.url, false);
+                logMessage(apiRequest, options.url, false);
                 logMessage(apiData, JSON.stringify(options.requestBody), false);
                 logMessage(apiMethod, options.requestType, false);
                 makeRequest(options, function(response) {
