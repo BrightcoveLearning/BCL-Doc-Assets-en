@@ -275,7 +275,7 @@ var BCLS = (function(window, document) {
                             createRequest('get1video');
                         } else {
                             // we are done
-                            logMessage(logger., ('Finished... ' + offset + ' videos processed'), true);
+                            logMessage(logger, ('Finished... ' + offset + ' videos processed'), true);
                         }
 
                       }
