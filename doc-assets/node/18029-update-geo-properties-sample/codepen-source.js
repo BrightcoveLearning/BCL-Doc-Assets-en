@@ -118,6 +118,22 @@ var BCLS = (function(window, document) {
     }
 
     /**
+     * injects messages into the UI
+     * @param  {HTMLElement} el The element to inject text into
+     * @param  {String} message The message to inject
+     * @param  {Boolean} append Append the message to existing content
+     */
+    function logMessage(el, message, append) {
+      if (append === true) {
+        var br = document.createElement('br');
+        el.appendChild(br);
+        el.appendChild(document.createTextNode(message));
+      } else {
+        el.textContent = message;
+      }
+    }
+
+    /**
      * or removes country codes to country array
      * this is a callback for getSelectedOptions
      * @param  {HTMLElement} sel the selector that is processing
@@ -162,7 +178,12 @@ var BCLS = (function(window, document) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 apiMethod.textContent = options.requestType;
-                makeRequest(options, id);
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                  // set total videos
+                  videoCount = parsedData.count;
+                  count.textContent = 'Total videos: ' + videoCount;
+                  createRequest('get1video');                });
                 break;
             case 'get1video':
                 endPoint = '/videos?limit=1&sort=created_at&offset=' + offset;
@@ -170,7 +191,14 @@ var BCLS = (function(window, document) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 apiMethod.textContent = options.requestType;
-                makeRequest(options, id);
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                  // set the video id for the update
+                  video_id = parsedData[0].id;
+                  video_name = parsedData[0].name;
+                  logger.textContent = 'Processing ' + video_name;
+                  createRequest('updateVideos');
+                });
                 break;
             case 'updateVideos':
                 endPoint = '/videos/' + video_id;
