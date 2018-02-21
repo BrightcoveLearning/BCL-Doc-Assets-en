@@ -51,8 +51,8 @@ var BCLS = (function(window, document) {
     /**
      * gets the selected value for the excluded radio group and sets the var
      */
-    function getExcludedValue() {
-        iMax = excludedEl.length;
+    function getRadioValue(e) {
+        iMax = e.length;
         for (i = 0; i < iMax; i++) {
             if (excludedEl[i].checked === true) {
                 if (excludedEl[i].value === 'true') {
@@ -167,7 +167,8 @@ var BCLS = (function(window, document) {
      */
     function createRequest(id) {
         var endPoint = '',
-            options = {};
+            options = {},
+            requestBody = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         options.proxyURL = proxyURL;
@@ -207,7 +208,11 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos/' + video_id;
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
-                options.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
+                requestBody.geo = {};
+                requestBody.geo.countries = countriesArray;
+                requestBody.geo.excluded = excluded;
+                requestBody.geo.restricted = true;
+                options.requestBody = JSON.stringify(requestBody);
                 logMessage(apiRequest, options.url, false);
                 logMessage(apiData, JSON.stringify(options.requestBody, null, '  '), false);
                 logMessage(apiMethod, options.requestType, false);
@@ -281,11 +286,12 @@ var BCLS = (function(window, document) {
 
     // event listeners
     updateVideos.addEventListener('click', function() {
+        excluded = getRadioValue(excludedEl);
         createRequest('getCount');
     });
     iMax = excludedEl.length;
     for (i = 0; i < iMax; i++) {
-        excludedEl[i].addEventListener('change', getExcludedValue);
+        excludedEl[i].addEventListener('change', getRadioValue);
     }
     addCountry.addEventListener('click', function() {
         updateVideos.removeAttribute('disabled');
