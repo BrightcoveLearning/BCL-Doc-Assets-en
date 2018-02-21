@@ -176,10 +176,11 @@ var BCLS = (function(window, document) {
                 endPoint = '/counts/videos';
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
-                apiRequest.textContent = options.url;
-                apiMethod.textContent = options.requestType;
+                logMessage(apiRequest., options.url, false);
+                logMessage(apiMethod, options.requestType, false);
                 makeRequest(options, function(response) {
                   parsedData = JSON.parse(response);
+                  logMessage(responseData, JSON.stringify(parsedData, null, '  '), false);
                   // set total videos
                   videoCount = parsedData.count;
                   count.textContent = 'Total videos: ' + videoCount;
@@ -189,14 +190,15 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos?limit=1&sort=created_at&offset=' + offset;
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
-                apiRequest.textContent = options.url;
-                apiMethod.textContent = options.requestType;
+                logMessage(apiRequest., options.url, false);
+                logMessage(apiMethod, options.requestType, false);
                 makeRequest(options, function(response) {
                   parsedData = JSON.parse(response);
+                  logMessage(responseData, JSON.stringify(parsedData, null, '  '), false);
                   // set the video id for the update
                   video_id = parsedData[0].id;
                   video_name = parsedData[0].name;
-                  logger.textContent = 'Processing ' + video_name;
+                  logMessage(logger, ('Processing ' + video_name), false);
                   createRequest('updateVideos');
                 });
                 break;
@@ -205,10 +207,22 @@ var BCLS = (function(window, document) {
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
                 options.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
-                apiRequest.textContent = options.url;
-                apiData.textContent = JSON.stringify(options.requestBody);
-                apiMethod.textContent = options.requestType;
-                makeRequest(options, id);
+                logMessage(apiRequest., options.url, false);
+                logMessage(apiData, JSON.stringify(options.requestBody), false);
+                logMessage(apiMethod, options.requestType, false);
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                  logMessage(responseData, JSON.stringify(parsedData, null, '  '), false);
+                  // increment offset
+                  offset++;
+                  if (offset < videoCount) {
+                      // move on to next video
+                      createRequest('get1video');
+                  } else {
+                      // we are done
+                      logMessage(logger., ('Finished... ' + offset + ' videos processed'), true)
+                  }
+                });
                 break;
         }
     }
@@ -249,7 +263,7 @@ var BCLS = (function(window, document) {
                         // set the video id for the update
                         video_id = parsedData[0].id;
                         video_name = parsedData[0].name;
-                        logger.textContent = 'Processing ' + video_name;
+                        logMessage(logger, ('Processing ' + video_name), true);
                         createRequest('updateVideos');
                       } else if (requestID === 'updateVideos') {
                         responseRaw = httpRequest.responseText;
@@ -261,7 +275,7 @@ var BCLS = (function(window, document) {
                             createRequest('get1video');
                         } else {
                             // we are done
-                            logger.textContent = 'Finished... ' + offset + ' videos processed'
+                            logMessage(logger., ('Finished... ' + offset + ' videos processed'), true);
                         }
 
                       }
