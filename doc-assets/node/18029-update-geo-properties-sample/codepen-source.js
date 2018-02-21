@@ -198,7 +198,7 @@ var BCLS = (function(window, document) {
                   // set the video id for the update
                   video_id = parsedData[0].id;
                   video_name = parsedData[0].name;
-                  logMessage(logger, ('Processing ' + video_name), false);
+                  logMessage(logger, ('Processing ' + video_name), true);
                   createRequest('updateVideos');
                 });
                 break;
@@ -220,7 +220,7 @@ var BCLS = (function(window, document) {
                       createRequest('get1video');
                   } else {
                       // we are done
-                      logMessage(logger., ('Finished... ' + offset + ' videos processed'), true)
+                      logMessage(logger, ('Finished... ' + offset + ' videos processed'), true)
                   }
                 });
                 break;
