@@ -3,6 +3,7 @@ var BCLS = (function(window, document) {
       proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
       video_id                = '',
       video_name              = '',
+      account_id              = '1485884786001',
       offset                  = 0,
       excludedValue           = 'true',
       excluded                = true,
