@@ -1,6 +1,6 @@
 var BCLS = (function(window, document) {
   var baseURL                 = 'https://cms.api.brightcove.com/v1/accounts/1485884786001',
-      proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy.php',
+      proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
       video_id                = '',
       video_name              = '',
       offset                  = 0,
@@ -148,47 +148,49 @@ var BCLS = (function(window, document) {
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
      */
-    function setRequestData(id) {
+    function createRequest(id) {
         var endPoint = '',
-            requestData = {};
+            options = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        options.proxyURL = proxyURL;
+        options.account_id = account_id;
         switch (id) {
             case 'getCount':
                 endPoint = '/counts/videos';
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                apiMethod.textContent = options.requestType;
+                makeRequest(options, id);
                 break;
             case 'get1video':
                 endPoint = '/videos?limit=1&sort=created_at&offset=' + offset;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                apiMethod.textContent = options.requestType;
+                makeRequest(options, id);
                 break;
             case 'updateVideos':
                 endPoint = '/videos/' + video_id;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'PATCH';
-                requestData.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
-                apiRequest.textContent = requestData.url;
-                apiData.textContent = JSON.stringify(requestData.requestBody);
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'PATCH';
+                options.requestBody = {geo: {countries: countriesArray, exclude_countries: excluded, restricted: true}};
+                apiRequest.textContent = options.url;
+                apiData.textContent = JSON.stringify(options.requestBody);
+                apiMethod.textContent = options.requestType;
+                makeRequest(options, id);
                 break;
         }
     }
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
+     * @param  {Object} options options for the request
      * @param  {String} requestID the type of request = id of the button
      */
-    function getMediaData(options, requestID) {
+    function makeRequest(options, requestID) {
         var httpRequest = new XMLHttpRequest(),
             responseRaw,
             parsedData,
@@ -211,7 +213,7 @@ var BCLS = (function(window, document) {
                         // set total videos
                         videoCount = parsedData.count;
                         count.textContent = 'Total videos: ' + videoCount;
-                        setRequestData('get1video');
+                        createRequest('get1video');
                       } else if (requestID === 'get1video') {
                         responseRaw = httpRequest.responseText;
                         responseData.textContent = responseRaw;
@@ -220,7 +222,7 @@ var BCLS = (function(window, document) {
                         video_id = parsedData[0].id;
                         video_name = parsedData[0].name;
                         logger.textContent = 'Processing ' + video_name;
-                        setRequestData('updateVideos');
+                        createRequest('updateVideos');
                       } else if (requestID === 'updateVideos') {
                         responseRaw = httpRequest.responseText;
                         responseData.textContent = responseRaw;
@@ -228,7 +230,7 @@ var BCLS = (function(window, document) {
                         offset++;
                         if (offset < videoCount) {
                             // move on to next video
-                            setRequestData('get1video');
+                            createRequest('get1video');
                         } else {
                             // we are done
                             logger.textContent = 'Finished... ' + offset + ' videos processed'
@@ -261,7 +263,7 @@ var BCLS = (function(window, document) {
     }
     // event listeners
     updateVideos.addEventListener('click', function() {
-        setRequestData('getCount');
+        createRequest('getCount');
     });
     iMax = excludedEl.length;
     for (i = 0; i < iMax; i++) {
