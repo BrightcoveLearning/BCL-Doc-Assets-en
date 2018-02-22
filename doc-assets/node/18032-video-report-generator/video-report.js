@@ -175,7 +175,7 @@ var BCLS = (function(window, document) {
     var i = 0,
       iMax;
     csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",';
-    if (customFields) {
+    if (customFields.length > 0) {
       iMax = customFields.length;
       for (i; i < iMax; i++) {
         csvStr += '"' + customFields[i] + '",';
@@ -228,7 +228,7 @@ var BCLS = (function(window, document) {
         resHeight = rendition.frame_height;
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",';
-        if (customFields) {
+        if (customFields.length > 0) {
           jMax = customFields.length;
           for (j = 0; j < jMax; j++) {
             if (video.custom_fields.hasOwnProperty(customFields[j])) {
@@ -237,10 +237,8 @@ var BCLS = (function(window, document) {
               csvStr += '"",';
             }
           }
-          csvStr += '\r\n';
-        } else {
-          csvStr += '\r\n';
         }
+        csvStr += '\r\n';
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
