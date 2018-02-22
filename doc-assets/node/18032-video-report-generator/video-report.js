@@ -266,21 +266,6 @@ var BCLS = (function(window, document) {
           }
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
-          createRequest('getCustomFields');
-        });
-        break;
-      case 'getCustomFields':
-        endPoint = account_id + '/video_fields';
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          parsedData = JSON.parse(response);
-          for (field in parsedData.custom_fields) {
-            customFields.push(field);
-          }
-          logText.textContent = 'Custom fields retrieved; getting videos...';
-          spanRenditionsTotalEl.textContent = totalVideos;
           createRequest('getVideos');
         });
         break;
