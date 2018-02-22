@@ -394,11 +394,11 @@ var BCLS = (function(window, document) {
                           // return the response
                           callback(response);
                       } else {
-                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                          logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
                       }
                   }
               } catch (e) {
-                  alert('Caught Exception: ' + e);
+                  logger.appendChild(document.createTextNode('Caught Exception: ' + e));
               }
           };
       /**
@@ -447,7 +447,7 @@ var BCLS = (function(window, document) {
     totalVideos = getSelectedValue(videoCount);
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
-      window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+      logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
         account_id = '1752604059001';
     }
     // get video count
