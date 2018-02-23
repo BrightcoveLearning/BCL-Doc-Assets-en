@@ -174,14 +174,7 @@ var BCLS = (function(window, document) {
   function startCSVStrings() {
     var i = 0,
       iMax;
-    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",';
-    if (customFields) {
-      iMax = customFields.length;
-      for (i; i < iMax; i++) {
-        csvStr += '"' + customFields[i] + '",';
-      }
-    }
-    csvStr += '\r\n';
+    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",\r\n';
   }
 
   function writeReport() {
@@ -227,20 +220,7 @@ var BCLS = (function(window, document) {
         resWidth = rendition.frame_width;
         resHeight = rendition.frame_height;
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",';
-        if (customFields) {
-          jMax = customFields.length;
-          for (j = 0; j < jMax; j++) {
-            if (video.custom_fields.hasOwnProperty(customFields[j])) {
-              csvStr += '"' + video.custom_fields[customFields[j]] + '",';
-            } else {
-              csvStr += '"",';
-            }
-          }
-          csvStr += '\r\n';
-        } else {
-          csvStr += '\r\n';
-        }
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",\r\n';
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
@@ -286,21 +266,6 @@ var BCLS = (function(window, document) {
           }
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
-          createRequest('getCustomFields');
-        });
-        break;
-      case 'getCustomFields':
-        endPoint = account_id + '/video_fields';
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          parsedData = JSON.parse(response);
-          for (field in parsedData.custom_fields) {
-            customFields.push(field);
-          }
-          logText.textContent = 'Custom fields retrieved; getting videos...';
-          spanRenditionsTotalEl.textContent = totalVideos;
           createRequest('getVideos');
         });
         break;
@@ -429,11 +394,11 @@ var BCLS = (function(window, document) {
                           // return the response
                           callback(response);
                       } else {
-                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                          logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
                       }
                   }
               } catch (e) {
-                  alert('Caught Exception: ' + e);
+                  logger.appendChild(document.createTextNode('Caught Exception: ' + e));
               }
           };
       /**
@@ -482,7 +447,7 @@ var BCLS = (function(window, document) {
     totalVideos = getSelectedValue(videoCount);
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
-      window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+      logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
         account_id = '1752604059001';
     }
     // get video count
