@@ -4,10 +4,11 @@
 
 <p>Definitions for clips are created using the <code>/vods</code> endpoint.</p>
 
-<p>Clips can be created in four ways:</p>
+<p>Clips can be created in several ways:</p>
 
 <ul>
 	<li>With <code>start_time</code> and/or <code>end_time</code> defined relative to the start time (<code>stream_start_time</code>) of the whole live stream event</li>
+	<li>With <code>stream_start_timecode</code> and/or <code>stream_end_time_code</code> defined in SMPTE timecodes for whole live stream event (if both are not present, you must also specify a <code>duration</code>)</li>
 	<li>With <code>start_time</code> and/or <code>end_time</code> defined in Epoch (Unix) time (in seconds)</li>
 	<li>With duration and either a <code>start_time</code> or <code>end_time</code></li>
 	<li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li>
@@ -136,7 +137,7 @@
     "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
     "outputs":[
         {
-            "label": "60 secs - epoch time",
+            "label": "60 secs from start time",
             "start_time": 300,
             "duration": 60,
             "credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
@@ -165,7 +166,7 @@
     "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
     "outputs":[
         {
-            "label": "60 secs - epoch time",
+            "label": "60 secs - duration",
             "duration": 60,
             "credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
             "videocloud": {
@@ -184,6 +185,36 @@
 }</code></pre>
 
 <p>In this example, we are creating a clip of one-minute duration. Since we are not specifying a start or end time, the clip will be taken from the last 60 seconds of the live stream.</p>
+
+<h3>Example 5: using <code>stream_start_timecode</code> and <code>stream_end_time_code</code></h3>
+
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
+    "outputs":[
+        {
+            "label": "Clipping using Timecode from-01:10:18:15 to-01:11:08:15",
+            "stream_start_timecode": "01:10:18:15",
+            "stream_end_timecode": "01:11:08:15",
+            "credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
+            "videocloud": {
+                "video": {
+                    "name": "One Minute Clip",
+                    "tags": ["live", "clip"]
+                },
+                "ingest": {
+                    "profile": "high-resolution",
+                    "capture-images": true
+                }
+            },
+            "notifications": ["<span class="bcls-input">http://myserver.com/api/notification_listener?type=jvod</span>"]
+        }
+    ]
+}</code></pre>
+
+<p>In this example, we are creating a clip of one-minute duration from a specific part of the live stream based on timecodes.</p>
 
 <h3>General information about sending clips to Video Cloud</h3>
 
