@@ -863,10 +863,9 @@ video-cloud/sharing-relationships/delete</code></pre>
 			<td></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Sample response</code></th>
+			<th>Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
-<code class="language-json">
 <code class="language-json">[
 	{
 		"video_id": "5553744346001",
@@ -891,31 +890,30 @@ video-cloud/sharing-relationships/delete</code></pre>
 </table>
 
 
-<h4 id="Share_video"><code class="language-json">Sharing (or resharing) a video</code></h4>
+<h4 id="Share_video">Sharing (or resharing) a video</code></h4>
 
 
-<p><code class="language-json">The request described below will share a video to one or more Affiliate accounts.</code></p>
+<p>The request described below will share a video to one or more Affiliate accounts.</code></p>
 
 
-<aside class="bcls-aside bcls-aside--information"><code class="language-json">Remember that if the video has already been shared to an Affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the Affiliate has made to the video metadata!</code></aside>
-<code class="language-json"> <!-- table 16 --> </code>
+<aside class="bcls-aside bcls-aside--information">Remember that if the video has already been shared to an Affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the Affiliate has made to the video metadata!</code></aside>
+ <!-- table 16 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table"><code class="language-json">Share Video</code></caption>
+	<caption class="bcls-caption--table">Share Video</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th><code class="language-json">Method</code></th>
-			<td><code class="language-json">POST</code></td>
+			<th>Method</code></th>
+			<td><code>POST</code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Endpoint</code></th>
-			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
+			<th>Endpoint</code></th>
+			<td><code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares</code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Request body</code></th>
+			<th>Request body</code></th>
 			<td>
 			<pre class="line-numbers">
-<code class="language-json">
 <code class="language-json">[
   { "id": "<span class="bcls-input">affiliate_account_id_1</span>" },
   { "id": "<span class="bcls-input">affiliate_account_id_2</span>" }
@@ -923,12 +921,11 @@ video-cloud/sharing-relationships/delete</code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Sample response</code></th>
+			<th>Sample response</code></th>
 			<td>
-			<p><code class="language-json">Success response</code></p>
+			<p>Success response</code></p>
 
 			<pre class="line-numbers">
-<code class="language-json">
 <code class="language-json">[
 	{
 		"video_id": "5553744346001",
@@ -940,11 +937,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 	}
 ]</code></code></pre>
 
-			<p><code class="language-json">Failure response</code></p>
-			<code class="language-json">\ </code>
-
+			<p>Failure response</code></p>
 			<pre class="line-numbers">
-<code class="language-json">
 <code class="language-json">{
 "video_id": "5553744346001",
 "affiliate_id": "1485884786001",
@@ -960,54 +954,54 @@ video-cloud/sharing-relationships/delete</code></pre>
 </table>
 
 
-<p><code class="language-json">Sharing will create a new video in the Affiliate's account. The <code>state</code> of the video share will be <code>PROCESSING</code> until the share is complete <strong>and</strong> the video is created in the Affiliate account. The Affiliate may still need to accept the video (if <code>auto_accept</code> is set to <code>false</code> on the contract by the Affiliate - see the previous section on setting up sharing).</code></p>
+<p>Sharing will create a new video in the Affiliate's account. The <code>state</code> of the video share will be <code>PROCESSING</code> until the share is complete <strong>and</strong> the video is created in the Affiliate account. The Affiliate may still need to accept the video (if <code>auto_accept</code> is set to <code>false</code> on the contract by the Affiliate - see the previous section on setting up sharing).</code></p>
 
 
-<aside class="bcls-aside bcls-aside--information"><code class="language-json">A GET shares request by the Master account will not return the Affiliate video id until the share status is <code>COMPLETE</code>.</code></aside>
+<aside class="bcls-aside bcls-aside--information">A <code>GET</code> shares request by the Master account will not return the Affiliate video id until the share status is <code>COMPLETE</code>.</code></aside>
 
 
 <aside class="bcls-aside bcls-aside--warning">
-<p><code class="language-json">Important notes:</code></p>
+<p>Important notes:</code></p>
 
 <ul>
-	<li><code class="language-json">This operation will re-share a video if it has already been shared with the affiliate(s) - be sure to read <a href="#Resharing_videos">Resharing Videos</a> before you do that!</code></li>
+	<li>This operation will re-share a video if it has already been shared with the affiliate(s) - be sure to read <a href="#Resharing_videos">Resharing Videos</a> before you do that!</code></li>
 	<li>
-	<p><code class="language-json">If the <code>reference_id</code> for the Master video is already in use in the Affiliate account, the share will fail. The Master and Affiliate will need to resolve the issue by changing the <code>reference_id</code> in one of the accounts and then retry the share.</code></p>
+	<p>If the <code>reference_id</code> for the Master video is already in use in the Affiliate account, the share will fail. The Master and Affiliate will need to resolve the issue by changing the <code>reference_id</code> in one of the accounts and then retry the share.</code></p>
 
-	<p><code class="language-json">Because sharing is an asynchronous operation, no error will be returned on the share requests. However, the GET shares request (see above) will show an error for the account.</code></p>
+	<p>Because sharing is an asynchronous operation, no error will be returned on the share requests. However, the GET shares request (see above) will show an error for the account.</code></p>
 	</li>
 </ul>
 </aside>
 
 
-<h4 id="Unshare_video_affiliate"><code class="language-json">Unsharing a video for an Affiliate</code></h4>
-<code class="language-json"> <!-- table 17 --> </code>
+<h4 id="Unshare_video_affiliate">Unsharing a video for an Affiliate</code></h4>
+ <!-- table 17 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table"><code class="language-json">Unshare Video</code></caption>
+	<caption class="bcls-caption--table">Unshare Video</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th><code class="language-json">Method</code></th>
-			<td><code class="language-json">DELETE</code></td>
+			<th>Method</code></th>
+			<td><code>DELETE</code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Endpoint</code></th>
-			<td><code class="language-json">/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares/<span class="bcls-input">affiliate_account_id</span></code></td>
+			<th>Endpoint</code></th>
+			<td><code>/accounts/<span class="bcls-input">master_account_id</span>/videos/<span class="bcls-input">video_id</span>/shares/<span class="bcls-input">affiliate_account_id</span></code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Request body</code></th>
-			<td><code class="language-json">&nbsp;</code></td>
+			<th>Request body</code></th>
+			<td><code>&nbsp;</code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Sample response</code></th>
-			<td><code class="language-json">202 ACCEPTED (empty response body) - the response indicates that the request has been accepted for processing, but the operation may not be completed for a couple of minutes</code></td>
+			<th>Sample response</code></th>
+			<td><code>202 ACCEPTED</code> (empty response body) - the response indicates that the request has been accepted for processing, but the operation may not be completed for a couple of minutes</td>
 		</tr>
 	</tbody>
 </table>
 
 
-<aside class="bcls-aside bcls-aside--warning"><code class="language-json">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</code></aside>
-<code class="language-json"> <!-- table 18 --><!-- <h4 id="Unshare_video">Unsharing a video for all Affiliates</h4>
+<aside class="bcls-aside bcls-aside--warning">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</code></aside>
+ <!-- table 18 --><!-- <h4 id="Unshare_video">Unsharing a video for all Affiliates</h4>
     <table class="bcls-table">
     <caption class="bcls-caption--table">Unshare Video</caption>
     <tbody class="bcls-table__body">
@@ -1032,44 +1026,41 @@ video-cloud/sharing-relationships/delete</code></pre>
 </table>
 <aside class="bcls-aside bcls-aside--warning">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</aside> --> </code>
 
-<h3><code class="language-json">Affiliate operations</code></h3>
+<h3>Affiliate operations</code></h3>
 
 
-<h4 id="Accept_share"><code class="language-json">Accept shared video</code></h4>
+<h4 id="Accept_share">Accept shared video</code></h4>
 
 
-<p><code class="language-json">To accept a shared video, the Affiliate updates the shared video, setting its <code>state</code> to <code>ACTIVE</code>. (Setting the <code>state</code> to <code>INACTIVE</code> rejects the share.)</code></p>
-<code class="language-json"> <!-- table 19 --> </code>
+<p>To accept a shared video, the Affiliate updates the shared video, setting its <code>state</code> to <code>ACTIVE</code>. (Setting the <code>state</code> to <code>INACTIVE</code> rejects the share.)</code></p>
+ <!-- table 19 --> </code>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table"><code class="language-json">Accept Shared Video</code></caption>
+	<caption class="bcls-caption--table">Accept Shared Video</code></caption>
 	<tbody class="bcls-table__body">
 		<tr>
-			<th><code class="language-json">Method</code></th>
-			<td><code class="language-json">PATCH</code></td>
+			<th>Method</code></th>
+			<td><code>PATCH</code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Endpoint</code></th>
-			<td><code class="language-json">/accounts/<span class="bcls-input">affiliate_account_id</span>/videos/<span class="bcls-input">affiliate_video_id</span></code></td>
+			<th>Endpoint</code></th>
+			<td><code>/accounts/<span class="bcls-input">affiliate_account_id</span>/videos/<span class="bcls-input">affiliate_video_id</span></code></td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Request body</code></th>
+			<th>Request body</code></th>
 			<td>
 			<pre class="line-numbers">
-<code class="language-json">
 <code class="language-json">
 	{
 	  "state": "ACTIVE"
 	}
-
 </code></code></pre>
 			</td>
 		</tr>
 		<tr>
-			<th><code class="language-json">Sample response</code></th>
+			<th>Sample response</code></th>
 			<td>
 			<pre class="line-numbers">
-<code class="language-json">
 <code class="language-json">{
 	"id": "5557656136001",
 	"account_id": "1485884786001",
