@@ -385,7 +385,7 @@ Some DRM services return key IDs in little-endian order formatted as a GUID; to 
 
 <p>When using Common Encryption to encrypt an output (or set of outputs), information about the DRM providers is specified as a schema including the schema type, and provider-specific infomration.</p>
 
-<p></p>
+<p>This is generally only specified on playlist outputs for multi-bitrate encoding jobs, but may also be specified for a CENC-encoded output to ensure that output is playable on its own.</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -393,17 +393,28 @@ Some DRM services return key IDs in little-endian order formatted as a GUID; to 
   "outputs": [
     {
       "drm": {
-        "method": "playready",
-        "provider": "buydrm",
-        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
-        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
-        "content_key": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+        "method": "cenc",
+        "content_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "key_id": "526d3480-48d5-11e4-916c-0800200c9a66",
+        "schemas": [
+          {
+            "type": "marlin"
+          },
+          {
+            "type": "playready",
+            "license_acquisition_url": "https://license.server.example.com/license/123456789"
+          },
+          {
+            "type": "widevine",
+            "license_acquisition_url": "https://widevine.example.com/license_server/"
+          }
+        ]
       }
     }
   ]
 }</code></pre>
 
-<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#provider">provider</a>, <a href="#server_key">server_key</a>, <a href="#key-id">key_id</a>, <a href="#key-guid">key_guid</a>, and <a href="#schemas">schemas</a></p>
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#content_key">content_key</a>, <a href="#key-id">key_id</a>, and <a href="#key-guid">key_guid</a></p>
 </section>
 
 </article>
