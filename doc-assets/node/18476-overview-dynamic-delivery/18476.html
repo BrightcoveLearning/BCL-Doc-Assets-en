@@ -3,78 +3,11 @@
 
 <p>With Dynamic Delivery, customers provide a single high-quality (mezzanine) video file. During the ingest process, we create several quality levels of this file suited to a range of different screen sizes and network conditions. When a viewer presses play, Video Cloud uses information about the requesting device to determine the type of streaming technology expected — for example, the type of stream packaging (HLS vs. DASH), the DRM required (e.g. Widevine, Fairplay, Playready), and ancillary content such as closed captions or alternate audio tracks. Dynamic Delivery then uses this information to deliver the appropriate content package (i.e. type of stream) for the requesting device in real-time.</p>
 </section>
-<!-- <section class="bcls-section">
+<section class="bcls-section">
 <h2 id="do_you_have_dynamic_delivery">Do you have Dynamic Delivery?</h2>
 
-<p>As of Tuesday, October 17, 2017, all new Video Cloud accounts that are created will be configured to use Dynamic Delivery by default. This includes trial accounts, accounts for new publishers, and new sub-accounts for existing publishers. With this change, all new publishers and trial customers will be able to benefit from all the features of Brightcove's new delivery platform.</p>
+<p>How can I tell if my account is already enabled for Dynamic Delivery?</p>
+<p>The easiest way to tell if your account is enabled for Dynamic Delivery is to navigate to the Upload Module and open the “Ingest Profile” dropdown. If you see the “Dynamic Delivery” subheading that means your account is enabled for Dynamic Delivery. </p>
 
-<p>From a video publishing perspective, a couple of things will appear differently inside Video Cloud Studio. First, when uploading videos using the Upload module, you will now see Dynamic Delivery ingestion profiles in your account.</p>
 
-<figure><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18476-upload-module.png" /></figure>
-
-<p>The Media module will also display a green cloud icon (<img alt="" src="https://img.brightcove.com/node18476-dd-icon.png" />) next to video titles that have been ingested using a Dynamic Delivery profile. Videos ingested using a legacy ingest profile will display a grey icon (<img alt="" src="https://img.brightcove.com/node18476-legacy-icon.png" />).</p>
-
-<figure><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18476-media-module.png" /></figure>
-
-<p>Once a video has been ingested using Dynamic Delivery, if the video is retranscoded, a Dynamic Delivery profile must be selected. If you want to use a legacy ingest profile, the video must be re-uploaded.</p>
-
-<aside class="bcls-aside bcls-aside--information">Note: Dynamic Delivery introduces the concept of regionalized ingest and delivery. Under previous delivery systems, all ingestion processing and delivery origin resided in the United States. With Dynamic Delivery, Brightcove can configure where the ingestion takes place and where the origin resides on a publisher-by-publisher basis for better performance. All Video Cloud accounts will be defaulted to US-East but can be re-configured to your local region. Note that there are cost implications when moving to another region. Please contact your Brightcove account manager for further information.</aside>
-
-<p>Brightcove is actively working on a plan to migrate existing publishers to Dynamic Delivery. The migration plan will be shared once we have a bit more clarity on some key issues.</p>
-</section> --><!-- <section class="bcls-section">
-<h2 id="Architecture_overview">Architecture overview</h2>
-
-<figure><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18476-architecture.png" /></figure>
-
-<ol>
-	<li>When a source file is uploaded, the transcoding process will use the selected ingest profile to determine the set of renditions to create. If server-side ads are configured, the ad content will be stitched together with the source content when the renditions are created.</li>
-	<li>Renditions are stored as a set of contiguous, fragmented MP4 files of various bitrates and resolutions.</li>
-	<li>When a request is made for a video, the Dynamic Delivery process does Just-in-Time or JIT packaging, which means that it will dynamically package content into the appropriate format based specified requirements. So, if a device needs HLSv5, it can package to that. If another device needs MPEG-DASH Live Profile with PlayReady DRM, it can package to that too.</li>
-	<li>We will then return manifests for the formats that the requesting device can support. This is a nice feature because some devices support more than one format and these formats may perform differently. We also give you the flexibility to override the choices that we make so that you can completely customize what formats are returned and how they are delivered to your devices.</li>
-	<li>When the playback device uses the manifest returned by the Playback API to request media to play, we perform just-in-time packaging on the fragmented MP4 files to provide the appropriate segment format, duration and encryption. These fragments are cached on a CDN so that we are not having to do the same work over and over again. This technique also means that we can “late bind” audio tracks and subtitles.</li>
-</ol>
-
-<p>The Dynamic Delivery process was designed to be a fully managed, cloud-based service. All of the components run on AWS in multiple regions to insure high availability, redundancy and scalability. In fact, if one AWS region is not available, we will serve requests from another region transparently. We’ve also designed Dynamic Delivery to be multi-CDN so that you can decide to serve content from more than one CDN based on volume allocation, for example, 60% on one CDN, 40% on another.</p>
-</section> --><!-- <section class="bcls-section">
-<h2 id="faq">Frequently asked questions</h2>
-
-<h4>What is Dynamic Delivery?</h4>
-
-<p>Dynamic Delivery is a set of technologies that make Brightcove's next-generation media delivery platform. Dynamic Delivery is designed to address publisher's current and future requirements and will become the foundation for how all Brightcove products deliver media.</p>
-
-<h4>What are the benefits of Dynamic Delivery?</h4>
-
-<ul>
-	<li><strong>Greater flexibility and agility for delivery</strong> - Content is dynamically packaged for delivery to a number of endpoints (web browsers, smartphones, tablets, connected TVs and streaming boxes). Dynamic Delivery is designed to be capable of using multiple CDNs to deliver content, increasing customer choice.</li>
-	<li><strong>Future proofing</strong> - Since content is dynamically packaged, Brightcove can add new formats on the fly. As a new version of HLS, DASH, etc., or even a new format comes out, we simply add support at the platform level and publishers can start using it without re-transcoding existing content.</li>
-	<li><strong>Reduced storage footprint</strong> - Content assets are stored once and renditions are created downstream for delivery when needed instead of storing the content multiple times.</li>
-	<li><strong>Enhanced performance through geographic distribution</strong> - Dynamic Delivery is designed for a regionally distributed, highly available architecture. Publishers benefit from improved playback performance and increased resiliency.</li>
-	<li><strong>Integrated support for Server Side Ad Insertion (SSAI)</strong> - Dynamic Delivery will enable ads or other content to be inserted from the server. This provides a seamless playback experience for viewers and gives publishers increased resiliency against ad blockers, all from within Video Cloud.</li>
-</ul>
-
-<h4>Are there any pricing considerations with Dynamic Delivery?</h4>
-
-<p>No, access to Dynamic Delivery is included in every base platform fee. Brightcove's desire is that all publishers migrate to new pricing models, but this is not a prerequisite for adopting Dynamic Delivery. Certain features of Dynamic Delivery such as Server Side Ad Insertion (SSAI) and Context-Aware Encoding (CAE) are add-ons with costs associated. Check with your Account Manager for details on pricing.</p>
-
-<h4>Does Dynamic Delivery support BYO CDN publishers?</h4>
-
-<p>Dynamic Delivery allows publishers to take advantage of their own CDN relationships, however, all video assets must be managed by the Brightcove Origin. Please contact Brightcove Support for more information.</p>
-
-<h4>What regions does Dynamic Delivery support for ingest and origin?</h4>
-
-<p>Dynamic Delivery supports ingestion and origin in the following AWS Regions:</p>
-
-<ul>
-	<li>us-east-1 (Virginia) - default for all accounts</li>
-	<li>eu-west-1 (Dublin)</li>
-	<li>ap-northeast-1 (Tokyo)</li>
-	<li>ap-southeast-1 (Singapore)</li>
-	<li>ap-southeast-2 (Sydney)</li>
-</ul>
-
-<p>Note that there are cost implications when moving ingestion and origin to another region. Please contact your Brightcove account manager for further information.</p>
-
-<h4>Will Brightcove be moving all publishers to Dynamic Delivery?</h4>
-
-<p>Yes, all new publishers (both Video Cloud and Once) will be configured with Dynamic Delivery. Over the coming year, Brightcove will be working to move all publishers to Dynamic Delivery and will eventually be sunsetting legacy delivery technologies. There is no date associated with this migration, but we will share them as they become available.</p>
-</section> -->
+</section>
