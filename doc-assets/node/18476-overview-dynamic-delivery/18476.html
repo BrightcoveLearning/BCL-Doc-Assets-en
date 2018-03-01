@@ -10,7 +10,26 @@
     <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18476-overview-dynamic-delivery/dynamic-delivery-architecture.png" alt="Dynamic Delivery Architecture">
     <figcaption class="bcls-caption--image">Dynamic Delivery Architecture</figcaption>
   </figure>
-  <p></p>
+  <ol>
+    <li>When a source file is uploaded, the transcoding process will use the selected ingest profile to determine the set of renditions to create.</li>
+    <li>Renditions are stored as a set of contiguous, fragmented MP4 files of various bit rates and resolutions that are agnostic of any specific delivery format.</li>
+    <li>When a request is made for a video, the Dynamic Delivery process does Just-in-Time or JIT packaging, which means it will dynamically package content into the appropriate format based specified requirements. This packaging will take into consideration the specific delivery format needed, audio and caption tracks needed, as well as any encryption/DRM needed.</li>
+    <li>When the playback device uses the manifest returned by the Playback API to request media to play, we perform just-in-time packaging on the fragmented MP4 files to provide the appropriate segment format, duration and encryption. These fragments are cached on a CDN so that video delivery is still highly performant.</li>
+  </ol>
+  <p>The Dynamic Delivery process was designed to be a fully managed, cloud-based service.  All the components run on cloud infrastructure in multiple regions to insure high availability, redundancy and scalability. </p>
+</section>
+
+<section class="bcls-section">
+  <h2 id="migration_process">Migration process</h2>
+  <p>As of Tuesday, October 17, 2017, all new Video Cloud accounts that are created are configured to use Dynamic Delivery by default. This includes trial accounts, accounts for new publishers, and new sub-accounts for existing publishers. With this change, all new publishers and trial customers will automatically  benefit from all the features of Dynamic Delivery.</p>
+  <p>For existing customers, the migration is a two step process. First, new uploads are transitioned to utilize Dynamic Delivery (day forward migration) and second, existing content is migrated from the legacy delivery platform to Dynamic Delivery (back catalog migration.)</p>
+  <h3>Day forward migration</h3>
+  <p>The first step to moving to Dynamic Delivery is transitioning new uploads to utilize Dynamic Delivery. Enabling your account for Dynamic Delivery is a simple task that can be completed by Customer Support. There is no danger in enabling an existing Video Cloud account for Dynamic Delivery as it does not modify any existing content. Only content explicitly ingested to Dynamic Delivery will utilize the new system.</p>
+  <p>From a workflow perspective, a couple of things will appear differently inside Video Cloud Studio. First, when uploading videos using the Upload module, you will now see Dynamic Delivery ingestion profiles in your account.</p>
+  <figure class="bcls-figure">
+  <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18476-overview-dynamic-delivery/dd-ingest-profiles.png" alt="Dynamic Delivey Profiles">
+  <figcaption class="bcls-caption--image">Dynamic Delivey Profiles</figcaption>
+</figure>
 </section>
 
 <section class="bcls-section">
