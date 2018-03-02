@@ -35,12 +35,12 @@
 <p>The base URL for the Playback API is:</p>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1</code></pre>
 
 <aside class="bcls-aside bcls-aside--warning">
 <ul>
-	<li>Note: you must use <strong>https</strong> as the protocol.</li>
-	<li>Note: customers using IP Restriction <strong>must</strong> use <code>https://edge-elb.api.brightcove.com/playback/v1</code> instead of the standard URL; for more details on players used outside of North America with IP restrictions, be sure to check out the information in the <a href="/node/18262#iprestrictions">Player Configuration Guide</a> to prevent issues that may arise.</li>
+<li>Note: you must use <strong>https</strong> as the protocol.</li>
+<li>Note: customers using IP Restriction <strong>must</strong> use <code>https://edge-elb.api.brightcove.com/playback/v1</code> instead of the standard URL; for more details on players used outside of North America with IP restrictions, be sure to check out the information in the <a href="/node/18262#iprestrictions">Player Configuration Guide</a> to prevent issues that may arise.</li>
 </ul>
 </aside>
 
@@ -49,28 +49,28 @@
 <p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term <code>accounts</code> followed by your account id to the base URL:</p>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/<strong>accounts/{account_id}</strong></code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/<strong>accounts/{account_id}</strong></code></pre>
 
 <h3>Authentication</h3>
 
 <p>Requests are authenticated by a policy key, which can be passed in one of three ways:</p>
 
 <ol>
-	<li>In an argument to an <code>Accept</code> header:
+<li>In an argument to an <code>Accept</code> header:
 
-	<pre class="line-numbers">
-  <code class="language-http">Accept: application/json;pk={policy_key}</code></pre>
+<pre class="line-numbers">
+<code class="language-http">Accept: application/json;pk={policy_key}</code></pre>
 
-	<p>This is the recommended method for a browser-based client, because it allows the request to go ahead without an extra request first as part of the browser CORS "pre-flight" checking. This saves latency on the first time a browser request is made.</p>
-	</li>
-	<li>In an <code>Authorization</code> header using the realm keyword <code>BCOV-Policy</code>:
-	<pre class="line-numbers">
-  <code class="language-http">Authorization: BCOV-Policy {policy_key}</code></pre>
-	</li>
-	<li>In a <code>BCOV-Policy</code> header:
-	<pre class="line-numbers">
-  <code class="language-http">BCOV-Policy: {policy_key}</code></pre>
-	</li>
+<p>This is the recommended method for a browser-based client, because it allows the request to go ahead without an extra request first as part of the browser CORS "pre-flight" checking. This saves latency on the first time a browser request is made.</p>
+</li>
+<li>In an <code>Authorization</code> header using the realm keyword <code>BCOV-Policy</code>:
+<pre class="line-numbers">
+<code class="language-http">Authorization: BCOV-Policy {policy_key}</code></pre>
+</li>
+<li>In a <code>BCOV-Policy</code> header:
+<pre class="line-numbers">
+<code class="language-http">BCOV-Policy: {policy_key}</code></pre>
+</li>
 </ol>
 
 <h3>Obtaining a policy key</h3>
@@ -78,9 +78,9 @@
 <p>There are three ways you can obtain a policy key:</p>
 
 <ol>
-	<li>Every Brightcove player is automatically assigned one. You can find instructions for getting a player's policy key in <a href="/node/18125">this document</a>. Since policy keys are good account-wide, you can use it regardless of whether that player is embedded on the page.</li>
-	<li>You can generate a basic policy key using the <a href="/node/18004">Policy Keys Quick Start</a></li>
-	<li>You can make a request to the <a href="/node/18003">Policy API</a></li>
+<li>Every Brightcove player is automatically assigned one. You can find instructions for getting a player's policy key in <a href="/node/18125">this document</a>. Since policy keys are good account-wide, you can use it regardless of whether that player is embedded on the page.</li>
+<li>You can generate a basic policy key using the <a href="/node/18004">Policy Keys Quick Start</a></li>
+<li>You can make a request to the <a href="/node/18003">Policy API</a></li>
 </ol>
 </section>
 
@@ -96,11 +96,11 @@
 <p>The API supports the following GET requests only, of the following types:</p>
 
 <ul>
-	<li><a href="#Get_video_by_id">Get video by id</a></li>
-	<li><a href="#Get_video_by_reference_id">Get video by reference id</a></li>
-	<li><a href="#Get_videos">Get videos</a></li>
-	<li><a href="#Get_playlist_by_id">Get playlist by id</a></li>
-	<li><a href="#Get_playlist_by_reference_id">Get playlist by reference id</a></li>
+<li><a href="#getVideoById">get video by id</a></li>
+<li><a href="#getVideoByReferenceId">get video by reference id</a></li>
+<li><a href="#Get_videos">get videos</a></li>
+<li><a href="#getPlaylistById">get playlist by id</a></li>
+<li><a href="#getPlaylistByReferenceId">get playlist by reference id</a></li>
 </ul>
 </section>
 
@@ -114,179 +114,180 @@
 <h4>Endpoint</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}</code></pre>
 
 <h4>Example</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos/38467382999</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos/38467382999</code></pre>
 
 <h4>Sample response</h4>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-    "account_id": "107767373999",
-    "ad_keys": null,
-    "created_at": "2010-07-12T22:37:34.760Z",
-    "description": "Avatar_MakingAScene_Featurette",
-    "duration": 595560,
-    "id": "38467382999",
-    "long_description": null,
-    "name": "Avatar_MakingAScene_Featurette",
-    "published_at": "2010-07-12T22:37:34.760Z",
-    "reference_id": "AvatarMakingShort",
-    "text_tracks": [],
-    "updated_at": "2010-07-12T22:54:29.666Z",
-    "cue_points": [
-      {
-        "id": "111637107001",
-        "name": "Pre-roll",
-        "type": "AD",
-        "time": 0,
-        "metadata": null,
-        "force_stop": false
-      }
-    ],
-    "custom_fields": {
-      "moretext": "this is the first video uploaded",
-      "mylist": "abc"
-    },
-    "link": {
-      "text": "Full Dvd at Amazon",
-      "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
-    },
-    "tags": [
-      "copied"
-    ],
-    "poster_sources": [
-      {
-        "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-      }
-    ],
-    "thumbnail_sources": [
-      {
-        "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-      }
-    ],
-    "poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-    "thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-    "sources": [
-      {
-        "avg_bitrate": 379000,
-        "width": 320,
-        "duration": 595560,
-        "size": 28196307,
-        "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-        "codec": "H264",
-        "asset_id": "111728840001",
-        "container": "MP4",
-        "height": 180,
-        "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-      },
-      {
-        "avg_bitrate": 379000,
-        "width": 320,
-        "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-        "size": 28196307,
-        "height": 180,
-        "duration": 595560,
-        "container": "MP4",
-        "codec": "H264",
-        "asset_id": "111728840001"
-      }, ... 6 more sources ...
+<code class="language-json">{
+"account_id": "107767373999",
+"ad_keys": null,
+"created_at": "2010-07-12T22:37:34.760Z",
+"description": "Avatar_MakingAScene_Featurette",
+"duration": 595560,
+"id": "38467382999",
+"long_description": null,
+"name": "Avatar_MakingAScene_Featurette",
+"published_at": "2010-07-12T22:37:34.760Z",
+"reference_id": "AvatarMakingShort",
+"text_tracks": [],
+"updated_at": "2010-07-12T22:54:29.666Z",
+"cue_points": [
+{
+  "id": "111637107001",
+  "name": "Pre-roll",
+  "type": "AD",
+  "time": 0,
+  "metadata": null,
+  "force_stop": false
+}
+],
+"custom_fields": {
+"moretext": "this is the first video uploaded",
+"mylist": "abc"
+},
+"link": {
+"text": "Full Dvd at Amazon",
+"url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
+},
+"tags": [
+"copied"
+],
+"poster_sources": [
+{
+  "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+}
+],
+"thumbnail_sources": [
+{
+  "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+}
+],
+"poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+"thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+"sources": [
+{
+  "avg_bitrate": 379000,
+  "width": 320,
+  "duration": 595560,
+  "size": 28196307,
+  "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+  "codec": "H264",
+  "asset_id": "111728840001",
+  "container": "MP4",
+  "height": 180,
+  "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+},
+{
+  "avg_bitrate": 379000,
+  "width": 320,
+  "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+  "size": 28196307,
+  "height": 180,
+  "duration": 595560,
+  "container": "MP4",
+  "codec": "H264",
+  "asset_id": "111728840001"
+}, ... 6 more sources ...
 
-    ]
-  }</code></pre>
+]
+}</code></pre>
 
 <h3 id="Get_video_by_reference_id">Get video by reference id</h3>
 
 <h4>Endpoint</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/ref:{reference_id}</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/ref:{reference_id}</code></pre>
 
 <h4>Example</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos/ref:nature_2010-07-12</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos/ref:nature_2010-07-12</code></pre>
 
 <h4>Sample response</h4>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-    "account_id": "107767373999",
-    "ad_keys": null,
-    "created_at": "2010-07-12T22:37:34.760Z",
-    "description": "Avatar_MakingAScene_Featurette",
-    "duration": 595560,
-    "id": "38467382999",
-    "long_description": null,
-    "name": "Avatar_MakingAScene_Featurette",
-    "published_at": "2010-07-12T22:37:34.760Z",
-    "reference_id": "nature_2010-07-12",
-    "text_tracks": [],
-    "updated_at": "2010-07-12T22:54:29.666Z",
-    "cue_points": [
-      {
-        "id": "111637107001",
-        "name": "Pre-roll",
-        "type": "AD",
-        "time": 0,
-        "metadata": null,
-        "force_stop": false
-      }
-    ],
-    "custom_fields": {
-      "moretext": "this is the first video uploaded",
-      "mylist": "abc"
-    },
-    "link": {
-      "text": "Full Dvd at Amazon",
-      "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
-    },
-    "tags": [
-      "copied"
-    ],
-    "poster_sources": [
-      {
-        "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-      }
-    ],
-    "thumbnail_sources": [
-      {
-        "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-      }
-    ],
-    "poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-    "thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-    "sources": [
-      {
-        "avg_bitrate": 379000,
-        "width": 320,
-        "duration": 595560,
-        "size": 28196307,
-        "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-        "codec": "H264",
-        "asset_id": "111728840001",
-        "container": "MP4",
-        "height": 180,
-        "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-      },
-      {
-        "avg_bitrate": 379000,
-        "width": 320,
-        "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-        "size": 28196307,
-        "height": 180,
-        "duration": 595560,
-        "container": "MP4",
-        "codec": "H264",
-        "asset_id": "111728840001"
-      }, ... 6 more sources ...
+<code class="language-json">{
+"account_id": "107767373999",
+"ad_keys": null,
+"created_at": "2010-07-12T22:37:34.760Z",
+"description": "Avatar_MakingAScene_Featurette",
+"duration": 595560,
+"id": "38467382999",
+"long_description": null,
+"name": "Avatar_MakingAScene_Featurette",
+"published_at": "2010-07-12T22:37:34.760Z",
+"reference_id": "nature_2010-07-12",
+"text_tracks": [],
+"updated_at": "2010-07-12T22:54:29.666Z",
+"cue_points": [
+{
+  "id": "111637107001",
+  "name": "Pre-roll",
+  "type": "AD",
+  "time": 0,
+  "metadata": null,
+  "force_stop": false
+}
+],
+"custom_fields": {
+"moretext": "this is the first video uploaded",
+"mylist": "abc"
+},
+"link": {
+"text": "Full Dvd at Amazon",
+"url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
+},
+"tags": [
+"copied"
+],
+"poster_sources": [
+{
+  "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+}
+],
+"thumbnail_sources": [
+{
+  "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+}
+],
+"poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+"thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+"sources": [
+{
+  "avg_bitrate": 379000,
+  "width": 320,
+  "duration": 595560,
+  "size": 28196307,
+  "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+  "codec": "H264",
+  "asset_id": "111728840001",
+  "container": "MP4",
+  "height": 180,
+  "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+},
+{
+  "avg_bitrate": 379000,
+  "width": 320,
+  "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+  "size": 28196307,
+  "height": 180,
+  "duration": 595560,
+  "container": "MP4",
+  "codec": "H264",
+  "asset_id": "111728840001"
+}, ... 6 more sources ...
 
-    ]
-  }</code></pre>
+]
+}</code></pre>
 </section>
+
 
 <section class="bcls-section">
 <h2 id="Search_videos">Search videos</h2>
@@ -299,38 +300,24 @@
 
 <p>Note that all parameters are <strong>optional</strong>. They apply to <code>GET Videos</code> requests only.</p>
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">GET Videos Request Parameters</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Parameter</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>q</code></td>
-			<td>Query string for searches - for details, see the <a href="https://support.brightcove.com/node/18005">search guide</a></td>
-		</tr>
-		<tr>
-			<td><code><a href="#paging">limit</a></code></td>
-			<td>Number of videos to return - must be an integer between 1 and 100. <strong>Default: 20</strong></td>
-		</tr>
-		<tr>
-			<td><code><a href="#offset">offset</a> </code></td>
-			<td>Number of videos to skip (for paging results). Must be a positive integer. <strong>Default: 0</strong></td>
-		</tr>
-		<tr>
-			<td><code><a href="#sort">sort</a></code></td>
-			<td>A string that specifies the field to sort by.<br />
-			Start with <code>-</code> to sort descending.<br />
-			If a value for <code>q</code> is provided, then the default sort is by "score" (relevance of the search results to the original query).<br />
-			If no value for <code>q</code> is provided, then the default sort is by <code>updated_at</code> descending.<br />
-			The following fields are valid for sort: <code>name</code>, <code>reference_id</code>, <code>created_at</code>, <code>published_at</code>, <code>updated_at</code>, <code>schedule_starts_at</code>, <code>schedule_ends_at</code>, <code>state</code>, <code>plays_total</code>, and <code>plays_trailing_week</code><br />
-			For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">Get Videos</a> section of the Playback API reference</td>
-		</tr>
-	</tbody>
-</table>
+<table class="bcls-table"><caption class="bcls-caption--table">GET Videos Request Parameters</caption>
+<thead class="bcls-table__head"><tr><th>Parameter</th>
+  <th>Description</th>
+</tr></thead><tbody class="bcls-table__body"><tr><td><code>q</code></td>
+  <td>Query string for searches - for details, see the <a href="https://support.brightcove.com/node/18005">search guide</a></td>
+</tr><tr><td><code><a href="#paging">limit</a></code></td>
+  <td>Number of videos to return - must be an integer between 1 and 100. <strong>Default: 20</strong></td>
+</tr><tr><td><code><a href="#offset">offset</a> </code></td>
+  <td>Number of videos to skip (for paging results). Must be a positive integer. <strong>Default: 0</strong></td>
+</tr><tr><td><code><a href="#sort">sort</a></code></td>
+  <td>A string that specifies the field to sort by.<br />
+    Start with <code>-</code> to sort descending.<br />
+    If a value for <code>q</code> is provided, then the default sort is by "score" (relevance of the search results to the original query).<br />
+    If no value for <code>q</code> is provided, then the default sort is by <code>updated_at</code> descending.<br />
+    The following fields are valid for sort: <code>name</code>, <code>reference_id</code>, <code>created_at</code>, <code>published_at</code>, <code>updated_at</code>, <code>schedule_starts_at</code>, <code>schedule_ends_at</code>, <code>state</code>, <code>plays_total</code>, and <code>plays_trailing_week</code><br />
+    For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">Get Videos</a> section of the Playback API reference
+  </td>
+</tr></tbody></table>
 
 <h3 id="search">Using search parameters</h3>
 
@@ -346,115 +333,221 @@
 <h3 id="paging">Paging results</h3>
 
 <p>Use the <code><a href="#Parameters">limit</a></code> parameter to specify how many items you want to return on a request - up to 100. You can then use the <code><a href="#Parameters">offset</a></code> parameter to page through result sets that are larger than the <code>limit</code>. The <code>offset</code> is the number of items to skip.</p>
-
-<p>For example, the following search returns videos 51-75 of the total result set, assuming the total result set has at least 75 videos:</p>
+<p>
+For example, the following search returns videos 51-75 of the total result set, assuming the total result set has at least 75 videos:
+</p>
 
 <pre class="line-numbers">
-  <code class="language-http">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
+<code class="language-http">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
 
 <p>The <code>limit</code> and <code>offset</code> parameters can only be used for videos.</p>
 
 <h4>Paging best practice</h4>
-
-<p>When paging through your result set from the Playback API, it is recommended to follow these steps:</p>
-
+<p>
+When paging through your result set from the Playback API, it is recommended to follow these steps:
+</p>
 <ol class="bcls-tasklist">
-	<li>Use the <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">limit</a></code> and <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">offset</a></code> parameters to return groups of data from your result set.
-
-	<pre class="line-numbers">
-<code class="language-http">/accounts/578380111111/videos?q=tags:nature&amp;limit=20&amp;offset=50</code></pre>
-	</li>
-	<li>With each response, you will see that the <code>count</code> field always shows the maximum number of videos in your result set.
-	<pre class="line-numbers">
-<code class="language-json">{"count": 1471,
-  "videos": [ ... ]
+<li>
+Use the <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">limit</a></code> and <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">offset</a></code> parameters to return groups of data from your result set.
+<pre class="line-numbers"><code class="language-http">/accounts/578380111111/videos?q=tags:nature&amp;limit=20&amp;offset=50</code></pre>
+</li>
+<li>
+With each response, you will see that the <code>count</code> field always shows the maximum number of videos in your result set.
+<pre class="line-numbers"><code class="language-json">{&quot;count&quot;: 1471,
+&quot;videos&quot;: [ ... ]
 }</code></pre>
-	</li>
-	<li>So, you can get the total <code>count</code> of videos from your first request, and it can be used to determine how many more pages you will need to request.<br />
-	<br />
-	Alternatively, you can interrogate the <code>count</code> value with each response and continue until the <code>count</code> is less than or equal to page size times the <code>limit</code>.
-	<pre class="line-numbers">
-<code class="language-http">count &lt;= page-number * limit</code></pre>
-	</li>
+</li>
+<li>
+So, you can get the total <code>count</code> of videos from your first request can be used to determine how many more pages you will need to request.<br /><br />
+Alternatively, you can interrogate the <code>count</code> value with each response and continue until the <code>count</code> is less than or equal to page size times the <code>limit</code>.
+<pre class="line-numbers"><code class="language-http">count &lt;= page-number * limit</code></pre>
+</li>
 </ol>
-
-<p>The <code>count</code> property returned by the Playback API may be larger than the number of videos actually available because of deleted videos and/or geo-restricted videos. For more details, see the notes for the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">Get Videos</a> endpoint.</p>
 
 <h3>Sorting video results</h3>
 
 <p>Use the parameter <code>sort=field_name</code> to specify how the results should be sorted. You can sort on the following video fields:<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></p>
 
-<aside class="bcls-aside bcls-aside--information">Prefix the field name with a minus sign (<code>sort=<span class="bcls-highlight">-</span>field_name</code>) for descending order.</aside>
+<aside class="bcls-aside bcls-aside--information">Prefix the field name with a minus sign (<code>sort=<span class="bcls-highlight">-</span>field_name</code>) for descending order.</aside><ul><li>name</li>
+<li>reference_id</li>
+<li>created_at</li>
+<li>published_at</li>
+<li>updated_at</li>
+<li>schedule_starts_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code>schedule.starts_at</code></strong>)</li>
+<li>schedule_ends_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code>schedule.ends_at</code></strong>)</li>
+<li>state</li>
+<li>plays_total<sup><strong><a href="#note1-2">[1-2]</a></strong></sup></li>
+<li>plays_trailing_week<sup><strong><a href="#note1-2">[1-2]</a></strong></sup></li>
+</ul><p><strong>Notes</strong></p>
 
-<ul>
-	<li>name</li>
-	<li>reference_id</li>
-	<li>created_at</li>
-	<li>published_at</li>
-	<li>updated_at</li>
-	<li>schedule_starts_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code>schedule.starts_at</code></strong>)</li>
-	<li>schedule_ends_at (note: this is the <strong>sort</strong> field - the <strong>search field is <code>schedule.ends_at</code></strong>)</li>
-	<li>state</li>
-	<li>plays_total<sup><strong><a href="#note1-2">[1-2]</a></strong></sup></li>
-	<li>plays_trailing_week<sup><strong><a href="#note1-2">[1-2]</a></strong></sup></li>
+<ul><li id="note1-1"><sup><strong>[1-1]</strong></sup> If you do not provide a sort value for a video search call, the results will be sorted by relevance. If you do not provide a sort value for a <code>GET</code> videos call, the results will be sorted by <code>updated_at</code> descending.</li>
+<li id="note1-2"><sup><strong>[1-2]</strong></sup> You can sort on <code>plays_total</code> or <code>plays_trailing_week</code>, but these fields are not included in the results</li>
 </ul>
 
-<p><strong>Notes</strong></p>
-
-<ul>
-	<li id="note1-1"><sup><strong>[1-1]</strong></sup> If you do not provide a sort value for a video search call, the results will be sorted by relevance. If you do not provide a sort value for a <code>GET</code> videos call, the results will be sorted by <code>updated_at</code> descending.</li>
-	<li id="note1-2"><sup><strong>[1-2]</strong></sup> You can sort on <code>plays_total</code> or <code>plays_trailing_week</code>, but these fields are not included in the results</li>
-</ul>
-
-<h3 id="Large_data_sets">Large data sets</h3>
+<h4 id="largeDataSets">All videos and large data sets</h4>
 
 <p>If you are retrieving all the videos in your account, or a large number of videos, there are some things you must be aware of:</p>
 
-<ol>
-	<li>You may be tempted to use the largest allowed page size (1000), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out. Instead of asking for 100 videos at one time, it is better to ask for 5 pages of 20 videos. This allows you to display the first 20 videos quickly, while retrieving the remaining videos.</li>
-	<li>You cannot retrieve more than 1000 videos for a search request on the Playback API.</li>
-	<li>Remember that the Playback API is cached, so submitting another search request right away won't change the response.</li>
-	<li>The Playback API is optimized for speed, while the CMS API is optimized for correctness.</li>
+<ol><li>You may be tempted to use the largest allowed <code>page_size</code> (100), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
+<li>As you are paging through large data sets, it is possible that the video data may be updated during the operation, which could cause items to shift in responses:
+<ul><li>You might see an item repeated on successive pages</li>
+<li>An item might be missed, as it has shifted to a previous response set</li>
+</ul><p>To account for the first possibility, your app should de-dupe the complete item list after you have finished retrieving videos. To handle the second possibility, you need to compare the total number of items retrieved (after de-duping) to the number you were expecting, and then rerun the requests, sorting the results by last_modified_date (descending) - you shouldn't need to retrieve more than one batch to pick up missed items.</p>
+</li>
+<li>You can decrease the likelihood of the scenarios in the previous item by sorting the returned results appropriately. The default sorting by <strong>relevance</strong> for searches is based on a complex algorithm that looks combinations of keywords, tags, and custom field values. If you are searching for videos based on multiple keywords, tags, and/or custom fields, sort by relevance is exactly what you want. However, if you are just trying to retrieve all or a large set of your videos, setting the <code>sort_by</code> parameter explicitly will give you more control over the order of the returned items.</li>
 </ol>
+
 
 <h3 id="Get_videos">Get videos</h3>
 
 <h4>Endpoint</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos</code></pre>
 
 <h4>Example</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos?q=tags:nature,name:nature</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/videos?q=tags:nature,name:nature</code></pre>
 
 <h4>Sample response</h4>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-    "count": 123,
-    "videos":
-      [
-        {&lt;video1 fields&gt;},
-        {&lt;video2 fields&gt;},
-        ...
-      ]
-  }</code></pre>
+<code class="language-json">{
+"count": 123,
+"videos":
+[
+  {&lt;video1 fields&gt;},
+  {&lt;video2 fields&gt;},
+  ...
+]
+}</code></pre>
 
 <h4>Error response</h4>
 
 <p>if you attempt to use the Get Videos endpoint with a Policy Key that is NOT search-enabled, you will receive the following error message from the Playback API:</p>
 
 <pre class="line-numbers">
-  <code class="language-json">[
-    {
-      "api_call": "search",
-      "error_subcode": "API",
-      "error_code": "ACCESS_DENIED",
-      "message": "Access to this resource is forbidden by access policy."
-    }
-  ]</code></pre>
+<code class="language-json">[
+{
+"api_call": "search",
+"error_subcode": "API",
+"error_code": "ACCESS_DENIED",
+"message": "Access to this resource is forbidden by access policy."
+}
+]</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Find_related_videos">Find related videos</h2>
+
+<p>The Playback API allows you to search your account for videos that are related to the specified video. Based on the <code>name</code> and <code>short description</code> of the specified video, the API will search for any partial matches in the following fields:</p>
+<ul>
+<li>
+<code>name</code>
+</li>
+<li>
+<code>short description</code>
+</li>
+<li>
+<code>long description</code>
+</li>
+<li>
+<code>tags</code>
+</li>
+</ul>
+<p>
+A more precise way of finding related videos would be to tag your videos by subject, and use the <a href="#Search_videos">search videos</a> functionality.
+</p>
+<aside class="bcls-aside bcls-aside--information">You must use a <a href="https://support.brightcove.com/overview-policy-api#Search_videos">search-enabled Policy Key</a>, when finding related videos using the Playback API.</aside>
+<p>
+If geo-restriction is in effect, you may not receive a full page of results.
+</p>
+
+<h3>Parameters</h3>
+
+<p>The following URL parameters can be used for GET related videos requests:</p>
+
+<table class="bcls-table">
+<caption class="bcls-caption--table">GET Related Videos Request Params</caption>
+<thead class="bcls-table__head">
+<tr>
+  <th>Parameter</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody class="bcls-table__body">
+<tr>
+  <td><code>limit</code></td>
+  <td>The number of videos to return (default=20; maximum=100)</td>
+</tr>
+<tr>
+  <td><code>ad_config_id</code></td>
+  <td>Append your ad_config_id to return <a href="#Video_request_with_SSAI">videos with SSAI</a></td>
+</tr>
+</tbody>
+</table>
+
+<p>
+By default, the response will contain up to 20 videos. You may use the <code>limit</code> parameter to return up to a maximum of 100 videos, with a cost of increased latency.
+</p>
+<p>
+Notice that there is no <code>offset</code> parameter when finding related videos, so you will not be able to page through your video results.
+</p>
+
+<h3>Get related videos using video id</h3>
+
+<h4>Endpoint</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}/related</code></pre>
+
+<h4>Example</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5565662146001/related</code></pre>
+
+<h3>Get related videos using reference id</h3>
+
+<h4>Endpoint</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/ref:{reference_id}/related</code></pre>
+
+<h4>Example</h4>
+
+<pre class="line-numbers">
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/ref:nature/related</code></pre>
+
+<h3>Sample response</h3>
+<p>
+In the response below, notice that there is no <code>count</code> field, unlike the <a href="#Search_videos">search videos</a> response.
+</p>
+
+<pre class="line-numbers"><code class="language-json">{
+&quot;videos&quot;:
+[
+{&lt;video1 fields&gt;},
+{&lt;video2 fields&gt;},
+...
+]
+}</code></pre>
+
+<h4>Error response</h4>
+
+<p>if you attempt to use the find related endpoint with a Policy Key that is NOT search-enabled, you will receive the following error message from the Playback API:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
+{
+"api_call": "search",
+"error_subcode": "API",
+"error_code": "ACCESS_DENIED",
+"message": "Access to this resource is forbidden by access policy."
+}
+]</code></pre>
+
+
 </section>
 
 <section class="bcls-section">
@@ -464,8 +557,8 @@
 
 <aside class="bcls-aside bcls-aside--information">Notes:
 <ul>
-	<li>To use SSAI, your Video Cloud account will need to be configured for <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
-	<li>Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD), and it does not support <a href="https://support.brightcove.com/multiple-audio-tracks">Multiple Audio Tracks</a>.</li>
+<li>To use SSAI, your Video Cloud account will need to be configured for <a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
+<li>Currently, Video Cloud SSAI is only available for Video-on-Demand (VOD), and it does not support <a href="https://support.brightcove.com/multiple-audio-tracks">Multiple Audio Tracks</a>.</li>
 </ul>
 </aside>
 
@@ -480,52 +573,52 @@
 <p>Append your <code>ad_config_id</code> to the end of the Playback API request:</p>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}?ad_config_id={ad_config_id}</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/videos/{video_id}?ad_config_id={ad_config_id}</code></pre>
 
 <h4>Example</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5565662146001?ad_config_id=1234abcd</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5565662146001?ad_config_id=1234abcd</code></pre>
 
 <p>In the sample response below, you will notice the following:</p>
 
 <ul>
-	<li>The response is similar to that if you didn't include an ad config Id.</li>
-	<li>The elements of the <code>sources</code> array will contain a new property called <code>vmap</code>.</li>
-	<li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code>vmap</code> property.</li>
-	<li>The <code>src</code> property within the <code>sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code>src</code> will have ads stitched in with the main content.</li>
+<li>The response is similar to that if you didn't include an ad config Id.</li>
+<li>The elements of the <code>sources</code> array will contain a new property called <code>vmap</code>.</li>
+<li>If you want to know where the ads are located in the content, you can read the VMAP file linked in the <code>vmap</code> property.</li>
+<li>The <code>src</code> property within the <code>sources</code> array will contain the URL to the HLS or DASH source. This is the same as the response when no ad config Id is used, but the <code>src</code> will have ads stitched in with the main content.</li>
 </ul>
 
 <p>For more information about the Brightcove Once UX ad service and VMAP files, see the <a href="https://support.brightcove.com/node/17776">Brightcove Once UX Implementation</a> guide.</p>
 <!-- <h4 class="bcls-expander-head">Sample response</h4>
 
-      <div class="bcls-expander-content"> -->
+<div class="bcls-expander-content"> -->
 
 <h4>Sample response</h4>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-    "description": "The story of a giant rabbit with a heart bigger than himself. ",
-    "poster_sources": [
-    	{
-        "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg"
-    	}
-    ],
-    "tags": [],
-    "cue_points": [],
-    "custom_fields": {},
-    "account_id": "3723496277001",
-    "sources": [
-    	{
-        "ext_x_version": "4",
-        <span class="bcls-highlight">"vmap": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D"</span>,
-        "type": "application/x-mpegURL",
-        "src": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D"
-    	},
-      ...
-    ],
-    "created_at": "2017-05-15T17:09:11.171Z"
-  }</code></pre>
+<code class="language-json">{
+"description": "The story of a giant rabbit with a heart bigger than himself. ",
+"poster_sources": [
+{
+  "src": "https://cf-images.us-east-1.prod.boltdns.net/v1/jit/3723496277001/dd5bd69c-e962-4a43-9dbd-94faaaba1785/main/1280x720/5m17s130ms/match/image.jpg"
+}
+],
+"tags": [],
+"cue_points": [],
+"custom_fields": {},
+"account_id": "3723496277001",
+"sources": [
+{
+  "ext_x_version": "4",
+  <span class="bcls-highlight">"vmap": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/content.vmap?bc_token=NTllMTMxYjNfMTdkOTY2YThhNjU5MDk5ZTQ3NDBkNmUxOTYyOGRkNzM0ZjBiM2RjMGEwOThjOGFkYjk1MWQxMzFmNGYzMjA5YQ%3D%3D"</span>,
+  "type": "application/x-mpegURL",
+  "src": "http://ssaiplayback.prod.boltdns.net/playback/once/v1/hls/v4/clear/3723496277001/7a3316d9-1b06-4d62-bec8-3919b43fffbb/dd5bd69c-e962-4a43-9dbd-94faaaba1785/master.m3u8?bc_token=NTllMTMxYjNfZGM5ZDg0NGM2ZGJjZDcxZTFjOGYyODBlMzM2NmNmMmJkMWNhZDczNWViNzRiMjIwNjg5MjkzZGM0ZmJlMTc1Yw%3D%3D"
+},
+...
+],
+"created_at": "2017-05-15T17:09:11.171Z"
+}</code></pre>
 <!-- </div> -->
 
 <h3 id="Require_ad_config_id">Require ad_config_id</h3>
@@ -535,13 +628,13 @@
 <p>When the policy key is set to require an <code>ad_config_id</code>, and you do not append it to a Playback API request, you will get the following error:</p>
 
 <pre class="line-numbers">
-  <code class="language-json">[
-    {
-    	"error_subcode": "AD_CONFIG",
-    	"error_code": "ACCESS_DENIED",
-    	"message": "Missing required ad_config_id parameter"
-    }
-  ]</code></pre>
+<code class="language-json">[
+{
+"error_subcode": "AD_CONFIG",
+"error_code": "ACCESS_DENIED",
+"message": "Missing required ad_config_id parameter"
+}
+]</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -554,23 +647,23 @@
 <p>The following URL parameters can be used for playlist requests</p>
 
 <table class="bcls-table">
-	<caption class="bcls-caption--table">Playlist Request Params</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Parameter</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>limit</td>
-			<td>The number of videos to return (default=20; maximum=100)</td>
-		</tr>
-		<tr>
-			<td>offset</td>
-			<td>number of videos to skip (from the start of the playlist; default=0)</td>
-		</tr>
-	</tbody>
+<caption class="bcls-caption--table">Playlist Request Params</caption>
+<thead class="bcls-table__head">
+<tr>
+  <th>Parameter</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody class="bcls-table__body">
+<tr>
+  <td>limit</td>
+  <td>The number of videos to return (default=20; maximum=100)</td>
+</tr>
+<tr>
+  <td>offset</td>
+  <td>number of videos to skip (from the start of the playlist; default=0)</td>
+</tr>
+</tbody>
 </table>
 
 <p>For example, these parameters appended to your request - ?limit=40&amp;offset=20 - would return videos 21-60 in the playlist (assuming there are that many).</p>
@@ -580,217 +673,217 @@
 <h4>Endpoint</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/playlists/{playlist_id}</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/playlists/{playlist_id}</code></pre>
 
 <h4>Example</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/playlists/38467382999</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/playlists/38467382999</code></pre>
 
 <h4 id="Sample_response" class="bcls-expander-head">Sample response</h4>
 
 <div class="bcls-expander-content">
 <pre class="line-numbers">
-  <code class="language-json">{
-    "account_id": "107767373999",
-    "created_at": "2010-07-12T22:43:30.290Z",
-    "description": null,
-    "id": "111592530001",
-    "name": "Play One",
-    "reference_id": null,
-    "type": "EXPLICIT",
-    "updated_at": "2010-07-12T22:51:25.055Z",
+<code class="language-json">{
+"account_id": "107767373999",
+"created_at": "2010-07-12T22:43:30.290Z",
+"description": null,
+"id": "111592530001",
+"name": "Play One",
+"reference_id": null,
+"type": "EXPLICIT",
+"updated_at": "2010-07-12T22:51:25.055Z",
 
-    "videos": [
-      {
-        "description": "Avatar_MakingAScene_Featurette",
-        "poster_sources": [
-          {
-            "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-          }
-        ],
-        "tags": [
-          "copied"
-        ],
-        "cue_points": [
-          {
-            "id": "111637107001",
-            "name": "Pre-roll",
-            "type": "AD",
-            "time": 0,
-            "metadata": null,
-            "force_stop": false
-          }
-        ],
-        "custom_fields": {
-          "moretext": "this is the first video uploaded",
-          "mylist": "abc"
-        },
-        "account_id": "107767373999",
-        "sources": [
-          {
-            "avg_bitrate": 379000,
-            "width": 320,
-            "duration": 595560,
-            "size": 28196307,
-            "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728840001",
-            "container": "MP4",
-            "height": 180,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 379000,
-            "width": 320,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 28196307,
-            "height": 180,
-            "duration": 595560,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728840001"
-          },
-          {
-            "avg_bitrate": 267000,
-            "width": 320,
-            "duration": 595560,
-            "size": 19894997,
-            "stream_name": "mp4:107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728852001",
-            "container": "MP4",
-            "height": 180,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 267000,
-            "width": 320,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 19894997,
-            "height": 180,
-            "duration": 595560,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728852001"
-          },
-          {
-            "avg_bitrate": 549000,
-            "width": 480,
-            "duration": 595567,
-            "size": 40889436,
-            "stream_name": "mp4:107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728860001",
-            "container": "MP4",
-            "height": 268,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 549000,
-            "width": 480,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 40889436,
-            "height": 268,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728860001"
-          },
-          {
-            "avg_bitrate": 835000,
-            "width": 640,
-            "duration": 595567,
-            "size": 62142992,
-            "stream_name": "mp4:107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728865001",
-            "container": "MP4",
-            "height": 360,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 835000,
-            "width": 640,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 62142992,
-            "height": 360,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728865001"
-          },
-          {
-            "avg_bitrate": 1744000,
-            "width": 640,
-            "duration": 595567,
-            "size": 129836869,
-            "stream_name": "mp4:107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111735357001",
-            "container": "MP4",
-            "height": 360,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 1744000,
-            "width": 640,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 129836869,
-            "height": 360,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111735357001"
-          },
-          {
-            "avg_bitrate": 1249000,
-            "width": 640,
-            "duration": 595567,
-            "size": 92994065,
-            "stream_name": "mp4:107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111735369001",
-            "container": "MP4",
-            "height": 360,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 1249000,
-            "width": 640,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 92994065,
-            "height": 360,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111735369001"
-          }
-        ],
-        "name": "Avatar_MakingAScene_Featurette",
-        "reference_id": "AvatarMakingShort",
-        "long_description": null,
-        "duration": 595560,
-        "published_at": "2010-07-12T22:37:34.760Z",
-        "text_tracks": [],
-        "updated_at": "2010-07-12T22:54:29.666Z",
-        "thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-        "poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-        "link": {
-          "text": "Full Dvd at Amazon",
-          "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
-        },
-        "id": "38467382999",
-        "ad_keys": null,
-        "thumbnail_sources": [
-          {
-            "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-          }
-        ],
-        "created_at": "2010-07-12T22:37:34.760Z"
-      }
-    ],
-  }</code></pre>
+"videos": [
+{
+  "description": "Avatar_MakingAScene_Featurette",
+  "poster_sources": [
+    {
+      "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+    }
+  ],
+  "tags": [
+    "copied"
+  ],
+  "cue_points": [
+    {
+      "id": "111637107001",
+      "name": "Pre-roll",
+      "type": "AD",
+      "time": 0,
+      "metadata": null,
+      "force_stop": false
+    }
+  ],
+  "custom_fields": {
+    "moretext": "this is the first video uploaded",
+    "mylist": "abc"
+  },
+  "account_id": "107767373999",
+  "sources": [
+    {
+      "avg_bitrate": 379000,
+      "width": 320,
+      "duration": 595560,
+      "size": 28196307,
+      "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728840001",
+      "container": "MP4",
+      "height": 180,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 379000,
+      "width": 320,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 28196307,
+      "height": 180,
+      "duration": 595560,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728840001"
+    },
+    {
+      "avg_bitrate": 267000,
+      "width": 320,
+      "duration": 595560,
+      "size": 19894997,
+      "stream_name": "mp4:107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728852001",
+      "container": "MP4",
+      "height": 180,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 267000,
+      "width": 320,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 19894997,
+      "height": 180,
+      "duration": 595560,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728852001"
+    },
+    {
+      "avg_bitrate": 549000,
+      "width": 480,
+      "duration": 595567,
+      "size": 40889436,
+      "stream_name": "mp4:107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728860001",
+      "container": "MP4",
+      "height": 268,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 549000,
+      "width": 480,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 40889436,
+      "height": 268,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728860001"
+    },
+    {
+      "avg_bitrate": 835000,
+      "width": 640,
+      "duration": 595567,
+      "size": 62142992,
+      "stream_name": "mp4:107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728865001",
+      "container": "MP4",
+      "height": 360,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 835000,
+      "width": 640,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 62142992,
+      "height": 360,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728865001"
+    },
+    {
+      "avg_bitrate": 1744000,
+      "width": 640,
+      "duration": 595567,
+      "size": 129836869,
+      "stream_name": "mp4:107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111735357001",
+      "container": "MP4",
+      "height": 360,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 1744000,
+      "width": 640,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 129836869,
+      "height": 360,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111735357001"
+    },
+    {
+      "avg_bitrate": 1249000,
+      "width": 640,
+      "duration": 595567,
+      "size": 92994065,
+      "stream_name": "mp4:107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111735369001",
+      "container": "MP4",
+      "height": 360,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 1249000,
+      "width": 640,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 92994065,
+      "height": 360,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111735369001"
+    }
+  ],
+  "name": "Avatar_MakingAScene_Featurette",
+  "reference_id": "AvatarMakingShort",
+  "long_description": null,
+  "duration": 595560,
+  "published_at": "2010-07-12T22:37:34.760Z",
+  "text_tracks": [],
+  "updated_at": "2010-07-12T22:54:29.666Z",
+  "thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+  "poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+  "link": {
+    "text": "Full Dvd at Amazon",
+    "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
+  },
+  "id": "38467382999",
+  "ad_keys": null,
+  "thumbnail_sources": [
+    {
+      "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+    }
+  ],
+  "created_at": "2010-07-12T22:37:34.760Z"
+}
+],
+}</code></pre>
 </div>
 
 <h3 id="Get_playlist_by_reference_id">Get playlist by reference id</h3>
@@ -798,217 +891,217 @@
 <h4>Endpoint</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/playlists/ref:{reference_id}</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/{account_id}/playlists/ref:{reference_id}</code></pre>
 
 <h4>Example</h4>
 
 <pre class="line-numbers">
-  <code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/playlists/ref:nature_2010-07-12</code></pre>
+<code class="language-http">https://edge.api.brightcove.com/playback/v1/accounts/57838016001/playlists/ref:nature_2010-07-12</code></pre>
 
 <h4 id="Sample_response" class="bcls-expander-head">Sample response</h4>
 
 <div class="bcls-expander-content">
 <pre class="line-numbers">
-  <code class="language-json">{
-    "account_id": "107767373999",
-    "created_at": "2010-07-12T22:43:30.290Z",
-    "description": null,
-    "id": "111592530001",
-    "name": "Play One",
-    "reference_id": nature_2010-07-12,
-    "type": "EXPLICIT",
-    "updated_at": "2010-07-12T22:51:25.055Z",
+<code class="language-json">{
+"account_id": "107767373999",
+"created_at": "2010-07-12T22:43:30.290Z",
+"description": null,
+"id": "111592530001",
+"name": "Play One",
+"reference_id": nature_2010-07-12,
+"type": "EXPLICIT",
+"updated_at": "2010-07-12T22:51:25.055Z",
 
-    "videos": [
-      {
-        "description": "Avatar_MakingAScene_Featurette",
-        "poster_sources": [
-          {
-            "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-          }
-        ],
-        "tags": [
-          "copied"
-        ],
-        "cue_points": [
-          {
-            "id": "111637107001",
-            "name": "Pre-roll",
-            "type": "AD",
-            "time": 0,
-            "metadata": null,
-            "force_stop": false
-          }
-        ],
-        "custom_fields": {
-          "moretext": "this is the first video uploaded",
-          "mylist": "abc"
-        },
-        "account_id": "107767373999",
-        "sources": [
-          {
-            "avg_bitrate": 379000,
-            "width": 320,
-            "duration": 595560,
-            "size": 28196307,
-            "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728840001",
-            "container": "MP4",
-            "height": 180,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 379000,
-            "width": 320,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 28196307,
-            "height": 180,
-            "duration": 595560,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728840001"
-          },
-          {
-            "avg_bitrate": 267000,
-            "width": 320,
-            "duration": 595560,
-            "size": 19894997,
-            "stream_name": "mp4:107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728852001",
-            "container": "MP4",
-            "height": 180,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 267000,
-            "width": 320,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 19894997,
-            "height": 180,
-            "duration": 595560,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728852001"
-          },
-          {
-            "avg_bitrate": 549000,
-            "width": 480,
-            "duration": 595567,
-            "size": 40889436,
-            "stream_name": "mp4:107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728860001",
-            "container": "MP4",
-            "height": 268,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 549000,
-            "width": 480,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 40889436,
-            "height": 268,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728860001"
-          },
-          {
-            "avg_bitrate": 835000,
-            "width": 640,
-            "duration": 595567,
-            "size": 62142992,
-            "stream_name": "mp4:107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111728865001",
-            "container": "MP4",
-            "height": 360,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 835000,
-            "width": 640,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 62142992,
-            "height": 360,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111728865001"
-          },
-          {
-            "avg_bitrate": 1744000,
-            "width": 640,
-            "duration": 595567,
-            "size": 129836869,
-            "stream_name": "mp4:107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111735357001",
-            "container": "MP4",
-            "height": 360,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 1744000,
-            "width": 640,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 129836869,
-            "height": 360,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111735357001"
-          },
-          {
-            "avg_bitrate": 1249000,
-            "width": 640,
-            "duration": 595567,
-            "size": 92994065,
-            "stream_name": "mp4:107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
-            "codec": "H264",
-            "asset_id": "111735369001",
-            "container": "MP4",
-            "height": 360,
-            "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
-          },
-          {
-            "avg_bitrate": 1249000,
-            "width": 640,
-            "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
-            "size": 92994065,
-            "height": 360,
-            "duration": 595567,
-            "container": "MP4",
-            "codec": "H264",
-            "asset_id": "111735369001"
-          }
-        ],
-        "name": "Avatar_MakingAScene_Featurette",
-        "reference_id": "AvatarMakingShort",
-        "long_description": null,
-        "duration": 595560,
-        "published_at": "2010-07-12T22:37:34.760Z",
-        "text_tracks": [],
-        "updated_at": "2010-07-12T22:54:29.666Z",
-        "thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-        "poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
-        "link": {
-          "text": "Full Dvd at Amazon",
-          "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
-        },
-        "id": "38467382999",
-        "ad_keys": null,
-        "thumbnail_sources": [
-          {
-            "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
-          }
-        ],
-        "created_at": "2010-07-12T22:37:34.760Z"
-      }
-    ],
-  }</code></pre>
+"videos": [
+{
+  "description": "Avatar_MakingAScene_Featurette",
+  "poster_sources": [
+    {
+      "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+    }
+  ],
+  "tags": [
+    "copied"
+  ],
+  "cue_points": [
+    {
+      "id": "111637107001",
+      "name": "Pre-roll",
+      "type": "AD",
+      "time": 0,
+      "metadata": null,
+      "force_stop": false
+    }
+  ],
+  "custom_fields": {
+    "moretext": "this is the first video uploaded",
+    "mylist": "abc"
+  },
+  "account_id": "107767373999",
+  "sources": [
+    {
+      "avg_bitrate": 379000,
+      "width": 320,
+      "duration": 595560,
+      "size": 28196307,
+      "stream_name": "mp4:107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728840001",
+      "container": "MP4",
+      "height": 180,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 379000,
+      "width": 320,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728840001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 28196307,
+      "height": 180,
+      "duration": 595560,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728840001"
+    },
+    {
+      "avg_bitrate": 267000,
+      "width": 320,
+      "duration": 595560,
+      "size": 19894997,
+      "stream_name": "mp4:107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728852001",
+      "container": "MP4",
+      "height": 180,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 267000,
+      "width": 320,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728852001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 19894997,
+      "height": 180,
+      "duration": 595560,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728852001"
+    },
+    {
+      "avg_bitrate": 549000,
+      "width": 480,
+      "duration": 595567,
+      "size": 40889436,
+      "stream_name": "mp4:107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728860001",
+      "container": "MP4",
+      "height": 268,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 549000,
+      "width": 480,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728860001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 40889436,
+      "height": 268,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728860001"
+    },
+    {
+      "avg_bitrate": 835000,
+      "width": 640,
+      "duration": 595567,
+      "size": 62142992,
+      "stream_name": "mp4:107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111728865001",
+      "container": "MP4",
+      "height": 360,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 835000,
+      "width": 640,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111728865001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 62142992,
+      "height": 360,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111728865001"
+    },
+    {
+      "avg_bitrate": 1744000,
+      "width": 640,
+      "duration": 595567,
+      "size": 129836869,
+      "stream_name": "mp4:107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111735357001",
+      "container": "MP4",
+      "height": 360,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 1744000,
+      "width": 640,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735357001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 129836869,
+      "height": 360,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111735357001"
+    },
+    {
+      "avg_bitrate": 1249000,
+      "width": 640,
+      "duration": 595567,
+      "size": 92994065,
+      "stream_name": "mp4:107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?__nn__=1497926354001&amp;slist=107767373999/&amp;auth=daEciavcicRbhbtdSaBdBdVbXd0aUdTcMaX-bvRrSa-hca-slyCzrux_zJAq_HFCB_EvE&amp;aifp=bcosuds",
+      "codec": "H264",
+      "asset_id": "111735369001",
+      "container": "MP4",
+      "height": 360,
+      "app_name": "rtmp://cp150446.edgefcs.net/ondemand"
+    },
+    {
+      "avg_bitrate": 1249000,
+      "width": 640,
+      "src": "http://uds.ak.o.brightcove.com/107767373999/107767373999_111735369001_Avatar-MakingAScene-Featurette.mp4?pubId=107767373999&amp;videoId=38467382999",
+      "size": 92994065,
+      "height": 360,
+      "duration": 595567,
+      "container": "MP4",
+      "codec": "H264",
+      "asset_id": "111735369001"
+    }
+  ],
+  "name": "Avatar_MakingAScene_Featurette",
+  "reference_id": "AvatarMakingShort",
+  "long_description": null,
+  "duration": 595560,
+  "published_at": "2010-07-12T22:37:34.760Z",
+  "text_tracks": [],
+  "updated_at": "2010-07-12T22:54:29.666Z",
+  "thumbnail": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+  "poster": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728861001_vs-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999",
+  "link": {
+    "text": "Full Dvd at Amazon",
+    "url": "http://www.amazon.com/Avatar-Sam-Worthington/dp/B002VPE1AW"
+  },
+  "id": "38467382999",
+  "ad_keys": null,
+  "thumbnail_sources": [
+    {
+      "src": "http://brightcove04.o.brightcove.com/107767373999/107767373999_111728862001_th-111727994001.jpg?pubId=107767373999&amp;videoId=38467382999"
+    }
+  ],
+  "created_at": "2010-07-12T22:37:34.760Z"
+}
+],
+}</code></pre>
 </div>
 </section>
 
@@ -1022,8 +1115,8 @@
 <p>External WebVTT captions are text files separate from the video. You can associate captions files with a video as follows:</p>
 
 <ul>
-	<li><a href="/node/15481">Adding Captions using the Media Module</a></li>
-	<li><a href="/node/18013">Adding Captions using the CMS API</a></li>
+<li><a href="/node/15481">Adding Captions using the Media Module</a></li>
+<li><a href="/node/18013">Adding Captions using the CMS API</a></li>
 </ul>
 
 <h4>Sample response</h4>
@@ -1031,34 +1124,34 @@
 <p>Below is a sample response from the Playback API where a WebVTT captions file has been added to a video using the Media module. Notice that the text track <code>src</code> properties point to an external captions file.</p>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-  "text_tracks": [
-  {
-  	"mime_type": null,
-  	"account_id": "20318290001",
-  	"default": true,
-  	"sources": [
-  		{
-  			"src": "https://static.3playmedia.com/p/files/2240988/threeplay_transcripts/6418302.vtt?project_id=10127&amp;format_id=51&amp;refresh=1515241856"
-  		}
-  	],
-  	"src": "https://static.3playmedia.com/p/files/2240988/threeplay_transcripts/6418302.vtt?project_id=10127&amp;format_id=51&amp;refresh=1515241856",
-  	"asset_id": null,
-  	"label": "English",
-  	"id": "13d66def-d004-4e75-b160-4ac693eff7d7",
-  	"kind": "captions",
-  	"srclang": "en"
-  }
-  ],
-  }</code></pre>
+<code class="language-json">{
+"text_tracks": [
+{
+"mime_type": null,
+"account_id": "20318290001",
+"default": true,
+"sources": [
+{
+  "src": "https://static.3playmedia.com/p/files/2240988/threeplay_transcripts/6418302.vtt?project_id=10127&amp;format_id=51&amp;refresh=1515241856"
+}
+],
+"src": "https://static.3playmedia.com/p/files/2240988/threeplay_transcripts/6418302.vtt?project_id=10127&amp;format_id=51&amp;refresh=1515241856",
+"asset_id": null,
+"label": "English",
+"id": "13d66def-d004-4e75-b160-4ac693eff7d7",
+"kind": "captions",
+"srclang": "en"
+}
+],
+}</code></pre>
 
 <h3>In-manifest WebVTT</h3>
 
 <p>In-manifest WebVTT captions are ingested with your videos. This can be done when you first ingest your video or after your video has been ingested. You can create in-manifest captions as follows:</p>
 
 <ul>
-	<li><a href="/node/17938">Ingesting WebVTT files</a></li>
-	<li><a href="/node/17949#ingest_captions">Ingesting Captions using the Dynamic Ingest API</a></li>
+<li><a href="/node/17938">Ingesting WebVTT files</a></li>
+<li><a href="/node/17949#ingest_captions">Ingesting Captions using the Dynamic Ingest API</a></li>
 </ul>
 
 <h4>Sample response</h4>
@@ -1066,30 +1159,30 @@
 <p>Below is a sample response from the Playback API where a WebVTT captions file has been added to a video using the Dynamice Ingest API. Notice that the text track <code>src</code> properties point to internal Brightcove files.</p>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-  "text_tracks": [
-  {
-  	"mime_type": "text/webvtt",
-  	"account_id": "1752604059001",
-  	"default": false,
-  	"sources": [
-  		{
-  			"src": "http://bcboltbde696aa-a.akamaihd.net/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt?akamai_token=exp=1518032480~acl=/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt*~hmac=5aa9f206a8e970efb4cab95278e2e9b16a29b3ccf82951a91245352d9149b173"
-  		},
-  		{
-  			"src": "https://bcboltbde696aa-a.akamaihd.net/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt?akamai_token=exp=1518032480~acl=/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt*~hmac=5aa9f206a8e970efb4cab95278e2e9b16a29b3ccf82951a91245352d9149b173"
-  		}
-  		],
-  	"src": "http://bcboltbde696aa-a.akamaihd.net/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt?akamai_token=exp=1518032480~acl=/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt*~hmac=5aa9f206a8e970efb4cab95278e2e9b16a29b3ccf82951a91245352d9149b173",
-  	"asset_id": null,
-  	"label": "EN",
-  	"id": "92cb36a7-c836-4506-a87f-f649316c0cdf",
-  	"kind": "captions",
-  	"in_band_metadata_track_dispatch_type": "",
-  	"srclang": "en"
-  }
-  ],
-  }</code></pre>
+<code class="language-json">{
+"text_tracks": [
+{
+"mime_type": "text/webvtt",
+"account_id": "1752604059001",
+"default": false,
+"sources": [
+{
+  "src": "http://bcboltbde696aa-a.akamaihd.net/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt?akamai_token=exp=1518032480~acl=/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt*~hmac=5aa9f206a8e970efb4cab95278e2e9b16a29b3ccf82951a91245352d9149b173"
+},
+{
+  "src": "https://bcboltbde696aa-a.akamaihd.net/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt?akamai_token=exp=1518032480~acl=/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt*~hmac=5aa9f206a8e970efb4cab95278e2e9b16a29b3ccf82951a91245352d9149b173"
+}
+],
+"src": "http://bcboltbde696aa-a.akamaihd.net/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt?akamai_token=exp=1518032480~acl=/media/v1/text/vtt/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/text.vtt*~hmac=5aa9f206a8e970efb4cab95278e2e9b16a29b3ccf82951a91245352d9149b173",
+"asset_id": null,
+"label": "EN",
+"id": "92cb36a7-c836-4506-a87f-f649316c0cdf",
+"kind": "captions",
+"in_band_metadata_track_dispatch_type": "",
+"srclang": "en"
+}
+],
+}</code></pre>
 
 <h4>Manifest</h4>
 
@@ -1098,19 +1191,19 @@
 <h5>HLS</h5>
 
 <pre class="line-numbers">
-  <code class="language-bash">#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio-0",NAME="en (Main)",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/8b12c808-c5ea-47f3-abfa-c23b023db297/10s/rendition.m3u8?fastly_token=NWE3YjU3ZThfNzAwNTczOWM4MWQ4Mzk2NjFkYjVjYmFhYjQwNzY2MWUzM2MyNDM5ZDA5ZGExYTFkMzRmYzA0MDdhOTlmZWJhMw%3D%3D"
-  #EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subtitles-0",NAME="EN",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/rendition.m3u8?fastly_token=NWE3YjU3ZThfNDYzOThkZGJiZTU1NTlhOTdkYzA5OTA3M2UzZGRlYTgzMmRkZmUxMGIxYTJkY2Y5ZDQ1ODFiNTEyMmNiZDVhMw%3D%3D"
-  #EXT-X-STREAM-INF:PROGRAM-ID=0,BANDWIDTH=519200,CODECS="mp4a.40.2,avc1.420015",RESOLUTION=480x270,AUDIO="audio-0",CLOSED-CAPTIONS=NONE,SUBTITLES="subtitles-0"
-  https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/5f7850d9-9a65-4eee-8810-86a1e18e05fb/10s/rendition.m3u8?fastly_token=NWE3YjU3ZThfY2Q5YmE2ODc2OWFiNTgyZjUxMjc1MzRhNmQxMzA0ZmJmY2RlMGU4ZjBiNDExZGRmNjc3YjQ0OGQ5N2RiOTVmMA%3D%3D
-  </code></pre>
+<code class="language-bash">#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio-0",NAME="en (Main)",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/8b12c808-c5ea-47f3-abfa-c23b023db297/10s/rendition.m3u8?fastly_token=NWE3YjU3ZThfNzAwNTczOWM4MWQ4Mzk2NjFkYjVjYmFhYjQwNzY2MWUzM2MyNDM5ZDA5ZGExYTFkMzRmYzA0MDdhOTlmZWJhMw%3D%3D"
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subtitles-0",NAME="EN",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="en",URI="https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf/rendition.m3u8?fastly_token=NWE3YjU3ZThfNDYzOThkZGJiZTU1NTlhOTdkYzA5OTA3M2UzZGRlYTgzMmRkZmUxMGIxYTJkY2Y5ZDQ1ODFiNTEyMmNiZDVhMw%3D%3D"
+#EXT-X-STREAM-INF:PROGRAM-ID=0,BANDWIDTH=519200,CODECS="mp4a.40.2,avc1.420015",RESOLUTION=480x270,AUDIO="audio-0",CLOSED-CAPTIONS=NONE,SUBTITLES="subtitles-0"
+https://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/5f7850d9-9a65-4eee-8810-86a1e18e05fb/10s/rendition.m3u8?fastly_token=NWE3YjU3ZThfY2Q5YmE2ODc2OWFiNTgyZjUxMjc1MzRhNmQxMzA0ZmJmY2RlMGU4ZjBiNDExZGRmNjc3YjQ0OGQ5N2RiOTVmMA%3D%3D
+</code></pre>
 
 <h5>DASH</h5>
 
 <pre class="line-numbers">
-  <code class="language-xml">&lt;AdaptationSet mimeType="text/vtt" lang="en"&gt;
-  &lt;Representation bandwidth="256" id="92cb36a7-c836-4506-a87f-f649316c0cdf"&gt;
-  	&lt;BaseURL&gt;http://bcboltbde696aa-a.akamaihd.net/media/v1/dash/live/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf.vtt?akamai_token=exp=1518032494~acl=/media/v1/dash/live/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a*~hmac=3e2edc412c273f1255f2c18bbbcee7afc6a2edb74573f9295b0f05feda69f0e2&lt;/BaseURL&gt;
-  &lt;/Representation&gt;
-  &lt;/AdaptationSet&gt;</code></pre>
+<code class="language-xml">&lt;AdaptationSet mimeType="text/vtt" lang="en"&gt;
+&lt;Representation bandwidth="256" id="92cb36a7-c836-4506-a87f-f649316c0cdf"&gt;
+&lt;BaseURL&gt;http://bcboltbde696aa-a.akamaihd.net/media/v1/dash/live/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a/92cb36a7-c836-4506-a87f-f649316c0cdf.vtt?akamai_token=exp=1518032494~acl=/media/v1/dash/live/clear/1752604059001/3585c49a-5a95-4783-8625-e3af727d094a*~hmac=3e2edc412c273f1255f2c18bbbcee7afc6a2edb74573f9295b0f05feda69f0e2&lt;/BaseURL&gt;
+&lt;/Representation&gt;
+&lt;/AdaptationSet&gt;</code></pre>
 </section>
 </article>
