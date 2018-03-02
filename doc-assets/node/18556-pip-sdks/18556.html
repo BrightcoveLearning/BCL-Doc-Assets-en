@@ -1,0 +1,205 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+  <h2 id="Overview">Overview</h2>
+  <p>
+    Picture-in-Picture mode allows users to multitask on their devices. With this feature, you can create apps where a small video playback window is pinned to a corner of the screen while the user performs other tasks.
+  </p>
+  <p>
+    Currently, this feature is only available with the Brightcove Native SDK for Android.
+  </p>
+  <figure class="bcls-figure">
+    <img class="bcls-image--no-border" width="322" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/pip/pip-android.png" alt="Picture-in-picture mode">
+    <figcaption class="bcls-caption--image">Picture-in-picture mode</figcaption>
+  </figure>
+
+  </section>
+
+<section class="bcls-section">
+<h2 id="Supported_versions">Supported versions</h2>
+<p>
+Picture-in-Picture mode is supported with the following versions:
+</p>
+<h3>OS version</h3>
+<p>
+<strong>Android:</strong> This feature is supported on Android OS Oreo 8.0+ (API level 26+)
+</p>
+<h3>Native SDK version</h3>
+<p>
+<strong>Android:</strong> This feature is supported when using the Brightcove Native SDK for Android version 6.1.0+
+</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Android_implementation">Android implementation</h2>
+<p>
+The following topics will help you get started with the Picture-in-Picture feature:
+</p>
+<ul>
+<li>
+<a href="#Using_BrightcovePlayer">Using BrightcovePlayer</a>
+</li>
+<li>
+<a href="#Using_a_regular_Activity">Using a regular Activity</a>
+</li>
+<li>
+<a href="#Customizing_Picture-in-Picture">Customizing Picture-in-Picture</a>
+</li>
+<li>
+<a href="#Limitations">Limitations</a>
+</li>
+<li>
+<a href="#Known_issues">Known issues</a>
+</li>
+</ul>
+<p>
+For more details, see Android's <a href="https://developer.android.com/guide/topics/ui/picture-in-picture.html">Picture-in-picture support guide</a>.
+</p>
+
+<h3 id="Using_BrightcovePlayer">Using BrightcovePlayer</h3>
+<p>
+The easiest way to start using Picture-in-Picture is to have your activity extend the <code>BrightcovePlayer</code>. In your <strong>AndroidManifest.xml</strong> file, you only need to <a href="https://developer.android.com/guide/topics/ui/picture-in-picture.html#declaring">declare Picture-in-Picture support</a> for that activity by adding the following:
+</p>
+<pre class="line-numbers"><code class="language-xml">&lt;activity android:name=&quot;VideoActivity&quot;
+android:resizeableActivity=&quot;true&quot;
+<span class="bcls-highlight">  android:supportsPictureInPicture=&quot;true&quot;
+android:configChanges=
+&quot;screenSize|smallestScreenSize|screenLayout|orientation&quot;</span>
+...
+</code></pre>
+
+<p>
+This is an important step. If you do not declare it, when a user presses the Picture-in-Picture button in the Brightcove Media Controller, an <code>IllegalStateException</code> will be thrown:
+</p>
+<pre class="line-numbers"><code class="language-java">java.lang.IllegalStateException: enterPictureInPictureMode: Current activity does not support picture-in-picture</code></pre>
+
+<p>
+When going into Picture-in-Picture mode, the activity itself is resized, retaining all of the activity components in the Picture-In-Picture window. To avoid this and to provide an easier implementation, the Brightcove video view will go into Full Screen automatically to match the parent layout width and height showing only the video video in the Picture-in-Picture window. Once you leave this mode, Brightcove video view will return to its original state.
+</p>
+<p>
+If you do not want Picture-in-Picture in your app, you can disable the Picture-in-Picture button by adding the following code in your <strong>styles.xml</strong> file:
+</p>
+<pre class="line-numbers"><code class="language-xml">&lt;style name=&quot;BrightcoveControlBar&quot; parent=&quot;BrightcoveControlBarDefault&quot;&gt;
+&lt;item name=&quot;brightcove_picture_in_picture&quot;&gt;false&lt;/item&gt;
+&lt;/style&gt;</code></pre>
+
+<h3 id="Using_a_regular_Activity">Using a regular Activity</h3>
+<p>
+If you are using an activity which does not extend <code>BrightcovePlayer</code>, in addition to declaring support for Picture-in-Picture as mentioned in the previous section, you need to follow a few extra steps:
+</p>
+<ol class="bcls-tasklist">
+<li>Open the <strong>MainActivity.java</strong> file.</li>
+<li>In the <code>onCreate</code> method of the activity, register the Activity with the Brightcove <code>PictureInPictureManager</code>:
+<pre class="line-numbers"><code class="language-java">PictureInPictureManager.getInstance().registerActivity(Activity, BrightcoveVideoView)</code></pre>
+</li>
+<li>In the <code>onDestroy</code> method, unregister the Activity:
+<pre class="line-numbers"><code class="language-java">PictureInPictureManager.getInstance().unregisterActivity(Activity)</code></pre>
+</li>
+<li>Override the <code>onPictureInPictureModeChanged</code> Activity method, and call <code>onPictureInPictureModeChanged()</code> method as shown below:
+<pre class="line-numbers"><code class="language-java">@Override
+public void onPictureInPictureModeChanged (boolean isInPictureInPictureMode, Configuration newConfig) {
+super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+PictureInPictureManager.getInstance().onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
+}</code></pre>
+</li>
+<li>Finally, override the <code>onUserLeaveHint()</code> Activity method, and call <code>onUserLeaveHint()</code> as shown below:
+<pre class="line-numbers"><code class="language-java">@Override
+public void onUserLeaveHint () {
+super.onUserLeaveHint();
+PictureInPictureManager.getInstance().onUserLeaveHint();
+}</code></pre>
+</li>
+</ol>
+
+<p>
+After following these steps, the Picture-in-Picture button will appear in the Brightcove Media Controller automatically. You can also trigger Picture-in-Picture programmatically as follows:
+</p>
+<pre class="line-numbers"><code class="language-java">PictureInPictureManager.getInstance().enterPictureInPictureMode()</code></pre>
+<aside class="bcls-aside bcls-aside--information">Note that calling this method will throw a <code>PictureInPictureManagerException</code> if an Activity has not been registered.</aside>
+
+<h3 id="Customizing_Picture-in-Picture">Customizing Picture-in-Picture</h3>
+<p>
+You can customize the behavior and appearance of the Picture-in-Picture window through the <code>PictureInPictureManager</code>. For example, you can change the aspect ratio of the window or enable/disable captions for your videos.
+</p>
+<p>
+Android Oreo natively provides three parameters that can  be customized:
+</p>
+<ul>
+<li>
+<a href="https://developer.android.com/reference/android/app/PictureInPictureParams.Builder.html#setAspectRatio(android.util.Rational)">aspect ratio</a>
+<pre class="line-numbers"><code class="language-java">setAspectRatio(Rational)</code></pre>
+</li>
+<li>
+<a href="https://developer.android.com/reference/android/app/PictureInPictureParams.Builder.html#setSourceRectHint(android.graphics.Rect)">source bounds hint</a>
+<pre class="line-numbers"><code class="language-java">setSourceRectHint(Rect)</code></pre>
+</li>
+<li>
+<a href="https://developer.android.com/reference/android/app/PictureInPictureParams.Builder.html#setActions(java.util.List%3Candroid.app.RemoteAction%3E)">list of remote actions</a>
+<pre class="line-numbers"><code class="language-java">setUserActions(List&lt;RemoteAction&gt;)</code></pre>
+</li>
+</ul>
+
+<h4>User actions</h4>
+<p>
+Brightcove adds a <code>RemoteAction</code> by default, which handles the <code>Play/Pause</code> video events and sets their respective icons. This means that the default <code>RemoteAction</code> will be added to the list of remote actions you set with the following:
+</p>
+<pre class="line-numbers"><code class="language-java">setUserActions</code></pre>
+<p>
+Keep in mind that you can only set a limited number of actions. To get the <a href="https://developer.android.com/reference/android/app/Activity.html#getMaxNumPictureInPictureActions()">maximum number of actions</a>, call the following:
+</p>
+<pre class="line-numbers"><code class="language-java">Activity.getMaxNumPictureInPictureActions()</code></pre>
+
+<h4>Closed captions</h4>
+<p>
+You can enable/disable Closed Captions when playing a video in Picture-in-Picture mode by calling the following in the <code>inPictureInPictureManager</code>.
+</p>
+<pre class="line-numbers"><code class="language-java">setClosedCaptionsEnabled(boolean)</code></pre>
+<p>
+Closed Captions are disabled by default in phones but enabled in tablets. To reduce the size of the Closed Captions while playing in Picture-in-Picture mode, call the following to set a value between <code>0</code> and <code>1.0f</code>.
+</p>
+<pre class="line-numbers"><code class="language-java">setClosedCaptionsReductionScaleFactor(float)</code></pre>
+<p>
+By default, the Closed Captions size in Picture-in-Picture mode is <code>0.5f</code> or 50% the original size. Lastly, to enter Picture-in-Picture mode when the Activity <code>onUserLeaveHint()</code> is called, set the following to <code>true</code>:
+</p>
+<pre class="line-numbers"><code class="language-java">setOnUserLeaveEnable(boolean)</code></pre>
+
+<h4>Parameters</h4>
+<p>
+In order to retrieve the current Picture-in-Picture parameters, you can call the following:
+</p>
+<pre class="line-numbers"><code class="language-java">PictureInPicture.getBrightcovePictureInPictureParams()</code></pre>
+<p>
+This call returns the <code>BrightcovePictureInPictureParams</code> object, which has the getters for all the parameters previously discussed.
+</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+<h3>Android</h3>
+<ul>
+<li>
+Picture-in-Picture will only work on devices with Android Oreo or higher.
+</li>
+<li>
+It is currently not supported for Android TV.
+</li>
+<li>
+Videos with ads are not supported.
+</li>
+<li>
+360 videos are not supported.
+</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Known_issues">Known issues</h2>
+<h3>Android</h3>
+<ul>
+<li>
+We found that Widevine-protected videos playing in Picture-in-Picture mode will turn transparent or black in the Pixel C with Android 8.0. The issue is not reproducible in the same device with Android 8.1.
+</li>
+</ul>
+</section>
+
+</article>
