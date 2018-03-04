@@ -1,6 +1,7 @@
 <article class="bcls-article">
   <section class="bcls-section">
-    <h2 id="introduction">The Social API is a REST API that allows you to manage the sharing of your Video Cloud videos to social media destinations such as Twitter and Facebook from your own CMS or app. Currently, the API provides operations to get the status of social sharing for videos.</h2>
+    <h2 id="introduction">Introduction</h2>
+    <p>The Social API is a REST API that allows you to manage the sharing of your Video Cloud videos to social media destinations such as Twitter and Facebook from your own CMS or app. Currently, the API provides operations to get the status of social sharing for videos.</p>
   </section>
 
   <section class="bcls-section">
@@ -20,8 +21,8 @@
   <pre><code class="language-bash">Authorization: Bearer <span class="bcls-input">{access_token}</span></code></pre>
 
   <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all Ingest Profiles API operation:</p>
-<!-- TODO replace image -->
-  <figure class="bcls-figure"><img class="bcls-image" alt="Ingest Profiles API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/ingest-profiles-permissions.png" />
+<!-- TODO update screenshot when social permissions added to studio -->
+  <figure class="bcls-figure"><img class="bcls-image" alt="Social API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/ingest-profiles-permissions.png" />
   <figcaption class="bcls-caption--image">Social Profiles API Permissions</figcaption>
   </figure>
 
@@ -41,6 +42,11 @@
 </section>
 
 <section class="bcls-section">
+  <h2 id="Note_on_responses">Note on responses</h2>
+  <p>Note that response for status requests may return <code>HTTP 202 NO CONTENT</code> if the video requested has not been distributed at all, or to the requested destination.</p>
+</section>
+
+<section class="bcls-section">
   <h2 id="available_endpoints">Available endpoints</h2>
   <p>The sections the follow provide brief descriptions of the endpoints currently available for the API. Full details of the endpoints, along with descriptions of parameters, responses, and errors, can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/social-api/v1/doc/index.html">Social API Reference</a></p>
 </section>
@@ -49,6 +55,18 @@
   <h2 id="Get_status_of_a_video">Get status of a video</h2>
   <p>Gets the current status of the requested video on every destination to which Social has ever attempted to distribute it, ordered by date, most recent first.</p>
   <p><strong>Method</strong>: <code>GET</code></p>
-  <p><strong>Endpoint</strong>: <code class="language-http">/accounts/:account_id/social-status/video/:video_id</code></p>
+  <p><strong>Endpoint</strong>: <code class="language-http">/accounts/<span class="bcls-input">:account_id</span>/social-status/video/<span class="bcls-input">:video_id</span></code></p>
+</section>
+<section class="bcls-section">
+  <h2 id="Get_Status_of_Videos_for_Destination">Get Status of Videos for Destination</h2>
+  <p>Gets the current status of every video which Social ever attempted to distribute to the given destination.</p>
+  <p><strong>Method</strong>: <code>GET</code></p>
+  <p><strong>Endpoint</strong>: <code class="language-http">/accounts/<span class="bcls-input">:account_id</span>/social-status/destination/<span class="bcls-input">:destination_id</span></code></p>
+</section>
+<section class="bcls-section">
+  <h2 id="Get_Status_of_Video_for_Destination">Get Status of a Video for Destination</h2>
+  <p>Gets the current status of one video with respect to one destination.</p>
+  <p><strong>Method</strong>: <code>GET</code></p>
+  <p><strong>Endpoint</strong>: <code class="language-http">/accounts/<span class="bcls-input">:account_id</span>/social-status/destination/<span class="bcls-input">:destination_id</span>/video/<span class="bcls-input">:video_id</span></code></p>
 </section>
 </article>
