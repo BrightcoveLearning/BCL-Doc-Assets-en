@@ -1,243 +1,202 @@
-
 <article class="bcls-article">
-    <section id="Development_sequence" class="bcls-section">
-        <h2 class="bcls-expander-head">Development sequence</h2>
-        <div class="bcls-expander-content">
-            <p>Here is the recommended development sequence:</p>
-            <ol>
-                <li>Use the embed_in_page player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
-                <li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
-                <li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
-                <li>Use the new Video Cloud Studio to add the plugin and CSS to your player</li>
-                <li>Replace the embed_in_page player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
-            </ol>
-            <p>For details about these steps, review the <a href="//docs.brightcove.com/en/player/brightcove-player/guides/plugin-dev-quick-start.html">Quick Start to Plugin Development</a> guide.</p>
-            <h3>iframe or embed_in_page</h3>
-            <p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or embed_in_page implementation. The best practice recommendation is to build a plugin for use with an iframe implementation.
-                The advantages of using the iframe player are:</p>
-            <ul>
-                <li>No collisions with existing JavaScript and/or CSS</li>
-                <li>Automatically responsive</li>
-                <li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
-            </ul>
-            <p>Although integrating the embed_in_page player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically,
-                here are some examples:</p>
-            <ul>
-                <li>Code in the containing page needs to listen for and act on player events</li>
-                <li>The player uses styles from the containing page</li>
-                <li>The iframe will cause application logic to fail, like a redirect from the containing page</li>
-            </ul>
-            <p>Even if your final implementation does not use the iframe player, you can still use the embed_in_page player with a plugin that contains your JavaScript and CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
-        </div>
-    </section>
-    <section id="Select_implementation" class="bcls-section">
-        <h2>Select implementation</h2>
-        <p>In this sample, the player is going to interact with the parent page, so the in-page embed implementation will be used.</p>
-    </section>
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
 
-    <section id="API/Plugin_resources_used" class="bcls-section">
-        <h2>API resources used</h2>
-        <p>The following sections detail resources used from various APIs.</p>
-        <h3>Brightcove Player API</h3>
-        <ul>
-            <li><code>on()</code>: Method to associate an event handler with an event, in this case <code>loadstart</code>.</li>
-            <li><code>mediainfo</code>: Object containing video information.</li>
-        </ul>
-    </section>
+<p>For this sample you see the text associated with the video displayed below the player. You use Studio's <strong>MEDIA &gt; VIDEO INFORMATION</strong> section to supply the text and associated link. The video need not be playing to see the sample's functionality.</p>
+<!-- UPDATE codepen here -->
 
-    <section id="The_player" class="bcls-section">
-        <h2>The player</h2>
-        <p>Look below the player and you see the dynamically create link in the HTML page.</p>
+<p data-height="481" data-theme-id="dark" data-slug-hash="RjLGrL" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="Display Related Links" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/RjLGrL/">Display Related Links</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-            <video id="myPlayerID" data-video-id="5165694790001" data-account="1752604059001" data-player="HJSEihoR" data-embed="default" data-application-id class="video-js" controls></video>
-            <p id="cta" style='color:red; font-weight: bold; font-size: 20px'></p>
+<!-- UPDATE link to GitHub source -->
+<p>View the <a href="https://github.com/BrightcoveLearning/18463-display-related-link">source code</a>.</p>
 
-    </section>
+<aside class="bcls-aside bcls-aside--tip">The <a href="/node/18151">Brightcove Player Sample: Dynamic Call to Action</a> is very similar to this sample, but adds displaying the call to action (link) over the player in addition to below the player.</aside>
+</section>
 
-    <section id="How_it_works" class="bcls-section">
-        <h2>How it works</h2>
-        <p>For every video with which you want use the related link you will need to enter the <strong>Related Link URL</strong> and <strong>Related Link Text</strong> in <span class="video-cloud-only">Video Cloud</span><span class="player-only">Perform</span>            Studio. You do this in the <strong>MEDIA > VIDEO INFORMATION</strong> section, as shown here:</p>
-        <figure class="bcls-figure">
-            <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/display-related-link/studio-fill-in-form.png" alt="Related link in studio">
-            <figcaption class="bcls-caption--image">Related link in studio</figcaption>
-        </figure>
-        <p>JavaScript is then used to:</p>
-        <ul>
-            <li>Populate the <code>mediainfo</code> property.</li>
-            <li>Dynamically build an HTML anchor tag with a link.</li>
-            <li>Use the dynamically built HMTL in the HTML page.</li>
-        </ul>
-        <p>The following sections explain the player, JavaScript and CSS code used in the example.</p>
-        <h3>Create the player</h3>
-        <div class="video-cloud-only">
-            <p>To create a player and assign a video to it, follow these steps:</p>
-            <ol class="bcls-tasklist">
-                <li>Using Video Cloud Studio, in the <strong>Players</strong> module, create a new player or use an existing one.</li>
-                <li>In the <strong>Media</strong> module, select a video and publish it with this player.</li>
-                <li>Copy the In-Page embed code and paste it into a new HTML file.</li>
-            </ol>
-        </div>
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
 
-        <h3>The player code</h3>
-        <p>Your player code should look similar to the following:</p>
-<pre class="line-numbers"><code class="language-html">&lt;video id=&quot;myPlayerID&quot;
-data-video-id=&quot;5165694790001&quot;
-data-account=&quot;1752604059001&quot;
-data-player=&quot;HJSEihoR&quot;
-data-embed=&quot;default&quot;
-data-application-id
-class=&quot;video-js&quot;
-controls&gt;&lt;/video&gt;</code></pre>
-        <aside class="bcls-aside bcls-aside--information">Note that an <code>id</code> has been added to the code.</aside>
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
 
-        <h3>The HTML code</h3>
-        <p>Here, you will add the target in which your link will appear in your page code.</p>
-        <ol class="bcls-tasklist">
-            <li>
-                <p>
-                    Add the following HTML to your page code where you wish your link to appear:
-                </p>
-                <pre class="line-numbers"><code class="language-html">&lt;p id=&quot;linkHere&quot; style='color:red; font-weight: bold; font-size: 20px'&gt;&lt;/p&gt;</code></pre>
-            </li>
-        </ol>
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Application_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Application_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
 
-        <h3>The JavaScript code</h3>
-        <p>Here you will build and insert the link into the HTML.</p>
-        <ol class="bcls-tasklist">
-            <li>
-                <p>
-                    Add the following JavaScript to your page code:
-                </p>
-                <ul>
-                    <li>Line 1: Link to the JavaScript file for the player.</li>
-                    <li>Lines 4, 12: Wait for the player to be ready for programmatic interaction.</li>
-                    <li>Line 5: Create a variable to hold a reference to the player.</li>
-                    <li>Line 6, 11: Add an event listener for the <code>loadstart</code> event. In the anonymous event handler function you can access video information stored in the <code>mediainfo</code> object.</li>
-                    <li>Lines 7, 8: Extract the link text and link URL from the metadata and store in variables. Of course, this would not have to be done, but it makes the next line of code that dynamically builds the anchor tag much neater.</li>
-                    <li>Line 9: Build an HTML anchor tag using the variables just created. Note a <code>target</code> is used to open the linked page in a new window or tab.</li>
-                    <li>Line 10: Inject the dynamically built anchor tag into the HTML page.</li>
-                </ul>
-                <pre class="line-numbers"><code class="language-javascript">  &lt;script src=&quot;//players.brightcove.net/1752604059001/7bf38d3b-968a-4dec-855c-3f98e08604df_default/index.min.js&quot;&gt;&lt;/script&gt;
+<section class="bcls-section">
+<h2 id="Development_sequence" class="bcls-expander-head">Development sequence</h2>
 
-&lt;script type=&quot;text/javascript&quot;&gt;
-    videojs('myPlayerID').ready(function(){
-        var myPlayer = this;
-        myPlayer.on('loadstart', function(evt) {
-        var linkText = myPlayer.mediainfo.link.text,
-          linkURL = myPlayer.mediainfo.link.url,
-          hrefString = '&lt;a href = &quot;' + linkURL + '&quot; target=&quot;_blank&quot;&gt;' +  linkText + '&lt;/a&gt;';
-        document.getElementById('linkHere').innerHTML = hrefString;
-        });
-    });
-&lt;/script&gt;</code></pre>
-            </li>
-        </ol>
+<div class="bcls-expander-content">
+<p>Here is the recommended development sequence:</p>
 
-        <h3>The stylesheet</h3>
-        <p>This example uses CSS styles for the Brightcove player, the Overlay plugin and the Endscreen plugin.</p>
-        <ol class="bcls-tasklist">
-            <li>
-                <p>
-                    Add the following to your page code:
-                </p>
-                <ul>
-                    <li>Lines 2-5: Set the size of the player.</li>
-                </ul>
-                <pre class="line-numbers"><code class="language-html">&lt;style&gt;
-    .video-js {
-        height: 344px;
-        width: 610px;
-    }
-&lt;/style&gt;</code></pre>
-            </li>
-        </ol>
+<ol>
+	<li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+	<li>Use Studio to add the plugin and CSS to your player</li>
+	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+</ol>
 
-        <h3>Full code</h3>
-        <p>Here is the full code for the sample:</p>
-        <pre class="line-numbers" data-start="1"><code class="language-html">&lt;!doctype html&gt;
-&lt;html&gt;
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
 
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Untitled Document&lt;/title&gt;
-    &lt;style&gt;
-        .video-js {
-            height: 344px;
-            width: 610px;
-        }
-    &lt;/style&gt;
-&lt;/head&gt;
+<h3>iframe or In-Page embed</h3>
 
-&lt;body&gt;
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
 
-    &lt;video id=&quot;myPlayerID&quot;
-    data-video-id=&quot;5165694790001&quot;
-    data-account=&quot;1752604059001&quot;
-    data-player=&quot;HJSEihoR&quot;
-    data-embed=&quot;default&quot;
-    data-application-id
-    class=&quot;video-js&quot;
-    controls&gt;&lt;/video&gt;
-    &lt;p id=&quot;linkHere&quot; style='color:red; font-weight: bold; font-size: 20px'&gt;&lt;/p&gt;
+<ul>
+	<li>No collisions with existing JavaScript and/or CSS</li>
+	<li>Automatically responsive</li>
+	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+</ul>
 
-    &lt;script src=&quot;//players.brightcove.net/1752604059001/HJSEihoR_default/index.min.js&quot;&gt;&lt;/script&gt;
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
 
-    &lt;script type=&quot;text/javascript&quot;&gt;
-        videojs('myPlayerID').ready(function(){
-            var myPlayer = this;
-            myPlayer.on('loadstart', function(evt) {
-            var linkText = myPlayer.mediainfo.link.text,
-              linkURL = myPlayer.mediainfo.link.url,
-              hrefString = '&lt;a href = &quot;' + linkURL + '&quot; target=&quot;_blank&quot;&gt;' +  linkText + '&lt;/a&gt;';
-            document.getElementById('linkHere').innerHTML = hrefString;
-            });
-        });
-    &lt;/script&gt;
+<ul>
+	<li>Code in the containing page needs to listen for and act on player events</li>
+	<li>The player uses styles from the containing page</li>
+	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+</ul>
 
-&lt;/body&gt;
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+</div>
+<!-- id="expanderContent" --></section>
 
-&lt;/html&gt;</code></pre>
-    </section>
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
 
-    <section id="Use_iframe" class="bcls-section">
-        <h2>Use iframe</h2>
-        <p>The iframe implementation cannot be used in this case since the player needs to interact with the parent HTML page.</p>
-    </section>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>API Methods</th>
+			<th>API Properties</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="/node/18085">myPlayer.mediainfo</a></td>
+		</tr>
+	</tbody>
+</table>
+<!-- <aside class="bcls-aside bcls-aside--tip">This code sample uses one of the Brightcove REST APIs. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside> --></section>
+<!-- UPDATE player and HTML configuration -->
 
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+<h3>Other HTML</h3>
+
+<p>An HTML <code>&lt;p&gt;</code> element is used as a target for the text extracted from the video's metatdata:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;p id="linkHere" style='color:red; font-weight: bold; font-size: 20px'&gt;&lt;/p&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Associate_data_with_the_video">Associate data with the video</h2>
+
+<p>For every video with which you want use the related link you will need to enter the <strong>Related Link URL</strong> and <strong>Related Link Text</strong> in Studio. You do this in the <strong>MEDIA &gt; VIDEO INFORMATION</strong> section, as shown here:</p>
+
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Related link in studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/display-related-link/studio-fill-in-form.png" />
+<figcaption class="bcls-caption--image">Related link in studio</figcaption>
+</figure>
+</section>
+<!-- UPDATE application flow -->
+
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+	<li>Populate the <code>mediainfo</code> property in Studio.</li>
+	<li>Dynamically build an HTML anchor tag with a link.</li>
+	<li>Inject the dynamically built HMTL in the HTML page.</li>
+</ul>
+<!-- UPDATE task 1 -->
+
+<h3>Wait for loadstart to read video information</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ###  // +++ Wait for loadstart to read video information +++ ###</code></pre>
+
+<p>Often you see the player's <code>ready()</code> method used to start JavaScript processing. This does not work in this instance as you have to wait for the video to be loaded in the player and have the metadata ready to read. The event to listen for is <code>loadstart</code>.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Read data and build anchor tag</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Read test and link from video info and build anchor tag +++</code></pre>
+
+<p>Once the <code>loadstart</code> event is dispatched, you can read properties from the <code>mediainfo</code> object. In this case the properties <code>link.text</code> and <code>link.url</code> are read. An anchor tag is then dynamically built using the extracted data.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Inject anchor tag into HTML page</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Inject anchor tag into HTML ###</code></pre>
+
+<p>A reference to the location for the anchor is obtained using the <code>getElementById()</code> method, and the anchor tag is placed in the HTML page.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>The only CSS is used to size the player, which can be done in various ways.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Plugin_code">Plugin code</h2>
+
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+
+<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
+
+<pre class="line-numbers"><code class="language-javascript">videojs('myPlayerID').ready(function(){
+  var myPlayer = this;
+  ...
+});</code></pre>
+
+<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
+
+<pre class="line-numbers"><code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+  var myPlayer = this;
+  ...
+});</code></pre>
+<!-- UPDATE path to plugin's JavaScript -->
+
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18463-display-related-link/blob/master/plugin/display-related-link.js">display-related-link.js</a>.</p>
+
+<h3>Using the plugin with a player</h3>
+
+<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
+
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
+</section>
 </article>
-<script src="//players.brightcove.net/1752604059001/HJSEihoR_default/index.min.js"></script>
-  <script type="text/javascript">
-  videojs('myPlayerID').ready(function(){
-    var myPlayer = this;
-    myPlayer.on('loadstart', function(evt) {
-      var linkText = myPlayer.mediainfo.link.text,
-        linkURL = myPlayer.mediainfo.link.url,
-        hrefString = '<a href = "' + linkURL + '" target="_blank" rel="noopener noreferrer">' +  linkText + '</a>';
-      document.getElementById("cta").innerHTML = hrefString;
-      myPlayer.overlay({
-        overlays: [{
-          "align": "bottom",
-          "content": "<p style='color:red; background-color: black; font-weight: bold; font-size: 20px'>" + hrefString + "</p>",
-          "start": "pause",
-          "end": "play"
-        }]
-      });
-      myPlayer.customEndscreen({
-        "content": "<p style='font-weight: bold; font-size: 20px'>" + hrefString + "</p>"
-      });
-      myPlayer.on('ended',function(){
-        var overlayElement = document.getElementsByClassName('vjs-overlay')[0];
-        overlayElement.setAttribute('style', 'display: none;');
-      })
-    });
-  });
-  </script>
-
-  <div style="text-align:center">
-      <iframe id="CSAT" src="//learning-services-media.brightcove.com/doc-assets/general/surveylink.html" style=" padding-bottom:20px;border:none"></iframe>
-  </div>
-  <div class="bcls-footer"><a id="feedbackMail" href="mailto:docs@brightcove.com">Questions or comments?</a></div>
-  <script>
-  var feedbackMail = document.getElementById("feedbackMail");
-  feedbackMail.setAttribute("href", "mailto:docs@brightcove.com?subject=question regarding " + encodeURI(document.location.href));
-  </script>
