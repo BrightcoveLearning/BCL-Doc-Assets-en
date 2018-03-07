@@ -62,7 +62,7 @@ var BCLS = ( function (window, document, creds) {
             requestBody = '{"description":"' + currentVideo.description + '"}';
             // display the request URL
             apiRequest_field.textContent = apiRequest;
-            makeRequest();
+            makeRequest(options, function(response) {});
         }
 
     };
