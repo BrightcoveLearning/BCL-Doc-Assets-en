@@ -17,31 +17,27 @@ var BCLS = ( function (window, document, creds) {
         videoData_display = document.getElementById("videoData"),
         videoData,
         t1,
-        currentVideo,
-        // functions
-        isDefined,
-        cleanString,
-        cleanUpData,
-        submitRequest,
-        setRequest,
-        logResponse,
-        init;
-    // is defined
-    isDefined = function(x){
-        if(x !== "" && x !== null && x !== undefined){
-            return true;
-        } else{
-            return false;
-        }
-    };
+        currentVideo;
+      /**
+       * tests for all the ways a variable might be undefined or not have a value
+       * @param {*} x the variable to test
+       * @return {Boolean} true if variable is defined and has a value
+       */
+      function isDefined(x) {
+          if ( x === '' || x === null || x === undefined) {
+              return false;
+          }
+          return true;
+      }
+
     // function to remove spaces from string
-    cleanString = function (str) {
+    function cleanString(str) {
         // remove spaces
         str = str.replace(/\s/g, "");
         return str;
     };
     // clean up data before submitting
-    cleanUpData = function () {
+    function cleanUpData() {
         var i, iMax, item;
         iMax = videoData.length;
         for (i = 0; i < iMax; i++) {
@@ -58,7 +54,7 @@ var BCLS = ( function (window, document, creds) {
         // console.log("videoData Cleaned", videoData);
     };
     // function to set up request
-    setRequest = function () {
+    function setRequest() {
 
         currentVideo = videoData[callNumber];
         if (isDefined(currentVideo)) {
@@ -66,7 +62,7 @@ var BCLS = ( function (window, document, creds) {
             requestBody = '{"description":"' + currentVideo.description + '"}';
             // display the request URL
             apiRequest_field.textContent = apiRequest;
-            submitRequest();
+            makeRequest();
         }
 
     };
@@ -75,7 +71,7 @@ var BCLS = ( function (window, document, creds) {
         response.innerHTML += data + ",<br />";
     };
     // function to make API request
-    submitRequest = function () {
+    function makeRequest() {
         var httpRequest = new XMLHttpRequest(),
             proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
             requestData,
