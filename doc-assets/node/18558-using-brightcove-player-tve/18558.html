@@ -1,0 +1,97 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+    <h2 id="Introduction">Introduction</h2>
+    <p>This topic provides information on Video Cloud’s <a href="https://www.adobe.com/marketing-cloud/primetime.html">Adobe Primetime</a> integration for TV Everywhere (TVE) solutions. The instructions below simplify data entry and management of video metadata by removing the unnecessary duplication of values and by automatically generating the XML request values needed by the Adobe Pass client based on individual custom fields.</p>
+  </section>
+</article>
+
+<section class="bcls-section">
+  <h2 id="account_configuration">Account configuration</h2>
+  <p>Using Video Cloud with TVE requires some account configuration by Brightcove Support. If you want to use TVE,  <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> for details.</p>
+</section>
+
+
+<section class="bcls-section">
+    <h2 id="customFields">Required Fields</h2>
+    <p>For this integration you must create the following custom fields in your account. The names below are the <em>internal</em> names for the fields - you can use whatever you like for the display names.</p>
+    <ul>
+      <li><code>bcadobepassrequestorid</code></li>
+      <li><code>bcadobepassresourceid</code></li>
+    </ul>
+</section>
+<section class="bcls-articlesection">
+  <h2 id="autoGeneratation">Auto-generation of <code>resourceID</code> and <code>requestorID</code> fields</h2>
+<p>When a user retrieves a video via the media API from a TVE-enabled account, the API will return a value for <code>bcadobepassrequestorid</code> according to the following rules:</p>
+<ul>
+  <li>If a custom field value for <code>bcadobepassrequestorid</code> exists on the video, the API will return the video-level value.</li>
+  <li>If no value is set for the <code>bcadobepassrequestorid</code> field, the API will return the requestor ID value stored in the account settings.</li>
+</ul>
+<p>When a user retrieves a video via the media API from a TVE-enabled account, the API will return a value for <code>bcadobepassresourceid</code> according to the following rules:</p>
+<ul>
+  <li>If a custom field value for <code>bcadobepassresourceid</code> exists on the video, the API will return the field-level value</li>
+  <li>If no value is set for the <code>bcadobepassresourceid</code> field, the API will return a calculated value based on the fields and XML format noted below.</li>
+</ul>
+<ol>
+  <li>The generated <code>bcadobepassresourceid</code> field should follow the MRSS format specified by Adobe and used in almost all integrations with Comcast.</li>
+</ol>
+</section>
+<section class="bcls-section">
+  <h2 id="configuring_the_player">Configuring the player</h2>
+  <p>The following code stub provides a model for configuring the Brightcove player for TVE.</p>
+  <pre class="line-numbers"><code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;TVE Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Make sure your player doesn't have a video associated with it
+  and don't use data-video-id to assign one. We'll request a video
+  from the catalog by hand, detect that it's TVE content, trigger TVE
+  authentication and then load the video into the player. --&gt;
+  &lt;video id="tve-player"
+    data-account="account1234"
+    data-player="player-id"
+    class="video-js"
+    controls&gt;
+  &lt;/video&gt;
+  &lt;script src="//players.brightcove.net/account1234/player-id_default/index.min.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+  var player = videojs('tve-player');
+  player.ready(function() {
+    player.catalog.getVideo('ref:tve-video', function(error, video) {
+      if (error) {
+        // showErrorMessage() would be defined by you somewhere else
+        // in the page
+        return showErrorMessage(error);
+      }
+      // You can tell whether a video is TVE protected by checking to
+      // see if the video sources contain URLs. If they don't, you need
+      // to authenticate your viewer and re-request the video with their
+      // TVE credentials.
+      if (video.sources && video.sources[0].src) {
+        // This is not a TVE video so it can be played back immediately
+        return player.catalog.load(video);
+      }
+      // From here on, we're definitely dealing with a TVE video.
+      // You need to provide an implementation for authenticateWithTVE()
+      // to get a TVE token. See the documentation from your TVE provider
+      // for details on how to do that.
+      autenticateWithTVE(function(error, tveToken) {
+        if (error) {
+          return showErorMessage(error);
+        }
+        // Now that we have the token, we can re-request the video and get playable URLs.
+        player.catalog.tveToken = tveToken;
+        player.catalog.getVideo('ref:tve-video', function(error, video) {
+          if (error) {
+            return showErrorMessage(error);
+          }
+          player.catalog.load(video);
+        });
+      });
+    });
+  });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</section>
