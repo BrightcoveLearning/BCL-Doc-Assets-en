@@ -111,7 +111,7 @@ var BCLS = ( function (window, document, creds) {
         httpRequest.send(requestData);
     };
     // init function to set up event listeners
-    init = function () {
+    function init() {
         // event listeners
         setRequest_btn.addEventListener("click", function () {
             // trim any leading/trailing spaces from the input strings
