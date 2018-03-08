@@ -2,15 +2,13 @@
 <section class="bcls-section">
 <h2 id="Introduction">Introduction</h2>
 
-<aside class="bcls-aside bcls-aside--information">The new media sharing is currently in Limited Availability. Contact your account manager or Support to request migrating to it.</aside>
-
 <p>Media sharing is a feature of Video Cloud that lets publishers share videos with other publishers, enabling you to more easily manage videos across multiple accounts. For example, publishers can keep a Master account of video content and then share videos out to other divisions or subsidiaries of the organization.</p>
 
 <p>Media sharing with the CMS API is a new version that makes some changes to how sharing works. To migrate your account to the new media sharing, first see <a href="/node/18452">Media Sharing Migration</a> to be sure you are ready, and then submit a request to Support.</p>
 
 <aside class="bcls-aside bcls-aside--information"><strong>Media sharing is available only for Video Cloud Enterprise and Pro customers with multiple accounts.</strong> If you are interested in upgrading your Video Cloud account, please contact Brightcove for more information.</aside>
 
-<aside class="bcls-aside bcls-aside--information">CMS API media sharing operations must be enabled for your account - contact Support to have them enabled.</aside>
+<aside class="bcls-aside bcls-aside--information">CMS API media sharing operations must be enabled for the master and for each affiliate account.  <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> if you need sharing enabled.</aside>
 </section>
 
 <section class="bcls-section">
@@ -182,30 +180,21 @@ video-cloud/sharing-relationships/delete</code></pre>
 
 <p>After the video has been shared, some changes to the video in the Master account are automatically inherited by the Affiliate accounts, and some are not.</p>
 
-
 <h4>Video assets</h4>
-
 
 <p><strong>Except for images</strong>, Master changes to the video assets are <strong>always</strong> inherited by Affiliates. Affiliates <strong>cannot change assets</strong> such as renditions, manifests, text tracks, or the digital master.</p>
 
-
 <p>Changes to images by the Master are inherited by the Affiliate <strong>unless the Affiliate has replaced the image(s)</strong>. Once an Affiliate changes an image, that image will no longer be inherited from the Master.</p>
-
 
 <h4>Video metadata</h4>
 
-
 <p>Any video metadata (such as the name, description, and reference id) can be modified by the Affiliate, and changes made on the Master video are <strong>not</strong> inherited by the Affiliate.</p>
-
 
 <h5 id="Resharing_videos">Resharing videos</h5>
 
-
 <p>Note, however, that if the Master <strong>re-shares</strong> the video (this can only be done through the CMS API, not in Studio), all assets and metadata (aside from data/time fields) will be shared to Affiliates, <strong>overwriting any changes the Affiliates have made</strong>.</p>
 
-
 <aside class="bcls-aside bcls-aside--information">Note that there are two ways to re-share, that have different consequences:
-
 <dl>
 	<dt>Master <em>un-shares</em> and then <em>re-shares</em> the video</dt>
 	<dd>In this case, the video shared earlier will be deleted from all Affiliate accounts on the un-share. When the Master shares the video again, a <em>new</em> video with a <em>new</em> unique id will be added to each affiliate account, bringing metadata and assets from the Master account as on the original share.</dd>
@@ -213,7 +202,6 @@ video-cloud/sharing-relationships/delete</code></pre>
 	<dd>In this case, all metadata and images from the Master copy of the video will be pushed to the Affiliate version, overwriting Affiliate changes, but the Affiliate video ids will <strong>not</strong> change.</dd>
 </dl>
 </aside>
-
 
 <aside class="bcls-aside bcls-aside--warning">Before you re-share a video, be sure that this is what you want to do, and that your Affiliates know what is going to happen!</aside>
 </section>
@@ -229,7 +217,7 @@ video-cloud/sharing-relationships/delete</code></pre>
     </figure> -->
 
 <p>Below is a summary of the operations for setting up a relationship (click on the operation name for more details):</p>
- <!-- table 2 -->
+<!-- table 2 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Setup Operations</caption>
@@ -314,23 +302,18 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h4>Notes</h4>
-
 
 <ul>
 	<li id="note2-1"><sup><strong>[2-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
 </ul>
 
-
 <h3>Sharing videos</h3>
-
 
 <p>Video sharing operations are performed by the Master account. The Affiliate account can accept the share (if <code>auto_accept</code> is set to <code>false</code>) and can update shared video metadata and images using the standard <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</p>
 
-
 <p>Here are the sharing operations that can be performed once a relationship is set up (click on an operation name for more details):</p>
- <!-- table 3 -->
+<!-- table 3 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Sharing Operations</caption>
@@ -409,12 +392,13 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">[
+			<pre class="line-numbers">
+<code class="language-json">[
 	{
 		"account_id": "57838016001",
 		"name": "default",
@@ -430,9 +414,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h4 id="Get_channel_details">Get channel details</h4>
- <!-- table 5 -->
+<!-- table 5 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Get channel details</caption>
@@ -447,12 +430,13 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
   "account_id": "57838016001",
   "name": "default",
   "enforce_custom_fields": false,
@@ -466,14 +450,12 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h5>Notes</h5>
-
 
 <ul>
 	<li id="note5-1"><sup><strong>[5-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
 </ul>
- <!-- table 6 --><!-- <h4 id="create_channel">Create channel</h4>
+<!-- table 6 --><!-- <h4 id="create_channel">Create channel</h4>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Create Channel</caption>
     <tbody class="bcls-table__body">
@@ -509,7 +491,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 </table> -->
 
 <h4 id="update_channel">Update channel</h4>
- <!-- table 7 -->
+<!-- table 7 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Create Channel</caption>
@@ -525,7 +507,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<th>Request body</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
 	"enforce_custom_fields" : true,
 	"enforce_geo" : true
 }</code></pre>
@@ -534,7 +517,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
 	"account_id": "57838016001",
 	"name": "default",
 	"enforce_custom_fields": true,
@@ -548,14 +532,12 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h5>Notes</h5>
-
 
 <ul>
 	<li id="note6-1"><sup><strong>[6-1]</strong></sup> Currently there is only one channel named <code>default</code></li>
 </ul>
- <!-- table 8 --><!-- <h4 id="Remove_channel">Remove channel</h4>
+<!-- table 8 --><!-- <h4 id="Remove_channel">Remove channel</h4>
 <table class="bcls-table">
     <caption class="bcls-caption--table">Remove Channel</caption>
     <tbody class="bcls-table__body">
@@ -585,7 +567,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <aside class="bcls-aside bcls-aside--warning">Note that this operation will fail if all affiliates have <strong>not</strong> been removed from the channel.</aside> -->
 
 <h4 id="List_channel_affiliates">List affiliates for channel</h4>
- <!-- table 9 -->
+<!-- table 9 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">List Channel Affiliates</caption>
@@ -600,12 +582,13 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">[
+			<pre class="line-numbers">
+<code class="language-json">[
 	{
 		"account_id": "20318290001",
 		<span class="bcls-highlight">"approved": false,</span>
@@ -627,12 +610,10 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <p>The value of the <code>approved</code> field indicates whether or not the Affiliate has approved the contract.</p>
 
-
 <h4 id="Add_affiliates">Add affiliate to channel</h4>
- <!-- table 10 -->
+<!-- table 10 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Add Affiliate</caption>
@@ -648,7 +629,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<th>Request body</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
   "account_id":"<span class="bcls-input">affiliate_account_id</span>"
 }</code></pre>
 			</td>
@@ -656,7 +638,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
 	"account_id": "1485884786001"
 }</code></pre>
 			</td>
@@ -664,9 +647,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h4 id="Remove_affiliate">Remove affiliate from channel</h4>
- <!-- table 11 -->
+<!-- table 11 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Remove Affiliate</caption>
@@ -681,7 +663,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
@@ -690,12 +672,10 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h3>Affiliate operations</h3>
 
-
 <h3 id="List_available_contracts">List available contracts</h3>
- <!-- table 12 -->
+<!-- table 12 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">List Contracts</caption>
@@ -710,12 +690,13 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">[
+			<pre class="line-numbers">
+<code class="language-json">[
 	{
 		"account_id": "1485884786001",
 		"channel": {
@@ -734,21 +715,17 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <p>The two essential fields in the response are:</p>
-
 
 <ul>
 	<li><code>approved</code> - when set to true, the contract is accepted by the Affiliate</li>
 	<li><code>auto-accept</code> - when set to true, videos shared through this contract will be automatically accepted by the Affiliate; otherwise, they must be approved one by one</li>
 </ul>
 
-
 <p>We will see how to update the contract below.</p>
 
-
 <h4 id="Get_specific_contract">Get contract for a specific account</h4>
- <!-- table 13 -->
+<!-- table 13 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Get Contract</caption>
@@ -763,12 +740,13 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
 	"account_id": "1485884786001",
 	"channel": {
 		"account_id": "57838016001",
@@ -785,9 +763,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h4 id="Accept_contract">Approve contract</h4>
- <!-- table 14 -->
+<!-- table 14 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Approve Contract</caption>
@@ -803,7 +780,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<th>Request body</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
   "approved": true,
   "auto_accept": true
 }</code></pre>
@@ -812,7 +790,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<th>Sample response</th>
 			<td>
-			<pre class="line-numbers"><code class="language-json">{
+			<pre class="line-numbers">
+<code class="language-json">{
 	"account_id": "1485884786001",
 	"channel": {
 		"account_id": "57838016001",
@@ -828,7 +807,6 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 	</tbody>
 </table>
-
 
 <p>If you include only <code>"approved":true</code>, each video will have to be approved individually.</p>
 </section>
@@ -860,7 +838,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
@@ -889,15 +867,12 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <h4 id="Share_video">Sharing (or resharing) a video</h4>
-
 
 <p>The request described below will share a video to one or more Affiliate accounts.</p>
 
-
 <aside class="bcls-aside bcls-aside--information">Remember that if the video has already been shared to an Affiliate, this request will <strong>reshare</strong> the video, and overwrite any changes the Affiliate has made to the video metadata!</aside>
- <!-- table 16 -->
+<!-- table 16 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Share Video</caption>
@@ -938,6 +913,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 ]</code></pre>
 
 			<p>Failure response</p>
+
 			<pre class="line-numbers">
 <code class="language-json">{
 "video_id": "5553744346001",
@@ -953,12 +929,9 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <p>Sharing will create a new video in the Affiliate's account. The <code>state</code> of the video share will be <code>PROCESSING</code> until the share is complete <strong>and</strong> the video is created in the Affiliate account. The Affiliate may still need to accept the video (if <code>auto_accept</code> is set to <code>false</code> on the contract by the Affiliate - see the previous section on setting up sharing).</p>
 
-
 <aside class="bcls-aside bcls-aside--information">A <code>GET</code> shares request by the Master account will not return the Affiliate video id until the share status is <code>COMPLETE</code>.</aside>
-
 
 <aside class="bcls-aside bcls-aside--warning">
 <p>Important notes:</p>
@@ -973,9 +946,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 </ul>
 </aside>
 
-
 <h4 id="Unshare_video_affiliate">Unsharing a video for an Affiliate</h4>
- <!-- table 17 -->
+<!-- table 17 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Unshare Video</caption>
@@ -990,7 +962,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 		</tr>
 		<tr>
 			<th>Request body</th>
-			<td></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th>Sample response</th>
@@ -999,9 +971,8 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <aside class="bcls-aside bcls-aside--warning">Note that un-sharing and re-sharing a video will result in the shared video having a different video id in the Affiliate account.</aside>
- <!-- table 18 --><!-- <h4 id="Unshare_video">Unsharing a video for all Affiliates</h4>
+<!-- table 18 --><!-- <h4 id="Unshare_video">Unsharing a video for all Affiliates</h4>
     <table class="bcls-table">
     <caption class="bcls-caption--table">Unshare Video</caption>
     <tbody class="bcls-table__body">
@@ -1028,12 +999,10 @@ video-cloud/sharing-relationships/delete</code></pre>
 
 <h3>Affiliate operations</h3>
 
-
 <h4 id="Accept_share">Accept shared video</h4>
 
-
 <p>To accept a shared video, the Affiliate updates the shared video, setting its <code>state</code> to <code>ACTIVE</code>. (Setting the <code>state</code> to <code>INACTIVE</code> rejects the share.)</p>
- <!-- table 19 -->
+<!-- table 19 -->
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Accept Shared Video</caption>
@@ -1145,15 +1114,11 @@ video-cloud/sharing-relationships/delete</code></pre>
 	</tbody>
 </table>
 
-
 <p>Set the <code>state</code> to <code>INACTIVE</code> to reject the share.</p>
-
 
 <p>Note that there is no special notification indicating that a video has been shared to your account. However, if you <a href="/node/18005">search videos</a> for <code>state:pending</code>, that will find any unaccepted shares. Alternatively, you can use the Shares Pending list in the Studio Media module to see and accept/reject pending shares:</p>
 
-
 <figure class="bcls-figure"><img class="bcls-image" alt="Pending Shares" src="//learning-services-media.brightcove.com/doc-assets/node/18325-media-sharing-cms-api/18325-pending-share.png" />
-
 <figcaption class="bcls-caption--image">Pending Shares</figcaption>
 </figure>
 </section>
