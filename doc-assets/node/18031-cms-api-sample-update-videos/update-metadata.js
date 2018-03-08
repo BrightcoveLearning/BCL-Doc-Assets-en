@@ -97,8 +97,8 @@ console.log('options', options);
    * @param  {String} options.url the full API request URL
    * @param  {String="GET","POST","PATCH","PUT","DELETE"} [options.requestType="GET"] HTTP type for the request
    * @param  {String} options.proxyURL proxyURL to send the request to
-   * @param  {String} options.client_id client id for the account (default is in the proxy)
-   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {String} [options.client_id] client id for the account (default is in the proxy)
+   * @param  {String} [options.client_secret] client secret for the account (default is in the proxy)
    * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
    * @param  {Function} [callback] callback function that will process the response
    */
@@ -138,6 +138,7 @@ console.log('options', options);
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
+console.log('options', options);
     httpRequest.send(JSON.stringify(options));
   }
 
