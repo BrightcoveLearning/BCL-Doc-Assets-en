@@ -55,14 +55,17 @@ var BCLS = ( function (window, document, creds) {
     };
     // function to set up request
     function setRequest() {
-
+      var responseParsed,
+        options = {};
         currentVideo = videoData[callNumber];
         if (isDefined(currentVideo)) {
             apiRequest = "https://cms.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + currentVideo.id;
             requestBody = '{"description":"' + currentVideo.description + '"}';
             // display the request URL
             apiRequest_field.textContent = apiRequest;
-            makeRequest(options, function(response) {});
+            makeRequest(options, function(response) {
+
+            });
         }
 
     };
