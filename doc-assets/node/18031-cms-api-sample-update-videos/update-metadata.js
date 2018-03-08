@@ -29,29 +29,6 @@ var BCLS = (function(window, document, creds) {
     return true;
   }
 
-  // function to remove spaces from string
-  function cleanString(str) {
-    // remove spaces
-    str = str.replace(/\s/g, "");
-    return str;
-  };
-  // clean up data before submitting
-  function cleanUpData() {
-    var i, iMax, item;
-    iMax = videoData.length;
-    for (i = 0; i < iMax; i++) {
-      item = videoData[i];
-      // truncate over-long descriptions
-      if (item.description.length > 120) {
-        item.description = item.description.substr(0, 250) + "...";
-      }
-      // use name for missing descriptions
-      if (item.description === "") {
-        item.description = item.name;
-      }
-    }
-    // console.log("videoData Cleaned", videoData);
-  };
   // function to set up request
   function setRequest(type) {
     var responseParsed,
@@ -66,7 +43,7 @@ var BCLS = (function(window, document, creds) {
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + options.account_id + '/videos?limit=5&offset=' + offset;
         // display the request URL
         apiRequest_field.textContent = options.url;
-
+console.log('options', options);
         makeRequest(options, function(response)) {
           responseParsed = JSON.parse(response);
           response.textContent = JSON.stringify(responseParsed, null, '  ');
@@ -99,15 +76,14 @@ var BCLS = (function(window, document, creds) {
             setRequest('updateVideo');
           }
         });
-
+      }
         break;
       default:
 
     }
 
-    }
+  }
 
-  };
 
   /**
    * send API request to the proxy
@@ -123,7 +99,6 @@ var BCLS = (function(window, document, creds) {
   function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
       response,
-      requestParams,
       dataString,
       proxyURL = options.proxyURL,
       // response handler
