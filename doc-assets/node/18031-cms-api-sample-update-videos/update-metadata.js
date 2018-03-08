@@ -75,7 +75,7 @@ var BCLS = (function(window, document, creds) {
   };
   // function to set the request
   logResponse = function(data) {
-    response.innerHTML += data + ",<br />";
+    response.innerHTML += data + ",<br>";
   };
   // function to make API request
   function makeRequest() {
