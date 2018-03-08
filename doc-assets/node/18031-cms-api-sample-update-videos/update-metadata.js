@@ -40,7 +40,7 @@ var BCLS = (function(window, document) {
     switch (type) {
       case 'getVideos':
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + options.account_id + '/videos?limit=5&offset=' + offset;
-        options.requestMethod = 'GET';
+        options.requestType = 'GET';
         // display the request URL
         apiRequest_field.textContent = options.url;
         makeRequest(options, function(response) {
@@ -65,7 +65,7 @@ var BCLS = (function(window, document) {
         options.url = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
         requestBody = currentVideo;
         options.requestBody = requestBody;
-        options.requestMethod = "PATCH"
+        options.requestType = "PATCH"
         // display the request URL
         apiRequest_field.textContent = options.url;
         makeRequest(options, function(response) {
@@ -89,7 +89,7 @@ var BCLS = (function(window, document) {
    * send API request to the proxy
    * @param  {Object} options for the request
    * @param  {String} options.url the full API request URL
-   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} [options.requestType="GET"] HTTP type for the request
    * @param  {String} options.proxyURL proxyURL to send the request to
    * @param  {String} options.client_id client id for the account (default is in the proxy)
    * @param  {String} options.client_secret client secret for the account (default is in the proxy)
