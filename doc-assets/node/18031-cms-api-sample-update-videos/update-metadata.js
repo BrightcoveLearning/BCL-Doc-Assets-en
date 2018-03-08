@@ -14,8 +14,7 @@ var BCLS = (function(window, document, creds) {
     requestBody,
     videoData_display = document.getElementById("videoData"),
     videoData = [],
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php'
-    t1,
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     currentVideo;
   /**
    * tests for all the ways a variable might be undefined or not have a value
