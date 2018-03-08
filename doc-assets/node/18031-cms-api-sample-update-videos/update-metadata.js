@@ -49,7 +49,7 @@ console.log('options', options);
           response.textContent = JSON.stringify(responseParsed, null, '  ');
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
-            var 0 = {},
+            var o = {},
               video = responseParsed[i],
               date = new Date().toISOString();
               o.id = video.id;
