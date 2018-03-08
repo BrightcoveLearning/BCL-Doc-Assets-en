@@ -6,7 +6,7 @@ var BCLS = (function(window, document) {
     apiRequest_field = document.getElementById("apiRequest"),
     getVideos_button = document.getElementById('getVideos'),
     submit_button = document.getElementById("submit"),
-    response = document.getElementById("response"),
+    response_display = document.getElementById("response"),
     totalVideos = 0,
     limit = 5,
     offset = 0,
@@ -42,10 +42,9 @@ var BCLS = (function(window, document) {
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + options.account_id + '/videos?limit=5&offset=' + offset;
         // display the request URL
         apiRequest_field.textContent = options.url;
-console.log('options', options);
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
-          response.textContent = JSON.stringify(responseParsed, null, '  ');
+          response_display.textContent = JSON.stringify(responseParsed, null, '  ');
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
             var o = {},
@@ -69,7 +68,7 @@ console.log('options', options);
         apiRequest_field.textContent = options.url;
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
-          response.textContent = JSON.stringify(responseParsed, null, '  ');
+          response_display.textContent = JSON.stringify(responseParsed, null, '  ');
           callNumber++;
           if (callNumber < totalVideos) {
             setRequest('updateVideo');
