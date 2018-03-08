@@ -70,6 +70,7 @@ var BCLS = (function(window, document) {
         options.requestType = "PATCH"
         // display the request URL
         apiRequest_field.textContent = options.url;
+console.log('options', options);
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
           response_display.textContent = JSON.stringify(responseParsed, null, '  ');
