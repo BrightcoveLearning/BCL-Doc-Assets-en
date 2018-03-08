@@ -52,13 +52,13 @@ console.log('options', options);
             var o = {},
               video = responseParsed[i],
               date = new Date().toISOString();
-              o.id = video.id;
-              o.name - video.name;
-              o.description = 'Updated at: ' + date;
-              videoData.push(o);
+            o.id = video.id;
+            o.name - video.name;
+            o.description = 'Updated at: ' + date;
+            videoData.push(o);
           }
           videoData_display.textContent = JSON.stringify(videoData, null, '  ');
-        }
+        });
         break;
       case 'updateVideo':
       var currentVideo = videoData[callNumber];
