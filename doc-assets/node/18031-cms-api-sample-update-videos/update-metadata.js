@@ -16,6 +16,7 @@ var BCLS = (function(window, document, creds) {
     requestBody,
     videoData_display = document.getElementById("videoData"),
     videoData,
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php'
     t1,
     currentVideo;
   /**
@@ -56,11 +57,18 @@ var BCLS = (function(window, document, creds) {
   // function to set up request
   function setRequest() {
     var responseParsed,
-      options = {};
+      options = {},
+      requestBody = {};
+    options.account_id = account_id;
+    options.client_id = client_id;
+    options.client_secret = client_secret;
+    options.proxyURL = proxyURL;
     currentVideo = videoData[callNumber];
     if (isDefined(currentVideo)) {
-      apiRequest = "https://cms.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + currentVideo.id;
-      requestBody = '{"description":"' + currentVideo.description + '"}';
+      apiRequest = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
+      requestBody.description = currentVideo.description
+      options.requestBody = requestBody;
+      options.url = apiRequest;
       // display the request URL
       apiRequest_field.textContent = apiRequest;
       makeRequest(options, function(response) {
