@@ -62,7 +62,7 @@ var BCLS = (function(window, document) {
       var currentVideo = videoData[callNumber];
       if (isDefined(currentVideo)) {
         options.url = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
-        requestBody.description = currentVideo.description
+        requestBody = currentVideo;
         options.requestBody = requestBody;
         // display the request URL
         apiRequest_field.textContent = options.url;
