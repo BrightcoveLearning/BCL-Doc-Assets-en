@@ -64,6 +64,8 @@ var BCLS = (function(window, document) {
       if (isDefined(currentVideo)) {
         options.url = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
         requestBody = currentVideo;
+        // request body must not contain the video id
+        delete requestBody.id;
         options.requestBody = requestBody;
         options.requestType = "PATCH"
         // display the request URL
