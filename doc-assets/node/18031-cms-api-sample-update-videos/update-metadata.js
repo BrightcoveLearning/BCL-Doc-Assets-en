@@ -1,4 +1,4 @@
-var BCLS = (function(window, document, creds) {
+var BCLS = (function(window, document) {
   var account_id_field = document.getElementById("account_id"),
     account_id = '57838016001',
     setRequest_btn = document.getElementById("setRequest"),
