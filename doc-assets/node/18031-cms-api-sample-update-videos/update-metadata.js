@@ -52,7 +52,7 @@ console.log('options', options);
               video = responseParsed[i],
               date = new Date().toISOString();
             o.id = video.id;
-            o.name - video.name;
+            o.name = video.name;
             o.description = 'Updated at: ' + date;
             videoData.push(o);
           }
