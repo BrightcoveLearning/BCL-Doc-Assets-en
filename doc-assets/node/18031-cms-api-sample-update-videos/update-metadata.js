@@ -4,6 +4,7 @@ var BCLS = (function(window, document) {
     setRequest_btn = document.getElementById("setRequest"),
     apiRequest = null,
     apiRequest_field = document.getElementById("apiRequest"),
+    apiRequestBody = document.getElementById('apiRequestBody'),
     getVideos_button = document.getElementById('getVideos'),
     submit_button = document.getElementById("submit"),
     response_display = document.getElementById("response"),
@@ -68,8 +69,9 @@ var BCLS = (function(window, document) {
         delete requestBody.id;
         options.requestBody = requestBody;
         options.requestType = "PATCH"
-        // display the request URL
+        // display the request URL and body
         apiRequest_field.textContent = options.url;
+        apiRequestBody.textContent = JSON.stringify(options.requestBody, null, '  ');
 console.log('options', options);
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
