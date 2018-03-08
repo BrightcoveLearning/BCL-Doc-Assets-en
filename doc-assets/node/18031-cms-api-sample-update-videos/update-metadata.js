@@ -40,6 +40,7 @@ var BCLS = (function(window, document) {
     switch (type) {
       case 'getVideos':
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + options.account_id + '/videos?limit=5&offset=' + offset;
+        options.requestMethod = 'GET';
         // display the request URL
         apiRequest_field.textContent = options.url;
         makeRequest(options, function(response) {
@@ -64,6 +65,7 @@ var BCLS = (function(window, document) {
         options.url = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
         requestBody = currentVideo;
         options.requestBody = requestBody;
+        options.requestMethod = "PATCH"
         // display the request URL
         apiRequest_field.textContent = options.url;
         makeRequest(options, function(response) {
