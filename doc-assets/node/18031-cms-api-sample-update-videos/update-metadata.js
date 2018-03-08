@@ -1,21 +1,19 @@
 var BCLS = (function(window, document, creds) {
   var account_id_field = document.getElementById("account_id"),
-    account_id,
-    client_id_field = document.getElementById("client_id"),
-    client_id = null,
-    client_secret_field = document.getElementById("client_secret"),
-    client_secret = null,
+    account_id = '57838016001',
     setRequest_btn = document.getElementById("setRequest"),
     apiRequest = null,
     apiRequest_field = document.getElementById("apiRequest"),
+    getVideos_button = document.getElementById('getVideos'),
     submit_button = document.getElementById("submit"),
     response = document.getElementById("response"),
     totalVideos = 0,
+    limit = 5,
     offset = 0,
     callNumber = 0,
     requestBody,
     videoData_display = document.getElementById("videoData"),
-    videoData,
+    videoData = [],
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php'
     t1,
     currentVideo;
@@ -55,29 +53,58 @@ var BCLS = (function(window, document, creds) {
     // console.log("videoData Cleaned", videoData);
   };
   // function to set up request
-  function setRequest() {
+  function setRequest(type) {
     var responseParsed,
       options = {},
-      requestBody = {};
+      requestBody = {},
+      i,
+      iMax;
     options.account_id = account_id;
-    options.client_id = client_id;
-    options.client_secret = client_secret;
     options.proxyURL = proxyURL;
-    currentVideo = videoData[callNumber];
-    if (isDefined(currentVideo)) {
-      apiRequest = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
-      requestBody.description = currentVideo.description
-      options.requestBody = requestBody;
-      options.url = apiRequest;
-      // display the request URL
-      apiRequest_field.textContent = apiRequest;
-      makeRequest(options, function(response) {
-        responseParsed = JSON.parse(response);
-        callNumber++;
-        if (callNumber < totalVideos) {
-          setRequest();
+    switch (type) {
+      case 'getVideos':
+        options.url = 'https://cms.api.brightcove.com/v1/accounts/' + options.account_id + '/videos?limit=5&offset=' + offset;
+        // display the request URL
+        apiRequest_field.textContent = options.url;
+
+        makeRequest(options, function(response)) {
+          responseParsed = JSON.parse(response);
+          response.textContent = JSON.stringify(responseParsed, null, '  ');
+          iMax = responseParsed.length;
+          for (i = 0; i < iMax; i++) {
+            var 0 = {},
+              video = responseParsed[i],
+              date = new Date().toISOString();
+              o.id = video.id;
+              o.name - video.name;
+              o.description = 'Updated at: ' + date;
+              videoData.push(o);
+          }
+          videoData_display.textContent = JSON.stringify(videoData, null, '  ');
         }
-      });
+        break;
+      case 'updateVideo':
+      var currentVideo = videoData[callNumber];
+      if (isDefined(currentVideo)) {
+        options.url = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
+        requestBody.description = currentVideo.description
+        options.requestBody = requestBody;
+        // display the request URL
+        apiRequest_field.textContent = options.url;
+        makeRequest(options, function(response) {
+          responseParsed = JSON.parse(response);
+          response.textContent = JSON.stringify(responseParsed, null, '  ');
+          callNumber++;
+          if (callNumber < totalVideos) {
+            setRequest('updateVideo');
+          }
+        });
+
+        break;
+      default:
+
+    }
+
     }
 
   };
@@ -136,17 +163,15 @@ var BCLS = (function(window, document, creds) {
   // init function to set up event listeners
   function init() {
     // event listeners
+    getVideos_button.addEventListener('click', function() {
+      setRequest('getVideos');
+    });
     setRequest_btn.addEventListener("click", function() {
-      // trim any leading/trailing spaces from the input strings
-      account_id = cleanString(account_id_field.value) || creds.account_id;
-      client_id = cleanString(client_id_field.value) || creds.client_id;
-      client_secret = cleanString(client_secret_field.value) || creds.client_secret;
       // get and clean up video data
       videoData = JSON.parse(videoData_display.value);
       totalVideos = videoData.length;
-      cleanUpData();
       // set up the request
-      setRequest();
+      setRequest('updateVideo');
     });
   }
   // initialize - set up data
