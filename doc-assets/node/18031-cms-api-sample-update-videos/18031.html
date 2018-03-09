@@ -7,31 +7,9 @@
 <p>Since the aim is just to show the logic, we will just update one bit of metadata for the videos: the description.</p>
 </section>
 
-<section class="bcls-section">
-<h2 id="dataInput">Inputs for the Update</h2>
 
-<fieldset class="bcls-fieldset"><legend>Videos to Update</legend>
 
-<p><button class="bcls-button" id="getVideos">Get Videos</button></p>
 
-<p>Video metadata for update:<textarea id="videoData" class="bcls-code" style="height:20em;">Video data for the update will appear here.</textarea></p>
-
-<p><button id="setRequest" class="bcls-button">Update the videos</button></p>
-</fieldset>
-</section>
-
-<section class="bcls-section">
-<h2 id="outputLog">Results</h2>
-
-<fieldset class="bcls-fieldset"><legend>Outputs</legend>
-
-<p>API request:<textarea id="apiRequest" class="bcls-code"></textarea></p>
-<p>API request body:<textarea id="apiRequestBody" class="bcls-code"></textarea></p>
-
-<pre>
-<code id="response">Response will appear here...</code></pre>
-</fieldset>
-</section>
 
 <section class="bcls-section">
 <h2 id="sampleCode">Code for the sample</h2>
@@ -42,144 +20,7 @@
 
 <h3>JavaScript code:</h3>
 
-<pre class="line-numbers">
-<code class="language-javascript">var BCLS = ( function (window, document, creds) {
-    var account_id_field = document.getElementById("account_id"),
-        account_id,
-        client_id_field = document.getElementById("client_id"),
-        client_id = null,
-        client_secret_field = document.getElementById("client_secret"),
-        client_secret = null,
-        setRequest_btn = document.getElementById("setRequest"),
-        apiRequest = null,
-        apiRequest_field = document.getElementById("apiRequest"),
-        submit_button = document.getElementById("submit"),
-        response = document.getElementById("response"),
-        totalVideos = 0,
-        offset = 0,
-        callNumber = 0,
-        requestBody,
-        videoData_display = document.getElementById("videoData"),
-        videoData,
-        t1,
-        currentVideo,
-        // functions
-        isDefined,
-        cleanString,
-        cleanUpData,
-        submitRequest,
-        setRequest,
-        logResponse,
-        init;
-    // is defined
-    isDefined = function(x){
-        if(x !== "" &amp;&amp; x !== null &amp;&amp; x !== undefined){
-            return true;
-        } else{
-            return false;
-        }
-    };
-    // function to remove spaces from string
-    cleanString = function (str) {
-        // remove spaces
-        str = str.replace(/\s/g, "");
-        return str;
-    };
-    // clean up data before submitting
-    cleanUpData = function () {
-        var i, iMax, item;
-        iMax = videoData.length;
-        for (i = 0; i &lt; iMax; i++) {
-            item = videoData[i];
-            // truncate over-long descriptions
-            if (item.description.length &gt; 120) {
-                item.description = item.description.substr(0, 250) + "...";
-            }
-            // use name for missing descriptions
-            if (item.description === "") {
-                item.description = item.name;
-            }
-        }
-        // console.log("videoData Cleaned", videoData);
-    };
-    // function to set up request
-    setRequest = function () {
-
-        currentVideo = videoData[callNumber];
-        if (isDefined(currentVideo)) {
-            apiRequest = "https://cms.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + currentVideo.id;
-            requestBody = '{"description":"' + currentVideo.description + '"}';
-            // display the request URL
-            apiRequest_field.textContent = apiRequest;
-            submitRequest();
-        }
-
-    };
-    // function to set the request
-    logResponse = function (data) {
-        response.innerHTML += data + ",
-";
-    };
-    // function to make API request
-    submitRequest = function () {
-        var httpRequest = new XMLHttpRequest(),
-            proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-            requestData,
-            getResponse = function () {
-                try {
-                    if (httpRequest.readyState === 4) {
-                      if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
-                        logResponse(httpRequest.responseText);
-                        if (callNumber &lt; totalVideos) {
-                            callNumber++;
-                            setRequest();
-                        }
-                      } else {
-                        alert("There was a problem with the request. Request returned " + httpRequest.status);
-                      }
-                    }
-                  }
-                  catch(e) {
-                    alert('Caught Exception: ' + e);
-                  }
-            };
-        if (account_id === null || client_id === null || client_secret === null) {
-            alert("You must provide an account id, client id, and client secret");
-            return false;
-        }
-        // get latest request URL in case use edited it
-        apiRequest = cleanString(apiRequest_field.value);
-        // set up request data
-        requestData = "client_id=" + client_id + "&amp;client_secret=" + client_secret + "&amp;url=" + encodeURIComponent(apiRequest) + "&amp;requestBody=" + encodeURIComponent(requestBody) + "&amp;requestType=PATCH";
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open("POST", proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestData);
-    };
-    // init function to set up event listeners
-    init = function () {
-        // event listeners
-        setRequest_btn.addEventListener("click", function () {
-            // trim any leading/trailing spaces from the input strings
-            account_id = cleanString(account_id_field.value) || creds.account_id;
-            client_id = cleanString(client_id_field.value) || creds.client_id;
-            client_secret = cleanString(client_secret_field.value) || creds.client_secret;
-            // get and clean up video data
-            videoData = JSON.parse(videoData_display.value);
-            totalVideos = videoData.length;
-            cleanUpData();
-            // set up the request
-            setRequest();
-        });
-    }
-    // initialize - set up data
-    init();
-
-})(window, document, creds);</code></pre>
+<p>All HTML, CSS, and JavaScript code can be found in the codepen.</p>
 
 <h3>Proxy</h3>
 
