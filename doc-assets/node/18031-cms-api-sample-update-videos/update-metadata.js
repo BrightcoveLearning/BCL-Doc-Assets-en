@@ -1,7 +1,7 @@
 var BCLS = (function(window, document) {
   var account_id_field = document.getElementById("account_id"),
     account_id = '57838016001',
-    setRequest_btn = document.getElementById("setRequest"),
+    setRequest_button = document.getElementById("setRequest"),
     apiRequest = null,
     apiRequest_field = document.getElementById("apiRequest"),
     apiRequestBody = document.getElementById('apiRequestBody'),
@@ -147,7 +147,7 @@ console.log('options', options);
     getVideos_button.addEventListener('click', function() {
       setRequest('getVideos');
     });
-    setRequest_btn.addEventListener("click", function() {
+    setRequest_button.addEventListener("click", function() {
       // get and clean up video data
       videoData = JSON.parse(videoData_display.value);
       totalVideos = videoData.length;
