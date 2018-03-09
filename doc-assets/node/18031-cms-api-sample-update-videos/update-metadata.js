@@ -55,7 +55,6 @@ var BCLS = (function(window, document) {
             o.id = video.id;
             o.name = video.name;
             o.description = 'Updated at: ' + date;
-            o.description = 'foo';
             videoData.push(o);
           }
           videoData_display.textContent = JSON.stringify(videoData, null, '  ');
