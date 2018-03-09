@@ -67,7 +67,7 @@ var BCLS = (function(window, document) {
         requestBody = currentVideo;
         // request body must not contain the video id
         delete requestBody.id;
-        options.requestBody = requestBody;
+        options.requestBody = JSON.stringify(requestBody);
         options.requestType = "PATCH"
         // display the request URL and body
         apiRequest_field.textContent = options.url;
