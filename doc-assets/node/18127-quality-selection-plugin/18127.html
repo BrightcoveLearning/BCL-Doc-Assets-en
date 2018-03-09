@@ -1,0 +1,211 @@
+<article class="bcls-article">
+<aside class="bcls-aside bcls-aside--information">
+<p>Note: The Quality Selection Plugin does not work with all video sources. The following points clarify the situation:</p>
+
+<ul>
+	<li>This plugin only works with HLS/DASH sources.</li>
+	<li>This plugin will display the resolution information for any M3U8 master file that includes the resolution info for the child renditions. If no resolution is specified, the plugin will show HD/SD instead.</li>
+	<li>It does not matter where the HLS M3U8 file is hosted or whether it is LIVE or VOD.</li>
+	<li>This plugin does NOT work with MP4. If you have five MP4 sources, and only one HLS source, you will not see the quality selector appear showing the different MP4 qualities.</li>
+</ul>
+</aside>
+
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+
+<p>The following is a Brightcove Player that is using the quality selection plugin. Once you play the video, in the controlbar you will see the following icon: <img class="bcls-image" alt="" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/icon-in-controlbar.png" />. Once you make a selection, the gear will spin until the new quality is rendered, for DASH sources, or until the the new quality is being loaded, for HLS sources. More information is provided below on the quality options you see for the selection, and gear spinning behavior.</p>
+
+<aside class="bcls-aside bcls-aside--information">If you have a fast Internet connection, you may have to make a number of selections before you see the gear spin as changes take place quickly with HLS renditions, which this video is using.</aside>
+<iframe src="//players.brightcove.net/1752604059001/B1CWQFiPZ_default/index.html?videoId=5323141859001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="640" height="360"></iframe></section>
+
+<section class="bcls-section">
+<h2 id="Quality_options">Quality options</h2>
+
+<p>When the gear icon is clicked, a number of quality options are displayed for user selection. For example, a video with the following renditions:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="All video renditions" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/video-renditions.png" /></figure>
+
+<p>will create the following quality options:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Quality options" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/quality-options.png" /></figure>
+
+<p>Here is how those options are built and then a specific rendition selected:</p>
+
+<ul>
+	<li>All renditions are grouped based on lines of horizontal resolution (e.g. 270p, 360p, 540p, 720p and 1080p in the example above) and used as quality options.</li>
+	<li>After user selection of a group, if there are multiple renditions in the selected group the standard adaptive bitrate streaming algorithm then chooses the optimal rendition in the selected resolution group. The process is how rendition selection currently works, but only within a selected resolution group.</li>
+	<li>If resolution information is not available, options will fallback to show options <strong>SD</strong> and <strong>HD</strong>, for Standard Definition and High Definition respectively. The plugin will use bitrate information for each rendition to determine whether it is SD or HD, using a configurable dividing line.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Gear_spinning">Gear spinning</h2>
+
+<p>The gear icon spinning represents changes to the rendition used. The rules for spinning differ for DASH and HLS sources:</p>
+
+<ul>
+	<li>For DASH sources, the gear will spin until the quality has changed in the player and being rendered on screen.</li>
+	<li>For HLS sources, the gear stops spinning when the internal algorithm has decided to start LOADING the new quality, not when it has been rendered. This decision happens quickly, so it is probable you won't see the spinning action that frequently with an HLS source.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Implement_using_Players_module">Implement using Players module</h2>
+
+<p>To implement the quality selection plugin using the Players module, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the <strong>Players</strong> module and locate the player.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>SETTINGS</strong> section and click <strong>Edit</strong>.</li>
+	<li>Set the <strong>Show Quality Selector</strong> to <strong>Yes</strong>:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Configuration show quality selector" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/studio-show-quality-selector.png" /></figure>
+	</li>
+	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configuration_options">Configuration options</h2>
+
+<p>The following options are available to configure the plugin:</p>
+
+<ul>
+	<li>
+	<h3><code>defaultResolution</code></h3>
+
+	<ul>
+		<li>Type: <code>String</code></li>
+		<li>Default: <code>none</code></li>
+		<li>Defines the default resolution or resolution mapping to use. Pass it either the horizontal resolution or <strong>SD</strong>/<strong>HD</strong>.</li>
+	</ul>
+	</li>
+	<li>
+	<h3><code>sdBitrateLimit</code></h3>
+
+	<ul>
+		<li>Type: <code>Number</code></li>
+		<li>Default: <code>2000000</code></li>
+		<li>Defines the upper bitrate limit (exclusive) for considering a rendition <strong>SD</strong>.</li>
+	</ul>
+	</li>
+	<li>
+	<h3><code>useResolutionLabels</code></h3>
+
+	<ul>
+		<li>Type: <code>Boolean</code></li>
+		<li>Default: <code>true</code></li>
+		<li>When <code>true</code>, the plugin will attempt to categorize renditions by lines of horizontal resolution when available. Set to false to always use <strong>SD</strong>/<strong>HD</strong> categorization.</li>
+	</ul>
+
+	<p>To implement the <code>useResolutionLabels</code> option, you would enter the following in the plugin's options in Studio:</p>
+
+	<pre class="line-numbers">
+                  <code class="language-json">{
+                    "useResolutionLabels": false
+                  }</code></pre>
+
+	<p>The resulting quality options would appear as follows:</p>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="Options SD and HD only" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/quality-options-sd-hd-only.png" /></figure>
+
+	<p>The player would then select the optimal rendition from the selected group. As detailed in this section, <code>sdBitrateLimit</code> is configurable to determine the renditions classified as <strong>SD</strong> and <strong>HD.</strong></p>
+	</li>
+	<li>
+	<h3><code>resolutionLabelBitrates</code></h3>
+
+	<ul>
+		<li>Type: <code>Boolean</code></li>
+		<li>Default: <code>false</code></li>
+		<li>When <code>true</code>, the plugin will attach bitrate information to the resolution labels (e.g. 720p @ 13806 kbps). This option has no effect when <code>useResolutionLabels</code> is false or when resolution information is unavailable.</li>
+	</ul>
+
+	<p>When this configuration option is set the <code>true</code>, the quality selector will appear as follows:</p>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="All video bitrates" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/bitrates-displayed.png" /></figure>
+
+	<p>To configure this, go to Studio's <strong>PLAYERS</strong> module and select the player to configure. In the <strong>PLUGINS</strong> section add the configuration in the <strong>Name, Options (JSON)</strong> section, as shown here:</p>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="All video bitrates" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/bitrates-json.png" /></figure>
+	</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Known_issues">Known issues</h2>
+
+<ul>
+	<li>The plugin functions with Brightcove Player version 5.17.0 and later. Functionality with earlier versions of the player is not supported.</li>
+	<li>The quality selector does not work in Safari.</li>
+	<li>The quality selector does not appear in iOS.</li>
+	<li>Setting the source in the player configuration and building with single video template will cause the quality menu to not be initialized properly. This is because the source will be set through a call to the <code>videojs</code> constructor, which does not have access to the player or plugins. The source should be set by calling <code>player.src()</code>. This does not affect Video Cloud users.</li>
+	<li>The quality menu will not be displayed when using DASH content with Silverlight.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Changelog">Changelog</h2>
+
+<h4>5 Sep 2017</h4>
+
+<p>v1.2.0</p>
+
+<ul>
+	<li>Added enhancement to allow passing default preferred rendition to use</li>
+</ul>
+
+<h4>18 Aug 2017</h4>
+
+<p>v1.1.1</p>
+
+<ul>
+	<li>Fixed an issue with plugin registry integration</li>
+</ul>
+
+<h4>2017</h4>
+
+<p>v1.1.0</p>
+
+<ul>
+	<li>Added an option to display bitrate data in resolution menu</li>
+	<li>Updated README; added unit test for <code>resolutionLabelBitrates</code></li>
+	<li>Fixed style for cog icon</li>
+	<li>Updated alignment for vjs-control-text</li>
+	<li>Added support for plugin registry</li>
+</ul>
+
+<h4>1 Mar 2017</h4>
+
+<p>v1.0.3</p>
+
+<ul>
+	<li>Support Video.js 5 &amp; 6</li>
+</ul>
+
+<h4>13 Feb 2017</h4>
+
+<p>v1.0.2</p>
+
+<ul>
+	<li>Added Graphite skin compatibility</li>
+	<li>Added IE8 support</li>
+</ul>
+
+<h4>2 Feb 2017</h4>
+
+<p>v1.0.1</p>
+
+<ul>
+	<li>Update <strong>4K</strong> and <strong>HD</strong> flag styles to be circular</li>
+	<li>Add <strong>p</strong> to the end of resolution labels</li>
+</ul>
+
+<h4>17 Jan 2017</h4>
+
+<p>v1.0.0</p>
+
+<ul>
+	<li>Initial Release</li>
+</ul>
+</section>
+</article>
