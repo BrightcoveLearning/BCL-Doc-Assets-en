@@ -72,7 +72,6 @@ var BCLS = (function(window, document) {
         // display the request URL and body
         apiRequest_field.textContent = options.url;
         apiRequestBody.textContent = JSON.stringify(options.requestBody, null, '  ');
-console.log('options', options);
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
           response_display.textContent = JSON.stringify(responseParsed, null, '  ');
@@ -137,7 +136,6 @@ console.log('options', options);
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
-console.log('options', options);
     httpRequest.send(JSON.stringify(options));
   }
 
