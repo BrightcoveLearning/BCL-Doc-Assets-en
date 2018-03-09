@@ -1,11 +1,11 @@
 var BCLS = (function(window, document) {
   var account_id_field = document.getElementById("account_id"),
-    account_id = '57838016001',
+    account_id = "57838016001",
     setRequest_button = document.getElementById("setRequest"),
     apiRequest = null,
     apiRequest_field = document.getElementById("apiRequest"),
-    apiRequestBody = document.getElementById('apiRequestBody'),
-    getVideos_button = document.getElementById('getVideos'),
+    apiRequestBody = document.getElementById("apiRequestBody"),
+    getVideos_button = document.getElementById("getVideos"),
     submit_button = document.getElementById("submit"),
     response_display = document.getElementById("response"),
     totalVideos = 0,
@@ -15,7 +15,8 @@ var BCLS = (function(window, document) {
     requestBody,
     videoData_display = document.getElementById("videoData"),
     videoData = [],
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+    proxyURL =
+      "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
     currentVideo;
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -23,7 +24,7 @@ var BCLS = (function(window, document) {
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-    if (x === '' || x === null || x === undefined) {
+    if (x === "" || x === null || x === undefined) {
       return false;
     }
     return true;
@@ -39,14 +40,22 @@ var BCLS = (function(window, document) {
     options.account_id = account_id;
     options.proxyURL = proxyURL;
     switch (type) {
-      case 'getVideos':
-        options.url = 'https://cms.api.brightcove.com/v1/accounts/' + options.account_id + '/videos?limit=5&offset=' + offset;
-        options.requestType = 'GET';
+      case "getVideos":
+        options.url =
+          "https://cms.api.brightcove.com/v1/accounts/" +
+          options.account_id +
+          "/videos?limit=5&offset=" +
+          offset;
+        options.requestType = "GET";
         // display the request URL
         apiRequest_field.textContent = options.url;
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
-          response_display.textContent = JSON.stringify(responseParsed, null, '  ');
+          response_display.textContent = JSON.stringify(
+            responseParsed,
+            null,
+            "  "
+          );
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
             var o = {},
@@ -54,40 +63,45 @@ var BCLS = (function(window, document) {
               date = new Date().toISOString();
             o.id = video.id;
             o.name = video.name;
-            o.description = 'Updated at: ' + date;
+            o.description = "Updated at: " + date;
             videoData.push(o);
           }
-          videoData_display.textContent = JSON.stringify(videoData, null, '  ');
+          videoData_display.textContent = JSON.stringify(videoData, null, "  ");
         });
         break;
-      case 'updateVideo':
-      var currentVideo = videoData[callNumber];
-      if (isDefined(currentVideo)) {
-        options.url = "https://cms.api.brightcove.com/v1/accounts/" + options.account_id + "/videos/" + currentVideo.id;
-        requestBody = currentVideo;
-        // request body must not contain the video id
-        delete requestBody.id;
-        options.requestBody = JSON.stringify(requestBody);
-        options.requestType = "PATCH"
-        // display the request URL and body
-        apiRequest_field.textContent = options.url;
-        apiRequestBody.textContent = JSON.stringify(options.requestBody, null, '  ');
-        makeRequest(options, function(response) {
-          responseParsed = JSON.parse(response);
-          response_display.textContent = JSON.stringify(responseParsed, null, '  ');
-          callNumber++;
-          if (callNumber < totalVideos) {
-            setRequest('updateVideo');
-          }
-        });
-      }
+      case "updateVideo":
+        var currentVideo = videoData[callNumber];
+        if (isDefined(currentVideo)) {
+          options.url =
+            "https://cms.api.brightcove.com/v1/accounts/" +
+            options.account_id +
+            "/videos/" +
+            currentVideo.id;
+          requestBody = currentVideo;
+          // request body must not contain the video id
+          delete requestBody.id;
+          options.requestBody = JSON.stringify(requestBody);
+          options.requestType = "PATCH";
+          // display the request URL and body
+          apiRequest_field.textContent = options.url;
+          apiRequestBody.textContent = JSON.stringify(requestBody, null, "  ");
+          makeRequest(options, function(response) {
+            responseParsed = JSON.parse(response);
+            response_display.textContent = JSON.stringify(
+              responseParsed,
+              null,
+              "  "
+            );
+            callNumber++;
+            if (callNumber < totalVideos) {
+              setRequest("updateVideo");
+            }
+          });
+        }
         break;
       default:
-
     }
-
   }
-
 
   /**
    * send API request to the proxy
@@ -112,17 +126,20 @@ var BCLS = (function(window, document) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
               // some API requests return '{null}' for empty responses - breaks JSON.parse
-              if (response === '{null}') {
+              if (response === "{null}") {
                 response = null;
               }
               // return the response
               callback(response);
             } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              alert(
+                "There was a problem with the request. Request returned " +
+                  httpRequest.status
+              );
             }
           }
         } catch (e) {
-          alert('Caught Exception: ' + e);
+          alert("Caught Exception: " + e);
         }
       };
     /**
@@ -133,7 +150,7 @@ var BCLS = (function(window, document) {
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
-    httpRequest.open('POST', proxyURL);
+    httpRequest.open("POST", proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
     httpRequest.send(JSON.stringify(options));
@@ -142,18 +159,17 @@ var BCLS = (function(window, document) {
   // init function to set up event listeners
   function init() {
     // event listeners
-    getVideos_button.addEventListener('click', function() {
-      setRequest('getVideos');
+    getVideos_button.addEventListener("click", function() {
+      setRequest("getVideos");
     });
     setRequest_button.addEventListener("click", function() {
       // get and clean up video data
       videoData = JSON.parse(videoData_display.value);
       totalVideos = videoData.length;
       // set up the request
-      setRequest('updateVideo');
+      setRequest("updateVideo");
     });
   }
   // initialize - set up data
   init();
-
 })(window, document);
