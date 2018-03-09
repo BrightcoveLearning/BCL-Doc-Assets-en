@@ -261,64 +261,77 @@
 }</code></pre>
   <h3>Playlist outputs</h3>
 <pre class="line-numbers"><code class="language-json">{
-  "outputs":[
-    {
-      "base_url": "s3://my-bucket/",
-      "filename": "playlist.m3u8",
-      "type": "playlist",
-      "hls_protocol_version" : 7,
-      "public": 1,
-      "alternate_audio": {
-        "audio_64k": {
-          "path": "file-audio-64k.m3u8",
-          "language": "en",
-          "default": true,
-          "source": "hls-audio-64"
-        },
-        "audio_128k": {
-          "path": "file-audio-128k.m3u8",
-          "language": "en",
-          "source": "hls-audio-64"
+    "outputs":[
+       {
+            "public": true,
+            "label": "master-playlist",
+            "base_url": "s3://my-bucket/",
+            "filename": "master_playlist.m3u8",
+            "hls_protocol_version": 7,
+            "type": "playlist",
+            "allow_skipped_sources": true,
+            "alternate_audio": {
+                "64k_audio": {
+                    "path": "Audio/64k/audio_64k.m3u8",
+                    "language": "en",
+                    "default": true,
+                    "source": "Audio-64"
+                },
+                "128k_audio": {
+                    "path": "Audio/128k/audio_128k.m3u8",
+                    "language": "en",
+                    "source": "Audio-128"
+                }
+            },
+            "streams": [
+                {
+                    "path": "Rendition1/Rendition1.m3u8",
+                    "source": "Rendition1",
+                    "audio": "64k_audio"
+                },
+                {
+                    "path": "Rendition2/Rendition2.m3u8",
+                    "source": "Rendition2",
+                    "audio": "64k_audio"
+                },
+                {
+                    "path": "Rendition3/Rendition3.m3u8",
+                    "source": "Rendition3",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition4/Rendition4.m3u8",
+                    "source": "Rendition4",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition5/Rendition5.m3u8",
+                    "source": "Rendition5",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition6/Rendition6.m3u8",
+                    "source": "Rendition6",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition7/Rendition7.m3u8",
+                    "source": "Rendition7",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition8/Rendition8.m3u8",
+                    "source": "Rendition8",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition9/Rendition9.m3u8",
+                    "source": "Rendition9",
+                    "audio": "128k_audio"
+                }
+            ]
         }
-      },
-      "streams": [
-        {
-          "source": "hls-2040",
-          "path": "file-2040k.m3u8",
-          "audio": "audio_128k"
-        },
-        {
-          "source": "hls-1540",
-          "path": "file-1540k.m3u8",
-          "audio": "audio_128k"
-        },
-        {
-          "source": "hls-1040",
-          "path": "file-1040k.m3u8",
-          "audio": "audio_128k"
-        },
-        {
-          "source": "hls-640",
-          "path": "file-640k.m3u8",
-          "audio": "audio_128k"
-        },
-        {
-          "source": "hls-440",
-          "path": "file-440k.m3u8"
-          "audio": "audio_64k"
-        },
-        {
-          "source": "hls-240",
-          "path": "file-240k.m3u8",
-          "audio": "audio_64k"
-        },
-        {
-          "source": "hls-audio-64",
-          "path": "file-audio-64k.m3u8"
-        }
-      ]
-    }
-  ]
+    ]
 }</code></pre>
 </section>
 </article>
