@@ -3,10 +3,6 @@ var BCLS = (function(window, document) {
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     get_profiles = document.getElementById('get_profiles'),
-    set_default_profile = document.getElementById('set_default_profile'),
-    update_default_profile = document.getElementById('update_default_profile'),
-    profile_selector = document.getElementById('profile_selector'),
-    profile_select = document.getElementById('profile_select'),
     logger = document.getElementById('logger'),
     api_request_display = document.getElementById('api_request_display'),
     api_request_body_display = document.getElementById('api_request_body_display'),
@@ -26,23 +22,6 @@ var BCLS = (function(window, document) {
     }
   });
 
-  set_default_profile.addEventListener('click', function() {
-    selectedProfile = getSelectedValue(profile_select).value;
-    if (isDefined(selectedProfile)) {
-      createRequest('set_default_profile');
-    } else {
-      alert('Please select a profile and click this button again');
-    }
-  });
-
-  update_default_profile.addEventListener('click', function() {
-    selectedProfile = getSelectedValue(profile_select).value;
-    if (isDefined(selectedProfile)) {
-      createRequest('update_default_profile');
-    } else {
-      alert('Please select a profile and click this button again');
-    }
-  });
 
   /**
    * get account info from input fields
@@ -58,12 +37,21 @@ var BCLS = (function(window, document) {
     }
   }
 
-  function logMessage(message) {
-    var p = document.createElement('p'),
-        txt = document.createTextNode(message);
-    p.appendChild(txt);
-    logger.appendChild(p);
-  }
+  /**
+       * injects messages into the UI
+       * @param  {HTMLElement} el The element to inject text into
+       * @param  {String} message The message to inject
+       * @param  {Boolean} append Append the message to existing content
+       */
+      function logMessage(el, message, append) {
+        if (append === true) {
+          var br = document.createElement('br');
+          el.appendChild(br);
+          el.appendChild(document.createTextNode(message));
+        } else {
+          el.textContent = message;
+        }
+      }
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -101,40 +89,6 @@ var BCLS = (function(window, document) {
       return str;
   }
 
-  /**
-   * enable a button element
-   * @param  {HTMLelement} button a reference to a button element
-   */
-  function enableButton(button) {
-    button.removeAttribute('disabled');
-    button.setAttribute('style', 'opacity:1;');
-  }
-
-  /**
-   * disable a button element
-   * @param  {HTMLelement} button a reference to a button element
-   */
-  function disableButton(button) {
-    button.setAttribute('disabled', 'disabled');
-    button.setAttribute('style', 'opacity:.6;');
-  }
-
-  /**
-   * get selected value for single select element
-   * @param {htmlElement} e the select element
-   * @return {Object} object containing the `value`, text, and selected `index`
-   */
-  function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
-  }
 
   /**
    * adds options to a select element from an array of valuesArray
