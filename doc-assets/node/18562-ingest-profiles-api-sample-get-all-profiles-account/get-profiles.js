@@ -8,6 +8,7 @@ var BCLS = (function(window, document) {
     api_response = document.getElementById('api_response'),
     list_filters = document.getElementsByName('list_filter'),
     hide_obsolete = document.getElementById('hide_obsolete'),
+    profile_list = document.getElementById('profile_list'),
     obsoletes_hidden = false,
     all_profiles = [],
     all_current_profiles = [],
@@ -203,7 +204,16 @@ var BCLS = (function(window, document) {
   }
 
   function displayFilteredProfiles() {
-    
+    var ul = document.createElement('ul').
+      li;
+    iMax = all_current_profiles.length;
+    for (i = 0; i < iMax; i++) {
+      li = document.createElement('li');
+      li.textContent = all_current_profiles[i].name;
+      ul.appendChild(li);
+    }
+    profile_list.innerHTML = '';
+    profile_list.appendChild(ul);
   }
 
 
