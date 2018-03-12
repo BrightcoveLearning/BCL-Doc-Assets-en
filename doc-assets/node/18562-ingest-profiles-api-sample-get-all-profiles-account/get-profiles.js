@@ -95,8 +95,23 @@ var BCLS = (function(window, document) {
     return false;
   }
 
-  function toggleObsoleteProfiles() {
+  /**
+  * get value of a selected radio buttom
+  * @param {htmlElementCollection} rgroup the collection of radio buttom elements
+  */
+  function getRadioValue(rgroup) {
+      var i = 0,
+      iMax = rgroup.length;
+      for (i; i < iMax; i++) {
+          if (rgroup[i].checked) {
+              return rgroup[i].value;
+          }
+      }
+  }
 
+
+  function toggleObsoleteProfiles() {
+    if
   }
 
   /**
