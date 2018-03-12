@@ -97,11 +97,32 @@ var BCLS = (function(window, document) {
     if (filter_type) {
       var tmpArray = [];
       switch (filter_type) {
-        case expression:
+        case 'show_all':
 
+          return tmpArray;
+          break;
+        case 'show_standard':
+
+        return tmpArray;
+          break;
+        case 'show_custom':
+
+        return tmpArray;
+          break;
+        case 'hide_legacy':
+
+        return tmpArray;
+          break;
+        case 'hide_dynamic_delivery':
+
+        return tmpArray;
+          break;
+        case 'hide_cae':
+
+        return tmpArray;
           break;
         default:
-
+        console.log('should not be here - unknown filter_type: ', filter_type);
       }
     } else {
       console.log('no filter_type passed');
