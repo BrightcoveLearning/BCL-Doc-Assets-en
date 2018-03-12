@@ -202,6 +202,10 @@ var BCLS = (function(window, document) {
       return str;
   }
 
+  function displayFilteredProfiles() {
+    
+  }
+
 
   function filterProfiles(filter_type) {
     if (filter_type) {
@@ -276,6 +280,7 @@ var BCLS = (function(window, document) {
             all_profiles = responseDecoded;
             all_current_profiles = all_profiles;
             toggleObsoleteProfiles();
+            displayFilteredProfiles();
           } else {
             api_response.textContent = response;
             logMessage('The get all_profiles operation failed; see the API Response for the error');
