@@ -222,16 +222,15 @@ var BCLS = (function(window, document) {
       var tmpArray = [];
       switch (filter_type) {
         case 'show_all':
-
-          return tmpArray;
+          all_current_profiles = all_profiles;
+          toggleObsoleteProfiles();
+          displayFilteredProfiles();
           break;
         case 'show_standard':
-
-        return tmpArray;
+          
           break;
         case 'show_custom':
 
-        return tmpArray;
           break;
         case 'hide_legacy':
 
