@@ -122,9 +122,36 @@ var BCLS = (function(window, document) {
       }
   }
 
+  /**
+   * determines whether specified item is in an array
+   *
+   * @param {array} array to check
+   * @param {string} item to check for
+   * @return {boolean} true if item is in the array, else false
+   */
+  function arrayContains(arr, item) {
+      var i,
+          iMax = arr.length;
+      for (i = 0; i < iMax; i++) {
+          if (arr[i] === item) {
+              return true;
+          }
+      }
+      return false;
+  }
+
 
   function toggleObsoleteProfiles() {
-    if
+    var deprecatedProfiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
+    if (isChecked(hide_obsolete)) {
+      i = all_current_profiles.length;
+      while (i > 0) {
+        i--;
+        if (arrayContains(deprecatedProfiles, all_current_profiles[i].name) {
+
+        }
+      }
+    }
   }
 
   /**
@@ -208,6 +235,9 @@ var BCLS = (function(window, document) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+            all_profiles = responseDecoded;
+            all_current_profiles = all_profiles;
+            toggleObsoleteProfiles();
           } else {
             api_response.textContent = response;
             logMessage('The get all_profiles operation failed; see the API Response for the error');
@@ -244,57 +274,43 @@ var BCLS = (function(window, document) {
    * @param  {Function} [callback] callback function that will process the response
    */
   function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-          response,
-          requestParams,
-          dataString,
-          proxyURL    = options.proxyURL,
-          // response handler
-          getResponse = function() {
-              try {
-                  if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                          response = httpRequest.responseText;
-                          // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          if (response === '{null}') {
-                              response = null;
-                          }
-                          // return the response
-                          callback(response);
-                      } else {
-                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                      }
-                  }
-              } catch (e) {
-                  alert('Caught Exception: ' + e);
+    var httpRequest = new XMLHttpRequest(),
+      response,
+      requestParams,
+      dataString,
+      proxyURL = options.proxyURL,
+      // response handler
+      getResponse = function() {
+        try {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '{null}') {
+                response = null;
               }
-          };
-      /**
-       * set up request data
-       * the proxy used here takes the following params:
-       * url - the full API request (required)
-       * requestType - the HTTP request type (default: GET)
-       * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-       * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-       * requestBody - request body for write requests (optional JSON string)
-       */
-      requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-      // only add client id and secret if both were submitted
-      if (options.client_id && options.client_secret) {
-          requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-      }
-      // add request data if any
-      if (options.requestBody) {
-          requestParams += '&requestBody=' + options.requestBody;
-      }
-      // set response handler
-      httpRequest.onreadystatechange = getResponse;
-      // open the request
-      httpRequest.open('POST', proxyURL);
-      // set headers
-      httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      // open and send request
-      httpRequest.send(requestParams);
+              // return the response
+              callback(response);
+            } else {
+              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+            }
+          }
+        } catch (e) {
+          alert('Caught Exception: ' + e);
+        }
+      };
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 
 })(window, document);
