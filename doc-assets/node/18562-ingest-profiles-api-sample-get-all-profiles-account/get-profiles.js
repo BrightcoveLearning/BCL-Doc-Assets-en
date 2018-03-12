@@ -84,6 +84,20 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * determines if checkbox is checked
+   * @param  {htmlElement}  e the checkbox to check
+   * @return {Boolean}  true if box is checked
+   */
+  function isChecked(e) {
+    if (e.checked) {
+      return true;
+    }
+    return false;
+  }
+
+
+
+  /**
    * remove spaces from a string
    * @param {String} str string to process
    * @return {String} trimmed string
