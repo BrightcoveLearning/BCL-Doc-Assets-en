@@ -9,6 +9,7 @@ var BCLS = (function(window, document) {
     list_filters = document.getElementsByName('list_filter'),
     hide_obsolete = document.getElementById('hide_obsolete'),
     all_profiles = [],
+    all_current_profiles = [],
     filtered_profiles = [],
     account_id,
     default_account_id = '1752604059001',
