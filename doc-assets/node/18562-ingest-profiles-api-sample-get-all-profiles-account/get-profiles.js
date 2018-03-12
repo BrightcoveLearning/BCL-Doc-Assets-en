@@ -226,53 +226,6 @@ var BCLS = (function(window, document) {
           }
         });
         break;
-      case 'set_default_profile':
-        logMessage('Setting the default profile');
-        endpoint = '/configuration';
-        options.url = baseURL + endpoint;
-        api_request_display.textContent = options.url;
-        options.requestType = 'POST';
-        requestBody.account_id = account_id;
-        requestBody.default_profile_id = selectedProfile;
-        api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
-        options.requestBody = JSON.stringify(requestBody);
-        makeRequest(options, function(response) {
-          if (isJson(response)) {
-            responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
-            // check for conflict - means default has already been set
-            if (Array.isArray(responseDecoded) && responseDecoded[0].code === 'CONFLICT') {
-              alert('The request failed because the default profile for the account has already been set - use Update Default Profile instead');
-              enableButton(update_default_profile);
-            }
-          } else {
-            api_response.textContent = response;
-            logMessage('The set default profile operation failed; see the API Response for the error');
-            return;
-          }
-        });
-        break;
-      case 'update_default_profile':
-        logMessage('Updating the default profile');
-        endpoint = '/configuration';
-        options.url = baseURL + endpoint;
-        api_request_display.textContent = options.url;
-        options.requestType = 'PUT';
-        requestBody.account_id = account_id;
-        requestBody.default_profile_id = selectedProfile;
-        api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
-        options.requestBody = JSON.stringify(requestBody);
-        makeRequest(options, function(response) {
-          if (isJson(response)) {
-            responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
-          } else {
-            api_response.textContent = response;
-            logMessage('The set default profile operation failed; see the API Response for the error');
-            return;
-          }
-        });
-        break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
         break;
