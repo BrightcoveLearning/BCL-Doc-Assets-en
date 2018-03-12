@@ -15,7 +15,9 @@ var BCLS = (function(window, document) {
     default_account_id = '1752604059001',
     client_id,
     client_secret,
-    selectedProfile;
+    selectedProfile,
+    i,
+    iMax;
 
   // event listeners
   get_profiles.addEventListener('click', function() {
@@ -25,6 +27,17 @@ var BCLS = (function(window, document) {
       alert('Account ID, Client ID, and Client Secret are required');
     }
   });
+
+  iMax = listFilters.length;
+  for (i = 0; i < iMax; i++) {
+    listFilters[i].addEventListener('change' function() {
+      filterProfiles(getRadioValue(listFilters));
+    })
+  }
+
+  hide_obsolete.addEventListener('change', function() {
+    toggleObsoleteProfiles();
+  })
 
 
   /**
