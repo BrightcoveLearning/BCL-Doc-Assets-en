@@ -5,12 +5,13 @@ var BCLS = (function(window, document) {
     get_profiles = document.getElementById('get_profiles'),
     logger = document.getElementById('logger'),
     api_request_display = document.getElementById('api_request_display'),
-    api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
+    list_filters = document.getElementsByName('list_filter'),
+    hide_obsolete = document.getElementById('hide_obsolete'),
     all_profiles = [],
     filtered_profiles = [],
     account_id,
-    default_account_id = '57838016001',
+    default_account_id = '1752604059001',
     client_id,
     client_secret,
     selectedProfile;
@@ -92,24 +93,19 @@ var BCLS = (function(window, document) {
   }
 
 
-  /**
-   * adds options to a select element from an array of valuesArray
-   * @param {HTMLelement} selectElement the select element reference
-   * @param {Array} valuesArray the array of option values e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
-   */
-  function addOptions(selectElement, valuesArray) {
-    var i,
-      iMax;
-    if (selectElement && valuesArray) {
-      iMax = valuesArray.length;
-      for (i = 0; i < iMax; i++) {
-        var option = document.createElement('option');
-        option.setAttribute('value', valuesArray[i].value);
-        option.textContent = valuesArray[i].label;
-        selectElement.add(option);
+  function filterProfiles(filter_type) {
+    if (filter_type) {
+      var tmpArray = [];
+      switch (filter_type) {
+        case expression:
+
+          break;
+        default:
+
       }
     } else {
-      console.log('function addOptions: no parameters provided');
+      console.log('no filter_type passed');
+      return [];
     }
   }
 
@@ -120,7 +116,7 @@ var BCLS = (function(window, document) {
   function createRequest(type) {
     var options = {},
       requestBody = {},
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
       baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
