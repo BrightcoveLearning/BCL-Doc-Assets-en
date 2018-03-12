@@ -178,8 +178,12 @@ var BCLS = (function(window, document) {
         }
       }
     } else {
+      var index;
       if (obsoletes_hidden) {
-        i = deprecated_profiles.length;
+        iMax = deprecated_profiles.length;
+        for (i = 0; i < iMax; i++) {
+          index = findObjectInArray()
+        }
       }
     }
   }
