@@ -7,8 +7,10 @@ var BCLS = (function(window, document) {
     api_request_display = document.getElementById('api_request_display'),
     api_request_body_display = document.getElementById('api_request_body_display'),
     api_response = document.getElementById('api_response'),
-    profiles = [],
-    account_ids = [],
+    all_profiles = [],
+    filtered_profiles = [],
+    account_id,
+    default_account_id = '57838016001',
     client_id,
     client_secret,
     selectedProfile;
@@ -134,8 +136,8 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'get_profiles':
-        logMessage('Getting profiles');
-        endpoint = '/profiles';
+        logMessage('Getting all_profiles');
+        endpoint = '/all_profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
         api_request_body_display.textContent = 'no request body for this operation';
@@ -146,7 +148,7 @@ var BCLS = (function(window, document) {
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
           } else {
             api_response.textContent = response;
-            logMessage('The get profiles operation failed; see the API Response for the error');
+            logMessage('The get all_profiles operation failed; see the API Response for the error');
             return;
           }
           if (Array.isArray(responseDecoded)) {
