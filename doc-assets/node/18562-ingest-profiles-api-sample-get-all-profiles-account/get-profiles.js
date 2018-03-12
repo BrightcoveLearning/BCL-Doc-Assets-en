@@ -163,7 +163,9 @@ var BCLS = (function(window, document) {
       }
   }
 
-
+  /*
+   * hides or shows the obsolete profile
+   */
   function toggleObsoleteProfiles() {
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
     if (isChecked(hide_obsolete)) {
@@ -182,8 +184,10 @@ var BCLS = (function(window, document) {
       if (obsoletes_hidden) {
         iMax = deprecated_profiles.length;
         for (i = 0; i < iMax; i++) {
-          index = findObjectInArray()
+          index = findObjectInArray(all_profiles, name, deprecated_profiles[i]);
+          all_current_profiles.push(all_profiles[index]);
         }
+        obsoletes_hidden = false;
       }
     }
   }
