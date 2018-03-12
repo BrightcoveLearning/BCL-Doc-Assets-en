@@ -95,7 +95,9 @@ var BCLS = (function(window, document) {
     return false;
   }
 
+  function toggleObsoleteProfiles() {
 
+  }
 
   /**
    * remove spaces from a string
