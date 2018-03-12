@@ -8,6 +8,7 @@ var BCLS = (function(window, document) {
     api_response = document.getElementById('api_response'),
     list_filters = document.getElementsByName('list_filter'),
     hide_obsolete = document.getElementById('hide_obsolete'),
+    obsoletes_hidden = false,
     all_profiles = [],
     all_current_profiles = [],
     filtered_profiles = [],
@@ -140,16 +141,45 @@ var BCLS = (function(window, document) {
       return false;
   }
 
+  /**
+   * find index of an object in array of objects
+   * based on some property value
+   *
+   * @param {array} targetArray array to search
+   * @param {string} objProperty object property to search
+   * @param {string} value of the property to search for
+   * @return {integer} index of first instance if found, otherwise returns -1
+  */
+  function findObjectInArray(targetArray, objProperty, value) {
+      var i, totalItems = targetArray.length, objFound = false;
+      for (i = 0; i < totalItems; i++) {
+          if (targetArray[i][objProperty] === value) {
+              objFound = true;
+              return i;
+          }
+      }
+      if (objFound === false) {
+          return -1;
+      }
+  }
+
 
   function toggleObsoleteProfiles() {
-    var deprecatedProfiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
+    var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
     if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
       while (i > 0) {
         i--;
-        if (arrayContains(deprecatedProfiles, all_current_profiles[i].name) {
-
+        if (arrayContains(deprecated_profiles, all_current_profiles[i].name) {
+          all_current_profiles.splice(i, 1);
         }
+        if (!obsoletes_hidden) {
+          obsoletes_hidden = true;
+        }
+      }
+    } else {
+      if (obsoletes_hidden) {
+        i = deprecated_profiles.length;
       }
     }
   }
