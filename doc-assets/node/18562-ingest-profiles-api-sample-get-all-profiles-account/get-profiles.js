@@ -328,19 +328,8 @@ var BCLS = (function(window, document) {
             displayFilteredProfiles();
           } else {
             api_response.textContent = response;
-            logMessage(logger, 'The get all_profiles operation failed; see the API Response for the error', true);
+            logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
             return;
-          }
-          if (Array.isArray(responseDecoded)) {
-            iMax = responseDecoded.length;
-            for (i = 0; i < iMax; i++) {
-              if (responseDecoded[i].hasOwnProperty('dynamic_origin')) {
-                var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
-                tmpArray.push(o);
-              }
-            }
-            addOptions(profile_select, tmpArray);
-            enableButton(set_default_profile);
           }
         });
         break;
