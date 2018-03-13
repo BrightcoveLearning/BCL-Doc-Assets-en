@@ -8,6 +8,7 @@ var BCLS = (function(window, document) {
     api_response = document.getElementById('api_response'),
     list_filters = document.getElementsByName('list_filter'),
     hide_obsolete = document.getElementById('hide_obsolete'),
+    profile_list = document.getElementById('profile_list'),
     obsoletes_hidden = false,
     all_profiles = [],
     all_current_profiles = [],
@@ -188,6 +189,7 @@ var BCLS = (function(window, document) {
           all_current_profiles.push(all_profiles[index]);
           obsoletes_hidden = false;
         }
+        obsoletes_hidden = false;
       }
     }
   }
@@ -200,6 +202,19 @@ var BCLS = (function(window, document) {
   function removeSpaces(str) {
       str= str.replace(/\s/g, '');
       return str;
+  }
+
+  function displayFilteredProfiles() {
+    var ul = document.createElement('ul').
+      li;
+    iMax = all_current_profiles.length;
+    for (i = 0; i < iMax; i++) {
+      li = document.createElement('li');
+      li.textContent = all_current_profiles[i].name;
+      ul.appendChild(li);
+    }
+    profile_list.innerHTML = '';
+    profile_list.appendChild(ul);
   }
 
 
@@ -276,6 +291,7 @@ var BCLS = (function(window, document) {
             all_profiles = responseDecoded;
             all_current_profiles = all_profiles;
             toggleObsoleteProfiles();
+            displayFilteredProfiles();
           } else {
             api_response.textContent = response;
             logMessage('The get all_profiles operation failed; see the API Response for the error');
