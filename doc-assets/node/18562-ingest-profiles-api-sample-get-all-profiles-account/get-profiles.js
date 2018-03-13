@@ -23,6 +23,7 @@ var BCLS = (function(window, document) {
 
   // event listeners
   get_profiles.addEventListener('click', function() {
+  console.log('get profiles');
     getAccountInfo();
     createRequest('get_profiles');
   });
