@@ -220,23 +220,21 @@ var BCLS = (function(window, document) {
 
   function filterProfiles(filter_type) {
     if (filter_type) {
-      var tmpArray = [];
+      all_current_profiles = all_profiles;
+      toggleObsoleteProfiles();
       switch (filter_type) {
         case 'show_all':
-
-          return tmpArray;
+          displayFilteredProfiles();
           break;
         case 'show_standard':
-
-        return tmpArray;
+          i = all_current_profiles.length;
+          while (i > 0)
           break;
         case 'show_custom':
 
-        return tmpArray;
           break;
         case 'hide_legacy':
 
-        return tmpArray;
           break;
         case 'hide_dynamic_delivery':
 
