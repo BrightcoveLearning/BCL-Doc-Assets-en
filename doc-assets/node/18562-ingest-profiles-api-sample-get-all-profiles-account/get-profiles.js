@@ -182,7 +182,7 @@ var BCLS = (function(window, document) {
       if (obsoletes_hidden) {
         iMax = deprecated_profiles.length;
         for (i = 0; i < iMax; i++) {
-          index = findObjectInArray()
+          index = findObjectInArray(all_profiles, 'name', deprecated_profiles[i])
         }
       }
     }
