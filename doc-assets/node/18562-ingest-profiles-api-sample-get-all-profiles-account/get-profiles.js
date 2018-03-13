@@ -23,11 +23,8 @@ var BCLS = (function(window, document) {
 
   // event listeners
   get_profiles.addEventListener('click', function() {
-    if  (getAccountInfo()) {
-      createRequest('get_profiles');
-    } else {
-      alert('Account ID, Client ID, and Client Secret are required');
-    }
+    getAccountInfo();
+    createRequest('get_profiles');
   });
 
   iMax = listFilters.length;
@@ -46,14 +43,10 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
-      account_id    = removeSpaces(account_id_input.value);
+      account_id    = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : default_account_id;
       client_id     = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
-      return true;
-    } else {
-      return false;
-    }
+      return;
   }
 
   /**
@@ -70,6 +63,7 @@ var BCLS = (function(window, document) {
         } else {
           el.textContent = message;
         }
+        return;
       }
 
   /**
@@ -192,6 +186,7 @@ var BCLS = (function(window, document) {
         obsoletes_hidden = false;
       }
     }
+    return;
   }
 
   /**
@@ -215,6 +210,7 @@ var BCLS = (function(window, document) {
     }
     profile_list.innerHTML = '';
     profile_list.appendChild(ul);
+    return;
   }
 
 
@@ -286,8 +282,8 @@ var BCLS = (function(window, document) {
       displayFilteredProfiles();
     } else {
       console.log('no filter_type passed');
-      return [];
     }
+    return;
   }
 
   /**
@@ -307,8 +303,11 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    options.client_id = client_id;
-    options.client_secret = client_secret;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
+    options.account_id = account_id;
     options.proxyURL = proxyURL;
 
     switch (type) {
