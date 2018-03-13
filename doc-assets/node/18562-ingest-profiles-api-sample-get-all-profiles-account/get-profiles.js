@@ -164,8 +164,7 @@ var BCLS = (function(window, document) {
   }
 
 /*
- * [toggleObsoleteProfiles description]
- * @return {[type]} [description]
+ * remove or add obsolete profiles from the current profiles list
  */
   function toggleObsoleteProfiles() {
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
