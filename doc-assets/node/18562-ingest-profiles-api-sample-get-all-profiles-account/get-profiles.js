@@ -31,7 +31,7 @@ var BCLS = (function(window, document) {
   iMax = listFilters.length;
   for (i = 0; i < iMax; i++) {
     listFilters[i].addEventListener('change', function() {
-      filterProfiles(getRadioValue(listFilters));
+      filterProfiles(getRadioValue(list_filters));
     });
   }
 
