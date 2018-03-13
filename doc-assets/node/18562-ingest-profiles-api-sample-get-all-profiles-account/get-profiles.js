@@ -31,14 +31,14 @@ var BCLS = (function(window, document) {
 
   iMax = listFilters.length;
   for (i = 0; i < iMax; i++) {
-    listFilters[i].addEventListener('change' function() {
+    listFilters[i].addEventListener('change', function() {
       filterProfiles(getRadioValue(listFilters));
-    })
+    });
   }
 
   hide_obsolete.addEventListener('change', function() {
     toggleObsoleteProfiles();
-  })
+  });
 
 
   /**
@@ -163,14 +163,17 @@ var BCLS = (function(window, document) {
       }
   }
 
-
+/*
+ * [toggleObsoleteProfiles description]
+ * @return {[type]} [description]
+ */
   function toggleObsoleteProfiles() {
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
     if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
       while (i > 0) {
         i--;
-        if (arrayContains(deprecated_profiles, all_current_profiles[i].name) {
+        if (arrayContains(deprecated_profiles, all_current_profiles[i].name)) {
           all_current_profiles.splice(i, 1);
         }
         if (!obsoletes_hidden) {
@@ -183,6 +186,8 @@ var BCLS = (function(window, document) {
         iMax = deprecated_profiles.length;
         for (i = 0; i < iMax; i++) {
           index = findObjectInArray(all_profiles, 'name', deprecated_profiles[i]);
+          all_current_profiles.push(all_profiles[index]);
+          obsoletes_hidden = false;
         }
       }
     }
