@@ -317,7 +317,6 @@ var BCLS = (function(window, document) {
         endpoint = '/all_profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
-        api_request_body_display.textContent = 'no request body for this operation';
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           if (isJson(response)) {
