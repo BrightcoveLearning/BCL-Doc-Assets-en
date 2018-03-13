@@ -201,7 +201,7 @@ var BCLS = (function(window, document) {
   }
 
   function displayFilteredProfiles() {
-    var ul = document.createElement('ul').
+    var ul = document.createElement('ul'),
       li;
     iMax = all_current_profiles.length;
     for (i = 0; i < iMax; i++) {
