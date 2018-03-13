@@ -313,7 +313,7 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'get_profiles':
-        logMessage('Getting all_profiles');
+        logMessage(logger, 'Getting all_profiles', true);
         endpoint = '/all_profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
@@ -329,7 +329,7 @@ var BCLS = (function(window, document) {
             displayFilteredProfiles();
           } else {
             api_response.textContent = response;
-            logMessage('The get all_profiles operation failed; see the API Response for the error');
+            logMessage(logger, 'The get all_profiles operation failed; see the API Response for the error', true);
             return;
           }
           if (Array.isArray(responseDecoded)) {
