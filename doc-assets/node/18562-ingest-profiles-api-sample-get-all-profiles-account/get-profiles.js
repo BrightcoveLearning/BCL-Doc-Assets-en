@@ -261,10 +261,24 @@ var BCLS = (function(window, document) {
           }
           break;
         case 'hide_cae':
-
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            } else if (all_current_profiles[i].dynamic_origin.hasOwnProperty('dynamic_profile_options')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'show_cae':
-
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            } else if (!all_current_profiles[i].dynamic_origin.hasOwnProperty('dynamic_profile_options')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         default:
         console.log('should not be here - unknown filter_type: ', filter_type);
