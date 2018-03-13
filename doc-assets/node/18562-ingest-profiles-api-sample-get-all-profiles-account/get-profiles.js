@@ -224,29 +224,42 @@ var BCLS = (function(window, document) {
       toggleObsoleteProfiles();
       switch (filter_type) {
         case 'show_all':
-          displayFilteredProfiles();
+          // nothing to do here; just a pass-through
           break;
         case 'show_standard':
           i = all_current_profiles.length;
-          while (i > 0)
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].brightcove_standard === false) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'show_custom':
-
+        i = all_current_profiles.length;
+        while (i > 0) {
+          i--;
+          if (all_current_profiles[i].brightcove_standard === true) {
+            all_current_profiles.splice(i, 1);
+          }
+        }
           break;
         case 'hide_legacy':
 
           break;
         case 'hide_dynamic_delivery':
 
-        return tmpArray;
           break;
         case 'hide_cae':
 
-        return tmpArray;
+          break;
+        case 'show_cae':
+
           break;
         default:
         console.log('should not be here - unknown filter_type: ', filter_type);
       }
+      displayFilteredProfiles();
     } else {
       console.log('no filter_type passed');
       return [];
