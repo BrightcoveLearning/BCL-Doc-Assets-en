@@ -28,7 +28,7 @@ var BCLS = (function(window, document) {
     createRequest('get_profiles');
   });
 
-  iMax = listFilters.length;
+  iMax = list_filters.length;
   for (i = 0; i < iMax; i++) {
     listFilters[i].addEventListener('change', function() {
       filterProfiles(getRadioValue(list_filters));
