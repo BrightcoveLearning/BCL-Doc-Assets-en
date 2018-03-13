@@ -236,19 +236,29 @@ var BCLS = (function(window, document) {
           }
           break;
         case 'show_custom':
-        i = all_current_profiles.length;
-        while (i > 0) {
-          i--;
-          if (all_current_profiles[i].brightcove_standard === true) {
-            all_current_profiles.splice(i, 1);
+          i = all_current_profiles.length;
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].brightcove_standard === true) {
+              all_current_profiles.splice(i, 1);
+            }
           }
-        }
           break;
         case 'hide_legacy':
-
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'hide_dynamic_delivery':
-
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'hide_cae':
 
