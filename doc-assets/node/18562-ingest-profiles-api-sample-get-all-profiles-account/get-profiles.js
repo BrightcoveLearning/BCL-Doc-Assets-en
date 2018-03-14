@@ -255,7 +255,7 @@ console.log('all_current_profiles', all_current_profiles);
         case 'hide_legacy':
           while (i > 0) {
             i--;
-            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+            if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
               all_current_profiles.splice(i, 1);
             }
           }
@@ -264,7 +264,7 @@ console.log('all_current_profiles', all_current_profiles);
         case 'hide_dynamic_delivery':
           while (i > 0) {
             i--;
-            if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
               all_current_profiles.splice(i, 1);
             }
           }
