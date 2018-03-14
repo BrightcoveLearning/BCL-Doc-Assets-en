@@ -14,7 +14,7 @@ var BCLS = (function(window, document) {
     all_current_profiles = [],
     filtered_profiles = [],
     // below are the 3 standard live profiles - you just have to know their names
-    live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD']
+    live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
     account_id,
     default_account_id = '1752604059001',
     client_id,
