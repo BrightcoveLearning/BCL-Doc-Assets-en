@@ -189,6 +189,7 @@ var BCLS = (function(window, document) {
         obsoletes_hidden = false;
       }
     }
+    displayFilteredProfiles();
     return;
   }
 
