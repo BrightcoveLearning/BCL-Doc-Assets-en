@@ -215,10 +215,18 @@ console.log('list_filter', getRadioValue(list_filters));
     return;
   }
 
+  function resetAllCurrentProfiles() {
+    iMax = all_profiles.length;
+    all_current_profiles = [];
+    for (i = 0; i < iMax; i++) {
+      all_current_profiles.push(all_profiles[i]);
+    }
+  }
+
 
   function filterProfiles(filter_type) {
     if (filter_type) {
-      all_current_profiles = all_profiles;
+      resetAllCurrentProfiles();
       toggleObsoleteProfiles();
       console.log('all_current_profiles', all_current_profiles);
       switch (filter_type) {
@@ -330,7 +338,7 @@ console.log('all_current_profiles', all_current_profiles);
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
             all_profiles = responseDecoded;
-            all_current_profiles = all_profiles;
+            resetAllCurrentProfiles();
             toggleObsoleteProfiles();
             displayFilteredProfiles();
           } else {
