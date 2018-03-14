@@ -13,6 +13,8 @@ var BCLS = (function(window, document) {
     all_profiles = [],
     all_current_profiles = [],
     filtered_profiles = [],
+    // below are the 3 standard live profiles - you just have to know their names
+    live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD']
     account_id,
     default_account_id = '1752604059001',
     client_id,
@@ -164,6 +166,7 @@ console.log('list_filter', getRadioValue(list_filters));
  * remove or add obsolete profiles from the current profiles list
  */
   function toggleObsoleteProfiles() {
+    // below are the obsolete profiles - you just have to know their names
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
     if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
@@ -247,6 +250,16 @@ console.log('list_filter', getRadioValue(list_filters));
           while (i > 0) {
             i--;
             if (all_current_profiles[i].brightcove_standard === true) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
+console.log('all_current_profiles', all_current_profiles);
+          break;
+        case 'show_live':
+          i = all_current_profiles.length;
+          while (i > 0) {
+            i--;
+            if (!arrayContains(live_profiles, all_current_profiles[i].name)) {
               all_current_profiles.splice(i, 1);
             }
           }
