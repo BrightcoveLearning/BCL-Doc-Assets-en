@@ -220,6 +220,7 @@ console.log('list_filter', getRadioValue(list_filters));
     if (filter_type) {
       all_current_profiles = all_profiles;
       toggleObsoleteProfiles();
+      console.log('all_current_profiles', all_current_profiles);
       switch (filter_type) {
         case 'show_all':
           // nothing to do here; just a pass-through
