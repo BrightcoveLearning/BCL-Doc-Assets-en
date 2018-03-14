@@ -25,7 +25,6 @@ var BCLS = (function(window, document) {
 
   // event listeners
   get_profiles.addEventListener('click', function() {
-  console.log('get profiles');
     getAccountInfo();
     createRequest('get_profiles');
   });
@@ -33,7 +32,6 @@ var BCLS = (function(window, document) {
   iMax = list_filters.length;
   for (i = 0; i < iMax; i++) {
     list_filters[i].addEventListener('change', function() {
-console.log('list_filter', getRadioValue(list_filters));
       filterProfiles(getRadioValue(list_filters));
     });
   }
@@ -54,21 +52,21 @@ console.log('list_filter', getRadioValue(list_filters));
   }
 
   /**
-       * injects messages into the UI
-       * @param  {HTMLElement} el The element to inject text into
-       * @param  {String} message The message to inject
-       * @param  {Boolean} append Append the message to existing content
-       */
-      function logMessage(el, message, append) {
-        if (append === true) {
-          var br = document.createElement('br');
-          el.appendChild(br);
-          el.appendChild(document.createTextNode(message));
-        } else {
-          el.textContent = message;
-        }
-        return;
-      }
+   * injects messages into the UI
+   * @param  {HTMLElement} el The element to inject text into
+   * @param  {String} message The message to inject
+   * @param  {Boolean} append Append the message to existing content
+   */
+  function logMessage(el, message, append) {
+    if (append === true) {
+      var br = document.createElement('br');
+      el.appendChild(br);
+      el.appendChild(document.createTextNode(message));
+    } else {
+      el.textContent = message;
+    }
+    return;
+  }
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -82,7 +80,7 @@ console.log('list_filter', getRadioValue(list_filters));
       return true;
   }
 
-  /*
+  /**
    * tests to see if a string is json
    * @param {String} str string to test
    * @return {Boolean}
@@ -162,7 +160,7 @@ console.log('list_filter', getRadioValue(list_filters));
       }
   }
 
-/*
+/**
  * remove or add obsolete profiles from the current profiles list
  */
   function toggleObsoleteProfiles() {
@@ -204,6 +202,9 @@ console.log('list_filter', getRadioValue(list_filters));
       return str;
   }
 
+  /**
+   * displays the filtered list of profiles
+   */
   function displayFilteredProfiles() {
     var ul = document.createElement('ul'),
       li;
@@ -218,6 +219,9 @@ console.log('list_filter', getRadioValue(list_filters));
     return;
   }
 
+  /**
+   * resets the current profiles array to all profiles
+   */
   function resetAllCurrentProfiles() {
     iMax = all_profiles.length;
     all_current_profiles = [];
@@ -226,12 +230,14 @@ console.log('list_filter', getRadioValue(list_filters));
     }
   }
 
-
+  /**
+   * filters the profile list
+   * @param  {string} filter_type the type of filter to use
+   */
   function filterProfiles(filter_type) {
     if (filter_type) {
       resetAllCurrentProfiles();
       toggleObsoleteProfiles();
-      console.log('all_current_profiles', all_current_profiles);
       switch (filter_type) {
         case 'show_all':
           // nothing to do here; just a pass-through
@@ -253,7 +259,6 @@ console.log('list_filter', getRadioValue(list_filters));
               all_current_profiles.splice(i, 1);
             }
           }
-console.log('all_current_profiles', all_current_profiles);
           break;
         case 'show_live':
           i = all_current_profiles.length;
@@ -263,7 +268,6 @@ console.log('all_current_profiles', all_current_profiles);
               all_current_profiles.splice(i, 1);
             }
           }
-console.log('all_current_profiles', all_current_profiles);
           break;
         case 'hide_legacy':
           i = all_current_profiles.length;
@@ -273,7 +277,6 @@ console.log('all_current_profiles', all_current_profiles);
               all_current_profiles.splice(i, 1);
             }
           }
-          console.log('all_current_profiles', all_current_profiles);
           break;
         case 'hide_dynamic_delivery':
           i = all_current_profiles.length;
@@ -283,7 +286,6 @@ console.log('all_current_profiles', all_current_profiles);
               all_current_profiles.splice(i, 1);
             }
           }
-          console.log('all_current_profiles', all_current_profiles);
           break;
         case 'hide_cae':
           i = all_current_profiles.length;
@@ -295,7 +297,6 @@ console.log('all_current_profiles', all_current_profiles);
               all_current_profiles.splice(i, 1);
             }
           }
-          console.log('all_current_profiles', all_current_profiles);
           break;
         case 'show_cae':
           i = all_current_profiles.length;
@@ -307,7 +308,6 @@ console.log('all_current_profiles', all_current_profiles);
               all_current_profiles.splice(i, 1);
             }
           }
-          console.log('all_current_profiles', all_current_profiles);
           break;
         default:
         console.log('should not be here - unknown filter_type: ', filter_type);
