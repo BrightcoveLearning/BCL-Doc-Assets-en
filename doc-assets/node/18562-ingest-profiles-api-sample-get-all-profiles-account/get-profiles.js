@@ -23,37 +23,31 @@ var BCLS = (function(window, document) {
 
   // event listeners
   get_profiles.addEventListener('click', function() {
-    if  (getAccountInfo()) {
-      createRequest('get_profiles');
-    } else {
-      alert('Account ID, Client ID, and Client Secret are required');
-    }
+  console.log('get profiles');
+    getAccountInfo();
+    createRequest('get_profiles');
   });
 
-  iMax = listFilters.length;
+  iMax = list_filters.length;
   for (i = 0; i < iMax; i++) {
-    listFilters[i].addEventListener('change' function() {
-      filterProfiles(getRadioValue(listFilters));
-    })
+    list_filters[i].addEventListener('change', function() {
+      filterProfiles(getRadioValue(list_filters));
+    });
   }
 
   hide_obsolete.addEventListener('change', function() {
     toggleObsoleteProfiles();
-  })
+  });
 
 
   /**
    * get account info from input fields
    */
   function getAccountInfo() {
-    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value)) {
-      account_id    = removeSpaces(account_id_input.value);
+      account_id    = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : default_account_id;
       client_id     = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
-      return true;
-    } else {
-      return false;
-    }
+      return;
   }
 
   /**
@@ -70,6 +64,7 @@ var BCLS = (function(window, document) {
         } else {
           el.textContent = message;
         }
+        return;
       }
 
   /**
@@ -164,16 +159,16 @@ var BCLS = (function(window, document) {
       }
   }
 
-  /*
-   * hides or shows the obsolete profile
-   */
+/*
+ * remove or add obsolete profiles from the current profiles list
+ */
   function toggleObsoleteProfiles() {
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
     if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
       while (i > 0) {
         i--;
-        if (arrayContains(deprecated_profiles, all_current_profiles[i].name) {
+        if (arrayContains(deprecated_profiles, all_current_profiles[i].name)) {
           all_current_profiles.splice(i, 1);
         }
         if (!obsoletes_hidden) {
@@ -185,12 +180,14 @@ var BCLS = (function(window, document) {
       if (obsoletes_hidden) {
         iMax = deprecated_profiles.length;
         for (i = 0; i < iMax; i++) {
-          index = findObjectInArray(all_profiles, name, deprecated_profiles[i]);
+          index = findObjectInArray(all_profiles, 'name', deprecated_profiles[i]);
           all_current_profiles.push(all_profiles[index]);
+          obsoletes_hidden = false;
         }
         obsoletes_hidden = false;
       }
     }
+    return;
   }
 
   /**
@@ -204,7 +201,7 @@ var BCLS = (function(window, document) {
   }
 
   function displayFilteredProfiles() {
-    var ul = document.createElement('ul').
+    var ul = document.createElement('ul'),
       li;
     iMax = all_current_profiles.length;
     for (i = 0; i < iMax; i++) {
@@ -214,43 +211,80 @@ var BCLS = (function(window, document) {
     }
     profile_list.innerHTML = '';
     profile_list.appendChild(ul);
+    return;
   }
 
 
   function filterProfiles(filter_type) {
     if (filter_type) {
-      var tmpArray = [];
+      all_current_profiles = all_profiles;
+      toggleObsoleteProfiles();
       switch (filter_type) {
         case 'show_all':
-          all_current_profiles = all_profiles;
-          toggleObsoleteProfiles();
-          displayFilteredProfiles();
+          // nothing to do here; just a pass-through
           break;
         case 'show_standard':
-          
+          i = all_current_profiles.length;
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].brightcove_standard === false) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'show_custom':
-
+          i = all_current_profiles.length;
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].brightcove_standard === true) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'hide_legacy':
-
-        return tmpArray;
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'hide_dynamic_delivery':
-
-        return tmpArray;
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         case 'hide_cae':
-
-        return tmpArray;
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            } else if (all_current_profiles[i].dynamic_origin.hasOwnProperty('dynamic_profile_options')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
+          break;
+        case 'show_cae':
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            } else if (!all_current_profiles[i].dynamic_origin.hasOwnProperty('dynamic_profile_options')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
           break;
         default:
         console.log('should not be here - unknown filter_type: ', filter_type);
       }
+      displayFilteredProfiles();
     } else {
       console.log('no filter_type passed');
-      return [];
     }
+    return;
   }
 
   /**
@@ -270,17 +304,19 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    options.client_id = client_id;
-    options.client_secret = client_secret;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
+    options.account_id = account_id;
     options.proxyURL = proxyURL;
 
     switch (type) {
       case 'get_profiles':
-        logMessage('Getting all_profiles');
+        logMessage(logger, 'Getting all_profiles', true);
         endpoint = '/all_profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
-        api_request_body_display.textContent = 'no request body for this operation';
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           if (isJson(response)) {
@@ -292,19 +328,8 @@ var BCLS = (function(window, document) {
             displayFilteredProfiles();
           } else {
             api_response.textContent = response;
-            logMessage('The get all_profiles operation failed; see the API Response for the error');
+            logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
             return;
-          }
-          if (Array.isArray(responseDecoded)) {
-            iMax = responseDecoded.length;
-            for (i = 0; i < iMax; i++) {
-              if (responseDecoded[i].hasOwnProperty('dynamic_origin')) {
-                var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
-                tmpArray.push(o);
-              }
-            }
-            addOptions(profile_select, tmpArray);
-            enableButton(set_default_profile);
           }
         });
         break;
