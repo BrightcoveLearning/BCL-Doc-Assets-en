@@ -241,6 +241,7 @@ console.log('list_filter', getRadioValue(list_filters));
               all_current_profiles.splice(i, 1);
             }
           }
+console.log('all_current_profiles', all_current_profiles);
           break;
         case 'hide_legacy':
           while (i > 0) {
@@ -249,6 +250,7 @@ console.log('list_filter', getRadioValue(list_filters));
               all_current_profiles.splice(i, 1);
             }
           }
+          console.log('all_current_profiles', all_current_profiles);
           break;
         case 'hide_dynamic_delivery':
           while (i > 0) {
@@ -257,6 +259,7 @@ console.log('list_filter', getRadioValue(list_filters));
               all_current_profiles.splice(i, 1);
             }
           }
+          console.log('all_current_profiles', all_current_profiles);
           break;
         case 'hide_cae':
           while (i > 0) {
@@ -267,6 +270,7 @@ console.log('list_filter', getRadioValue(list_filters));
               all_current_profiles.splice(i, 1);
             }
           }
+          console.log('all_current_profiles', all_current_profiles);
           break;
         case 'show_cae':
           while (i > 0) {
@@ -277,6 +281,7 @@ console.log('list_filter', getRadioValue(list_filters));
               all_current_profiles.splice(i, 1);
             }
           }
+          console.log('all_current_profiles', all_current_profiles);
           break;
         default:
         console.log('should not be here - unknown filter_type: ', filter_type);
