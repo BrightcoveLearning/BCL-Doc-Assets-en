@@ -298,6 +298,7 @@ console.log('all_current_profiles', all_current_profiles);
           console.log('all_current_profiles', all_current_profiles);
           break;
         case 'show_cae':
+          i = all_current_profiles.length;
           while (i > 0) {
             i--;
             if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
