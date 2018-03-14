@@ -314,7 +314,7 @@ var BCLS = (function(window, document) {
     switch (type) {
       case 'get_profiles':
         logMessage(logger, 'Getting all_profiles', true);
-        endpoint = '/all_profiles';
+        endpoint = '/profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
         options.requestType = 'GET';
