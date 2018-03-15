@@ -136,6 +136,7 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
      * handler for API request responses
      */
     function apiCallback(response) {
+      var responseParsed = JSON.parse(response);
         responseEl.textContent = JSON.stringify(response, null, '  ');
     }
 
@@ -150,11 +151,11 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
         switch (type) {
             case 'dimension':
                 options.url = dimensionObj.samples[0].dimension;
-                getData(options, apiCallback);
+                makeRequest(options, apiCallback);
                 break;
             case 'filter':
                 options.url = dimensionObj.samples[1].filter;
-                getData(options, apiCallback);
+                makeRequest(options, apiCallback);
                 break;
         }
     }
@@ -165,7 +166,7 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
      * @param  {String} requestID the type of request
      * @param  {Function} callback the callback function to invoke
      */
-    function getData(options, callback) {
+    function makeRequest(options, callback) {
         var httpRequest = new XMLHttpRequest(),
             requestParams,
             dataString,
