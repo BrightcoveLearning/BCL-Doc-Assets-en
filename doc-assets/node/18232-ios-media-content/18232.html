@@ -15,17 +15,20 @@
 <p>You can retrieve your video and playlist data from your Video Cloud library by using the Playback API. For details about the API, see the <a href="/node/17906">Playback API Overview</a> document.</p>
 
 <ol class="bcls-tasklist">
-<li>Use the <code>BCOVPlaybackService</code> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
-<li>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
-<p>Here is an example of how to retrieve a video using the <code>BCOVPlaybackService</code> class in Swift:</p>
+	<li>Use the <code>BCOVPlaybackService</code> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+	<li><p>
+		For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
+	</p>
+	<aside class="bcls-aside bcls-aside--information">Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</aside>
+	<p>Here is an example of how to retrieve a video using the <code>BCOVPlaybackService</code> class in Swift:</p>
 
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="language-swift">import UIKit
 import BrightcovePlayerSDK
 
-let kViewControllerPlaybackServicePolicyKey = &quot;<span class="bcls-input">your policy key</span>&quot;
-let kViewControllerAccountID = &quot;<span class="bcls-input">your account id</span>&quot;
-let kViewControllerVideoID = &quot;<span class="bcls-input">your video id</span>&quot;
+let kViewControllerPlaybackServicePolicyKey = "<span class="bcls-input">your policy key</span>"
+let kViewControllerAccountID = "<span class="bcls-input">your account id</span>"
+let kViewControllerVideoID = "<span class="bcls-input">your video id</span>"
 class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 
 let sharedSDKManager = BCOVPlayerSDKManager.shared()
@@ -67,50 +70,45 @@ func requestContentFromPlaybackService() {
 		if let v = video {
 			self.playbackController.setVideos([v] as NSArray)
 		} else {
-			print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
+			print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
 		}
 	}
 }
 }</code></pre>
 
-<p>For complete samples, see the following:</p>
-<ul>
-	<li>
-		<a href="/node/18219">Create a Simple Video App using Objective-C</a>
+	<p>For complete samples, see the following:</p>
+
+	<ul>
+		<li><a href="/node/18219">Create a Simple Video App using Objective-C</a></li>
+		<li><a href="/node/18220">Create a Simple Video App using Swift</a></li>
+	</ul>
 	</li>
 	<li>
-		<a href="/node/18220">Create a Simple Video App using Swift</a>
-	</li>
-</ul>
-</li>
-<li>
-<p>
-The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVVideo.html">BCOVVideo</a> object provides video metadata information as shown below:
-</p>
-<pre class="line-numbers">
+	<p>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVVideo.html">BCOVVideo</a> object provides video metadata information as shown below:</p>
+
+	<pre class="line-numbers">
 <code class="language-swift">func requestContentFromPlaybackService() {
 playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
 	if let v = video {
-<span class="bcls-highlight">		print(&quot;video name: \(v.properties[&quot;name&quot;] as AnyObject)&quot;)
-		print(&quot;video id: \(v.properties[&quot;id&quot;] as AnyObject)&quot;)
-		print(&quot;video thumbnail: \(v.properties[&quot;thumbnail&quot;] as AnyObject)&quot;)
-		print(&quot;video metadata: \(v.properties)&quot;)</span>
+<span class="bcls-highlight">		print("video name: \(v.properties["name"] as AnyObject)")
+		print("video id: \(v.properties["id"] as AnyObject)")
+		print("video thumbnail: \(v.properties["thumbnail"] as AnyObject)")
+		print("video metadata: \(v.properties)")</span>
 
 		self.playbackController.setVideos([v] as NSArray)
 	} else {
-		print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
+		print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
 	}
 }
 }</code></pre>
 
-<p>
-The above <code>print()</code> methods return the following media information:
-</p>
-<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Video object"   src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/media-content/video-metadata.png" />
-<figcaption class="bcls-caption--image">Video object</figcaption>
-</figure>
-</li>
+	<p>The above <code>print()</code> methods return the following media information:</p>
+
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Video object" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/media-content/video-metadata.png" />
+	<figcaption class="bcls-caption--image">Video object</figcaption>
+	</figure>
+	</li>
 </ol>
 
 <h3>Working with geo-filtered videos</h3>
@@ -126,8 +124,8 @@ The above <code>print()</code> methods return the following media information:
 <p>There are two ways you can add geo-filterings to your videos to control which countries they can (or cannot) be viewed in:</p>
 
 <ul>
-<li><a href="/node/18034">Brightcove's CMS API</a></li>
-<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
+	<li><a href="/node/18034">Brightcove's CMS API</a></li>
+	<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
 </ul>
 
 <p>In your iOS app, when you retrieve a video using Brightcove's <code>BCOVPlaybackService</code> class (Playback API) in a country which is geo-filtered for that video, you should see this message:</p>
@@ -161,8 +159,8 @@ super.viewDidLoad()
 
 // Create an array of videos
 var videoArray = [AnyObject]()
-videoArray = [videoWithURL(url: NSURL(string: &quot;https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4&quot;)!),
-						videoWithURL(url: NSURL(string: &quot;https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4&quot;)!)]
+videoArray = [videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4")!),
+						videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4")!)]
 
 // Set up the player view with a standard VOD layout.
 let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
@@ -188,13 +186,10 @@ return video!
 }</code></pre>
 
 <p>For complete samples, see the following:</p>
+
 <ul>
-	<li>
-		<a href="/node/18219#bp">Create a Simple Video App using Objective-C</a>
-	</li>
-	<li>
-		<a href="/node/18220#bp">Create a Simple Video App using Swift</a>
-	</li>
+	<li><a href="/node/18219#bp">Create a Simple Video App using Objective-C</a></li>
+	<li><a href="/node/18220#bp">Create a Simple Video App using Swift</a></li>
 </ul>
 </section>
 &nbsp;
