@@ -9,10 +9,12 @@ var BCLS = (function(window, document) {
     list_filters = document.getElementsByName('list_filter'),
     hide_obsolete = document.getElementById('hide_obsolete'),
     profile_list = document.getElementById('profile_list'),
-    obsoletes_hidden = false,
+    obsoletes_hidden = true,
     all_profiles = [],
     all_current_profiles = [],
     filtered_profiles = [],
+    // below are the 3 standard live profiles - you just have to know their names
+    live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
     account_id,
     default_account_id = '1752604059001',
     client_id,
@@ -23,7 +25,6 @@ var BCLS = (function(window, document) {
 
   // event listeners
   get_profiles.addEventListener('click', function() {
-  console.log('get profiles');
     getAccountInfo();
     createRequest('get_profiles');
   });
@@ -51,21 +52,21 @@ var BCLS = (function(window, document) {
   }
 
   /**
-       * injects messages into the UI
-       * @param  {HTMLElement} el The element to inject text into
-       * @param  {String} message The message to inject
-       * @param  {Boolean} append Append the message to existing content
-       */
-      function logMessage(el, message, append) {
-        if (append === true) {
-          var br = document.createElement('br');
-          el.appendChild(br);
-          el.appendChild(document.createTextNode(message));
-        } else {
-          el.textContent = message;
-        }
-        return;
-      }
+   * injects messages into the UI
+   * @param  {HTMLElement} el The element to inject text into
+   * @param  {String} message The message to inject
+   * @param  {Boolean} append Append the message to existing content
+   */
+  function logMessage(el, message, append) {
+    if (append === true) {
+      var br = document.createElement('br');
+      el.appendChild(br);
+      el.appendChild(document.createTextNode(message));
+    } else {
+      el.textContent = message;
+    }
+    return;
+  }
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -79,7 +80,7 @@ var BCLS = (function(window, document) {
       return true;
   }
 
-  /*
+  /**
    * tests to see if a string is json
    * @param {String} str string to test
    * @return {Boolean}
@@ -159,10 +160,11 @@ var BCLS = (function(window, document) {
       }
   }
 
-/*
+/**
  * remove or add obsolete profiles from the current profiles list
  */
   function toggleObsoleteProfiles() {
+    // below are the obsolete profiles - you just have to know their names
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
     if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
@@ -187,6 +189,7 @@ var BCLS = (function(window, document) {
         obsoletes_hidden = false;
       }
     }
+    displayFilteredProfiles();
     return;
   }
 
@@ -200,6 +203,9 @@ var BCLS = (function(window, document) {
       return str;
   }
 
+  /**
+   * displays the filtered list of profiles
+   */
   function displayFilteredProfiles() {
     var ul = document.createElement('ul'),
       li;
@@ -214,10 +220,24 @@ var BCLS = (function(window, document) {
     return;
   }
 
+  /**
+   * resets the current profiles array to all profiles
+   */
+  function resetAllCurrentProfiles() {
+    iMax = all_profiles.length;
+    all_current_profiles = [];
+    for (i = 0; i < iMax; i++) {
+      all_current_profiles.push(all_profiles[i]);
+    }
+  }
 
+  /**
+   * filters the profile list
+   * @param  {string} filter_type the type of filter to use
+   */
   function filterProfiles(filter_type) {
     if (filter_type) {
-      all_current_profiles = all_profiles;
+      resetAllCurrentProfiles();
       toggleObsoleteProfiles();
       switch (filter_type) {
         case 'show_all':
@@ -241,15 +261,17 @@ var BCLS = (function(window, document) {
             }
           }
           break;
-        case 'hide_legacy':
+        case 'show_live':
+          i = all_current_profiles.length;
           while (i > 0) {
             i--;
-            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+            if (!arrayContains(live_profiles, all_current_profiles[i].name)) {
               all_current_profiles.splice(i, 1);
             }
           }
           break;
-        case 'hide_dynamic_delivery':
+        case 'hide_legacy':
+          i = all_current_profiles.length;
           while (i > 0) {
             i--;
             if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
@@ -257,7 +279,17 @@ var BCLS = (function(window, document) {
             }
           }
           break;
+        case 'hide_dynamic_delivery':
+          i = all_current_profiles.length;
+          while (i > 0) {
+            i--;
+            if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
+          break;
         case 'hide_cae':
+          i = all_current_profiles.length;
           while (i > 0) {
             i--;
             if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
@@ -268,6 +300,7 @@ var BCLS = (function(window, document) {
           }
           break;
         case 'show_cae':
+          i = all_current_profiles.length;
           while (i > 0) {
             i--;
             if (!all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
@@ -314,7 +347,7 @@ var BCLS = (function(window, document) {
     switch (type) {
       case 'get_profiles':
         logMessage(logger, 'Getting all_profiles', true);
-        endpoint = '/all_profiles';
+        endpoint = '/profiles';
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
         options.requestType = 'GET';
@@ -323,7 +356,7 @@ var BCLS = (function(window, document) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
             all_profiles = responseDecoded;
-            all_current_profiles = all_profiles;
+            resetAllCurrentProfiles();
             toggleObsoleteProfiles();
             displayFilteredProfiles();
           } else {
