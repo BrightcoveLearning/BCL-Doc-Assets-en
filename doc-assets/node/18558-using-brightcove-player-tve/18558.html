@@ -13,7 +13,7 @@
 <ul>
 	<li><code>bcadobepassrequestorid</code></li>
 	<li><code>bcadobepasstitle</code></li>
-	<li><code>bcadobepassresourceid</code></li>
+	<li><code>bcadobepassreferenceid</code></li>
 	<li><code>bcadobepassrating</code></li>
 	<li><code>bcadobepassrating</code></li>
 </ul>
@@ -46,7 +46,7 @@
 <title><strong><em>channel</em></strong></title>
 <item><title><strong><em>item-title</em></strong></title>
 <guid><strong><em>guid</em></strong></guid>
-<media:rating scheme='urn:rating-scheme'><strong><em>rating</em></strong></media:rating></item>
+<media:rating scheme='urn:<strong><em>rating-scheme</em></strong>'><strong><em>rating</em></strong></media:rating></item>
 </channel>
 </rss>
 </code></pre>
@@ -62,8 +62,50 @@
     </thead>
     <tbody class="bcls-table__body">
         <tr>
-            <td></td>
-            <td></td>
+            <td><code>channel</code></td>
+            <td>
+              <ul>
+                <li>If present, use <code>bcadobepassrequestorid</code></li>
+                <li>If not present, use the value set in the account settings</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><code>item-title</code></td>
+            <td>
+              <ul>
+                <li>If present, use <code>bcadobepasstitle</code></li>
+                <li>If not present, use <code>name</code></li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><code>guid</code></td>
+            <td>
+              <ul>
+                <li>If present, use <code>bcadobepassreferenceid</code></li>
+                <li>If not present, use <code>reference_id</code></li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><code>rating</code></td>
+            <td>
+              <ul>
+                <li>If present, use <code>bcadobepassrequestorid</code></li>
+                <li>Only send if both <code>bcadobepassrating</code> and <code>bcadobepassratingscheme</code> are present</li>
+              </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><code>rating-scheme</code></td>
+            <td>
+              <ul>
+                <li>If present, use <code>bcadobepassratingscheme</code></li>
+                <li>Only send if both <code>bcadobepassrating</code> and <code>bcadobepassratingscheme</code> are present</li>
+              </ul>
+              <aside class="bcls-aside bcls-aside--information">Note: Currently, the only values in use are ≈<code>Note: Currently, the only values in use are ‘v-chip’ or ‘mpaa’ but others may be used in the future</code> or <code>mpaa</code> but others may be used in the future</aside>
+            </td>
         </tr>
     </tbody>
 </table>
@@ -72,7 +114,7 @@
 <section class="bcls-section">
 <h2 id="configuring_the_player">Configuring the player</h2>
 
-<p>The following code stub provides a model for configuring the Brightcove player for TVE.</p>
+<p>The following code provides a model for configuring the Brightcove player for TVE.</p>
 
 <pre class="line-numbers">
 <code class="language-html">&lt;!doctype html&gt;
@@ -85,7 +127,7 @@
   and don't use data-video-id to assign one. We'll request a video
   from the catalog by hand, detect that it's TVE content, trigger TVE
   authentication and then load the video into the player. --&gt;
-  &lt;video id="tve-player"
+  &lt;video id="<span class="bcls-highlight">tve-player</span>"
     data-account="account1234"
     data-player="player-id"
     class="video-js"
@@ -93,7 +135,7 @@
   &lt;/video&gt;
   &lt;script src="//players.brightcove.net/account1234/player-id_default/index.min.js"&gt;&lt;/script&gt;
   &lt;script&gt;
-  var player = videojs('tve-player');
+  var player = videojs('<span class="bcls-highlight">tve-player</span>');
   player.ready(function() {
     player.catalog.getVideo('ref:tve-video', function(error, video) {
       if (error) {
