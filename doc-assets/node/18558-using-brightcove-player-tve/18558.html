@@ -8,12 +8,17 @@
 <section class="bcls-section">
 <h2 id="customFields">Required Fields</h2>
 
-<p>For this integration you must create the following custom fields in your account. The names below are the <em>internal</em> names for the fields - you can use whatever you like for the display names.</p>
+<p>For this integration you may want to create one of more of the following custom fields in your account. The names below are the <em>internal</em> names for the fields - you can use whatever you like for the display names.</p>
 
 <ul>
 	<li><code>bcadobepassrequestorid</code></li>
+	<li><code>bcadobepasstitle</code></li>
 	<li><code>bcadobepassresourceid</code></li>
+	<li><code>bcadobepassrating</code></li>
+	<li><code>bcadobepassrating</code></li>
 </ul>
+
+<p>In the following section, you will see how these fields are used, if present, and what values are used instead if they are not.</p>
 </section>
 
 <section class="bcls-articlesection">
@@ -26,16 +31,42 @@
 	<li>If no value is set for the <code>bcadobepassrequestorid</code> field, the API will return the requestor ID value stored in the account settings.</li>
 </ul>
 
-<p>When a user retrieves a video via the media API from a TVE-enabled account, the API will return a value for <code>bcadobepassresourceid</code> according to the following rules:</p>
+<p></p>
+
+<p>When a user retrieves a video via the Playback API from a TVE-enabled account, the API will return a value for <code>bcadobepassresourceid</code> according to the following rules:</p>
 
 <ul>
 	<li>If a custom field value for <code>bcadobepassresourceid</code> exists on the video, the API will return the field-level value</li>
 	<li>If no value is set for the <code>bcadobepassresourceid</code> field, the API will return a calculated value based on the fields and XML format noted below.</li>
 </ul>
 
-<ol>
-	<li>The generated <code>bcadobepassresourceid</code> field should follow the MRSS format specified by Adobe and used in almost all integrations with Comcast.</li>
-</ol>
+<p> The generated <code>bcadobepassresourceid</code> field should follow the MRSS format specified by Adobe and used in almost all integrations with Comcast. </p>
+<pre class="line-numbers"><code class="language-xml"><rss version='2.0' xmlns:media='http://search.yahoo.com/mrss/'>
+<channel>
+<title><strong><em>channel</em></strong></title>
+<item><title><strong><em>item-title</em></strong></title>
+<guid><strong><em>guid</em></strong></guid>
+<media:rating scheme='urn:rating-scheme'><strong><em>rating</em></strong></media:rating></item>
+</channel>
+</rss>
+</code></pre>
+
+<p>The values included in the MRSS should be based on the following rules.</p>
+<table class="bcls-table">
+    <caption class="bcls-caption--table">TVE RSS Fields</caption>
+    <thead class="bcls-table__head">
+        <tr>
+            <th>RSS XML Field</th>
+            <th>Video Cloud Field</th>
+        </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 </section>
 
 <section class="bcls-section">
