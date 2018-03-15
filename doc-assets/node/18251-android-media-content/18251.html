@@ -16,7 +16,10 @@
 
 <ol class="bcls-tasklist">
 	<li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
-	<li>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
+	<li><p>
+		For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
+	</p>
+		<aside class="bcls-aside bcls-aside--information">Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</aside>
 	<p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.edge.Catalog </code> class:</p>
 
 	<pre class="line-numbers">
@@ -73,22 +76,22 @@ catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
   @
   Override
   public void onVideo(Video video) {
-<span class="bcls-highlight">    Log.v(TAG, &quot;onVideo: video = &quot; + video);
-    Log.v(TAG, &quot;onVideo: videoID = &quot; + video.getId());
-    Log.v(TAG, &quot;onVideo: videoName = &quot; + video.getName());
-    Log.v(TAG, &quot;onVideo: videoDescription = &quot; + video.getDescription());
-    Log.v(TAG, &quot;onVideo: videoImage = &quot; + video.getStillImageUri());
-    Log.v(TAG, &quot;onVideo: sourceCollections = &quot; + video.getSourceCollections());
+<span class="bcls-highlight">    Log.v(TAG, "onVideo: video = " + video);
+    Log.v(TAG, "onVideo: videoID = " + video.getId());
+    Log.v(TAG, "onVideo: videoName = " + video.getName());
+    Log.v(TAG, "onVideo: videoDescription = " + video.getDescription());
+    Log.v(TAG, "onVideo: videoImage = " + video.getStillImageUri());
+    Log.v(TAG, "onVideo: sourceCollections = " + video.getSourceCollections());
     SourceCollection dashCollection = video.getSourceCollections().get(DeliveryType.DASH);
     if (dashCollection != null) {
       Set &lt; Source &gt; sources = dashCollection.getSources();
       for (Source source: sources) {
         if (!TextUtils.isEmpty(source.getUrl())) {
-          Log.v(TAG, &quot;onVideo: DASH source = &quot; + source.getUrl());
+          Log.v(TAG, "onVideo: DASH source = " + source.getUrl());
         }
       }
     }</span>
-		
+
     brightcoveVideoView.add(video);
     brightcoveVideoView.start();
   }

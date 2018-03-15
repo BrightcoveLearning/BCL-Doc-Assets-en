@@ -1,6 +1,6 @@
 <article class="bcls-article">
-<section id="introduction" class="bcls-section">
-<h2>Introduction</h2>
+<section class="bcls-section">
+<h2 id="introduction">Introduction</h2>
 
 <p>There are two different ways to add poster and thumbnail images to your videos using the Dynamic Ingest API:</p>
 
@@ -10,8 +10,8 @@
 </ul>
 </section>
 
-<section class="bcls-section" id="setup">
-<h2>Setup</h2>
+<section class="bcls-section">
+<h2 id="setup">Setup</h2>
 
 <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, a WebVTT file, or all of these:</p>
 
@@ -31,14 +31,14 @@
 </dl>
 </section>
 
-<section class="bcls-section" id="s3">
-<h2>Note on S3</h2>
+<section class="bcls-section">
+<h2 id="s3">Note on S3</h2>
 
 <p>If your images will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/node/17934#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
 </section>
 
-<section class="bcls-section" id="capture-images">
-<h2>Capture images</h2>
+<section class="bcls-section">
+<h2 id="capture-images">Capture images</h2>
 
 <p>During transcoding, Video Cloud can capture a snapshot from the video at the midpoint and save this as poster (video still) and thumbnail images.</p>
 
@@ -98,7 +98,6 @@
 <aside class="bcls-aside bcls-aside--information">
 <p>You can specify png or jpg as the format - currently captured images are always output as jpg images.</p>
 
-
 <pre>
 <code>{
     "height": 360,
@@ -147,8 +146,8 @@
 <aside class="bcls-aside bcls-aside--information">Note that you must include the <code>profile</code> field and specify a profile with image renditions (all the standard profiles have them).</aside>
 </section>
 
-<section class="bcls-section" id="ingest_images">
-<h2>Ingest images</h2>
+<section class="bcls-section">
+<h2 id="ingest_images">Ingest images</h2>
 
 <p>You can also include a custom poster and thumbnail for your video (or add them) by referencing their URLs in the JSON you use for the Dynamic Ingest request body:</p>
 
@@ -172,7 +171,7 @@
 <ul>
 	<li>For images, only unprotected HTTP/HTTPS URLs or signed S3 URLs are currently supported</li>
 	<li>The poster and thumbnail can be included with the ingestion of a <code>master</code>, or separately</li>
-  <li>If you are using the <a href="/node/17948">legacy ingest system</a>, and you omit the <code>width</code> and <code>height</code> fields, the system default values will be used (thumbnail: 160x90; poster: 960x540)</li>
+	<li>If you are using the <a href="/node/17948">legacy ingest system</a>, and you omit the <code>width</code> and <code>height</code> fields, the system default values will be used (thumbnail: 160x90; poster: 960x540)</li>
 	<li>If you are uploading your own poster and thumbnail images along with a video master, and the ingest profile you are using includes image renditions, you should set <code>capture-images</code> to <code>false</code>:
 	<pre class="line-numbers">
 <code class="language-json">{
@@ -195,13 +194,13 @@
 </aside>
 </section>
 
-<section id="Automatic_resizing" class="bcls-section">
-<h2>Automatic resizing</h2>
+<section class="bcls-section">
+<h2 id="Automatic_resizing">Automatic resizing</h2>
 
 <p>When you add custom poster and/or thumbnail images via Studio or the Dynamic Ingest API, by default Video Cloud will resize these to match the image sizes defined in the default Ingest Profile for the account.</p>
 
 <h3>Override auto-resizing</h3>
-
+<aside class="bcls-aside bcls-aside--information">Note: the technique below applies only to accounts on legacy ingest, <strong>not to Dynamic Delivery accounts</strong>.</aside>
 <p>If you want to override this behavior and have Video Cloud retain actual image dimensions, follow these steps:</p>
 
 <ol class="bcls-tasklist">
@@ -228,41 +227,4 @@
 
 <p>Now when you add custom images via Studio or Dynamic Ingest, they will have the original dimensions of the source images.</p>
 </section>
-<!-- <section id="Use_Cases" class="bcls-section">
-                    <h2>Common use cases</h2>
-                    <p>To summarize the information above, some common use cases are listed below with recommended solutions.</p>
-                    <table class="bcls-table">
-                        <caption class="bcls-caption--table">Common Use Cases</caption>
-                        <thead class="bcls-table__head">
-                            <tr>
-                                <th>Use Case</th>
-                                <th>Solution</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bcls-table__body">
-                            <tr>
-                                <td>Always capture images from the video</td>
-                                <td>Use standard ingest profiles or create your own custom profiles, but include the two image renditions from one of the standard profiles.</td>
-                            </tr>
-                            <tr>
-                                <td>Never capture images from the video - you will always upload your own - but use the standard Video Cloud images sizes</td>
-                                <td>
-                                    <ul>
-                                        <li>If you will always ingest videos using the API (not Studio), then you can use the <code>"capture-images": false</code> field in the request body and use any profile you like</li>
-                                        <li>If you want to avoid having to include the <code>capture-images</code> flag everytime you ingest videos, or want the option of adding some videos using Studio, create one or more ingest profiles that have <stong>no</stong> image renditions, and use one of these profiles to ingest your videos whether through the API or the Studio Upload module.</li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Never capture images from the video - you will always upload your own and keep the original image sizes</td>
-                                <td>
-                                    <ol>
-                                        <li>Create a custom profile with image renditions that have the <code>width</code> and <code>height</code> of the images set to <code>9999</code> (as explained in the <a href="#Automatic_resizing">Automatic Resizing</a> section above) and make this the default profile for the account.</li>
-                                        <li>Ingest your videos via the API using the <code>"capture-images": false</code> flag, or use custom profiles with no image renditions, as explained in the previous use case.</li>
-                                    </ol>
-
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section> --></article>
+</article>
