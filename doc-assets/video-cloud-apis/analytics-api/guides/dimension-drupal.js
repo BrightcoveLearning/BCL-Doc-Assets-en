@@ -12,7 +12,8 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
         sendDimensionRequest = document.getElementById('sendDimensionRequest'),
         sendFilterRequest = document.getElementById('sendFilterRequest'),
         dimensionObj = aapi_model.dimensions[dimension],
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/dimension-guides-proxy.php';
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php'
+        account_id = '1752604059001';
 
     /**
      * determines whether specified item is in an array
@@ -143,15 +144,17 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
      * @param {String} type the request type (getCount | getVideos | getAnalytics)
      */
     function buildRequest(type) {
-        var requestOptions = {};
+        var options = {};
+        options.proxyURL = proxyURL;
+        options.account_id = account_id;
         switch (type) {
             case 'dimension':
-                requestOptions.url = dimensionObj.samples[0].dimension;
-                getData(requestOptions, type, apiCallback);
+                options.url = dimensionObj.samples[0].dimension;
+                getData(options, apiCallback);
                 break;
             case 'filter':
-                requestOptions.url = dimensionObj.samples[1].filter;
-                getData(requestOptions, type, apiCallback);
+                options.url = dimensionObj.samples[1].filter;
+                getData(options, apiCallback);
                 break;
         }
     }
@@ -162,9 +165,8 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
      * @param  {String} requestID the type of request
      * @param  {Function} callback the callback function to invoke
      */
-    function getData(options, type, callback) {
+    function getData(options, callback) {
         var httpRequest = new XMLHttpRequest(),
-            parsedData,
             requestParams,
             dataString,
             // response handler
@@ -172,8 +174,7 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
                 try {
                     if (httpRequest.readyState === 4) {
                         if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                            parsedData = JSON.parse(httpRequest.responseText);
-                            callback(parsedData);
+                            callback(httpRequest.responseText);
                         } else {
                             alert('There was a problem with the request. Request returned ' + httpRequest.status);
                         }
