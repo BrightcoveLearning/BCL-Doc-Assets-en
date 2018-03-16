@@ -137,7 +137,7 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
    */
   function apiCallback(response) {
     var responseParsed = JSON.parse(response);
-    responseEl.textContent = JSON.stringify(response, null, '  ');
+    responseEl.textContent = JSON.stringify(responseParsed, null, '  ');
   }
 
   /**
