@@ -1,5 +1,5 @@
 var BCLS = ( function (window, document) {
-    var mrssStr = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
+    var mrssStr = '<?xml version="1.0" encoding="utf-8"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"version="2.0"xmlns:atom="http://www.w3.org/2005/Atom">',
     sChannel = '<channel>',
     eChannel = '</channel>',
     sTitle = '<title>',
@@ -7,6 +7,9 @@ var BCLS = ( function (window, document) {
     sDescription = '<description>',
     eDescription = '</description>',
     sItem = '<item xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
+    lastBuildDate = new Date().toDateString(),
+    sLastBuildDate = '<lastBuildDate>',
+    eLastBuildDate = '</lastBuildDate>',
     defaultEndDate = '2020-10-15T00:00+01:00',
     eItemStart = '<dcterms:valid xmlns:dcterms="http://purl.org/dc/terms/">end=',
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
@@ -24,10 +27,11 @@ var BCLS = ( function (window, document) {
     eMediaThumbnail = '/>',
     sMediaTitle = '<media:title>',
     eMediaTitle = '</media:title>',
-    // account stuff
+    // input data
     account_id,
     client_id,
     client_secret,
+    feed_url,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -43,6 +47,7 @@ var BCLS = ( function (window, document) {
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
+    feed_url_input = document.getElementById('feed_url_input')
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
     numberSelect = document.getElementById('numberSelect'),
