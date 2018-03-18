@@ -47,7 +47,7 @@ var BCLS = ( function (window, document) {
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
-    feed_url_input = document.getElementById('feed_url_input')
+    feed_url_input = document.getElementById('feed_url_input'),
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
     numberSelect = document.getElementById('numberSelect'),
@@ -58,7 +58,25 @@ var BCLS = ( function (window, document) {
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
     feedDisplay = document.getElementById('feedDisplay'),
-    allButtons = document.getElementsByName('button');
+    allButtons = document.getElementsByName('button'),
+    categories = {
+      Arts: [ 'Design', 'Fashion &amp; Beauty', 'Food', 'Literature', 'Performing Arts', 'Visual Arts' ],
+      Business: [ 'Business News', 'Careers', 'Investing', 'Management &amp; Marketing', 'Shopping' ],
+      Comedy: [],
+      Education: [ 'Educational Technology', 'Higher Education', 'K-12', 'Language Courses', 'Training' ],
+      'Games &amp; Hobbies': [ 'Automotive', 'Aviation', 'Hobbies', 'Other Games', 'Video Games' ],
+      'Government &amp; Organizations': ['Local', 'National', 'Non-Profit', 'Regional'],
+      Health: ['Alternative Health', 'Fitness &amp; Nutrition', 'Self-Help', 'Sexuality'],
+      'Kids &amp; Family': [],
+      Music: [],
+      'News &amp; Politics': [],
+      'Religion &amp; Spirituality': ['Buddhism', 'Christianity', 'Hinduism', 'Islam', 'Judaism', 'Other', 'Spirituality'],
+      'Science &amp; Medicine': ['Medicine', 'Natural Sciences', 'Social Sciences'],
+      'Society &amp; Culture': [ 'History', 'Personal Journals', 'Philosophy', 'Places &amp; Travel' ],
+      'Sports &amp; Recreation': [ 'Amateur', 'College &amp; High School', 'Outdoor', 'Professional' ],
+      Technology: ['Gadgets', 'Tech News', 'Podcasting', 'Software How-To'],
+      'TV &amp; Film': []
+    };
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
