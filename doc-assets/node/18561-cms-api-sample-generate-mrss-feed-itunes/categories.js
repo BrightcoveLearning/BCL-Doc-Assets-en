@@ -1,92 +1,47 @@
-Arts
+categories = { Arts:
+[
+'Design',
+'Fashion &amp; Beauty',
+'Food',
+'Literature',
+'Performing Arts',
+'Visual Arts'
+],
+Business:
+[
+'Business News',
+'Careers',
+'Investing',
+'Management &amp; Marketing',
+'Shopping'
+],
+Comedy:[],
 
-Design
-Fashion & Beauty
-Food
-Literature
-Performing Arts
-Visual Arts
-Arts
+Education:
+[
+'Educational Technology',
+'Higher Education',
+'K-12',
+'Language Courses',
+'Training'
+],
+'Games &amp; Hobbies':
+[
+'Automotive',
+'Aviation',
+'Hobbies',
+'Other Games',
+'Video Games'
+],
+ 'Government &amp; Organizations':
 
-Design
-Fashion &amp; Beauty
-Food
-Literature
-Performing Arts
-Visual Arts
-Business
+['Local','National','Non-Profit','Regional'],
 
-Business News
-Careers
-Investing
-Management & Marketing
-Shopping
-Business
+Health:
+['Alternative Health','Fitness &amp; Nutrition','Self-Help','Sexuality'],
 
-Business News
-Careers
-Investing
-Management &amp; Marketing
-Shopping
-Comedy
-Comedy
-Education
-
-Educational Technology
-Higher Education
-K-12
-Language Courses
-Training
-Education
-
-Educational Technology
-Higher Education
-K-12
-Language Courses
-Training
-Games & Hobbies
-
-Automotive
-Aviation
-Hobbies
-Other Games
-Video Games
-Games &amp; Hobbies
-
-Automotive
-Aviation
-Hobbies
-Other Games
-Video Games
- Government & Organizations
-
-Local
-National
-Non-Profit
-Regional
- Government &amp; Organizations
-
-Local
-National
-Non-Profit
-Regional
-Health
-
-Alternative Health
-Fitness & Nutrition
-Self-Help
-Sexuality
-Health
-
-Alternative Health
-Fitness &amp; Nutrition
-Self-Help
-Sexuality
-Kids & Family
-Kids &amp; Family
-Music
-Music
-News & Politics
+'Kids &amp; Family': [],
+Music: [],
 News &amp; Politics
 Religion & Spirituality
 
