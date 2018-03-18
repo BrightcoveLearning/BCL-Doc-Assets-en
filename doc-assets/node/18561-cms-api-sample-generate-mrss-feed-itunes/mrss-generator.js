@@ -15,8 +15,6 @@ var BCLS = ( function (window, document) {
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
     sLink = '<link>',
     eLink = '</link>',
-    sPubDate = '<pubDate>',
-    ePubDate = '</pubDate>',
     sCopyright = '<copyright>',
     eCopyright = '</copyright>',
     sMediaContent = '<media:content>',
