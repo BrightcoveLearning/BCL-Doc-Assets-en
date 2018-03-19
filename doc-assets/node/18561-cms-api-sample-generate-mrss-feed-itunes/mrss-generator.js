@@ -10,7 +10,6 @@ var BCLS = ( function (window, document) {
     lastBuildDate = new Date().toDateString(),
     sLastBuildDate = '<lastBuildDate>',
     eLastBuildDate = '</lastBuildDate>',
-    defaultEndDate = '2020-10-15T00:00+01:00',
     eItemStart = '<dcterms:valid xmlns:dcterms="http://purl.org/dc/terms/">end=',
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
     sLink = '<link>',
