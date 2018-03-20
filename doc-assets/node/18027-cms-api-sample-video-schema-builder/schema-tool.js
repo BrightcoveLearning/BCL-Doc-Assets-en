@@ -119,8 +119,30 @@ var BCLS = (function (window, document) {
         videoData.playerHeight = isDefined(playerHeight.textContent) ? playerHeight.textContent : defaults.playerHeight;
         // convert the duration to ISO format schema needs
         videoData.duration = secondsToTime(videoData.duration / 1000);
-        microData = '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="' + videoData.name + '"> \n <meta itemprop="description" content="' + videoData.description + '"> \n <meta itemprop="videoID" content="' + videoData.id + '"> \n <meta itemprop="duration" content="' + videoData.duration + '"> \n <link itemprop="thumbnail" href="' + videoData.images.thumbnail.src + '"> \n <link itemprop="embedURL" href="http://players.brightcove.net/' + videoData.account_id + '/' + videoData.playerID + '_default/index.html?videoID=' + videoData.id + '"> \n <meta itemprop="width" content="' + videoData.playerWidth + '"> \n <meta itemprop="height" content="' + videoData.playerHeight + '"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>';
-        json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "' + videoData.name + '", \n "@id": "' + videoData.url + '", \n "datePublished": "' + videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "' + videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
+        microData = '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="';
+        microData += videoData.name + '"> \n <meta itemprop="description" content="';
+        microData += videoData.description + '"> \n <meta itemprop="videoID" content="';
+        microData += videoData.id + '"> \n <meta itemprop="duration" content="';
+        microData += videoData.duration + '"> \n <link itemprop="thumbnail" href="';
+        microData += videoData.images.thumbnail.src + '"> \n <link itemprop="embedURL" href="http://players.brightcove.net/';
+        microData += videoData.account_id + '/';
+        microData += videoData.playerID + '_default/index.html?videoID=';
+        microData += videoData.id + '"> \n <meta itemprop="width" content="';
+        microData += videoData.playerWidth + '"> \n <meta itemprop="height" content="';
+        microData += videoData.playerHeight + '"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
+        microData += videoData.accountID + '/default_default/index.html?videoID=';
+        microData += videoData.id + '" style="width:';
+        microData += videoData.playerWidth + ';height:';
+        microData += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>';
+        json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "';
+        json_ld += videoData.name + '", \n "@id": "';
+        json_ld += videoData.url + '", \n "datePublished": "';
+        json_ld += videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "';
+        json_ld += videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
+        json_ld += videoData.accountID + '/default_default/index.html?videoID=';
+        json_ld += videoData.id + '" style="width:';
+        json_ld += videoData.playerWidth + ';height:';
+        json_ld += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
         switch (type) {
           case 'microdata':
             publishingCode.textContent = microData;
