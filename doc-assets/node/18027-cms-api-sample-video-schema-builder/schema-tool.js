@@ -113,7 +113,6 @@ var BCLS = (function (window, document) {
     function generateSchema(type) {
       var microData,
         json_ld;
-        console.log('videoData', videoData);
         // insert other data that the schema needs
         videoData.playerID = isDefined(playerID.textContent) ? playerID.textContent : defaults.playerID;
         videoData.playerWidth = isDefined(playerWidth.textContent) ? playerWidth.textContent : defaults.playerWidth;
@@ -159,7 +158,6 @@ var BCLS = (function (window, document) {
 
     generateJSON_ld.addEventListener("click", function () {
         // data setup
-        console.log('click');
         var options = {};
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
