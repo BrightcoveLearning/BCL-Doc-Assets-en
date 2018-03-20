@@ -110,7 +110,7 @@ var BCLS = (function (window, document) {
       httpRequest.send(JSON.stringify(options));
     }
 
-    function generateSchema() {
+    function generateSchema(type) {
         console.log('videoData', videoData);
         // insert other data that the schema needs
         videoData.playerID = isDefined(playerID.textContent) ? playerID.textContent : defaults.playerID;
@@ -119,14 +119,20 @@ var BCLS = (function (window, document) {
         // convert the duration to ISO format schema needs
         videoData.duration = secondsToTime(videoData.duration / 1000);
         publishingCode.textContent = '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="' + videoData.name + '"> \n <meta itemprop="description" content="' + videoData.description + '"> \n <meta itemprop="videoID" content="' + videoData.id + '"> \n <meta itemprop="duration" content="' + videoData.duration + '"> \n <link itemprop="thumbnail" href="' + videoData.images.thumbnail.src + '"> \n <link itemprop="embedURL" href="http://players.brightcove.net/' + videoData.account_id + '/' + videoData.playerID + '_default/index.html?videoID=' + videoData.id + '"> \n <meta itemprop="width" content="' + videoData.playerWidth + '"> \n <meta itemprop="height" content="' + videoData.playerHeight + '"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>';
-            json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "' + videoData.name + '", \n "@id": "' + videoData.url + '", \n "datePublished": "' + videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "' + videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
+        json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "' + videoData.name + '", \n "@id": "' + videoData.url + '", \n "datePublished": "' + videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "' + videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
+        switch (type) {
+          case 'microdata':
+
+            break;
+          default:
+            break;
+        }
     }
 
     // set listeners for buttons
     generateMicrodata.addEventListener("click", function () {
         // data setup
         var options = {};
-        useTemplate = 'MicroData';
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
         account_id = (isDefined(accountID.value)) ? accountID.value : defaults.account_id;
@@ -141,7 +147,7 @@ var BCLS = (function (window, document) {
             makeRequest(options, function(response) {
                 response = JSON.parse(response);
                 videoData.total_plays = response.alltime_video_views;
-                generateSchema();
+                generateSchema('microdata');
             });
         });
     });
@@ -150,7 +156,6 @@ var BCLS = (function (window, document) {
         // data setup
         console.log('click');
         var options = {};
-        useTemplate = 'json_ld';
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
         account_id = (isDefined(accountID.value)) ? accountID.value : defaults.account_id;
@@ -165,7 +170,7 @@ var BCLS = (function (window, document) {
             makeRequest(options, function(response) {
                 response = JSON.parse(response);
                 videoData.total_plays = response.alltime_video_views;
-                generateSchema();
+                generateSchema('json_ld');
             });
         });
     });
