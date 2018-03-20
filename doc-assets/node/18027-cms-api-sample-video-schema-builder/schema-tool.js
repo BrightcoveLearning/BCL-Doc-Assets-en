@@ -1,4 +1,4 @@
-var BCLS = (function (document, Handlebars) {
+var BCLS = (function (window, document) {
     "use strict";
     var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         accountID = document.getElementById('accountID'),
@@ -14,14 +14,7 @@ var BCLS = (function (document, Handlebars) {
         generateJSON_ld = document.getElementById('generateJSON_ld'),
         publishingCode = document.getElementById('publishingCode'),
         videoData = null,
-        defaults = {},
-        useTemplate,
-        template,
-        result,
-        schemaTemplates = {
-            MicroData: '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="{{name}}"> \n <meta itemprop="description" content="{{description}}"> \n <meta itemprop="videoID" content="{{id}}"> \n <meta itemprop="duration" content="{{duration}}"> \n <link itemprop="thumbnail" href="{{images.thumbnail.src}}"> \n <link itemprop="embedURL" href="http://players.brightcove.net/{{account_id}}/{{playerID}}_default/index.html?videoID={{id}}"> \n <meta itemprop="width" content="{{playerWidth}}"> \n <meta itemprop="height" content="{{playerHeight}}"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>',
-            json_ld: '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "{{name}}", \n "@id": "{{url}}", \n "datePublished": "{{created_at}}", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "{{total_plays}}" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n '
-        };
+        defaults = {};
 
     /**
      * determines whether a var has value
@@ -125,9 +118,8 @@ var BCLS = (function (document, Handlebars) {
         videoData.playerHeight = isDefined(playerHeight.textContent) ? playerHeight.textContent : defaults.playerHeight;
         // convert the duration to ISO format schema needs
         videoData.duration = secondsToTime(videoData.duration / 1000);
-        template = Handlebars.compile(schemaTemplates[useTemplate]);
-        result = template(videoData);
-        publishingCode.textContent = result;
+        publishingCode.textContent = '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="' + videoData.name + '"> \n <meta itemprop="description" content="' + videoData.description + '"> \n <meta itemprop="videoID" content="' + videoData.id + '"> \n <meta itemprop="duration" content="' + videoData.duration + '"> \n <link itemprop="thumbnail" href="' + videoData.images.thumbnail.src + '"> \n <link itemprop="embedURL" href="http://players.brightcove.net/' + videoData.account_id + '/' + videoData.playerID + '_default/index.html?videoID=' + videoData.id + '"> \n <meta itemprop="width" content="' + videoData.playerWidth + '"> \n <meta itemprop="height" content="' + videoData.playerHeight + '"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>',
+            json_ld: '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "' + videoData.name + '", \n "@id": "' + videoData.url + '", \n "datePublished": "' + videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "' + videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
     }
     // set listeners for buttons
     generateMicrodata.addEventListener("click", function () {
@@ -183,8 +175,8 @@ var BCLS = (function (document, Handlebars) {
 
     function init() {
         defaults.account_id = '1752604059001';
-        defaults.playerID = '28e29e6d-bed3-4db9-8d70-8d55b8aa3091';
-        defaults.videoID = '4454620113001';
+        defaults.playerID = 'default';
+        defaults.videoID = '5625780785001';
         defaults.playerWidth = '480';
         defaults.playerHeight = '270';
         // proxy has credentials for the default account, so no need to send them
@@ -193,4 +185,4 @@ var BCLS = (function (document, Handlebars) {
     }
 
     init();
-})(document, Handlebars);
+})(window, document);
