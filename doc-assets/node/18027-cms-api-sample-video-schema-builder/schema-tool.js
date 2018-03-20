@@ -111,6 +111,8 @@ var BCLS = (function (window, document) {
     }
 
     function generateSchema(type) {
+      var microData,
+        json_ld;
         console.log('videoData', videoData);
         // insert other data that the schema needs
         videoData.playerID = isDefined(playerID.textContent) ? playerID.textContent : defaults.playerID;
@@ -122,7 +124,7 @@ var BCLS = (function (window, document) {
         json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "' + videoData.name + '", \n "@id": "' + videoData.url + '", \n "datePublished": "' + videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "' + videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/' + videoData.accountID + '/default_default/index.html?videoID=' + videoData.id + '" style="width:' + videoData.playerWidth + ';height:' + videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
         switch (type) {
           case 'microdata':
-
+            publishingCode.textContent =
             break;
           default:
             break;
