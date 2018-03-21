@@ -10,7 +10,9 @@
 
 <p>You can request notifications by including one or more <code>notifications</code> fields in the outputs your <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request.</p>
 
-<p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post", "credentials": "refToMyCreds"}". A notification will be sent to all destinations when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+<p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post", "credentials": "reference_to_your_credentials"}". A notification will be sent to the destination you specify when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type (<code>first_segment_uploaded</code>, <code>state_change</code>, etc) is allowed.</aside>
 
 <p>Here is an example</p>
 
@@ -20,15 +22,13 @@
     "region": "us-west-2",
     "reconnect_time": 20,
     <span class="bcls-highlight">"notifications": [
-        "http://httpbin.org/post?liveStateChange",
-        {
-            "url": "http://httpbin.org/post?liveStarted",
-            "event": "first_segment_uploaded"
-        },
-        {
-            "url": "http://httpbin.org/post?liveFinished",
-            "event": "output_finished"
-        }]</span>,
+          {"url": "http://httpbin.org/post/URLA",
+           "credentials": "reference_to_your_credentials",
+           "event": "first_segment_uploaded"}",
+          {"url": "http://httpbin.org/post/URLB",
+          "credentials": "reference_to_your_credentials",
+          "event": "state_changed"}"
+    	],</span>,
     "outputs": [
     {
         "label": "hls720p",
