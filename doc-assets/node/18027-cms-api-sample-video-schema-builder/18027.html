@@ -125,13 +125,13 @@
 <p>You can see the the HTML code by viewing the source for this page.</p>
 </section>
 
-<div class="bcls-section" id="codeJS">
+<section class="bcls-section" id="codeJS">
 <h2>Code: JavaScript</h2>
 
 <pre class="line-numbers">
-<code class="language-javascript">var BCLS = (function (document, Handlebars) {
+<code class="language-javascript">var BCLS = (function (window, document) {
     "use strict";
-    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/schema-tool-proxy.php',
+    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         accountID = document.getElementById('accountID'),
         account_id,
         clientID = document.getElementById('clientID'),
@@ -145,14 +145,7 @@
         generateJSON_ld = document.getElementById('generateJSON_ld'),
         publishingCode = document.getElementById('publishingCode'),
         videoData = null,
-        defaults = {},
-        useTemplate,
-        template,
-        result,
-        schemaTemplates = {
-            MicroData: '&lt;!-- Start Schema Code --&gt; \n &lt;div id="content"&gt; \n &lt;div itemscope itemtype="http://schema.org/VideoObject"&gt; \n &lt;meta itemprop="name" content="{{name}}"&gt; \n &lt;meta itemprop="description" content="{{description}}"&gt; \n &lt;meta itemprop="videoID" content="{{id}}"&gt; \n &lt;meta itemprop="duration" content="{{duration}}"&gt; \n &lt;link itemprop="thumbnail" href="{{images.thumbnail.src}}"&gt; \n &lt;link itemprop="embedURL" href="http://players.brightcove.net/{{account_id}}/{{playerID}}_default/index.html?videoID={{id}}"&gt; \n &lt;meta itemprop="width" content="{{playerWidth}}"&gt; \n &lt;meta itemprop="height" content="{{playerHeight}}"&gt; \n &lt;!-- End Schema Code --&gt; \n &lt;!-- Start Player Code --&gt; \n &lt;iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;\/iframe&gt;  \n &lt;!-- End Player Code --&gt; \n &lt;\/div&gt; \n &lt;\/div&gt;',
-            json_ld: '&lt;!-- Start Schema Code --&gt; \n &lt;script type="application/ld+json"&gt; \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "{{name}}", \n "@id": "{{url}}", \n "datePublished": "{{created_at}}", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "{{total_plays}}" \n ]} \n &lt;/script&gt; \n &lt;!-- End Schema Code --&gt; \n &lt;!-- Start Player Code --&gt; \n &lt;iframe src="//players.brightcove.net/{{accountID}}/default_default/index.html?videoID={{id}}" style="width:{{playerWidth}};height:{{playerHeight}}" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;\/iframe&gt; \n &lt;!-- End Player Code --&gt; \n '
-        };
+        defaults = {};
 
     /**
      * determines whether a var has value
@@ -201,94 +194,139 @@
 
     /**
      * send API request to the proxy
-     * @param  {Object} options options for the request
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function getMediaData(options, callback) {
-        var httpRequest = new XMLHttpRequest(),
-            requestParams,
-            // response handler
-            getResponse = function () {
-                try {
-                    if (httpRequest.readyState === 4) {
-                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
-                            // add/remove folder video return no data
-                            callback(httpRequest.responseText);
-                            // re-enable the buttons
-                        } else {
-                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                        }
-                    }
-                } catch (e) {
-                    alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&amp;requestType=" + options.requestType;
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
 
-    function generateSchema() {
-        console.log('videoData', videoData);
+    function generateSchema(type) {
+      var microData,
+        json_ld;
         // insert other data that the schema needs
         videoData.playerID = isDefined(playerID.textContent) ? playerID.textContent : defaults.playerID;
         videoData.playerWidth = isDefined(playerWidth.textContent) ? playerWidth.textContent : defaults.playerWidth;
         videoData.playerHeight = isDefined(playerHeight.textContent) ? playerHeight.textContent : defaults.playerHeight;
         // convert the duration to ISO format schema needs
         videoData.duration = secondsToTime(videoData.duration / 1000);
-        template = Handlebars.compile(schemaTemplates[useTemplate]);
-        result = template(videoData);
-        publishingCode.textContent = result;
+        microData = '&lt;!-- Start Schema Code --&gt; \n &lt;div id="content"&gt; \n &lt;div itemscope itemtype="http://schema.org/VideoObject"&gt; \n &lt;meta itemprop="name" content="';
+        microData += videoData.name + '"&gt; \n &lt;meta itemprop="description" content="';
+        microData += videoData.description + '"&gt; \n &lt;meta itemprop="videoID" content="';
+        microData += videoData.id + '"&gt; \n &lt;meta itemprop="duration" content="';
+        microData += videoData.duration + '"&gt; \n &lt;link itemprop="thumbnail" href="';
+        microData += videoData.images.thumbnail.src + '"&gt; \n &lt;link itemprop="embedURL" href="http://players.brightcove.net/';
+        microData += videoData.account_id + '/';
+        microData += videoData.playerID + '_default/index.html?videoID=';
+        microData += videoData.id + '"&gt; \n &lt;meta itemprop="width" content="';
+        microData += videoData.playerWidth + '"&gt; \n &lt;meta itemprop="height" content="';
+        microData += videoData.playerHeight + '"&gt; \n &lt;!-- End Schema Code --&gt; \n &lt;!-- Start Player Code --&gt; \n &lt;iframe src="//players.brightcove.net/';
+        microData += videoData.accountID + '/default_default/index.html?videoID=';
+        microData += videoData.id + '" style="width:';
+        microData += videoData.playerWidth + ';height:';
+        microData += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;\/iframe&gt;  \n &lt;!-- End Player Code --&gt; \n &lt;\/div&gt; \n &lt;\/div&gt;';
+        json_ld = '&lt;!-- Start Schema Code --&gt; \n &lt;script type="application/ld+json"&gt; \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "';
+        json_ld += videoData.name + '", \n "@id": "';
+        json_ld += videoData.url + '", \n "datePublished": "';
+        json_ld += videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "';
+        json_ld += videoData.total_plays + '" \n ]} \n &lt;/script&gt; \n &lt;!-- End Schema Code --&gt; \n &lt;!-- Start Player Code --&gt; \n &lt;iframe src="//players.brightcove.net/';
+        json_ld += videoData.accountID + '/default_default/index.html?videoID=';
+        json_ld += videoData.id + '" style="width:';
+        json_ld += videoData.playerWidth + ';height:';
+        json_ld += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;\/iframe&gt; \n &lt;!-- End Player Code --&gt; \n ';
+        switch (type) {
+          case 'microdata':
+            publishingCode.textContent = microData;
+            break;
+          case 'json_ld':
+            publishingCode.textContent = json_ld;
+            break;
+          default:
+            break;
+        }
     }
+
     // set listeners for buttons
     generateMicrodata.addEventListener("click", function () {
         // data setup
         var options = {};
-        useTemplate = 'MicroData';
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
         account_id = (isDefined(accountID.value)) ? accountID.value : defaults.account_id;
         video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
+        options.proxyURL = proxyURL;
         options.requestType = "GET";
-        getMediaData(options, function(response) {
+        makeRequest(options, function(response) {
             videoData = JSON.parse(response);
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
-            getMediaData(options, function(response) {
+            makeRequest(options, function(response) {
                 response = JSON.parse(response);
                 videoData.total_plays = response.alltime_video_views;
-                generateSchema();
+                generateSchema('microdata');
             });
         });
     });
 
     generateJSON_ld.addEventListener("click", function () {
         // data setup
-        console.log('click');
         var options = {};
-        useTemplate = 'json_ld';
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
         account_id = (isDefined(accountID.value)) ? accountID.value : defaults.account_id;
         video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
+        options.proxyURL = proxyURL;
         options.requestType = "GET";
-        getMediaData(options, function(response) {
+        makeRequest(options, function(response) {
             videoData = JSON.parse(response);
             videoData.url = 'http://http://players.brightcove.net/' + account_id + '/default_default/index.html';
             options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + video_id;
-            getMediaData(options, function(response) {
+            makeRequest(options, function(response) {
                 response = JSON.parse(response);
                 videoData.total_plays = response.alltime_video_views;
-                generateSchema();
+                generateSchema('json_ld');
             });
         });
     });
@@ -299,8 +337,8 @@
 
     function init() {
         defaults.account_id = '1752604059001';
-        defaults.playerID = '28e29e6d-bed3-4db9-8d70-8d55b8aa3091';
-        defaults.videoID = '4454620113001';
+        defaults.playerID = 'default';
+        defaults.videoID = '5625780785001';
         defaults.playerWidth = '480';
         defaults.playerHeight = '270';
         // proxy has credentials for the default account, so no need to send them
@@ -309,9 +347,18 @@
     }
 
     init();
-})(document, Handlebars);
+})(window, document);
 </code></pre>
-</div>
+</section>
+<section class="bcls-section">
+  <h2 id="proxy">Proxy</h2>
+  <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+</p>
+<ul>
+  <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
+  <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
+</ul>
+</section>
 <script src="//learning-services-media.brightcove.com/doc-assets/node/18027-cms-api-sample-video-schema-builder/schema-tool.js">
 
 </script>
