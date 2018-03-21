@@ -24,13 +24,13 @@
 
 	<ul>
 		<li>If the job is active and still live: (request time - duration) to (request time)</li>
-		<li>If the job is finished: (finished_at - duration) to (finished_at)</li>
+		<li>If the job is finished: (<code>finished_at</code> - duration) to (<code>finished_at</code>)</li>
 	</ul>
 	</li>
-	<li>If you specify both "start_time" AND "end_time":
+	<li>If you specify both <code>start_time</code> AND <code>end_time</code>:
 	<ul>
-		<li>If the job is active and still live: as long as the Epoch time window falls entirely within "created_at" and the request time, the clip will be made</li>
-		<li>If the job is finished: as long as the Epoch time window falls entirely within "created_at" and "finished_at", the clip will be made</li>
+		<li>If the job is active and still live: as long as the Epoch time window falls entirely within <code>created_at</code> and the request time, the clip will be made</li>
+		<li>If the job is finished: as long as the Epoch time window falls entirely within <code>created_at</code> and <code>finished_at</code>, the clip will be made</li>
 	</ul>
 	</li>
 	<li>Clips can be created up to 24 hours after an event. For <a href="/node/18443">SEP</a>, they can be created up until the next activation or 24 hours (whichever is shorter).</li>
@@ -41,12 +41,13 @@
 <p>Clips can also be sent to multiple destinations:</p>
 
 <ul>
-	<li>A Video Cloud account</li>
+	<li>A <span class=”notranslate”>Video Cloud</span>
+ account</li>
 	<li>An FTP server</li>
 	<li>An S3 bucket</li>
 </ul>
 
-<aside class="bcls-aside bcls-aside--information">Note: clips can be created while the live stream is running. To do this, you will need to define the start and end times of the clip in Epoch time or relative to <strong>start</strong> time of the live stream.</aside>
+<p>Note: clips <strong>can be created while the live stream is running</strong>. To do this, you will need to define the start and end times of the clip in Epoch time or relative to <strong>start</strong> time of the live stream.</p>
 </section>
 <!-- <section class="bcls-section">
 <h2 id="state_diagram">State diagram</h2>
@@ -68,11 +69,16 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="Request_body_video_cloud">Request body - Video Cloud</h2>
+<h2 id="Request_body_video_cloud">Request body - <span class=”notranslate”>Video Cloud</span>
+</h2>
+
+<aside class="bcls-aside bcls-aside--tip">Note: we strongly recommend <strong>not</strong> specifying ingest profile that should be used for transcoding the clip, and instead use the account default profile. This will reduce the chance of errors in creating the clip in <span class=”notranslate”>Video Cloud</span>
+</aside>
 
 <h3>Example 1: start/end times relative to stream start</h3>
 
-<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:</p>
+<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class=”notranslate”>Video Cloud</span>
+ account:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -89,7 +95,6 @@
                     "tags": ["live", "clip"]
                 },
                 "ingest": {
-                    "profile": "high-resolution",
                     "capture-images": true
                 }
             }
@@ -97,11 +102,14 @@
     ]
 }</code></pre>
 
-<p>In this example, we are creating a clip of one-minute duration and sending it to Video Cloud. We're giving the clip a name and a couple of tags, specifying a "high-resolution" <a href="/node/18045">ingest profile</a> for retranscoding, and instructing Video Cloud to capture thumbnail and poster images from the clip during transcoding.</p>
+<p>In this example, we are creating a clip of one-minute duration and sending it to <span class=”notranslate”>Video Cloud</span>
+. We're giving the clip a name and a couple of tags, not specifying the <a href="/node/18045">ingest profile</a> for retranscoding, so that the account default will be used, and instructing <span class=”notranslate”>Video Cloud</span>
+ to capture thumbnail and poster images from the clip during transcoding.</p>
 
 <h3>Example 2: start/end times in Epoch time</h3>
 
-<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:</p>
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class=”notranslate”>Video Cloud</span>
+ account:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -130,7 +138,8 @@
 
 <h3>Example 3: duration with start time relative to stream start</h3>
 
-<p>The request body includes the duration and stream_start_time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:</p>
+<p>The request body includes the duration and stream_start_time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class=”notranslate”>Video Cloud</span>
+ account:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -159,7 +168,8 @@
 
 <h3>Example 4: duration with no start or end time</h3>
 
-<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:</p>
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class=”notranslate”>Video Cloud</span>
+ account:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -188,7 +198,8 @@
 
 <h3>Example 5: using <code>stream_start_timecode</code> and <code>stream_end_time_code</code></h3>
 
-<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:</p>
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class=”notranslate”>Video Cloud</span>
+ account:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
@@ -216,7 +227,8 @@
 
 <p>In this example, we are creating a clip of one-minute duration from a specific part of the live stream based on timecodes.</p>
 
-<h3>General information about sending clips to Video Cloud</h3>
+<h3>General information about sending clips to <span class=”notranslate”>Video Cloud</span>
+</h3>
 
 <p>To see what fields can be included in the <code>video</code> and <code>ingest</code> objects, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html">Dynamic Ingest API Reference</a>.</p>
 
@@ -337,21 +349,24 @@
 			<td class="code">&nbsp;&nbsp;videocloud</td>
 			<td>Object</td>
 			<td>
-			<p>An object containing inputs for Video Cloud ingestion</p>
+			<p>An object containing inputs for <span class=”notranslate”>Video Cloud</span>
+ ingestion</p>
 			</td>
 		</tr>
 		<tr>
 			<td class="code">&nbsp;&nbsp;&nbsp;&nbsp;video</td>
 			<td>Object</td>
 			<td>
-			<p>An object containing inputs for Video Cloud video object creation - see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API Reference for creating a video</a></p>
+			<p>An object containing inputs for <span class=”notranslate”>Video Cloud</span>
+ video object creation - see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API Reference for creating a video</a></p>
 			</td>
 		</tr>
 		<tr>
 			<td class="code">&nbsp;&nbsp;&nbsp;&nbsp;ingest</td>
 			<td>Object</td>
 			<td>
-			<p>An object containing inputs for Video Cloud video ingestion - see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest Reference</a> - do <strong>not</strong> include the <code>master</code> field, as that information will be provided by the Live API</p>
+			<p>An object containing inputs for <span class=”notranslate”>Video Cloud</span>
+ video ingestion - see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest Reference</a> - do <strong>not</strong> include the <code>master</code> field, as that information will be provided by the Live API</p>
 			</td>
 		</tr>
 	</tbody>
