@@ -45,7 +45,7 @@ var BCLS = ( function (window, document) {
         return false;
     }
     // set options for the Dynamic Ingest API request
-    function setDIOptions() {
+    function makeRequest(type) {
         var options = {},
             body = {},
             custom_profile_display_value = custom_profile_display.value;
@@ -58,6 +58,16 @@ var BCLS = ( function (window, document) {
         options.client_id = client_id;
         options.client_secret = client_secret;
         options.proxyURL = proxyURL;
+
+        switch(type) {
+          case 'getProfiles':
+
+            break;
+          case 'startRetranscode':
+            break;
+          default:
+            console.log('Unknown request type');
+        }
         di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
         body.master = {};
         body.master.use_archived_master = true;
@@ -100,16 +110,16 @@ var BCLS = ( function (window, document) {
                                 // reset currentJobs
                                 currentJobs = 0;
                                 // wait 30 min before resuming
-                                t2 = setTimeout(setDIOptions, 1800000);
+                                t2 = setTimeout(makeRequest, 1800000);
                             } else {
-                                setDIOptions();
+                                makeRequest();
                             }
                         }
                     } else {
                         logResponse("DI", "Request failed; retrying video number: " + videoData[videoNumber].id);
                         videoNumber++;
                         // give proxy a second to rest
-                        t2 = setTimeout(setDIOptions, 1000);
+                        t2 = setTimeout(makeRequest, 1000);
                     }
 
                       } else {
@@ -143,7 +153,7 @@ var BCLS = ( function (window, document) {
         client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
         client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
         // set CMS API options for first video
-        setDIOptions();
+        makeRequest();
     });
     // initialize
     function init() {
