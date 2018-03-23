@@ -15,7 +15,7 @@ var BCLS = ( function (window, document) {
         profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
         di_url_display = document.getElementById("di_url"),
         di_submit_display = document.getElementById("di_Submit"),
-        diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
         response = document.getElementById("response"),
         videoData = [],
         totalVideos = 0,
@@ -29,9 +29,9 @@ var BCLS = ( function (window, document) {
     // is defined
     function isDefined(x){
         if (x === "" || x === null || x === undefined){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -57,6 +57,7 @@ var BCLS = ( function (window, document) {
         }
         options.client_id = client_id;
         options.client_secret = client_secret;
+        options.proxyURL = proxyURL;
         di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
         body.master = {};
         body.master.use_archived_master = true;
