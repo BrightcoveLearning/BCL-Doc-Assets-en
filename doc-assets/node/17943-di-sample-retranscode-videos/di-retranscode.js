@@ -71,7 +71,7 @@ var BCLS = ( function (window, document) {
         makeRequest(options, function(response) {
           var parsedData = JSON.parse(response);
           console.log('parsedData', parsedData);
-          if (parsedData.indexOf("error_code") < 0) {
+          if (response.indexOf("error_code") < 0) {
               // handle the response
           totalIngested++;
           logResponse("totalIngested", totalIngested);
