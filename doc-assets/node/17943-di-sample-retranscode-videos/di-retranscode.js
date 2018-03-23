@@ -12,9 +12,9 @@ var BCLS = (function(window, document) {
     capture_images_display = document.getElementById('capture_images_display'),
     videoDataDisplay = document.getElementById("videoData"),
     // Dynamic Ingest API stuff
-    profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
+    profilesArray = [],
     videosBlock = document.getElementById('videosBlock'),
-    di_url_display = document.getElementById("di_url"),
+    apiRequest = document.getElementById("apiRequest"),
     di_submit_display = document.getElementById("di_Submit"),
     proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php",
     response = document.getElementById("response"),
@@ -119,10 +119,13 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getVideos':
-      endpoint = '/videos?limit=' + limit + '&offset=' + (limit * videoCallNumber);
-      if (isDefined(searchString)) {
-        endpoint += '&q=' + searchString;
-      }
+      var input,
+        space,
+        label,
+        text,
+        br,
+        fragment = document.createDocumentFragment();
+      endpoint = '/videos';
       options.url = cmsBaseURL + endpoint;
       apiRequest.textContent = options.url;
       options.requestType = 'GET';
@@ -189,14 +192,14 @@ var BCLS = (function(window, document) {
       default:
         console.log('Unknown request type');
     }
-    di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
+    apiRequest.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
     body.master = {};
     body.master.use_archived_master = true;
     body.profile = ingest_profile;
     body["capture-images"] = isChecked(capture_images_display);
     options.requestBody = JSON.stringify(body);
     options.requestType = "POST";
-    options.url = di_url_display.value;
+    options.url = apiRequest.value;
     // now submit the request
     submitRequest(options, diURL, "di");
   }
