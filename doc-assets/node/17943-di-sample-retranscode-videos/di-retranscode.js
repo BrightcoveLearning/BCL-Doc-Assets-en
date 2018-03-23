@@ -13,15 +13,18 @@ var BCLS = (function(window, document) {
     videoDataDisplay = document.getElementById("videoData"),
     // Dynamic Ingest API stuff
     profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
+    videosBlock = document.getElementById('videosBlock'),
     di_url_display = document.getElementById("di_url"),
     di_submit_display = document.getElementById("di_Submit"),
     proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php",
     response = document.getElementById("response"),
     videoData = [],
+    videos = [],
+    videosCollection,
+    videosSelectAll,
     totalVideos = 0,
     videoNumber = 0,
     currentJobs = 0,
-    t2,
     totalIngested = 0,
     defaults = {
       account_id: 57838016001,
@@ -48,10 +51,61 @@ var BCLS = (function(window, document) {
     }
     return false;
   }
+
+  /**
+     * get array of values for checked boxes in a collection
+     * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+     * @return {Array} array of the values of the checked boxes
+     */
+    function getCheckedBoxValues(checkBoxCollection) {
+      var checkedValues = [],
+        i,
+        iMax;
+      if (checkBoxCollection) {
+        iMax = checkBoxCollection.length;
+        for (i = 0; i < iMax; i++) {
+          if (checkBoxCollection[i].checked === true) {
+            checkedValues.push(checkBoxCollection[i].value);
+          }
+        }
+        return checkedValues;
+      } else {
+        console.log('Error: no input received');
+        return null;
+      }
+    }
+
+    /**
+       * selects all checkboxes in a collection
+       * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+       */
+      function selectAllCheckboxes(checkboxCollection) {
+        var i,
+          iMax = checkboxCollection.length;
+        for (i = 0; i < iMax; i += 1) {
+          checkboxCollection[i].setAttribute('checked', 'checked');
+        }
+      }
+
+      /**
+         * deselects all checkboxes in a collection
+         * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+         */
+        function deselectAllCheckboxes(checkboxCollection) {
+          var i,
+            iMax = checkboxCollection.length;
+          for (i = 0; i < iMax; i += 1) {
+            checkboxCollection[i].removeAttribute('checked');
+          }
+        }
+
   // set options for the Dynamic Ingest API request
   function makeRequest(type) {
     var options = {},
       body = {},
+      i,
+      iMax,
+      cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
       custom_profile_display_value = custom_profile_display.value;
     // get the ingest profile
     if (isDefined(custom_profile_display_value)) {
@@ -64,6 +118,69 @@ var BCLS = (function(window, document) {
     options.proxyURL = proxyURL;
 
     switch (type) {
+      case 'getVideos':
+      endpoint = '/videos?limit=' + limit + '&offset=' + (limit * videoCallNumber);
+      if (isDefined(searchString)) {
+        endpoint += '&q=' + searchString;
+      }
+      options.url = cmsBaseURL + endpoint;
+      apiRequest.textContent = options.url;
+      options.requestType = 'GET';
+      makeRequest(options, function(response) {
+        getVideos.textContent = 'Get Next Set of Videos';
+        videos = JSON.parse(response);
+        logMessage(videos.length + ' videos retrieved');
+        apiResponse.textContent = JSON.stringify(videos, null, '  ');
+        input = document.createElement('input');
+        space = document.createTextNode(' ');
+        label = document.createElement('label');
+        input.setAttribute('name', 'videosChkAll');
+        input.setAttribute('id', 'videosChkAll');
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('value', 'all');
+        label.setAttribute('for', 'videosChkAll');
+        label.setAttribute('style', 'color:#F3951D;');
+        text = document.createTextNode('Select All');
+        label.appendChild(text);
+        br = document.createElement('br');
+        fragment.appendChild(input);
+        fragment.appendChild(space);
+        fragment.appendChild(label);
+        fragment.appendChild(br);
+          iMax = videos.length;
+          for (i = 0; i < iMax; i++) {
+            input = document.createElement('input');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'videosChk');
+            input.setAttribute('id', 'field' + videos[i].id);
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', videos[i].id);
+            label.setAttribute('for', 'field' + videos[i].id);
+            text = document.createTextNode(videos[i].name);
+            label.appendChild(text);
+            br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
+          }
+          // clear videos videos
+          videosBlock.innerHTML = '';
+          videosBlock.appendChild(fragment);
+          // get references to checkboxes
+          videosCollection = document.getElementsByName('videosChk');
+          videosSelectAll = document.getElementById('videosChkAll');
+          // add event listener for select allows
+          videosSelectAll.addEventListener('change', function() {
+            if (this.checked) {
+              selectAllCheckboxes(videosCollection);
+            } else {
+              deselectAllCheckboxes(videosCollection);
+            }
+          });
+        });
+        break;
       case 'getProfiles':
 
         break;
