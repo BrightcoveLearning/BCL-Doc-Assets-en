@@ -2,9 +2,8 @@
 <section class="bcls-section">
 <h2 id="Introduction">Introduction</h2>
 
-<p>Brightcove's Dynamic Ingest (DI) API is based on functionality where video source files are downloaded from the customer's storage location and specified renditions of the source files are created. (There is also an option to <a href="/node/18288">upload your source files</a> to a temporary location where Dynamic Ingest can access them.) The platform is cloud-centric, globally-distributed and based on modern practices to deliver best in class consistency and speed.</p>
+<p>Brightcove's Dynamic Ingest API is based on functionality where video source files are downloaded from the customer's storage location and specified renditions of the source files are created. (There is also an option to <a href="/node/18288">upload your source files</a> to a temporary location where Dynamic Ingest can access them.) The platform is cloud-centric, globally-distributed and based on modern practices to deliver best in class consistency and speed.</p>
 
-<aside class="bcls-aside bcls-aside--information">Note: for segmented video types (HLS and DASH) some players do not handle the case where the audio and video stream lengths differ by more than a segment's duration. If you encounter this, try using a shorter segment length.</aside>
 </section>
 
 <section class="bcls-section">
@@ -59,7 +58,6 @@
 <section class="bcls-section">
 <h2 id="best_practices">Best practices</h2>
 
-<aside class="bcls-aside bcls-aside--tip">
 <ul>
 	<li>A 20 request per second limit on each account for total requests across DI and the CMS API (CMS API or Ingest API requests)</li>
 	<li>A limit of 100 concurrent normal priority DI jobs per account</li>
@@ -73,11 +71,10 @@
 		<li>ACCEPTABLE: Submit an ingest request for a video file, then submit an ingest request for a text track in English associated with the same Video ID, and then submit an ingest request for a thumbnail image with the same Video ID</li>
 		<li>ACCEPTABLE: Submit an ingest job for a text track in English and then submit an ingest request for a text track in Spanish in parallel</li>
 		<li>UNACCEPTABLE: Submit a request to ingest a Spanish audio track and then immediately submit a request to ingest another Spanish audio track on the same Video ID</li>
-    <li>The <code>profile</code> field for ingest requests is <strong>optional</strong>. Avoid hard-coding the <code>profile</code> in apps and integrations - instead, set the most commonly used profile as the <strong>default</strong> for the account, and omit the field, or <a href="https://brightcovelearning.github.io/Brightcove-API-References/ingest-profiles-api/v1/doc/index.html#api-Profile-Get_All_Ingest_Profiles">fetch the available profiles for the account</a> and force the user to choose one.</li>
+		<li>The <code>profile</code> field for ingest requests is <strong>optional</strong>. Avoid hard-coding the <code>profile</code> in apps and integrations - instead, set the most commonly used profile as the <strong>default</strong> for the account, and omit the field, or <a href="https://brightcovelearning.github.io/Brightcove-API-References/ingest-profiles-api/v1/doc/index.html#api-Profile-Get_All_Ingest_Profiles">fetch the available profiles for the account</a> and force the user to choose one.</li>
 	</ul>
 	</li>
 </ul>
-</aside>
 </section>
 
 <section class="bcls-section">
@@ -143,9 +140,9 @@
 
 <p>Special ingest profiles are required to create Dynamic Delivery videos. You will find a couple of <a href="/node/18386">standard ingest profiles</a> in your account when Dynamic Delivery is enabled, and these are recommended.</p>
 
-<p>You can also add a custom Dynamic Delivery profile to your ingest profiles in the Admin section of Studio see <a href="/node/16840">Creating Ingest Profiles for Dynamic Delivery</a> for details.</p>
+<p>You can also add a custom Dynamic Delivery profile to your ingest profiles in the Admin section of Studio - see <a href="/node/16840">Creating Ingest Profiles for Dynamic Delivery</a> for details.</p>
 
-<aside class="bcls-aside bcls-aside--information">Note that Dynamic Delivery supports and creates several versions HLS renditions to maximize the reach of your videos to devices.</aside>
+<aside class="bcls-aside bcls-aside--information">Note that Dynamic Delivery supports and creates several HLS renditions to maximize the reach of your videos to devices.</aside>
 
 <h3>Sample Dynamic Delivery profile</h3>
 
@@ -190,11 +187,11 @@
 <section class="bcls-section" id="ingestingVideos">
 <h2>Ingesting videos</h2>
 
-<p>There are two API calls required for ingesting videos:</p>
+<p>There are two API requests required for ingesting videos:</p>
 
 <ol>
 	<li>Call the CMS API to create a video object in the Video Cloud system and get its id</li>
-	<li>Call the Dynamic Ingest API to provide the URL for the video source file, and specify the ingest profile you just created using the example above</li>
+	<li>Call the Dynamic Ingest API to provide the URL for the video source file and specify other files and settings for the ingest as needed</li>
 </ol>
 
 <p>A sample set of basic requests would look like the following:</p>
@@ -241,7 +238,11 @@
 	</dd>
 </dl>
 
-<aside class="bcls-aside bcls-aside--information">Note that the <code>callbacks</code> field is optional, but we highly recommend that you use it as the best way to track the progress of ingest jobs. See <a href="#notifications">below</a> for more on notifications.</aside>
+<h3>Notes</h3>
+<ul>
+  <li>If you do not include the <code>profile</code> field, that account default profile will be used. We recommend using the account default, unless you need to use different profiles for different kinds of videos. Be sure to set the account default to the profile you (most often) want to use.</li>
+  <li>The <code>callbacks</code> field is optional, but we highly recommend that you use it as the best way to track the progress of ingest jobs. See <a href="#notifications">below</a> for more on notifications.</li>
+</ul>
 </section>
 
 <section class="bcls-section">
@@ -273,7 +274,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 
 // request body
 {
-    "master": { <strong><em>"use_archived_master": true</em></strong> },
+    "master": { <span class="bcls-highlight">"use_archived_master": true</span> },
     "profile": "multi-platform-extended-static"
 }</code></pre>
 
@@ -289,7 +290,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 <section class="bcls-section">
 <h2 id="ingest-images">Image ingest</h2>
 
-<p>Instead of having poster and thumbnail images captured during transcoding, you can include your own images with ingest request or add them in a separate request later.</p>
+<p>Instead of having poster and thumbnail images captured during transcoding, you can include your own images with the ingest request or add them in a separate request later.</p>
 <!-- <aside class="bcls-aside bcls-aside--information">If you add images in a separate request, your request body <strong>must</strong> include the <code>"profile": "YOUR_DYNAMIC_DELIVERY_PROFILE"</code> field, as shown in the example below.</aside> -->
 
 <h3>Sample request body</h3>
@@ -377,7 +378,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
     ]
 }</code></pre>
 
-<p>Sidecar text tracks will show up in CMS or Playback responses as they do for non-Dynamic Delivery videos:</p>
+<p>Sidecar text tracks will show up in CMS or Playback responses, as they do for non-Dynamic Delivery videos:</p>
 
 <pre class="line-numbers">
 <code class="language-json">"text_tracks": [
@@ -685,8 +686,6 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 
 <p>DRM is supported, but works differently than for ordinary video ingest. You do <strong>not</strong> need to specify packaging in the ingest profile. Instead, packaging is automatic based on DRM settings for your account. <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> to set defaults for DRM packaging of your videos.</p>
 
-<p>You do <strong>not</strong> need to specify DRM packaging in your ingest profiles.</p>
-
 <p>For more details, see <a href="/node/18038#DRM_for_dynamic_delivery">Ingesting content with DRM</a>.</p>
 </section>
 
@@ -709,9 +708,7 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 
 <h3>Status API</h3>
 
-<p>You can also get the current status of ingest jobs using the Status API.</p>
-
-<aside class="bcls-aside bcls-aside--information">Status messages are available only for ingest jobs submitted within the past 7 days.</aside>
+<p>You can also get the current status of ingest jobs using the Status API. Status messages are available only for ingest jobs submitted within the past 7 days.</p>
 
 <h4>Endpoints</h4>
 
@@ -772,17 +769,17 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 </section>
 
 <section class="bcls-section">
-<h2 id="context_aware_profiles">Context-aware profiles (beta)</h2>
+<h2 id="context_aware_profiles">Context Aware Encoding</h2>
 
-<p>Context-aware profiles is a technology developed by Brightcove to analyze the source video during transcoding and generate an optimum set of renditions and bitrates based on the complexity of the video and a set of bounding parameters provided (minimum number of renditions, max bitrate, etc.). A comparable industry term for this technology is "per title encoding".</p>
+<p>Context Aware Encoding (CAE) is a technology developed by Brightcove to analyze the source video during transcoding and generate an optimum set of renditions and bitrates based on the complexity of the video and a set of bounding parameters provided (minimum number of renditions, max bitrate, etc.).</p>
 
-<p>To learn how to use Context-aware profiles, see <a href="/node/18042">Context-aware profiles</a>.</p>
+<p>To learn how to use CAE profiles, see <a href="/node/18353">Context Aware Encoding</a>.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="Multiple_audio_tracks">Multiple audio tracks</h2>
 
-<p>Accounts set up for Dynamic Delivery can be enabled to add multiple audio tracks to videos.</p>
+<p>Accounts set up for Dynamic Delivery can be enabled to allow multiple audio tracks for videos.</p>
 
 <p>The ability to associate multiple audio tracks with a single title can be useful in a couple of key scenarios:</p>
 
@@ -792,5 +789,13 @@ POST /v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 </ul>
 
 <p>For details of using this feature, see <a href="/node/17937#Managing_audio_tracks">Multiple Audio Tracks</a>.</p>
+</section>
+
+<section class="bcls-section">
+  <h2 id="limitations">Limitations</h2>
+<ul>
+  <li>For segmented video types (HLS and DASH) some players do not handle the case where the audio and video stream lengths differ by more than a segment's duration. If you encounter this, try using a shorter segment length.
+</li>
+</ul>
 </section>
 </article>
