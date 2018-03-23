@@ -69,8 +69,9 @@ var BCLS = ( function (window, document) {
         options.url = di_url_display.value;
         // now submit the request
         makeRequest(options, function(response) {
-          var parseData = JSON.parse(response);
-          if (parseData.indexOf("error_code") < 0) {
+          var parsedData = JSON.parse(response);
+          console.log('parsedData', parsedData);
+          if (parsedData.indexOf("error_code") < 0) {
               // handle the response
           totalIngested++;
           logResponse("totalIngested", totalIngested);
