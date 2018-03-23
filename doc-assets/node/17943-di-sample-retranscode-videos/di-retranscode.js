@@ -55,6 +55,7 @@ var BCLS = ( function (window, document) {
         } else {
             ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
         }
+        options.account_id = account_id;
         options.client_id = client_id;
         options.client_secret = client_secret;
         options.proxyURL = proxyURL;
@@ -67,71 +68,89 @@ var BCLS = ( function (window, document) {
         options.requestType = "POST";
         options.url = di_url_display.value;
         // now submit the request
-        submitRequest(options, diURL, "di");
+        makeRequest(options, function(response) {
+          var parseData = JSON.parse(response);
+          if (parseData.indexOf("error_code") < 0) {
+              // handle the response
+          totalIngested++;
+          logResponse("totalIngested", totalIngested);
+          videoNumber++;
+          currentJobs++;
+          if (videoNumber < totalVideos - 1) {
+              logResponse('Processing video number', videoNumber);
+              logResponse('Current jobs: ', currentJobs);
+              // if currentJobs is > 99, need to pause
+              if (currentJobs > 99) {
+                  // reset currentJobs
+                  currentJobs = 0;
+                  // wait 30 min before resuming
+                  t2 = setTimeout(setDIOptions, 1800000);
+              } else {
+                  setDIOptions();
+              }
+          }
+          } else {
+          logResponse("DI", "Request failed; retrying video number: " + videoData[videoNumber].id);
+          videoNumber++;
+          // give proxy a second to rest
+          t2 = setTimeout(setDIOptions, 1000);
+          }
+        });
     }
     // function to set the request
     function logResponse(type, data) {
         response.textContent += type + ": " + data + ",\n";
     }
 
-    // function to submit Request
-    function submitRequest(options, proxyURL, type) {
-        var httpRequest = new XMLHttpRequest(),
-            requestData,
-            responseData,
-            parsedData,
-            getResponse = function () {
-                try {
-                    if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                        logResponse(type, httpRequest.responseText);
-                        responseData = httpRequest.responseText;
-                        if (responseData.indexOf("error_code") < 0) {
-                            // handle the response
-                        totalIngested++;
-                        logResponse("totalIngested", totalIngested);
-                        videoNumber++;
-                        currentJobs++;
-                        if (videoNumber < totalVideos - 1) {
-                            logResponse('Processing video number', videoNumber);
-                            logResponse('Current jobs: ', currentJobs);
-                            // if currentJobs is > 99, need to pause
-                            if (currentJobs > 99) {
-                                // reset currentJobs
-                                currentJobs = 0;
-                                // wait 30 min before resuming
-                                t2 = setTimeout(setDIOptions, 1800000);
-                            } else {
-                                setDIOptions();
-                            }
-                        }
-                    } else {
-                        logResponse("DI", "Request failed; retrying video number: " + videoData[videoNumber].id);
-                        videoNumber++;
-                        // give proxy a second to rest
-                        t2 = setTimeout(setDIOptions, 1000);
-                    }
-
-                      } else {
-                        alert("There was a problem with the request. Request returned " + httpRequest.status);
-                      }
-                    }
-                  }
-                  catch(e) {
-                    alert('Caught Exception: ' + e);
-                  }
-            };
-        // set up request data
-        requestData = "client_id=" + options.client_id + "&client_secret=" + options.client_secret + "&url=" + encodeURIComponent(options.url) + "&requestBody=" + encodeURIComponent(options.requestBody) + "&requestType=" + options.requestType;
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open("POST", proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestData);
+    /**
+     * send API request to the proxy
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
+     */
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
+                }
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
+
     di_submit_display.addEventListener("click", function () {
         videoData = JSON.parse(videoDataDisplay.value);
         totalVideos = videoData.length;
@@ -155,7 +174,7 @@ var BCLS = ( function (window, document) {
             newOpt = new Option(profilesArray[i]);
             ingest_profile_display.add(newOpt);
         }
-    };
+    }
     // call init to set things up
     init();
 })(window, document);
