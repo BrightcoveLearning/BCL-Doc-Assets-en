@@ -160,7 +160,17 @@ var BCLS = ( function (window, document) {
     }
 
     function populateMainCategorySelect() {
-
+      var option,
+        prop,
+        first = true;
+      for (prop in categories) {
+        option = document.createElement('option');
+        if (first) {
+          option.setAttribute('checked', 'checked');
+          first = false;
+        }
+        main_category_input.appendChild(option);
+      }
     }
 
     function addItems() {
