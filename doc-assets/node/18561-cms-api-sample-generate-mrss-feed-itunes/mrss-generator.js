@@ -166,7 +166,7 @@ var BCLS = ( function (window, document) {
       for (prop in categories) {
         option = document.createElement('option');
         if (first) {
-          option.setAttribute('checked', 'checked');
+          option.setAttribute('selected', 'selected');
           first = false;
         }
         option.setAttribute('value', prop);
@@ -180,6 +180,14 @@ var BCLS = ( function (window, document) {
         i,
         iMax,
         mainCategory = getSelectedValue(main_category_input);
+        if (isDefined(mainCategory)) {
+          iMax = categories[mainCategory].length;
+          for (i = 0; i < iMax; i++) {
+            option = document.createElement('option');
+            option.setAttribute('value', categories[mainCategory][i]);
+            option.appendChild(document.createTextNode(categories[mainCategory][i]));
+          }
+        }
     }
 
     function addItems() {
