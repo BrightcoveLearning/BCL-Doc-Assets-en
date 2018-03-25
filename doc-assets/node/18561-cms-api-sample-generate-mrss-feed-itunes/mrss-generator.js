@@ -142,6 +142,11 @@ var BCLS = ( function (window, document) {
         return targetArray;
     }
 
+    /**
+     * remove non-MP4 sources and get highest bitrate one
+     * @param  {Array} sources array of source objects
+     * @return {Object} the highest bitrate MP4 source
+     */
     function processSources(sources) {
         var i = sources.length;
         // remove non-MP4 sources
