@@ -396,7 +396,7 @@ var BCLS = ( function (window, document) {
         main_category_input.addEventListener('change', function() {
           populateSubCategorySelect()
         };
-        makeFeed.addEventListener('click', function() {
+        make_feed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
             client_id = client_id_input.value;
