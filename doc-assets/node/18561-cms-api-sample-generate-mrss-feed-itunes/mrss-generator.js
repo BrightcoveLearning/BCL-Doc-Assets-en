@@ -391,7 +391,11 @@ var BCLS = ( function (window, document) {
     }
 
     function init() {
+        populateMainCategorySelect();
         // event handlers
+        main_category_input.addEventListener('change', function() {
+          populateSubCategorySelect()
+        };
         makeFeed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
