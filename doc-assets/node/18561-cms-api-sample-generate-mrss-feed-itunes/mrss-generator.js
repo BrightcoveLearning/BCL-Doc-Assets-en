@@ -46,14 +46,14 @@ var BCLS = ( function (window, document) {
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
+    site_url_input = document.getElementById('site_url_input'),
     feed_url_input = document.getElementById('feed_url_input'),
-    feedTitle = document.getElementById('feedTitle'),
-    feedDescription = document.getElementById('feedDescription'),
-    main_category = document.getElementById('main_category'),
-    sub_category = document.getElementById('sub_category'),
-    searchStr = document.getElementById('searchStr'),
-    sortSelect = document.getElementById('sortSelect'),
-    directionSelect = document.getElementById('directionSelect'),
+    feed_title_input = document.getElementById('feed_title_input'),
+    feed_description_input = document.getElementById('feed_description_input'),
+    feed_summary_input = document.getElementById('feed_summary_input'),
+    main_category_input = document.getElementById('main_category_input'),
+    sub_category_input = document.getElementById('sub_category_input'),
+    search_string_input = document.getElementById('search_string_input'),
     makeFeed = document.getElementById('makeFeed'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
@@ -157,6 +157,10 @@ var BCLS = ( function (window, document) {
         sortArray(sources, 'encoding_rate');
         // return the first item (highest bitrate)
         return sources[0];
+    }
+
+    function populateMainCategorySelect() {
+
     }
 
     function addItems() {
@@ -383,7 +387,7 @@ var BCLS = ( function (window, document) {
             if (isDefined(sortDirection)) {
                 sort = sortDirection + sort;
             }
-            search = searchStr.value;
+            search = search_string_input.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
