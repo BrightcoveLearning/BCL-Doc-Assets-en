@@ -186,6 +186,7 @@ var BCLS = ( function (window, document) {
             option = document.createElement('option');
             option.setAttribute('value', categories[mainCategory][i]);
             option.appendChild(document.createTextNode(categories[mainCategory][i]));
+            sub_category_input.appendChild(option);
           }
         }
     }
