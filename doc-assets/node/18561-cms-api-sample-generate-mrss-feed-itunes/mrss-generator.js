@@ -169,8 +169,17 @@ var BCLS = ( function (window, document) {
           option.setAttribute('checked', 'checked');
           first = false;
         }
+        option.setAttribute('value', prop);
+        option.appendChild(document.createTextNode(prop));
         main_category_input.appendChild(option);
       }
+    }
+
+    function populateSubCategorySelect() {
+      var option,
+        i,
+        iMax,
+        mainCategory = getSelectedValue(main_category_input);
     }
 
     function addItems() {
