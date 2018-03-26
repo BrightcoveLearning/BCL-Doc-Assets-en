@@ -419,11 +419,6 @@ var BCLS = ( function (window, document) {
             } else {
                 account_id = '1752604059001';
             }
-            sort = getSelectedValue(sortSelect);
-            sortDirection = getSelectedValue(directionSelect);
-            if (isDefined(sortDirection)) {
-                sort = sortDirection + sort;
-            }
             search = search_string_input.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
