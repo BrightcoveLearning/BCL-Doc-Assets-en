@@ -41,8 +41,8 @@ var BCLS = ( function (window, document) {
     totalVideos = 0,
     totalCalls = 0,
     callNumber = 0,
-    videosArray = [],
-    feed_videos = [],
+    videos = [],
+    all_videos = [],
     // elements
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
@@ -249,10 +249,10 @@ var BCLS = ( function (window, document) {
 
     function addItems() {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
-        if (videosArray.length > 0) {
-            iMax = videosArray.length;
+        if (videos.length > 0) {
+            iMax = videos.length;
             for (i = 0; i < iMax; i += 1) {
-                video = videosArray[i];
+                video = videos[i];
                 // video may not have a valid source
                 if (isDefined(video.source) && isDefined(video.source.src)) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
@@ -326,9 +326,9 @@ var BCLS = ( function (window, document) {
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
-              videos = JSON.parse(response);
+              all_videos = JSON.parse(response);
               logMessage(videos.length + ' videos retrieved');
-              apiResponse.textContent = JSON.stringify(videos, null, '  ');
+              apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
               input = document.createElement('input');
               space = document.createTextNode(' ');
               label = document.createElement('label');
@@ -345,17 +345,17 @@ var BCLS = ( function (window, document) {
               fragment.appendChild(space);
               fragment.appendChild(label);
               fragment.appendChild(br);
-                iMax = videos.length;
+                iMax = all_videos.length;
                 for (i = 0; i < iMax; i++) {
                   input = document.createElement('input');
                   space = document.createTextNode(' ');
                   label = document.createElement('label');
                   input.setAttribute('name', 'videosChk');
-                  input.setAttribute('id', 'field' + videos[i].id);
+                  input.setAttribute('id', 'field' + all_videos[i].id);
                   input.setAttribute('type', 'checkbox');
-                  input.setAttribute('value', videos[i].id);
-                  label.setAttribute('for', 'field' + videos[i].id);
-                  text = document.createTextNode(videos[i].name);
+                  input.setAttribute('value', all_videos[i].id);
+                  label.setAttribute('for', 'field' + all_videos[i].id);
+                  text = document.createTextNode(all_videos[i].name);
                   label.appendChild(text);
                   br = document.createElement('br');
                   fragment.appendChild(input);
@@ -379,37 +379,36 @@ var BCLS = ( function (window, document) {
                 });
               });
               break;
-            break;
             case 'getVideoSources':
                 var i,
-                    iMax = videosArray.length;
-                endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/sources';
+                    iMax = videos.length;
+                endPoint = account_id + '/videos/' + videos[callNumber].id + '/sources';
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
-                logger.textContent = 'Getting sources for video ' + videosArray[callNumber].name;
+                logger.textContent = 'Getting sources for video ' + videos[callNumber].name;
                 makeRequest(options, function(response) {
                   sources = JSON.parse(response);
                   if (sources.length > 0) {
                       // get the best MP4 rendition
                       var source = processSources(sources);
-                      videosArray[callNumber].source = source;
+                      videos[callNumber].source = source;
                   } else {
                       // video has no sources
-                      videosArray[callNumber].source = null;
+                      videos[callNumber].source = null;
                   }
                   callNumber++;
                   if (callNumber < iMax) {
                       createRequest('getVideoSources');
                   } else {
                       // remove videos with no sources
-                      i = videosArray.length;
+                      i = videos.length;
                       while (i > 0) {
                           i--;
-                          console.log('videosArray[i]', videosArray[i]);
-                          if (!isDefined(videosArray[i].source)) {
+                          console.log('videos[i]', videos[i]);
+                          if (!isDefined(videos[i].source)) {
                               console.log('i', i);
-                              videosArray.splice(i, 1);
+                              videos.splice(i, 1);
                           }
                       }
                       addItems();
