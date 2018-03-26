@@ -335,7 +335,7 @@ var BCLS = ( function (window, document) {
                 });
                 break;
             case 'getVideos':
-            endPoint = account_id + '/videos?sort=' + sort + '&limit=' + limit + '&offset=' + limit * callNumber;
+            endPoint = account_id + '/videos?limit=20';
             if (isDefined(search)) {
                 endPoint += '&q=' + search;
             }
