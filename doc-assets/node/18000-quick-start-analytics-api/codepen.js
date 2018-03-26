@@ -1,9 +1,9 @@
 var BCLS = (function(window, document) {
   var reportURL = 'https://analytics.api.brightcove.com/v1/data',
-    engagementURL = 'https://analytics.api.brightcove.com/v1/engagement/accounts/20318290001',
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/training-videos-proxy.php',
-    video_id = '4562259880001',
-    player_id = '901fa759-2353-412c-83ff-e8be6011e9f2',
+    engagementURL = 'https://analytics.api.brightcove.com/v1/engagement/accounts/1752604059001',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    video_id = '4825296720001',
+    player_id = 'HJHx0gc7',
     allButtons = document.getElementsByTagName('button'),
     account = document.getElementById('account'),
     video = document.getElementById('video'),
@@ -12,20 +12,35 @@ var BCLS = (function(window, document) {
     country = document.getElementById('country'),
     destination_path = document.getElementById('destination_path'),
     source_type = document.getElementById('source_type');
-  device_os = document.getElementById('device_os');
-  videoCountry = document.getElementById('videoCountry');
-  multipleAccounts = document.getElementById('multipleAccounts');
-  limitOffset = document.getElementById('limitOffset');
-  sort = document.getElementById('sort');
-  dateRange = document.getElementById('dateRange');
-  oneDay = document.getElementById('oneDay');
-  fields = document.getElementById('fields');
-  whereDevice = document.getElementById('whereDevice');
-  whereTags = document.getElementById('whereTags');
-  formatCSV = document.getElementById('formatCSV');
-  accountEngagement = document.getElementById('accountEngagement');
-  videoEngagement = document.getElementById('videoEngagement');
-  playerEngagement = document.getElementById('playerEngagement');
+    device_os = document.getElementById('device_os');
+    videoCountry = document.getElementById('videoCountry');
+    multipleAccounts = document.getElementById('multipleAccounts');
+    limitOffset = document.getElementById('limitOffset');
+    sort = document.getElementById('sort');
+    dateRange = document.getElementById('dateRange');
+    oneDay = document.getElementById('oneDay');
+    fields = document.getElementById('fields');
+    whereDevice = document.getElementById('whereDevice');
+    whereTags = document.getElementById('whereTags');
+    formatCSV = document.getElementById('formatCSV');
+    accountEngagement = document.getElementById('accountEngagement');
+    videoEngagement = document.getElementById('videoEngagement');
+    playerEngagement = document.getElementById('playerEngagement');
+
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
+
   /**
    * disables all buttons so user can't submit new request until current one finishes
    */
@@ -46,300 +61,311 @@ var BCLS = (function(window, document) {
         allButtons[i].removeAttribute('disabled');
       }
     }
+
+    function apiCallback(response) {
+      var parsedData;
+      if (isJson(response)) {
+        parsedData = JSON.parse(response);
+        responseData.textContent = JSON.stringify(parsedData, '  ');
+      } else {
+        responseData.textContent = response;
+      }
+      enableButtons();
+    }
     /**
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
      */
-  function setRequestData(id) {
+  function setoptions(id) {
       var endPoint = '',
-        requestData = {};
+        options = {};
       // disable buttons to prevent a new request before current one finishes
       disableButtons();
+      options.proxyURL = proxyURL;
+      options.account_id = '1752604059001';
       switch (id) {
         case 'account':
-          endPoint = '?accounts=20318290001&dimensions=account';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=account';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'video':
-          endPoint = '?accounts=20318290001&dimensions=video';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'player':
-          endPoint = '?accounts=20318290001&dimensions=player';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=player';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'date':
-          endPoint = '?accounts=20318290001&dimensions=date';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=date';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'destination_path':
-          endPoint = '?accounts=20318290001&dimensions=destination_path';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=destination_path';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'country':
-          endPoint = '?accounts=20318290001&dimensions=country';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=country';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'source_type':
-          endPoint = '?accounts=20318290001&dimensions=source_type';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=source_type';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'device_os':
-          endPoint = '?accounts=20318290001&dimensions=device_os';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=device_os';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'videoCountry':
-          endPoint = '?accounts=20318290001&dimensions=video,country';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video,country';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'multipleAccounts':
-          endPoint = '?accounts=20318290001,57838016001&dimensions=video';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001,57838016001&dimensions=video';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'limitOffset':
-          endPoint = '?accounts=20318290001&dimensions=video&limit=5&offset=5';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video&limit=5&offset=5';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'sort':
-          endPoint = '?accounts=20318290001&dimensions=video,country&sort=country_name';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video,country&sort=country_name';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'dateRange':
-          endPoint = '?accounts=20318290001&dimensions=video&from=alltime&to=now';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video&from=alltime&to=now';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'oneDay':
-          endPoint = '?accounts=20318290001&dimensions=video&from=2015-03-25&to=2015-03-25';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video&from=2015-03-25&to=2015-03-25';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'fields':
-          endPoint = '?accounts=20318290001&dimensions=video&fields=video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video.name,video_percent_viewed,video_seconds_viewed';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video&fields=video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video.name,video_percent_viewed,video_seconds_viewed';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'whereDevice':
-          endPoint = '?accounts=20318290001&dimensions=video&where=device_type==tablet';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video&where=device_type==tablet';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'whereTags':
-          endPoint = '?accounts=20318290001&dimensions=video&where=video.q==tags:drupal';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video&where=video.q==tags:drupal';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'formatCSV':
-          endPoint = '?accounts=20318290001&dimensions=video,country&sort=country_name&format=csv';
-          requestData.url = reportURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          endPoint = '?accounts=1752604059001&dimensions=video,country&sort=country_name&format=csv';
+          options.url = reportURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'accountEngagement':
           endPoint = '';
-          requestData.url = engagementURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          options.url = engagementURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'videoEngagement':
           endPoint = '/videos/video_id';
-          requestData.url = engagementURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          options.url = engagementURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
         case 'playerEngagement':
           endPoint = '/players/player_id';
-          requestData.url = engagementURL + endPoint;
-          requestData.requestType = 'GET';
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          options.url = engagementURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          makeRequest(options, apiCallback);
           break;
       }
     }
+
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
-     * @param  {String} requestID the type of request = id of the button
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-  function getMediaData(options, requestID) {
+    function makeRequest(options, callback) {
       var httpRequest = new XMLHttpRequest(),
-        responseRaw,
-        parsedData,
-        requestParams,
-        dataString,
+        response,
+        proxyURL = options.proxyURL,
         // response handler
         getResponse = function() {
           try {
             if (httpRequest.readyState === 4) {
-              if (httpRequest.status === 200) {
-                if (requestID === 'formatCSV') {
-                  responseData.textContent = httpRequest.responseText;
-                } else {
-                  console.log(httpRequest.responseText);
-                  responseRaw = httpRequest.responseText;
-                  responseData.textContent = responseRaw;
-                  parsedData = JSON.parse(responseRaw);
-                  responseData.textContent = JSON.stringify(parsedData, null, '  ');
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-
-                // re-enable the buttons
-                enableButtons();
+                // return the response
+                callback(response);
               } else {
-                console.log('There was a problem with the request. Request returned ' + httpRequest.status);
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
               }
             }
           } catch (e) {
-            console.log('Caught Exception: ' + e);
+            alert('Caught Exception: ' + e);
           }
         };
-      // set up request data
-      requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-      if (options.requestBody) {
-        dataString = JSON.stringify(options.requestBody);
-        requestParams += '&requestBody=' + encodeURIComponent(dataString);
-      }
-      console.log(requestParams);
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
       // set response handler
       httpRequest.onreadystatechange = getResponse;
       // open the request
       httpRequest.open('POST', proxyURL);
-      // set headers
-      httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      // set headers if there is a set header line, remove it
       // open and send request
-      httpRequest.send(requestParams);
+      httpRequest.send(JSON.stringify(options));
     }
+
     // event listeners
   video.addEventListener('click', function() {
-    setRequestData('video');
+    setoptions('video');
   });
   player.addEventListener('click', function() {
-    setRequestData('player');
+    setoptions('player');
   });
   country.addEventListener('click', function() {
-    setRequestData('country');
+    setoptions('country');
   });
   date.addEventListener('click', function() {
-    setRequestData('date');
+    setoptions('date');
   });
   destination_path.addEventListener('click', function() {
-    setRequestData('destination_path');
+    setoptions('destination_path');
   });
   device_os.addEventListener('click', function() {
-    setRequestData('device_os');
+    setoptions('device_os');
   });
   source_type.addEventListener('click', function() {
-    setRequestData('source_type');
+    setoptions('source_type');
   });
   account.addEventListener('click', function() {
-    setRequestData('account');
+    setoptions('account');
   });
   videoCountry.addEventListener('click', function() {
-    setRequestData('videoCountry');
+    setoptions('videoCountry');
   });
   multipleAccounts.addEventListener('click', function() {
-    setRequestData('multipleAccounts');
+    setoptions('multipleAccounts');
   });
   limitOffset.addEventListener('click', function() {
-    setRequestData('limitOffset');
+    setoptions('limitOffset');
   });
   sort.addEventListener('click', function() {
-    setRequestData('sort');
+    setoptions('sort');
   });
   fields.addEventListener('click', function() {
-    setRequestData('fields');
+    setoptions('fields');
   });
   dateRange.addEventListener('click', function() {
-    setRequestData('dateRange');
+    setoptions('dateRange');
   });
   oneDay.addEventListener('click', function() {
-    setRequestData('oneDay');
+    setoptions('oneDay');
   });
   whereDevice.addEventListener('click', function() {
-    setRequestData('whereDevice');
+    setoptions('whereDevice');
   });
   whereTags.addEventListener('click', function() {
-    setRequestData('whereTags');
+    setoptions('whereTags');
   });
   formatCSV.addEventListener('click', function() {
-    setRequestData('formatCSV');
+    setoptions('formatCSV');
   });
   accountEngagement.addEventListener('click', function() {
-    setRequestData('accountEngagement');
+    setoptions('accountEngagement');
   });
   videoEngagement.addEventListener('click', function() {
-    setRequestData('videoEngagement');
+    setoptions('videoEngagement');
   });
   playerEngagement.addEventListener('click', function() {
-    setRequestData('playerEngagement');
+    setoptions('playerEngagement');
   });
 })(window, document);
