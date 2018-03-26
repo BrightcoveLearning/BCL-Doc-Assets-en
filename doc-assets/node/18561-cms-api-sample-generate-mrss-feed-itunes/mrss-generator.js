@@ -317,23 +317,6 @@ var BCLS = ( function (window, document) {
         }
 
         switch (id) {
-            case 'getCount':
-                endPoint = account_id + '/counts/videos?sort=' + sort;
-                if (isDefined(search)) {
-                    endPoint += '&q=' + search;
-                }
-                options.url = baseURL + endPoint;
-                options.requestType = 'GET';
-                apiRequest.textContent = options.url;
-                makeRequest(options, function(response) {
-                  parsedData = JSON.parse(response);
-                  // set total videos
-                  totalVideos = parsedData.count;
-                  totalCalls = Math.ceil(totalVideos / limit);
-                  logger.textContent = 'Total videos: ' + totalVideos;
-                  createRequest('getVideos');
-                });
-                break;
             case 'getVideos':
             endPoint = account_id + '/videos?limit=20';
             if (isDefined(search)) {
@@ -343,18 +326,59 @@ var BCLS = ( function (window, document) {
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
-              parsedData = JSON.parse(response);
-              videosArray = videosArray.concat(parsedData);
-              callNumber++;
-              if (callNumber < totalCalls) {
-                  logger.textContent = 'Getting video set ' + callNumber;
-                  createRequest('getVideos');
-              } else {
-                  logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources...';
-                  callNumber = 0;
-                  createRequest('getVideoSources');
+              videos = JSON.parse(response);
+              logMessage(videos.length + ' videos retrieved');
+              apiResponse.textContent = JSON.stringify(videos, null, '  ');
+              input = document.createElement('input');
+              space = document.createTextNode(' ');
+              label = document.createElement('label');
+              input.setAttribute('name', 'videosChkAll');
+              input.setAttribute('id', 'videosChkAll');
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', 'all');
+              label.setAttribute('for', 'videosChkAll');
+              label.setAttribute('style', 'color:#F3951D;');
+              text = document.createTextNode('Select All');
+              label.appendChild(text);
+              br = document.createElement('br');
+              fragment.appendChild(input);
+              fragment.appendChild(space);
+              fragment.appendChild(label);
+              fragment.appendChild(br);
+                iMax = videos.length;
+                for (i = 0; i < iMax; i++) {
+                  input = document.createElement('input');
+                  space = document.createTextNode(' ');
+                  label = document.createElement('label');
+                  input.setAttribute('name', 'videosChk');
+                  input.setAttribute('id', 'field' + videos[i].id);
+                  input.setAttribute('type', 'checkbox');
+                  input.setAttribute('value', videos[i].id);
+                  label.setAttribute('for', 'field' + videos[i].id);
+                  text = document.createTextNode(videos[i].name);
+                  label.appendChild(text);
+                  br = document.createElement('br');
+                  fragment.appendChild(input);
+                  fragment.appendChild(space);
+                  fragment.appendChild(label);
+                  fragment.appendChild(br);
                 }
-            });
+                // clear videos videos
+                videosBlock.innerHTML = '';
+                videosBlock.appendChild(fragment);
+                // get references to checkboxes
+                videosCollection = document.getElementsByName('videosChk');
+                videosSelectAll = document.getElementById('videosChkAll');
+                // add event listener for select allows
+                videosSelectAll.addEventListener('change', function() {
+                  if (this.checked) {
+                    selectAllCheckboxes(videosCollection);
+                  } else {
+                    deselectAllCheckboxes(videosCollection);
+                  }
+                });
+              });
+              break;
             break;
             case 'getVideoSources':
                 var i,
