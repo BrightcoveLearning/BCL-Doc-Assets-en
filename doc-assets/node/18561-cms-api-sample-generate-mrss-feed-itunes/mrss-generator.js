@@ -326,6 +326,7 @@ var BCLS = ( function (window, document) {
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
+              var input, label, space, text, br, i, iMax;
               all_videos = JSON.parse(response);
               logMessage(videos.length + ' videos retrieved');
               apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
