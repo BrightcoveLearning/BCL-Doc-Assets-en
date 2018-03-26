@@ -31,13 +31,16 @@ var BCLS = ( function (window, document) {
     client_id,
     client_secret,
     feed_url,
+    site_url,
+    feed_title,
+    feed_description,
+    feed_summary,
+    main_category,
+    sub_category,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-    sort,
-    sortDirection = "",
     search,
-    limit = 25,
     totalVideos = 0,
     totalCalls = 0,
     callNumber = 0,
@@ -165,6 +168,13 @@ var BCLS = ( function (window, document) {
         sortArray(sources, 'encoding_rate');
         // return the first item (highest bitrate)
         return sources[0];
+    }
+
+    function getInputData() {
+      account_id = account_id_input.value;
+      client_id = client_id_input.value;
+      client_secret = client_secret.value;
+
     }
 
     function populateMainCategorySelect() {
@@ -476,6 +486,9 @@ var BCLS = ( function (window, document) {
         main_category_input.addEventListener('change', function() {
           populateSubCategorySelect();
         });
+        get_videos.addEventListener('click', function() {
+
+        })
         make_feed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
