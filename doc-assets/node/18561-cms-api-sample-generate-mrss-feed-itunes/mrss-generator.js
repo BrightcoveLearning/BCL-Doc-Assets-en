@@ -365,8 +365,8 @@ var BCLS = ( function (window, document) {
                   fragment.appendChild(br);
                 }
                 // clear videos videos
-                videosBlock.innerHTML = '';
-                videosBlock.appendChild(fragment);
+                returned_videos.innerHTML = '';
+                returned_videos.appendChild(fragment);
                 // get references to checkboxes
                 videosCollection = document.getElementsByName('videosChk');
                 videosSelectAll = document.getElementById('videosChkAll');
