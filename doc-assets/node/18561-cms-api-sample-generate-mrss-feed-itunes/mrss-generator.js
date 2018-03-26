@@ -42,6 +42,7 @@ var BCLS = ( function (window, document) {
     totalCalls = 0,
     callNumber = 0,
     videosArray = [],
+    feed_videos = [],
     // elements
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
@@ -54,6 +55,8 @@ var BCLS = ( function (window, document) {
     main_category_input = document.getElementById('main_category_input'),
     sub_category_input = document.getElementById('sub_category_input'),
     search_string_input = document.getElementById('search_string_input'),
+    get_videos = document.getElementById('get_videos'),
+    returned_videos = document.getElementById('returned_videos'),
     makeFeed = document.getElementById('makeFeed'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
