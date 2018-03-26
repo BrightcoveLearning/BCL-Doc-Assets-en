@@ -174,7 +174,10 @@ var BCLS = ( function (window, document) {
       account_id = account_id_input.value;
       client_id = client_id_input.value;
       client_secret = client_secret.value;
-
+      site_url = site_url_input.value;
+      feed_url = feed_url_input.value;
+      feed_title = feed_title_input.value;
+      feed_description = feed_description_input.value;
     }
 
     function populateMainCategorySelect() {
