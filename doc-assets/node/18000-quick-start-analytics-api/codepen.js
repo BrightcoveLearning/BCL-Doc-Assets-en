@@ -66,7 +66,7 @@ var BCLS = (function(window, document) {
       var parsedData;
       if (isJson(response)) {
         parsedData = JSON.parse(response);
-        responseData.textContent = JSON.stringify(parsedData, '  ');
+        responseData.textContent = JSON.stringify(parsedData, null, '  ');
       } else {
         responseData.textContent = response;
       }
