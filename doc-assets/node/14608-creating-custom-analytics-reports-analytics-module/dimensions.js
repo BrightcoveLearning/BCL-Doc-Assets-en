@@ -177,18 +177,20 @@ var BCLS = ( function (window, document, aapi_model) {
         half = Math.ceil(iMax / 2);
         for (d in aapi_model.dimensions) {
             thisDimension = aapi_model.dimensions[d];
-            input = document.createElement('input');
-            label = document.createElement('label');
-            input.setAttribute('name', 'dimensionsChk');
-            input.setAttribute('id', 'dim' + thisDimension.name);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', thisDimension.name);
-            label.setAttribute('for', 'dim' + thisDimension.name);
-            text = document.createTextNode('  ' + thisDimension.name);
-            br = document.createElement('br');
-            code = document.createElement('code');
-            label.appendChild(code);
-            code.appendChild(text);
+            if (thisDimension.hasOwnProperty('data_group')) {
+              input = document.createElement('input');
+              label = document.createElement('label');
+              input.setAttribute('name', 'dimensionsChk');
+              input.setAttribute('id', 'dim' + thisDimension.name);
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', thisDimension.name);
+              label.setAttribute('for', 'dim' + thisDimension.name);
+              text = document.createTextNode('  ' + thisDimension.data_group);
+              br = document.createElement('br');
+              code = document.createElement('code');
+              label.appendChild(code);
+              code.appendChild(text);
+            }
             if (count < half) {
                 frag1.appendChild(input);
                 frag1.appendChild(label);
