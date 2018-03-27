@@ -258,16 +258,6 @@ var BCLS = ( function (window, document, aapi_model) {
     function init() {
         addDimensionOptions();
         // event listeners
-        getData.addEventListener('click', function() {
-            var i,
-                iMax,
-                selectedDateObj,
-                dimensionObj,
-                displayFields = '';
-            // make sure arrays are emptied out
-            selectedDimensions = [];
-            selectedDimensions = getSelectedCheckboxes(dimensionCheckboxes, selectedDimensions);
-        });
 
         function dimensionSelected() {
             var dateArray = [],
