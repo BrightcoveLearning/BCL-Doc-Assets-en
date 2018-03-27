@@ -256,14 +256,7 @@ var BCLS = ( function (window, document, aapi_model) {
 
 
     function init() {
-        buildDimensionsList();
-        // set up dimensions
         addDimensionOptions();
-        // initially disable buttons
-        disableButtons();
-        // set up fields
-        // selectedDimensions = ['video'];
-        // addFieldOptions();
         // event listeners
         getData.addEventListener('click', function() {
             var i,
