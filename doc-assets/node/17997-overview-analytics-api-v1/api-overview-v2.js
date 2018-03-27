@@ -439,7 +439,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          var parseData = JSON.parse(response);
+          var parsedData = JSON.parse(response);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
         });
     }
