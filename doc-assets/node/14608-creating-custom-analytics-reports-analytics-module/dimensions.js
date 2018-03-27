@@ -28,7 +28,7 @@ var BCLS = ( function (window, document, aapi_model) {
      * logging
      */
     function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
+        if (window.console && console.log) {
           console.log(context, message);
         }
     }
@@ -151,104 +151,6 @@ var BCLS = ( function (window, document, aapi_model) {
         return targetArray;
     }
 
-    /**
-     * disables all buttons so user can't submit new request until current one finishes
-     */
-    function disableButtons() {
-        var i,
-            iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].setAttribute('disabled', 'disabled');
-            allButtons[i].setAttribute('style', 'opacity:.5;cursor:not-allowed;');
-        }
-        return;
-    }
-
-    /**
-     * re-enables all buttons
-     */
-    function enableButtons() {
-        var i,
-            iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].removeAttribute('disabled');
-            allButtons[i].removeAttribute('style');
-        }
-        return;
-    }
-
-    /**
-     * build list of dimensions with links to the guides
-     */
-    function buildDimensionsList() {
-        var i,
-            iMax = aapi_model.dimensionsArray.length,
-            half = Math.ceil(iMax / 2),
-            ul1 = document.createElement('ul'),
-            ul2 = document.createElement('ul'),
-            li,
-            a,
-            code,
-            txt,
-            thisDimension;
-        for (i = 0; i < iMax; i++) {
-            thisDimension = aapi_model.dimensionsArray[i];
-            li = document.createElement('li');
-            a = document.createElement('a');
-            code = document.createElement('code');
-            a.setAttribute('href', '/' + dimensionGuides[thisDimension]);
-            txt = document.createTextNode(thisDimension);
-            a.appendChild(code);
-            code.appendChild(txt);
-            li.appendChild(a);
-            if (i < half) {
-                ul1.appendChild(li);
-            } else {
-                ul2.appendChild(li);
-            }
-        }
-        dimensionsListCol1.appendChild(ul1);
-        dimensionsListCol2.appendChild(ul2);
-    }
-    /**
-     * built filter values
-     */
-    function buildFilterValueTable() {
-        var thisDimension,
-            thisValues,
-            j,
-            d,
-            jMax,
-            str = "";
-        for (d in aapi_model.dimensions) {
-            thisDimension = aapi_model.dimensions[d];
-            bclslog('thisDimension', thisDimension);
-            thisValues = thisDimension.filter_values;
-            str += "<tr><td><code>" + thisDimension.name + "</code></td><td><ul>";
-            jMax = thisValues.length;
-            for (j = 0; j < jMax; j++) {
-                str += "<li>" + thisValues[j] + "</li>";
-            }
-            str += "</td></tr>";
-        }
-        filterAllowableValues.innerHTML = str;
-    }
-
-    /**
-     * updateRequestDisplay - gets the selected checkboxes and update the fields list display
-     */
-    function updateRequestDisplay() {
-        apiRequest.textContent = 'https://analytics.api.brightcove.com/v1/data?accounts=ACCOUNT_ID';
-        if (selectedDimensions.length > 0) {
-            apiRequest.textContent += '&dimensions=' + selectedDimensions.join(',');
-        }
-        if (fieldsToReturn.length > 0) {
-            apiRequest.textContent += '&fields=' + fieldsToReturn.join(',');
-        }
-        if (isDefined(fromDate)) {
-
-        }
-    }
 
     /**
      * adds dimension options from the aapi_model
@@ -317,11 +219,10 @@ var BCLS = ( function (window, document, aapi_model) {
             iMax,
             j,
             jMax,
-            input,
-            label,
+            ul,
+            li,
             code,
             text,
-            br,
             half;
         // clear existing field checkboxes
         fieldsCol1.innerHTML = '';
@@ -330,39 +231,25 @@ var BCLS = ( function (window, document, aapi_model) {
         // add the return field options
         iMax = fieldsArray.length;
         half = Math.ceil(iMax / 2);
+        ul = document.createElement('ul');
+        fieldsCol1.appendChild(ul);
         for (i = 0; i < half; i++) {
-            input = document.createElement('input');
-            label = document.createElement('label');
-            input.setAttribute('name', 'fieldsChk');
-            input.setAttribute('id', 'field' + fieldsArray[i]);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', fieldsArray[i]);
-            label.setAttribute('for', 'field' + fieldsArray[i]);
-            text = document.createTextNode(' ' + fieldsArray[i]);
-            br = document.createElement('br');
-            fieldsCol1.appendChild(input);
-            fieldsCol1.appendChild(label);
+            li = document.createElement('li');
+            text = document.createTextNode(fieldsArray[i]);
             code = document.createElement('code');
-            label.appendChild(code);
+            li.appendChild(code);
             code.appendChild(text);
-            fieldsCol1.appendChild(br);
+            ul.appendChild(li);
         }
+        ul = document.createElement('ul');
+        fieldsCol2.appendChild(ul);
         for (i = half; i < iMax; i++) {
-            input = document.createElement('input');
-            label = document.createElement('label');
-            code = document.createElement('code');
-            input.setAttribute('name', 'fieldsChk');
-            input.setAttribute('id', 'field' + fieldsArray[i]);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', fieldsArray[i]);
-            label.setAttribute('for', 'field' + fieldsArray[i]);
-            text = document.createTextNode(' ' + fieldsArray[i]);
-            br = document.createElement('br');
-            fieldsCol2.appendChild(input);
-            fieldsCol2.appendChild(label);
-            label.appendChild(code);
-            code.appendChild(text);
-            fieldsCol2.appendChild(br);
+          li = document.createElement('li');
+          text = document.createTextNode(fieldsArray[i]);
+          code = document.createElement('code');
+          li.appendChild(code);
+          code.appendChild(text);
+          ul.appendChild(li);
         }
 
     }
