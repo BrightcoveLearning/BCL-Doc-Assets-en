@@ -181,10 +181,10 @@ var BCLS = ( function (window, document, aapi_model) {
               input = document.createElement('input');
               label = document.createElement('label');
               input.setAttribute('name', 'dimensionsChk');
-              input.setAttribute('id', 'dim' + thisDimension.data_group);
+              input.setAttribute('id', 'dim' + thisDimension.name);
               input.setAttribute('type', 'checkbox');
-              input.setAttribute('value', thisDimension.data_group);
-              label.setAttribute('for', 'dim' + thisDimension.data_group);
+              input.setAttribute('value', thisDimension.name);
+              label.setAttribute('for', 'dim' + thisDimension.name);
               text = document.createTextNode('  ' + thisDimension.data_group);
               br = document.createElement('br');
               code = document.createElement('code');
