@@ -150,6 +150,50 @@ var BCLS = ( function (window, document) {
     }
 
     /**
+     * sort an array of objects based on an object property
+     * @param {array} targetArray - array to be sorted
+     * @param {string|number} objProperty - object property to sort on
+     * @return sorted array
+     */
+    function sortArrayDescending(targetArray, objProperty) {
+        targetArray.sort(function (b, a) {
+            var propA = a[objProperty], propB = b[objProperty];
+            // sort ascending; reverse propA and propB to sort descending
+            if (propB < propA) {
+                 return -1;
+            } else if (propB > propA) {
+                 return 1;
+            } else {
+                 return 0;
+            }
+        });
+        return targetArray;
+    }
+
+    /**
+     * find index of an object in array of objects *
+       based on some property value *
+       * @param {array}
+     targetArray array to search
+       * @param {string} objProperty object property to search
+       * @param {string} value of the property to search for
+       * @return {integer} index of first instance if found, otherwise returns - 1
+       */
+
+     function findObjectInArray(targetArray, objProperty, value) {
+       var i, totalItems = targetArray.length,
+         objFound = false;
+       for (i = 0; i < totalItems; i++) {
+         if (targetArray[i][objProperty] === value) {
+           objFound = true;
+           return i;
+         }
+       }
+       if (objFound === false) {
+         return -1;
+       }
+     }
+    /**
      * remove non-MP4 sources and get highest bitrate one
      * @param  {Array} sources array of source objects
      * @return {Object} the highest bitrate MP4 source
@@ -193,7 +237,7 @@ var BCLS = ( function (window, document) {
       index;
       iMax = checkedBoxes.length;
       for (i = 0; i < iMax; i++) {
-        
+        index =
       }
     }
 
