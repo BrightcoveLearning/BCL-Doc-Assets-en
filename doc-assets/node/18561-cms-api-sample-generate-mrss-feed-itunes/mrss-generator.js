@@ -189,8 +189,12 @@ var BCLS = ( function (window, document) {
     function getVideosForFeed() {
       var checkedBoxes = getCheckedBoxValues(videosCollection),
       i,
-      iMax;
+      iMax,
+      index;
       iMax = checkedBoxes.length;
+      for (i = 0; i < iMax; i++) {
+        
+      }
     }
 
     function populateMainCategorySelect() {
