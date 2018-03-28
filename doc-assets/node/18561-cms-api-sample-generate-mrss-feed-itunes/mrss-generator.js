@@ -37,6 +37,7 @@ var BCLS = ( function (window, document) {
     feed_summary,
     main_category,
     sub_category,
+    category,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -178,6 +179,15 @@ var BCLS = ( function (window, document) {
       feed_url = feed_url_input.value;
       feed_title = feed_title_input.value;
       feed_description = feed_description_input.value;
+      feed_author = feed_author_input.value;
+      feed_summary = feed_summary_input.value;
+      main_category = getSelectedValue(main_category_input);
+      sub_category = getSelectedValue(sub_category_input);
+      category = (isDefined(sub_category)) ? sub_category : main_category;
+    }
+
+    function getVideosForFeed() {
+
     }
 
     function populateMainCategorySelect() {
