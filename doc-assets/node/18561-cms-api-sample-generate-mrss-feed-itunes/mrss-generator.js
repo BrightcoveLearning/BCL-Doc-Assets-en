@@ -67,6 +67,7 @@ var BCLS = ( function (window, document) {
     feed_summary_input = document.getElementById('feed_summary_input'),
     explicit_input = document.getElementById('explicit_input'),
     closed_captioned_input = document.getElementById('closed_captioned_input'),
+    complete = document.getElementById('complete'),
     main_category_input = document.getElementById('main_category_input'),
     sub_category_input = document.getElementById('sub_category_input'),
     search_string_input = document.getElementById('search_string_input'),
