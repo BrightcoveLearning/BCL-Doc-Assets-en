@@ -217,7 +217,8 @@ var BCLS = ( function (window, document) {
       index;
       iMax = checkedBoxes.length;
       for (i = 0; i < iMax; i++) {
-        index =
+        index = findObjectInArray(all_videos, 'id', checkedBoxes[i]);
+        videos.push(all_videos[index]);
       }
     }
 
@@ -532,7 +533,7 @@ var BCLS = ( function (window, document) {
         });
         get_videos.addEventListener('click', function() {
 
-        })
+        });
         make_feed.addEventListener('click', function() {
             var numVideos;
             // get the inputs
