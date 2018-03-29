@@ -1,5 +1,5 @@
 var BCLS = ( function (window, document) {
-    var mrssStr = '<?xml version="1.0" encoding="utf-8"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"version="2.0"xmlns:atom="http://www.w3.org/2005/Atom">',
+    var mrssStr = '<?xml version="1.0" encoding="utf-8"?>\n<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"version="2.0"xmlns:atom="http://www.w3.org/2005/Atom">',
     sChannel = '<channel>',
     eChannel = '</channel>',
     sTitle = '<title>',
@@ -67,7 +67,7 @@ var BCLS = ( function (window, document) {
     feed_summary_input = document.getElementById('feed_summary_input'),
     explicit_input = document.getElementById('explicit_input'),
     closed_captioned_input = document.getElementById('closed_captioned_input'),
-    complete = document.getElementById('complete'),
+    complete_input = document.getElementById('complete_input'),
     main_category_input = document.getElementById('main_category_input'),
     sub_category_input = document.getElementById('sub_category_input'),
     search_string_input = document.getElementById('search_string_input'),
@@ -231,7 +231,7 @@ var BCLS = ( function (window, document) {
       for (i = 0; i < iMax; i++) {
         index = findObjectInArray(all_videos, 'id', checkedBoxes[i]);
         videos.push(all_videos[index]);
-        sortArray(videos, 'published_at')
+        sortArray(videos, 'published_at');
       }
     }
 
