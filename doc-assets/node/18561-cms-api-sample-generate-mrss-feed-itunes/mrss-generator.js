@@ -149,26 +149,6 @@ var BCLS = ( function (window, document) {
         return targetArray;
     }
 
-    /**
-     * sort an array of objects based on an object property
-     * @param {array} targetArray - array to be sorted
-     * @param {string|number} objProperty - object property to sort on
-     * @return sorted array
-     */
-    function sortArrayDescending(targetArray, objProperty) {
-        targetArray.sort(function (b, a) {
-            var propA = a[objProperty], propB = b[objProperty];
-            // sort ascending; reverse propA and propB to sort descending
-            if (propB < propA) {
-                 return -1;
-            } else if (propB > propA) {
-                 return 1;
-            } else {
-                 return 0;
-            }
-        });
-        return targetArray;
-    }
 
     /**
      * find index of an object in array of objects *
