@@ -30,7 +30,6 @@ var BCLS = ( function (window, document) {
     account_id,
     client_id,
     client_secret,
-    podcast_url,
     site_url,
     podcast_title,
     podcast_author,
@@ -59,7 +58,6 @@ var BCLS = ( function (window, document) {
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
     site_url_input = document.getElementById('site_url_input'),
-    podcast_url_input = document.getElementById('podcast_url_input'),
     podcast_title_input = document.getElementById('podcast_title_input'),
     podcast_author_input = document.getElementById('podcast_author_input'),
     podcast_owner_input = document.getElementById('podcast_owner_input'),
@@ -214,7 +212,6 @@ var BCLS = ( function (window, document) {
       client_id = client_id_input.value;
       client_secret = client_secret.value;
       site_url = site_url_input.value;
-      podcast_url = podcast_url_input.value;
       podcast_title = podcast_title_input.value;
       podcast_description = podcast_description_input.value;
       podcast_author = podcast_author_input.value;
