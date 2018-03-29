@@ -38,9 +38,9 @@ var BCLS = ( function (window, document) {
     feed_email,
     feed_description,
     feed_summary,
+    language,
     main_category,
     sub_category,
-    category,
     explict = false,
     closed_captioned = false,
     complete = false,
@@ -65,6 +65,7 @@ var BCLS = ( function (window, document) {
     feed_email_input = document.getElementById('feed_email_input'),
     feed_description_input = document.getElementById('feed_description_input'),
     feed_summary_input = document.getElementById('feed_summary_input'),
+    language_input = document.getElementById('language_input'),
     explicit_input = document.getElementById('explicit_input'),
     closed_captioned_input = document.getElementById('closed_captioned_input'),
     complete_input = document.getElementById('complete_input'),
@@ -216,10 +217,10 @@ var BCLS = ( function (window, document) {
       feed_title = feed_title_input.value;
       feed_description = feed_description_input.value;
       feed_author = feed_author_input.value;
+      feed_owner = feed_owner_input.value;
       feed_summary = feed_summary_input.value;
       main_category = getSelectedValue(main_category_input);
       sub_category = getSelectedValue(sub_category_input);
-      category = (isDefined(sub_category)) ? sub_category : main_category;
     }
 
     function getVideosForFeed() {
