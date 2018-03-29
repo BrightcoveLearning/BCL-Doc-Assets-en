@@ -30,7 +30,7 @@ var BCLS = ( function (window, document) {
     account_id,
     client_id,
     client_secret,
-    feed_url,
+    podcast_url,
     site_url,
     feed_title,
     feed_author,
@@ -38,6 +38,7 @@ var BCLS = ( function (window, document) {
     feed_email,
     feed_description,
     feed_summary,
+    feed_type = 'video/mp4',
     language,
     main_category,
     sub_category,
@@ -58,7 +59,7 @@ var BCLS = ( function (window, document) {
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
     site_url_input = document.getElementById('site_url_input'),
-    feed_url_input = document.getElementById('feed_url_input'),
+    podcast_url_input = document.getElementById('podcast_url_input'),
     feed_title_input = document.getElementById('feed_title_input'),
     feed_author_input = document.getElementById('feed_author_input'),
     feed_owner_input = document.getElementById('feed_owner_input'),
@@ -213,7 +214,7 @@ var BCLS = ( function (window, document) {
       client_id = client_id_input.value;
       client_secret = client_secret.value;
       site_url = site_url_input.value;
-      feed_url = feed_url_input.value;
+      podcast_url = podcast_url_input.value;
       feed_title = feed_title_input.value;
       feed_description = feed_description_input.value;
       feed_author = feed_author_input.value;
