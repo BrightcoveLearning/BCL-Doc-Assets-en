@@ -42,7 +42,7 @@ var BCLS = ( function (window, document) {
     language,
     main_category,
     sub_category,
-    explict = false,
+    explicit = false,
     closed_captioned = false,
     complete = false,
     // api stuff
@@ -109,6 +109,18 @@ var BCLS = ( function (window, document) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * determines if checkbox is checked
+     * @param  {htmlElement}  e the checkbox to check
+     * @return {Boolean}  true if box is checked
+     */
+    function isChecked(e) {
+      if (e.checked) {
+        return true;
+      }
+      return false;
     }
 
     /**
@@ -209,6 +221,24 @@ var BCLS = ( function (window, document) {
         return sources[0];
     }
 
+    /**
+     * checks for required values
+     * @param  {String[]} fieldsToCheck array of vars to check
+     * @return {boolean} true if all vars have values
+     */
+    function missingRequiredFields(fieldsToCheck) {
+      var i,
+        iMax,
+        tmpArr = [];
+      iMax = fieldsToCheck.length;
+      for (i = 0; i < iMax; i++) {
+        if (!isDefined(fieldsToCheck[i])) {
+          tmpArr.push(fieldsToCheck[i]);
+        }
+      }
+      if (tmpArr.length === 0)
+    }
+
     function getInputData() {
       account_id = account_id_input.value;
       client_id = client_id_input.value;
@@ -219,10 +249,14 @@ var BCLS = ( function (window, document) {
       podcast_description = podcast_description_input.value;
       podcast_author = podcast_author_input.value;
       podcast_owner = podcast_owner_input.value;
+      podcast_email = podcast_email_input.value;
       podcast_summary = (isDefined(podcast_summary_input.value)) ? podcast_summary_input.value : podcast_description;
       language = language_input.value;
       main_category = getSelectedValue(main_category_input);
       sub_category = getSelectedValue(sub_category_input);
+      explicit = isChecked(explicit_input);
+      closed_captioned = isChecked(closed_captioned_input);
+      complete = isChecked(complete_input);
     }
 
     function getVideosForFeed() {
