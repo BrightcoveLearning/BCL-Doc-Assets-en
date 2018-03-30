@@ -204,6 +204,7 @@ var BCLS = ( function (window, document) {
     podcast_title = podcast_title_input.value;
     podcast_description = podcast_description_input.value;
     podcast_author = podcast_author_input.value;
+    podcast_owner = (isDefined(podcast_owner_input.value)) ? podcast_owner_input.value :podcast_author;
     podcast_summary = podcast_summary_input.value;
     main_category = getSelectedValue(main_category_input);
     sub_category = getSelectedValue(sub_category_input);
