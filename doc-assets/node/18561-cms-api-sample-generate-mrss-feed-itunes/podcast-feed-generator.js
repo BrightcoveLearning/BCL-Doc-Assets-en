@@ -218,7 +218,9 @@ var BCLS = ( function (window, document) {
       podcast_description = podcast_description_input.value;
       podcast_author = podcast_author_input.value;
       podcast_owner = podcast_owner_input.value;
-      podcast_summary = podcast_summary_input.value;
+      podcast_summary = (isDefined(podcast_summary_input.value)) ? podcast_summary_input.value : podcast_description;
+      podcast_url = podcast_url_input.value;
+      language = language_input.value;
       main_category = getSelectedValue(main_category_input);
       sub_category = getSelectedValue(sub_category_input);
     }
