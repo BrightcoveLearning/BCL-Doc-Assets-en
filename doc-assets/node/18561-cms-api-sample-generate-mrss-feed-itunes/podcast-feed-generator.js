@@ -199,6 +199,47 @@ var BCLS = ( function (window, document) {
          return -1;
        }
      }
+
+     /**
+      * utility to extract h/m/s from seconds
+      * @param {number} secs - seconds to convert to hh:mm:ss
+      * @returns {String} date string in HH:MM:SS format
+      */
+         function secondsToTime(secs) {
+             var hours = Math.floor(secs / (60 * 60)),
+                 divisor_for_minutes = secs % (60 * 60),
+                 minutes = Math.floor(divisor_for_minutes / 60),
+                 divisor_for_seconds = divisor_for_minutes % 60,
+                 seconds = Math.ceil(divisor_for_seconds),
+                 str = '';
+
+             if (hours > 0) {
+               if (hours < 10) {
+                 hours = "0" + hours.toString();
+               } else {
+                 str += hours.toString() + ':';
+               }
+             }
+
+             if (minutes > 0) {
+               if (minutes < 10) {
+                 minutes = "0" + minutes.toString();
+               } else {
+                 str += minutes.toString() + ':';
+               }
+             }
+
+             if (seconds < 10) {
+                 seconds = "0" + seconds.toString();
+             } else {
+                 str += seconds.toString();
+             }
+
+             return str;
+         }
+
+
+
     /**
      * remove non-MP4 sources and get highest bitrate one
      * @param  {Array} sources array of source objects
@@ -226,7 +267,7 @@ var BCLS = ( function (window, document) {
      * @param  {String[]} fieldsToCheck array of vars to check
      * @return {boolean} true if all vars have values
      */
-    function missingRequiredFields(fieldsToCheck) {
+    function requiredFieldsHaveValues(fieldsToCheck) {
       var i,
         iMax,
         tmpArr = [];
@@ -236,7 +277,10 @@ var BCLS = ( function (window, document) {
           tmpArr.push(fieldsToCheck[i]);
         }
       }
-      if (tmpArr.length === 0)
+      if (tmpArr.length === 0) {
+        return true;
+      }
+      return false;
     }
 
     function getInputData() {
@@ -257,6 +301,7 @@ var BCLS = ( function (window, document) {
       explicit = isChecked(explicit_input);
       closed_captioned = isChecked(closed_captioned_input);
       complete = isChecked(complete_input);
+      if (requiredFieldsHaveValues([site_url, podcast_author, podcast_url, podcast_description, podcast_email]))
     }
 
     function getVideosForFeed() {
