@@ -220,7 +220,7 @@ var BCLS = ( function (window, document) {
     for (i = 0; i < iMax; i++) {
       index = findObjectInArray(all_videos, 'id', checkedBoxes[i]);
       videos.push(all_videos[index]);
-      sortArray(videos, 'published_at')
+      sortArray(videos, 'published_at');
     }
   }
 
