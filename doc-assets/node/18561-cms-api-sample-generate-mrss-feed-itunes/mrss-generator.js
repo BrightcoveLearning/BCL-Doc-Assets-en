@@ -30,11 +30,11 @@ var BCLS = ( function (window, document) {
     account_id,
     client_id,
     client_secret,
-    feed_url,
+    podcast_url,
     site_url,
-    feed_title,
-    feed_description,
-    feed_summary,
+    podcast_title,
+    podcast_description,
+    podcast_summary,
     main_category,
     sub_category,
     category,
@@ -52,10 +52,10 @@ var BCLS = ( function (window, document) {
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
     site_url_input = document.getElementById('site_url_input'),
-    feed_url_input = document.getElementById('feed_url_input'),
-    feed_title_input = document.getElementById('feed_title_input'),
-    feed_description_input = document.getElementById('feed_description_input'),
-    feed_summary_input = document.getElementById('feed_summary_input'),
+    podcast_url_input = document.getElementById('podcast_url_input'),
+    podcast_title_input = document.getElementById('podcast_title_input'),
+    podcast_description_input = document.getElementById('podcast_description_input'),
+    podcast_summary_input = document.getElementById('podcast_summary_input'),
     main_category_input = document.getElementById('main_category_input'),
     sub_category_input = document.getElementById('sub_category_input'),
     search_string_input = document.getElementById('search_string_input'),
@@ -200,11 +200,11 @@ var BCLS = ( function (window, document) {
     client_id = client_id_input.value;
     client_secret = client_secret.value;
     site_url = site_url_input.value;
-    feed_url = feed_url_input.value;
-    feed_title = feed_title_input.value;
-    feed_description = feed_description_input.value;
-    feed_author = feed_author_input.value;
-    feed_summary = feed_summary_input.value;
+    podcast_url = podcast_url_input.value;
+    podcast_title = podcast_title_input.value;
+    podcast_description = podcast_description_input.value;
+    podcast_author = podcast_author_input.value;
+    podcast_summary = podcast_summary_input.value;
     main_category = getSelectedValue(main_category_input);
     sub_category = getSelectedValue(sub_category_input);
     category = (isDefined(sub_category)) ? sub_category : main_category;
