@@ -301,7 +301,11 @@ var BCLS = ( function (window, document) {
       explicit = isChecked(explicit_input);
       closed_captioned = isChecked(closed_captioned_input);
       complete = isChecked(complete_input);
-      if (requiredFieldsHaveValues([site_url, podcast_author, podcast_url, podcast_description, podcast_email]))
+      if (requiredFieldsHaveValues([podcast_title, site_url, podcast_author, podcast_url, podcast_description, podcast_email, language])) {
+        createRequest('getVideos');
+      } else {
+        alert('One or more required inputs was missing: be sure you include the podcast title, author, email, description, url and language, as well as your site url');
+      }
     }
 
     function getVideosForFeed() {
