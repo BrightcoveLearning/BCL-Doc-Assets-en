@@ -234,7 +234,6 @@ var BCLS = ( function (window, document) {
          } else {
              str += seconds.toString();
          }
-
          return str;
      }
 
