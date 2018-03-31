@@ -635,8 +635,8 @@ var BCLS = ( function (window, document) {
         });
         make_feed.addEventListener('click', function() {
             var numVideos;
-            search_string = search_string_input.value;
-            numVideos = getSelectedValue(numberSelect);
+            getVideosForFeed();
+            numVideos = video.length;
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
             // if all videos wanted, get count; otherwise get videos
