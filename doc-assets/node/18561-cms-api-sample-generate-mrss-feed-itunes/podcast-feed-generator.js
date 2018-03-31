@@ -474,7 +474,7 @@ var BCLS = ( function (window, document) {
             case 'getVideos':
             endPoint = account_id + '/videos?limit=20';
             if (isDefined(search_string)) {
-                endPoint += '&q=' + search_string;
+                endPoint += '&q=' + encodeURI(search_string);
             }
             options.url = baseURL + endPoint;
             options.requestType = 'GET';
