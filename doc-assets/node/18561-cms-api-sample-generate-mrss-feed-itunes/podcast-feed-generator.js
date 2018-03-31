@@ -48,7 +48,7 @@ var BCLS = ( function (window, document) {
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-    search,
+    search_string,
     totalVideos = 0,
     totalCalls = 0,
     callNumber = 0,
@@ -301,6 +301,7 @@ var BCLS = ( function (window, document) {
       explicit = isChecked(explicit_input);
       closed_captioned = isChecked(closed_captioned_input);
       complete = isChecked(complete_input);
+
       if (requiredFieldsHaveValues([podcast_title, site_url, podcast_author, podcast_url, podcast_description, podcast_email, language])) {
         createRequest('getVideos');
       } else {
@@ -473,8 +474,8 @@ var BCLS = ( function (window, document) {
         switch (id) {
             case 'getVideos':
             endPoint = account_id + '/videos?limit=20';
-            if (isDefined(search)) {
-                endPoint += '&q=' + search;
+            if (isDefined(search_string)) {
+                endPoint += '&q=' + search_string;
             }
             options.url = baseURL + endPoint;
             options.requestType = 'GET';
@@ -635,23 +636,7 @@ var BCLS = ( function (window, document) {
         });
         make_feed.addEventListener('click', function() {
             var numVideos;
-            // get the inputs
-            client_id = client_id_input.value;
-            client_secret = client_secret_input.value;
-            // only use entered account id if client id and secret are entered also
-            if (isDefined(client_id) && isDefined(client_secret)) {
-                if (isDefined(account_id_input.value)) {
-                    account_id = account_id_input.value;
-                } else {
-                    window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-                    client_id = '';
-                    client_secret = '';
-                    account_id = '1752604059001';
-                }
-            } else {
-                account_id = '1752604059001';
-            }
-            search = search_string_input.value;
+\            search_string = search_string_input.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
