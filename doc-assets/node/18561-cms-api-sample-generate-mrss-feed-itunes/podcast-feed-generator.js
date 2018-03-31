@@ -1,5 +1,5 @@
 var BCLS = ( function (window, document) {
-    var mrssStr = '<?xml version="1.0" encoding="utf-8"?>\n<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"version="2.0"xmlns:atom="http://www.w3.org/2005/Atom">',
+    var mrssStr = '<?xml version="1.0" encoding="utf-8"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">',
     sChannel = '<channel>',
     eChannel = '</channel>',
     sTitle = '<title>',
@@ -261,6 +261,11 @@ var BCLS = ( function (window, document) {
         return sources[0];
     }
 
+    function setPodcastData() {
+      mrssStr += sChannel;
+      mrssStr += sTitle + podcast_title + eTitle;
+    }
+
     /**
      * checks for required values
      * @param  {String[]} fieldsToCheck array of vars to check
@@ -302,6 +307,7 @@ var BCLS = ( function (window, document) {
       complete = isChecked(complete_input);
 
       if (requiredFieldsHaveValues([podcast_title, site_url, podcast_author, podcast_url, podcast_description, podcast_email, language])) {
+        setPodcastData();
         createRequest('getVideos');
       } else {
         alert('One or more required inputs was missing: be sure you include the podcast title, author, email, description, url and language, as well as your site url');
