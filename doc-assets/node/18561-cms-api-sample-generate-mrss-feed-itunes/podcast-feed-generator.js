@@ -55,9 +55,9 @@ var BCLS = ( function (window, document) {
     videos = [],
     all_videos = [],
     // elements
-    account_id_input = document.getElementById('account_id'),
-    client_id_input = document.getElementById('client_id'),
-    client_secret_input = document.getElementById('client_secret'),
+    account_id_input = document.getElementById('account_id_input'),
+    client_id_input = document.getElementById('client_id_input'),
+    client_secret_input = document.getElementById('client_secret_input'),
     site_url_input = document.getElementById('site_url_input'),
     podcast_url_input = document.getElementById('podcast_url_input'),
     podcast_title_input = document.getElementById('podcast_title_input'),
