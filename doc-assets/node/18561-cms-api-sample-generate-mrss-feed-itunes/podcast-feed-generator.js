@@ -200,43 +200,43 @@ var BCLS = ( function (window, document) {
        }
      }
 
-     /**
-      * utility to extract h/m/s from seconds
-      * @param {number} secs - seconds to convert to hh:mm:ss
-      * @returns {String} date string in HH:MM:SS format
-      */
-         function secondsToTime(secs) {
-             var hours = Math.floor(secs / (60 * 60)),
-                 divisor_for_minutes = secs % (60 * 60),
-                 minutes = Math.floor(divisor_for_minutes / 60),
-                 divisor_for_seconds = divisor_for_minutes % 60,
-                 seconds = Math.ceil(divisor_for_seconds),
-                 str = '';
+    /**
+    * utility to extract h/m/s from seconds
+    * @param {number} secs - seconds to convert to hh:mm:ss
+    * @returns {String} date string in HH:MM:SS format
+    */
+     function secondsToTime(secs) {
+         var hours = Math.floor(secs / (60 * 60)),
+             divisor_for_minutes = secs % (60 * 60),
+             minutes = Math.floor(divisor_for_minutes / 60),
+             divisor_for_seconds = divisor_for_minutes % 60,
+             seconds = Math.ceil(divisor_for_seconds),
+             str = '';
 
-             if (hours > 0) {
-               if (hours < 10) {
-                 hours = "0" + hours.toString();
-               } else {
-                 str += hours.toString() + ':';
-               }
-             }
-
-             if (minutes > 0) {
-               if (minutes < 10) {
-                 minutes = "0" + minutes.toString();
-               } else {
-                 str += minutes.toString() + ':';
-               }
-             }
-
-             if (seconds < 10) {
-                 seconds = "0" + seconds.toString();
-             } else {
-                 str += seconds.toString();
-             }
-
-             return str;
+         if (hours > 0) {
+           if (hours < 10) {
+             hours = "0" + hours.toString();
+           } else {
+             str += hours.toString() + ':';
+           }
          }
+
+         if (minutes > 0) {
+           if (minutes < 10) {
+             minutes = "0" + minutes.toString();
+           } else {
+             str += minutes.toString() + ':';
+           }
+         }
+
+         if (seconds < 10) {
+             seconds = "0" + seconds.toString();
+         } else {
+             str += seconds.toString();
+         }
+
+         return str;
+     }
 
 
 
@@ -631,7 +631,7 @@ var BCLS = ( function (window, document) {
           populateSubCategorySelect();
         });
         get_videos.addEventListener('click', function() {
-
+          getInputData();
         });
         make_feed.addEventListener('click', function() {
             var numVideos;
