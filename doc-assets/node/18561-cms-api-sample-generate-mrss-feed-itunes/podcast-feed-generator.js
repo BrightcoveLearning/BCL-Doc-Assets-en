@@ -285,7 +285,7 @@ var BCLS = ( function (window, document) {
     function getInputData() {
       account_id = account_id_input.value;
       client_id = client_id_input.value;
-      client_secret = client_secret.value;
+      client_secret = client_secret_input.value;
       site_url = site_url_input.value;
       podcast_url = podcast_url_input.value;
       podcast_title = podcast_title_input.value;
