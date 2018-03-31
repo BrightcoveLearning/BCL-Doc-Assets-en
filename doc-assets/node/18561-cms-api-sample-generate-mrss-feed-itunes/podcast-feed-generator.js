@@ -4,6 +4,8 @@ var BCLS = ( function (window, document) {
     eChannel = '</channel>',
     sTitle = '<title>',
     eTitle = '</title>',
+    sSubTitle = '<itunes:subtitle>',
+    eSubTitle = '</itunes:subtitle>',
     sDescription = '<description>',
     eDescription = '</description>',
     sItem = '<item xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
