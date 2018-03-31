@@ -18,8 +18,6 @@ var BCLS = ( function (window, document) {
     eCopyright = '</copyright>',
     sMediaContent = '<media:content>',
     eMediaContent = '</media:content>',
-    sAtom = '<atom:linkhref="',
-    eAtom = '"rel="self"type="application/rss+xml" />',
     sLanguage = '<language>',
     eLanguage = '</language>',
     sMediaThumbnail = '<media:thumbnail',
