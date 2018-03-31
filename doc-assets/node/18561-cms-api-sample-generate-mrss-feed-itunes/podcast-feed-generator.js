@@ -635,7 +635,7 @@ var BCLS = ( function (window, document) {
         });
         make_feed.addEventListener('click', function() {
             var numVideos;
-\            search_string = search_string_input.value;
+            search_string = search_string_input.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
