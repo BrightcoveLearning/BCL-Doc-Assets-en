@@ -634,20 +634,18 @@ var BCLS = ( function (window, document) {
           getInputData();
         });
         make_feed.addEventListener('click', function() {
-            var numVideos;
             getVideosForFeed();
-            numVideos = video.length;
-            // add title and description
+\            // add title and description
             mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
             // if all videos wanted, get count; otherwise get videos
             if (numVideos === 'all') {
                 // we need to get the count
                 createRequest('getCount');
             } else {
-                totalVideos = parseInt(numVideos);
-                totalCalls = Math.ceil(numVideos / limit);
+                totalVideos = videos.length;
+                totalCalls = totalVideos;
                 logger.textContent = 'Total videos to retrieve: ' + totalVideos;
-                createRequest('getVideos');
+                createRequest('getVideoSources');
             }
         });
         feedDisplay.addEventListener('click', function() {
