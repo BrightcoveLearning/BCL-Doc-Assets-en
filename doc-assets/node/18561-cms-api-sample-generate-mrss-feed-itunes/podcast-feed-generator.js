@@ -45,6 +45,7 @@ var BCLS = ( function (window, document) {
     explicit = false,
     closed_captioned = false,
     complete = false,
+    year = new Date().getFullYear().toString(),
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -266,6 +267,7 @@ var BCLS = ( function (window, document) {
       mrssStr += sTitle + podcast_title + eTitle;
       mrssStr += sLink + podcast_url + elink;
       mrssStr += sLanguage + language + eLanguage;
+      mrssStr += sCopyright + '&copy ' + podcast_owner
     }
 
     /**
