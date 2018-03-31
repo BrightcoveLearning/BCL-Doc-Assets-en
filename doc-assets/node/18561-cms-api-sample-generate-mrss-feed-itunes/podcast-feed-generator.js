@@ -264,6 +264,8 @@ var BCLS = ( function (window, document) {
     function setPodcastData() {
       mrssStr += sChannel;
       mrssStr += sTitle + podcast_title + eTitle;
+      mrssStr += sLink + podcast_url + elink;
+      mrssStr += sLanguage + language + eLanguage;
     }
 
     /**
