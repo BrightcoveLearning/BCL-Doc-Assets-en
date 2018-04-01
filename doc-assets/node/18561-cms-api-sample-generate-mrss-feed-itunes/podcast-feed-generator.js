@@ -292,7 +292,8 @@ var BCLS = ( function (window, document) {
       mrssStr += sCopyright + '&copy ' + year + ' ' + podcast_owner +eCopyright;
       mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
       mrssStr += sAuthor + podcast_author + eAuthor;
-      mrssStr +=
+      mrssStr += sSummary + podcast_summary + eSummary;
+      mrssStr += sDescription + podcast_description + eDescription;
     }
 
     /**
