@@ -294,6 +294,8 @@ var BCLS = ( function (window, document) {
       mrssStr += sAuthor + podcast_author + eAuthor;
       mrssStr += sSummary + podcast_summary + eSummary;
       mrssStr += sDescription + podcast_description + eDescription;
+      mrssStr += sOwner;
+      mrssStr += sName + podcast_owner + eName;
     }
 
     /**
