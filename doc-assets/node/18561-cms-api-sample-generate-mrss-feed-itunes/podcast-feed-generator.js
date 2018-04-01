@@ -28,8 +28,8 @@ var BCLS = ( function (window, document) {
     eDuration = '</itunes:duration>',
     sDescription = '<description>',
     eDescription = '</description>',
-    sSummary = '<itunes:summary>',
-    eSummary = '</itunes:summary>',
+    sSummary = '<itunes:summary><![CDATA[',
+    eSummary = ']]></itunes:summary>',
     sEnclosure = '<enclosure ',
     eEnclosure = ' />',
     sItem = '<item>',
@@ -290,6 +290,9 @@ var BCLS = ( function (window, document) {
       mrssStr += sLink + podcast_url + elink;
       mrssStr += sLanguage + language + eLanguage;
       mrssStr += sCopyright + '&copy ' + year + ' ' + podcast_owner +eCopyright;
+      mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
+      mrssStr += sAuthor + podcast_author + eAuthor;
+      mrssStr +=
     }
 
     /**
