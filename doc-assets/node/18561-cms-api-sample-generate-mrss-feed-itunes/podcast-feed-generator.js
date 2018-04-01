@@ -58,9 +58,9 @@ var BCLS = ( function (window, document) {
     language,
     main_category,
     sub_category,
-    explicit = false,
-    closed_captioned = false,
-    complete = false,
+    explicit = 'no',
+    closed_captioned = 'no',
+    complete = 'no',
     year = new Date().getFullYear().toString(),
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
@@ -324,9 +324,9 @@ var BCLS = ( function (window, document) {
       language = language_input.value;
       main_category = getSelectedValue(main_category_input);
       sub_category = getSelectedValue(sub_category_input);
-      explicit = isChecked(explicit_input);
-      closed_captioned = isChecked(closed_captioned_input);
-      complete = isChecked(complete_input);
+      explicit = (isChecked(explicit_input)) ? 'yes' : 'no';
+      closed_captioned = (isChecked(closed_captioned_input)) ? 'yes' : 'no';
+      complete = (isChecked(complete_input)) ? 'yes' : 'no';
 
       if (requiredFieldsHaveValues([podcast_title, site_url, podcast_author, podcast_url, podcast_description, podcast_email, language])) {
         setPodcastData();
