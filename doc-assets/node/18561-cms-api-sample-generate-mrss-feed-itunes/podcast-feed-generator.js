@@ -298,6 +298,7 @@ var BCLS = ( function (window, document) {
       mrssStr += sName + podcast_owner + eName;
       mrssStr += sEmail + podcast_email + eEmail;
       mrssStr += eOwner;
+      mrssStr += sComplete + complete + eComplete;
     }
 
     /**
