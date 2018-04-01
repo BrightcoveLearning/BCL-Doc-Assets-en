@@ -443,7 +443,7 @@ var BCLS = ( function (window, document) {
 
 
     function addItems() {
-        var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
+        var i, iMax, video, pubdate, eItem, videoURL, posterURL, doPoster = true;
         if (videos.length > 0) {
             iMax = videos.length;
             for (i = 0; i < iMax; i += 1) {
@@ -455,12 +455,12 @@ var BCLS = ( function (window, document) {
                     videoURL = "";
                 }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
-                if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
-                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
-                } else if (isDefined(video.thumbnail)) {
-                    thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
+                if (isDefined(video.images) && isDefined(video.images.poster)) {
+                    posterURL = encodeURI(video.images.poster.sources[0].src.replace(/&/g, '&amp;'));
+                } else if (isDefined(video.poster)) {
+                    posterURL = encodeURI(video.poster.replace(/&/g, '&amp;'));
                 } else {
-                    doThumbnail = false;
+                    doPoster = false;
                 }
 
                 pubdate = new Date(video.created_at).toGMTString();
@@ -471,8 +471,8 @@ var BCLS = ( function (window, document) {
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
                 mrssStr += sMediaDescription + video.description + eMediaDescription;
-                if (doThumbnail) {
-                    mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
+                if (doPoster) {
+                    mrssStr += sMediaThumbnail + ' url="' + posterURL + '"';
                     if (isDefined(video.images)) {
                         mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
                     } else {
