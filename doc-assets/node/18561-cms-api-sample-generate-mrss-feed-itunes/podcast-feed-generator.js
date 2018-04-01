@@ -443,7 +443,7 @@ var BCLS = ( function (window, document) {
 
 
     function addItems() {
-        var i, iMax, video, pubdate, eItem, videoURL, posterURL, doPoster = true;
+        var i, iMax, video, videoURL, posterURL, doPoster = true;
         if (videos.length > 0) {
             iMax = videos.length;
             for (i = 0; i < iMax; i += 1) {
@@ -463,10 +463,10 @@ var BCLS = ( function (window, document) {
                     doPoster = false;
                 }
 
-                pubdate = new Date(video.created_at).toGMTString();
                 mrssStr += sItem;
+                mrssStr += sTitle + video.name + eTitle;
                 mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
-                mrssStr += sPubDate + pubdate + ePubDate;
+                mrssStr += sPubDate + video.published_at + ePubDate;
                 mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
