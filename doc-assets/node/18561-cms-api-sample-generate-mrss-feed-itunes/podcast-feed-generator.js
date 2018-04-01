@@ -281,7 +281,7 @@ var BCLS = ( function (window, document) {
       mrssStr += sTitle + podcast_title + eTitle;
       mrssStr += sLink + podcast_url + elink;
       mrssStr += sLanguage + language + eLanguage;
-      mrssStr += sCopyright + '&copy ' + podcast_owner
+      mrssStr += sCopyright + '&copy ' + year + ' ' + podcast_owner +eCopyright;
     }
 
     /**
