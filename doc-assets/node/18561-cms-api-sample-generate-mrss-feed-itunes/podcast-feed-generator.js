@@ -224,12 +224,13 @@ var BCLS = ( function (window, document) {
      }
 
     /**
-    * utility to extract h/m/s from seconds
-    * @param {number} secs - seconds to convert to hh:mm:ss
+    * utility to extract h/m/s from milliseconds
+    * @param {number} msecs - milliseconds to convert to hh:mm:ss
     * @returns {String} date string in HH:MM:SS format
     */
-     function secondsToTime(secs) {
-         var hours = Math.floor(secs / (60 * 60)),
+     function millisecondsToTime(msecs) {
+         var secs = msecs / 1000,
+          hours = Math.floor(secs / (60 * 60)),
              divisor_for_minutes = secs % (60 * 60),
              minutes = Math.floor(divisor_for_minutes / 60),
              divisor_for_seconds = divisor_for_minutes % 60,
