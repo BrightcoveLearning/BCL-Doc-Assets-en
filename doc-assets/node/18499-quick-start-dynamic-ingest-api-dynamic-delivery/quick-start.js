@@ -2,7 +2,9 @@ var BCLS = (function(window, document) {
   var baseURL = 'https://cms.api.brightcove.com/v1/accounts/57838016001',
     ingestURL = 'https://ingest.api.brightcove.com/v1/accounts/57838016001',
     ingestURLsuffix = '/ingest-requests',
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+    dd_profile = 'multi-platform-standard-static',
+    callback_url = 'https://solutions.brightcove.com/bcls/di-api/di-callback-app.php',
     newVideo_id = '',
     allButtons = document.getElementsByTagName('button'),
     createVideo = document.getElementById('createVideo'),
@@ -35,46 +37,45 @@ var BCLS = (function(window, document) {
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
      */
-  function setRequestData(id) {
+  function createRequest(id) {
       var endPoint = '',
-        requestData = {};
+        options = {},
+        requestBody = {};
       // disable buttons to prevent a new request before current one finishes
       disableButtons();
+      options.account_id = '57838016001';
+      options.proxyURL = proxyURL;
       switch (id) {
         case 'createVideo':
           endPoint = '/videos';
-          requestData.url = baseURL + endPoint;
-          requestData.requestType = 'POST';
-          requestData.requestBody = {
-            name: 'New Video from Dynamic Ingest API Quick Start'
-          };
-          apiRequest.textContent = requestData.url;
-          apiData.textContent = JSON.stringify(requestData.requestBody, null, '  ');
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          options.url = baseURL + endPoint;
+          options.requestType = 'POST';
+          requestBody.name = 'New Video from Dynamic Ingest API Quick Start';
+          options.requestBody = JSON.stringify(requestBody);
+          apiRequest.textContent = options.url;
+          apiData.textContent = JSON.stringify(requestBody, null, '  ');
+          apiMethod.textContent = options.requestType;
+          getMediaData(options, id);
           break;
         case 'ingestVideo':
           endPoint = '/videos/' + newVideo_id;
-          requestData.url = ingestURL + endPoint + ingestURLsuffix;
-          requestData.requestType = 'POST';
-          requestData.requestBody = {
-            master: {
-              url: 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4'
-            },
-            profile: 'multi-platform-extended-static',
-            'capture-images': true,
-            'callbacks': ['https://solutions.brightcove.com/bcls/dynamic-delivery/di-callback-app.php']
-          };
-          apiRequest.textContent = requestData.url;
-          apiData.textContent = JSON.stringify(requestData.requestBody, null, '  ');
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          options.url = ingestURL + endPoint + ingestURLsuffix;
+          options.requestType = 'POST';
+          requestBody.master = {};
+          requestBody.master.url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
+          requestBody.profile = dd_profile;
+          requestBody.callbacks = [callback_url];
+          options.requestBody = JSON.stringify(requestBody);
+          apiRequest.textContent = options.url;
+          apiData.textContent = JSON.stringify(requestBody, null, '  ');
+          apiMethod.textContent = options.requestType;
+          getMediaData(options, id);
           break;
         case 'retranscode':
           endPoint = '/videos/' + newVideo_id;
-          requestData.url = ingestURL + endPoint + ingestURLsuffix;
-          requestData.requestType = 'POST';
-          requestData.requestBody = {
+          options.url = ingestURL + endPoint + ingestURLsuffix;
+          options.requestType = 'POST';
+          options.requestBody = {
             master: {
               use_archived_master: true
             },
@@ -82,16 +83,16 @@ var BCLS = (function(window, document) {
             'capture-images': true,
             'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
           };
-          apiRequest.textContent = requestData.url;
-          apiData.textContent = JSON.stringify(requestData.requestBody, null, '  ');
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          apiRequest.textContent = options.url;
+          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+          apiMethod.textContent = options.requestType;
+          getMediaData(options, id);
           break;
         case 'replace':
           endPoint = '/videos/' + newVideo_id;
-          requestData.url = ingestURL + endPoint + ingestURLsuffix;
-          requestData.requestType = 'POST';
-          requestData.requestBody = {
+          options.url = ingestURL + endPoint + ingestURLsuffix;
+          options.requestType = 'POST';
+          options.requestBody = {
             master: {
               url: 'https://learning-services-media.brightcove.com/videos/mp4/greathornedowl.mp4'
             },
@@ -99,16 +100,16 @@ var BCLS = (function(window, document) {
             'capture-images': true,
             'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
           };
-          apiRequest.textContent = requestData.url;
-          apiData.textContent = JSON.stringify(requestData.requestBody, null, '  ');
-          apiMethod.textContent = requestData.requestType;
-          getMediaData(requestData, id);
+          apiRequest.textContent = options.url;
+          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+          apiMethod.textContent = options.requestType;
+          getMediaData(options, id);
           break;
         case 'addImages':
           endPoint = '/videos/' + newVideo_id;
-          requestData.url = ingestURL + endPoint + ingestURLsuffix;
-          requestData.requestType = 'POST';
-          requestData.requestBody = {
+          options.url = ingestURL + endPoint + ingestURLsuffix;
+          options.requestType = 'POST';
+          options.requestBody = {
             poster: {
               url: 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-poster.png',
               width: 640,
@@ -122,16 +123,16 @@ var BCLS = (function(window, document) {
             profile: 'multi-platform-extended-static',
             'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
           };
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          apiData.textContent = JSON.stringify(requestData.requestBody, null, '  ');
-          getMediaData(requestData, id);
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+          getMediaData(options, id);
           break;
         case 'addTextTracks':
           endPoint = '/videos/' + newVideo_id;
-          requestData.url = ingestURL + endPoint + ingestURLsuffix;
-          requestData.requestType = 'POST';
-          requestData.requestBody = {
+          options.url = ingestURL + endPoint + ingestURLsuffix;
+          options.requestType = 'POST';
+          options.requestBody = {
             profile: '<>multi-platform-extended-static',
             text_tracks: [{
               url: 'https://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt',
@@ -142,16 +143,16 @@ var BCLS = (function(window, document) {
             }],
             'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
           };
-          apiRequest.textContent = requestData.url;
-          apiMethod.textContent = requestData.requestType;
-          apiData.textContent = JSON.stringify(requestData.requestBody, null, '  ');
-          getMediaData(requestData, id);
+          apiRequest.textContent = options.url;
+          apiMethod.textContent = options.requestType;
+          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+          getMediaData(options, id);
           break;
       }
     }
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
+     * @param  {Object} options options for the request
      * @param  {String} requestID the type of request = id of the button
      */
   function getMediaData(options, requestID) {
@@ -202,21 +203,21 @@ var BCLS = (function(window, document) {
     }
     // event listeners
   createVideo.addEventListener('click', function() {
-    setRequestData('createVideo');
+    createRequest('createVideo');
   });
   ingestVideo.addEventListener('click', function() {
-    setRequestData('ingestVideo');
+    createRequest('ingestVideo');
   });
   retranscode.addEventListener('click', function() {
-    setRequestData('retranscode');
+    createRequest('retranscode');
   });
   replace.addEventListener('click', function() {
-    setRequestData('replace');
+    createRequest('replace');
   });
   addImages.addEventListener('click', function() {
-    setRequestData('addImages');
+    createRequest('addImages');
   });
   addTextTracks.addEventListener('click', function() {
-    setRequestData('addTextTracks');
+    createRequest('addTextTracks');
   });
 })(window, document);
