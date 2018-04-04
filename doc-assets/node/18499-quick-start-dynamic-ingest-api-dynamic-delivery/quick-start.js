@@ -59,7 +59,10 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
-
+            newVideo_id = parsedData.id;
+            responseData.textContent = JSON.stringify(parsedData, null, '  ');
+            // re-enable the buttons
+            enableButtons();
           });
           break;
         case 'ingestVideo':
@@ -77,7 +80,9 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
-
+            responseData.textContent = JSON.stringify(parsedData, null, '  ');
+            // re-enable the buttons
+            enableButtons();
           });
           break;
         case 'retranscode':
@@ -96,7 +101,9 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
-
+            responseData.textContent = JSON.stringify(parsedData, null, '  ');
+            // re-enable the buttons
+            enableButtons();
           });
           break;
         case 'replace':
@@ -115,7 +122,9 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
-
+            responseData.textContent = JSON.stringify(parsedData, null, '  ');
+            // re-enable the buttons
+            enableButtons();
           });
           break;
         case 'addImages':
@@ -139,7 +148,9 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
-
+            responseData.textContent = JSON.stringify(parsedData, null, '  ');
+            // re-enable the buttons
+            enableButtons();
           });
           break;
         case 'addTextTracks':
@@ -154,24 +165,17 @@ var BCLS = (function(window, document) {
           requestBody.text_tracks[0].kind = 'captions';
           requestBody.text_tracks[0].label = 'EN';
           requestBody.text_tracks[0].default = true;
-          options.requestBody = {
-            profile: '<>multi-platform-extended-static',
-            text_tracks: [{
-              url:
-              srclang: 'en',
-              kind: 'captions',
-              label: 'EN',
-              default: true
-            }],
-            'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
-          };
+          requestBody.callbacks = [callback_url];
+          options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
           apiMethod.textContent = options.requestType;
           apiData.textContent = JSON.stringify(requestBody, null, '  ');
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
-
+            responseData.textContent = JSON.stringify(parsedData, null, '  ');
+            // re-enable the buttons
+            enableButtons();
           });
           break;
       }
