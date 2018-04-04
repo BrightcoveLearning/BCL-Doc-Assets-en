@@ -4,6 +4,7 @@ var BCLS = (function(window, document) {
     ingestURLsuffix = '/ingest-requests',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     dd_profile = 'multi-platform-standard-static',
+    dd_retranscode_profile = 'multi-platform-extended-static',
     callback_url = 'https://solutions.brightcove.com/bcls/di-api/di-callback-app.php',
     newVideo_id = '',
     allButtons = document.getElementsByTagName('button'),
@@ -75,6 +76,9 @@ var BCLS = (function(window, document) {
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
+          requestBody.master = {};
+          requestBody.master.use_archived_master = true;
+
           options.requestBody = {
             master: {
               use_archived_master: true
