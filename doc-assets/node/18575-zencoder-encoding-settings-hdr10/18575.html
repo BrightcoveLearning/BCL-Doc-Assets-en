@@ -5,8 +5,8 @@
     <p>In addition to this topic, you should also look at <a href="/node/18573">HDR10 Video Output</a> for additional information and specific <a href="/node/17870">video encoding settings</a> that are required for HDR10 outputs.</p>
   </section>
 <section class="bcls-section">
-<h2 id="video_bit_depth">master_display_red_x</h2>
-<code>master_display_red_x:Number</code>
+<h2 id="master_display">master_display</h2>
+<code>master_display:Object</code>
 
 <p><strong>API Versions:</strong> V2</p>
 
@@ -14,15 +14,121 @@
 
 <p><strong>Default:</strong> none</p>
 
-<p><strong>Valid Values:</strong> <code>0.0001-0.7400</code></p>
-
 <p><strong>Compatible Job Types:</strong> vod</p>
-
-<p><strong>Example:</strong> <code>0.708</code></p>
 
 <p><strong>Description:</strong></p>
 
-<p>Color volume x setting for red.</p>
+<p>Hash containing color volume and luminance settings for HDR outputs.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://mybucket/hdr_master.mov",
+  "outputs": [
+    {
+      "video_codec": "hevc",
+      "video_bit_depth": 10,
+      <span class="bcls-highlight">"master_display"</span>: {
+        "red": {
+          "x": 0.708,
+          "y": 0.292
+        },
+        "green": {
+          "x": 0.17,
+          "y": 0.797
+        },
+        "blue": {
+          "x": 0.131,
+          "y": 0.046
+        },
+        "white_point": {
+          "x": 0.31273,
+          "y": 0.329
+        },
+        "luminance": {
+          "max": 1000,
+          "min": 0.0001
+        }
+      },
+      "max_content_light_level": 1000,
+      "max_frame_average_light_level": 180
+    }
+  ]
+}
+</code></pre>
+
+</section>
+<section class="bcls-section">
+<h2 id="master_display_red">red</h2>
+<code>red:Object</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="#master_display">master_display</a></p>
+
+<p><strong>Default:</strong> none</p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Hash containing color volume setting for red.</p>
+
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://mybucket/hdr_master.mov",
+  "outputs": [
+    {
+      "video_codec": "hevc",
+      "video_bit_depth": 10,
+      <span class="bcls-highlight">"master_display"</span>: {
+        <span class="bcls-highlight">"red": {
+          "x": 0.708,
+          "y": 0.292
+        },</span>
+        "green": {
+          "x": 0.17,
+          "y": 0.797
+        },
+        "blue": {
+          "x": 0.131,
+          "y": 0.046
+        },
+        "white_point": {
+          "x": 0.31273,
+          "y": 0.329
+        },
+        "luminance": {
+          "max": 1000,
+          "min": 0.0001
+        }
+      },
+      "max_content_light_level": 1000,
+      "max_frame_average_light_level": 180
+    }
+  ]
+}
+</code></pre>
+</section>
+<section class="bcls-section">
+<h2 id="video_bit_depth">master_display_red_x</h2>
+<code>master_display_red_x:Number</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="#master_display_red">master_display:red</a></p>
+
+<p><strong>Default:</strong> none</p>
+
+<p><strong>Valid Values:</strong> <code>0.0001-0.8400</code></p>
+
+<p><strong>Compatible Job Types:</strong> vod</p>
+
+<p><strong>Example:</strong> <code>0.292</code></p>
+
+<p><strong>Description:</strong></p>
+
+<p>Color volume y setting for green.</p>
 
 
 <pre class="line-numbers">
@@ -42,8 +148,8 @@
       "video_bitrate": 2000,
       "decoder_bitrate_cap": 2400,
       "decoder_buffer_size": 3600,
-      <span class="bcls-highlight">"master_display_red_x": 0.708,</span>
-      "master_display_red_y": 0.292,
+      "master_display_red_x": 0.708,
+      <span class="bcls-highlight">"master_display_red_y": 0.292,</span>
       "master_display_green_x": 0.17,
       "master_display_green_y": 0.797,
       "master_display_blue_x": 0.131,
@@ -58,6 +164,7 @@
   ]
 }</code></pre>
 </section>
+
 <section class="bcls-section">
 <h2 id="video_bit_depth">master_display_red_y</h2>
 <code>master_display_red_y:Number</code>
