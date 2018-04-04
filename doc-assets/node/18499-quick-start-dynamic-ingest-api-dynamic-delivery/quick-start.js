@@ -56,7 +56,11 @@ var BCLS = (function(window, document) {
           apiRequest.textContent = options.url;
           apiData.textContent = JSON.stringify(requestBody, null, '  ');
           apiMethod.textContent = options.requestType;
-          getMediaData(options, id);
+          getMediaData(options, function(response){
+            var parsedData;
+            parsedData = JSON.parse(response);
+
+          });
           break;
         case 'ingestVideo':
           endPoint = '/videos/' + newVideo_id;
