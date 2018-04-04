@@ -146,10 +146,18 @@ var BCLS = (function(window, document) {
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
+          requestBody.profile = dd_profile;
+          requestBody.text_tracks = [];
+          requestBody.text_tracks[0] = {};
+          requestBody.text_tracks[0].url = 'https://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt';
+          requestBody.text_tracks[0].srclang = 'en';
+          requestBody.text_tracks[0].kind = 'captions';
+          requestBody.text_tracks[0].label = 'EN';
+          requestBody.text_tracks[0].default = true;
           options.requestBody = {
             profile: '<>multi-platform-extended-static',
             text_tracks: [{
-              url: 'https://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt',
+              url:
               srclang: 'en',
               kind: 'captions',
               label: 'EN',
