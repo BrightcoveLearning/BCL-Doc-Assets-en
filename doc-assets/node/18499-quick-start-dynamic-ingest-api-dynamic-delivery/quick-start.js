@@ -56,7 +56,7 @@ var BCLS = (function(window, document) {
           apiRequest.textContent = options.url;
           apiData.textContent = JSON.stringify(requestBody, null, '  ');
           apiMethod.textContent = options.requestType;
-          getMediaData(options, function(response){
+          makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
 
@@ -74,7 +74,11 @@ var BCLS = (function(window, document) {
           apiRequest.textContent = options.url;
           apiData.textContent = JSON.stringify(requestBody, null, '  ');
           apiMethod.textContent = options.requestType;
-          getMediaData(options, id);
+          makeRequest(options, function(response){
+            var parsedData;
+            parsedData = JSON.parse(response);
+
+          });
           break;
         case 'retranscode':
           endPoint = '/videos/' + newVideo_id;
@@ -82,59 +86,61 @@ var BCLS = (function(window, document) {
           options.requestType = 'POST';
           requestBody.master = {};
           requestBody.master.use_archived_master = true;
-
-          options.requestBody = {
-            master: {
-              use_archived_master: true
-            },
-            profile: 'multi-platform-extended-static',
-            'capture-images': true,
-            'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
-          };
+          requestBody.profile = dd_retranscode_profile;
+          requestBody['capture-images'] = true;
+          requestBody.callbacks = [callback_url];
+          options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
-          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+          apiData.textContent = JSON.stringify(requestBody, null, '  ');
           apiMethod.textContent = options.requestType;
-          getMediaData(options, id);
+          makeRequest(options, function(response){
+            var parsedData;
+            parsedData = JSON.parse(response);
+
+          });
           break;
         case 'replace':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
-          options.requestBody = {
-            master: {
-              url: 'https://learning-services-media.brightcove.com/videos/mp4/greathornedowl.mp4'
-            },
-            profile: 'multi-platform-extended-static',
-            'capture-images': true,
-            'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
-          };
+          options.master = {};
+          options.master.url = 'https://learning-services-media.brightcove.com/videos/mp4/greathornedowl.mp4';
+          options.profile = dd_profile;
+          requestBody['capture-images'] = true;
+          requestBody.callbacks = [callback_url];
+          options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
-          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+          apiData.textContent = JSON.stringify(requestBody, null, '  ');
           apiMethod.textContent = options.requestType;
-          getMediaData(options, id);
+          makeRequest(options, function(response){
+            var parsedData;
+            parsedData = JSON.parse(response);
+
+          });
           break;
         case 'addImages':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
-          options.requestBody = {
-            poster: {
-              url: 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-poster.png',
-              width: 640,
-              height: 360
-            },
-            'thumbnail': {
-              url: 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-thumbnail.png',
-              width: 160,
-              height: 90
-            },
-            profile: 'multi-platform-extended-static',
-            'callbacks': ['https://solutions.brightcove.com/bcls/di-api/di-callback-app.php']
-          };
+          requestBody.poster = {};
+          requestBody.poster.url = 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-poster.png';
+          requestBody.poster.width = 640;
+          requestBody.poster.height = 360;
+          requestBody.thumbnail = {};
+          requestBody.thumbnail.url = 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-thumbnail.png';
+          requestBody.thumbnail.width = 160;
+          requestBody.thumbnail.height = 90;
+          requestBody.profile = dd_profile;
+          requestBody.callbacks = [callback_url];
+          options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
           apiMethod.textContent = options.requestType;
-          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
-          getMediaData(options, id);
+          apiData.textContent = JSON.stringify(requestBody, null, '  ');
+          makeRequest(options, function(response){
+            var parsedData;
+            parsedData = JSON.parse(response);
+
+          });
           break;
         case 'addTextTracks':
           endPoint = '/videos/' + newVideo_id;
@@ -153,8 +159,12 @@ var BCLS = (function(window, document) {
           };
           apiRequest.textContent = options.url;
           apiMethod.textContent = options.requestType;
-          apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
-          getMediaData(options, id);
+          apiData.textContent = JSON.stringify(requestBody, null, '  ');
+          makeRequest(options, function(response){
+            var parsedData;
+            parsedData = JSON.parse(response);
+
+          });
           break;
       }
     }
@@ -163,7 +173,7 @@ var BCLS = (function(window, document) {
      * @param  {Object} options options for the request
      * @param  {String} requestID the type of request = id of the button
      */
-  function getMediaData(options, requestID) {
+  function makeRequest(options, requestID) {
       var httpRequest = new XMLHttpRequest(),
         responseRaw,
         parsedData,
