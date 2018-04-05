@@ -458,6 +458,7 @@ var BCLS = ( function (window, document) {
                 }
                 mrssStr += sItem;
                 mrssStr += sTitle + video.name + eTitle;
+                mrssStr += sAuthor + author + eAuthor;
                 if (isDefined(video.description)) {
                   mrssStr += sSubTitle + video.description + eSubTitle;
                 }
