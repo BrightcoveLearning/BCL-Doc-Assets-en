@@ -467,14 +467,11 @@ var BCLS = ( function (window, document) {
                   mrssStr += sImage + video.poster.src + eImage;
                 }
                 mrssStr += sEnclosure + 'length="' + video.source.size + '" type="video/mp4" ' + 'url="' + video.source.src + '"' + eEnclosure;
-                mrssStr += sPubDate + video.published_at + ePubDate;
                 mrssStr += sGuid + video.source.src + eGuid;
-                if (isDefined(video.schedule) && video.schedule.ends_at) {
-                    eItem = eItemStart + video.schedule.ends_at + eItemEnd;
-                } else {
-                    eItem = eItemStart + defaultEndDate + eItemEnd;
-                }
-                mrssStr += eItem;
+                mrssStr += sPubDate + video.published_at + ePubDate;
+                mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
+                mrssStr += sExplicit + isChecked(explicit_input) + eExplicit;
+
             }
         }
         mrssStr += eChannel + '</rss>';
