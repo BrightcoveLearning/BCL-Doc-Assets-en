@@ -8,13 +8,23 @@
 <section class="bcls-section">
 <h2 id="Encoding_recommendations">Encoding recommendations</h2>
 
-<p><strong><a href="/node/17870#video-codec-level">video_codec_level</a></strong>: constrains the bitrate and coding tree units (CTUs). <a href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding#Tiers_and_levels">List of valid values</a>.</p>
+<p><strong><code><a href="/node/17870#video-codec-level">video_codec_level</a></code></strong>: constrains the bitrate and coding tree units (CTUs). <a href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding#Tiers_and_levels">List of valid values</a>.</p>
 
-<p><strong><a href="/node/17870#video-codec-profile">video_codec_profile</a></strong>: sets the encoding profile. The currently supported HEVC profiles are: main, main10, main12, main422-10, main422-12, main444-8, main444-10, main444-12. Default: main.</p>
+<p><strong><code><a href="/node/17870#video-codec-profile">video_codec_profile</a></code></strong>: sets the encoding profile. The currently supported HEVC profiles are: main, main10, main12, main422-10, main422-12, main444-8, main444-10, main444-12. Default: main.</p>
 
-<p><strong><a href="/node/17870#video-reference-frames">video_reference_frames</a></strong>: Limits the number of reference frames for HEVC. Default: 3.</p>
+<p><strong><code><a href="/node/17870#video-reference-frames">video_reference_frames</a></code></strong>: Limits the number of reference frames for HEVC. Default: 3.</p>
 
-<p><strong><a href="/node/17870#video-bframes">video_bframes</a></strong>: Limits the number of consecutive bframes used for HEVC. Default: 3.</p>
+<p><strong><code><a href="/node/17870#video-bframes">video_bframes</a></code></strong>: Limits the number of consecutive bframes used for HEVC. Default: 3.</p>
+<p><strong><code><a href="/node/17868#tuning">tuning</a></code></strong>: Tunes the output video to optimize for a specific encoding priority. Note that for <code>HEVC</code> video, the allowable values for <code>tuning</code> are:</p>
+<ul>
+	<li>grain - optimized for film with high levels of grain.</li>
+	<li>psnr - uses "peak signal-to-noise ratio" to optimize video quality.</li>
+	<li>ssim - uses "structural similarity" to optimize video quality.</li>
+	<li>fastdecode - reduces encoding complexity, to allow for easier decoding.</li>
+	<li>zerolatency - x265 will keep an internal buffer of frames to improve quality; this setting removes that buffer, but reduces quality.</li>
+</ul>
+<p><strong><code><a href="/node/17868#crf">crf</a></code></strong>: CRF is a bitrate-control setting, and sets a constant ratefactor. The Zencoder Quality setting determines an appropriate CRF for a given video. So if you set both Quality and CRF, the CRF setting will override Quality. Valid values are 0-51, with lower values being better quality. Generally speaking, you shouldn't have to go below 16; 16 is nearly lossless for most files. Around 24 usually looks pretty good. Around 35 looks pretty compressed.</p>
+
 </section>
 
 <section class="bcls-section">
