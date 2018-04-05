@@ -33,7 +33,7 @@ var BCLS = ( function (window, document) {
     sEnclosure = '<enclosure ',
     eEnclosure = ' />',
     sItem = '<item>',
-    eItemStart = '</item>',
+    eItem = '</item>',
     sLink = '<link>',
     eLink = '</link>',
     sGuid = '<guid>',
@@ -299,6 +299,7 @@ var BCLS = ( function (window, document) {
       mrssStr += sName + podcast_owner + eName;
       mrssStr += sEmail + podcast_email + eEmail;
       mrssStr += eOwner;
+      mrssStr += sExplicit + explicit + eExplicit;
       mrssStr += sComplete + complete + eComplete;
     }
 
@@ -470,8 +471,9 @@ var BCLS = ( function (window, document) {
                 mrssStr += sGuid + video.source.src + eGuid;
                 mrssStr += sPubDate + video.published_at + ePubDate;
                 mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
-                mrssStr += sExplicit + isChecked(explicit_input) + eExplicit;
-
+                mrssStr += sExplicit + explicit + eExplicit;
+                mrssStr += sisClosedCaptioned + closed_captioned + eisClosedCaptioned;
+                mrssStr += eItem;
             }
         }
         mrssStr += eChannel + '</rss>';
