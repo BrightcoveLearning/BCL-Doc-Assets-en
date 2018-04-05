@@ -464,19 +464,15 @@ var BCLS = ( function (window, document) {
                   mrssStr += sSummary + video.long_description + eSummary;
                 }
                 if (isDefined())
-                mrssStr += sPubDate + video.published_at + ePubDate;
-                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
-                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
-                mrssStr += sMediaTitle + video.name + eMediaTitle;
-                mrssStr += sMediaDescription + video.description + eMediaDescription;
-                if (doPoster) {
-                    mrssStr += sMediaThumbnail + ' url="' + posterURL + '"';
-                    if (isDefined(video.images)) {
-                        mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
-                    } else {
-                        mrssStr += eMediaThumbnail;
-                    }
+                if (video.images.hasOwnProperty('poster')) {
+                  mrssStr += sMediaThumbnail + ' url="' + posterURL + '"';
+                  if (isDefined(video.images)) {
+                    mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
+                  } else {
+                    mrssStr += eMediaThumbnail;
+                  }
                 }
+                mrssStr += sPubDate + video.published_at + ePubDate;
                 mrssStr += eMediaContent;
                 if (isDefined(video.schedule) && video.schedule.ends_at) {
                     eItem = eItemStart + video.schedule.ends_at + eItemEnd;
