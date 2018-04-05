@@ -37,6 +37,8 @@
 <p>The max bitrate fed to the decoder via a buffer. This setting is typically used only for streaming (RTMP, HLS, or broadcast video).</p>
 
 <p>Only use this setting if you understand its implications, as it can decrease video quality.</p>
+
+<p>Also see the <a href="#max_video_bitrate"><code>max_video_bitrate</code></a> section below.</p>
 </section>
 
 <section class="bcls-section">
@@ -57,6 +59,14 @@
 <h2 id="max_video_bitrate">max_video_bitrate</h2>
 
 <p>A maximum average bitrate for a movie. Overrides both the quality and video_bitrate settings to ensure that a bitrate doesn't exceed the provided number.</p>
+
+<p>The <code>max_video_bitrate</code> setting works in conjunction with the quality setting to allow for encoding to a specific quality level (in variable bitrate mode) but having a "safety" limit in place.  Brightcove will start by trying to encode to the quality setting specified, but while encoding, if we detect that the final average bitrate will be higher than <code>max_video_bitrate</code>, we'll stop encoding, and go back and do a second pass that encodes to the <code>max_video_bitrate</code> (in average bitrate mode), ensuring that the average bitrate of the video does not end up too high.</p>
+
+<p>Using max_video_bitrate in conjunction with video_bitrate does not really make sense, so we just encode to the lesser of the two values specified.</p>
+
+<p>The <code><a href="#decoder_bitrate_cap">decoder_bitrate_cap</a></code> setting, however, sets a maximum peak bitrate for the encoding, so that there will not be any "spikes" going higher than this bitrate, allowing for streaming the video without needing to stop and rebuffer.  Note, however, that calculating those peaks is not straightforward, because it is limiting the fill rate for the video buffer, as opposed to limiting the bitrate of a single frame or a single time period.  That is why the <code>decoder_buffer_size</code> is generally used together with this.  The video encoder will still be able to pre-fill the buffer when needed (such as in a time when there is low action followed by very high action), so the bitrate of a single frame or even short period of time may be significantly higher than the value specified for <code>decoder_bitrate_cap</code>.  Yet, if the video is transferred over a connection with a bandwidth at least equal to <code>decoder_bitrate_cap</code>, then it will never have to stop and rebuffer.</p>
+
+<p>Note that <code>max_video_bitrate</code> does not limit peak values, and is not recommended for streaming situations.</p>
 
 <p><code>max_video_bitrate</code> is especially useful when encoding for mobile devices using the quality setting, which autoselects a bitrate. Mobile devices sometimes have fixed bitrate limits; for example, the iPhone 3GS has a bitrate limit of 1500 kbps.</p>
 
