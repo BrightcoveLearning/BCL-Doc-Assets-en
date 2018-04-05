@@ -463,14 +463,8 @@ var BCLS = ( function (window, document) {
                 if (isDefined(video.long_description)) {
                   mrssStr += sSummary + video.long_description + eSummary;
                 }
-                if (isDefined())
                 if (video.images.hasOwnProperty('poster')) {
-                  mrssStr += sMediaThumbnail + ' url="' + posterURL + '"';
-                  if (isDefined(video.images)) {
-                    mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
-                  } else {
-                    mrssStr += eMediaThumbnail;
-                  }
+                  mrssStr += sImage + video.poster.src + eImage;
                 }
                 mrssStr += sPubDate + video.published_at + ePubDate;
                 mrssStr += eMediaContent;
