@@ -455,18 +455,15 @@ var BCLS = ( function (window, document) {
                 } else {
                     videoURL = "";
                 }
-                // depending on when/how the video was created, it may have different thumbnail properties or none at all
-                if (isDefined(video.images) && isDefined(video.images.poster)) {
-                    posterURL = encodeURI(video.images.poster.sources[0].src.replace(/&/g, '&amp;'));
-                } else if (isDefined(video.poster)) {
-                    posterURL = encodeURI(video.poster.replace(/&/g, '&amp;'));
-                } else {
-                    doPoster = false;
-                }
-
                 mrssStr += sItem;
                 mrssStr += sTitle + video.name + eTitle;
-                mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
+                if (isDefined(video.description)) {
+                  mrssStr += sSubTitle + video.description + eSubTitle;
+                }
+                if (isDefined(video.long_description)) {
+                  mrssStr += sSummary + video.long_description + eSummary;
+                }
+                if (isDefined())
                 mrssStr += sPubDate + video.published_at + ePubDate;
                 mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
