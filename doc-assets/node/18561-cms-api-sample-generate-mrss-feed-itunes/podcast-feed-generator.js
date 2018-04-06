@@ -355,7 +355,7 @@ console.log('tmpArr', tmpArr);
     }
 
     function getInputData() {
-      account_id = account_id_input.value;
+      account_id = (isDefined()(account_id_input.value)) ? account_id_input.value : '1752604059001';
       client_id = client_id_input.value;
       client_secret = client_secret_input.value;
       site_url = site_url_input.value;
