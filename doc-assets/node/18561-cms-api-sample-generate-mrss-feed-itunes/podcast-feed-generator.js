@@ -541,7 +541,14 @@ console.log('request', options.url);
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
-              var input, label, space, text, br, i, iMax;
+              var input,
+                label,
+                space,
+                text,
+                br,
+                i,
+                iMax,
+                fragment = document.createDocumentFragment();
 console.log('response', response);
               all_videos = JSON.parse(response);
               logMessage(videos.length + ' videos retrieved');
