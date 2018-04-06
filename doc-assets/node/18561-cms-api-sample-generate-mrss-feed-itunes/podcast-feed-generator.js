@@ -537,6 +537,7 @@ console.log('tmpArr', tmpArr);
                 endPoint += '&q=' + encodeURI(search_string);
             }
             options.url = baseURL + endPoint;
+console.log('request', options.url);
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
