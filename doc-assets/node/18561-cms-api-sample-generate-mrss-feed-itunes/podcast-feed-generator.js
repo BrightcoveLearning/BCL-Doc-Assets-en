@@ -339,12 +339,14 @@ var BCLS = ( function (window, document) {
       var i,
         iMax,
         tmpArr = [];
+console.log('fieldsToCheck', fieldsToCheck);
       iMax = fieldsToCheck.length;
       for (i = 0; i < iMax; i++) {
         if (!isDefined(fieldsToCheck[i])) {
           tmpArr.push(fieldsToCheck[i]);
         }
       }
+console.log('tmpArr', tmpArr);
       if (tmpArr.length === 0) {
         return true;
       }
