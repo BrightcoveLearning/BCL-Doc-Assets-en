@@ -541,6 +541,7 @@ console.log('tmpArr', tmpArr);
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
               var input, label, space, text, br, i, iMax;
+console.log('response', response);
               all_videos = JSON.parse(response);
               logMessage(videos.length + ' videos retrieved');
               apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
