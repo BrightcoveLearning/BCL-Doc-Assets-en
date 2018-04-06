@@ -182,6 +182,20 @@ var BCLS = ( function (window, document) {
     }
 
     /**
+     * add a log message to the page
+     * (inside an element with id="logger")
+     * @param  {string} message the message to insert
+     */
+    function logMessage(message) {
+      var p = document.createElement('p'),
+          txt = document.createTextNode(message);
+      p.appendChild(txt);
+      logger.appendChild(p);
+    }
+
+
+
+    /**
      * sort an array of objects based on an object property
      * @param {array} targetArray - array to be sorted
      * @param {string|number} objProperty - object property to sort on
@@ -491,7 +505,7 @@ var BCLS = ( function (window, document) {
             }
         }
         mrssStr += eChannel + '</rss>';
-        logger.textContent = 'Finished!';
+        logMessage('Finished!');
         feedDisplay.textContent = vkbeautify.xml(mrssStr);
         enableButtons();
     }
@@ -584,7 +598,7 @@ var BCLS = ( function (window, document) {
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
-                logger.textContent = 'Getting sources for video ' + videos[callNumber].name;
+                logMessage('Getting sources for video ' + videos[callNumber].name);
                 makeRequest(options, function(response) {
                   sources = JSON.parse(response);
                   if (sources.length > 0) {
@@ -677,19 +691,11 @@ var BCLS = ( function (window, document) {
           getInputData();
         });
         make_feed.addEventListener('click', function() {
-            getVideosForFeed();
-            // add title and description
-            mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
-            // if all videos wanted, get count; otherwise get videos
-            if (numVideos === 'all') {
-                // we need to get the count
-                createRequest('getCount');
-            } else {
-                totalVideos = videos.length;
-                totalCalls = totalVideos;
-                logger.textContent = 'Total videos to retrieve: ' + totalVideos;
-                createRequest('getVideoSources');
-            }
+          getVideosForFeed();
+          totalVideos = videos.length;
+          totalCalls = totalVideos;
+          logMessage('Total videos to retrieve: ' + totalVideos);
+          createRequest('getVideoSources');
         });
         feedDisplay.addEventListener('click', function() {
             feedDisplay.select();
