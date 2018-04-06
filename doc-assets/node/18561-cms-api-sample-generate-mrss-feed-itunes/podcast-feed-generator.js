@@ -292,7 +292,7 @@ var BCLS = ( function (window, document) {
     function setPodcastData() {
       mrssStr += sChannel;
       mrssStr += sTitle + podcast_title + eTitle;
-      mrssStr += sLink + podcast_url + elink;
+      mrssStr += sLink + podcast_url + eLink;
       mrssStr += sLanguage + language + eLanguage;
       mrssStr += sCopyright + '&copy ' + year + ' ' + podcast_owner +eCopyright;
       mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
