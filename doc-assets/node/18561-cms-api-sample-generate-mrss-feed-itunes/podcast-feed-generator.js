@@ -613,7 +613,7 @@ console.log('response', response);
                 logMessage('Getting sources for video ' + videos[callNumber].name);
                 makeRequest(options, function(response) {
                   sources = JSON.parse(response);
-                  apiResponse.textContent = JSON.stringify(souces, null, '  ');
+                  apiResponse.textContent = JSON.stringify(sources, null, '  ');
                   if (sources.length > 0) {
                       // get the best MP4 rendition
                       var source = processSources(sources);
