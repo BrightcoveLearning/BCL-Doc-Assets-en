@@ -488,7 +488,7 @@ console.log('tmpArr', tmpArr);
                 }
                 mrssStr += sItem;
                 mrssStr += sTitle + video.name + eTitle;
-                mrssStr += sAuthor + author + eAuthor;
+                mrssStr += sAuthor + podcast_author + eAuthor;
                 if (isDefined(video.description)) {
                   mrssStr += sSubTitle + video.description + eSubTitle;
                 }
