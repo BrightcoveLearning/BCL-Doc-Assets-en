@@ -309,6 +309,8 @@ var BCLS = ( function (window, document) {
         mrssStr += eCategory1;
         mrssStr += sSubcategory + sub_category + eSubCategory;
         mrssStr += eCategory;
+      } else {
+        mrssStr += eCategory2;
       }
       mrssStr += sExplicit + explicit + eExplicit;
       mrssStr += sComplete + complete + eComplete;
