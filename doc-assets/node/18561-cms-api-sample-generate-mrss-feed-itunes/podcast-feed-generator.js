@@ -18,6 +18,7 @@ var BCLS = ( function (window, document) {
     eImage = '" />',
     sCategory = '<itunes:category text="',
     eCategory1 = '">',
+    eCategory2 = '"/>',
     sSubcategory = '<itunes:category text="',
     eSubCategory = '"/>',
     eCategory = '</itunes:category>',
@@ -302,6 +303,13 @@ var BCLS = ( function (window, document) {
       mrssStr += sName + podcast_owner + eName;
       mrssStr += sEmail + podcast_email + eEmail;
       mrssStr += eOwner;
+      mrssStr += sImage + podcast_image + eImage;
+      mrssStr += sCategory + category;
+      if (isDefined(sub_category)) {
+        mrssStr += eCategory1;
+        mrssStr += sSubcategory + sub_category + eSubCategory;
+        mrssStr += eCategory;
+      }
       mrssStr += sExplicit + explicit + eExplicit;
       mrssStr += sComplete + complete + eComplete;
     }
