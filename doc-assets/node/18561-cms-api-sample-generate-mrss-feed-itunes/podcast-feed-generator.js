@@ -105,6 +105,7 @@ var BCLS = ( function (window, document) {
     makeFeed = document.getElementById('makeFeed'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
+    apiResponse = document.getElementById('apiResponse'),
     feedDisplay = document.getElementById('feedDisplay'),
     allButtons = document.getElementsByName('button'),
     categories = {
