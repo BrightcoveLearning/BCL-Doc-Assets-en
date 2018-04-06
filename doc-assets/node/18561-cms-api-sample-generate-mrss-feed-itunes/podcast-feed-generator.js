@@ -64,7 +64,7 @@ var BCLS = ( function (window, document) {
     podcast_summary,
     podcast_type = 'video/mp4',
     language,
-    main_category,
+    category,
     sub_category,
     explicit = 'no',
     closed_captioned = 'no',
@@ -350,7 +350,7 @@ var BCLS = ( function (window, document) {
       podcast_email = podcast_email_input.value;
       podcast_summary = (isDefined(podcast_summary_input.value)) ? podcast_summary_input.value : podcast_description;
       language = language_input.value;
-      main_category = getSelectedValue(main_category_input);
+      category = getSelectedValue(main_category_input);
       sub_category = getSelectedValue(sub_category_input);
       explicit = (isChecked(explicit_input)) ? 'yes' : 'no';
       closed_captioned = (isChecked(closed_captioned_input)) ? 'yes' : 'no';
