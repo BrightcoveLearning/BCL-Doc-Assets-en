@@ -1,141 +1,4 @@
-<article class="bcls-article">
-<section class="bcls-section">
-<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
-
-<div class="bcls-expander-content">
-<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
-
-<ul>
-	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
-</ul>
-
-<p>These are the permissions you will need:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Analytics API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-permissions.png" />
-<figcaption class="bcls-caption--image">Analytics API Permissions</figcaption>
-</figure>
-
-<p>You can also get your credentials via CURL or Postman - see:</p>
-
-<ul>
-	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
-	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
-</ul>
-
-<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
-
-<pre class="line-numbers">
-  <code class="language-json">[
-    "video-cloud/analytics/read",
-    "video-cloud/video/read"
-  ]</code></pre>
-</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="request-inputs">Request Inputs</h2>
-
-<p>Where no default value is indicated, there is none.</p>
-
-<div id="inputFields" class="input-fields">
-<fieldset class="bcls-fieldset"><legend>Basic Information</legend>
-
-<p>By default, you will get results from the Brightcove Training Videos account.</p>
-
-<p><button class="bcls-button" id="useMyAccount">Use My Account Instead</button></p>
-
-<div id="basicInfo" style="display:none;">
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Video Cloud Account (Publisher ID):</td>
-			<td><input id="accountID" class="aapi-request" type="text" size="55" /></td>
-		</tr>
-		<tr>
-			<td class="align-top no-wrap">Client id:</td>
-			<td><input id="client_id" class="aapi-request" type="text" size="100" value="" />
-			<p>&nbsp;</p>
-			</td>
-		</tr>
-		<tr>
-			<td class="align-top no-wrap">Client secret:</td>
-			<td><input id="client_secret" class="aapi-request" type="text" size="100" value="" />
-			<p>&nbsp;</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-<p class="small" id="n1"><sup class="red">[1]</sup> See <a href="/node/14056">Managing API Credentials</a> for information on getting client credentials.</p>
-</div>
-</fieldset>
-
-<fieldset class="bcls-fieldset"><legend>Filters</legend>
-
-<div id="scopeSelector">
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Scope for the report</td>
-			<td><select class="aapi-request" name="scopeSelect" id="scopeSelect"><option value="">Select the scope for the report</option><option value="account">Account</option><option value="players">Player</option><option value="videos">Video</option></select></td>
-		</tr>
-		<tr id="pid">
-			<td>Player ID =</td>
-			<td><input id="playerID" class="aapi-request" type="text" size="40" value="" /></td>
-		</tr>
-		<tr id="vid">
-			<td>Video ID =</td>
-			<td>
-			<div id="directVideoInput"><input id="videoID" class="aapi-request" type="text" size="40" value="" /></div>
-			</td>
-		</tr>
-	</tbody>
-</table>
-</div>
-</fieldset>
-</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="requestSection">The API Request</h2>
-
-<div id="requestSubmitter">
-<fieldset class="bcls-fieldset"><legend>Generated Request</legend>
-
-<p>API Request</p>
-<textarea id="request" name="request" class="bcls-code">API request will appear here...</textarea></fieldset>
-
-<p><button class="bcls-button" id="submitButton">Submit Request</button></p>
-</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="response">Response</h2>
-
-<div class="toolbar">
-<div class="toolbar-item"><a>Copy</a></div>
-</div>
-
-<pre class="line-numbers language-json code-toolbar">
-<code class="language-json" id="responseFrame">Response will appear here...</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="graph">Engagement Graph</h2>
-
-<p>Average views at % of video length</p>
-<canvas id="chartEngagement" style="width:600px !important;height:400px !important;"></canvas>
-
-<div id="chartEngagementLegend" style="padding:10px 20px;">&nbsp;</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="code"><a name="code"></a>Code for this page</h2>
-
-<h3>JavaScript used for this sample:</h3>
-
-<pre class="line-numbers">
-<code class="language-javascript">var BCLS = (function (window, document) {
+var BCLS = (function (window, document) {
     'use strict';
     var // aapi stuff
         useMyAccount = document.getElementById('useMyAccount'),
@@ -174,7 +37,7 @@
      * @return {}
      */
     function bclslog(context, message) {
-        if (window['console'] &amp;&amp; console['log']) {
+        if (window['console'] && console['log']) {
           console.log(context, message);
         }
         return;
@@ -182,7 +45,7 @@
 
     // more robust test for strings 'not defined'
     function isDefined(v) {
-        if(v !== '' &amp;&amp; v !== null &amp;&amp; v !== 'undefined') { return true; }
+        if(v !== '' && v !== null && v !== 'undefined') { return true; }
         else { return false; }
     }
 
@@ -263,7 +126,7 @@
             getResponse = function() {
                 try {
                   if (httpRequest.readyState === 4) {
-                    if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
                       parsedData = JSON.parse(httpRequest.responseText);
                       callback(parsedData);
                     } else {
@@ -275,9 +138,9 @@
                 }
             };
         // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
-        if (options.client_id &amp;&amp; options.client_secret) {
-            requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
+        if (options.client_id && options.client_secret) {
+            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
         }
 
         // set response handler
@@ -301,7 +164,7 @@
     });
     // listener for videos request
     iMax = $requestInputs.length;
-    for (i = 0; i &lt; iMax; i++) {
+    for (i = 0; i < iMax; i++) {
         $requestInputs[i].addEventListener('change', buildRequest);
     }
     // rebuild request when scope selector changes
@@ -330,16 +193,4 @@
 
     // generate initial request
     buildRequest();
-})(window, document);</code></pre>
-
-<h3>Proxy</h3>
-
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
-</aside>
-</section>
-</article>
-<script type="text/javascript" src="//learning-services-media.brightcove.com/doc-assets/js/chartjs/Chart.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/node/17985-analytics-api-sample-video-engagement-graph/video-engagement.js"></script>
+})(window, document);
