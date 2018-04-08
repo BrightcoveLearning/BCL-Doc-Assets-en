@@ -1,28 +1,56 @@
-<style type="text/css">iframe {
-                width: 88%;
-                min-height: 300px;
-              }
-</style>
 <article class="bcls-article">
-<section id="developmentsequence" class="bcls-section">
-<h2 class="bcls-expander-head">Development sequence</h2>
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>In the following example, you will see the player with a playlist appearing to the right. The playlist is populated by retrieving the most popular videos, based on most number of plays, via the CMS API.</p>
+<!-- UPDATE codepen here -->
+
+<p data-height="349" data-theme-id="dark" data-slug-hash="zRzZNG" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Most Watched Videos in a Playlist" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/zRzZNG/">Most Watched Videos in a Playlist</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18175-most-watched-videos-playlist">source code</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
 
 <div class="bcls-expander-content">
 <p>Here is the recommended development sequence:</p>
 
 <ol>
-	<li>Use the embed_in_page player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+	<li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
 	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
 	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
-	<li>Use the new Video Cloud Studio to add the plugin and CSS to your player</li>
-	<li>Replace the embed_in_page player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+	<li>Use Studio to add the plugin and CSS to your player</li>
+	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
 </ol>
 
-<p>For details about these steps, review the <a href="/node/18081">Quick Start to Plugin Development</a> guide.</p>
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
 
-<h3>iframe or embed_in_page</h3>
+<h3>iframe or In-Page embed</h3>
 
-<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or embed_in_page implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
 
 <ul>
 	<li>No collisions with existing JavaScript and/or CSS</li>
@@ -30,364 +58,168 @@
 	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
 </ul>
 
-<p>Although integrating the embed_in_page player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
 
 <ul>
 	<li>Code in the containing page needs to listen for and act on player events</li>
 	<li>The player uses styles from the containing page</li>
-	<li>The iframe will cause application logic to fail, like a redirect from the containing page</li>
+	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
 </ul>
 
-<p>Even if your final implementation does not use the iframe player, you can still use the embed_in_page player with a plugin that contains your JavaScript and CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
 </div>
 <!-- id="expanderContent" --></section>
 
-<section id="selectimplementation" class="bcls-section">
-<h2>Select implementation</h2>
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
 
-<p>In this sample, you will test with the In-Page embed code and then move the CSS and JavaScript into a plugin. Since this example does not interact with any page elements, an iframe implementation with a plugin will be detailed and used.</p>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>API Methods</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="/node/18108#getVideo">player.catalog.getVideo()</a></td>
+		</tr>
+		<tr>
+			<td><a href="/node/18099#playlist">player.playlist()</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--tip">This code sample uses one of the Brightcove REST APIs. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside>
+</section>
+<!-- UPDATE player and HTML configuration -->
+
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+<h3>Other HTML</h3>
+
+<p>A <code>div</code> element is added to specify the location of the playlist:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;div class="vjs-playlist"&gt;&lt;/div&gt;</code></pre>
+</section>
+<!-- UPDATE application flow -->
+
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+	<li>Build an object with info for API call.</li>
+	<li>Call the CMS API to return the 10 most watched videos.</li>
+	<li>Extract the video IDs from the returned data.</li>
+	<li>For each ID, use the Video Cloud catalog to get the corresponding video object. Store the video objects in an array.</li>
+	<li>Assign the array of video objects to the player as a playlist.</li>
+</ul>
+<!-- UPDATE task 1 -->
+
+<h3>Create object with API call info</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Initialize variables and option object for CMS API call +++</code></pre>
+
+<p>The key information needed for the API call are:</p>
+
+<ul>
+	<li>Account ID</li>
+	<li>Base URL</li>
+	<li>End point</li>
+	<li>HTTP method</li>
+</ul>
+
+<p>Variables are then concatenated to create properly formed values for the API call.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Make the CMS API request</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Make the CMS API request to get matching video IDs +++</code></pre>
+
+<p>Note that the <code>makeRequest()</code> method is called and the options object, built earlier, and a callback function are passed to the method. The information returned by the CMS API will be returned in the <code>mostWatchedVideos</code> parameter. The data is returned as a string, so it needs to be JSON parsed to be usable.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Extract video IDs from returned data</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Helper Function: Extract video IDs from data CMS API response +++</code></pre>
+
+<p>The <code>extractVideoData()</code> method loops over the data returned from the CMS API and extracts the IDs, and pushing them into an array.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Retrieve video objects based on extracted IDs</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Helper Function: Retrieve video objects from video IDs +++</code></pre>
+
+<p>The <code>catalog.getVideo()</code> method is used to get the video object, then the objects are pushed into another array, this one containing the video objects.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Assign array of video objects to the player's playlist</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// Add the most watched videos list to the player as a playlist</code></pre>
+
+<p>The Playlist API's <code>playlist()</code> method is used to assign the array of video objects to the the player's playlist.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>The CSS is used to position size the player and playlist.</p>
 </section>
 
 <section class="bcls-section">
-<h2 id="resources">API resources used</h2>
+<h2 id="Plugin_code">Plugin code</h2>
 
-<p>The following sections detail resources used from various APIs/plugins.</p>
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
 
-<h3>Brightcove Player API</h3>
-
-<ul>
-	<li><code>playlist()</code>: Method to assign an array of video objects to a player's playlist. Note that this method can also be used to retrieve the playlist currently playing in the player, but will not be used in this way in this document.</li>
-	<li><code>catalog.getVideo()</code>: Method to make a catalog request for the video with the specified id and invokes a callback when the request completes.</li>
-</ul>
-
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
-</aside>
-</section>
-
-<section class="bcls-section">
-<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
-
-<div class="bcls-expander-content">
-<p>To use the CMS API you will need proper credentials.</p>
-
-<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-<figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
-</figure>
-
-<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-<code class="language-json">"operations": [
-  "video-cloud/video/all",
-  "video-cloud/playlist/all",
-  "video-cloud/sharing-relationships/all",
-  "video-cloud/notifications/all"
-]</code></pre>
+<code class="language-javascript">videojs('myPlayerID').ready(function(){
+  var myPlayer = this;
+  ...
+});</code></pre>
 
-<ul>
-	<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
-	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
-</ul>
-</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="player">The player</h2>
-<iframe src="//players.brightcove.net/1752604059001/BJvcsJv6_default/index.html" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></section>
-
-<section class="bcls-section">
-<h2 id="code">How it works</h2>
-
-<p>The following sections explain the player, JavaScript and CSS code used in the example.</p>
-
-<h3>Create the player</h3>
-
-<p>To create a player, follow these steps:</p>
-
-<ol class="bcls-tasklist">
-	<li>Using Video Cloud Studio, in the <strong>Players</strong> module, create a new player.</li>
-	<li>Click on the video's title to alter its settings.</li>
-	<li>In the <strong>SETTINGS</strong> section click the <strong>Edit</strong> button.</li>
-	<li>Click the radio button for the <strong>Display Playlist</strong> option.</li>
-	<li>Remove any <strong>width</strong> and <strong>height</strong> values. The size of the player and iframe will be set using CSS for the players in this document.</li>
-	<li>Click the checkbox for the <strong>Adjust Player Dimensions for Playlist</strong> option.</li>
-	<li>Click <strong>Save</strong> to save your changed settings.</li>
-	<li>Publish the player.</li>
-	<li>Near the top-right of the page, click the <strong>Embed Code &amp; URL</strong> button.</li>
-	<li>Click the <strong>Published Player</strong> option.</li>
-	<li>Copy the <strong>Advanced Embed Code</strong>.</li>
-</ol>
-
-<h3>The player code</h3>
-
-<p>Your player code should look similar to the following (note that the <code>&lt;div&gt;</code> for the playlist is included):</p>
+<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
 <pre class="line-numbers">
-<code class="language-html">&lt;video data-account="1752604059001"
-  data-player="HJx5vaWQa"
-  data-embed="default"
-  data-application-id
-  class="video-js"
-  controls&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/1752604059001/HJx5vaWQa_default/index.min.js"&gt;&lt;/script&gt;
-&lt;div class="vjs-playlist"&gt;&lt;/div&gt; </code></pre>
+<code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+  var myPlayer = this;
+  ...
+});</code></pre>
+<!-- UPDATE path to plugin's JavaScript -->
 
-<h3>The HTML code</h3>
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18175-most-watched-videos-playlist/blob/master/plugin/most-watched-playlist.js">most-watched-playlist.js</a>.</p>
 
-<p>No HTML code is added to the page.</p>
+<h3>Using the plugin with a player</h3>
 
-<h3>The JavaScript code</h3>
+<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
 
-<p>The main flow of logic in the JavaScript code is</p>
-
-<ol>
-	<li>Prepare to make the call to the CMS API by setting the search criteria, in this case return the 10 most watched videos.</li>
-	<li>Make the actual request using the CMS API for the data. This step will use a callback function, which means the callback function is passed as a parameter to another, second, function. The callback function is then called inside the second function's logic.</li>
-	<li>Once the data is retrieved, data is extracted to build an array of the video IDs for the most watched videos.</li>
-	<li>The array of video IDs is then passed as a parameter to another function which retrieves the complete video object for for each ID. The returned objects are stored in an array. A callback function is used in this step also.</li>
-	<li>The array of video objects is assigned as the player's playlist.</li>
-</ol>
-
-<p>The actual JavaScript code is show below, with comments in the code and functionality highlighted in these bullets:</p>
-
-<ul>
-	<li>Lines 2-4: Set variables for the page and request.</li>
-	<li>Line 5: Wait for the player to be ready to act upon.</li>
-	<li>Lines 6-10: Set local variables for the <code>ready</code> event handler function.</li>
-	<li>Lines 12-19: Make the calls to the functions that implement the logic highlighted in steps 1-5 above.</li>
-	<li>Lines 26-40: A function that prepares for the CMS API request. If you would like to change the logic for what videos are returned, the ONLY line of code that must be changed in all of this JavaScript is line 36. Of course, you might want to change variable and function names to meet your new search criteria, but it would not be necessary.</li>
-	<li>Lines 42-77: A function to make the actual CMS API call using JavaScript's <code>XMLHttpRequest</code> API, which provides client functionality for transferring data between a client and a server.</li>
-	<li>Lines 83-96: A function that loops over the data returned by the CMS API and extracts only the video IDs into an array.</li>
-	<li>Lines 102-117: A function that loops or the array of video IDs and use the <code>catalog.getVideo()</code> method to retrieve the complete video object for each ID.</li>
-	<li>Lines 124-128: A function that pushes video objects into an array.</li>
-</ul>
-
-<pre class="line-numbers">
-<code class="language-html">  &lt;script type="text/javascript"&gt;
-      var myPlayer,
-          proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php',
-          cmsURL = 'https://cms.api.brightcove.com/v1/accounts/';
-      videojs("myPlayerID").ready(function () {
-          myPlayer = this,
-          requestData = {},
-          mostWatchedVideos = [],
-          videoData = [],
-          videoObjects = [];
-          // set up data for CMS API request
-          requestData = setRequestData();
-          // make the CMS API request to get matching video IDs
-          getMostWatchedVideos(requestData, function (mostWatchedVideos) {
-              // extract the needed video data into an array
-              videoData = extractVideoData(mostWatchedVideos);
-              getVideoData(videoData, function (videoObjects) {
-                  // add the most watched videos list to the player as a playlist
-                  myPlayer.playlist(videoObjects);
-              });
-          });
-      });
-      /**
-       * sets up the data for the API request
-       */
-      function setRequestData() {
-          var endPoint = '',
-              accountId = '1752604059001',
-              videoName,
-              requestURL,
-              endPoint,
-              requestData = {},
-              dataReturned = false;
-          requestURL = cmsURL + accountId + '/videos';
-          // return the 10 most watched videos created
-          endPoint = '?sort=-plays_total&amp;limit=10';
-          requestData.url = requestURL + endPoint;
-          requestData.requestType = 'GET';
-          return requestData;
-      }
-
-      function getMostWatchedVideos(options, callback) {
-          var httpRequest = new XMLHttpRequest(),
-              responseRaw,
-              parsedData,
-              requestParams;
-          // set up request data
-          requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=' + options.requestType;
-          // set response handler
-          httpRequest.onreadystatechange = getResponse;
-          // open the request
-          httpRequest.open('POST', proxyURL);
-          // set headers
-          httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-          // open and send request
-          httpRequest.send(requestParams);
-          // response handler
-          function getResponse() {
-              dataReturned = false;
-              try {
-                  if (httpRequest.readyState === 4) {
-                      if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
-
-<h3>The stylesheet</h3>
-
-<p>Add the following styles to your page code:</p>
-
-<ul>
-	<li>Lines 2-7: Styles the player.</li>
-	<li>Lines 8-12: Styles the playlist.</li>
-</ul>
-
-<pre class="line-numbers">
-<code class="language-html">  &lt;style&gt;
-    .video-js {
-      float: left;
-      margin: 15px;
-      height: 344px;
-      width: 610px;
-    }
-    .vjs-playlist {
-      width: 250px;
-      float: left;
-      margin: 15px;
-    }
-  &lt;/style&gt;</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="plugin">Use a plugin</h2>
-
-<p>It is a best practice to use a plugin so that you can easily add the JavaScript code's functionality to multiple players.</p>
-
-<h3>Create the JavaScript file</h3>
-
-<p>Move the plugin's JavaScript code into a file and place it in an Internet accessible URL.</p>
-
-<ul>
-	<li>Lines 1, 130: Use the standard syntax to begin and end a Brightcove Player plugin.</li>
-	<li>Line 1: The first argument of the function call is the name of the function defined in the plugin code, in this case <code>mostWatchedVideosInPlaylist</code>.</li>
-	<li>Line 130: The trailing semicolon is required.</li>
-</ul>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>ready</code> method is removed.</aside>
-
-<pre class="line-numbers">
-<code class="language-javascript">videojs.registerPlugin('mostWatchedVideosInPlaylist', function() {
-
-  var myPlayer = this,
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy.php',
-      cmsURL = 'https://cms.api.brightcove.com/v1/accounts/',
-      myPlayer = this,
-      requestData = {},
-      mostWatchedVideos = [],
-      videoData = [],
-      videoObjects = [];
-      // set up data for CMS API request
-      requestData = setRequestData();
-      // make the CMS API request to get matching video IDs
-      getMostWatchedVideos(requestData, function (mostWatchedVideos) {
-          // extract the needed video data into an array
-          videoData = extractVideoData(mostWatchedVideos);
-          getVideoData(videoData, function (videoObjects) {
-              // add the most watched videos list to the player as a playlist
-              myPlayer.playlist(videoObjects);
-          });
-      });
-  /**
-   * sets up the data for the API request
-   */
-  function setRequestData() {
-      var endPoint = '',
-          accountId = '1752604059001',
-          videoName,
-          requestURL,
-          endPoint,
-          requestData = {},
-          dataReturned = false;
-      requestURL = cmsURL + accountId + '/videos';
-      // return the 10 most recently created videos
-      endPoint = '?sort=-created_at&amp;limit=10';
-      requestData.url = requestURL + endPoint;
-      requestData.requestType = 'GET';
-      return requestData;
-  }
-
-  function getMostWatchedVideos(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-          responseRaw,
-          parsedData,
-          requestParams;
-      // set up request data
-      requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=' + options.requestType;
-      // set response handler
-      httpRequest.onreadystatechange = getResponse;
-      // open the request
-      httpRequest.open('POST', proxyURL);
-      // set headers
-      httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      // open and send request
-      httpRequest.send(requestParams);
-      // response handler
-      function getResponse() {
-          dataReturned = false;
-          try {
-              if (httpRequest.readyState === 4) {
-                  if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
-
-<h3>Create the CSS file</h3>
-
-<p>Move the CSS into a file and place it in an Internet accessible URL.</p>
-
-<pre class="line-numbers">
-<code class="language-css">.video-js {
-  float: left;
-  margin: 15px;
-  height: 344px;
-  width: 610px;
-}
-.vjs-playlist {
-  width: 250px;
-  float: left;
-  margin: 15px;
-}
-</code></pre>
-
-<h3>Deploy plugin and CSS</h3>
-
-<p>You must load both the JavaScript and CSS files for the custom plugin.</p>
-
-<p>To deploy the <strong>mostWatchedVideosInPlaylist</strong> plugin using the Players module, follow these steps:</p>
-
-<ol class="bcls-tasklist__restart">
-	<li>In Video Cloud Studio, open the <strong>Players</strong> module either locate a player wo which you wish to add the plugin, or create a new one.</li>
-	<li>Click the link for the player to open the player properties.</li>
-	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-	<li>For the <strong>JavaScript URL</strong>, enter the URL which specifies the location of where you saved your plugin's JavaScript.</li>
-	<li>For the <strong>CSS URL</strong>, enter the URL which specifies the location of where you saved your plugin's CSS.</li>
-	<li>For the <strong>Name</strong>, enter <strong>mostWatchedVideosInPlaylist</strong>.</li>
-	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-</ol>
-</section>
-
-<section class="bcls-section">
-<h2 id="useiframe">Use iframe</h2>
-
-<p>It is a best practice to use the iframe player implementation. Since you can create this functionality as a plugin, replace the embed_in_page implementation with the iframe implementation.</p>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;iframe src="//players.brightcove.net/1752604059001/HJx5vaWQa_default/index.html" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;</code></pre>
-
-<p>You will also want to control the size of the iframe, for example:</p>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;style&gt;
-  iframe {
-    width: 88%;
-    min-height: 300px;
-  }
-&lt;/style&gt;</code></pre>
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
 </section>
 </article>
