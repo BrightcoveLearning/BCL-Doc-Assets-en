@@ -496,7 +496,7 @@ console.log('tmpArr', tmpArr);
                   mrssStr += sSummary + video.long_description + eSummary;
                 }
                 if (video.images.hasOwnProperty('poster')) {
-                  mrssStr += sImage + video.poster.src + eImage;
+                  mrssStr += sImage + video.images.poster.src + eImage;
                 }
                 mrssStr += sEnclosure + 'length="' + video.source.size + '" type="video/mp4" ' + 'url="' + video.source.src + '"' + eEnclosure;
                 mrssStr += sGuid + video.source.src + eGuid;
