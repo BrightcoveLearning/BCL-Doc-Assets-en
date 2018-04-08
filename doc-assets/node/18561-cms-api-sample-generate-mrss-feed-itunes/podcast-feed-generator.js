@@ -340,14 +340,12 @@ var BCLS = ( function (window, document) {
       var i,
         iMax,
         tmpArr = [];
-console.log('fieldsToCheck', fieldsToCheck);
       iMax = fieldsToCheck.length;
       for (i = 0; i < iMax; i++) {
         if (!isDefined(fieldsToCheck[i])) {
           tmpArr.push(fieldsToCheck[i]);
         }
       }
-console.log('tmpArr', tmpArr);
       if (tmpArr.length === 0) {
         return true;
       }
@@ -537,7 +535,6 @@ console.log('tmpArr', tmpArr);
                 endPoint += '&q=' + encodeURI(search_string);
             }
             options.url = baseURL + endPoint;
-console.log('request', options.url);
             options.requestType = 'GET';
             apiRequest.textContent = options.url;
             makeRequest(options, function(response) {
@@ -549,7 +546,6 @@ console.log('request', options.url);
                 i,
                 iMax,
                 fragment = document.createDocumentFragment();
-console.log('response', response);
               all_videos = JSON.parse(response);
               logMessage(videos.length + ' videos retrieved');
               apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
@@ -630,9 +626,7 @@ console.log('response', response);
                       i = videos.length;
                       while (i > 0) {
                           i--;
-                          console.log('videos[i]', videos[i]);
                           if (!isDefined(videos[i].source)) {
-                              console.log('i', i);
                               videos.splice(i, 1);
                           }
                       }
