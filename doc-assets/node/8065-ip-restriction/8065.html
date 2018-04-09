@@ -1,53 +1,98 @@
 <article class="bcls-article">
-	<header id="bcls_header" class="bcls-header">
-		<aside class="bcls-aside bcls-aside--information">IP address restriction is available only to Video Cloud Enterprise publishers.</aside>
-	</header>
-	<section id="Overview" class="bcls-section">
-		<h2>Overview</h2>
-		<p>In order to limit video playback to internal viewers only, Video&nbsp;Cloud Enterprise publishers can use IP address restriction. This approach prevents all the players in an account from loading unless the browser loading the player uses one of a specified list (whitelist) of allowed IP addresses. This provides a level of security that goes beyond <a href="node/15616#domains">domain restriction</a> or <a href="node/15616#geofilter">geo-restriction</a>.
-	  </p>
-	  <p>When you set up IP address restriction, it applies to all the players in that account. You will need to use a separate account for players and videos that you want to make publicly available.
-	  </p>
-	  <p>When a user tries to load a page that contains a Video Cloud player from an address that is not on the whitelist, they will see an error message that says "The video you are trying to watch cannot be viewed from your current country or location."
-	  </p>
-	</section>
-	<section id="How_to_set_up_IP_address_restriction" class="bcls-section">
-		<h2>How to set up IP address restriction</h2>
-		<p>To set up IP address restriction for one of your Video Cloud accounts, contact <a href="http://support.brightcove.com/en/contact">Brightcove Support</a>. You will need to work with Support to identify or create an account for this purpose and provide a text file that contains your IP address whitelist.
-  </p>
-	</section>
-	<section id="Creating_an_IP_address_whitelist" class="bcls-section">
-		<h2>Creating an IP address whitelist</h2>
-		<p>To set up IP address restriction for one of your Video Cloud accounts, you need to provide Brightcove Support with a whitelist of the IP addresses that should be allowed to load Video Cloud players. Most companies use one or more gateways through which internal corporate traffic reaches the outside Internet.&nbsp;Your IP address whitelist should include the IP addresses of all of these gateways.
-	  </p>
-	  <p>The whitelist should include each IP address on a separate line. You can also include a range of IP addresses. For example:
-	  </p>
-	  <pre>
-38.39.23.40
-38.39.23.48
-38.39.23.50-38.112.23.69
-38.39.23.100-38.112.23.199</pre>
-	  <p>You can also use <a target="_blank" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR block notation</a>, such as:
-	  </p>
-	  <pre>
-38.39.23.50|38</pre>
-	  <p>or
-	  </p>
-	  <pre>
-38.39.23.50/38</pre>
-	</section>
-	<section id="Video_Cloud_content" class="bcls-section">
-		<h2>Video Cloud content</h2>
-		<p>When using the Playback API to retrieve content from a Video Cloud account which is configured for IP restrictions, you must use the following instead of the standard URL:</p>
-<pre>
-<code>https://edge-elb.api.brightcove.com/playback/v1</code></pre>
-		<p>
-		  Use <code>edge-elb.api...</code> vs the normal <code>edge.api...</code>
-		</p>
-		<p>
-		  For more details, see the <a href="/node/17906">Playback API Overview</a> document.
-		</p>
-	</section>
+<header id="bcls_header" class="bcls-header">
+<aside class="bcls-aside bcls-aside--information">IP address restriction is available only to Video Cloud Enterprise publishers.</aside>
+</header>
 
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>In order to limit video playback to internal viewers only, Video&nbsp;Cloud Enterprise publishers can use IP address restriction. This approach prevents all the players in an account from loading unless the browser loading the player uses one of a specified list (whitelist) of allowed IP addresses. This provides a level of security that goes beyond <a href="node/15616#domains">domain restriction</a> or <a href="node/15616#geofilter">geo-restriction</a>.</p>
+
+<p>When you set up IP address restriction, it applies to all the players in that account. You will need to use a separate account for players and videos that you want to make publicly available.</p>
+
+<p>When a user tries to load a page that contains a Video Cloud player from an address that is not on the whitelist, they will see an error message that says "The video you are trying to watch cannot be viewed from your current country or location."</p>
+</section>
+
+<section id="How_to_set_up_IP_address_restriction" class="bcls-section">
+<h2>How to set up IP address restriction</h2>
+
+<p>To set up IP address restriction for one of your Video Cloud accounts, contact <a href="http://support.brightcove.com/en/contact">Brightcove Support</a>. You will need to work with Support to identify or create an account for this purpose and provide a text file that contains your IP address whitelist.</p>
+</section>
+
+<section id="Creating_an_IP_address_whitelist" class="bcls-section">
+<h2>Creating an IP address whitelist</h2>
+
+<p>To set up IP address restriction for one of your Video Cloud accounts, you need to provide Brightcove Support with a whitelist of the IP addresses that should be allowed to load Video Cloud players. Most companies use one or more gateways through which internal corporate traffic reaches the outside Internet.&nbsp;Your IP address whitelist should include the IP addresses of all of these gateways.</p>
+
+<p>The whitelist should include each IP address on a separate line. You can also include a range of IP addresses. For example:</p>
+
+<pre>
+      38.39.23.40
+      38.39.23.48
+      38.39.23.50-38.112.23.69
+      38.39.23.100-38.112.23.199</pre>
+
+<p>You can use subnet masks in <a href="https://en.wikipedia.org/wiki/Dot-decimal_notation">Dot-decimal notation</a>, such as:</p>
+
+<pre>
+38.39.23.50/255.255.255.0</pre>
+
+<p>You can also use <a target="_blank" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR block notation</a>, such as:</p>
+
+<pre>
+      38.39.23.50|24</pre>
+
+<p>or</p>
+
+<pre>
+      38.39.23.50/24</pre>
+</section>
+
+<section id="Video_Cloud_content" class="bcls-section">
+<h2>Video Cloud content</h2>
+
+<p>When using the Playback API to retrieve content from a Video Cloud account which is configured for IP restrictions, you must use the following instead of the standard URL:</p>
+
+<pre>
+      <code>https://edge-elb.api.brightcove.com/playback/v1</code></pre>
+
+<p>Use <code>edge-elb.api...</code> vs the normal <code>edge.api...</code></p>
+
+<h3 id="Implementation_details">Implementation details</h3>
+
+<p>When a Brightcove Player is asked to load a video from a Video Cloud account, it connects to the catalog at this address:</p>
+
+<p><strong>https://edge.api.brightcove.com/playback/v1/</strong>.</p>
+
+<p>Here is how that URL behaves:</p>
+
+<ul>
+	<li>When hitting Edge from within North America, it hits Edge directly, and Edge sees the user's IP address. It can either allow or deny access to the catalog as per the IP Restriction whitelist. This is the desired behavior.</li>
+	<li>When hitting Edge from outside North America it goes via Cloudfront for load-balancing/local caching CDN reasons. This causes issues because Edge sees the Cloudfront IP instead of the user's IP, and denies all requests. This is because Cloudfront isn't on the whitelist (and never should it be because then anyone using Cloudfront would have access).</li>
+</ul>
+
+<p>There is an alternative endpoint for Edge that can remedy this situation for non-North American customers. The endpoint is:</p>
+
+<p><strong>edge-elb.api.brightcove.com</strong>.</p>
+
+<p>The downside to this approach is that it will introduce a very slight delay to the retrieval of cached content from outside of the US because catalog requests will be going to Virginia in the U.S. rather than through Cloudfront's global network of local servers. It's likely that this will be barely noticeable, but it's worth considering and testing. Content itself will be delivered as normal, from local servers. When accessing from North America or through an North American proxy, there will be no change in performance at all.</p>
+
+<p>If you feel the slight delay is worth the benefit, you must configure every player that needs to access the IP restricted account from outside North America. To make this change you must use the <strong>Player Management API</strong>. If you are unfamiliar with that particular API, the following documents will be helpful:</p>
+
+<ul>
+	<li><a href="/node/18269">Overview: Player Management API</a></li>
+	<li><a href="/node/18268">Quick Start: Player Management</a></li>
+</ul>
+
+<p>The Player Management API uses curl statements to alter the player's configuration. In this case, you will add the <code>base_url</code> setting to the <code>video_cloud</code> object, and assign it the value of <code>https://edge-elb.api.brightcove.com/playback/v1/</code>. To do this you would use the following in a curl PATCH call:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "video_cloud": {
+    "base_url": "https://edge-elb.api.brightcove.com/playback/v1/"
+  }
+}</code></pre>
+
+<aside class="bcls-aside bcls-aside--warning">The <code>base_url</code> setting should ONLY be used with IP restriction configuration.</aside>
+</section>
 </article>
-<!-- End of Drupal content -->
