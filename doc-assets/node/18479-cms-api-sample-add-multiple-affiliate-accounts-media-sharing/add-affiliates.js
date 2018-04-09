@@ -186,6 +186,7 @@ var BCLS = (function(window, document) {
       case 'addChannel':
         endpoint            = '/channels/default';
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         body.account_id     = accountId.value;
         body.name           = 'default';
         options.requestBody = JSON.stringify(body);
@@ -206,6 +207,7 @@ var BCLS = (function(window, document) {
         var existingAffiliateIds = [];
         endpoint            = '/channels/default/members';
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
@@ -233,6 +235,7 @@ var BCLS = (function(window, document) {
       case 'addAffiliate':
         endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         body.account_id     = affiliate_ids[callNumber];
         options.requestBody = JSON.stringify(body);
         options.requestType = 'PUT';
