@@ -165,6 +165,7 @@ var BCLS = (function(window, document) {
       case 'getChannels':
         endpoint            = '/channels';
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
