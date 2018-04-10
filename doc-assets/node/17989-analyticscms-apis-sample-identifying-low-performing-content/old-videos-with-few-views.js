@@ -108,6 +108,7 @@ var BCLS = (function (window, document) {
             newVideoItem = {},
             currentIndex,
             videoItem,
+            parsedData,
             i;
         options.account_id = account_id;
         options.proxyURL = proxyURL;
@@ -120,17 +121,19 @@ var BCLS = (function (window, document) {
             case 'getCount':
                 options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos?q=published_at:..' + lastPublishedDate;
                 $request.textContent = options.url;
-                getData(options, type, function(response) {
-                    totalVideos = response.count;
+                makeRequest(options, function(response) {
+                    parsedData = JSON.parse(response);
+                    totalVideos = parsedData.count;
                     buildRequest('getVideos');
                 });
                 break;
             case 'getVideos':
                 totalVideoCalls = Math.ceil(totalVideos / limit);
                 options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&limit=' + limit + '&offset=' + (limit * callNumber) + '&sort=published_at';
-                getData(options, type, function(response) {
+                makeRequest(options, function(response) {
+                    parsedData = JSON.parse(response);
                     // add the current item array to overall one
-                    response.forEach(function(video, index, response){
+                    parsedData.forEach(function(video, index, response){
                         newVideoItem = {};
                         newVideoItem.id = video.id;
                         newVideoItem.name = video.name;
@@ -169,8 +172,9 @@ var BCLS = (function (window, document) {
                 requestURL += '&fields=video,engagement_score,video_view,video_percent_viewed';
                 $request.textContent = options.url;
                 $request.setAttribute('value', requestURL);
-                getData(options, type, function(response) {
-                    analyticsData = analyticsData.concat(response.items);
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                    analyticsData = analyticsData.concat(parsedData.items);
                     callNumber++;
                     if (callNumber < totalAnalyticsCalls) {
                         buildRequest('getAnalytics');
@@ -214,7 +218,7 @@ var BCLS = (function (window, document) {
      * @param  {String} requestID the type of request = id of the button
      * @param  {Function} callback the callback function to invoke
      */
-    function getData(options, type, callback) {
+    function makeRequest(options, type, callback) {
         var httpRequest = new XMLHttpRequest(),
             parsedData,
             requestParams,
