@@ -11,7 +11,7 @@ var BCLS = (function (window, document) {
         pageNumber = 0,
         params = {},
         // aapi stuff
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/non-performing-videos-proxy.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         useMyAccount = document.getElementById('useMyAccount'),
         basicInfo = document.getElementById('basicInfo'),
         accountID = document.getElementById('accountID'),
@@ -42,19 +42,6 @@ var BCLS = (function (window, document) {
         i,
         len,
         minViews = $includeVideos.value;
-
-    /**
-     * Logging function - safe for IE
-     * @param  {string} context - description of the data
-     * @param  {*} message - the data to be logged by the console
-     * @return {}
-     */
-    function bclslog(context, message) {
-        if (window['console'] && console['log']) {
-          console.log(context, message);
-        }
-        return;
-    }
 
 
     // more robust test for strings 'not defined'
@@ -312,7 +299,6 @@ var BCLS = (function (window, document) {
         from = now.valueOf() - ($fromMonths.value * mMonth);
         oldestPubDate = now.valueOf() - ($excludeMonths.value * mMonth);
         lastPublishedDate = new Date(oldestPubDate).toISOString();
-        bclslog('lastPublishedDate', lastPublishedDate);
         minViews = $includeVideos.value;
         // generate initial request
         // if total videos not defined, get count
