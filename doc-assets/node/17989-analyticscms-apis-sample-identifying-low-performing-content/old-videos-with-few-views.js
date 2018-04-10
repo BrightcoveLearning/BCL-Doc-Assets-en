@@ -46,7 +46,7 @@ var BCLS = (function (window, document) {
 
     // more robust test for strings 'not defined'
     function isDefined(v) {
-        if (v === '' || v === null || v === undefined || v === NaN) {
+        if (v === '' || v === null || v === undefined) {
             return false;
         }
         return true;
@@ -103,30 +103,32 @@ var BCLS = (function (window, document) {
      * @param {String} type the request type (getCount | getVideos | getAnalytics)
      */
     function buildRequest(type) {
-        var requestOptions = {},
+        var options = {},
             tmpArray,
             newVideoItem = {},
             currentIndex,
             videoItem,
             i;
+        options.account_id = account_id;
+        options.proxyURL = proxyURL;
         // add credentials if submitted
         if (isDefined(client_id) && isDefined(client_secret)) {
-            requestOptions.client_id = client_id;
-            requestOptions.client_secret = client_secret;
+            options.client_id = client_id;
+            options.client_secret = client_secret;
         }
         switch (type) {
             case 'getCount':
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos?q=published_at:..' + lastPublishedDate;
-                $request.textContent = requestOptions.url;
-                getData(requestOptions, type, function(response) {
+                options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/videos?q=published_at:..' + lastPublishedDate;
+                $request.textContent = options.url;
+                getData(options, type, function(response) {
                     totalVideos = response.count;
                     buildRequest('getVideos');
                 });
                 break;
             case 'getVideos':
                 totalVideoCalls = Math.ceil(totalVideos / limit);
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&limit=' + limit + '&offset=' + (limit * callNumber) + '&sort=published_at';
-                getData(requestOptions, type, function(response) {
+                options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos?q=published_at:..' + lastPublishedDate + '&limit=' + limit + '&offset=' + (limit * callNumber) + '&sort=published_at';
+                getData(options, type, function(response) {
                     // add the current item array to overall one
                     response.forEach(function(video, index, response){
                         newVideoItem = {};
@@ -157,17 +159,17 @@ var BCLS = (function (window, document) {
                 tmpArray = videoIdsArray.slice((callNumber * 150), ((callNumber * 150) + 150));
                 account_id = (isDefined(accountID.value)) ? accountID.value : account_id;
                 minViews = parseInt($includeVideos.value);
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1';
-                requestOptions.url += '/data?accounts=' + account_id + '&dimensions=video&limit=150';
+                options.url = 'https://analytics.api.brightcove.com/v1';
+                options.url += '/data?accounts=' + account_id + '&dimensions=video&limit=150';
                 // add where filter
-                requestOptions.url += '&where=video==' + tmpArray.join(',');
+                options.url += '&where=video==' + tmpArray.join(',');
                 // add from date
                 requestURL += '&from=' + from;
                 // add fields
                 requestURL += '&fields=video,engagement_score,video_view,video_percent_viewed';
-                $request.textContent = requestOptions.url;
+                $request.textContent = options.url;
                 $request.setAttribute('value', requestURL);
-                getData(requestOptions, type, function(response) {
+                getData(options, type, function(response) {
                     analyticsData = analyticsData.concat(response.items);
                     callNumber++;
                     if (callNumber < totalAnalyticsCalls) {
