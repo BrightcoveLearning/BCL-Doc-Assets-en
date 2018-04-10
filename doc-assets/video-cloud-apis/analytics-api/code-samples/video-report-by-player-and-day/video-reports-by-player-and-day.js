@@ -320,7 +320,7 @@ var BCLS = (function (window, document, datepickr) {
             // open the request
             httpRequest.open('POST', proxyURL);
             // open and send request
-            httpRequest.send();
+            httpRequest.send(JSON.stringify(options));
         }
         // get the analytics data for the videos
         function getAnalyticsData() {
