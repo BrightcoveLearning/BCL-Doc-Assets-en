@@ -1,152 +1,185 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="Introduction">Introduction</h2>
-    <p>Transport Layer Security (TLS) protects data transferred over the internet by encrypting it. (TLS is a successor to SSL.) The process is largely transparent to users - the only difference is that URLs use the HTTPS protocol instead of HTTP.</p>
-    <p>Video Cloud supports TLS for all media delivery on these terms:</p>
-    <ul>
-      <li>Those using Brightcove CDNs can  <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> to have their accounts configured for either <strong>HTTPS + HTTP</strong> or for <strong>HTTPS-only</strong> delivery.</li>
-      <li>Those using other CDNs (sometimes called BYO CDNs) can request these options from their CDN (if they are supported).</li>
-    </ul>
-    <p>Whether you need TLS depends on a couple of factors:</p>
-    <ul>
-      <li>How important the security of the media content is to you - in other words, how concerned you are about it being stolen.</li>
-      <li>Whether the site(s) where you deploy your videos loads over HTTPS - if it does, then then your videos and video assets should also load over HTTPS; if they do not, they may fail to load or generate warnings in the viewer's browser.</li>
-    </ul>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Changes_in_TLS_support">Changes in TLS support</h2>
-    <p>Following the recommendations of internet security experts, Brightcove change its support for TLS as detailed below.</p>
-    <section class="bcls-subsection">
-      <h3>What is the change?</h3>
-      <p>As of June 30, 2018, Video Cloud will no longer provide support for TLS 1.0 or 1.1. Going forward, only HTTPS connections using the TLS 1.2 encryption protocol will be supported.</p>
-    </section>
-    <section class="bcls-subsection">
-      <h3>Why is Brightcove deprecating older TLS versions?</h3>
-      <p>The security of customer data is a top priority for Brightcove. These changes are unfolding across our industry, and many of our technology partners and peers have already taken the steps to disable early TLS. These changes are necessary to maintain best practices and, in part, to ensure that updated compliance requirements from the PCI Security Standards Council are met.</p>
-    </section>
-    <section class="bcls-subsection">
-      <h3>When will Brightcove stop supporting older TLS?</h3>
-      <p>June 30th, 2018 is the deadline to disable SSL/early TLS. Going forward all secure connections will be made using TLS 1.2.</p>
-    </section>
-    <section class="bcls-subsection">
-      <h3>What specific endpoints are changing on the 30th?</h3>
-      <p>Below find the list of services that will be affected as of the 30th. To the extent that any unlisted endpoints accept early TLS, customers should assume that this is unsupported, and that this is subject to change at any time.</p>
-      <ul>
-        <li>
-          Catalog APIs
-          <ul>
-            <li>Playback API</li>
-            <li>CMS API</li>
-            <li>Dynamic Ingest API</li>
-          </ul>
-        </li>
-        <li>
-          Content Delivery
-          <ul>
-            <li>HTTPS Player Delivery (players.brightcove.net)</li>
-            <li>HTTPS Manifest Delivery (manifest.prod.boltdns.net and secure.brightcove.com)</li>
-            <li>HTTPS Dynamic Delivery Media Origin (media-origin.*.prod.boltdns.net)</li>
-          </ul>
-        </li>
-      </ul>
-    </section>
-    <section class="bcls-subsection">
-      <h3>How do I know if we are ready for this change?</h3>
-      <p>Following the cutover, all connections with the Video Cloud platform will need to use the TLS 1.2 encryption protocol (or later). We expect the impact to be minimal, but there are two areas of risk:</p>
-      <ol>
-        <li>You should make sure that all connections to the Video Cloud APIs (e.g., a call from a Python script to the CMS API) are made from platforms that support TLS 1.2 or later. This means that automated processes should be hosted from a compatible browser.</li>
-        <li>Your users may be impacted if they are using an unsupported browser, if they have disabled the relevant encryption protocols, or if they using are an unsupported device.</li>
-      </ol>
-      <p>In general, the impact should be limited to older devices and browsers that represent a small fraction of our users. Please see below for a sample of  unsupported clients and devices.</p>
-    </section>
-    <section class="bcls-subsection">
-      <h3>Unsupported Platforms (Players/SDKs)</h3>
-      <p>As noted before, HTTP connections "in the clear" are unaffected by the change. Below find a list of user agents where HTTPS connections using TLS 1.2 are not supported.</p>
-      <h4>OS/Browser Combinations</h4>
-      <ul>
-        <li>Windows 7 / Chrome 29 (or earlier Chrome versions)</li>
-        <li>Windows 7 / Firefox 10.10.12, Firefox 17.0.7, Firefox 24.2.0, Firefox 22, Firefox 24</li>
-        <li>Windows 8 / Firefox 26</li>
-        <li>Windows XP / IE 6</li>
-        <li>Windows Vista / IE 7</li>
-        <li>Windows Phone 8.0 / IE 10</li>
-        <li>Windows 7 / Opera 12.15, Opera 15, Opera 16</li>
-        <li>OS X 10.6.8 / Safari 5.1.9</li>
-        <li>OS X 10.8.4 / Safari 6.0.4</li>
-        <li>Android 4.3 or earlier</li>
-      </ul>
-    </section>
-    <section class="bcls-subsection">
-      <h3>Other Unsupported Platforms and Devices</h3>
-      <p>You should verify integrations on platforms and devices where we do not provide a player or SDK, or where they have authored a custom integration with our APIs. The list below is not meant to be exhaustive, but includes a number of platforms and OEM devices that do not support TLS 1.2.</p>
-      <h4>Software Libraries and Runtime Environments</h4>
-      <ul>
-        <li>Java 6u45</li>
-        <li>Java 7u25</li>
-        <li>OpenSSL 0.9.8y</li>
-      </ul>
-      <h4>Smart TV/OEM Devices</h4>
-      <ul>
-        <li>2015 Panasonic CS650 TV</li>
-        <li>2014 Sharp TV - UD20, U20, US20, W20, W25, R30, XL20, G20</li>
-        <li>Playstation 3</li>
-        <li>Playstation Vita</li>
-      </ul>
-      <aside class="bcls-aside bcls-aside--information">Note that bots and crawlers are not listed. Please see <a href="https://www.ssllabs.com/ssltest/clients.html">https://www.ssllabs.com/ssltest/clients.html</a>.</aside>
-    </section>
-    <section class="bcls-subsection">
-      <h3>Enabling TLS 1.2</h3>
-      <p>In some cases, TLS 1.2 may be supported but disabled. To enable TLS 1.2 protocols on Windows web browsers, please see below.</p>
-      <ul>
-        <li><a href="#Microsoft_Internet_Explorer">Microsoft Internet Explorer</a></li>
-        <li><a href="#Google_Chrome">Google Chrome</a></li>
-        <li><a href="#Mozilla_Firefox">Mozilla Firefox</a></li>
-        <li><a href="#Opera">Opera</a></li>
-      </ul>
-      <h4 id="Microsoft_Internet_Explorer">Microsoft Internet Explorer</h4>
-      <ol>
-        <li>Open Internet Explorer</li>
-        <li>
-          From the menu bar, click Tools >  Internet Options > Advanced tab:
-          <figure class="bcls-figure">
-            <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18576-tls-media-urls/node18576-IE-dialolog.png" alt="Internet Explorer Settings">
-            <figcaption class="bcls-caption--image">Internet Explorer Settings</figcaption>
-          </figure>
-        </li>
-        <li>Scroll down to Security category, manually check the option box for Use TLS 1.2</li>
-        <li>Click OK</li>
-        <li>Close your browser and restart Internet Explorer</li>
-      </ol>
-      <h4 id="Google_Chrome">Google Chrome</h4>
-      <ol>
-        <li>Open Google Chrome</li>
-        <li>Click Alt F and select Settings</li>
-        <li>Scroll down and select Show advanced settings</li>
-        <li>Scroll down to the Network section and click on Change proxy settings</li>
-        <li>Select the Advanced tab</li>
-        <li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2</li>
-        <li>Click OK</li>
-        <li>Close your browser and restart Google Chrome</li>
-      </ol>
-      <h4 id="Mozilla_Firefox">Mozilla Firefox</h4>
-      <ol>
-        <li>Open Firefox</li>
-        <li>In the address bar, type about:config and press Enter</li>
-        <li>In the Search field, enter <code>tls</code>. Find and double-click the entry for c<code>security.tls.version.max</code></li>
-        <li>Set the integer value to 3 to force protocol of TLS 1.2</li>
-        <li>Click OK</li>
-        <li>Close your browser and restart Mozilla Firefox</li>
-      </ol>
-      <h4 id="Opera">Opera</h4>
-      <ol>
-        <li>Open Opera</li>
-        <li>Click Ctrl plus F12</li>
-        <li>Scroll down to the Network section and click on Change proxy settings</li>
-        <li>Select the Advanced tab</li>
-        <li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2</li>
-        <li>Click OK</li>
-        <li>Close your browser and restart Opera</li>
-      </ol>
-    </section>
-  </section>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>Transport Layer Security (TLS) protects data transferred over the internet by encrypting it. (TLS replaced an earlier crytographic protocol called SSL.) The process is largely transparent to users. Data delivered over the web can be delivered with or without encryption, so it is up to the client (a brower, for example) to signal to servers that data should be encrypted. This is usually done by using the HTTPS protocol for URLs instead of HTTP.</p>
+
+<p>Video Cloud supports TLS for all media delivery on these terms:</p>
+
+<ul>
+	<li>Those using Brightcove CDNs can <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a> to have their accounts configured for either <strong>HTTPS + HTTP</strong> delivery of data, or for <strong>HTTPS-only</strong> delivery.</li>
+	<li>Those using other CDNs (sometimes called BYO CDNs) can request these options from their CDN (if they are supported).</li>
+</ul>
+
+<p>Whether you need TLS depends mainly on whether the site(s)/pages(s) where you deploy your videos loads over HTTPS - if they does, then then your videos and video assets, as well as players and API requests must also be requested over HTTPS; if they do not, they may fail to load or generate warnings in the viewer's browser.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Changes_in_TLS_support">Changes in TLS support</h2>
+
+<p>Following the recommendations of internet security experts, Brightcove change its support for versions of TLS as detailed below.</p>
+
+<section class="bcls-subsection">
+<h3>What is the change?</h3>
+
+<p>As of June 30, 2018, Video Cloud will no longer provide support for TLS versions 1.0 or 1.1. Going forward, only HTTPS connections using the TLS 1.2 encryption protocol will be supported. Of course, using TLS at all will still be an option.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>Why is Brightcove deprecating older TLS versions?</h3>
+
+<p>The security of customer data is a top priority for Brightcove. These changes are unfolding across our industry, and many of our technology partners and peers have already taken the steps to disable early TLS. These changes are necessary to maintain best practices and, in part, to ensure that updated compliance requirements from the PCI Security Standards Council are met.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>When will Brightcove stop supporting older TLS?</h3>
+
+<p>June 30th, 2018 is the deadline to disable SSL/early TLS. Going forward all secure connections will be made using TLS 1.2.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>What specific endpoints are changing on the 30th?</h3>
+
+<p>Below find the list of services that will be affected as of the 30th. To the extent that any unlisted endpoints accept early TLS, customers should assume that this is unsupported, and that this is subject to change at any time.</p>
+
+<ul>
+	<li>Catalog APIs
+	<ul>
+		<li>Playback API</li>
+		<li>CMS API</li>
+		<li>Dynamic Ingest API</li>
+	</ul>
+	</li>
+	<li>Content Delivery
+	<ul>
+		<li>HTTPS Player Delivery (players.brightcove.net)</li>
+		<li>HTTPS Manifest Delivery (manifest.prod.boltdns.net and secure.brightcove.com)</li>
+		<li>HTTPS Dynamic Delivery Media Origin (media-origin.*.prod.boltdns.net)</li>
+	</ul>
+	</li>
+</ul>
+</section>
+
+<section class="bcls-subsection">
+<h3>How do I know if we are ready for this change?</h3>
+
+<p>Following the cutover, all connections with the Video Cloud platform will need to use the TLS 1.2 encryption protocol (or later). We expect the impact to be minimal, but there are two areas of risk:</p>
+
+<ol>
+	<li>You should make sure that all connections to the Video Cloud APIs (e.g., a call from a Python script to the CMS API) are made from platforms that support TLS 1.2 or later. This means that automated processes should be hosted from a compatible browser.</li>
+	<li>Your users may be impacted if they are using an unsupported browser, if they have disabled the relevant encryption protocols, or if they using are an unsupported device.</li>
+</ol>
+
+<p>In general, the impact should be limited to older devices and browsers that represent a small fraction of our users. Please see below for a sample of unsupported clients and devices.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>Unsupported Platforms (Players/SDKs)</h3>
+
+<p>As noted before, HTTP connections "in the clear" are unaffected by the change. Below find a list of user agents where HTTPS connections using TLS 1.2 are not supported.</p>
+
+<h4>OS/Browser Combinations</h4>
+
+<ul>
+	<li>Windows 7 / Chrome 29 (or earlier Chrome versions)</li>
+	<li>Windows 7 / Firefox 10.10.12, Firefox 17.0.7, Firefox 24.2.0, Firefox 22, Firefox 24</li>
+	<li>Windows 8 / Firefox 26</li>
+	<li>Windows XP / IE 6</li>
+	<li>Windows Vista / IE 7</li>
+	<li>Windows Phone 8.0 / IE 10</li>
+	<li>Windows 7 / Opera 12.15, Opera 15, Opera 16</li>
+	<li>OS X 10.6.8 / Safari 5.1.9</li>
+	<li>OS X 10.8.4 / Safari 6.0.4</li>
+	<li>Android 4.3 or earlier</li>
+</ul>
+</section>
+
+<section class="bcls-subsection">
+<h3>Other Unsupported Platforms and Devices</h3>
+
+<p>You should verify integrations on platforms and devices where we do not provide a player or SDK, or where they have authored a custom integration with our APIs. The list below is not meant to be exhaustive, but includes a number of platforms and OEM devices that do not support TLS 1.2.</p>
+
+<h4>Software Libraries and Runtime Environments</h4>
+
+<ul>
+	<li>Java 6u45</li>
+	<li>Java 7u25</li>
+	<li>OpenSSL 0.9.8y</li>
+</ul>
+
+<h4>Smart TV/OEM Devices</h4>
+
+<ul>
+	<li>2015 Panasonic CS650 TV</li>
+	<li>2014 Sharp TV - UD20, U20, US20, W20, W25, R30, XL20, G20</li>
+	<li>Playstation 3</li>
+	<li>Playstation Vita</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">Note that bots and crawlers are not listed. Please see <a href="https://www.ssllabs.com/ssltest/clients.html">https://www.ssllabs.com/ssltest/clients.html</a>.</aside>
+</section>
+
+<section class="bcls-subsection">
+<h3>Enabling TLS 1.2</h3>
+
+<p>In some cases, TLS 1.2 may be supported but disabled. To enable TLS 1.2 protocols on Windows web browsers, please see below.</p>
+
+<ul>
+	<li><a href="#Microsoft_Internet_Explorer">Microsoft Internet Explorer</a></li>
+	<li><a href="#Google_Chrome">Google Chrome</a></li>
+	<li><a href="#Mozilla_Firefox">Mozilla Firefox</a></li>
+	<li><a href="#Opera">Opera</a></li>
+</ul>
+
+<h4 id="Microsoft_Internet_Explorer">Microsoft Internet Explorer</h4>
+
+<ol>
+	<li>Open Internet Explorer</li>
+	<li>From the menu bar, click Tools &gt; Internet Options &gt; Advanced tab:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Internet Explorer Settings" src="//learning-services-media.brightcove.com/doc-assets/node/18576-tls-media-urls/node18576-IE-dialolog.png" />
+	<figcaption class="bcls-caption--image">Internet Explorer Settings</figcaption>
+	</figure>
+	</li>
+	<li>Scroll down to Security category, manually check the option box for Use TLS 1.2</li>
+	<li>Click OK</li>
+	<li>Close your browser and restart Internet Explorer</li>
+</ol>
+
+<h4 id="Google_Chrome">Google Chrome</h4>
+
+<ol>
+	<li>Open Google Chrome</li>
+	<li>Click Alt F and select Settings</li>
+	<li>Scroll down and select Show advanced settings</li>
+	<li>Scroll down to the Network section and click on Change proxy settings</li>
+	<li>Select the Advanced tab</li>
+	<li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2</li>
+	<li>Click OK</li>
+	<li>Close your browser and restart Google Chrome</li>
+</ol>
+
+<h4 id="Mozilla_Firefox">Mozilla Firefox</h4>
+
+<ol>
+	<li>Open Firefox</li>
+	<li>In the address bar, type about:config and press Enter</li>
+	<li>In the Search field, enter <code>tls</code>. Find and double-click the entry for c<code>security.tls.version.max</code></li>
+	<li>Set the integer value to 3 to force protocol of TLS 1.2</li>
+	<li>Click OK</li>
+	<li>Close your browser and restart Mozilla Firefox</li>
+</ol>
+
+<h4 id="Opera">Opera</h4>
+
+<ol>
+	<li>Open Opera</li>
+	<li>Click Ctrl plus F12</li>
+	<li>Scroll down to the Network section and click on Change proxy settings</li>
+	<li>Select the Advanced tab</li>
+	<li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2</li>
+	<li>Click OK</li>
+	<li>Close your browser and restart Opera</li>
+</ol>
+</section>
+</section>
 </article>
