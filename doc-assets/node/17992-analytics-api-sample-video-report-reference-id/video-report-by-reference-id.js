@@ -1,6 +1,6 @@
 var BCLS = (function (window, document, Pikaday) {
 "use strict";
-var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by-reference-id-proxy.php",
+var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php",
     useMyAccount = document.getElementById("useMyAccount"),
     basicInfo = document.getElementById("basicInfo"),
     $accountID = document.getElementById('accountID'),
@@ -29,7 +29,7 @@ var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/video-report-by
     responseFrame = document.getElementById('responseFrame'),
     endDate = '',
     startDate = '',
-    requestOptions = {},
+    options = {},
     i,
     iMax;
 
@@ -48,7 +48,7 @@ function bclslog(context, message) {
 
 // more robust test for strings "not defined"
 function isDefined(v) {
-    if (v === "" || v === null || v === undefined || v === NaN) {
+    if (v === "" || v === null || v === undefined) {
         return false;
     }
     return true;
@@ -75,30 +75,32 @@ function buildRequest() {
         reference_ids[i] = 'reference_id:' + encodeURI(reference_ids[i]);
     }
     if (isDefined($client_id.value)) {
-        requestOptions.client_id = $client_id.value;
+        options.client_id = $client_id.value;
     }
     if (isDefined($client_secret.value)) {
-        requestOptions.client_secret = $client_secret.value;
+        options.client_secret = $client_secret.value;
     }
+    options.account_id = account_id;
+    options.proxyURL = proxyURL;
     searchStr = reference_ids.join('+');
     // build the request
-    requestOptions.url = "https://analytics.api.brightcove.com/v1";
-    requestOptions.url += "/data?accounts=" + account_id + "&dimensions=video";
+    options.url = "https://analytics.api.brightcove.com/v1";
+    options.url += "/data?accounts=" + account_id + "&dimensions=video";
     // check for time filters
     startDate = from.value;
     if (startDate !== " ") {
-        requestOptions.url += "&from=" + startDate;
+        options.url += "&from=" + startDate;
     }
     endDate = to.value;
     if (endDate !== " ") {
-        requestOptions.url += "&to=" + endDate;
+        options.url += "&to=" + endDate;
     }
     // add limit and fields
-    requestOptions.url += "&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.reference_id";
+    options.url += "&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.reference_id";
     // add ref id filter
-    requestOptions.url += "&where=video.q==" + searchStr;
-    $request.textContent = requestOptions.url;
-    $request.setAttribute("value", requestOptions.url);
+    options.url += "&where=video.q==" + searchStr;
+    $request.textContent = options.url;
+    $request.setAttribute("value", options.url);
 }
 
 /**
@@ -179,7 +181,7 @@ for (i = 0; i < iMax; i++) {
 }
 // send request
 submitButton.addEventListener("click", function() {
-    getData(requestOptions, function(response) {
+    getData(options, function(response) {
         bclslog('response', response);
         responseFrame.textContent = JSON.stringify(response, null, '  ');
     });
