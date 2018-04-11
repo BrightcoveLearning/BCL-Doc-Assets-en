@@ -1,6 +1,6 @@
 var BCLS = (function (window, document, Pikaday) {
     'use strict';
-    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/geo-report-proxy.php',
+    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         useMyAccount = document.getElementById('useMyAccount'),
         basicInfo = document.getElementById('basicInfo'),
         $accountID = document.getElementById('accountID'),
@@ -106,7 +106,7 @@ var BCLS = (function (window, document, Pikaday) {
          * @param {String} type the request type (getCount | getVideos | getAnalytics)
          */
         function buildRequest(type) {
-            var requestOptions = {},
+            var options = {},
                 tmpArray,
                 newVideoItem = {},
                 videoItem,
@@ -119,14 +119,16 @@ var BCLS = (function (window, document, Pikaday) {
                 frag = new DocumentFragment();
             // add credentials if submitted
             if (isDefined(client_id) && isDefined(client_secret)) {
-                requestOptions.client_id = client_id;
-                requestOptions.client_secret = client_secret;
+                options.client_id = client_id;
+                options.client_secret = client_secret;
             }
+            options.account_id = account_id;
+            options.proxyURL = proxyURL;
             switch (type) {
                 case 'getVideos':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=-video_view&from=' + fromDatePicker.value + '&to=' + toDatePicker.value;
-                $requestURL.textContent = requestOptions.url;
-                getData(requestOptions, type, function(response) {
+                options.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=-video_view&from=' + fromDatePicker.value + '&to=' + toDatePicker.value;
+                $requestURL.textContent = options.url;
+                getData(options, type, function(response) {
                     // create the video selector items from the response items
                     newEl = document.createElement('option');
                     newEl.setAttribute('value', '');
@@ -150,9 +152,9 @@ var BCLS = (function (window, document, Pikaday) {
                     currentVideo = currentVideoObj.value;
                     // fields to return
                     fields = 'country,country_name,video_view,video_seconds_viewed';
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
-                    $requestURL.textContent = requestOptions.url;
-                    getData(requestOptions, type, function(response) {
+                    options.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
+                    $requestURL.textContent = options.url;
+                    getData(options, type, function(response) {
                         // display the data
                         displayData(response.items);
                     });
