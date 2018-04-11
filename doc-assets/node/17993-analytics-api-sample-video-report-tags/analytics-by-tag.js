@@ -1,6 +1,6 @@
 var BCLS = (function(window, document, Pikaday) {
   'use strict';
-  var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analytics-by-tag.php',
+  var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     basicInfo = document.getElementById('basicInfo'),
     useMyAccount = document.getElementById('useMyAccount'),
     $accountID = document.getElementById('accountID'),
@@ -34,23 +34,10 @@ var BCLS = (function(window, document, Pikaday) {
     i,
     iMax;
 
-  /**
-   * Logging function - safe for IE
-   * @param  {string} context description of the data
-   * @param  {*} message the data to be logged by the console
-   * @return {}
-   */
-  function bclslog(context, message) {
-    if (window['console'] && console['log']) {
-      console.log(context, message);
-    }
-    ;
-    return;
-  }
 
   // more robust test for strings 'not defined'
   function isDefined(v) {
-    if (v === '' || v === null || v === undefined || v === NaN) {
+    if (v === '' || v === null || v === undefined) {
       return false;
     }
     return true;
@@ -174,7 +161,6 @@ var BCLS = (function(window, document, Pikaday) {
   // send request
   $submitButton.addEventListener('click', function(){
       getData(requestOptions, function(response) {
-          bclslog('response', response);
           responseFrame.textContent = JSON.stringify(response, null, '  ');
       });
   });
