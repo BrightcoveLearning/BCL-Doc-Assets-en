@@ -127,7 +127,8 @@
 
 <h3>JavaScript</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function (window, document, Pikaday) {
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function (window, document, Pikaday) {
     'use strict';
     var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/geo-report-proxy.php',
         useMyAccount = document.getElementById('useMyAccount'),
@@ -165,7 +166,7 @@
          * @return {}
          */
         function bclslog(context, message) {
-            if (window['console'] && console['log']) {
+            if (window['console'] &amp;&amp; console['log']) {
               console.log(context, message);
             }
             return;
@@ -247,13 +248,13 @@
                 fields,
                 frag = new DocumentFragment();
             // add credentials if submitted
-            if (isDefined(client_id) && isDefined(client_secret)) {
+            if (isDefined(client_id) &amp;&amp; isDefined(client_secret)) {
                 requestOptions.client_id = client_id;
                 requestOptions.client_secret = client_secret;
             }
             switch (type) {
                 case 'getVideos':
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&limit=all&fields=video,video.name&sort=-video_view&from=' + fromDatePicker.value + '&to=' + toDatePicker.value;
+                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&amp;dimensions=video&amp;limit=all&amp;fields=video,video.name&amp;sort=-video_view&amp;from=' + fromDatePicker.value + '&amp;to=' + toDatePicker.value;
                 $requestURL.textContent = requestOptions.url;
                 getData(requestOptions, type, function(response) {
                     // create the video selector items from the response items
@@ -263,7 +264,7 @@
                     newEl.appendChild(txt);
                     frag.appendChild(newEl);
                     iMax = response.items.length;
-                    for (i = 0; i < iMax; i++) {
+                    for (i = 0; i &lt; iMax; i++) {
                         item = response.items[i];
                         newEl = document.createElement('option');
                         newEl.setAttribute('value', item.video);
@@ -279,7 +280,7 @@
                     currentVideo = currentVideoObj.value;
                     // fields to return
                     fields = 'country,country_name,video_view,video_seconds_viewed';
-                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
+                    requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&amp;dimensions=country&amp;limit=all&amp;fields=' + fields + '&amp;from=' + fromDatePicker.value + '&amp;to=' + toDatePicker.value + '&amp;where=video==' + currentVideo;
                     $requestURL.textContent = requestOptions.url;
                     getData(requestOptions, type, function(response) {
                         // display the data
@@ -304,7 +305,7 @@
                 getResponse = function() {
                     try {
                       if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
                           parsedData = JSON.parse(httpRequest.responseText);
                           callback(parsedData);
                         } else {
@@ -316,9 +317,9 @@
                     }
                 };
                 // set up request data
-            requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-            if (options.client_id && options.client_secret) {
-                requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+            requestParams = 'url=' + encodeURIComponent(options.url) + '&amp;requestType=GET';
+            if (options.client_id &amp;&amp; options.client_secret) {
+                requestParams += '&amp;client_id=' + options.client_id + '&amp;client_secret=' + options.client_secret;
             }
 
             // set response handler
@@ -369,6 +370,7 @@
 
     return {};
 })(window, document, Pikaday);</code></pre>
+
 <h3>Proxy</h3>
 
 <p>This app uses a proxy written in PHP to fetch access tokens and make the Analytics API requests.</p>
