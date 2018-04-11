@@ -1,7 +1,6 @@
 var BCLS = (function (window, document, Pikaday) {
     'use strict';
-    var // media api stuff
-        getPlaylists,
+    var getPlaylists,
         limit = 25,
         offset = 0,
         playlistData = [],
@@ -10,7 +9,7 @@ var BCLS = (function (window, document, Pikaday) {
         basicInfo = document.getElementById('basicInfo'),
         $accountInputs = document.getElementById('accountInputs'),
         $playlistInfo = document.getElementById('playlistInfo'),
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analytics-by-playlist.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         $account_id = document.getElementById('accountID'),
         account_id = '1752604059001',
         $client_id = document.getElementById('client_id'),
@@ -61,11 +60,6 @@ var BCLS = (function (window, document, Pikaday) {
         nowISO = now.toISOString().substr(0, 10),
         fromISO = fromDate.toISOString().substr(0, 10);
     // utilities
-    function bclslog(context, message) {
-        if (console) {
-            console.log(context, message);
-        }
-    }
     // more robust test for strings 'not defined'
     function isDefined(v) {
         if (v === '' || v === null || v === 'undefined' || v === undefined) {
@@ -110,7 +104,6 @@ var BCLS = (function (window, document, Pikaday) {
      * and then invokes the Analytics API request
      */
     function onPlaylistSelect() {
-        bclslog('playlist selected');
         var selectedPlaylistObj = getSelectedPlaylist(playlistSelector),
             selectedPlaylist = playlistData[selectedPlaylistObj.playlistIndex];
 
@@ -185,7 +178,7 @@ var BCLS = (function (window, document, Pikaday) {
      * @param {String} type the request type
      */
     function buildRequest(type) {
-        var requestOptions = {},
+        var options = {},
         tmpArray,
         newOption,
         txt,
@@ -195,23 +188,25 @@ var BCLS = (function (window, document, Pikaday) {
 
         // add credentials if submitted
         if (isDefined(client_id) && isDefined(client_secret)) {
-            requestOptions.client_id = client_id;
-            requestOptions.client_secret = client_secret;
+            options.client_id = client_id;
+            options.client_secret = client_secret;
         }
         switch (type) {
             case 'getPlaylistsCount':
-            requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/playlists';
-            $request.textContent = requestOptions.url;
-            getData(requestOptions, type, function(response) {
+            options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/playlists';
+            $request.textContent = options.url;
+            makeRequest(options, function(response) {
+              response = JSON.parse(response);
                 totalPlaylists = response.count;
                 buildRequest('getPlaylists');
             });
                 break;
             case 'getPlaylists':
             totalPlaylistCalls = Math.ceil(totalPlaylists / limit);
-            requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/playlists?limit=' + limit + '&offset=' + (limit * callNumber);
-            $request.textContent = requestOptions.url;
-            getData(requestOptions, type, function(response) {
+            options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/playlists?limit=' + limit + '&offset=' + (limit * callNumber);
+            $request.textContent = options.url;
+            makeRequest(options, function(response) {
+              response = JSON.parse(response);
                 // add the current items array to overall one
                 playlistData = playlistData.concat(response);
                 callNumber++;
@@ -240,9 +235,10 @@ var BCLS = (function (window, document, Pikaday) {
             });
                 break;
             case 'getVideos':
-                requestOptions.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + 'videos?q=' + searchString + '&limit=' + playlistLimit + '&sort=' + playlistSort;
-                $request.textContent = requestOptions.url;
-                getData(requestOptions, type, function(response) {
+                options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + 'videos?q=' + searchString + '&limit=' + playlistLimit + '&sort=' + playlistSort;
+                $request.textContent = options.url;
+                makeRequest(options, function(response) {
+                  response = JSON.parse(response);
                     response.forEach(function(video, index, response) {
                         videoIds.push(video.id);
                     });
@@ -254,9 +250,10 @@ var BCLS = (function (window, document, Pikaday) {
                 if (format === 'csv') {
                     isJSON = false;
                 }
-                requestOptions.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&where=video==' + videoIds.join(',') + '&from=' + from.value + '&to=' + to.value + '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view' + '&format=' + format;
-                $request.textContent = requestOptions.url;
-                getData(requestOptions, type, function(response) {
+                options.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=video&where=video==' + videoIds.join(',') + '&from=' + from.value + '&to=' + to.value + '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view' + '&format=' + format;
+                $request.textContent = options.url;
+                makeRequest(options, function(response) {
+                  response = JSON.parse(response);
                     if (format === 'json') {
                         $responseFrame.textContent = JSON.stringify(response, null, '  ');
                     } else {
@@ -269,51 +266,52 @@ var BCLS = (function (window, document, Pikaday) {
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
-     * @param  {String} requestID the type of request = id of the button
-     * @param  {Function} callback the callback function to invoke
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function getData(options, type, callback) {
-        var httpRequest = new XMLHttpRequest(),
-            parsedData,
-            requestParams,
-            dataString,
-            // response handler
-            getResponse = function() {
-                try {
-                  if (httpRequest.readyState === 4) {
-                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                        bclslog('responseText', httpRequest.responseText);
-                        if (isJSON) {
-                            parsedData = JSON.parse(httpRequest.responseText);
-                            callback(parsedData);
-                        } else {
-                            callback(httpRequest.responseText);
-                        }
-                    } else {
-                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                    }
-                  }
-                } catch (e) {
-                  alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-            // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-        }
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
-
 
     // add date pickers to the date input fields
     fromPicker = new Pikaday({
@@ -332,7 +330,6 @@ var BCLS = (function (window, document, Pikaday) {
 
     // set event listeners
     useMyAccount.addEventListener('click', function () {
-        bclslog('use account switch');
         if (basicInfo.getAttribute('style') === 'display:none;') {
             basicInfo.setAttribute('style', 'display:block;');
             useMyAccount.textContent = 'Use Sample Account';
