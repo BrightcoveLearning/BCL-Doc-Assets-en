@@ -139,27 +139,10 @@ function makeRequest(options, callback) {
   // open and send request
   httpRequest.send(JSON.stringify(options));
 }
-    // set response handler
-    httpRequest.onreadystatechange = getResponse;
-    // open the request
-    httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // open and send request
-    httpRequest.send(requestParams);
-}
 
 // add date pickers to the date input fields
-fromPicker = new Pikaday({
-  field: from,
-  format: 'YYYY-MM-DD',
-  onSelect: buildRequest
-});
-toPicker = new Pikaday({
-  field: to,
-  format: 'YYYY-MM-DD',
-  onSelect: buildRequest
-});
+fromPicker = new Pikaday({ field: from, format: 'YYYY-MM-DD', onSelect: buildRequest });
+toPicker = new Pikaday({ field: to, format: 'YYYY-MM-DD', onSelect: buildRequest });
 
 to.addEventListener('change', buildRequest);
 from.addEventListener('change', buildRequest);
