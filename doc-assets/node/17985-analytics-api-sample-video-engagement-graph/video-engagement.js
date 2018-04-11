@@ -1,207 +1,210 @@
-var BCLS = (function (window, document) {
-    'use strict';
-    var // aapi stuff
-        useMyAccount = document.getElementById('useMyAccount'),
-        basicInfo = document.getElementById('basicInfo'),
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
-        $accountID = document.getElementById('accountID'),
-        account_id = '1752604059001',
-        $client_id = document.getElementById('client_id'),
-        client_id = null,
-        $client_secret = document.getElementById('client_secret'),
-        client_secret = null,
-        $scopeSelect = document.getElementById('scopeSelect'),
-        scope = 'account',
-        $playerID = document.getElementById('playerID'),
-        player_id = '2fc88f47-3e0f-45bc-9a11-97d9d2f22392_default',
-        $videoID = document.getElementById('videoID'),
-        video_id = '4093643993001',
-        $pid = document.getElementById('pid'),
-        $vid = document.getElementById('vid'),
-        $requestButton = document.getElementById('requestButton'),
-        $request = document.getElementById('request'),
-        $submitButton = document.getElementById('submitButton'),
-        $requestInputs = document.getElementsByClassName('.aapi-request'),
-        responseFrame = document.getElementById('responseFrame'),
-        options = {},
-        requestURL = '',
-        chartEngagement = '#chartEngagement',
-        responseData,
-        i,
-        iMax;
+var BCLS = (function(window, document) {
+  'use strict';
+  var // aapi stuff
+    useMyAccount = document.getElementById('useMyAccount'),
+    basicInfo = document.getElementById('basicInfo'),
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    $accountID = document.getElementById('accountID'),
+    account_id = '1752604059001',
+    $client_id = document.getElementById('client_id'),
+    client_id = null,
+    $client_secret = document.getElementById('client_secret'),
+    client_secret = null,
+    $scopeSelect = document.getElementById('scopeSelect'),
+    scope = 'account',
+    $playerID = document.getElementById('playerID'),
+    player_id = '2fc88f47-3e0f-45bc-9a11-97d9d2f22392_default',
+    $videoID = document.getElementById('videoID'),
+    video_id = '4093643993001',
+    $pid = document.getElementById('pid'),
+    $vid = document.getElementById('vid'),
+    $requestButton = document.getElementById('requestButton'),
+    $request = document.getElementById('request'),
+    $submitButton = document.getElementById('submitButton'),
+    $requestInputs = document.getElementsByClassName('.aapi-request'),
+    responseFrame = document.getElementById('responseFrame'),
+    options = {},
+    requestURL = '',
+    chartEngagement = '#chartEngagement',
+    responseData,
+    i,
+    iMax;
 
-    /**
-     * Logging function - safe for IE
-     * @param  {string} context description of the data
-     * @param  {*} message the data to be logged by the console
-     * @return {}
-     */
-    function bclslog(context, message) {
-        if (window['console'] && console['log']) {
-          console.log(context, message);
-        }
-        return;
+  /**
+   * Logging function - safe for IE
+   * @param  {string} context description of the data
+   * @param  {*} message the data to be logged by the console
+   * @return {}
+   */
+  function bclslog(context, message) {
+    if (window['console'] && console['log']) {
+      console.log(context, message);
     }
+    return;
+  }
 
-    // more robust test for strings 'not defined'
-    function isDefined(v) {
-        if(v !== '' && v !== null && v !== 'undefined') { return true; }
-        else { return false; }
+  // more robust test for strings 'not defined'
+  function isDefined(v) {
+    if (v !== '' && v !== null && v !== 'undefined') {
+      return true;
+    } else {
+      return false;
     }
+  }
 
-    // create graph
-    function makeEngagementGraph(jsonObject) {
-        var options = {pointDot : false},
-            chartData = {},
-            labels = [],
-            data = [],
-            video_engagement = jsonObject.timeline.values,
-            video_duration = 100,
-            series = {},
-            video_name = jsonObject.video_name,
-            ctx,
-            myNewChart;
-        // process response data
-        video_engagement.forEach( function (element, index, video_engagement) {
-            if ((index) % 10 === 0) {
-                labels[index] = index + '%';
-            } else {
-                labels[index] = '';
-            }
+  // create graph
+  function makeEngagementGraph(jsonObject) {
+    var options = {
+        pointDot: false
+      },
+      chartData = {},
+      labels = [],
+      data = [],
+      video_engagement = jsonObject.timeline.values,
+      video_duration = 100,
+      series = {},
+      video_name = jsonObject.video_name,
+      ctx,
+      myNewChart;
+    // process response data
+    video_engagement.forEach(function(element, index, video_engagement) {
+      if ((index) % 10 === 0) {
+        labels[index] = index + '%';
+      } else {
+        labels[index] = '';
+      }
 
-            data[index] = element;
-        });
-        // chartData
-        chartData = {
-            labels : labels,
-            datasets : [
-                {
-                    fillColor : 'rgba(151,187,205,0.5)',
-                    strokeColor : 'rgba(151,187,205,1)',
-                    pointColor : 'rgba(151,187,205,1)',
-                    pointStrokeColor : '#fff',
-                    data : data
-                }
-            ]
-        };
-        //Get the context of the canvas element we want to select
-        ctx = document.getElementById('chartEngagement').getContext('2d');
-        myNewChart = new Chart(ctx).Line(chartData, options);
+      data[index] = element;
+    });
+    // chartData
+    chartData = {
+      labels: labels,
+      datasets: [{
+        fillColor: 'rgba(151,187,205,0.5)',
+        strokeColor: 'rgba(151,187,205,1)',
+        pointColor: 'rgba(151,187,205,1)',
+        pointStrokeColor: '#fff',
+        data: data
+      }]
+    };
+    //Get the context of the canvas element we want to select
+    ctx = document.getElementById('chartEngagement').getContext('2d');
+    myNewChart = new Chart(ctx).Line(chartData, options);
+  }
+
+  function buildRequest() {
+    player_id = (isDefined($playerID.value)) ? $playerID.value : player_id;
+    video_id = (isDefined($videoID.value)) ? $videoID.value : video_id;
+    account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
+    // add client credentials if any
+    if (isDefined($client_id.value)) {
+      options.client_id = $client_id.value;
     }
-
-    function buildRequest() {
-        player_id = (isDefined($playerID.value)) ? $playerID.value : player_id;
-        video_id = (isDefined($videoID.value)) ? $videoID.value : video_id;
-        account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
-        // add client credentials if any
-        if (isDefined($client_id.value)) {
-            options.client_id = $client_id.value;
-        }
-        if (isDefined($client_secret.value)) {
-            options.client_secret = $client_secret.value;
-        }
-        options.account_id = account_id;
-        options.proxyURL = proxyURL;
-
-        // build the request
-        options.url = 'https://analytics.api.brightcove.com/v1';
-        options.url += '/engagement/accounts/' + account_id;
-        if (scope === 'players') {
-            options.url += '/players/' + player_id;
-        } else if (scope === 'videos') {
-            options.url+= '/videos/' + video_id;
-        }
-        $request.textContent = options.url;
-        $request.setAttribute('value', options.url);
+    if (isDefined($client_secret.value)) {
+      options.client_secret = $client_secret.value;
     }
+    options.account_id = account_id;
+    options.proxyURL = proxyURL;
 
-    /**
-     * send API request to the proxy
-     * @param  {Object} options for the request
-     * @param  {String} options.url the full API request URL
-     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-     * @param  {String} options.proxyURL proxyURL to send the request to
-     * @param  {String} options.client_id client id for the account (default is in the proxy)
-     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
-     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
-     * @param  {Function} [callback] callback function that will process the response
-     */
-    function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-        response,
-        proxyURL = options.proxyURL,
-        // response handler
-        getResponse = function() {
-          try {
-            if (httpRequest.readyState === 4) {
-              if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                response = httpRequest.responseText;
-                // some API requests return '{null}' for empty responses - breaks JSON.parse
-                if (response === '{null}') {
-                  response = null;
-                }
-                // return the response
-                callback(response);
-              } else {
-                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+    // build the request
+    options.url = 'https://analytics.api.brightcove.com/v1';
+    options.url += '/engagement/accounts/' + account_id;
+    if (scope === 'players') {
+      options.url += '/players/' + player_id;
+    } else if (scope === 'videos') {
+      options.url += '/videos/' + video_id;
+    }
+    $request.textContent = options.url;
+    $request.setAttribute('value', options.url);
+  }
+
+  /**
+   * send API request to the proxy
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
+   */
+  function makeRequest(options, callback) {
+    var httpRequest = new XMLHttpRequest(),
+      response,
+      proxyURL = options.proxyURL,
+      // response handler
+      getResponse = function() {
+        try {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '{null}') {
+                response = null;
               }
+              // return the response
+              callback(response);
+            } else {
+              alert('There was a problem with the request. Request returned ' + httpRequest.status);
             }
-          } catch (e) {
-            alert('Caught Exception: ' + e);
           }
-        };
-      /**
-       * set up request data
-       * the proxy used here takes the following request body:
-       * JSON.stringify(options)
-       */
-      // set response handler
-      httpRequest.onreadystatechange = getResponse;
-      // open the request
-      httpRequest.open('POST', proxyURL);
-      // set headers if there is a set header line, remove it
-      // open and send request
-      httpRequest.send(JSON.stringify(options));
-    }
-    // set event listeners
-    useMyAccount.addEventListener('click', function () {
-        if (basicInfo.getAttribute('style') === 'display:none;') {
-            basicInfo.setAttribute('style', 'display:block;');
-            useMyAccount.innerHTML = 'Use Sample Account';
-        } else {
-            basicInfo.setAttribute('style', 'display:none;');
-            useMyAccount.innerHTML = 'Use My Account Instead';
+        } catch (e) {
+          alert('Caught Exception: ' + e);
         }
-    });
-    // listener for videos request
-    iMax = $requestInputs.length;
-    for (i = 0; i < iMax; i++) {
-        $requestInputs[i].addEventListener('change', buildRequest);
+      };
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
+  }
+  // set event listeners
+  useMyAccount.addEventListener('click', function() {
+    if (basicInfo.getAttribute('style') === 'display:none;') {
+      basicInfo.setAttribute('style', 'display:block;');
+      useMyAccount.innerHTML = 'Use Sample Account';
+    } else {
+      basicInfo.setAttribute('style', 'display:none;');
+      useMyAccount.innerHTML = 'Use My Account Instead';
     }
-    // rebuild request when scope selector changes
-    $scopeSelect.addEventListener('change', function (evt) {
-        scope = $scopeSelect.value;
-        if (scope === 'account') {
-            $vid.setAttribute('style', 'display:none;');
-            $pid.setAttribute('style', 'display:none;');
-        } else if (scope === 'players') {
-            $pid.setAttribute('style', 'display:block;');
-            $vid.setAttribute('style', 'display:none;');
-        } else if (scope === 'videos') {
-            $pid.setAttribute('style', 'display:none;');
-            $vid.setAttribute('style', 'display:block;');
-        }
-        buildRequest();
-    });
-    // submit request
-    $submitButton.addEventListener('click', function(){
-        makeRequest(options, function(response) {
-            response = JSON.parse(response);
-            responseFrame.textContent = JSON.stringify(response, null, '  ');
-            makeEngagementGraph(response);
-        });
-    });
-
-    // generate initial request
+  });
+  // listener for videos request
+  iMax = $requestInputs.length;
+  for (i = 0; i < iMax; i++) {
+    $requestInputs[i].addEventListener('change', buildRequest);
+  }
+  // rebuild request when scope selector changes
+  $scopeSelect.addEventListener('change', function(evt) {
+    scope = $scopeSelect.value;
+    if (scope === 'account') {
+      $vid.setAttribute('style', 'display:none;');
+      $pid.setAttribute('style', 'display:none;');
+    } else if (scope === 'players') {
+      $pid.setAttribute('style', 'display:block;');
+      $vid.setAttribute('style', 'display:none;');
+    } else if (scope === 'videos') {
+      $pid.setAttribute('style', 'display:none;');
+      $vid.setAttribute('style', 'display:block;');
+    }
     buildRequest();
+  });
+  // submit request
+  $submitButton.addEventListener('click', function() {
+    makeRequest(options, function(response) {
+      response = JSON.parse(response);
+      responseFrame.textContent = JSON.stringify(response, null, '  ');
+      makeEngagementGraph(response);
+    });
+  });
+
+  // generate initial request
+  buildRequest();
 })(window, document);
