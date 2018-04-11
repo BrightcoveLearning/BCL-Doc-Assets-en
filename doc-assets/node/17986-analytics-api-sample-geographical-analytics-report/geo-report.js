@@ -13,7 +13,7 @@ var BCLS = (function(window, document, Pikaday) {
     $reportTableBody = document.getElementById('reportTableBody'),
     fromDatePicker = document.getElementById('fromDatePicker'),
     toDatePicker = document.getElementById('toDatePicker'),
-    $makeRequest = document.getElementById('makeRequest'),
+    getData = document.getElementById('getData'),
     $gettingDataDisplay = document.getElementById('gettingDataDisplay'),
     video_info = document.getElementById('video_info'),
     $requestURL = document.getElementById('requestURL'),
@@ -225,7 +225,7 @@ var BCLS = (function(window, document, Pikaday) {
     currentVideoObj = getSelectedValue($videoSelector);
     buildRequest('getAnalytics');
   });
-  $makeRequest.addEventListener('click', function() {
+  getData.addEventListener('click', function() {
     account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
     $gettingDataDisplay.textContent = 'Getting video data...';
     buildRequest('getVideos');
