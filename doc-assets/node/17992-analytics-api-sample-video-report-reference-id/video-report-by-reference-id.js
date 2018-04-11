@@ -33,18 +33,6 @@ var proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-pro
     i,
     iMax;
 
-/**
- * Logging function - safe for IE
- * @param  {string} context description of the data
- * @param  {*} message the data to be logged by the console
- * @return {}
- */
-function bclslog(context, message) {
-    if (window["console"] && console["log"]) {
-        console.log(context, message);
-    }
-    return;
-}
 
 // more robust test for strings "not defined"
 function isDefined(v) {
@@ -198,8 +186,8 @@ for (i = 0; i < iMax; i++) {
 }
 // send request
 submitButton.addEventListener("click", function() {
-    getData(options, function(response) {
-        bclslog('response', response);
+    makeRequest(options, function(response) {
+        response = JSON.parse(response);
         responseFrame.textContent = JSON.stringify(response, null, '  ');
     });
 });
@@ -208,6 +196,5 @@ $selectData.addEventListener("click", function() {
     responseFrame.select();
 });
 // generate initial request
-bclslog('building request');
 buildRequest();
 })(window, document, Pikaday);
