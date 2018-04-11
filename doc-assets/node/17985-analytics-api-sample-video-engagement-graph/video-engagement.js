@@ -3,7 +3,7 @@ var BCLS = (function (window, document) {
     var // aapi stuff
         useMyAccount = document.getElementById('useMyAccount'),
         basicInfo = document.getElementById('basicInfo'),
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/engagement-report-proxy.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         $accountID = document.getElementById('accountID'),
         account_id = '1752604059001',
         $client_id = document.getElementById('client_id'),
@@ -23,7 +23,7 @@ var BCLS = (function (window, document) {
         $submitButton = document.getElementById('submitButton'),
         $requestInputs = document.getElementsByClassName('.aapi-request'),
         responseFrame = document.getElementById('responseFrame'),
-        requestOptions = {},
+        options = {},
         requestURL = '',
         chartEngagement = '#chartEngagement',
         responseData,
@@ -95,62 +95,73 @@ var BCLS = (function (window, document) {
         account_id = (isDefined($accountID.value)) ? $accountID.value : account_id;
         // add client credentials if any
         if (isDefined($client_id.value)) {
-            requestOptions.client_id = $client_id.value;
+            options.client_id = $client_id.value;
         }
         if (isDefined($client_secret.value)) {
-            requestOptions.client_secret = $client_secret.value;
+            options.client_secret = $client_secret.value;
         }
+        options.account_id = account_id;
+        options.proxyURL = proxyURL;
 
         // build the request
-        requestOptions.url = 'https://analytics.api.brightcove.com/v1';
-        requestOptions.url += '/engagement/accounts/' + account_id;
+        options.url = 'https://analytics.api.brightcove.com/v1';
+        options.url += '/engagement/accounts/' + account_id;
         if (scope === 'players') {
-            requestOptions.url += '/players/' + player_id;
+            options.url += '/players/' + player_id;
         } else if (scope === 'videos') {
-            requestOptions.url+= '/videos/' + video_id;
+            options.url+= '/videos/' + video_id;
         }
-        $request.textContent = requestOptions.url;
-        $request.setAttribute('value', requestOptions.url);
+        $request.textContent = options.url;
+        $request.setAttribute('value', options.url);
     }
+
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
-     * @param  {Function} callback the callback function to invoke
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function getData(options, callback) {
-        var httpRequest = new XMLHttpRequest(),
-            parsedData,
-            requestParams,
-            dataString,
-            // response handler
-            getResponse = function() {
-                try {
-                  if (httpRequest.readyState === 4) {
-                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                      parsedData = JSON.parse(httpRequest.responseText);
-                      callback(parsedData);
-                    } else {
-                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                    }
-                  }
-                } catch (e) {
-                  alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-        }
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
     // set event listeners
     useMyAccount.addEventListener('click', function () {
@@ -184,8 +195,8 @@ var BCLS = (function (window, document) {
     });
     // submit request
     $submitButton.addEventListener('click', function(){
-        getData(requestOptions, function(response) {
-            bclslog('response', response);
+        makeRequest(options, function(response) {
+            response = JSON.parse(response);
             responseFrame.textContent = JSON.stringify(response, null, '  ');
             makeEngagementGraph(response);
         });
