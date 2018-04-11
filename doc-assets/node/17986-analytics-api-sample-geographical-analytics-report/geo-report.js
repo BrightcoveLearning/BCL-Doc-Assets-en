@@ -137,9 +137,9 @@ var BCLS = (function(window, document, Pikaday) {
           txt = document.createTextNode('Select a video');
           newEl.appendChild(txt);
           frag.appendChild(newEl);
-          iMax = response.items.length;
+          iMax = parsedData.items.length;
           for (i = 0; i < iMax; i++) {
-            item = response.items[i];
+            item = parsedData.items[i];
             newEl = document.createElement('option');
             newEl.setAttribute('value', item.video);
             txt = document.createTextNode(item['video.name']);
@@ -157,8 +157,9 @@ var BCLS = (function(window, document, Pikaday) {
         options.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=country&limit=all&fields=' + fields + '&from=' + fromDatePicker.value + '&to=' + toDatePicker.value + '&where=video==' + currentVideo;
         $requestURL.textContent = options.url;
         makeRequest(options, function(response) {
+          parsedData = JSON.parse(response);
           // display the data
-          displayData(response.items);
+          displayData(parsedData.items);
         });
         break;
     }
