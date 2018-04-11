@@ -191,6 +191,8 @@ var BCLS = (function(window, document, Pikaday) {
       options.client_id = client_id;
       options.client_secret = client_secret;
     }
+    options.account_id = account_id;
+    options.proxyURL = proxyURL;
     switch (type) {
       case 'getPlaylistsCount':
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/counts/playlists';
