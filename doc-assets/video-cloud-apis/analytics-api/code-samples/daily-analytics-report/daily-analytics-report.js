@@ -208,7 +208,19 @@ var BCLS = (function(window, document) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 makeRequest(options, function(response) {
-
+                  parsedData = JSON.parse(response);
+                  // console.log('dateData', parsedData);
+                  // set total videos
+                  startDateISO = parsedData.reconciled_from;
+                  startDate = getDateFromIsoString(startDateISO);
+                  totalDays = getTotalDays(startDate);
+                  currentDate = startDate;
+                  currentDateISO = currentDate.toISOString().substring(0, 10);
+                  totalDays = getTotalDays(startDate);
+                  spanDaysTotal.textContent = totalDays;
+                  spanTotalVideos.textContent = totalVideos;
+                  spanCompletedVideos.textContent = videosCompleted;
+                  setRequestData('getVideoIds');
                 });
                 break;
             case 'getVideoIds':
@@ -217,7 +229,28 @@ var BCLS = (function(window, document) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 // console.log('options', options);
-                makeRequest(options, function(response) {});
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                  videosArray = parsedData.items;
+                  // console.log('videosData', videosArray);
+                  totalVideos = videosArray.length;
+                  for (i = 0; i < totalVideos; i++) {
+                      videosArray[i].items = [];
+                  }
+                  if (videoNumber === 0) {
+
+                  }
+                  spanCompletedVideos.textContent = videosCompleted;
+                  spanVideosCount.textContent = videoNumber + 1;
+                  spanVideosTotal.textContent = totalVideos;
+                  spanTotalVideos.textContent = totalVideos;
+                  logText.appendChild(spanTotalVideos);
+                  logText.appendChild(spanLogMessage);
+                  logText.appendChild(spanCompletedVideos);
+                  logger.appendChild(pLogGettingVideoAnalytics);
+                  logger.appendChild(pLogGettingDailyAnalytics);
+                  setRequestData('getVideoDays');
+                });
                 break;
             case 'getVideoDays':
                 var i,
@@ -233,7 +266,22 @@ var BCLS = (function(window, document) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 spanDaysCount.textContent = dayNumber + 1;
-                makeRequest(options, function(response) {});
+                makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
+                  if (parsedData.item_count > 0) {
+                      parsedData.items[0].date = currentDateISO;
+                      // console.log('data item', parsedData.items[0]);
+                      videosArray[videoNumber].items.push(parsedData.items[0]);
+                  }
+                  dayNumber++;
+                  if (dayNumber < totalDays) {
+                      currentDateISO = addOneDay(currentDate);
+                      currentDate = getDateFromIsoString(currentDateISO);
+                      setRequestData('getVideoDays');
+                  } else {
+                      writeReport();
+                  }
+                });
                 break;
         }
     }
