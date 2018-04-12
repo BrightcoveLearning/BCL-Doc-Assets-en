@@ -288,117 +288,51 @@ var BCLS = (function(window, document) {
 
     /**
      * send API request to the proxy
-     * @param  {Object} options options for the request
-     * @param  {String} requestID the type of request = id of the button
-     * @param  {Function} [callback] callback function
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function makeRequest(options, requestID) {
-        var httpRequest = new XMLHttpRequest(),
-            responseRaw,
-            parsedData,
-            requestParams,
-            dataString,
-            renditions,
-            i,
-            // response handler
-            getResponse = function() {
-                try {
-                    if (httpRequest.readyState === 4) {
-                        if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                            // check for completion
-                            if (requestID === 'getStartDate') {
-                                responseRaw = httpRequest.responseText;
-                                parsedData = JSON.parse(responseRaw);
-                                // console.log('dateData', parsedData);
-                                // set total videos
-                                startDateISO = parsedData.reconciled_from;
-                                startDate = getDateFromIsoString(startDateISO);
-                                totalDays = getTotalDays(startDate);
-                                currentDate = startDate;
-                                currentDateISO = currentDate.toISOString().substring(0, 10);
-                                totalDays = getTotalDays(startDate);
-                                spanDaysTotal.textContent = totalDays;
-                                spanTotalVideos.textContent = totalVideos;
-                                spanCompletedVideos.textContent = videosCompleted;
-                                setRequestData('getVideoIds');
-                            } else if (requestID === 'getVideoIds') {
-                                if (httpRequest.responseText === '[]') {
-                                    // no video returned
-                                    alert('no videos found');
-                                }
-                                responseRaw = httpRequest.responseText;
-                                parsedData = JSON.parse(responseRaw);
-                                videosArray = parsedData.items;
-                                // console.log('videosData', videosArray);
-                                totalVideos = videosArray.length;
-                                for (i = 0; i < totalVideos; i++) {
-                                    videosArray[i].items = [];
-                                }
-                                if (videoNumber === 0) {
-
-                                }
-                                spanCompletedVideos.textContent = videosCompleted;
-                                spanVideosCount.textContent = videoNumber + 1;
-                                spanVideosTotal.textContent = totalVideos;
-                                spanTotalVideos.textContent = totalVideos;
-                                logText.appendChild(spanTotalVideos);
-                                logText.appendChild(spanLogMessage);
-                                logText.appendChild(spanCompletedVideos);
-                                logger.appendChild(pLogGettingVideoAnalytics);
-                                logger.appendChild(pLogGettingDailyAnalytics);
-                                setRequestData('getVideoDays');
-                            } else if (requestID === 'getVideoDays') {
-                                // console.log('response', httpRequest.responseText);
-                                if (!isDefined(httpRequest.responseText)) {
-                                    // no data returned
-                                    if (dayNumber < daysTotal) {
-                                        dayNumber++;
-                                        spanDaysCount.textContent = dayNumber + 1;
-                                        setRequestData('getVideoDays');
-                                    }
-                                } else {
-                                    responseRaw = httpRequest.responseText;
-                                    parsedData = JSON.parse(responseRaw);
-                                    if (parsedData.item_count > 0) {
-                                        parsedData.items[0].date = currentDateISO;
-                                        // console.log('data item', parsedData.items[0]);
-                                        videosArray[videoNumber].items.push(parsedData.items[0]);
-                                    }
-                                    dayNumber++;
-                                    if (dayNumber < totalDays) {
-                                        currentDateISO = addOneDay(currentDate);
-                                        currentDate = getDateFromIsoString(currentDateISO);
-                                        setRequestData('getVideoDays');
-                                    } else {
-                                        writeReport();
-                                    }
-
-                                }
-
-                            } else {
-                                alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        // only add client id and secret if both were submitted
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-        }
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
 
     function init() {
