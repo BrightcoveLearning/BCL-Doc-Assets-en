@@ -67,6 +67,7 @@ var BCLS = (function (window, document) {
                 options.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=destination_domain,destination_path&limit=all&fields=destination_domain,destination_path,video_view&sort=destination_domain&from=alltime';
                 requestURL.textContent = options.url;
                 makeRequest(options, function(response) {
+                  response = JSON.parse(response);
                     // create the video selector items from the response items
                     frag = new DocumentFragment();
                     csvStr = '"URL","Video Views"\n';
@@ -101,6 +102,7 @@ var BCLS = (function (window, document) {
                     options.url = 'https://analytics.api.brightcove.com/v1/data?accounts=' + account_id + '&dimensions=player,destination_domain&limit=all&fields=' + fields  + '&sort=player';
                     requestURL.textContent = options.url;
                     makeRequest(options, function(response) {
+                      response = JSON.parse(response);
                         // display the data
                         frag = new DocumentFragment();
                         csvStr = '"Domain","Player ID","Player Name","Video Views"\n';
