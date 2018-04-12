@@ -332,8 +332,6 @@ console.log('sharedVideos', sharedVideos);
   function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
       response,
-      requestParams,
-      dataString,
       proxyURL = options.proxyURL,
       // response handler
       getResponse = function() {
@@ -367,16 +365,6 @@ console.log('sharedVideos', sharedVideos);
     // set headers if there is a set header line, remove it
     // open and send request
     httpRequest.send(JSON.stringify(options));
-  }
-
-    // set response handler
-    httpRequest.onreadystatechange = getResponse;
-    // open the request
-    httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // open and send request
-    httpRequest.send(requestParams);
   }
 
   function init() {
