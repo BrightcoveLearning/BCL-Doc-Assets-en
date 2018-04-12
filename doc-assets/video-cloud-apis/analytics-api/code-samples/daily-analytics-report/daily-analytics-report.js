@@ -201,6 +201,13 @@ var BCLS = (function(window, document) {
             options = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        options.account_id = accountId;
+        options.proxyURL = proxyURL;
+        options.requestType = 'GET';
+        if (isDefined(clientId) && isDefined(clientSecret)) {
+          options.client_id = clientId;
+          options.client_secret = clientSecret;
+        }
         switch (id) {
             case 'getStartDate':
                 endPoint = '/status?accounts=' + accountId + '&dimensions=video&fields=' + fields;
