@@ -12,7 +12,7 @@ var BCLS = (function(window, document) {
         currentDateMS,
         currentDateISO,
         // api stuff
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         baseURL = 'https://analytics.api.brightcove.com/v1/data',
         totalVideos = 0,
         totalCalls = 0,
@@ -61,7 +61,7 @@ var BCLS = (function(window, document) {
      * @return {Boolean} true if variable is defined and has a value
      */
     function isDefined(x) {
-        if (x === '' || x === null || x === undefined || x === NaN) {
+        if (x === '' || x === null || x === undefined) {
             return false;
         }
         return true;
@@ -198,24 +198,26 @@ var BCLS = (function(window, document) {
      */
     function setRequestData(id) {
         var endPoint = '',
-            requestData = {};
+            options = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         switch (id) {
             case 'getStartDate':
                 endPoint = '/status?accounts=' + accountId + '&dimensions=video&fields=' + fields;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                makeRequest(options, function(response) {
+
+                });
                 break;
             case 'getVideoIds':
                 endPoint = '?accounts=' + accountId + '&dimensions=video&limit=all&fields=video&sort=-video_view&from=alltime';
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                // console.log('requestData', requestData);
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                // console.log('options', options);
+                makeRequest(options, function(response) {});
                 break;
             case 'getVideoDays':
                 var i,
@@ -227,22 +229,22 @@ var BCLS = (function(window, document) {
                     setRequestData('getVideoDays');
                 }
                 endPoint = '?accounts=' + accountId + '&dimensions=video&where=video==' + videosArray[videoNumber].video + '&from=' + currentDateISO + '&to=' + currentDateISO + '&fields=' + fields;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
                 spanDaysCount.textContent = dayNumber + 1;
-                getMediaData(requestData, id);
+                makeRequest(options, function(response) {});
                 break;
         }
     }
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
+     * @param  {Object} options options for the request
      * @param  {String} requestID the type of request = id of the button
      * @param  {Function} [callback] callback function
      */
-    function getMediaData(options, requestID) {
+    function makeRequest(options, requestID) {
         var httpRequest = new XMLHttpRequest(),
             responseRaw,
             parsedData,
