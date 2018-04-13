@@ -255,9 +255,10 @@ console.log('affiliatesToShareWith', affiliatesToShareWith);
     // set credentials
     options.client_id = client_id;
     options.client_secret = client_secret;
+    options.account_id = account_id;
 
     // set proxyURL
-    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
+    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
 
     switch (type) {
       case 'getVideoCount':
@@ -417,7 +418,6 @@ console.log('affiliatesToShareWith', affiliatesToShareWith);
             o.id = affiliatesToShareWith[i];
             body.push(o);
           }
-console.log('body', body);
           options.requestBody = JSON.stringify(body);
           makeRequest(options, function(response) {
             responseDecoded = JSON.parse(response);
