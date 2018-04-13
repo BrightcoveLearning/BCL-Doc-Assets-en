@@ -138,7 +138,7 @@ var BCLS = (function (window, document) {
         json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n';
         object_ld = {"@context": "http://schema.org/","@type": "VideoObject","name": videoData.name, "@id": videoData.url, "datePublished": videoData.created_at, "interactionStatistic": [ {"@type": "InteractionCounter", "interactionType": "http://schema.org/WatchAction", "userInteractionCount": videoData.total_plays}]};
         json_ld += JSON.stringify(object_ld) + ' \n';
-        json_ld += '</script> \n <!-- End Schema Code --> \n';
+        json_ld += '\</script\> \n <!-- End Schema Code --> \n';
         json_ld += '<!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
         json_ld += videoData.accountID + '/default_default/index.html?videoID=';
         json_ld += videoData.id + '" style="width:';
