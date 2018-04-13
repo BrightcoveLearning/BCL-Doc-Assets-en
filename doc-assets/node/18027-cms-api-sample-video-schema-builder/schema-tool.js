@@ -112,7 +112,8 @@ var BCLS = (function (window, document) {
 
     function generateSchema(type) {
       var microData,
-        json_ld;
+        json_ld,
+        object_ld;
         // insert other data that the schema needs
         videoData.playerID = isDefined(playerID.textContent) ? playerID.textContent : defaults.playerID;
         videoData.playerWidth = isDefined(playerWidth.textContent) ? playerWidth.textContent : defaults.playerWidth;
@@ -134,11 +135,11 @@ var BCLS = (function (window, document) {
         microData += videoData.id + '" style="width:';
         microData += videoData.playerWidth + ';height:';
         microData += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>';
-        json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n {"@context": "http://schema.org/", \n "@type": "VideoObject", \n "name": "';
-        json_ld += videoData.name + '", \n "@id": "';
-        json_ld += videoData.url + '", \n "datePublished": "';
-        json_ld += videoData.created_at + '", \n "interactionStatistic": [ \n {"@type": "InteractionCounter", \n "interactionType": "http://schema.org/WatchAction", \n "userInteractionCount": "';
-        json_ld += videoData.total_plays + '" \n ]} \n </script> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
+        json_ld = '<!-- Start Schema Code --> \n <script type="application/ld+json"> \n';
+        object_ld = {"@context": "http://schema.org/","@type": "VideoObject","name": videoData.name, "@id": videoData.url, "datePublished": videoData.created_at, "interactionStatistic": [ {"@type": "InteractionCounter", "interactionType": "http://schema.org/WatchAction", "userInteractionCount": videoData.total_plays}]};
+        json_ld += JSON.stringify(object_ld) + '\n';
+        json_ld += '</script> \n <!-- End Schema Code --> \n';
+        json_ld += '<!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
         json_ld += videoData.accountID + '/default_default/index.html?videoID=';
         json_ld += videoData.id + '" style="width:';
         json_ld += videoData.playerWidth + ';height:';
