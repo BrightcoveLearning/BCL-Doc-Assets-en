@@ -11,50 +11,55 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="sampleApp">Sample App</h2>
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
 
-<p>Below is a working sample app, which you can use on your own account or on a sample Brightcove account.</p>
+<div class="bcls-expander-content">
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
 
-<fieldset class="bcls-fieldset"><legend>Input</legend>
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
 
-<h5><strong>Account id:</strong> <input id="account_id" type="text" placeholder="1752604059001" /></h5>
+<p>These are the permissions you will need:</p>
 
-<h5><strong>Client id (needs read access for the CMS and Analytics APIs):</strong> <input id="client_id" type="text" size="60" placeholder="c5d0a622-5479-46d8-8d8a-5f034b943fab" /></h5>
+<figure class="bcls-figure"><img class="bcls-image" alt="Analytics API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-permissions.png" />
+<figcaption class="bcls-caption--image">Analytics API Permissions</figcaption>
+</figure>
 
-<h5><strong>Client secret (needs read access for the CMS and Analytics APIs):</strong> <input id="client_secret" type="text" size="60" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWKJ1BUwHIvSFG2IbgcxEGKg" /></h5>
+<p>You can also get your credentials via CURL or Postman - see:</p>
 
-<h5>Select Dimension(s) to report on:</h5>
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
 
-<div id="dimensionsCol1" class="fields-list-col">&nbsp;</div>
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
 
-<div id="dimensionsCol2" class="fields-list-col">&nbsp;</div>
+<pre class="line-numbers">
+<code class="language-json">[
+  "video-cloud/analytics/read",
+  "video-cloud/video/read"
+]</code></pre>
+</div>
+</section>
 
-<h5>Fields to return:<button id="fieldsButton" class="bcls-button">Select All</button><button id="deselectFieldsButton" class="bcls-button">Deselect All</button></h5>
+<section class="bcls-section">
+<h2 id="CodePen">CodePen</h2>
+Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/17990-analytics-recently-added-videos">GitHub repository</a>.
+<p data-height="1350" data-theme-id="dark" data-slug-hash="zWyjVB" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Analytics/CMS APIs Sample: Recently Added Videos" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/zWyjVB/">Analytics/CMS APIs Sample: Recently Added Videos</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
 
-<div id="fieldsCol1" class="fields-list-col">&nbsp;</div>
-
-<div id="fieldsCol2" class="fields-list-col">&nbsp;</div>
-
-<h5>Get videos created in the past <select name="dateSelect" id="dateSelect"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="30" selected="selected">30</option><option value="60">60</option><option value="90">90</option><option value="180">180</option><option value="365">365</option></select> days</h5>
-
-<p><button id="getData" class="bcls-button">Get Analytics Data</button></p>
-</fieldset>
-
-<fieldset class="bcls-fieldset"><legend>Output</legend>
-
-    <h5><strong id="count">Count will appear here...</strong></h5>
-    <h5><strong id="logger">Log messages will appear here...</strong></h5>
-
-<h5><strong>API request:</strong></h5>
-<textarea id="apiRequest" class="bcls-code"></textarea>
-
-<h5><strong>Request method:</strong> <code id="apiMethod">Request method will appear here...</code></h5>
-
-<h5><strong>Response data</strong></h5>
-
-<pre class="line-numbers"><code id="responseData" class="language-json">Response will appear here...</code></pre>
-
-</fieldset>
+<section class="bcls-section">
+  <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+  <div class="bcls-expander-content">
+    <p>Here are some tips to effectively use the above CodePen:</p>
+    <ul>
+      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/17990-analytics-recently-added-videos">GitHub repository</a>.</li>
+    </ul>
+  </div>
 </section>
 
 <section class="bcls-section">
@@ -69,56 +74,12 @@
 	<li>The <a href="#proxy">proxy</a> (gets access tokens and makes the API requests - written in PHP, but any server-side language will do)</li>
 </ul>
 
-<h3 id="html">HTML code</h3>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;fieldset&gt;
-    &lt;legend&gt;Input&lt;/legend&gt;
-    &lt;h5&gt;&lt;strong&gt;Account id:&lt;/strong&gt; &lt;input id="account_id" type="text" placeholder="1752604059001"&gt;&lt;/h5&gt;
-    &lt;h5&gt;&lt;strong&gt;Client id:&lt;/strong&gt; &lt;input id="client_id" type="text" size="60" placeholder="c5d0a622-5479-46d8-8d8a-5f034b943fab"&gt;&lt;/h5&gt;
-    &lt;h5&gt;&lt;strong&gt;Client secret:&lt;/strong&gt; &lt;input id="client_secret" type="text" size="60" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWKJ1BUwHIvSFG2IbgcxEGKg"&gt;&lt;/h5&gt;
-    &lt;h5&gt;Select Dimension(s) to report on:&lt;/h5&gt;
-    &lt;div id="dimensionsCol1" class="fields-list-col"&gt;&lt;/div&gt;
-    &lt;div id="dimensionsCol2" class="fields-list-col"&gt;&lt;/div&gt;
-
-    &lt;h5&gt;Fields to return: &lt;button id="fieldsButton" class="bcls-button"&gt;Select All&lt;/button&gt; &lt;button id="deselectFieldsButton" class="bcls-button"&gt;Deselect All&lt;/button&gt;&lt;/h5&gt;
-    &lt;div id="fieldsCol1" class="fields-list-col"&gt;&lt;/div&gt;
-    &lt;div id="fieldsCol2" class="fields-list-col"&gt;&lt;/div&gt;
-    &lt;h5&gt;Get videos created in the past
-&lt;select name="dateSelect" id="dateSelect"&gt;
-    &lt;option value="1"&gt;1&lt;/option&gt;
-    &lt;option value="2"&gt;2&lt;/option&gt;
-    &lt;option value="3"&gt;3&lt;/option&gt;
-    &lt;option value="4"&gt;4&lt;/option&gt;
-    &lt;option value="5"&gt;5&lt;/option&gt;
-    &lt;option value="6"&gt;6&lt;/option&gt;
-    &lt;option value="7"&gt;7&lt;/option&gt;
-    &lt;option value="30" selected="selected"&gt;30&lt;/option&gt;
-    &lt;option value="60"&gt;60&lt;/option&gt;
-    &lt;option value="90"&gt;90&lt;/option&gt;
-    &lt;option value="180"&gt;180&lt;/option&gt;
-    &lt;option value="365"&gt;365&lt;/option&gt;
-&lt;/select&gt;
-days
-&lt;/h5&gt;
-&lt;p&gt;&lt;button id="getData" class="bcls-button"&gt;Get Analytics Data&lt;/button&gt;&lt;/p&gt;
-&lt;/fieldset&gt;
-&lt;fieldset&gt;
-    &lt;legend&gt;Output&lt;/legend&gt;
-    &lt;h5&gt;&lt;strong id="count"&gt;&lt;/strong&gt;&lt;/h5&gt;
-    &lt;h5&gt;&lt;strong id="logger"&gt;&lt;/strong&gt;&lt;/h5&gt;
-    &lt;h5&gt;&lt;strong&gt;API request:&lt;/strong&gt;&lt;/h5&gt;
-    &lt;textarea id="apiRequest"&gt;&lt;/textarea&gt;
-    &lt;h5&gt;&lt;strong&gt;Request method:&lt;/strong&gt;&lt;/h5&gt;
-    &lt;pre id="apiMethod"&gt;&lt;/pre&gt;
-    &lt;h5&gt;&lt;strong&gt;Response data&lt;/strong&gt;&lt;/h5&gt;
-    &lt;pre id="responseData"&gt;&lt;/pre&gt;
-&lt;/fieldset&gt;
-</code></pre>
+<p>You can view the HTML and main JavaScript in the <a href="#CodePen">CodePen</a> above. The data model and information on the proxy are shown below.</p>
 
 <h3 id="model">Data model for the Analytics API</h3>
 
-<pre class="line-numbers"><code class="language-javascript">var aapi_model = {
+<pre class="line-numbers">
+<code class="language-javascript">var aapi_model = {
     baseURL: 'https://analytics.api.brightcove.com/v1',
     endpointGroups: [{
         name: 'report',
@@ -149,7 +110,7 @@ days
         fields: ['account', 'account.name', 'active_media', 'ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'daily_unique_viewers', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['The account dimension is not used as a filter.'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=account'},
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=account'},
             {filter: 'Not applicable'}
         ]
     }, {
@@ -158,8 +119,8 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'city', 'dma', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['A comma-delimited list of city names - e.g. Seattle,Boston'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country&where=city==London,Boston,San%20Francisco&fields=city'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=city'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=country&amp;where=city==London,Boston,San%20Francisco&amp;fields=city'}
         ]
     }, {
         name: 'country',
@@ -167,16 +128,16 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'country', 'country_name', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['A comma-delimited list of ISO-3611-1 country codes - e.g.: KO,US'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=country'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=city&where=country==US,GB,JA,KO&fields=country_name'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=country'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=city&amp;where=country==US,GB,JA,KO&amp;fields=country_name'}
         ]
     }, {
         name: 'date',
-        description: 'The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate report report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
+        description: 'The date dimension returns analytics for a single day. The user can specify the from and to parameters in yyyy-mm-dd format. This enables a user to query the analytics system to generate a report by days within the from and to date range. Any date range specified by the user will be interpreted to the current timezone for the account. The date ranges for the request are inclusive, exclusive i.e. if the user makes a request from=2013-09-24&amp;to=2013-09-27, the response will include results from 2013-09-24 00:00:00 to 2013-09-27 00:00:00.',
         fields: ['ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['The date dimension is not used as a filter.'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date'},
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=date'},
             {filter: 'Not applicable'}
         ]
     }, {
@@ -185,7 +146,7 @@ days
         fields: ['active_media', 'bytes_delivered', 'ad_mode_begin', 'ad_mode_complete', 'daily_unique_viewers', 'date_hour', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['The date_hour dimension is not used as a filter.'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=date_hour&from=-6h'},
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=date_hour&amp;from=-6h'},
             {filter: 'Not applicable'}
         ]
     }, {
@@ -194,8 +155,8 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_domain', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['A comma-delimited list of domains - e.g. brightcove.com'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain,destination_path&where=destanation_domain==support.brightcove.com,docs.brightcove.com'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=destination_domain'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=destination_domain,destination_path&amp;where=destanation_domain==support.brightcove.com,docs.brightcove.com'}
         ]
     }, {
         name: 'destination_path',
@@ -203,8 +164,8 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['A comma-delimited list of paths - e.g. /en/video-cloud/docs/editing-settings-players-plug-ins-tab'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_path'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_domain,destination_path&where=destanation_path==/training-videos'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=destination_path'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=destination_domain,destination_path&amp;where=destanation_path==/training-videos'}
         ]
     }, {
         name: 'device_os',
@@ -212,8 +173,8 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'device_os', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['android', 'bada', 'ios', 'rim', 'symbian', 'web_os', 'windows', 'os_x', 'mac', 'linux', 'other'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_os'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_os==os_x,mac,ios'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=device_os'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=videos&amp;where=device_os==os_x,mac,ios'}
         ]
     },{
         name: 'device_type',
@@ -221,8 +182,8 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'device_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['mobile', 'tablet', 'tv', 'desktop', 'other'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=videos&where=device_type==mobile,tablet'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=device_type'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=videos&amp;where=device_type==mobile,tablet'}
         ]
     }, {
         name: 'player',
@@ -230,8 +191,8 @@ days
         fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'player', 'player_load', 'player_name', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
         filter_values: ['player ids as a comma-delimited list'],
         samples: [
-            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player'},
-            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=player==BJdk8Ms5,45dcbbdf-2807-4422-8fc7-5a1eb04d3f38,NkPHaVb2l'}
+            {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=player'},
+            {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=player&amp;where=player==BJdk8Ms5,45dcbbdf-2807-4422-8fc7-5a1eb04d3f38,NkPHaVb2l'}
         ]
     }, {
         name: 'referrer_domain',
@@ -1088,596 +1049,9 @@ days
 };
 </code></pre>
 
-<h3 id="javascript">Javascript</h3>
-
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document, aapi_model) {
-  var cmsBaseURL              = 'https://cms.api.brightcove.com/v1/accounts/',
-      aapiBaseURL             = 'https://analytics.api.brightcove.com/v1/data',
-      proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/aapi-proxy.php',
-      videoIds                = [],
-      videoIdSets             = [],
-      dimension,
-      selectedDimensions      = [],
-      fieldsToReturn          = [],
-      fieldsCheckBoxes,
-      dimensionCheckboxes,
-      videoCount              = 0,
-      totalVideoCalls         = 0,
-      videoCallNumber         = 0,
-      totalAnalyticsCalls     = 0,
-      analyticsCallNumber     = 0,
-      analyticsObject         = {},
-      accountId,
-      clientId,
-      clientSecret,
-      searchString,
-      pageSize                = 25,
-      account_id              = document.getElementById('account_id'),
-      client_id               = document.getElementById('client_id'),
-      client_secret           = document.getElementById('client_secret'),
-      returnFields            = document.getElementById('returnFields'),
-      fieldsButton            = document.getElementById('fieldsButton'),
-      deselectFieldsButton    = document.getElementById('deselectFieldsButton'),
-      dimensionsCol1          = document.getElementById('dimensionsCol1'),
-      dimensionsCol2          = document.getElementById('dimensionsCol2'),
-      fieldsCol1              = document.getElementById('fieldsCol1'),
-      fieldsCol2              = document.getElementById('fieldsCol2'),
-      dateSelect              = document.getElementById('dateSelect'),
-      count                   = document.getElementById('count'),
-      allButtons              = document.getElementsByTagName('button'),
-      getData                 = document.getElementById('getData'),
-      apiRequest              = document.getElementById('apiRequest'),
-      apiMethod               = document.getElementById('apiMethod'),
-      generatedContent        = document.getElementById('generatedContent'),
-      responseData            = document.getElementById('responseData'),
-      logger                  = document.getElementById('logger'),
-      videoIds = [],
-      i,
-      iMax;
-
-    /**
-    * tests for all the ways a variable (string or number) might be undefined or not have a value
-    * @param {String|Numbar} x the variable to test
-    * @return {Boolean} true if variable is defined and has a value
-    **/
-    function isDefined(x) {
-        if ( x === "" || x === null || x === undefined || x === NaN) {
-           return false;
-        }
-        return true;
-    }
-
-    /**
-     * get selected value for single select element
-     * @param {htmlElement} e the select element
-     * @return {Object} object containing the `value` and selected `index`
-     */
-    function getSelectedValue(e) {
-        var val = e.options[e.selectedIndex].value,
-            idx = e.selectedIndex;
-        return {
-            value: val,
-            index: idx
-        };
-    }
-
-    /**
-     * determines whether specified item is in an array
-     *
-     * @param {array} array to check
-     * @param {string} item to check for
-     * @return {boolean} true if item is in the array, else false
-     */
-    function isItemInArray(arr, item) {
-        var i,
-            iMax = arr.length;
-        for (i = 0; i < iMax; i++) {
-            if (arr[i] === item) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * find index of an object in array of objects
-     * based on some property value
-     *
-     * @param {array} targetArray array to search
-     * @param {string} objProperty object property to search
-     * @param {string} value of the property to search for
-     * @return {integer} index of first instance if found, otherwise returns -1
-    */
-    function findObjectInArray(targetArray, objProperty, value) {
-        var i, totalItems = targetArray.length, objFound = false;
-        for (i = 0; i < totalItems; i++) {
-            if (targetArray[i][objProperty] === value) {
-                objFound = true;
-                return i;
-            }
-        }
-        if (objFound === false) {
-            return -1;
-        }
-    }
-
-    /**
-     * dedupe a simple array of strings or numbers
-     * @param {array} arr the array to be deduped
-     * @return {array} the deduped array
-     */
-    function dedupe(arr) {
-        var i,
-            len = arr.length,
-            out = [],
-            obj = {};
-
-        for (i = 0;i < len; i++) {
-            obj[arr[i]] = 0;
-        }
-        for (i in obj) {
-            out.push(i);
-        }
-        return out;
-    }
-
-    /**
-     * getSelectedCheckboxes returns an array of the values
-     * of checked checkboxes
-     * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
-     * @param {Array} targetArray the array to store the values in
-     */
-    function getSelectedCheckboxes(checkboxCollection) {
-        var i,
-            tmpArray = [],
-            iMax = checkboxCollection.length;
-        for (i = 0; i < iMax; i += 1) {
-            if (checkboxCollection[i].checked) {
-                tmpArray.push(checkboxCollection[i].value);
-            }
-        }
-        return tmpArray;
-    }
-
-    /**
-     * disables all buttons so user can't submit new request until current one finishes
-     */
-    function disableButtons() {
-        var i,
-            iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].setAttribute('disabled', 'disabled');
-        }
-        return;
-    }
-
-    /**
-     * re-enables all buttons
-     */
-    function enableButtons() {
-        var i,
-            iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].removeAttribute('disabled');
-        }
-        return;
-    }
-
-    /**
-     * updateRequestDisplay - gets the selected checkboxes and update the fields list display
-     */
-    function updateRequestDisplay() {
-        apiRequest.textContent = 'https://analytics.api.brightcove.com/v1/data?accounts=ACCOUNT_ID';
-        if (selectedDimensions.length > 0) {
-            apiRequest.textContent += '&dimensions=' + selectedDimensions.join(',');
-        }
-        if (fieldsToReturn.length > 0) {
-            apiRequest.textContent += '&fields=' + fieldsToReturn.join(',');
-        }
-    }
-
-    /**
-     * adds dimension options from the aapi_model
-     */
-    function addDimensionOptions() {
-        var i,
-            iMax,
-            dimensionsArray = [],
-            j,
-            jMax,
-            option,
-            input,
-            label,
-            text,
-            br,
-            half;
-        // clear existing dimension checkboxes
-        dimensionsCol1.innerHTML = '';
-        dimensionsCol2.innerHTML = '';
-        // add the return field options
-        dimensionsArray = aapi_model.dimensions;
-        i = dimensionsArray.length;
-        while (i > 0) {
-            i--;
-            if (isItemInArray(aapi_model.combinations.video.incompatible_dimensions, dimensionsArray[i].name)) {
-                dimensionsArray.splice(i, 1);
-            }
-        }
-        iMax = dimensionsArray.length;
-        half = Math.ceil(iMax / 2);
-        for (i = 0; i < half; i += 1) {
-            input = document.createElement('input');
-            label = document.createElement('lable');
-            input.setAttribute('name', 'dimensionsChk');
-            input.setAttribute('id', 'dim' + dimensionsArray[i].name);
-            input.setAttribute('data-index', 'i');
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', dimensionsArray[i].name);
-            label.setAttribute('for', 'dim' + dimensionsArray[i].name);
-            text = document.createTextNode(' ' + dimensionsArray[i].name);
-            br = document.createElement('br');
-            dimensionsCol1.appendChild(input);
-            dimensionsCol1.appendChild(label);
-            label.appendChild(text);
-            dimensionsCol1.appendChild(br);
-            }
-        for (i = half; i < iMax; i += 1) {
-            input = document.createElement('input');
-            label = document.createElement('lable');
-            input.setAttribute('name', 'dimensionsChk');
-            input.setAttribute('id', 'dim' + dimensionsArray[i].name);
-            input.setAttribute('data-index', 'i');
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', dimensionsArray[i].name);
-            label.setAttribute('for', 'dim' + dimensionsArray[i].name);
-            text = document.createTextNode(' ' + dimensionsArray[i].name);
-            br = document.createElement('br');
-            dimensionsCol2.appendChild(input);
-            dimensionsCol2.appendChild(label);
-            label.appendChild(text);
-            dimensionsCol2.appendChild(br);
-        }
-        // get a reference to the checkbox collection
-        dimensionCheckboxes = document.getElementsByName('dimensionsChk');
-    }
-
-    /**
-     * addFieldOptions generates checkboxes for each field
-     * available for the selected dimension
-     *
-     * @ {Number} idx the index of the dimension object in the aapi_model
-     */
-    function addFieldOptions() {
-        var fieldsArray = [],
-            dimensionName,
-            dimensionIndex,
-            thisDimensionFields,
-            i,
-            iMax,
-            j,
-            jMax,
-            input,
-            label,
-            text,
-            br,
-            half;
-        // clear existing field checkboxes
-        fieldsCol1.innerHTML = '';
-        fieldsCol2.innerHTML = '';
-
-        dimensionName = selectedDimensions.join('__');
-        // video is always part of the dimensions
-        if (!isItemInArray(selectedDimensions, 'video')) {
-            dimensionName += '__video';
-        }
-        console.log('aapi_model.combinations[dimensionName]', aapi_model.combinations[dimensionName]);
-        // dimensionIndex = findObjectInArray(aapi_model.dimensions, 'name', dimensionName);
-        fieldsArray = aapi_model.combinations[dimensionName].fields;
-        // add the return field options
-        iMax = fieldsArray.length;
-        half = Math.ceil(iMax / 2);
-        for (i = 0; i < half; i += 1) {
-            input = document.createElement('input');
-            label = document.createElement('label');
-            input.setAttribute('name', 'fieldsChk');
-            input.setAttribute('id', 'field' + fieldsArray[i]);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', fieldsArray[i]);
-            label.setAttribute('for', 'field' + fieldsArray[i]);
-            text = document.createTextNode(' ' + fieldsArray[i]);
-            br = document.createElement('br');
-            fieldsCol1.appendChild(input);
-            fieldsCol1.appendChild(label);
-            label.appendChild(text);
-            fieldsCol1.appendChild(br);
-        }
-        for (i = half; i < iMax; i += 1) {
-            input = document.createElement('input');
-            label = document.createElement('label');
-            input.setAttribute('name', 'fieldsChk');
-            input.setAttribute('id', 'field' + fieldsArray[i]);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('value', fieldsArray[i]);
-            label.setAttribute('for', 'field' + fieldsArray[i]);
-            text = document.createTextNode(' ' + fieldsArray[i]);
-            br = document.createElement('br');
-            fieldsCol2.appendChild(input);
-            fieldsCol2.appendChild(label);
-            label.appendChild(text);
-            fieldsCol2.appendChild(br);
-        }
-        // get a reference to the checkbox collection
-        fieldsCheckboxes = document.getElementsByName('fieldsChk');
-    }
-
-    /**
-     * splitVideoIdsIntoSets - splits the videoIds array into
-     * sets of 100 or less (because you can only get analytics
-     * on about 100 videos at a time without exceeding the maximum
-     * url length for the Analytics API request)
-     */
-    function splitVideoIdsIntoSets() {
-        var tmpArray = [];
-        // grab the first 100 as a new array, push into sets array
-        tmpArray = videoIds.splice(0, 100);
-        videoIdSets.push(tmpArray);
-        // function recalls itself until videoIds array is empty
-        if (videoIds.length > 0) {
-            splitVideoIdsIntoSets();
-        } else {
-            return;
-        }
-    }
-
-    /**
-     * sets up the data for the API request
-     * @param {String="getCount","getVideos","getData"} id the id for the call type
-     */
-    function setRequestData(id) {
-        var endPoint = searchString,
-            requestData = {},
-            baseURL;
-        // disable buttons to prevent a new request before current one finishes
-        disableButtons();
-        switch (id) {
-            case 'getCount':
-                baseURL = cmsBaseURL + accountId + '/counts/videos?';
-                endPoint = searchString;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
-                break;
-            case 'getVideos':
-                baseURL = cmsBaseURL + accountId + '/videos?';
-                endPoint = searchString + '&limit=' + pageSize + '&sort=created_at&offset=' + pageSize * videoCallNumber;
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
-                break;
-            case 'getAnalytics':
-                var videoIdStr = videoIdSets[analyticsCallNumber].join(',');
-                baseURL = aapiBaseURL;
-                dimension = selectedDimensions.join(',');
-                endPoint = '?accounts=' + accountId + '&dimensions=' + dimension + '&where=video==' + videoIdStr + '&fields=' + fieldsToReturn.join(',');
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                apiMethod.textContent = requestData.requestType;
-                getMediaData(requestData, id);
-                break;
-        }
-    }
-
-    /**
-     * send API request to the proxy
-     * @param  {Object} requestData options for the request
-     * @param  {String} requestID the type of request = id of the button
-     */
-    function getMediaData(options, requestID) {
-        var httpRequest = new XMLHttpRequest(),
-            responseRaw,
-            parsedData,
-            requestParams,
-            dataString,
-            i,
-            iMax,
-            // response handler
-            getResponse = function() {
-                try {
-                  if (httpRequest.readyState === 4) {
-                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                      // check for completion
-                      if (requestID === 'getCount') {
-                        if (httpRequest.responseText === '[]') {
-                            // no video returned
-                            alert('no video returned');
-                        }
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        // set total videos
-                        videoCount = parsedData.count;
-                        // calulate total video calls
-                        totalVideoCalls = Math.ceil(videoCount / pageSize);
-                        console.log('count', videoCount);
-                        console.log('totalVideoCalls', totalVideoCalls);
-                        count.textContent = 'Total videos: ' + videoCount;
-                        setRequestData('getVideos');
-                    } else if (requestID === 'getVideos') {
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        console.log('parsedData', parsedData);
-                        // add the video ids to the videoIds array
-                        iMax = parsedData.length;
-                        for (i = 0; i < iMax; i += 1) {
-                            videoIds.push(parsedData[i].id);
-                        }
-                        // if there are more videos, make another requestID
-                        videoCallNumber++;
-                        if (videoCallNumber < totalVideoCalls) {
-                            // make the next call
-                            setRequestData('getVideos');
-                        } else {
-                            console.log('videoIds', videoIds);
-                            // got all the videos, move on
-                            // split the videoIds array into sets of 100
-                            splitVideoIdsIntoSets();
-                            console.log('videoIdSets', videoIdSets);
-                            // make the analytics requests
-                            setRequestData('getAnalytics');
-                        }
-                    } else if (requestID === 'getAnalytics') {
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        console.log('parsedData', parsedData);
-                        // add this data to the summation object
-                        analyticsObject.item_count += parsedData.item_count;
-                        analyticsObject.summary.video_view += parsedData.summary.video_view;
-                        iMax = parsedData.items.length;
-                        for (i = 0; i < iMax; i += 1) {
-                            analyticsObject.items.push(parsedData.items[i]);
-                        }
-                        // check to see if there are more calls to make
-                        analyticsCallNumber++;
-                        if (analyticsCallNumber < totalAnalyticsCalls) {
-                            // make the next call
-                            setRequestData('getAnalytics');
-                        } else {
-                            // we are done - display the final results
-                            responseData.textContent = JSON.stringify(analyticsObject, null, '  ');
-                        }
-                      }
-                    } else {
-                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                    }
-                  }
-                } catch (e) {
-                  alert('Caught Exception: ' + e);
-                }
-            };
-        // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-        if (isDefined(clientId) && isDefined(clientSecret)) {
-            requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-        }
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
-    }
-
-    function init() {
-        // set up dimensions
-        addDimensionOptions();
-        // set up fields
-        // set up analytics object
-        analyticsObject.item_count = 0;
-        analyticsObject.summary = {};
-        analyticsObject.summary.video_view = 0;
-        analyticsObject.items = [];
-        // event listeners
-        getData.addEventListener('click', function() {
-            var i,
-                iMax,
-                selectedDateObj,
-                    dimensionObj,
-                    displayFields = '';
-                // make sure arrays are emptied out
-                selectedDimensions = [];
-                fieldsToReturn = [];
-            // get account values
-            accountId = isDefined(account_id.value) ? account_id.value : '1752604059001';
-            console.log('accountId', accountId);
-            clientId = client_id.value;
-            clientSecret = client_secret.value;
-            // get dimension in case it wasn't changed
-            selectedDimensions = getSelectedCheckboxes(dimensionCheckboxes);
-            // in case nothing was selected
-            if (selectedDimensions.length === 0) {
-                selectedDimensions = ['video'];
-            }
-            // get date range in case it wasn't changed
-            selectedDateObj = getSelectedValue(dateSelect);
-            searchString = 'q=created_at:%2D' + selectedDateObj.value + 'd..';
-            // get the array of fields from the fieldsCheckboxes
-            fieldsToReturn = getSelectedCheckboxes(fieldsCheckboxes);
-            if (fieldsToReturn.length === 0) {
-                // in case nothing was selected
-                fieldsToReturn = ['video_view'];
-            }
-            // make the request
-            // get the video count
-            setRequestData('getCount');
-        });
-
-        // dimensions
-        iMax = dimensionCheckboxes.length;
-        for (i = 0; i < iMax; i += 1) {
-            dimensionCheckboxes[i].addEventListener('click', function() {
-                var dateArray = [],
-                j,
-                jMax,
-                thisDimension,
-                idx;
-                // empty selected dimensions arrays
-                selectedDimensions = [];
-                selectedDimensions = getSelectedCheckboxes(dimensionCheckboxes);
-                if (aapi_model.combinations.hasOwnProperty(selectedDimensions.join('__'))) {
-                    addFieldOptions();
-                } else {
-                    fieldsCol1.innerHTML = '<strong>The dimension combination is not valid</strong>';
-                    fieldsCol2.innerHTML = '';
-                }
-            });
-        }
-
-
-        fieldsButton.addEventListener('click', function() {
-            var i,
-                    iMax = fieldsCheckboxes.length;
-            for (i = 0; i < iMax; i += 1) {
-                    fieldsCheckboxes[i].setAttribute('checked', 'checked');
-            }
-                fieldsToReturn = getSelectedCheckboxes(fieldsCheckboxes);
-                // update fields display
-                updateRequestDisplay();
-        });
-
-        deselectFieldsButton.addEventListener('click', function() {
-            var i,
-                    iMax = fieldsCheckboxes.length;
-            for (i = 0; i < iMax; i += 1) {
-                    fieldsCheckboxes[i].removeAttribute('checked');
-            }
-                fieldsToReturn = [];
-                // update fields display
-                updateRequestDisplay();
-        });
-
-        dateSelect.addEventListener('change', function() {
-            var selectedValueObj = getSelectedValue(dateSelect);
-            searchString = 'q=created_at:%2D' + selectedValueObj.value + 'd..';
-        });
-
-    }
-
-    init();
-})(window, document, aapi_model);</code></pre>
-
 <h3 id="proxy">Proxy</h3>
 
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+<aside class="bcls-aside bcls-aside--information">In order to build your own version of the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
 <ul>
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
 	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
@@ -1685,4 +1059,3 @@ days
 </aside>
 </section>
 </article>
-<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v1.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/code-samples/analytics-recent-videos/analytics-recent-videos.js"></script>

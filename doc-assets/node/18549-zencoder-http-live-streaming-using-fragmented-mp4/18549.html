@@ -1,0 +1,337 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+<pre class="line-numbers"><code class="language-json">{
+  "skip_audio": true,
+  "base_url": "s3://my-bucket/",
+  "decoder_bitrate_cap": 900,
+  "decoder_buffer_size": 2400,
+  "filename": "file-640k.m3u8",
+  "max_frame_rate": 30,
+  "public": 1,
+  "type": "segmented",
+  "video_bitrate": 600,
+  "width": 400,
+  "format": "m4f",
+  "streaming_delivery_format" : "hls",
+  "byte_range_segmenting" : "true",
+  "max_hls_protocol_version" : 7
+}</code></pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="encryption">Encryption</h2>
+    <p>
+      Zencoder also supports generating CBCS-encrypted fragmented MP4, HLS outputs with necessary headers for integrating with Fairplay DRM. For each output, specify <a href="/node/17871">Encryption</a> options. Once you have those keys, the Zencoder API structure for a single rendition
+      is:
+    </p>
+<pre class="line-numbers"><code class="language-json">{
+  "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
+  "outputs": [
+    {
+      "skip_audio": true,
+      "base_url": "s3://my-bucket/",
+      "decoder_bitrate_cap": 900,
+      "decoder_buffer_size": 2400,
+      "filename": "file-640k.m3u8",
+      "max_frame_rate": 30,
+      "public": 1,
+      "type": "segmented",
+      "video_bitrate": 600,
+      "width": 400,
+      "format": "m4f",
+      "streaming_delivery_format" : "hls",
+      "max_hls_protocol_version" : 7,
+      "byte_range_segmenting" : "true",
+      "drm_method" : "fairplay",
+      "encryption_method": "cbcs",
+      "encryption_key_url":"http://example.com/encryption.key",
+      "encryption_key": "a5f6a7d6ef5d6a7a02a23dd35dd56a63",
+      "encryption_iv" : "6345216ef5d6a7a02a23dd35d456987"
+    }
+  ]
+}</code></pre>
+    <h3>Notes</h3>
+    <ul>
+      <li>It is recommended to do audio only and video only segmented outputs  and use alternate audio while generating playlist.</li>
+      <li>In playlist output DO NOT mix <code>ts</code> and <code>m4f</code> outputs (Causes audio video sync issues).</li>
+      <li>Captions with fragmented mp4 HLS outputs are not supported in zencoder yet.</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+  <h2 id="complete_example">Complete example</h2>
+  <p>Multiple outputs of different bitrates may be specified and referenced by the playlist. These settings match the guidelines given in our <a href="/node/17788">iOS encoding guide</a>.</p>
+  <h3>Audio outputs</h3>
+<pre class="line-numbers"><code class="language-json">{
+  "outputs": [
+      {
+            "public": true,
+            "label": "Audio-64",
+            "base_url": "s3://my-bucket/Audio/64k/",
+            "filename": "audio_64k.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "audio_codec": "aac",
+            "audio_bitrate": "64",
+            "skip_video": true
+        },
+        {
+            "public": true,
+            "label": "Audio-128",
+            "base_url": "s3://my-bucket/Audio/128k/",
+            "filename": "audio_128k.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "audio_codec": "aac",
+            "audio_bitrate": "128",
+            "skip_video": true
+        }
+    ]
+}</code></pre>
+  <h3>Video outputs</h3>
+<pre class="line-numbers"><code class="language-json">{
+ "outputs": [
+        {
+            "public": true,
+            "label": "Rendition1",
+            "base_url": "s3://my-bucket/Rendition1",
+            "filename": "Rendition1.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "416x234",
+            "video_bitrate": "145",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition2",
+            "base_url": "s3://my-bucket/Rendition2",
+            "filename": "Rendition2.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "480x270",
+            "video_bitrate": "300",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition3",
+            "base_url": "s3://my-bucket/Rendition3",
+            "filename": "Rendition3.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "640x360",
+            "video_bitrate": "660",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition4",
+            "base_url": "s3://my-bucket/Rendition4",
+            "filename": "Rendition4.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "768x432",
+            "video_bitrate": "990",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition5",
+            "base_url": "s3://my-bucket/Rendition5",
+            "filename": "Rendition5.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "960x540",
+            "video_bitrate": "1700",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition6",
+            "base_url": "s3://my-bucket/Rendition6",
+            "filename": "Rendition6.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "1280x720",
+            "video_bitrate": "2400",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition7",
+            "base_url": "s3://my-bucket/Rendition7",
+            "filename": "Rendition7.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "1920x1080",
+            "video_bitrate": "4500",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition8",
+            "base_url": "s3://my-bucket/Rendition8",
+            "filename": "Rendition8.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "2560x1440",
+            "video_bitrate": "8100",
+            "skip_audio": true
+        },
+        {
+            "public": true,
+            "label": "Rendition9",
+            "base_url": "s3://my-bucket/Rendition9",
+            "filename": "Rendition9.m3u8",
+            "type": "segmented",
+            "segment_seconds": 6,
+            "byte_range_segmenting": true,
+            "format": "m4f",
+            "streaming_delivery_format": "hls",
+            "generate_keyframe_manifest": "true",
+            "fixed_keyframe_interval": "true",
+            "keyframe_rate": 0.5,
+            "video_codec": "hevc",
+            "size": "3840x2160",
+            "video_bitrate": "11600",
+            "skip_audio": true
+        }
+    ]
+}</code></pre>
+  <h3>Playlist outputs</h3>
+<pre class="line-numbers"><code class="language-json">{
+    "outputs":[
+       {
+            "public": true,
+            "label": "master-playlist",
+            "base_url": "s3://my-bucket/",
+            "filename": "master_playlist.m3u8",
+            "hls_protocol_version": 7,
+            "type": "playlist",
+            "allow_skipped_sources": true,
+            "alternate_audio": {
+                "64k_audio": {
+                    "path": "Audio/64k/audio_64k.m3u8",
+                    "language": "en",
+                    "default": true,
+                    "source": "Audio-64"
+                },
+                "128k_audio": {
+                    "path": "Audio/128k/audio_128k.m3u8",
+                    "language": "en",
+                    "source": "Audio-128"
+                }
+            },
+            "streams": [
+                {
+                    "path": "Rendition1/Rendition1.m3u8",
+                    "source": "Rendition1",
+                    "audio": "64k_audio"
+                },
+                {
+                    "path": "Rendition2/Rendition2.m3u8",
+                    "source": "Rendition2",
+                    "audio": "64k_audio"
+                },
+                {
+                    "path": "Rendition3/Rendition3.m3u8",
+                    "source": "Rendition3",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition4/Rendition4.m3u8",
+                    "source": "Rendition4",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition5/Rendition5.m3u8",
+                    "source": "Rendition5",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition6/Rendition6.m3u8",
+                    "source": "Rendition6",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition7/Rendition7.m3u8",
+                    "source": "Rendition7",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition8/Rendition8.m3u8",
+                    "source": "Rendition8",
+                    "audio": "128k_audio"
+                },
+                {
+                    "path": "Rendition9/Rendition9.m3u8",
+                    "source": "Rendition9",
+                    "audio": "128k_audio"
+                }
+            ]
+        }
+    ]
+}</code></pre>
+</section>
+</article>

@@ -3,14 +3,14 @@ var BCLS = (function (window, document, datepickr) {
         useMyAccount = document.getElementById("useMyAccount"),
         basicInfo = document.getElementById("basicInfo"),
         accountID = document.getElementById("accountID"),
-        client_id = document.getElementById("client_id"),
-        client_secret = document.getElementById("client_secret"),
+        clientID = document.getElementById("clientID"),
+        clientSecret = document.getElementById("clientSecret"),
         dateSelector = document.getElementById("dateSelector"),
         playerSelector = document.getElementById("playerSelector"),
         videoSelector = document.getElementById("videoSelector"),
         reportTableBody = document.getElementById("reportTableBody"),
         csvDisplay = document.getElementById('csvDisplay'),
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/analyitcs-by-player-day-proxy.php",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php",
         currentPlayerIndex = 0,
         currentVideoIndex = 0,
         currentDayIndex = 0,
@@ -304,28 +304,23 @@ var BCLS = (function (window, document, datepickr) {
                         }
                     }
                 };
-            if (isDefined(client_id.value)) {
-                options.client_id = client_id.value;
+            if (isDefined(clientID.value)) {
+                options.client_id = clientID.value;
             }
-            if (isDefined(client_secret.value)) {
-                options.client_secret =  client_secret.value;
+            if (isDefined(clientSecret.value)) {
+                options.client_secret =  clientSecret.value;
             }
             options.url = callURL;
             options.requestMethod = "GET";
+            options.account_id = accountID.value;
             options.requestData = null;
             // set up request data
-            requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=GET';
-            if (options.client_id && options.client_secret) {
-                requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-            }
             // set response handler
             httpRequest.onreadystatechange = getResponse;
             // open the request
             httpRequest.open('POST', proxyURL);
-            // set headers
-            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             // open and send request
-            httpRequest.send(requestParams);
+            httpRequest.send(JSON.stringify(options));
         }
         // get the analytics data for the videos
         function getAnalyticsData() {

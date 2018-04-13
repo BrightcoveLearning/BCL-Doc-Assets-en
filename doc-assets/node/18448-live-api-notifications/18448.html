@@ -10,7 +10,9 @@
 
 <p>You can request notifications by including one or more <code>notifications</code> fields in the outputs your <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request.</p>
 
-<p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post", "credentials": "refToMyCreds"}". A notification will be sent to all destinations when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+<p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post", "credentials": "reference_to_your_credentials"}". A notification will be sent to the destination you specify when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type (<code>first_segment_uploaded</code>, <code>state_change</code>, etc) is allowed.</aside>
 
 <p>Here is an example</p>
 
@@ -20,15 +22,13 @@
     "region": "us-west-2",
     "reconnect_time": 20,
     <span class="bcls-highlight">"notifications": [
-        http://httpbin.org/post?liveStateChange",
-        {
-            "url": "http://httpbin.org/post?liveStarted",
-            "event": "first_segment_uploaded"
-        },
-        {
-            "url": "http://httpbin.org/post?liveFinished",
-            "event": "output_finished"
-        }]</span>,
+          {"url": "http://httpbin.org/post/URLA",
+           "credentials": "reference_to_your_credentials",
+           "event": "first_segment_uploaded"}",
+          {"url": "http://httpbin.org/post/URLB",
+          "credentials": "reference_to_your_credentials",
+          "event": "state_changed"}"
+    	],</span>,
     "outputs": [
     {
         "label": "hls720p",
@@ -50,32 +50,314 @@
     {
         "url":"s3://YOURBUCKET/path/filename.mp4",
         "credentials": "accConfiguredCredsAWSIdSecret",
-        <span class="bcls-highlight">"notifications":    [{
+        <span class="bcls-highlight">"notifications":    [
+        {
             "url": "http://httpbin.org/post?vodStateChange"
         },
         {
             "url": "http://httpbin.org/post?vodFinished",
             "event": "output_finished"
-        }]</span>
+        }
+        ]</span>
     }]
 }</code></pre>
 </section>
+
 <section class="bcls-section">
-    <h2 id="Events">Events</h2>
-    <p>Below is a list of events that notifications are sent for:</p>
-    <ul>
-        <li><code>state_changed</code></li>
-        <li><code></code></li>
-        <li><code></code></li>
-        <li><code></code></li>
-        <li><code></code></li>
-        <li><code></code></li>
-    </ul>
+<h2 id="Events">Events</h2>
+
+<p>Here are the events you can listen for:</p>
+
+<ul>
+	<li><code>state_changed</code></li>
+	<li><code>first_segment_uploaded</code></li>
+	<li><code>output_finished</code></li>
+</ul>
+
+<p>The <code>state_changed</code> will notify on the following states:</p>
+
+<ul>
+	<li><code>waiting</code></li>
+	<li><code>processing</code></li>
+	<li><code>disconnected</code></li>
+	<li><code>standby</code></li>
+	<li><code>cancelling</code></li>
+	<li><code>cancelled</code></li>
+	<li><code>finishing</code></li>
+	<li><code>finished</code></li>
+</ul>
+
+<p>For SSAI jobs, <code>state_changed</code> will include the following to represent the slate (required) prior to allowing SSAI playback:</p>
+
+<ul>
+	<li><code>start_transcoding</code></li>
+	<li><code>transcoding</code></li>
+	<li><code>error</code></li>
+	<li><code>ready</code></li>
+</ul>
 </section>
 
 <section class="bcls-section">
-<h2 id="Sample_notifications">Sample notifications</h2>
+<h2 id="sample_notification">Sample notifications</h2>
 
-<p>&nbsp;</p>
+<h3>Live stream notification</h3>
+
+<p>Here is a sample notification for a <code>state_changed</code> event for a live job:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "outputs": [
+        {
+            "rfc_6381_video_codec": null,
+            "finished_at": "2017-10-19T20:08:11.115Z",
+            "segment_seconds": 4,
+            "created_at": "2017-10-19T19:47:04.534Z",
+            "privacy": false,
+            "md5_checksum": null,
+            "audio_codec": "AAC",
+            "error_class": null,
+            "updated_at": "2017-10-19T20:08:11.115Z",
+            "video_bitrate_in_kbps": 2150.4,
+            "id": "0-621669558be84a7da4ff20bccb9a6a1a",
+            "state": "cancelled",
+            "playback_url": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_0\/chunklist.m3u8",
+            "duration_in_ms": 1156873,
+            "file_size_bytes": null,
+            "height": 720,
+            "playback_url_dvr": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_0\/chunklist_dvr.m3u8",
+            "error_message": null,
+            "video_codec": "H.264",
+            "audio_bitrate_in_kbps": 196.608,
+            "fragment_duration_in_ms": null,
+            "test": false,
+            "playback_url_vod": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_0\/chunklist_vod.m3u8",
+            "total_bitrate_in_kbps": 2347.008,
+            "format": null,
+            "label": "hls720p",
+            "frame_rate": null,
+            "video_codec_profile": "high",
+            "keyframe_interval": 60,
+            "keyframe_interval_follow_source": false,
+            "live_stream": true,
+            "channels": null,
+            "playback_added_cdns": [
+
+            ],
+            "width": 1280,
+            "rfc_6381_audio_codec": null,
+            "audio_sample_rate": null
+        },
+        {
+            "rfc_6381_video_codec": null,
+            "finished_at": "2017-10-19T20:08:11.115Z",
+            "segment_seconds": 4,
+            "created_at": "2017-10-19T19:47:04.534Z",
+            "privacy": false,
+            "md5_checksum": null,
+            "audio_codec": "AAC",
+            "error_class": null,
+            "updated_at": "2017-10-19T20:08:11.115Z",
+            "video_bitrate_in_kbps": 1536,
+            "id": "1-621669558be84a7da4ff20bccb9a6a1a",
+            "state": "cancelled",
+            "playback_url": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_1\/chunklist.m3u8",
+            "duration_in_ms": 1156873,
+            "file_size_bytes": null,
+            "height": 540,
+            "playback_url_dvr": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_1\/chunklist_dvr.m3u8",
+            "error_message": null,
+            "video_codec": "H.264",
+            "audio_bitrate_in_kbps": 196.608,
+            "fragment_duration_in_ms": null,
+            "test": false,
+            "playback_url_vod": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_1\/chunklist_vod.m3u8",
+            "total_bitrate_in_kbps": 1732.608,
+            "format": null,
+            "label": "hls540p",
+            "frame_rate": null,
+            "video_codec_profile": "main",
+            "keyframe_interval": 60,
+            "keyframe_interval_follow_source": false,
+            "live_stream": true,
+            "channels": null,
+            "playback_added_cdns": [
+
+            ],
+            "width": 960,
+            "rfc_6381_audio_codec": null,
+            "audio_sample_rate": null
+        },
+        {
+            "rfc_6381_video_codec": null,
+            "finished_at": "2017-10-19T20:08:11.115Z",
+            "segment_seconds": 4,
+            "created_at": "2017-10-19T19:47:04.534Z",
+            "privacy": false,
+            "md5_checksum": null,
+            "audio_codec": "AAC",
+            "error_class": null,
+            "updated_at": "2017-10-19T20:08:11.115Z",
+            "video_bitrate_in_kbps": 819.2,
+            "id": "2-621669558be84a7da4ff20bccb9a6a1a",
+            "state": "cancelled",
+            "playback_url": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_2\/chunklist.m3u8",
+            "duration_in_ms": 1156873,
+            "file_size_bytes": null,
+            "height": 360,
+            "playback_url_dvr": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_2\/chunklist_dvr.m3u8",
+            "error_message": null,
+            "video_codec": "H.264",
+            "audio_bitrate_in_kbps": 196.608,
+            "fragment_duration_in_ms": null,
+            "test": false,
+            "playback_url_vod": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/profile_2\/chunklist_vod.m3u8",
+            "total_bitrate_in_kbps": 1015.808,
+            "format": null,
+            "label": "hls360p",
+            "frame_rate": null,
+            "video_codec_profile": "main",
+            "keyframe_interval": 60,
+            "keyframe_interval_follow_source": false,
+            "live_stream": true,
+            "channels": null,
+            "playback_added_cdns": [
+
+            ],
+            "width": 640,
+            "rfc_6381_audio_codec": null,
+            "audio_sample_rate": null
+        },
+        {
+            "playlist_type": "defaultS3",
+            "dvr_filename": "playlist_dvr.m3u8",
+            "filename": "playlist.m3u8",
+            "playback_url": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist.m3u8",
+            "type": "playlist",
+            "playback_url_dvr": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist_dvr.m3u8"
+        }
+    ],
+    "input": {
+        "finished_at": "2017-10-19T20:08:11.115Z",
+        "created_at": "2017-10-19T19:47:04.534Z",
+        "privacy": false,
+        "md5_checksum": null,
+        "audio_codec": null,
+        "error_class": null,
+        "updated_at": "2017-10-19T20:08:11.115Z",
+        "video_bitrate_in_kbps": null,
+        "id": "input-621669558be84a7da4ff20bccb9a6a1a",
+        "state": "cancelled",
+        "duration_in_ms": 1156873,
+        "file_size_bytes": null,
+        "audio_tracks": null,
+        "height": null,
+        "error_message": null,
+        "video_codec": null,
+        "audio_bitrate_in_kbps": null,
+        "test": false,
+        "total_bitrate_in_kbps": null,
+        "format": null,
+        "frame_rate": null,
+        "url": null,
+        "channels": null,
+        "width": null,
+        "audio_sample_rate": null
+    },
+    <span class="bcls-highlight">"event": "state_changed",</span>
+    "job": {
+        "event_length": 0,
+        "static": false,
+        "finished_at": "2017-10-19T20:08:11.115Z",
+        "test": false,
+        "submitted_at": "2017-10-19T19:47:04.534Z",
+        "created_at": "2017-10-19T19:47:04.534Z",
+        "privacy": false,
+        "out_worker_bytes_rate": 0,
+        "ad_insertion": false,
+        "metadata_passthrough": false,
+        "live_stream": true,
+        "out_worker_bytes": 147114065,
+        "live_sliding_window_duration_ms": 57600000,
+        "updated_at": "2017-10-19T20:08:11.115Z",
+        "encryption": [
+
+        ],
+        "live_dvr_sliding_window_duration_ms": 57600000,
+        "ssai_state": "none",
+        "id": "621669558be84a7da4ff20bccb9a6a1a",
+        "state": "cancelled",
+        "playback_url": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist.m3u8",
+        "region": "us-west-2",
+        "reconnect_time": 1800,
+        "playback_url_dvr": "http:\/\/bcovlive-a.akamaihd.net\/621669558be84a7da4ff20bccb9a6a1a\/us-west-2\/NA\/playlist_dvr.m3u8"
+    }
+}
+</code></pre>
+
+<h3>Clipping to S3 sample</h3>
+
+<p>Below is a sample <code>state_changed</code> event for creating a clip and sending it to an S3 bucket. Note that it includes the S3 address of the clip as <code>jvod_url</code>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+    "jvod_id": "b750cce9e21a4cc894c4507208495b0c",
+    <span class="bcls-highlight">"jvod_url": "s3:\/\/learning-services-media.brightcove.com\/test_dur60.mp4",</span>
+    "jvod_created_at": 1517520650785,
+    "jvod_duration_s": 30,
+    "jvod_cancelling_flag": false,
+    "label": "last_30",
+    "jvod_reported_duration_s": null,
+    "jvod_finished_at": 0,
+    "jvod_type": "s3",
+    "account_id": "a95ac581551b4478b27910e5675db1f8",
+    "jvod_worker_id": "b55b6fec738e4d2788544d3233b5ecf6",
+    "user_id": "c2691d4d039040be96c190a949d754a7",
+    "job_id": "7005c6e07bc24ca7b69b6b9d24052720",
+    "jvod_last_state_change_at": 1517520652312,
+    "jvod_region": "us-west-2",
+    "cloud_id": "301c91a5d9254b5d944b108c355f12be",
+    "event": "state_changed",
+    "jvod_state": "processing"
+}</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="handling_notifications">Handling notifications</h2>
+
+<p>To receive notifications, you simply need an app that can receive HTTP/HTTPS <code>POST</code> requests. The app can then parse the JSON notications and do whatever you want based on their contents.</p>
+
+<p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write them to a text file.</p>
+
+<pre class="line-numbers">
+<code class="language-php"><!--?php
+  // POST won't work for JSON data
+  $problem = "No errors";
+  $notificationType = null;
+  try {
+      $json    = file_get_contents('php://input');
+      $decoded = json_decode($json, true);
+      // turn notification into pretty printed JSON
+      $notification = json_encode($decoded, JSON_PRETTY_PRINT);
+  } catch (Exception $e) {
+      $problem = $e--->getMessage();
+      $notification = $json;
+  }
+
+  // $notification = $json;
+
+
+
+  $logEntry = $notification."\n \n";
+
+  // Lastly, tell PHP where it can find the log file and tell PHP to open it
+  // and add the string we created earlier to it.
+      $logFileLocation = "live-log.txt";
+      $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+      fwrite($fileHandle, $logEntry);
+      fclose($fileHandle);
+
+  // line below is displayed when you browse the app directly
+  echo "Live callback app is running";
+</code></pre>
 </section>
 </article>

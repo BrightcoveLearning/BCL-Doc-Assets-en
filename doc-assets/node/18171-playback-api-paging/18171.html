@@ -1,482 +1,240 @@
-<style type="text/css">.vjs-playlist.vjs-playlist {
-                    margin-left: 0;
-                    margin-top: .5em;
-                    max-width: 640px;
-                    height: 140px;
-                      white-space: nowrap;
-                    overflow-y: hidden;
-                    border-style: solid;
-                    border-width: 2px;
-                    border-color: black;
-                  }
-                  .vjs-playlist-item {
-                      display: inline-block;
-                      height: 140px;
-                  }
-                  .vjs-playlist-item img{
-                    width: 212px;
-                      height: 140px;
-                  }
-                  @media (min-width: 800px) {
-                    .vjs-playlist.vjs-playlist {
-                        overflow-x: hidden;
-                      }
-                  }
-</style>
 <article class="bcls-article">
-<section class="Overview" id="top">
-<h2>Overview</h2>
 
-<p>To page through a set of videos in a playlist, you can use the following request URL parameters:</p>
+    <section class="bcls-section">
+    <h2 id="Player_example">Player example</h2>
+    <!-- UPDATE description -->
 
-<ul>
-	<li><code><a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-Playlist-Get_Playlists_by_ID">limit</a></code> - defines the number of videos to return from the Playback API</li>
-	<li><code><a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-Playlist-Get_Playlists_by_ID">offset</a></code> - sets the number of videos to skip in a playlist from the Playback API</li>
-</ul>
-</section>
+    <p>This example uses a Brightcove player to display a video in the player along with the first 3 videos in the playlist. Select the <strong>Next Videos</strong> button to display the next 3 videos in the playlist. When you reach the last set of videos in the playlist, then the videos displayed wrap around to the beginning of the playlist.</p>
+    <!-- UPDATE codepen here -->
 
-<section id="Development_sequence" class="bcls-section">
-<h2 class="bcls-expander-head">Development sequence</h2>
+    <p data-height="720" data-theme-id="dark" data-slug-hash="ppbdNG" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18171-playback-api-paging" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/ppbdNG/">18171-playback-api-paging</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+    <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-<div class="bcls-expander-content">
-<p>Here is the recommended development sequence:</p>
+    <!-- UPDATE link to GitHub source -->
+    <p>View the <a href="https://github.com/BrightcoveLearning/18171-playback-api-paging">source code</a>.</p>
 
-<ol>
-	<li>Use the embed_in_page player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
-	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
-	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
-	<li>Use Video Cloud Studio to add the plugin and CSS to your player</li>
-	<li>Replace the embed_in_page player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
-</ol>
+    <h3>Playback API</h3>
 
-<p>For details about these steps, review the <a href="/node/18081">Quick Start to Plugin Development</a> guide.</p>
+      <p>This example uses the Playback API to return videos from a specified playlist. To page through the videos in the playlist, this examples uses the following request URL parameters:</p>
+      <ul>
+        <li>
+          <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">limit</a></code> - defines the number of videos to return from the Playback API</li>
+        <li>
+          <code><a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-videoGroup-Get_Videos">offset</a></code> - sets the number of videos to skip in a playlist from the Playback API</li>
+      </ul>
 
-<h3>iframe or embed_in_page</h3>
+      <aside class="bcls-aside bcls-aside--tip">
+        <p>If you are new to using the Playback API, review the <a href="/node/17906">Overview: Playback API</a> document.</p>
 
-<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or embed_in_page implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+        <p>In order to make a request to the Playback API, you will need a Policy Key. There are three ways to obtain a policy key:</p>
 
-<ul>
-	<li>No collisions with existing JavaScript and/or CSS</li>
-	<li>Automatically responsive</li>
-	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
-</ul>
+        <ol>
+          <li>Every Brightcove player is automatically assigned one. You can find instructions for getting this in the <a href="/node/18125">Policy Keys</a> document. Since policy keys are good account-wide, you can use it regardless of whether that player is embedded on the page.</li>
+          <li>You can generate a basic policy key using the <a href="/node/18004">Policy Keys Quick Start</a></li>
+          <li>You can make a request to the <a href="/node/18003">Policy API</a></li>
+        </ol>
+      </aside>
+    </section>
 
-<p>Although integrating the embed_in_page player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+    <section class="bcls-section">
+    <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
 
-<ul>
-	<li>Code in the containing page needs to listen for and act on player events</li>
-	<li>The player uses styles from the containing page</li>
-	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
-</ul>
+    <div class="bcls-expander-content">
+    <p>Here are some tips to effectively use the above CodePen:</p>
 
-<p>Even if your final implementation does not use the iframe code, you can still use the embed_in_page code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
-</div>
-</section>
+    <ul>
+      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+      <li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+      <ol>
+        <li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+        <li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+        <li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+      </ol>
+      </li>
+    </ul>
+    </div>
+    </section>
 
-<section id="Select_implementation" class="bcls-section">
-<h2>Select implementation</h2>
+    <section class="bcls-section">
+    <h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
 
-<p>In this example, you will use the Advanced (In_Page) embed code. You will not create a plugin for the player, since the code interacts with the <strong>Next Videos</strong> button on the page.</p>
-</section>
+    <div class="bcls-expander-content">
+    <p>Here is the recommended development sequence:</p>
 
-<section id="API_resources_used" class="bcls-section">
-<h2>API resources used</h2>
+    <ol>
+      <li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+      <li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+      <li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+      <li>Use Studio to add the plugin and CSS to your player</li>
+      <li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+    </ol>
 
-<p>The following sections detail resources used from various APIs.</p>
+    <p>For details about these steps, review the <a href="https://support.brightcove.com/node/18081">Quick Start: Plugin Development</a> guide.</p>
 
-<h3>Brightcove player API methods</h3>
+    <h3>iframe or In-Page embed</h3>
 
-<ul>
-	<li><code><a href="/node/18108#getVideo">catalog.getVideo()</a></code>: Method to make a catalog request for the video with the specified id and invokes a callback when the request completes.</li>
-	<li><code><a href="/node/18108#load">catalog.load()</a></code>: Method to load a video into the player.</li>
-	<li><code><a href="/node/18099#playlist">playlist()</a></code>: Method to assign an array of video objects to a player's playlist. Note that this method can also be used to retrieve the playlist currently playing in the player, but will not be used in this way in this document.</li>
-</ul>
+    <p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
 
-<h3>Playback API</h3>
+    <ul>
+      <li>No collisions with existing JavaScript and/or CSS</li>
+      <li>Automatically responsive</li>
+      <li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+    </ul>
 
-<p>The Playback API will be used to return videos from the specified playlist.</p>
+    <p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
 
-<aside class="bcls-aside bcls-aside--tip">
-<p>If you are new to using the Playback API, review the <a href="/node/17906">Overview: Playback API</a> document.</p>
+    <ul>
+      <li>Code in the containing page needs to listen for and act on player events</li>
+      <li>The player uses styles from the containing page</li>
+      <li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+    </ul>
 
-<p>In order to make a request to the Playback API, you will need a Policy Key. There are three ways to obtain a policy key:</p>
+    <p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+    </div>
+    <!-- id="expanderContent" --></section>
 
-<ol>
-	<li>Every Brightcove player is automatically assigned one. You can find instructions for getting this in the <a href="/node/18125">Policy Keys</a> document. Since policy keys are good account-wide, you can use it regardless of whether that player is embedded on the page.</li>
-	<li>You can generate a basic policy key using the <a href="/node/18004">Policy Keys Quick Start</a></li>
-	<li>You can make a request to the <a href="/node/18003">Policy API</a></li>
-</ol>
-</aside>
-</section>
+    <section class="bcls-section">
+    <h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+    <!-- UPDATE table, remove unneeded columns -->
 
-<section id="The_player" class="bcls-section">
-<h2>The player</h2>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>API Methods</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><a href="/node/18108#getVideo">catalog.getVideo()</a></td>
+          <td>Method to make a catalog request for the video with the specified id and invokes a callback when the request completes.</td>
+        </tr>
+        <tr>
+          <td><a href="/node/18108#load">catalog.load()</a></td>
+          <td>Method to load a video into the player.</td>
+        </tr>
+        <tr>
+          <td><a href="/node/18099#playlist">playlist()</a></td>
+          <td>Method to assign an array of video objects to a player's playlist. Note that this method can also be used to retrieve the playlist currently playing in the player, but will not be used in this way in this document.</td>
+        </tr>
+      </tbody>
+    </table>
+    </section>
+    <!-- UPDATE player and HTML configuration -->
 
-<p>This example uses a Brightcove player to display a video in the player along with the first 3 videos in the playlist. Select the <strong>Next Videos</strong> button to display the next 3 videos in the playlist. When you reach the last set of videos in the playlist, then the videos displayed wrap around to the beginning of the playlist.</p>
+    <section class="bcls-section">
+    <h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
 
-<div style="display: block; position: relative; max-width: 640px;">
-<div style="padding-top: 56.25%;">
-<video id="myPlayerID" data-account="1752604059001" data-player="S1DM9wMOe" data-embed="default" data-application-id="" class="video-js" controls="" style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;">&nbsp;</video>
-<script src="//players.brightcove.net/1752604059001/S1DM9wMOe_default/index.min.js"></script></div>
-</div>
+    <p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
 
-<ol class="vjs-playlist">
-</ol>
-<input id="nextButton" class="bcls-button" type="button" value="Next Videos" />
-<h3>Playback API request:</h3>
+    <h3>Player configuration</h3>
+    <ul>
+      <li>In Video Cloud Studio, navigate to the <strong>Players</strong> module and then <strong>Settings</strong> section. Select the <strong>Edit</strong> button and do the following:
+      <ul>
+        <li>Set the <strong>Display Playlist</strong> option to <strong>Enabled</strong>.</li>
+        <li>Set the <strong>Sizing</strong> option to <strong>Responsive</strong>.</li>
+        <li>Set the Player Dimensions to fit your web page.</li>
+      </ul>
+    </li>
+    </ul>
+
+
+    <h3>Other HTML</h3>
+    <p>
+      Add a <strong>Next Videos</strong> button to get the next set of 3 videos in the playlist.
+    </p>
+    <p>
+      Optional: Add a container to display the current Playback API request URL.
+    </p>
+
+    </section>
+
+    <!-- UPDATE application flow -->
+    <section class="bcls-section">
+    <h2 id="Application_flow">Application flow</h2>
+
+    <p>The basic logic behind this application is:</p>
+
+    <ul>
+      <li>Load the first set of videos.</li>
+      <li>Listen for Next Videos button</li>
+      <li>Create request URL.</li>
+      <li>Get the next set of video data.</li>
+      <li>Load the current playlist into the player.</li>
+    </ul>
+
+    <!-- UPDATE task 1 -->
+    <h3>Load first set of videos</h3>
+    <p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Load first set of videos +++</code></pre>
+    <p>Use the <code>catalog</code> library to get the playlist object for the specified playlist Id. Load this first set of videos in the player.</p>
+
+    <!-- UPDATE task 2 -->
+    <h3>Listen for Next Videos button</h3>
+    <p>Find the code which is labeled:</p>
+<pre>
+<code class="language-javascript">// +++ Listen for Next Videos button +++</code></pre>
+    <p>Add an event listener to load the next set of videos in the playlist.</p>
+
+    <!-- UPDATE task 3 -->
+    <h3>Create request URL</h3>
+    <p>Find the code which is labeled:</p>
+<pre>
+<code class="language-javascript">// +++ Create request URL +++</code></pre>
+    <p>Create the Playback API request URL using the <code>limit</code> and <code>offset</code> parameters.</p>
+
+    <!-- UPDATE task 4 -->
+    <h3>Get video data</h3>
+    <p>Find the code which is labeled:</p>
+<pre>
+<code class="language-javascript">// +++ Get video data +++</code></pre>
+    <p>Call the Playback API to get the next set of videos in the playlist.</p>
+
+    <!-- UPDATE task 5 -->
+    <h3>Load video data</h3>
+    <p>Find the code which is labeled:</p>
+<pre>
+<code class="language-javascript">// +++ Load video data +++</code></pre>
+    <p>Call the Playback API to get the next set of videos in the playlist. Load the first video into the player. Load the videos in the array into the player's playlist.</p>
+
+    <!-- UPDATE CSS description -->
+    <section class="bcls-section">
+    <h2 id="Application_styling">Application styling</h2>
+
+    <p>The CSS styles the player and horizontal playist below the player.</p>
+    </section>
+
+    <section class="bcls-section">
+    <h2 id="Plugin_code">Plugin code</h2>
+
+    <p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+
+    <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-<code id="apiRequest" class="language-html" style="white-space: pre-line;">This text will be replaced</code></pre>
-<!-- custom script --> <script type="text/javascript">
-                      var myPlayer,
-                          requestData,
-                          mediaData,
-                          apiRequest,
-                          apiBaseURL = 'https://edge.api.brightcove.com/playback/v1/accounts/',
-                          policyKey = 'BCpkADawqM3_9ax216PJYuUTLApMLkLJ3apjFlTRKHHS4q0DE33J0XsiDWmc6SfKwrwRAhejCZpTbwljz4-OlUwyqKi64L25Dwy4yhY1eSZ9ZduI-dO0mjSNVcR9C8nz0jtkimOOtzQgswCr',
-                          accountId = "1752604059001",
-                          playlistId = "5282200243001",
-                          videoData = [],
-                          mediaType,
-                          offsetValue = 0,
-                          limitValue = 3,
-                          firstTime = true,
-                          eNextButton = document.getElementById("nextButton"),
-                          eApiRequest = document.getElementById("apiRequest"),
-                          playlistLength;
+<code class="language-javascript">videojs('myPlayerID').ready(function(){
+var myPlayer = this;
+...
+});</code></pre>
 
-                      videojs("myPlayerID").ready(function(){
-                          myPlayer = this;
-                  				// use the catalog library to get the playlist length
-                  				myPlayer.catalog.getPlaylist(playlistId, function(error, playlist){
-                  		      //deal with error
-                  					playlistLength = playlist.length;
-                  					displayPlaylist();
-                  					eNextButton.addEventListener("click",function(){
-                  					  offsetValue += 3;
-                  						if (offsetValue >= playlistLength) {
-                  							offsetValue = 0;
-                  						}
-                  						displayPlaylist();
-                  					});
-                  		    })
-                      });
+    <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
-                      function displayPlaylist() {
-                  			// set up data for Playback API request
-                  			requestData = setRequestData();
-                  			mediaType = 'playlist';
-                  			// make the Playback API request to get playlist data
-                  			getMediaData(mediaType, requestData, function (mediaData) {
-                  					// loop through video data and change duration from milliseconds to seconds
-                  					for (var i=0; i<limitValue; i++) {
-                  						mediaData.videos[i] = myPlayer.catalog.transformVideoResponse (mediaData.videos[i], myPlayer);
-                  					}
-														// load the first video of the current playlist to the player
-                  					myPlayer.catalog.load(mediaData.videos[0]);
-                  					// add the newest videos list to the playlist
-                  					myPlayer.playlist(mediaData.videos);
-                  			});
-                  		}
+<pre class="line-numbers">
+<code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+var myPlayer = this;
+...
+});</code></pre>
+    <!-- UPDATE path to plugin's JavaScript -->
 
-                      /**
-                       * sets up the data for the API request
-                       */
-                       function setRequestData() {
-                         console.log("setRequestData");
-                         var requestURL = '';
-                   			 requestURL = apiBaseURL +  accountId + '/playlists/' + playlistId + '?offset=' + offsetValue + '&limit=' + limitValue;
-                         eApiRequest.innerHTML = requestURL;
-                         return requestURL;
-                        }
+    <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18171-playback-api-paging/blob/master/plugin/playback-paging.js">playback-paging.js</a>.</p>
 
-                       /**
-                        * request data from the Playback API
-                        */
-                        getMediaData = function(mediaType, requestURL, callback) {
-                        var httpRequest = new XMLHttpRequest(),
-                          responseData,
-                          parsedData,
-                          // response handler
-                          getResponse = function() {
-                            try {
-                              if (httpRequest.readyState === 4) {
-                                if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                                  responseData = httpRequest.responseText;
-                                  parsedData = JSON.parse(responseData);
-                                  switch (mediaType) {
-                                    case 'video':
-                                      // do nothing
-                                      break;
-                                    case 'playlist':
-                                      callback(parsedData);
-                                      break;
-                                  }
-                                } else {
-                                  alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                                }
-                              }
-                            } catch (e) {
-                              alert('Caught Exception: ' + e);
-                            }
-                          };
-                        // set response handler
-                        httpRequest.onreadystatechange = getResponse;
-                        // open the request
-                        httpRequest.open('GET', requestURL);
-                        // set headers
-                        httpRequest.setRequestHeader('Accept', 'application/json;pk=' + policyKey);
-                        // open and send request
-                        httpRequest.send();
-                      };
-                    </script>
+    <h3>Using the plugin with a player</h3>
 
-<p>Notice that the request to the Playback API uses the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html#api-Playlist-Get_Playlists_by_ID">limit and offset parameters</a> to implement paging.</p>
-</section>
-<!-- id="player" --><br />
-&nbsp;
-<section id="How_it_works" class="bcls-section">
-<h2>How it works</h2>
+    <p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
 
-<p>The following sections explain the player, JavaScript and CSS code used in the example.</p>
-
-<h3>Create the player</h3>
-
-<p>To create a player and assign a video to it, follow these steps:</p>
-
-<ol class="bcls-tasklist">
-	<li>In the <strong>Players</strong> module, create a new player or use an existing one.</li>
-	<li>In the <strong>Settings</strong> section, select the <strong>Edit</strong> button and do the following:
-	<ul>
-		<li>Set the <strong>Display Playlist</strong> option to <strong>Enabled</strong>.</li>
-		<li>Set the <strong>Sizing</strong> option to <strong>Responsive</strong>.</li>
-		<li>Set the Player Dimensions to fit your web page.</li>
-	</ul>
-	</li>
-	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-	<li>In the <strong>Media</strong> module, select a playlist and publish it with this player.</li>
-	<li>Copy the Advanced (In-Page) embed code and paste it into a new HTML file.</li>
-	<li>
-	<p>For the <code>video</code> element, add an <code>id</code> attribute with a value. In this example, we will use a value of <strong>myPlayerID</strong>.</p>
-
-	<p>The embed code should look similar to this:</p>
-
-	<pre class="line-numbers" data-start="34">
-<code class="language-html">&lt;div style="display: block; position: relative; max-width: 640px;"&gt;
-  &lt;div style="padding-top: 56.25%;"&gt;
-    &lt;video id="myPlayerID"
-      data-account="1752604059001"
-      data-player="S1DM9wMOe"
-      data-embed="default"
-      data-application-id
-      class="video-js"
-      controls
-      style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;"&gt;&lt;/video&gt;
-      &lt;script src="//players.brightcove.net/1752604059001/S1DM9wMOe_default/index.min.js"&gt;&lt;/script&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;ol class="vjs-playlist"&gt;&lt;/ol&gt;</code></pre>
-
-	<aside class="bcls-aside bcls-aside--tip">For details on how to get this embed code, see the <a href="/node/18209">Quick Start to Brightcove Player</a> document.</aside>
-	</li>
-</ol>
-&nbsp;
-
-<h3>The HTML code</h3>
-
-<p>Here, you will create a button to get the next set of videos in the playlist and load them into the player.</p>
-
-<ol class="bcls-tasklist">
-	<li>Add the following HTML to your page code, just below the player embed code:
-	<ul>
-		<li>
-		<p>Line 49: Creates a button that you will add functionality to in a later step.</p>
-		</li>
-	</ul>
-
-	<pre class="line-numbers" data-start="46">
-<code class="language-html">...
-&lt;ol class="vjs-playlist"&gt;&lt;/ol&gt;
-
-<span class="bcls-highlight">&lt;input id="nextButton" type="button" value="Next Videos"&gt;</span></code></pre>
-	</li>
-</ol>
-&nbsp;
-
-<h3>The JavaScript code</h3>
-
-<p>Here, you will add code to control the functionality of the <strong>Next Videos</strong> button.</p>
-
-<ol class="bcls-tasklist">
-	<li>Add the following JavaScript to your page code:
-	<ul>
-		<li>Lines 52-66: Define variables. Use your own values for the Policy Key, Account Id and Playlist Id.</li>
-		<li>Line 69: Gets a reference to the player when it is ready.</li>
-		<li>Lines 71: Makes a call to the <code>catalog</code>'s <code>getPlaylist()</code> method to get the total number of videos in the playlist. You can also make a call to the Playback API to retrieve this information.</li>
-		<li>Line 74: Makes a call to the Playback API to get the first set of videos in the playlist and loads them into the player.</li>
-		<li>Lines 75-81: Add a listener to the <strong>Next Videos</strong> button. When selected, make a call to the Playback API to get the next set of videos in the playlist and load them into the player.</li>
-		<li>Lines 90-99: Make a request to the Playback API to get a set of videos from the playlist.</li>
-		<li>
-		<p>Lines 92-94: Loop through the media data returned from the Playback API and change the <code>duration</code> from milliseconds to seconds.</p>
-
-		<aside class="bcls-aside bcls-aside--tip">The Playback API stores <code>duration</code> in milliseconds. Use the <code>player.catalog.transformVideoResponse()</code> to convert the API response into a format compatible with the player's <code>playlist()</code> function. This includes duration times and https image compatibility.</aside>
-		function.</li>
-		<li>Line 96: Loads the first video object into the player.</li>
-		<li>Line 98: Loads the current set of video objects into the playlist.</li>
-		<li>Lines 105-109: Set the Playback API request URL. First time, all videos are returned for the playlist. After that, the next set of videos are returned from the playlist, using the <code>limit</code> and <code>offset</code> parameters.</li>
-		<li>
-		<p>Lines 114-149: Make the Playback API request using the request URL along with the Policy Key in the header.</p>
-		</li>
-	</ul>
-
-	<pre class="line-numbers" data-start="51">
-<code class="language-javascript">&lt;script type="text/javascript"&gt;
-  var myPlayer,
-      requestData,
-      mediaData,
-      apiRequest,
-      apiBaseURL = 'https://edge.api.brightcove.com/playback/v1/accounts/',
-      policyKey = <span class="bcls-input">your policy key</span>,
-      accountId = <span class="bcls-input">your account Id</span>,
-      playlistId = <span class="bcls-input">your playlist Id</span>,
-      videoData = [],
-      mediaType,
-      offsetValue = 0,
-      limitValue = 3,
-      firstTime = true,
-      eNextButton = document.getElementById("nextButton"),
-      playlistLength;
-
-  videojs("myPlayerID").ready(function(){
-    myPlayer = this;
-    // use the catalog library to get the playlist length
-    myPlayer.catalog.getPlaylist(playlistId, function(error, playlist){
-      //deal with error
-      playlistLength = playlist.length;
-      displayPlaylist();
-      eNextButton.addEventListener("click",function(){
-        offsetValue += 3;
-      	if (offsetValue &gt;= playlistLength) {
-      		offsetValue = 0;
-      	}
-      	displayPlaylist();
-      });
-    })
-  });
-
-  function displayPlaylist() {
-    // set up data for Playback API request
-    requestData = setRequestData();
-    mediaType = 'playlist';
-    // make the Playback API request to get playlist data
-    getMediaData(mediaType, requestData, function (mediaData) {
-      // loop through video data and change duration from milliseconds to seconds
-      for (var i=0; i&lt;limitValue; i++) {
-      	mediaData.videos[i] = myPlayer.catalog.transformVideoResponse (mediaData.videos[i], myPlayer);
-      }
-			// load the first video of the current playlist to the player
-      myPlayer.catalog.load(mediaData.videos[0]);
-      // add the newest videos list to the playlist
-      myPlayer.playlist(mediaData.videos);
-    });
-  }
-
-  /**
-   * sets up the data for the API request
-   */
-   function setRequestData() {
-     var requestURL = '';
-     requestURL = apiBaseURL +  accountId + '/playlists/' + playlistId + '?offset=' + offsetValue + '&amp;limit=' + limitValue;
-     return requestURL;
-    }
-
-   /**
-    * request data from the Playback API
-    */
-    getMediaData = function(mediaType, requestURL, callback) {
-    var httpRequest = new XMLHttpRequest(),
-      responseData,
-      parsedData,
-      // response handler
-      getResponse = function() {
-        try {
-          if (httpRequest.readyState === 4) {
-            if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
-              responseData = httpRequest.responseText;
-              parsedData = JSON.parse(responseData);
-              switch (mediaType) {
-                case 'video':
-                  // do nothing
-                  break;
-                case 'playlist':
-                  callback(parsedData);
-                  break;
-              }
-            } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
-            }
-          }
-        } catch (e) {
-          alert('Caught Exception: ' + e);
-        }
-      };
-    // set response handler
-    httpRequest.onreadystatechange = getResponse;
-    // open the request
-    httpRequest.open('GET', requestURL);
-    // set headers
-    httpRequest.setRequestHeader('Accept', 'application/json;pk=' + policyKey);
-    // open and send request
-    httpRequest.send();
-  };
-&lt;/script&gt;</code></pre>
-	</li>
-</ol>
-&nbsp;
-
-<h3>The stylesheet</h3>
-
-<p>This example uses CSS styles for the Brightcove player and the playlist.</p>
-
-<ol class="bcls-tasklist">
-	<li>Add the following CSS styles to your page code:
-	<ul>
-		<li>Lines 8-18: Set the style and size for the playlist container.</li>
-		<li>Lines 19-22: Set the style and size of each playlist item.</li>
-		<li>Lines 23-26: Set the style and size of each thumbnail image in the playlist.</li>
-		<li>
-		<p>Lines 27-31: Hide the horizontal scrollbar for the playlist when the browser viewport is greater than 800px.</p>
-		</li>
-	</ul>
-
-	<pre class="line-numbers" data-start="7">
-<code class="language-css">&lt;style type="text/css"&gt;
-  .vjs-playlist.vjs-playlist {
-    margin-left: 0;
-    margin-top: .5em;
-    max-width: 640px;
-    height: 140px;
-    white-space: nowrap;
-    overflow-y: hidden;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
-  }
-  .vjs-playlist-item {
-    display: inline-block;
-    height: 140px;
-  }
-  .vjs-playlist-item img{
-    width: 212px;
-    height: 140px;
-  }
-  @media (min-width: 800px) {
-    .vjs-playlist.vjs-playlist {
-        overflow-x: hidden;
-    }
-  }
-&lt;/style&gt;</code></pre>
-	</li>
-</ol>
-</section>
-</article>
+    <aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="//support.brightcove.com/node/14053">Configuring Player Plugins</a> document.</aside>
+    </section>
+  </article>

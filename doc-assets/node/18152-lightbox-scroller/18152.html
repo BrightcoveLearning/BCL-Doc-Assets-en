@@ -1,0 +1,227 @@
+<article class="bcls-article">
+
+  <section class="bcls-section">
+  <h2 id="Player_example">Player example</h2>
+  <!-- UPDATE description -->
+
+  <p>Drag the scrollbar below the thumbnail images to navigate through the videos. Select a video to play the video in a lightbox container. With the lightbox displayed, select the <strong>Close</strong> link to hide the lightbox container.</p>
+  <!-- UPDATE codepen here -->
+
+ <div class="video-cloud-only">
+  <p data-height="500" data-theme-id="dark" data-slug-hash="rpxoZK" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18152-lightbox-scroller" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/rpxoZK/">18152-lightbox-scroller</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+<!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18152-lightbox-scroller">source code</a>.</p>
+</div>
+
+<div class="player-only">
+  <p data-height="500" data-theme-id="dark" data-slug-hash="BJKPVv" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18152-lightbox-scroller-bcplayer" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/BJKPVv/">18152-lightbox-scroller-bcplayer</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+<!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18152-lightbox-scroller-bcplayer">source code</a>.</p>
+</div>
+
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+  <div class="bcls-expander-content">
+  <p>Here are some tips to effectively use the above CodePen:</p>
+
+  <ul>
+    <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+    <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+    <li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+    <ol>
+      <li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+      <li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+      <li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+    </ol>
+    </li>
+  </ul>
+  </div>
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+
+  <div class="bcls-expander-content">
+  <p>Here is the recommended development sequence:</p>
+
+  <ol>
+    <li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+    <li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+    <li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+    <li>Use Studio to add the plugin and CSS to your player</li>
+    <li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+  </ol>
+
+  <p>For details about these steps, review the <a href="https://support.brightcove.com/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+  <h3>iframe or In-Page embed</h3>
+
+  <p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+
+  <ul>
+    <li>No collisions with existing JavaScript and/or CSS</li>
+    <li>Automatically responsive</li>
+    <li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+  </ul>
+
+  <p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+
+  <ul>
+    <li>Code in the containing page needs to listen for and act on player events</li>
+    <li>The player uses styles from the containing page</li>
+    <li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+  </ul>
+
+  <p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+  </div>
+  <!-- id="expanderContent" --></section>
+
+  <section class="bcls-section">
+  <h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+  <!-- UPDATE table, remove unneeded columns -->
+
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>API Methods</th>
+        <th>API Events</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td><a href="/node/18099#playlist">playlist()</a></td>
+        <td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:loadedmetadata">loadedmetadata</a></td>
+      </tr>
+      <tr>
+        <td><a href="/node/18099#currentitem">playlist.currentItem()</a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#play">play()</a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#pause">pause()</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  <!-- UPDATE player and HTML configuration -->
+
+  <section class="bcls-section">
+  <h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+  <p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+  <h3>Player configuration</h3>
+
+  <p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+  <h3>Other HTML</h3>
+  <p>
+    Add a <code>&lt;div&gt;</code> container to define the horizontal scroller to hold a set of video poster images and a container for the lightbox player. Also, define the close button for the lightbox.
+  </p>
+
+  <p>Remember to add the <code>id</code> attribute to the <code>video</code> tag in the player embed code.</p>
+<pre><code class="language-html">&lt;video <span class="bcls-highlight">id="myPlayerID"</span>
+...</code></pre>
+  </section>
+
+  <!-- UPDATE application flow -->
+  <section class="bcls-section">
+  <h2 id="Application_flow">Application flow</h2>
+
+  <p>The basic logic behind this application is:</p>
+
+  <ul>
+    <li>Build the horizontal playlist scroller.</li>
+    <li>
+      Play the selected video in the lightbox.
+    </li>
+    <li>
+      Close the lightbox.
+    </li>
+  </ul>
+
+  <!-- UPDATE task 1 -->
+  <h3>Build horizontal scroller</h3>
+
+  <p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Build horizontal scroller +++</code></pre>
+
+  <p>Get the playlist data currently loaded in the player, and build the horizontal video poster scroller.</p>
+
+  <!-- UPDATE task 2 -->
+  <h3>Play selected video</h3>
+
+  <p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Play selected video +++</code></pre>
+
+  <p>When a poster image in the scroller is selected, then load the associated video into the player and start playback. Open the lightbox player with the playing video.</p>
+
+  <!-- UPDATE task 3 -->
+  <h3>Close lightbox</h3>
+
+  <p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Close lightbox +++</code></pre>
+
+  <p>When the <strong>Close</strong> button is selected, stop video playback and hide the lightbox.</p>
+
+  <!-- UPDATE CSS description -->
+  <section class="bcls-section">
+  <h2 id="Application_styling">Application styling</h2>
+
+  <p>The CSS styles horizontal poster image scroller and the lightbox player.</p>
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="Plugin_code">Plugin code</h2>
+
+  <p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+
+  <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">videojs('myPlayerID').ready(function(){
+var myPlayer = this;
+...
+});</code></pre>
+
+  <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+var myPlayer = this;
+...
+});</code></pre>
+  <!-- UPDATE path to plugin's JavaScript -->
+
+ <div class="video-cloud-only">
+  <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18152-lightbox-scroller/blob/master/plugin/lightbox-scroller.js">lightbox-scroller.js</a>.</p>
+</div>
+
+<div class="player-only">
+  <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18152-lightbox-scroller-bcplayer/blob/master/plugin/lightbox-scroller.js">lightbox-scroller.js</a>.</p>
+</div>
+
+  <h3>Using the plugin with a player</h3>
+
+  <p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
+
+  <aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="//support.brightcove.com/node/14053">Configuring Player Plugins</a> document.</aside>
+  </section>
+</article>

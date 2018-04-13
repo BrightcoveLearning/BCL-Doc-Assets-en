@@ -8,138 +8,141 @@
 <section class="bcls-section">
 <h2 id="Video_Cloud_customers">Video Cloud customers</h2>
 
-<p>As a Video Cloud customer, you can access your media data stored in Video Cloud Studio. For more information, see the <a href="https://github.com/BrightcoveOS/ios-player-samples">Player SDK for iOS code samples</a>.</p>
+<p>As a Video Cloud customer, you can access your media data stored in Video Cloud Studio. For more information, see the <a href="https://github.com/BrightcoveOS/ios-player-samples">Native Player SDK for iOS code samples</a>.</p>
 
 <h3>Retrieving media data</h3>
 
 <p>You can retrieve your video and playlist data from your Video Cloud library by using the Playback API. For details about the API, see the <a href="/node/17906">Playback API Overview</a> document.</p>
 
 <ol class="bcls-tasklist">
-  <li>Use the <code>BCOVPlaybackService</code> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+	<li>Use the <code>BCOVPlaybackService</code> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+	<li><p>
+		For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
+	</p>
+	<aside class="bcls-aside bcls-aside--information">Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</aside>
+	<p>Here is an example of how to retrieve a video using the <code>BCOVPlaybackService</code> class in Swift:</p>
 
-  <li>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.</li>
+	<pre class="line-numbers">
+<code class="language-swift">import UIKit
+import BrightcovePlayerSDK
+
+let kViewControllerPlaybackServicePolicyKey = "<span class="bcls-input">your policy key</span>"
+let kViewControllerAccountID = "<span class="bcls-input">your account id</span>"
+let kViewControllerVideoID = "<span class="bcls-input">your video id</span>"
+class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
+
+let sharedSDKManager = BCOVPlayerSDKManager.shared()
+let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)
+let playbackController :BCOVPlaybackController
+@IBOutlet weak var videoContainerView: UIView!
+
+required init?(coder aDecoder: NSCoder) {
+	playbackController = (sharedSDKManager?.createPlaybackController())!
+
+	super.init(coder: aDecoder)
+
+	playbackController.delegate = self
+	playbackController.isAutoAdvance = true
+	playbackController.isAutoPlay = true
+}
+
+override func viewDidLoad() {
+	super.viewDidLoad()
+	// Do any additional setup after loading the view, typically from a nib.
+
+	// Set up our player view. Create with a standard VOD layout.
+	let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
+
+	// Install in the container view and match its size.
+	playerView?.frame = self.videoContainerView.bounds
+	playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+	self.videoContainerView.addSubview(playerView!)
+
+	// Associate the playerView with the playback controller.
+	playerView?.playbackController = playbackController
+
+	requestContentFromPlaybackService()
+}
+
+func requestContentFromPlaybackService() {
+	playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+
+		if let v = video {
+			self.playbackController.setVideos([v] as NSArray)
+		} else {
+			print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+		}
+	}
+}
+}</code></pre>
+
+	<p>For complete samples, see the following:</p>
+
+	<ul>
+		<li><a href="/node/18219">Create a Simple Video App using Objective-C</a></li>
+		<li><a href="/node/18220">Create a Simple Video App using Swift</a></li>
+	</ul>
+	</li>
+	<li>
+	<p>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVVideo.html">BCOVVideo</a> object provides video metadata information as shown below:</p>
+
+	<pre class="line-numbers">
+<code class="language-swift">func requestContentFromPlaybackService() {
+playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+
+	if let v = video {
+<span class="bcls-highlight">		print("video name: \(v.properties["name"] as AnyObject)")
+		print("video id: \(v.properties["id"] as AnyObject)")
+		print("video thumbnail: \(v.properties["thumbnail"] as AnyObject)")
+		print("video metadata: \(v.properties)")</span>
+
+		self.playbackController.setVideos([v] as NSArray)
+	} else {
+		print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+	}
+}
+}</code></pre>
+
+	<p>The above <code>print()</code> methods return the following media information:</p>
+
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Video object" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/media-content/video-metadata.png" />
+	<figcaption class="bcls-caption--image">Video object</figcaption>
+	</figure>
+	</li>
 </ol>
 
-<p>Here is an example of how to retrieve a video using the <code>BCOVPlaybackService</code> class:</p>
+<h3>Working with geo-filtered videos</h3>
 
-<pre class="line-numbers">
-<code class="language-swift">#import "ViewController.h"
+<p>The Brightcove Player SDK for iOS supports geo-filtered videos.</p>
 
-// ** Customize these values with your own account information **
-static NSString * const kViewControllerPlaybackServicePolicyKey = @"BCpkADawqM1Sh_RsWQTEtCCpMbpKrbKQN_lhGY3fSZE-Cbp67h2aDRTDuifFXnT3yEYrxPNy640VTr224uWjtky-6YDzzqIDRyjqZq_wXu4Py0MSUMdf2rPmS102D6QGi8bIEQEXutS-eeVp";
-static NSString * const kViewControllerAccountID = @"3636334180001";
-static NSString * const kViewControllerVideoID = @"3987127390001";
+<aside class="bcls-aside bcls-aside--warning">The playback service will only return an error if your video is geo-filtered in Video Cloud. The error will be null if your video is geo-filtered at the CDN level. <!-- <ul>
+							<li>
+								You need to use the Playback API when working with geo-filtered videos.
+							</li>
+						</ul> --></aside>
 
-@interface ViewController () &lt;BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate&gt;&gt;
-
-@property (nonatomic, strong) BCOVPlaybackService *service;
-@property (nonatomic, strong) id&lt;BCOVPlaybackController&gt; playbackController;
-@property (nonatomic) BCOVPUIPlayerView *playerView;
-@property (nonatomic, weak) IBOutlet UIView *videoContainer;
-
-@end
-
-@implementation ViewController
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if (self)
-    {
-        [self setup];
-    }
-    return self;
-}
-
-- (void)setup
-{
-    BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
-    _playbackController = [manager createPlaybackController];
-
-    _playbackController.delegate = self;
-    _playbackController.autoAdvance = YES;
-    _playbackController.autoPlay = YES;
-
-    _service = [[BCOVPlaybackService alloc] initWithAccountId:kViewControllerAccountID policyKey:kViewControllerPlaybackServicePolicyKey];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Create and set options
-    BCOVPUIPlayerViewOptions *options = [[BCOVPUIPlayerViewOptions alloc] init];
-    options.presentingViewController = self;
-
-    // Create and configure Control View
-    BCOVPUIBasicControlView *controlsView = [BCOVPUIBasicControlView basicControlViewWithVODLayout];
-    BCOVPUIPlayerView *playerView = [[BCOVPUIPlayerView alloc] initWithPlaybackController:self.playbackController options:options controlsView:controlsView ];
-    playerView.delegate = self;
-    playerView.frame = _videoContainer.bounds;
-    playerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-    [_videoContainer addSubview:playerView];
-    _playerView = playerView;
-    _playerView.playbackController = _playbackController;
-
-    [self requestContentFromPlaybackService];
-
-}
-
-- (void)requestContentFromPlaybackService
-{
-    [self.service findVideoWithVideoID:kViewControllerVideoID parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
-
-        if (video)
-        {
-            [self.playbackController setVideos:@[ video ]];
-        }
-        else
-        {
-            NSLog(@"ViewController Debug - Error retrieving video: `%@`", error);
-        }
-
-    }];
-}
-
-@end</code></pre>
-<!-- <p><code data-gist-id="6e5ca0259094fb71d07f" data-gist-line="9,17-34,45-83,100-101"></code></p> -->
-
-<p>For a complete sample, see the <a href="/node/18219">Simple Video Playback App</a> guide.</p>
-<!-- <p><code data-gist-id="ba0b12bca81ccd51cb8c" data-gist-line="6-21,34-75,90-91"></code></p> -->
-
-<h3>Working with geo-restricted videos</h3>
-
-<p>The Brightcove Player SDK for iOS supports geo-restricted videos.</p>
-
-<aside class="bcls-aside bcls-aside--warning">The playback service will only return an error if your video is geo-restricted in Video Cloud. The error will be null if your video is geo-retricted at the CDN level. <!-- <ul>
-                    <li>
-                      You need to use the Playback API when working with geo-restricted videos.
-                    </li>
-                  </ul> --></aside>
-
-<p>There are two ways you can add geo-restrictions to your videos to control which countries they can (or cannot) be viewed in:</p>
+<p>There are two ways you can add geo-filterings to your videos to control which countries they can (or cannot) be viewed in:</p>
 
 <ul>
 	<li><a href="/node/18034">Brightcove's CMS API</a></li>
 	<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
 </ul>
 
-<p>In your iOS app, when you retrieve a video using Brightcove's <code>BCOVPlaybackService</code> class (Playback API) in a country which is geo-restricted for that video, you should see this message:</p>
+<p>In your iOS app, when you retrieve a video using Brightcove's <code>BCOVPlaybackService</code> class (Playback API) in a country which is geo-filtered for that video, you should see this message:</p>
 
 <pre class="line-numbers">
 <code class="language-swift">Error Domain=kBCOVPlaybackServiceErrorDomain Code=3 "(null)"
-  UserInfo={kBCOVPlaybackServiceErrorKeyAPIHTTPStatusCode=403,
-  kBCOVPlaybackServiceErrorKeyAPIErrors=
-  {type = immutable, count = 1, values = (
-    0 : {type = immutable dict, count = 4,
+UserInfo={kBCOVPlaybackServiceErrorKeyAPIHTTPStatusCode=403,
+kBCOVPlaybackServiceErrorKeyAPIErrors=
+{type = immutable, count = 1, values = (
+0 : {type = immutable dict, count = 4,
 entries =&gt;
-    1 : message = {contents = "Access to this resource is forbidden by access policy."}
-    2 : {contents = "client_geo"} = us
-    4 : {contents = "error_subcode"} = {contents = "CLIENT_GEO"}
-    6 : {contents = "error_code"} = {contents = "ACCESS_DENIED"}
-  }
+1 : message = {contents = "Access to this resource is forbidden by access policy."}
+2 : {contents = "client_geo"} = us
+4 : {contents = "error_subcode"} = {contents = "CLIENT_GEO"}
+6 : {contents = "error_code"} = {contents = "ACCESS_DENIED"}
+}
 )}}</code></pre>
-<br />
 </section>
 
 <section class="bcls-section">
@@ -150,27 +153,44 @@ entries =&gt;
 <p>Here is an example of adding an array of videos to the playback controller and starting playback:</p>
 
 <pre class="line-numbers">
-<code class="language-swift">// create an array of videos
-    NSArray *videos = @[
-        [self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]],
-        [self videoWithURL:[NSURL URLWithString:@"http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"]]
-    ];
+<code class="language-swift">override func viewDidLoad() {
+super.viewDidLoad()
+// Do any additional setup after loading the view, typically from a nib.
 
-    // add the video array to the controller's playback queue
-    [self.playbackController setVideos:videos];
-    // play the first video
-    [self.playbackController play];
+// Create an array of videos
+var videoArray = [AnyObject]()
+videoArray = [videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4")!),
+						videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4")!)]
+
+// Set up the player view with a standard VOD layout.
+let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
+
+// Install in the container view and match its size.
+playerView?.frame = self.videoContainerView.bounds
+playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+self.videoContainerView.addSubview(playerView!)
+
+// Associate the playerView with the playback controller.
+playerView?.playbackController = playbackController
+
+// Load the video array into the player and start video playback
+playbackController.setVideos(videoArray as NSArray)
+playbackController.play();
 }
 
-- (BCOVVideo *)videoWithURL:(NSURL *)url
-{
-    // set the delivery method for BCOVSources that belong to a video
-    BCOVSource *source = [[BCOVSource alloc] initWithURL:url deliveryMethod:kBCOVSourceDeliveryHLS properties:nil];
-    return [[BCOVVideo alloc] initWithSource:source cuePoints:[BCOVCuePointCollection collectionWithArray:@[]] properties:@{}];
+func videoWithURL(url: NSURL) -&gt; BCOVVideo {
+// Set the delivery method for BCOVSources that belong to a video
+let source:BCOVSource = BCOVSource(url: url as URL!, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
+let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
+return video!
 }</code></pre>
-<!-- <p><code data-gist-id="59b47e25a8aa9965de7e" data-gist-hide-footer="true" data-gist-line="50-55,60-65,66-71"></code></p> -->
 
-<p>For a complete sample, see the <a href="/node/18219#bp">Simple Video Playback App</a> guide.</p>
+<p>For complete samples, see the following:</p>
+
+<ul>
+	<li><a href="/node/18219#bp">Create a Simple Video App using Objective-C</a></li>
+	<li><a href="/node/18220#bp">Create a Simple Video App using Swift</a></li>
+</ul>
 </section>
 &nbsp;
 

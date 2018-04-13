@@ -1,0 +1,195 @@
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>One of the first things to decide after you create your Video Cloud account is how you plan to deliver your video files. Video Cloud offers many choices that have a variety of advantages and limitations. The delivery method you choose depends on how protected you want your video files to be, how you would like to reach your audience, your preferred method of upload, whether or not your video assets are already stored on another CDN (Content Delivery Network or Content Distribution Network), and so forth.</p>
+
+<p>The content delivery options described in this topic are available only for Video Cloud Enterprise publishers. Video Cloud Pro and Express publishers must use Brightcove as their CDN.</p>
+
+<p>In this topic, you will learn:</p>
+
+<ul>
+	<li><a href="#what">What is a CDN?</a></li>
+	<li><a href="#without">Can I deliver my content without a CDN?</a></li>
+	<li><a href="#types">How is my media content delivered? (Progressive Download vs. Streaming)</a></li>
+	<li><a href="#compare">Comparing content delivery: Brightcove-hosted video assets vs. BYO vs. remote assets</a></li>
+	<li><a href="#setup">Configuring content delivery to use BYO CDN or remote assets</a></li>
+	<li><a href="#cdns">What CDNs does Brightcove support for BYO CDN?</a></li>
+	<li><a href="#reporting">Video Cloud reporting and BYO CDN or remote assets</a></li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="what">What is a CDN?</h2>
+
+<p>Publishers use CDNs to distribute their media widely to viewers online. <a target="_blank" href="http://en.wikipedia.org/wiki/Content_Delivery_Network">Wikipedia</a> defines a CDN as:</p>
+
+<p><em>A content delivery network or content distribution network (CDN) is a system of computers networked together across the Internet that cooperate transparently to deliver content most often for the purpose of improving performance, scalability, and cost efficiency, to end users.</em></p>
+
+<p>There are many commercially available CDNs. If you are a Video Cloud Pro or Express publisher, Brightcove is your CDN solution. If you are a Video Cloud Enterprise publisher, then you can choose to deliver your content using the Brightcove CDN or over <a href="#cdns">any CDN that Video Cloud supports</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="without">Can I deliver my content without a CDN?</h2>
+
+<p>If you are expecting low volumes of traffic or have complete control over traffic to your videos, you may not need a CDN to serve your videos. For example, some publishers want to distribute their content on an internal wiki or private network. It is possible that your system can handle delivery of media without requiring an external CDN. If you would like more information on how Brightcove can support this set-up, please contact Brightcove Customer Support or your Account Manager.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="types">How is my media content delivered?</h2>
+
+<p>There are several types of content delivery mechanisms:</p>
+
+<ul>
+	<li><a href="#pd">Progressive download</a></li>
+	<li><a href="#fms">Streaming</a></li>
+</ul>
+
+<section id="pd" class="bcls-subsection">
+<h3>Progressive download (also called PD)</h3>
+
+<p>When you deliver your content using progressive download, the file is served from a standard web server through an HTTP request, just like a normal web page or any other downloadable document. When the video is played, the video file is downloaded to the viewer's computer or device and stored in a temporary directory. The video will begin to play when enough of the file has has been downloaded to the computer/device. If the viewer wants to fast forward or skip to another part of the video, he/she will only be able to do so if that part of the video has already been downloaded and stored. In comparison to streaming video, there's really only one consistent benefit to progressive download—you don't need a streaming server to deliver the video. Progressive download video can be served from any normal web server.</p>
+
+<p>Progressive download is fine for hobbyists or websites that have low traffic requirements, don't mind if their content is cached on the viewer's computer/device, and if you only need to deliver shorter length videos (under 10 minutes). Publishers who need advanced features and control over their video delivery, and/or those who need to display video to larger audiences (several hundred or more simultaneous viewers), need to track and report usage or viewing statistics for the video, or want to offer the best interactive playback experience, will need to stream their video. Streaming delivery also consumes less bandwidth than progressive delivery because only the portion of the video that is watched is actually delivered.</p>
+
+<p>Progressive download key points:</p>
+
+<ul>
+	<li>Limited seek and navigation capabilities</li>
+	<li>Viewers can access and re-purpose content</li>
+	<li>Does not effectively utilize Video Cloud’s dynamic delivery feature</li>
+	<li>Less secure and content can be easily copied</li>
+	<li>More bandwidth is used as all parts of the video are downloaded, not just the watched ones</li>
+</ul>
+</section>
+
+<section id="fms" class="bcls-subsection">
+<h3>Streaming (also called HLS or DASH)</h3>
+
+<p>Streaming video on the other hand is delivered via a streaming server without the file ever being downloaded to the viewer’s computer/device. As soon as the viewer presses play, the video will start to play. If the user decides to forward or skip to some other part of the video, he/she can do it immediately and the video will continue to play from that point onwards. One of the advantages of streaming media is that bandwidth is only used for video that the viewer has watched, as only the watched portion of the video has been delivered. Nothing is kept on the client side; everything is on the server side.</p>
+
+<p>Streaming is useful in situations where you want or need to do the following:</p>
+
+<ul>
+	<li>Deliver long files (10 minutes or longer) or high-bitrate files (high-definition)</li>
+	<li>Take advantage of the Video Cloud multi-bitrate streaming feature, which performs bandwidth detection and delivers the best quality for available hardware; you can use multi-bitrate streaming with progressive download, however, bandwidth detection occurs only at the beginning of playback and the player doesn't adapt to changes in the viewer's bandwidth</li>
+	<li>Serve more streams with less bandwidth</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">Note that you may encounter rererences to RTMP streaming. This is an older Flash streaming format, and now rarely used.</aside>
+
+<h4>Streaming to iOS devices</h4>
+
+<p>Apple iOS devices support only Apple HTTP Live Streaming (HLS) and HTTP (progressive download) for delivery of video files. You need to ensure either that your videos have one or more available HLS renditions. The App Store rules call for the use of Apple HTTP Live Streaming for long form video content (greater than 5 Mb or 10 minutes).</p>
+
+<p>Streaming key points:</p>
+
+<ul>
+	<li>Video content is secured via temporary video link</li>
+	<li>Advancing video is possible</li>
+	<li>Effectively utilizes Video Cloud’s dynamic delivery feature</li>
+	<li>Allows you to serve more steams with less bandwidth</li>
+	<li>Apple HTTP Live Streaming (HLS) or Real Time Messaging Protocol (RTMP) protocols in use</li>
+</ul>
+
+<p>In practice you will very rarely realize whether content has been streamed or progressively downloaded unless you look for some of the distinguished features as described above.</p>
+</section>
+
+<section id="images" class="bcls-subsection">
+<h3>How are image assets delivered?</h3>
+
+<p>Regardless of whether you use streaming or progressive download for your video content, images delivered to end users in the Video Cloud player (thumbnails and video stills, for example) are delivered via HTTP download.</p>
+</section>
+</section>
+
+<section class="bcls-section">
+<h2 id="compare">Comparing content delivery: Brightcove-hosted video assets vs. BYO vs. remote assets</h2>
+
+<p>Video Cloud supports a few basic CDN configurations, depending on your CDN provider and setup. The choices are:</p>
+
+<ul>
+	<li><a href="#BrightcoveCDN">Brightcove CDN</a></li>
+	<li><a href="#BYOCDN">BYO CDN</a></li>
+	<li><a href="#RemoteAssets">Remote assets</a></li>
+	<li><a href="#multiple">Multiple choice</a></li>
+</ul>
+
+<section id="BrightcoveCDN" class="bcls-subsection">
+<h3>Brightcove CDN</h3>
+
+<p>You can choose to use a <strong>Brightcove </strong><b>CDN</b>. Video Cloud leverages Akamai, Fastly, and other Tier 1 CDNs to offer both streaming and progressive download delivery for your video content. Generally HLS or DASH streaming is used, and progressive download only used in special cases or to provide a downloadable rendition of the video.</p>
+</section>
+
+<section id="BYOCDN" class="bcls-subsection">
+<h3>BYO CDN</h3>
+
+<p>You can also choose to use your own choice of CDN (<b>BYO CDN</b> or "bring your own bandwidth"). In this case, depending on the agreement with your CDN provider, your videos will be delivered seamlessly through Video Cloud players using either Progressive Download (PD) or streaming mechanisms. If you choose BYO CDN, you can use the Video Cloud uploading tools to ingest content into your Video Cloud account, which then gets pushed to your CDN provider for delivery to end users through your Video Cloud players.</p>
+
+</section>
+
+<section id="RemoteAssets" class="bcls-subsection">
+<h3>Remote assets</h3>
+
+<p>The final choice is <b>remote assets.</b> In this case, you may already have your video files stored on your CDN and you do not want to use the Video Cloud uploading tools at all to add new content. You can use either the Video Cloud Media module, the Dynamic Ingest API, or the CMS API to create videos in your Video Cloud account that point to the underlying video assets stored remotely by your CDN provider.</p>
+
+<h4>Limitations</h4>
+
+<p>When you create videos with remote assets you cannot use the image capture feature to create video still and thumbnail images for remote asset videos. Video still and thumbnail images can be uploaded for remote asset videos.</p>
+
+<p>For information on using remote assets, see <a href="/node/16244">Working with Remote Asset Videos</a>.</p>
+</section>
+
+<section id="multiple" class="bcls-subsection">
+<h3>Multiple choice</h3>
+
+<p>It is possible to configure a Video Cloud account to use both BYO CDN and remote assets. For example, if some of your video content is already available on your CDN, you may want to use remote assets for your existing content to avoid uploading it again, and use BYO CDN for new uploads going forward. Contact us if you require this set-up. You may also be able to create multiple Video Cloud accounts, each with a different content delivery strategy.</p>
+</section>
+</section>
+
+<section class="bcls-section">
+<h2 id="setup">Configuring content delivery to use BYO CDN or remote assets</h2>
+
+<p>Here are the main steps for getting set up with BYO CDN or remote assets:</p>
+
+<ol>
+	<li>Set up an account with a CDN (currently we support Akamai and Fastly).</li>
+	<li>If you have existing video content that you need to migrate (from Brightcove or an outside CDN), please contact our Services team.</li>
+	<li>Contact your Video Cloud Account Manager to complete the set-up.</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="cdns">What CDNs does Video Cloud support for BYO CDN?</h2>
+
+<p>Video Cloud supports the following major CDNs for BYOB CDN content delivery:</p>
+
+<ul>
+	<li>Akamai</li>
+	<li>Fastly</li>
+	<li>JOCDN</li>
+	<li>CloudFront</li>
+</ul>
+
+<p>Other BYO CDNs may be supported, but feature support will vary. <a href="https://www.brightcove.com/en/contact-sales">Contact Sales</a> or your account manager for more information.</p>
+
+<section class="bcls-subsection">
+<h3>Supported features for BYO CDNs</h3>
+
+<p>The following features are supported for BYO CDNs:</p>
+
+<ul>
+	<li>HTTP/HTTPS</li>
+	<li>HTTPS only</li>
+	<li>Signed manifest URLs</li>
+	<li>Signed content URLs (for the CDNs listed above only)</li>
+	<li>CDN Geo-Restriction (if supported by the CDN)</li>
+	<li>CDN IP-Restriction (if supported by the CDN)</li>
+	<li>Custom TTL settings (if supported by the CDN)</li>
+</ul>
+</section>
+</section>
+
+<section class="bcls-section">
+<h2 id="reporting">Video Cloud reporting and BYO CDN or remote assets</h2>
+
+<p>If you use BYO CDN or remote assets, your gigabytes downloaded will not appear in the Video Cloud Studio Analytics for any videos or players, since we are not integrated with your CDN. (You will see viewed minutes, because those are reported by the Brightcove Player.) You should be getting these reports directly from your CDN provider. You may still see gigabytes downloaded in the Video Cloud reports for your "non-video" content, that is, for bandwidth usage incurred for Video Cloud players, images, etc.</p>
+</section>

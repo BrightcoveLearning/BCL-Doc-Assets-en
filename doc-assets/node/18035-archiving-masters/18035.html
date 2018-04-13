@@ -21,59 +21,8 @@
         "rendition": "passthrough",
         "distribute": false
     },</span>
-    "brightcove_standard": false,
     "name": "nondrm-default",
-    "packages": [],
-    "renditions": [
-        {
-            "media_type": "video",
-            "audio_bitrate": 512,
-            "audio_codec": "aac",
-            "format": "mp4",
-            "h264_profile": "baseline",
-            "height": 2160,
-            "keyframe_rate": 0.5,
-            "max_frame_rate": 30.0,
-            "media_type": "video",
-            "reference_id": "av0",
-            "speed": 3,
-            "video_bitrate": 8192,
-            "video_codec": "h264",
-            "width": 3840
-        },
-        {
-            "media_type": "video",
-            "audio_bitrate": 64,
-            "audio_codec": "aac",
-            "format": "mp4",
-            "h264_profile": "baseline",
-            "height": 240,
-            "keyframe_rate": 0.5,
-            "max_frame_rate": 30.0,
-            "media_type": "video",
-            "reference_id": "av1",
-            "speed": 3,
-            "video_bitrate": 270,
-            "video_codec": "h264",
-            "width": 320
-        },
-        {
-            "format": "png",
-            "height": 360,
-            "label": "poster",
-            "media_type": "image",
-            "reference_id": "img0",
-            "width": 480
-        },
-        {
-            "format": "png",
-            "height": 90,
-            "label": "thumbnail",
-            "media_type": "image",
-            "reference_id": "img1",
-            "width": 160
-        }
-    ]
+    ...
 }</code></pre>
 </section>
 
@@ -91,6 +40,8 @@
 }</code></pre>
 
 <p>To use a rendition for the master instead of your source file, set the <code>rendition</code> field of the <code>digital_master</code> object to the <strong>reference id</strong> for the rendition:</p>
+
+<aside class="bcls-aside bcls-aside--information">For Dynamic Delivery and CAE profiles, the only supported values for <code>rendition</code> are <code>passthrough</code> and <code>none</code>.</aside>
 
 <pre class="line-numbers">
 <code class="language-json"><strong>"digital_master": {
@@ -117,7 +68,7 @@
 	<li>If you selected one of your renditions to be the master, and set <code>distribute</code> to <code>false</code>, that rendition will not be pushed to the CDN and will not be available for playback</li>
 	<li>If the rendition is set to <code>passthrough</code>, the rendition will only be distributed if it is in h264 format</li>
 	<li>The original video may be modified in order to make it playable over the internet. The archived master will be identical to the original file, however, except in very rare cases where we need to modify it in order to transcode it</li>
-    <li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/node/17949">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code>distribute</code> is set to <code>false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code>false</code> automatically.</li>
+	<li>Distributing the master does <strong>not</strong> work for videos ingested using <a href="/node/17949">Dynamic Delivery</a> profiles. If you look at the Dynamic Delivery ingest profiles, you will see that <code>distribute</code> is set to <code>false</code>. If you duplicate the profile and attempt to change that in Studio, the value will revert to <code>false</code> automatically.</li>
 </ul>
 </div>
 

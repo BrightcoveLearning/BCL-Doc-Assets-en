@@ -1,88 +1,69 @@
 <article class="bcls-article">
-<header id="bcls_header" class="bcls-header">
-<p>In this topic, you will learn how to use captions with apps built with the Brightcove Native SDKs.</p>
-</header>
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
 
-<section id="Understanding_captions" class="bcls-section">
-<h2>Understanding captions</h2>
+<p>Closed captions provide additional information about your video for individuals who wish to access it. Captions are necessary for the deaf and hard of hearing to access the audio portion of your videos. If you are new to captions, see the <a href="/node/17952">Overview: Adding Captions to a Video</a> document.</p>
 
-<p>Closed captions can be added to your videos to provide additional information about your video.</p>
-
-<p>First, it is important to understand which types of captions work best for each video format. Begin by reviewing the <a href="/node/15088">Video Formats and Captioning</a> document. Brightcove recommends using HLS videos with WebVTT captions.</p>
+<p>It is important to understand which types of captions work best for each video format. Begin by reviewing the <a href="/node/15088">Video Formats and Captioning</a> document. Brightcove recommends using HLS or DASH videos with WebVTT captions.</p>
 </section>
 
-<section id="Adding_captions_to_videos" class="bcls-section">
-<h2>Adding captions to videos</h2>
+<section class="bcls-section">
+<h2 id="Captions">Captions</h2>
 
-<p>Learn how to create a captions file and add it to your videos:</p>
-
-<ul>
-	<li><a href="/node/17952">Add captions to videos using the Media Module</a></li>
-	<li><a href="/node/18076">Add captions to videos programmatically</a></li>
-</ul>
-</section>
-
-<section id="HLS_Video" class="bcls-section">
-<h2>HLS Video</h2>
-
-<p>With HLS video, there are two options for captions playback:</p>
+<p>With HLS and DASH video, there are two options for captions playback:</p>
 
 <ul>
 	<li><a href="#In_manifest_WebVTT">In-manifest WebVTT</a></li>
-	<li><a href="#External_WebVTT">External WebVTT</a></li>
+	<li><a href="#External_WebVTT">External (Sidecar) WebVTT</a></li>
 </ul>
 
 <h3 id="In_manifest_WebVTT">In-manifest WebVTT</h3>
 
-<p>When using In-manifest WebVTT captions with HLS videos, your captions will just work. There is nothing extra that you need to do to implement these captions. If you are using Video Cloud and want to use this type of captions, then your videos need to be ingested with in-manifest WebVTT captions. For details, see the <a href="/node/18087#In-manifest_WebVTT">In-Manifest WebVTT</a> section of the HLS Plugin document.</p>
+<p>When using In-manifest WebVTT captions with HLS or DASH videos, your captions will just work. There is nothing extra that you need to do to implement these captions.</p>
 
-<h3 id="External_WebVTT">External WebVTT</h3>
+<p>In-manifest WebVTT captions are ingested with your videos. This can be done when you first ingest your video or after your video has been ingested. You can create in-manifest captions as follows:</p>
 
-<p>External WebVTT captions are text files separate from the video.</p>
+<ul>
+	<li><a href="/node/17938">Ingesting WebVTT files</a></li>
+	<li><a href="/node/17949#ingest_captions">Ingesting Captions using the Dynamic Ingest API</a></li>
+</ul>
+
+<h3 id="External_WebVTT">External (Sidecar) WebVTT</h3>
+
+<p>External WebVTT captions are text files separate from the video. You can associate captions files with a video as follows:</p>
+
+<ul>
+	<li><a href="/node/15481">Adding Captions using the Media Module</a></li>
+	<li><a href="/node/18013">Adding Captions using the CMS API</a></li>
+</ul>
 
 <p><strong>Android</strong></p>
 
-<p>The <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/WebVTTSampleApp/src/main">WebVTTSampleApp</a> shows you how to add WebVTT captions files for video playback.</p>
-
-<p>The <a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/DFXPClosedCaptioningSampleApp/src/main/java/com/brightcove/player/samples/closedcaptioning/dfxp/MainActivity.java">DFXPClosedCaptioningSampleApp</a> demonstrates playback and control of DFXP/TTML captions with videos retrieved from your Video Cloud library.</p>
+<p>The <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-mediaplayer/WebVTTSampleApp/src/main">WebVTTSampleApp</a> shows you how to add WebVTT captions files for video playback.</p>
 
 <p><strong>iOS/tvOS</strong></p>
 
-<p>When using external WebVTT captions, you need to include the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-sidecarsubtitles">Sidecar Subtitles</a> plugin for the Player SDK for iOS and tvOS.</p>
+<p>When using external WebVTT captions, you need to use the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-sidecarsubtitles">Sidecar Subtitles</a> functionality for the Player SDK for iOS and tvOS.</p>
 
-<p>If you are retrieving videos from your Video Cloud library using the BCOVPlaybackService, the videos and text tracks will be formatted for the Sidecar Subtitles plugin.</p>
+<p>When retrieving videos from your Video Cloud library using the <code>BCOVPlaybackService</code>, your videos and text tracks will be formatted for Sidecar Subtitles.</p>
 
-<p>If you are providing your own videos or you are a Brightcove Player customer without Video Cloud, then you need to structure the text tracks as shown in the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-sidecarsubtitles#manually-populating-subtitle-data">Manually populating subtitle data</a> section of the Sidecar Subtitles documentation.</p>
+<p>For Brightcove Player customer without Video Cloud or you are providing your own videos, then you need to structure the text tracks as shown in the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-sidecarsubtitles#manually-populating-subtitle-data">Manually populating subtitle data</a> section of the Sidecar Subtitles documentation.</p>
 </section>
 
-<section id="Styling_captions" class="bcls-section">
-<h2>Synchronizing WebVTT captions</h2>
+<section class="bcls-section">
+<h2 id="Synchronizing_WebVTT_captions">Synchronizing WebVTT captions</h2>
 
-<p>If you are using WebVTT captions with HLS video, make sure the video and audio is synchronized with the captions. Learn how to do this in the <a href="/node/18216">Synchronizing WebVTT Captions</a> document.</p>
+<p>If you are using WebVTT captions, make sure the video and audio is synchronized with the captions. Learn how to do this in the <a href="/node/18216">Synchronizing WebVTT Captions</a> document.</p>
 </section>
 
-<section id="Styling_captions" class="bcls-section">
-<h2>Styling captions</h2>
+<section class="bcls-section">
+<h2 id="Styling_captions">Styling captions</h2>
 
 <p>WebVTT captions can be styled to match your company preferences. For details, see the <a href="/node/17952#style">Styling captions section</a> of the Add Captions to Videos document.</p>
 </section>
 
-<section id="Combining_plugins" class="bcls-section">
-<h2>Combining plugins</h2>
-
-<p>Most plugins for the Native Player SDKs can be combined, so for example, you could have captions with a DRM-protected video that also plays Google IMA ads.</p>
-
-<p><strong>Android</strong></p>
-
-<p>With the Native SDK for Android, most plugins can be combined. This <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/AdRulesIMAWidevineModularSampleApp">sample app</a> shows you how to use the Brightcove ExoPlayer with Google IMA ads and Widevine Modular content.</p>
-
-<p><strong>iOS/tvOS</strong></p>
-
-<p>With the Native SDK for iOS, the BCOVSessionProviders from each plugin are created and chained together. This chain is then used to create the BCOVPlaybackController. For details, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios#combining-plugins">Combining Plugins section</a> of the SDK Reference.</p>
-</section>
-
-<section id="Example" class="bcls-section">
-<h2>Example</h2>
+<section class="bcls-section">
+<h2 id="Example">Example</h2>
 
 <p>If a video has captions associated with it, you will see a captions icon in the control bar. Select this icon.</p>
 

@@ -154,16 +154,18 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    options.client_id = clientId.value;
+    options.accout_id     = accountId.value;
+    options.client_id     = clientId.value;
     options.client_secret = clientSecret.value;
 
     // set proxyURL
-    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
+    options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
 
     switch (type) {
       case 'getChannels':
         endpoint            = '/channels';
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
@@ -177,12 +179,14 @@ var BCLS = (function(window, document) {
             addChannel.removeAttribute('style');
           } else {
             logger2.textContent = 'Default channel found - ok to proceed';
+            createRequest('getAffiliates');
           }
         });
         break;
       case 'addChannel':
         endpoint            = '/channels/default';
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         body.account_id     = accountId.value;
         body.name           = 'default';
         options.requestBody = JSON.stringify(body);
@@ -203,6 +207,7 @@ var BCLS = (function(window, document) {
         var existingAffiliateIds = [];
         endpoint            = '/channels/default/members';
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           existingAffiliates = JSON.parse(response);
@@ -230,6 +235,7 @@ var BCLS = (function(window, document) {
       case 'addAffiliate':
         endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
         options.url         = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         body.account_id     = affiliate_ids[callNumber];
         options.requestBody = JSON.stringify(body);
         options.requestType = 'PUT';
@@ -268,9 +274,9 @@ var BCLS = (function(window, document) {
       response,
       requestParams,
       dataString,
-      proxyURL      = options.proxyURL,
+      proxyURL = options.proxyURL,
       // response handler
-      getResponse   = function() {
+      getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -291,30 +297,15 @@ var BCLS = (function(window, document) {
       };
     /**
      * set up request data
-     * the proxy used here takes the following params:
-     * url - the full API request (required)
-     * requestType - the HTTP request type (default: GET)
-     * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * requestBody - request body for write requests (optional JSON string)
+     * the proxy used here takes the following request body:
+     * JSON.strinify(options)
      */
-    apiRequest.textContent = options.url;
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-    // only add client id and secret if both were submitted
-    if (options.client_id && options.client_secret) {
-      requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-    }
-    // add request data if any
-    if (options.requestBody) {
-      requestParams += '&requestBody=' + options.requestBody;
-    }
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // send request
-    httpRequest.send(requestParams);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 })(window, document);

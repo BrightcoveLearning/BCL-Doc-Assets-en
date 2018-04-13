@@ -1,6 +1,6 @@
 /*
  * Data Collection Plugin for Video JS
- * Version: 0.1
+ * Version: 0.2
  * Author: Robert Crooks
  * Description: Send analytics events for the Video JS player to Brightcove Analytics
  * Options:

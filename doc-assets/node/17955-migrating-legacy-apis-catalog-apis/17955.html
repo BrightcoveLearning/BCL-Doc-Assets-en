@@ -1,0 +1,1021 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Why_migrate">Why migrate?</h2>
+
+<p>There are several good reasons why you should migrate to the <span class=”notranslate”>Catalog APIs</span>:</p>
+
+<ul>
+	<li>The <span class=”notranslate”>Dynamic Ingest API</span> provides pull-based or source file upload ingestion, with better performance and reliability.</li>
+	<li>The <span class=”notranslate”>CMS API</span> provides cacheless read access, as well as functionality not available via the <span class=”notranslate”>Media API</span>.</li>
+	<li>The <span class=”notranslate”>Playback API</span> provides fast access to video and playlist data, without exposing metadata that the player doesn't need.</li>
+	<!-- <li>The Player Management API provides full integration between your CMS or app and the <span class=”notranslate”>Video Cloud</span> player system, allowing you to create, configure, and obtain publishing code for your players programmatically.</li> -->
+	<li>The new APIs are more scalable and reliable.</li>
+	<li>The new APIs are being actively enhanced, while the <span class=”notranslate”>Media API</span> and <span class=”notranslate”>Batch Provisioning</span> are deprecated and will be discontinued in 2017.</li>
+	<li>The Brightcove OAuth service provides a greater level of security for your content.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Migration_paths">Migration paths</h2>
+
+<p>The diagram below shows the primary migration paths from the legacy APIs to the new APIs. The sections that follow provide more detail on the paths.</p>
+<!-- <figure class="bcls-figure">
+                        <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/migration-guide/migration-guide.png" alt="Migration Paths">
+                        <figcaption class="bcls-caption--image">Migration Paths</figcaption>
+                    </figure> -->
+
+<figure class="bcls-figure">
+<table>
+	<tbody>
+		<tr>
+			<td>
+			<h4><a href="#Client_metadata_reads">Client Side <span class=”notranslate”>Media API</span> Reads</a></h4>
+			</td>
+			<td><a href="#Client_metadata_reads"><img alt="arrow" src="//learning-services-media.brightcove.com/doc-assets/general/images/right2left-arrow.png" /></a></td>
+			<td>
+			<h4><a href="#Client_metadata_reads"><span class=”notranslate”>Playback API</span></a></h4>
+			</td>
+		</tr>
+		<tr style="background:none;">
+			<td>
+			<h4><a href="#Metadata_writes"><span class=”notranslate”>Media API</span> Metadata Writes</a></h4>
+			</td>
+			<td><a href="#Metadata_writes"><img alt="arrow" src="//learning-services-media.brightcove.com/doc-assets/general/images/right2left-arrow.png" /></a></td>
+			<td>
+			<h4><a href="#Metadata_writes"><span class=”notranslate”>CMS API</span></a></h4>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<h4><a href="#ingest"><span class=”notranslate”>Media API</span>/Batch Uploads</a></h4>
+			</td>
+			<td><a href="#ingest"><img alt="arrow" src="//learning-services-media.brightcove.com/doc-assets/general/images/right2left-arrow.png" /></a></td>
+			<td>
+			<h4><a href="#ingest"><span class=”notranslate”>Dynamic Ingest API</span></a></h4>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<figcaption class="bcls-caption--image">Migration Paths</figcaption>
+</figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="ingest">Video/Asset ingest</h2>
+<!-- <h3><span class=”notranslate”>Media API</span>/<span class=”notranslate”>Batch Provisioning</span> <img src="//learning-services-media.brightcove.com/doc-assets/general/images/right2left-arrow.png" alt="arrow"> <span class=”notranslate”>Dynamic Ingest API</span></h3> -->
+
+<p>In the new Brightcove APIs, ingest functions are separate from media management functions - the rule to remember is that if you are sending files to <span class=”notranslate”>Video Cloud</span>, they will go via the <a href="/node/17948"><span class=”notranslate”>Dynamic Ingest API</span></a>, <strong>never</strong> the <span class=”notranslate”>CMS API</span>. If you are currently using the <span class=”notranslate”>Media API</span> or <span class=”notranslate”>Batch Provisioning</span> to upload videos, images, or captions, you should now migrate that functionality to the <span class=”notranslate”>Dynamic Ingest API</span>.</p>
+
+<h3>Use cases</h3>
+
+<p>Here is a breakdown of some specific use cases:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Use Case</th>
+			<th>Migration Path</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> to upload videos from your CMS</td>
+			<td>Use the <a href="/node/17948"><span class=”notranslate”>Dynamic Ingest API</span></a> instead</td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Batch Provisioning</span> to upload videos</td>
+			<td>
+			<p>Use the <span class=”notranslate”>Dynamic Ingest API</span> - you can host the files on your own server or S3 bucket for pull-based ingest, or use <a href="/node/18288">source file upload</a><sup><strong><a href="#note1">[1]</a></strong></sup></p>
+
+			<aside class="bcls-aside bcls-aside--tip">If you will be ingesting large numbers of videos, also see <a href="/node/17941">this guide</a> to using Notifications to avoid exceeding ingest rate limits.</aside>
+			</td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Batch Provisioning</span> to replace or retranscode videos</td>
+			<td>Both of these operations can be performed using the <a href="/node/17948#replaceVideo"><span class=”notranslate”>Dynamic Ingest API</span></a> - you can host the files on your own server or S3 bucket for pull-based ingest, or use <a href="/node/18288">source file upload</a><sup><strong><a href="#note2">[2]</a></strong></sup></td>
+		</tr>
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> or <span class=”notranslate”>Batch Provisioning</span> to add images or captions to videos</td>
+			<td>
+			<p><a href="/node/17940">Video stills (posters) and thumbnails</a> and <a href="/node/17938">WebVTT text tracks</a>can be added using the <span class=”notranslate”>Dynamic Ingest API</span>.<sup><strong><a href="#note3">[3]</a></strong></sup></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>Notes</h4>
+
+<ul>
+	<li id="note1"><sup><strong>[1]</strong></sup> The <span class=”notranslate”>Dynamic Ingest API</span> does not support multiple ingest on one request, but you can iterate over a set of video data as in <a href="/node/17944">this example</a></li>
+	<li id="note2"><sup><strong>[2]</strong></sup> Again, each video requires a separate request, but you can iterate over data sets as in these samples:
+	<ul>
+		<li><a href="/node/17946">Replace Multiple Videos</a></li>
+		<li><a href="/node/17943">Re-transcode Multiple Videos</a></li>
+	</ul>
+	</li>
+	<li id="note3"><sup><strong>[3]</strong></sup>
+	<aside class="bcls-aside bcls-aside--information">
+	<h4>Other media assets</h4>
+
+	<dl>
+		<dt>Logo overlays</dt>
+		<dd>Logo overlays will be handled differently:
+		<ul>
+			<li>For burned-in logos, you can specify a <a href="/node/18043#watermarkFields">watermark</a>, which is an image inserted into the video data during transcoding (just as the old burn-in logos were). Watermarks will travel with the video renditions even if they are played in non-Brightcove players (but not when the videos are distributed to social media via Brightcove Social, because we always send the digital master to social media providers).</li>
+      <li>For logo overlays, use the <a href="/node/18167">logo overlay plugin</a>.</li>
+		</ul>
+		</dd>
+		<dt>DFXP captions</dt>
+		<dd>DFXP captions are used only with the legacy smart player - if you are still using the smart player and need to add captions to videos, you can host the DFXP files yourself and add them to videos using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-assetGroup-Add_Caption"><span class=”notranslate”>CMS API</span></a>.</dd>
+	</dl>
+	</aside>
+	</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Client_metadata_reads">Client-facing <span class=”notranslate”>Media API</span> reads</h2>
+<!-- <h3><span class=”notranslate”>Media API</span> <img src="//learning-services-media.brightcove.com/doc-assets/general/images/right2left-arrow.png" alt="arrow"> <span class=”notranslate”>Playback API</span></h3> -->
+
+<p>If you are currently using the <span class=”notranslate”>Media API</span> to pull video or playlist data from <span class=”notranslate”>Video Cloud</span> you should migrate this functionality to use the <a href="/node/17906"><span class=”notranslate”>Playback API</span></a> instead. For web pages that contain a player, there is no need to make requests to the <span class=”notranslate”>Playback API</span> directly, as this functionality is encapsulated in the player <a href="/node/18108">catalog</a>.</p>
+
+<p>For mobile apps or web pages that don't contain a player, such as video portal or catalog, you can submit requests to the <span class=”notranslate”>Playback API</span> directly, using a <a href="/node/18003">policy key</a> for authentication.</p>
+
+<aside class="bcls-aside bcls-aside--information">If you just need a basic policy key, you can use <a href="/node/18004">the app here</a> instead of making the Policy API request yourself.</aside>
+
+<h4>Use cases</h4>
+
+<p>Here is a breakdown of some specific use cases:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Current State</th>
+			<th>Migration Path</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> to retrieve videos or a playlist by ID to load into the Brightcove Player dynamically</td>
+			<td>Use the player <a href="/node/18108">catalog</a> methods, iterating if you need to fetch multiple items.</td>
+		</tr>
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> to retrieve videos or a playlist in an iOS or Andriod app</td>
+			<td>
+			<p>Use the <a href="/node/17906"><span class=”notranslate”>Playback API</span></a>.</p>
+
+			<p>The Native Player SDKs offer endpoints to facilitate getting media metadata - see <a href="/node/18232">Working with Media Content (iOS)</a> and <a href="/node/18251">Working with Media Content (Android)</a> for more details.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> to search for videos (related to the current video, etc.)</td>
+			<td>Use the <a href="/node/18005"><span class=”notranslate”>Playback API</span> search</a></td>
+		</tr>
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> <code>find_related_videos</code> to get videos related to the one in the player (either directly or via the Smart Player settings)</td>
+			<td>See the following samples:
+			<ul>
+				<li><a href="/node/18194">Related Videos from a Playlist</a></li>
+				<li><a href="/node/18147">Related Videos via Tags</a> (note that this sample could also use the <span class=”notranslate”>Playback API</span> for a solution that does not require a server-side proxy)</li>
+			</ul>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="Metadata_writes">Metadata writes</h2>
+<!-- <h3><span class=”notranslate”>Media API</span> Write <img src="//learning-services-media.brightcove.com/doc-assets/general/images/right2left-arrow.png" alt="arrow"> <span class=”notranslate”>CMS API</span></h3> -->
+
+<p>Write requests to the <span class=”notranslate”>Video Cloud</span> system should always be made on the server side (if you need a web UI, make the requests via a server-side proxy that holds the authentication credentials). Where you are using the <span class=”notranslate”>Media API</span> to manage video metadata, including adding remote assets, you should migrate this functionality to the <a href="/node/18034"><span class=”notranslate”>CMS API</span></a>. To add videos or other assets to <span class=”notranslate”>Video Cloud</span>, see the <a href="#ingest">next section</a>.</p>
+
+<p>See the <a href="#methods">API methods comparison</a> below to see equivalent <span class=”notranslate”>CMS API</span> methods for various <span class=”notranslate”>Media API</span> methods, and the <a href="#videoFields">Video fields comparison</a> to see where the names of video properties differ between the Media and <span class=”notranslate”>CMS API</span>s.</p>
+
+<h3>Use cases</h3>
+
+<p>Here is a breakdown of some specific use cases:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Current State</th>
+			<th>Migration Path</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> to update video metadata (name, description, tags, etc.)</td>
+			<td>Use the <span class=”notranslate”>CMS API</span> <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> operation.</td>
+		</tr>
+		<tr>
+			<td>Using the <span class=”notranslate”>Media API</span> to manage playlists</td>
+			<td>Use the CMS <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-playlistGroup">Playlist operations</a>.</td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Batch Provisioning</span> to update video metadata</td>
+			<td>Use the <span class=”notranslate”>CMS API</span> <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> method</td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Batch Provisioning</span> to apply geo-filtering to videos</td>
+			<td>Use the <span class=”notranslate”>CMS API</span> <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> method<sup><strong><a href="#note4">[4]</a></strong></sup></td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Media API</span> or <span class=”notranslate”>Batch Provisioning</span> to share videos between accounts</td>
+			<td>
+			<aside class="bcls-aside bcls-aside--information">Support for Media Sharing is planned but not yet available in the <span class=”notranslate”>CMS API</span> - you will need to wait until this feature is added.</aside>
+			</td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Batch Provisioning</span> to retranscode videos</td>
+			<td>Use the <a href="/node/17948#retranscode"><span class=”notranslate”>Dynamic Ingest API</span></a><sup><strong><a href="#note5">[5]</a></strong></sup></td>
+		</tr>
+		<tr>
+			<td>Using <span class=”notranslate”>Batch Provisioning</span> or the <span class=”notranslate”>Media API</span> to add remote remote videos and assets such as captions and images</td>
+			<td>Use the <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-assetGroup"><span class=”notranslate”>CMS API</span> assets operations</a> - also see <a href="/node/18018">Using the <span class=”notranslate”>CMS API</span>: Remote Assets</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>In short, the new Catalog APIs offer greater performance, reliability, and functionality. In addition, they are part of the larger platform that is the new <span class=”notranslate”>Video Cloud</span> - in addition to the APIs discussed here, there are APIs for Analytics, Player Management, Ingest Profiles, and OAuth. Putting these all together enables you to create a complete integration between your CMS or app and <span class=”notranslate”>Video Cloud</span>.</p>
+
+<h4>Notes</h4>
+
+<ul>
+	<li id="note4"><sup><strong>[4]</strong></sup> The <span class=”notranslate”>CMS API</span> does not support updates on multiple videos - iterate over a video data set, making an <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a> request for each video - see a <a href="/node/18029">sample app here</a>.</li>
+	<li id="note5"><sup><strong>[5]</strong></sup> Dynamic Ingest does not support processing multiple videos in one request, but you interate over a data set to handle multiple videos, as in <a href="/node/17943">this sample</a></li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="videoFields">Video Field Comparison</h2>
+
+<p>The table below lists video fields that are different in <span class=”notranslate”>CMS API</span> responses from those in the <span class=”notranslate”>Media API</span>. Note that only those fields that are different are listed - <a href="/node/18023">video fields</a> not listed are the same for both APIs.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th><span class=”notranslate”>Media API</span> Field</th>
+			<th><span class=”notranslate”>CMS API</span> Field</th>
+			<th>Type</th>
+			<th>Can be updated in <span class=”notranslate”>CMS API</span>?</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>accountId</code></td>
+			<td><code>account_id</code></td>
+			<td>String</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>adKeys</code></td>
+			<td><code>ad_keys</code></td>
+			<td>String</td>
+			<td>yes</td>
+			<td>key/value pairs for ad requests</td>
+		</tr>
+		<tr>
+			<td><code>captioning</code></td>
+			<td><code>text_tracks</code></td>
+			<td>Array of HTML5-style text tracks</td>
+			<td>yes</td>
+			<td>WebVTT assets; more details <a href="/node/18013">here</a></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>src</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>address of the track file (URL)</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>srclang</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>language of the track, e.g. "en"</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>label</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>a user-readable title</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>kind</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>how the track is meant to be used: "subtitles", "captions", "descriptions", "chapters", "metadata"</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>mime_type</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>mime type of the track file, e.g. "text/vtt"</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>id_asset</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>null if asset is remote</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>sources</code></em></td>
+			<td><em>Array</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>src</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>address of the track file (URL)</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em>default</em></td>
+			<td><em>Boolean</em></td>
+			<td>yes</td>
+			<td>indicates that the track should be enabled by default. Should only be true on one track.</td>
+		</tr>
+		<tr>
+			<td><code>creationDate</code></td>
+			<td><code>created_at</code></td>
+			<td>UTC date-time</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>cuePoints</code></td>
+			<td><code>cue_points</code></td>
+			<td>Array of Maps</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>cue_points.0.id</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>cue_points.0.force_stop</code></em></td>
+			<td><em>Boolean</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>cue_points.0.metadata</code></em></td>
+			<td>_String</td>
+			<td>yes</td>
+			<td>code point only_</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>cue_points.0.name</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>cue_points.0.time</code></em></td>
+			<td><em>Float</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>cue_points.0.type</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>customFields</code></td>
+			<td><code>custom_fields</code></td>
+			<td>Map of field-value pairs (Strings)</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>dashManifestUrl</code></td>
+			<td><code>dash_manifest_id</code></td>
+			<td>String</td>
+			<td>no</td>
+			<td>Was an URL, is now an ID</td>
+		</tr>
+		<tr>
+			<td><code>dashRenditions</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>digitalMaster</code></td>
+			<td><em>digital_master_id</em></td>
+			<td>String</td>
+			<td>no</td>
+			<td>Was an object; is now an ID</td>
+		</tr>
+		<tr>
+			<td><code>economics</code></td>
+			<td><code>economics</code></td>
+			<td>String enum</td>
+			<td>yes</td>
+			<td>FREE, AD_SUPPORTED</td>
+		</tr>
+		<tr>
+			<td><code>FLVURL</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><code>geo</code></td>
+			<td>Map of property-value pairs</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>geoFilteredCountries</code></td>
+			<td>&nbsp;&nbsp; <em><code>geo.countries</code></em></td>
+			<td><em>Array of country code Strings</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>geoFilterExclude</code></td>
+			<td>&nbsp;&nbsp; <em><code>geo.exclude_countries</code></em></td>
+			<td><em>Boolean</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>geoRestricted</code></td>
+			<td>&nbsp;&nbsp; <em><code>geo.restricted</code></em></td>
+			<td><em>Boolean</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>geoFiltered</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>hdsManifestUrl</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>HDSRenditions</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>HLSURL</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>id</code></td>
+			<td><code>id</code></td>
+			<td>String</td>
+			<td>no</td>
+			<td>Was a Long, is now a String</td>
+		</tr>
+		<tr>
+			<td><code>IOSRenditions</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>itemState</code></td>
+			<td><code>state</code></td>
+			<td>String enum</td>
+			<td>yes</td>
+			<td>ACTIVE, INACTIVE, PENDING, <code>DELETE</code>D</td>
+		</tr>
+		<tr>
+			<td><code>lastModifiedDate</code></td>
+			<td><code>updated_at</code></td>
+			<td>UTC date-time</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>length</code></td>
+			<td><code>duration</code></td>
+			<td>Number, milliseconds</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><code>link</code></td>
+			<td>Map of property-value pairs</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>linkUrl</code></td>
+			<td>&nbsp;&nbsp; <em><code>link.url</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>linkText</code></td>
+			<td>&nbsp;&nbsp; <em><code>link.text</code></em></td>
+			<td><em>String</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>logoOverlay</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>longDescription</code></td>
+			<td><code>long_description</code></td>
+			<td>String</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>name</code></td>
+			<td><code>name</code></td>
+			<td>String</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>playsTotal</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>playsTrailingWeek</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>publishedDate</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>referenceId</code></td>
+			<td><code>reference_id</code></td>
+			<td>String</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>renditions</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><code>schedule</code></td>
+			<td>Map of property-value pairs</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>endDate</code></td>
+			<td>&nbsp;&nbsp; <em><code>schedule.ends_at</code></em></td>
+			<td><em>String in ISO-8601 date format</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>startDate</code></td>
+			<td>&nbsp;&nbsp; <em><code>schedule.starts_at</code></em></td>
+			<td><em>String in ISO-8601 date format</em></td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><code>sharing</code></td>
+			<td>Map of property-value pairs</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>sharedByExternalAccount</code></td>
+			<td>&nbsp;&nbsp; <em><code>sharing.by_external_account</code></em></td>
+			<td><em>Boolean</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>sharing.by_id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>pub ID that originated the share</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>sharing.source_id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>video ID of the original video (sharer's copy)</td>
+		</tr>
+		<tr>
+			<td>sharedToExternalAccount</td>
+			<td>&nbsp;&nbsp; <em>sharing.to</em>external <em>acct</em></td>
+			<td><em>Boolean</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp; <em><code>sharing.by_reference</code></em></td>
+			<td><em>Boolean</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>shortDescription</code></td>
+			<td><code>description</code></td>
+			<td>String</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><em><code>smooth_client_manifest_id</code></em></td>
+			<td>String</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>smoothManifestUrl</code></td>
+			<td><em><code>smooth_server_manifest_id</code></em></td>
+			<td>String</td>
+			<td>no</td>
+			<td>Was a URL, is now an ID</td>
+		</tr>
+		<tr>
+			<td><code>smoothRenditions</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>tags</code></td>
+			<td><code>tags</code></td>
+			<td>Array of tags (Strings)</td>
+			<td>yes</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><code>images</code></td>
+			<td>Map of property-value pairs</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>thumbnail</code></td>
+			<td>&nbsp;&nbsp; <em><code>images.thumbnail</code></em></td>
+			<td><em>Map</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.asset_id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.src</code></em></td>
+			<td><em>String URL</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.sources</code></em></td>
+			<td><em>Array of Maps</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.sources.asset_id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>thumbnailUrl</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.sources.src</code></em></td>
+			<td><em>String URL</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.sources.height</code></em></td>
+			<td><em>Number</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.thumbnail.sources.width</code></em></td>
+			<td><em>Number</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>videoStill</code></td>
+			<td>&nbsp;&nbsp; <em><code>images.poster</code></em></td>
+			<td><em>Map</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.asset_id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.src</code></em></td>
+			<td><em>String URL</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.sources</code></em></td>
+			<td><em>Array of Maps</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.sources.asset_id</code></em></td>
+			<td><em>String</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><code>videoStillUrl</code></td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.sources.src</code></em></td>
+			<td><em>String URL</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.sources.height</code></em></td>
+			<td><em>Number</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em><code>images.poster.sources.width</code></em></td>
+			<td><em>Number</em></td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><code>original_filename</code></td>
+			<td>String</td>
+			<td>no</td>
+			<td>Will be null for remote asset videos</td>
+		</tr>
+		<tr>
+			<td><code>version</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See the etag header on the request reponse</td>
+		</tr>
+		<tr>
+			<td><code>videoFullLength</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td><code>WMVRenditions</code></td>
+			<td>n/a</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>See <a href="//brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Sources"><code>sources</code></a></td>
+		</tr>
+		<tr>
+			<td>n/a</td>
+			<td><code>complete</code></td>
+			<td>Boolean</td>
+			<td>no</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>n/a</td>
+			<td><code>folder_id</code></td>
+			<td>String</td>
+			<td>no</td>
+			<td>Mongo-type ID of folder to which the video belongs</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="methods">API Methods Comparison</h2>
+
+<p>The table below shows <span class=”notranslate”>Media API</span> methods and the equivalent operation in CMS (or Dynamic Ingest) API</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th><span class=”notranslate”>Media API</span></th>
+			<th><span class=”notranslate”>CMS API</span> Verb + Endpoint</th>
+		</tr>
+		<tr>
+			<th colspan="2">Video Methods</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>search_videos</code></td>
+			<td><code><code>GET</code></code> <code>/accounts/account_id/videos</code> + <a href="/node/18005">search</a></td>
+		</tr>
+		<tr>
+			<td><code>find_modified_videos</code></td>
+			<td><code><code>GET</code></code> <code>/accounts/{account_id}/videos?sort=%2Dupdated_at</code></td>
+		</tr>
+		<tr>
+			<td><code>find_video_by_id</code></td>
+			<td><code><code>GET</code></code> <code>/accounts/{account_id}/videos/{video_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>find_videos_by_ids</code></td>
+			<td><code>GET</code> <code>/accounts/{account_id}/videos/{video_id} (iterate over ids)</code></td>
+		</tr>
+		<tr>
+			<td>find_video_by_reference_id</td>
+			<td><code>GET</code> <code>/accounts/{account_id}/videos/ref:{reference_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>find_videos_by_reference_ids</code></td>
+			<td><code>GET</code> <code>/accounts/{account_id}/videos/ref:{reference_id}</code> (iterate over reference ids)</td>
+		</tr>
+		<tr>
+			<td><code>find_all_videos</code></td>
+			<td><code>GET</code> /accounts/account_id/videos</td>
+		</tr>
+		<tr>
+			<td>find_related_videos</td>
+			<td><code>GET</code> <code>/accounts/account_id/videos</code> + <a href="/node/18005">search</a> (search according to the relationships you want)</td>
+		</tr>
+		<tr>
+			<td><code>create_video</code></td>
+			<td><code>POST</code> <code>/accounts/account_id/videos</code> + <a href="/node/17948"><span class=”notranslate”>Dynamic Ingest API</span></a></td>
+		</tr>
+		<tr>
+			<td><code>update_video</code></td>
+			<td><code>PATCH</code> <code>/accounts/{account_id}/videos/{video_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>delete_video</code></td>
+			<td><code>DELETE</code> /accounts/{account_id}/videos/{video_id}</td>
+		</tr>
+		<tr>
+			<td>add_captioning</td>
+			<td>Use <a href="/node/17938">Dynamic Ingest - Text Tracks</a></td>
+		</tr>
+		<tr>
+			<td><code>add_image</code></td>
+			<td><a href="/node/17940">Dynamic Ingest - Images</a></td>
+		</tr>
+		<tr>
+			<td><code>add_logo_overlay</code></td>
+			<td>Either use the <a href="/node/18075">Player Overlay Plugin</a> for detached overlays that can be managed and changed at runtime, or burned-in logos through a <a href="/node/18043#watermarkFields">custom Ingest Profile including watermarks</a></td>
+		</tr>
+		<tr>
+			<td><code>delete_captioning</code></td>
+			<td><code>PATCH</code> <code>/accounts/{account_id}/videos/{video_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>get_upload_status</code></td>
+			<td><code>GET</code> <code>/accounts/{account_id}/videos/{video_id} (status is included in the response)</code></td>
+		</tr>
+		<tr>
+			<td><code>remove_logo_overlay</code></td>
+			<td>No equivalent - see notes on <code>add_logo_overlay</code> above</td>
+		</tr>
+		<tr>
+			<td><code>share_video</code></td>
+			<td>see <a href="/node/19325">Sharing Videos with the CMS API</a></td>
+		</tr>
+		<tr>
+			<td><code>unshare_video</code></td>
+			<td>see <a href="/node/19325">Sharing Videos with the CMS API</a></td>
+		</tr>
+		<tr>
+			<th colspan="2">Playlist Methods</th>
+		</tr>
+		<tr>
+			<td><code>find_all_playlists</code></td>
+			<td><code>GET</code> <code>/account/{account_id}/playlists</code></td>
+		</tr>
+		<tr>
+			<td><code>find_playlist_by_id</code></td>
+			<td><code>GET</code> <code>/account/{account_id}/playlists/{playlist_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>find_playlist_by_reference_id</code></td>
+			<td><code>GET</code> <code>/account/{account_id}/playlists/ref:{reference_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>find_playlists_by_ids</code></td>
+			<td><code>GET</code> <code>/account/{account_id}/playlists/{playlist_id} (iterate over ids)</code></td>
+		</tr>
+		<tr>
+			<td><code>find_playlists_by_reference_ids</code></td>
+			<td><code>GET</code> <code>/account/{account_id}/playlists/ref:{reference_id}</code> (iterate over reference ids)</td>
+		</tr>
+		<tr>
+			<td><code>find_playlists_for_player_id</code></td>
+			<td>no equivalent</td>
+		</tr>
+		<tr>
+			<td><code>create_playlist</code></td>
+			<td><code>POST</code> <code>/account/{account_id}/playlists</code></td>
+		</tr>
+		<tr>
+			<td><code>update_playlist</code></td>
+			<td><code>PATCH</code> <code>/account/{account_id}/playlists/{playlist_id}</code></td>
+		</tr>
+		<tr>
+			<td><code>delete_playlist</code></td>
+			<td><code>DELETE</code> <code>/account/{account_id}/playlists/{playlist_id}</code></td>
+		</tr>
+	</tbody>
+</table>
+</section>
+</article>

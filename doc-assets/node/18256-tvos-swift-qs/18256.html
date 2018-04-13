@@ -6,7 +6,7 @@
 
 <p class="player-only">This example plays videos from an internal array of video files.</p>
 
-<aside class="bcls-aside bcls-aside--tip">This example is written in Swift 3.0, but you can also experiment with Objective-C. See the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/OUX/BasicOUXtvOSPlayer/objc">Obj-C version of the Basic tvOS player with the Once UX plugin</a> sample.</aside>
+<aside class="bcls-aside bcls-aside--tip">This example is written in Swift, but you can also experiment with Objective-C. See the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/OUX/BasicOUXtvOSPlayer/objc">Obj-C version of the Basic tvOS player with the Once UX plugin</a> sample.</aside>
 
 <p class="video-cloud-only">To use the Playback API, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a>.</p>
 
@@ -22,6 +22,11 @@ To use an advertising plugin, see the <a href="https://github.com/BrightcoveOS/i
 
 <p class="player-only">Follow the steps below to get familiar with setting up an app project that uses the Brightcove Player SDK for tvOS. You can view the complete code for each of the following:</p>
 
+<ol class="player-only">
+	<li><a href="#appdelegate">AppDelegate</a></li>
+	<li><a href="#viewControllerPerform">ViewController</a></li>
+</ol>
+
 <div class="video-cloud-only">
 <p>There are two ways to try out this sample:</p>
 
@@ -30,20 +35,19 @@ To use an advertising plugin, see the <a href="https://github.com/BrightcoveOS/i
 <p>Download the entire Xcode project for experimentation.</p>
 
 <ol>
-	<li>Download the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/AppleTV/swift">AppleTV</a> sample to your local system.</li>
+	<li>Clone or download the <a href="https://github.com/BrightcoveOS/ios-player-samples">Native SDK for iOS samples</a> to your local system.</li>
+	<li>Navigate to the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/AppleTV/swift">Player/AppleTV/swift</a> sample app.</li>
 	<li>Run the <code>pod install</code> command.</li>
 	<li>Open and run the newly created workspace.</li>
 </ol>
 
-<h3>Build the app by following the steps below</h3>
+<h3>Build the app by following the steps in this guide</h3>
 
 <p>Follow the steps below to get familiar with setting up an app project that uses the Brightcove Player SDK for tvOS. You can view the complete code for each of the following:</p>
 
 <ol>
-	<li><a href="#bridgingHeader">SVP-Bridging-Header</a></li>
 	<li><a href="#appdelegate">AppDelegate</a></li>
-	<li class="video-cloud-only"><a href="#viewController">ViewController</a></li>
-	<li class="player-only"><a href="#viewControllerPerform">ViewController</a></li>
+	<li><a href="#viewController">ViewController</a></li>
 </ol>
 </div>
 </section>
@@ -360,9 +364,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	<ul>
 		<li>
-		<p>Line 12: Defines your Brightcove Playback API Policy Key</p>
-
-		<aside class="bcls-aside bcls-aside--tip">This example plays a video returned from the <a href="/node/17906">Brightcove Playback API</a>, which is the latest and recommended API to retrieve content from your Video Cloud library. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a>.</aside>
+		<p>Line 12: Defines your Brightcove Playback API Policy Key. This example plays a video returned from the <a href="/node/17906">Brightcove Playback API</a>, which is the latest and recommended API to retrieve content from your Video Cloud library. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a>.</p>
+		<aside class="bcls-aside bcls-aside--information">Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</aside>
 		</li>
 		<li>Line 13: Defines your Video Cloud Account ID</li>
 		<li>Line 14: Defines your Video Cloud Video ID</li>
@@ -444,7 +447,7 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 		<p>Lines 31-33: Set the delegate and turn on the auto-advance and autoplay features.</p>
 		</li>
 		<li>
-		<p>Lines 37-39: Set a dictionary property to use the native <code>AVPlayerViewController</code> instead of the <code>BCOVPlaybackSession</code>'s AVPlayerLayer. This code is needed so that there will not be two view controllers running in your app. Without this code, your app will freeze video playback in the simulator.</p>
+		<p>Lines 37-39: Set the <code>kBCOVAVPlayerViewControllerCompatibilityKey</code> option to <code>true</code> to use the native <code>AVPlayerViewController</code> instead of the <code>BCOVPlaybackSession</code>'s <code>AVPlayerLayer</code>. Without this code your video may not play back properly.</p>
 
 		<aside class="bcls-aside bcls-aside--information">For details and limitations, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios#using-an-avplayerviewcontroller-with-a-bcovplaybackcontroller">Using an AVPlayerViewController with a BCOVPlaybackController</a> notes.<br />
 		<br />
@@ -466,8 +469,10 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 		playbackController.isAutoAdvance = true
 		playbackController.isAutoPlay = true
 
-		//use the AVPlayerViewController instead of the BCOVPlaybackSession class' AVPlayerLayer
-		//this is needed if you want to test in the simulator
+		//Tell the playback controller that we're going to use the
+AVPlayerViewController.
+		//This lets the AVPlayerViewController supply the AVPlayerLayer for display
+instead of the BCOVPlaybackSession.
 		var mutableOptions = self.playbackController.options
 		mutableOptions?[kBCOVAVPlayerViewControllerCompatibilityKey] = true
 		self.playbackController.options = mutableOptions
@@ -757,7 +762,7 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 		<p>Lines 27-29: set the delegate and turn on the auto-advance and autoplay features.</p>
 		</li>
 		<li>
-		<p>Lines 33-35: Set a dictionary property to use the native <code>AVPlayerViewController</code> instead of the <code>BCOVPlaybackSession</code>'s AVPlayerLayer. This code is needed so that there will not be two view controllers running in your app. Without this code, your app will freeze video playback in the simulator.</p>
+		<p>Lines 33-35: Set the <code>kBCOVAVPlayerViewControllerCompatibilityKey</code> option to <code>true</code> to use the native <code>AVPlayerViewController</code> instead of the <code>BCOVPlaybackSession</code>'s <code>AVPlayerLayer</code>. Without this code your video may not play back properly.</p>
 
 		<aside class="bcls-aside bcls-aside--information">For details and limitations, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios#using-an-avplayerviewcontroller-with-a-bcovplaybackcontroller">Using an AVPlayerViewController with a BCOVPlaybackController</a> notes.<br />
 		<br />
@@ -779,8 +784,10 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 		playbackController.isAutoAdvance = true
 		playbackController.isAutoPlay = true
 
-		//use the AVPlayerViewController instead of the BCOVPlaybackSession class' AVPlayerLayer
-		//this is needed if you want to test in the simulator
+		//Tell the playback controller that we're going to use the
+AVPlayerViewController.
+		//This lets the AVPlayerViewController supply the AVPlayerLayer for display
+instead of the BCOVPlaybackSession.
 		var mutableOptions = self.playbackController.options
 		mutableOptions?[kBCOVAVPlayerViewControllerCompatibilityKey] = true
 		self.playbackController.options = mutableOptions
@@ -979,39 +986,35 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 														</ol>
 										</section> -->
 
-										<section class="bcls-section">
-									      <h2 id="Manage_Media_Security">Manage Media Security</h2>
+<section class="bcls-section">
+<h2 id="Manage_Media_Security">Manage Media Security</h2>
 
-									      <p>App Transport Security (ATS) enforces secure connections between your app and web services. With Apple's release of the iOS 9 SDK, a new feature called <a href="https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/">App Transport Security (ATS)</a> was added.</p>
+<p>App Transport Security (ATS) enforces secure connections between your app and web services. With Apple's release of the iOS 9 SDK, a new feature called <a href="https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/">App Transport Security (ATS)</a> was added.</p>
 
-									      <ol class="bcls-tasklist">
-									        <li>
-									          <p>
-									            One of the following situations will apply to your app:
-									          </p>
-									          <ul>
-									            <li>
-									              <p>
-									                By default the Brightcove Native SDK for iOS uses a source selection policy to choose HTTPS over HTTP sources, so you can build your apps with ATS enabled.
-									              </p>
-									              <p>
-									                That's it, you are ready to run your app.
-									              </p>
-									            </li>
-									            <br />
-									            <li>
-									              <p>If you are using HTTP sources or have other HTTP calls in your app, you may encounter the following error message:</p>
+<ol class="bcls-tasklist">
+	<li>
+	<p>One of the following situations will apply to your app:</p>
 
-									              <pre class="line-numbers" data-start="1">
+	<ul>
+		<li>
+		<p>By default the Brightcove Native SDK for iOS uses a source selection policy to choose HTTPS over HTTP sources, so you can build your apps with ATS enabled.</p>
+
+		<p>That's it, you are ready to run your app.</p>
+		</li>
+		<br />
+		<li>
+		<p>If you are using HTTP sources or have other HTTP calls in your app, you may encounter the following error message:</p>
+
+		<pre class="line-numbers" data-start="1">
 									              <code class="language-swift">App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure.
 									                  Temporary exceptions can be configured via your app's Info.plist file.</code></pre>
 
-									              <p>This means that ATS is enabled, but your system is not configured to meet the ATS requirements. To fix this situation, see the <a href="/node/18215">Working with App Transport Security (ATS)</a> document.</p>
-									            </li>
-									          </ul>
-									        </li>
-									      </ol>
-									      </section>
+		<p>This means that ATS is enabled, but your system is not configured to meet the ATS requirements. To fix this situation, see the <a href="/node/18215">Working with App Transport Security (ATS)</a> document.</p>
+		</li>
+	</ul>
+	</li>
+</ol>
+</section>
 
 <section class="bcls-section">
 <h2 id="Run_the_app">Run the app</h2>

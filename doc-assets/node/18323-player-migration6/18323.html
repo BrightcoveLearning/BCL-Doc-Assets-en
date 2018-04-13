@@ -1,0 +1,169 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>While backward-incompatible changes in Video.js 6 are documented on the <a href="//github.com/videojs/video.js/wiki/Video.js-6-Migration-Guide">Video.js wiki</a>, this document can be used for additional migration guidelines specific to the Brightcove Player 6 that don’t apply to migration from Video.js 5 to 6.</p>
+
+<p>A significant piece of the Brightcove Player 5 was the compatibility plugin, triggered by the player configuration value:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">"compatibility": true</code></pre>
+
+<p>This configuration is on by default for 5.x players. Its effect is to include a plugin that will “shim” the Video.js 4 API, which allowed more customer plugins and integrations to work seamlessly in the automatic update to Brightcove Player 5.</p>
+
+<p>As of Brightcove Player 6, this shim is no longer a part of the player. Anyone who wants to update from 5 to 6 should ensure that their code is compatible with the Video.js 6 API by following the aforementioned documentation on the <a href="//github.com/videojs/video.js/wiki/Video.js-6-Migration-Guide">Video.js wiki</a>. The following sections document changes you will need to consider when updating.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="player-tech">player.tech</h2>
+
+<p>In version 6 of Brightcove Player, <code>player.tech</code> is a function that returns the current playback technology, not a property of the player as in version 5. The shim mapped some properties from the tech object onto the tech function so code expecting <code>player.tech</code> to be the tech object wouldn’t throw errors.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Player_sizing">Player sizing</h2>
+
+<p>In Video.js 4, the player was sized via JavaScript. Video.js 5 introduced a new CSS based sizing scheme that caused some issues with player dimensions. The shim rolled these changes back, such that they behaved more like they did in version 4. You will now have to use CSS based sizing.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Component_constructors">Component constructors</h2>
+
+<p>In Video.js 4, and version 5 via the shim, component constructors (such as <code>Player</code> and <code>ControlBar</code>) were available as properties of the <code>videojs</code> function:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript"> videojs.${ComponentName}</code></pre>
+
+<p>This is no longer the case. The <code>videojs.getComponent</code> function should be used instead:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">var ControlBar = videojs.getComponent('ControlBar');</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="SliderHandle_component">SliderHandle component</h2>
+
+<p>This component was not in the 5.x player, but was restored via the shim for those users who were extending it. It is now removed entirely.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Properties/Methods_and_alternatives">Properties/Methods and alternatives</h2>
+
+<p>The following are a number of Video.js properties from 4.x were copied to 5.x by the compatibility shim. They are no longer present in 6.x, but alternatives are supplied:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Removed</th>
+			<th>Alternative</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>vjs</td>
+			<td>videojs</td>
+		</tr>
+		<tr>
+			<td>videojs.JSON</td>
+			<td>JSON</td>
+		</tr>
+		<tr>
+			<td>videojs.USER_AGENT</td>
+			<td>window.navigator.userAgent</td>
+		</tr>
+		<tr>
+			<td>videojs.EventEmitter</td>
+			<td>videojs.EventTarget</td>
+		</tr>
+		<tr>
+			<td>videojs.obj.isArray</td>
+			<td>Array.isArray</td>
+		</tr>
+		<tr>
+			<td>videojs.round(num, digits)</td>
+			<td>Number(num.toFixed(digits))</td>
+		</tr>
+		<tr>
+			<td>videojs.trim(str)</td>
+			<td>str.trim()</td>
+		</tr>
+		<tr>
+			<td>videojs.util.mergeOptions</td>
+			<td>videojs.mergeOptions</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="Creating_a_custom_plugin">Creating a custom plugin</h2>
+
+<p>In version 5 of Brightcove Player when you created a custom plugin the first line of the plugin used the <code>videojs.plugin()</code> method. For example:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">videojs.plugin('scrollIntoView', function() {
+  var myPlayer = this,
+    isAdPlaying = false;
+  ...</code></pre>
+
+<p>You should now use the <code>videojs.registerPlugin()</code> method instead. For example:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">videojs.registerPlugin('scrollIntoView', function() {
+  var myPlayer = this,
+    isAdPlaying = false;</code></pre>
+
+<p>Although <code>videojs.plugin()</code> is deprecated in version 6, if used it will not error but you will see a warning in the console. You cannot use <code>videojs.registerPlugin()</code> with version 5 players.</p>
+
+<aside class="bcls-aside bcls-aside--tip">If you find you need to use a plugin with both versions of the player, you can use this technique to provide Video.js 5/6 cross-compatibility:
+<pre class="line-numbers">
+<code class="language-javascript">var registerPlugin =   videojs.registerPlugin || videojs.plugin;
+registerPlugin('pluginName', function(){
+  ...
+});</code></pre>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Flash_HLS_and_crossdomain.xml">Flash HLS and crossdomain.xml</h2>
+
+<p>In some special cases when using a Brightcove Player release 6.13.0 and later, you will need to use a <strong>crossdomain.xml</strong> file. This will be required when:</p>
+
+<ul>
+	<li>You wish to view videos in Internet Explorer on the Windows 7 platform.</li>
+	<li>You are using your own CDN(s).</li>
+	<li>You are using Brightcove Player in such a way that it must use Flash. See the <a href="/node/15613">Determining Which Rendition Will Play</a> document for when this could occur.</li>
+</ul>
+
+<p>If these criteria are met, you will have to use a <strong>crossdomain.xml</strong> file at the root domain from where the media is being served. For example, if you are serving content from</p>
+
+<pre class="line-numbers">
+<code class="language-html">https://www.domain.com/media/video.m3u8</code></pre>
+
+<p>then a <strong>crossdomain.xml</strong> file must exist on</p>
+
+<pre class="line-numbers">
+<code class="language-html">https://www.domain.com/crossdomain.xml</code></pre>
+
+<p>Since the player swf is hosted on <code>players.brightcove.net</code>, it is recommended to use <code>*.brightcove.net</code>. An example <strong>crossdomain.xml</strong> appears as follows:</p>
+
+
+<pre class="line-numbers">
+<code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;cross-domain-policy&gt;
+&lt;allow-access-from domain=&quot;*.brightcove.net&quot; /&gt;
+&lt;/cross-domain-policy&gt;</code></pre>
+
+<p>You will need to supply the proper domain(s). For more details, see <a href="https://code.tutsplus.com/tutorials/quick-tip-a-guide-to-cross-domain-policy-files--active-3832">Quick Tip: A Guide to Cross Domain Policy Files</a>.</p>
+
+<h3>Working with HTTPS</h3>
+<p>
+  When you are loading an HTTPS asset from an HTTP page or vice versa, you need to include the <code>secure</code> attribute with a value of <code>false</code> as follows:
+</p>
+<pre class="line-numbers">
+<code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;cross-domain-policy&gt;
+&lt;allow-access-from domain=&quot;*.brightcove.net&quot; secure=&quot;false&quot;/&gt;
+&lt;/cross-domain-policy&gt;</code></pre>
+</section>
+</article>

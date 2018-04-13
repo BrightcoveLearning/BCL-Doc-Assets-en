@@ -1,0 +1,302 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>The Dynamic Ingest API call is exactly the same as it would be for <a href="/node/17944">ingesting new videos</a> - the only difference is that you do not need to make a prior call to the CMS API to create the video object in the Video Cloud system and get an id for it, and the request body is slightly different. All videos will remain playable with existing renditions until retranscoding is complete.</p>
+
+<aside class="bcls-aside bcls-aside--information">Dynamic Ingest does <strong>not</strong> have a mechanism for processing multiple videos - this sample simply executes a loop to make a Dynamic Ingest request for each video.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+
+<div class="bcls-expander-content">
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+
+<p>These are the permissions you will need:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/di-permissions.png" />
+<figcaption class="bcls-caption--image">Dynamic Ingest Permissions</figcaption>
+</figure>
+
+<p>You can also get your credentials via CURL or Postman - see:</p>
+
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
+
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
+  "video-cloud/video/all",
+  "video-cloud/ingest-profiles/profile/read",
+  "video-cloud/ingest-profiles/account/read",
+  "video-cloud/upload-urls/read"
+]</code></pre>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="rateLimiting">Rate limiting</h2>
+
+<p>See <a href="/node/17948#best_practices">Best Practices</a> for information on rate limiting.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="video_data">Video data</h2>
+
+<p>This script expects a data set as a JSON array of objects like this:</p>
+
+<p>Videos:</p>
+<div id="videosBlock"></div></p>
+
+<p>This is the actual data used in this sample. You could include other metadata fields, but you would need to modify the script a little to send those with the first API call. You'll also notice that these are risky values to use for reference ids, especially for a sample like this that will be run multiple times - but I am getting around the duplication issue by appending the current epoch time in milliseconds to whatever is in the data.</p>
+
+<div class="form-wrapper">
+<fieldset class="bcls-fieldset"><legend>Inputs for Dynamic Ingest</legend>
+
+<p>Account: (defaults to Brightcove sample account) <input id="account_id" type="text" value="" name="account_id" /></p>
+
+<p>Client id: (defaults to Brightcove sample account) <input id="client_id" type="text" value="" name="client_id" /></p>
+
+<p>Client secret: (defaults to Brightcove sample account) <input id="client_secret" type="text" value="" name="client_secret" /></p>
+
+<p><strong>Limit search by tag(s):</strong>  <input id="searchTags" type="text" style="width:50%" placeholder="bird"></p>
+<p><strong>Limit search by custom field value:</strong> </p>
+<p>Field (default:any): <input id="searchField" type="text" style="width:50%"></p>
+<p>Field value: <input id="searchFieldValue" type="text" style="width:50%"></</p>
+<p><strong>Limit search by dates:</strong></p>
+<table class="bcls-table">
+  <tbody class="bcls-table__body">
+    <tr>
+      <td>Date type</td>
+      <td>From date</td>
+      <td>To date</td>
+    </tr>
+    <tr>
+      <td>
+        <select class="date-field" id="dateRangeType" style="width:200px;font-size:1.3rem;">
+          <option value="created_at" selected="selected">created_at</option>
+          <option value="updated_at">updated_at</option>
+          <option value="published_at">published_at</option><option value="schedule.starts_at">schedule.starts_at</option>
+          <option value="schedule.ends_at">schedule.ends_at</option>
+       </select>
+     </td>
+      <td><input id="fromDate" class="date-field" style="width:200px;font-size:1.3rem;" /></td>
+      <td><input id="toDate" class="date-field" style="width:200px;font-size:1.3rem;" /></td>
+    </tr>
+  </tbody>
+</table>
+<p style="text-align:center;"><button id="getVideos" class="bcls-button">Get Videos</button></p>
+
+
+<p>Ingest profile: <select id="ingest_profile_display"></select></p>
+
+<p><input id="capture_images_display" type="checkbox" checked="checked" />&nbsp;<label for="capture_images_display">Capture new images</label></p>
+
+<p>Full request URL for the current API call:<br />
+<textarea class="bcls-code" name="url" id="apiRequest"></textarea> (automatically generated - for information only)</p>
+
+<p><input id="di_Submit" type="submit" value="Start Ingest" /></p>
+</fieldset>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="logger">Results Log</h2>
+
+<pre class="line-numbers">
+<code id="response" class="language-json">Response will appear here... </code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="pageCode">Code for this app</h2>
+
+<h3>HTML</h3>
+
+<p>To see the HTML code, view the page source.</p>
+
+<h3>The JavaScript code for this sample:</h3>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function (window, document) {
+    var // CMS API stuff
+        account_id_display = document.getElementById("account_id"),
+        account_id,
+        client_id_display = document.getElementById("client_id"),
+        client_id,
+        client_secret_display = document.getElementById("client_secret"),
+        client_secret,
+        ingest_profile_display = document.getElementById("ingest_profile_display"),
+        ingest_profile,
+        custom_profile_display = document.getElementById("custom_profile_display"),
+        capture_images_display = document.getElementById('capture_images_display'),
+        videoDataDisplay = document.getElementById("videoData"),
+        // Dynamic Ingest API stuff
+        profilesArray = ['videocloud-default-v1', 'high-resolution', 'screencast-1280', 'smart-player-transition', 'single-bitrate-high', 'audio-only', 'single-bitrate-standard'],
+        di_url_display = document.getElementById("di_url"),
+        di_submit_display = document.getElementById("di_Submit"),
+        diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+        response = document.getElementById("response"),
+        videoData = [],
+        totalVideos = 0,
+        videoNumber = 0,
+        currentJobs = 0,
+        t2,
+        totalIngested = 0,
+        defaults = {account_id: 57838016001,client_id: "37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1",client_secret: "gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ"};
+
+
+    // is defined
+    function isDefined(x){
+        if (x === "" || x === null || x === undefined){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * determines if checkbox is checked * @param  {htmlElement}  e the checkbox to check
+     * @return {Boolean}  true if box is checked
+     */
+    function isChecked(e) {
+        if (e.checked) {
+            return true;
+        }
+        return false;
+    }
+    // set options for the Dynamic Ingest API request
+    function setDIOptions() {
+        var options = {},
+            body = {},
+            custom_profile_display_value = custom_profile_display.value;
+        // get the ingest profile
+        if (isDefined(custom_profile_display_value)) {
+            ingest_profile = custom_profile_display_value;
+        } else {
+            ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
+        }
+        options.client_id = client_id;
+        options.client_secret = client_secret;
+        di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
+        body.master = {};
+        body.master.use_archived_master = true;
+        body.profile = ingest_profile;
+        body["capture-images"] = isChecked(capture_images_display);
+        options.requestBody = JSON.stringify(body);
+        options.requestType = "POST";
+        options.url = di_url_display.value;
+        // now submit the request
+        submitRequest(options, diURL, "di");
+    }
+    // function to set the request
+    function logResponse(type, data) {
+        response.textContent += type + ": " + data + ",\n";
+    }
+
+    // function to submit Request
+    function submitRequest(options, proxyURL, type) {
+        var httpRequest = new XMLHttpRequest(),
+            requestData,
+            responseData,
+            parsedData,
+            getResponse = function () {
+                try {
+                    if (httpRequest.readyState === 4) {
+                      if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+                        logResponse(type, httpRequest.responseText);
+                        responseData = httpRequest.responseText;
+                        if (responseData.indexOf("error_code") &lt; 0) {
+                            // handle the response
+                        totalIngested++;
+                        logResponse("totalIngested", totalIngested);
+                        videoNumber++;
+                        currentJobs++;
+                        if (videoNumber &lt; totalVideos - 1) {
+                            logResponse('Processing video number', videoNumber);
+                            logResponse('Current jobs: ', currentJobs);
+                            // if currentJobs is &gt; 99, need to pause
+                            if (currentJobs &gt; 99) {
+                                // reset currentJobs
+                                currentJobs = 0;
+                                // wait 30 min before resuming
+                                t2 = setTimeout(setDIOptions, 1800000);
+                            } else {
+                                setDIOptions();
+                            }
+                        }
+                    } else {
+                        logResponse("DI", "Request failed; retrying video number: " + videoData[videoNumber].id);
+                        videoNumber++;
+                        // give proxy a second to rest
+                        t2 = setTimeout(setDIOptions, 1000);
+                    }
+
+                      } else {
+                        alert("There was a problem with the request. Request returned " + httpRequest.status);
+                      }
+                    }
+                  }
+                  catch(e) {
+                    alert('Caught Exception: ' + e);
+                  }
+            };
+        // set up request data
+        requestData = "client_id=" + options.client_id + "&amp;client_secret=" + options.client_secret + "&amp;url=" + encodeURIComponent(options.url) + "&amp;requestBody=" + encodeURIComponent(options.requestBody) + "&amp;requestType=" + options.requestType;
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
+        // open the request
+        httpRequest.open("POST", proxyURL);
+        // set headers
+        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // open and send request
+        httpRequest.send(requestData);
+    }
+    di_submit_display.addEventListener("click", function () {
+        videoData = JSON.parse(videoDataDisplay.value);
+        totalVideos = videoData.length;
+        // to insure uniqueness,
+        // in case of stop/start, reset videoNumber to 0
+        videoNumber = 0;
+        // get account inputs
+        account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
+        client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
+        client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
+        // set CMS API options for first video
+        setDIOptions();
+    });
+    // initialize
+    function init() {
+        var i,
+            iMax = profilesArray.length,
+            newOpt;
+        // add options for standard ingest profiles
+        for (i = 0; i &lt; iMax; i++) {
+            newOpt = new Option(profilesArray[i]);
+            ingest_profile_display.add(newOpt);
+        }
+    };
+    // call init to set things up
+    init();
+})(window, document);
+</code></pre>
+
+<h4>Proxy code</h4>
+
+<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+<ul>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
+</ul>
+</aside>
+</section>
+</article>
+<!-- date picker script-->
+<script src="https://learning-services-media.brightcove.com/doc-assets/js/rome/rome.min.js"></script>
+<script src="//learning-services-media.brightcove.com/doc-assets/node/17943-di-sample-retranscode-videos/di-retranscode.js"></script>

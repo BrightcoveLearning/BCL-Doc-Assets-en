@@ -1,5 +1,5 @@
-<section class="bcls-section" id="Overview">
-<h2>Overview</h2>
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
 
 <p>In this sample, we display videos from an account 20 at time (using the CMS API), and allow the user to add WebVTT captions to one or more of the displayed videos. The sample can be easily modified to add thumbnail and/or poster images instead, or to retrancode the videos. The main point of the sample is to go beyond the basic API requests to show you how to assemble them into a real app.</p>
 
@@ -14,8 +14,8 @@
 <aside class="bcls-aside bcls-aside--information">Dynamic Ingest does <strong>not</strong> have a mechanism for processing multiple videos - this sample simply iterates over a set of videos to make a Dynamic Ingest request for each one.</aside>
 </section>
 
-<section class="bcls-section" id="gettingCredentials">
-<h2 class="bcls-expander-head">Getting Credentials</h2>
+<section class="bcls-section">
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
 
 <div class="bcls-expander-content">
 <p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
@@ -24,31 +24,48 @@
 	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
 </ul>
 
+<p>These are the permissions you will need:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/di-permissions.png" />
+<figcaption class="bcls-caption--image">Dynamic Ingest Permissions</figcaption>
+</figure>
+
 <p>You can also get your credentials via CURL or Postman - see:</p>
 
 <ul>
 	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
 	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
 </ul>
+
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
+  "video-cloud/video/all",
+  "video-cloud/ingest-profiles/profile/read",
+  "video-cloud/ingest-profiles/account/read",
+  "video-cloud/upload-urls/read"
+]</code></pre>
 </div>
 </section>
 
 <section class="bcls-section">
 <h2 id="rateLimiting">Rate limiting</h2>
 
-<p>See <a href="/node/18949#best_practices">Best Practices</a> for information on rate limiting.</p>
+<p>See <a href="/node/17949#best_practices">Best Practices</a> for information on rate limiting.</p>
 </section>
 
-<section class="bcls-section" id="the_app">
-<h2>The app</h2>
+<section class="bcls-section">
+<h2 id="the_app">The app</h2>
 
 <p>The sample app is embedded in the CodePen below.</p>
 
 <p data-height="900" data-theme-id="light" data-slug-hash="vgLLQp" data-default-tab="result" data-user="bcls" data-embed-version="2" data-pen-title="Sample App for Dynamic Ingest" data-editable="true" class="codepen">See the Pen <a href="http://codepen.io/team/bcls/pen/vgLLQp/">Sample App for Dynamic Ingest</a> by Brightcove Learning Services (<a href="http://codepen.io/bcls">@bcls</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></section>
 
-<section class="bcls-section" id="htmlNotes">
-<h2>HTML and CSS notes</h2>
+<p>&lt; class="bcls-section"&gt;</p>
+
+<h2 id="htmlNotes">HTML and CSS notes</h2>
 
 <h3>HTML</h3>
 
@@ -59,10 +76,9 @@
 <h3>CSS</h3>
 
 <p>The CSS code is also very basic.</p>
-</section>
 
-<section id="javascriptNotes" class="bcls-section">
-<h2>JavaScript notes</h2>
+<section class="bcls-section">
+<h2 id="javascriptNotes">JavaScript notes</h2>
 
 <ul>
 	<li>The main work is done by the functions <code>createRequest()</code> (lines 146-265) and <code>makeRequest()</code> (lines 267-329).</li>
@@ -81,8 +97,8 @@
 </ul>
 </section>
 
-<section id="phpNotes" class="bcls-section">
-<h2>PHP proxy notes</h2>
+<section class="bcls-section">
+<h2 id="phpNotes">PHP proxy notes</h2>
 
 <p>The code discussed below is not part of the CodePen - these are additional pieces on the server side.</p>
 
@@ -228,20 +244,20 @@ echo $response;
 	<li>Lines 33-62: makes the request to the Brightcove OAuth API to get an access token</li>
 	<li>Lines 64-115: makes the API request and sends the response back to the caller</li>
 </ul>
+</section>
 
-<section id="dataFileNotes" class="bcls-section">
-<h2>Customer data file</h2>
+<section class="bcls-section">
+<h2 id="dataFileNotes">Customer data file</h2>
 
 <p>The JSON file that the proxy fetches customer data from is very simple:</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
   "customer1": {
-    "client_secret": "{client_secret_here}",
-    "client_id": "0d07efde-0d53-450c-995d-97dbdb330e73",
+    "client_secret": "<span class="bcls-input">client_secret_here</span>",
+    "client_id": "<span class="bcls-input">client_id here</span>",
     "account_id": "1485884786001"
   }
 }</code></pre>
-</section>
 </section>
 <script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/samples/batch-ingest/di-ingest.js"></script>

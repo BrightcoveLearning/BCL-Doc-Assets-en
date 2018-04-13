@@ -1,0 +1,49 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<p>Although native players such as Windows Media Player, Flash Player and Quicktime support deep linking through different mechanisms, this behavior is not directly exposed through the HTML <code>video</code> or <code>source</code> elements. It is, however, indirectly exposed through the <code>currentTime</code> property of the <code>video</code> element. This effectively allows HTML players like the Brightcove player and YouTube to layer deep linking support on top of native video players.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Social_media_use">Social media use</h2>
+
+<p>As mentioned above, HTML players can support deep linking, but this necessitates that the player be either embedded in the page or included as an iframe. Unfortunately, most social services do not follow this practice, and instead, substitute a native player which does not support deep linking. As of July 2014 only one major social network, Twitter, supports direct inclusion of the Brightcove player in the social feed using an iframe, making deep linking possible.</p>
+
+<p>For details about deep linking with Twitter, see the <a href="/node/18122">Social Media Plugin</a> document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Specify_deep_linking">Specify deep linking</h2>
+
+<p>To use a deep link in a Brightcove player, specify an offset using a format popularized by YouTube. It follows the format: <code>00h00m00s</code>, where each of the three parts represents a different unit of time (hours, minutes, seconds). Each of the parts must be present, so to offset 15 seconds you would write: <code>0h0m15s</code>. This is then added to the URL as a query string: <code>?t=0h0m15s</code>. An example of a deep link to a video follows:</p>
+
+<p><a href="https://players.brightcove.net/1752604059001/Sy4QijlIf_default/index.html?videoId=4172255216001#t=00h00m15s">https://players.brightcove.net/1752604059001/Sy4QijlIf_default/index.html?videoId=4172255216001#t=00h00m15s</a></p>
+
+<h3>Using with videoId</h3>
+
+<p>When you specify a <code>videoId</code> as a query parameter in the Brightcove player URL, you will use the <code>#</code> character (a fragment identifier) in front of the time parameter. Here is an example of the query string:</p>
+
+<pre class="line-numbers">
+<code class="language-html">?videoId=4172255216001#t=00h00m15s</code></pre>
+
+<h3>Using with autoplay</h3>
+
+<p>You can even include the <code>autoplay</code> parameter to set the player to start playback automatically. Notice that the <code>&amp;</code> symbol is used between the time and autoplay parameters:</p>
+
+<pre class="line-numbers">
+<code class="language-html">?videoId=4172255216001#t=00h00m15s&amp;autoplay=true</code></pre>
+
+<h3>Using with iframe implementation</h3>
+
+<p>To start playback of a video at a specified time with an iframe implementation, add query parameters to the Brightcove player's <code>src</code> property as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;iframe <span class="bcls-highlight">src=&quot;//players.brightcove.net/1752604059001/Sy4QijlIf_default/index.html?videoId=4172255216001#t=00h00m15s&amp;autoplay=true&quot;</span>
+      allowfullscreen
+      webkitallowfullscreen
+      mozallowfullscreen
+      width=&quot;640&quot;
+      height=&quot;360&quot;&gt;&lt;/iframe&gt;</code></pre>
+</section>
+</article>

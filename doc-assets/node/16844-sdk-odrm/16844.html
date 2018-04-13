@@ -1,5 +1,7 @@
 <article class="bcls-article">
-<section id="top" class="bcls-section">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
 <p>Offline Playback with the Brightcove Native Playback SDKs for iOS and Android allows publishers to reach their viewers in entirely new ways while ensuring their content remains secure. Our SDKs offer powerfully simple solutions for complex offline playback problems including download management, offline catalog management, analytics, DRM, and of course playback.</p>
 
 <p>Using offline playback, users can download both DRM-protected and non-encrypted video content to their devices and watch it when they are not connected.</p>
@@ -10,7 +12,7 @@
 <section class="bcls-section">
 <h2 id="Supported_device_versions">Supported device versions</h2>
 
-<p>The Brightcove Native Player SDKs support offline DRM with the following device OS versions:</p>
+<p>The Brightcove Native Player SDKs support offline playback with the following device OS versions:</p>
 
 <ul>
 	<li>iOS 10.0+, but 10.3+ is recommended</li>
@@ -24,22 +26,38 @@
 <p>Streaming video takes advantage of Video Cloud's multi-bitrate streaming feature which detects bandwidth at the source and delivers the best quality for the device. The offline playback feature supports the following streaming types:</p>
 
 <ul>
-	<li>iOS: Apple HTTP Live Streaming (HLS)</li>
-	<li>Android: Dynamic Adaptive Streaming over HTTP (DASH)</li>
+	<li><strong>Android</strong>: Dynamic Adaptive Streaming over HTTP (DASH)</li>
+	<li><strong>iOS</strong>: Apple HTTP Live Streaming (HLS)</li>
 </ul>
 </section>
 
 <section class="bcls-section">
 <h2 id="Security">Security</h2>
 
-<p>The protection of downloaded content is top-of-mind with our Offline DRM solution. The Brightcove Native Player SDKs provide the following functionality to ensure your content is stored safely on viewers devices:</p>
+<p>The protection of downloaded content is top-of-mind with our Offline solution. The Brightcove Native Player SDKs provide the following functionality to ensure your content is stored safely on viewers' devices:</p>
+
+<h3>DRM-protected content</h3>
 
 <ul>
-	<li>Your content is protected by <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a> on Android and <a href="https://developer.apple.com/streaming/fps/">FairPlay</a> on iOS.</li>
+	<li>For DRM-protected content, the Native SDKs use the following technologies:
+	<ul>
+		<li><strong>Android</strong>: <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a></li>
+		<li><strong>iOS</strong>: <a href="https://developer.apple.com/streaming/fps/">FairPlay</a></li>
+	</ul>
+	</li>
 	<li>Video content can only be watched on the device and app that has downloaded the content.</li>
-	<li>Video content can only be watched until a specific date and time expiration.</li>
+	<li>Video content can only be watched until a specific date and time expiration.
+	<aside class="bcls-aside bcls-aside--information">The date/time is set in the DRM license.</aside>
+	</li>
 	<li>Video URLs returned to the client will expire so that others can not use them.</li>
-	<li>When the app is deleted, all downloaded content is removed when using the default storage location.</li>
+</ul>
+
+<h3>All content</h3>
+
+<ul>
+	<li>When the app is deleted, all downloaded content is removed.
+	<aside class="bcls-aside bcls-aside--information">For Android, this is true as long as the default storage location is not overridden.</aside>
+	</li>
 	<li>Your app can delete locally stored content at any time.</li>
 </ul>
 </section>
@@ -50,9 +68,9 @@
 <p>The Brightcove Native Player SDKs handle the complexities of downloading content to a viewer's device, greatly simplifying the process for native applications.</p>
 
 <ul>
-	<li>Publishers can specify the maximum average bitrate for the downloaded video.</li>
+	<li>Publishers can choose the rendition quality of the content to download.</li>
 	<li>Captions can be downloaded and displayed while offline.</li>
-	<li>Multiple audio tracks are supported with the Native SDK for Android. For now, only single audio tracks are supported with the Native SDK for iOS.</li>
+	<li>Multiple audio tracks are supported by the Native SDKs. For details about adding additional tracks with the Native SDK for iOS, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md#downloading-secondary-tracks">iOS App Developer's Guide for Offline Playback</a>.</li>
 </ul>
 
 <p>The following functionality can be added to your apps to support download management:</p>
@@ -71,6 +89,29 @@
 
 <p>When you set a video's <code>offline_enabled</code> property to <strong>true</strong> using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">CMS API</a>, the Native SDKs will mark this video as downloadable.</p>
 
+<h4 id="Using_the_CodePen" class="bcls-expander-head">Prepare videos</h4>
+
+<div class="bcls-expander-content">
+<p>For the SDKs to mark a video as downloadable, you need to do the following:</p>
+
+<ol class="bcls-tasklist">
+	<li>Contact your account manager to enable your account for offline playback.</li>
+	<li>
+	<p>For each video that you want to be downloadable, use the <a href="/overview-cms-api">CMS API</a> to set the <a href="/cms-api-custom-fields-reference#videoFields">offline_enabled</a> field to a value of <strong>true</strong>.</p>
+
+	<p>Here is an example using curl:</p>
+
+	<pre class="line-numbers" data-start="1">
+  <code class="language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
+  {"offline_enabled" : true}
+  ' https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/videos/<span class="bcls-input">your video id</span>
+  </code></pre>
+
+	<p>Setting this field will be similar to the steps found in the <a href="/setting-360-degree-video-properties-cms-api">Setting 360-Video Properties with the CMS API</a> document.</p>
+	</li>
+</ol>
+</div>
+
 <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Display content" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/content-list.png" />
 <figcaption class="bcls-caption--image">Display content</figcaption>
 </figure>
@@ -81,8 +122,8 @@
 
 <p>Total estimated size, current download status and percent of downloading progress information will be returned by the SDKs.</p>
 <!-- <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Download status" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-progress.png" />
-		<figcaption class="bcls-caption--image">Download status</figcaption>
-		</figure> -->
+  <figcaption class="bcls-caption--image">Download status</figcaption>
+  </figure> -->
 
 <aside class="bcls-aside bcls-aside--tip">For Android devices, download status is also shown in the Notification Area. The notification title is set to the video title. The notification is removed if the download is paused or cancelled. For details, see the <a href="/node/18246#Offline_playback_with_DRM">Code Snippets using the Native SDK for Android</a> document.</aside>
 
@@ -91,10 +132,12 @@
 <p>Create and manage the download queue.</p>
 
 <p>The Native SDKs will allow mutliple videos to be queued for downloads. For example, a user can download multiple episodes of a season and the Native SDKs will manage the process by providing download status for each asset.</p>
+
+<aside class="bcls-aside bcls-aside--information">If your app is targeting iOS 11.0 - 11.2, we don't recommend concurrent downloads because pause and resume behavior is unreliable with multiple simultaneous downloads. The problem has been fixed with iOS 11.3.</aside>
 <!-- <figure class="bcls-figure">
-		  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-queue.png" alt="Download queue">
-		  <figcaption class="bcls-caption--image">Download queue</figcaption>
-		</figure> -->
+  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-queue.png" alt="Download queue">
+  <figcaption class="bcls-caption--image">Download queue</figcaption>
+  </figure> -->
 
 <h3 class="BCL_conceptTitle" id="Show_local_storage_space">Show local storage space</h3>
 
@@ -102,9 +145,9 @@
 
 <p>The SDKs provide the estimated size and progress so that you can determine if there is sufficient space for downloads.</p>
 <!-- <figure class="bcls-figure">
-		  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-space.png" alt="Local storage space">
-		  <figcaption class="bcls-caption--image">Local storage space</figcaption>
-		</figure> -->
+  <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-space.png" alt="Local storage space">
+  <figcaption class="bcls-caption--image">Local storage space</figcaption>
+  </figure> -->
 
 <h3 class="BCL_conceptTitle" id="Pause_resume_cancel_download">Pause/resume/cancel download</h3>
 
@@ -114,8 +157,8 @@
 
 <p>If you cancel a video download, then any progress made will be erased.</p>
 <!-- <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Pause/resume/cancel download" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-cancelled.png" />
-		<figcaption class="bcls-caption--image">Pause/resume/cancel download</figcaption>
-		</figure> --></section>
+  <figcaption class="bcls-caption--image">Pause/resume/cancel download</figcaption>
+  </figure> --></section>
 
 <section class="bcls-section">
 <h2 id="Local_catalog_management">Local catalog management</h2>
@@ -136,11 +179,18 @@
 
 <p>The SDKs return metadata and playback details for all downloaded content. This metadata includes video title, description, thumbnails, available captions, available audio tracks, etc.</p>
 
-<p>There are also new metadata properties specific to offline playback. These include the following:</p>
+<p>There are new metadata properties specific to offline playback, which include the following:</p>
+
+<h4>DRM-protected content</h4>
 
 <ul>
 	<li>Token identifier</li>
 	<li>License expiration date</li>
+</ul>
+
+<h4>All content</h4>
+
+<ul>
 	<li>Download start and end time</li>
 	<li>Downloaded thumbnail name along with its file URL</li>
 	<li>Downloaded poster name along with its file URL</li>
@@ -172,32 +222,105 @@
 
 <section class="bcls-section">
 <h2 id="Analytics">Analytics</h2>
-<!-- <p>There are two new types of analytics being introduced for measuring data related to the Offline flow: Download analytics &amp; Offline playback metrics.</p> -->
 
-<p>Analytics introduced for measuring data related to the Offline flow include the following Download analytics:</p>
-<!-- <h3>Download analytics</h3>
+<p>Analytics have been introduced for measuring data related to the Offline flow. For details, see the <a href="/node/18527">Analytics Related to Offline Playback with the Native SDKs</a> document.</p>
+</section>
 
-		<p>Download Analytics will automatically track:</p> -->
+<section class="bcls-section">
+<h2 id="Samples">Samples</h2>
 
-<ul>
-	<li>Every download request - This includes rendition bitrate and rendition dimensions</li>
-	<li>Every download complete</li>
-	<li>Every download failure</li>
-	<li>Every download cancellation</li>
-</ul>
+<p>The following table contains links to code samples to show you how to get started with offline playback:</p>
 
-<p>For details about viewing these download metrics from the Analytics API, see the <a href="/node/17961#fieldValues">Dimension: video</a> document.</p>
-<!-- <h3>Offline playback metrics</h3>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th style="width:25%">Sample Application</th>
+			<th style="width:75%">Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Offline">iOS Offline Playback</a></td>
+			<td>Download and play HLS videos, including those protected with FairPlay encryption. For developer details, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md">iOS App Developers Guide for Offline Playback</a>.</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">Android Offline Playback</a></td>
+			<td>Download and play DASH videos, including those protected with Widevine encryption.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-		<p>Offline Playback Metrics will track various playback data, however is not yet available.</p> -->
+<section class="bcls-section">
+<h2 id="Notes">Notes</h2>
 
-<aside class="bcls-aside bcls-aside--tip">
-<p>Looking for developer docs? Below are links to the Brightcove Player SDK documentation:</p>
+<p>The following notes apply to the offline playback feature supported by the Native SDKs:</p>
 
-<ul>
-	<li><a href="/node/18277">Offline Playback with the Player SDK for Android</a></li>
-	<li><a href="/node/18278">Offline Playback with the Player SDK for iOS</a></li>
-</ul>
-</aside>
+<h3>Android</h3>
+
+<p>When the app is deleted, all downloaded content is removed. This is true as long as the default storage location is not overridden.</p>
+
+<h3>iOS</h3>
+
+<p>As a security feature, you cannot stream an offline HLS video to an AirPlay device for playback. This is confirmed by Apple to be an <code>AVFoundation</code> limitation.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="FAQ">FAQ</h2>
+
+<p>Below you will find answers to some general questions.</p>
+
+<h3>DRM-protected content</h3>
+
+<p class="bcls-question">Can the user change the system clock to bypass the expiration date?</p>
+
+<p class="bcls-answer"><strong>Android</strong>: Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the Android OS release notes.<br />
+<br />
+<strong>iOS</strong>: License expiration is enforced by FairPlay. iOS handles all checking for clock changes, etc. An app has the option of checking the license expiration to alert the user that the license has expired. This may be preferable to simply playing back an expired video and then receiving a playback error.</p>
+<!-- <p class="bcls-answer">Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/release-notes.txt">Native SDK for Android release notes</a>.</p> -->
+
+<p class="bcls-question">Will the license and offline videos continue loading while the app is in the background?</p>
+
+<p class="bcls-answer"><strong>Android</strong>: Yes. Typically, the license is downloaded immediately, but even the license can be downloaded while the app is backgrounded.<br />
+<br />
+<strong>iOS</strong>: License loading should happen in the foreground. We have a <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVOfflineVideoManager.h#L631">method to preload the license</a>. Downloading of the main video content can happen while the app is in the background.</p>
+<!-- <p class="bcls-answer">License loading should happen in the foreground. We have a method to preload the license.
+  Downloading of the main video content can happen while the app is in the background.</p> -->
+
+<h3>All content</h3>
+
+<p class="bcls-question">What is the video format used for downloading offline content?</p>
+
+<p class="bcls-answer"><strong>Android</strong>: DRM-protected DASH or non-encrypted DASH.<br />
+<br />
+<strong>iOS</strong>: HLS steaming. You can specify a bitrate for the download to use a specific variant.</p>
+
+<p class="bcls-question">Will downloaded videos playback locally or streaming when the user is online?</p>
+
+<p class="bcls-answer">A downloaded video can be played back while online or offline, but it will always use the downloaded video. If you choose to play back an online version of the video, you should retrieve a new video object from the Playback Service. The offline video can only be played from local storage.</p>
+
+<p class="bcls-question">Will the release of Android OS v8.0 affect the Offline Playback feature?</p>
+
+<p class="bcls-answer">The release of Android OS v8.0 will have new <a href="https://developer.android.com/preview/features/background.html">background service limitations</a>. We will test and make any changes needed for continued support of Offline Playback with the Native Player SDK for Android.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Best_practices">Best practices</h2>
+
+<p>The following guidelines should help when developing your app for offline playback.</p>
+
+<h3>Displaying pause/cancel buttons</h3>
+
+<p>The pause and cancel buttons should be displayed when video download has started.</p>
+
+<p><strong>Android:</strong> You should display the pause and cancel buttons as part of calling the <code>onDownloadStarted</code> callback in the <code>DownloadEventListener</code>. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">Offline Playback sample app</a>.</p>
+
+<p><strong>iOS:</strong> For details about how to create an app for Offline Playback, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md">iOS App Developer's Guide</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Enabling_the_feature">Enabling the feature</h2>
+
+<p>Contact your account manager to learn about pricing and to enable the Offline Playback feature for your account.</p>
 </section>
 </article>

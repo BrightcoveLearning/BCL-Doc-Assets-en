@@ -1,44 +1,127 @@
 var BCLS = (function(window, document) {
-  var accountId        = document.getElementById('accountId'),
-    clientId           = document.getElementById('clientId'),
-    clientSecret       = document.getElementById('clientSecret'),
-    getChannels        = document.getElementById('getChannels'),
-    addChannel         = document.getElementById('addChannel'),
-    affiliateId        = document.getElementById('affiliateId'),
-    addAffiliateId     = document.getElementById('addAffiliateId'),
-    affiliateIds       = document.getElementById('affiliateIds'),
-    addAffiliates      = document.getElementById('addAffiliates'),
-    logger             = document.getElementById('logger'),
-    logger2            = document.getElementById('logger2'),
-    apiRequest         = document.getElementById('apiRequest'),
-    apiResponse        = document.getElementById('apiResponse'),
-    affiliate_ids      = [],
-    existingAffiliates = [],
-    callNumber         = 0,
-    totalCalls         = 0;
+  var accountId           = document.getElementById('accountId'),
+    clientId              = document.getElementById('clientId'),
+    clientSecret          = document.getElementById('clientSecret'),
+    searchTags            = document.getElementById('searchTags'),
+    searchField           = document.getElementById('searchField'),
+    searchFieldValue      = document.getElementById('searchFieldValue'),
+    dateRangeType         = document.getElementById('dateRangeType'),
+    fromDate              = document.getElementById('fromDate'),
+    toDate                = document.getElementById('toDate'),
+    videoCountDisplay     = document.getElementById('videoCountDisplay'),
+    videosBlock           = document.getElementById('videosBlock'),
+    affiliatesBlock       = document.getElementById('affiliatesBlock'),
+    getVideos             = document.getElementById('getVideos'),
+    shareVideos           = document.getElementById('shareVideos'),
+    logger                = document.getElementById('logger'),
+    apiRequest            = document.getElementById('apiRequest'),
+    apiResponse           = document.getElementById('apiResponse'),
+    affiliates            = [],
+    affiliatesToShareWith = [],
+    videos                = [],
+    videosToShare         = [],
+    limit                 = 20,
+    videoCount            = 0,
+    videoCallNumber       = 0,
+    shareCallNumber       = 0,
+    totalVideoCalls       = 0,
+    totalShareCalls       = 0,
+    lineBreak,
+    message,
+    dateTypeValue,
+    fromDateValue,
+    toDateValue,
+    tagsSearchString,
+    fieldsSearchString,
+    dateSearchString,
+    searchString,
+    account_id,
+    client_id,
+    client_secret,
+    videosCollection,
+    affiliatesCollection,
+    videosSelectAll,
+    affiliatesSelectAll;
+
+  // date pickers
+  rome(fromDate);
+  rome(toDate);
 
   // *****event listeners*****
-  getChannels.addEventListener('click', function() {
-    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest('getChannels');
+  getVideos.addEventListener('click', function() {
+    if (videoCount === 0) {
+      if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
+        // get inputs
+        account_id    = accountId.value;
+        client_id     = clientId.value;
+        client_secret = clientSecret.value;
+        if (isDefined(searchTags.value)) {
+          tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
+        }
+        if (isDefined(searchFieldValue.value)) {
+          if (isDefined(searchField.value)) {
+            fieldsSearchString = '%2B' + searchField.value + ':' + convertSpaces(searchFieldValue.value);
+          } else {
+            fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
+          }
+        }
+        dateTypeValue = getSelectedValue(dateRangeType).value;
+        fromDateValue = rome(fromDate).getDate();
+        if (isDefined(fromDateValue)) {
+          fromDateValue = fromDateValue.toISOString();
+        }
+        toDateValue = rome(toDate).getDate();
+        if (isDefined(toDateValue)) {
+          toDateValue = toDateValue.toISOString();
+        }
+        if (isDefined(fromDateValue) || isDefined(toDateValue)) {
+          dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+        }
+
+        // define the whole search string
+        if (isDefined(tagsSearchString)) {
+          searchString = tagsSearchString;
+          if (isDefined(fieldsSearchString)) {
+            searchString += '+' + fieldsSearchString;
+          }
+          if (isDefined(dateSearchString)) {
+            searchString += '+' + dateSearchString;
+          }
+        } else if (isDefined(fieldsSearchString)) {
+          searchString = fieldsSearchString;
+          if (isDefined(dateSearchString)) {
+            searchString += '+' + dateSearchString;
+          }
+        } else if (isDefined(dateSearchString)) {
+          searchString = dateSearchString;
+        }
+        createRequest('getVideoCount');
+      } else {
+        alert('You must submit an account id and client credentials');
+      }
     } else {
-      alert('You must submit an account id and client credentials');
+      videoCallNumber++;
+      if (videoCallNumber < totalVideoCalls) {
+        createRequest('getVideos');
+      } else {
+        logMessage('No more videos - finished.');
+      }
     }
   });
 
-  addChannel.addEventListener('click', function() {
-    createRequest('addChannel');
-  });
-
-  addAffiliateId.addEventListener('click', function() {
-    addAffiliate();
-  });
-
-  addAffiliates.addEventListener('click', function() {
-    if (isDefined(accountId.value) && isDefined(clientId.value) && isDefined(clientSecret.value)) {
-      createRequest('getAffiliates');
+  shareVideos.addEventListener('click', function() {
+    apiResponse.textContent = '';
+    videosToShare = getCheckedBoxValues(videosCollection);
+    affiliatesToShareWith = getCheckedBoxValues(affiliatesCollection);
+console.log('affiliatesToShareWith', affiliatesToShareWith);
+    if (videosToShare.length === 0) {
+      alert('Please select some videos to share and try again');
+    } else if (affiliatesToShareWith.length === 0) {
+      alert('Please select some affiliates to share with and try again');
     } else {
-      alert('You must submit an account id and client credentials');
+      totalShareCalls = videosToShare.length;
+      shareCallNumber = 0;
+      createRequest('shareVideos');
     }
   });
 
@@ -57,22 +140,67 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * dedupe a simple array of strings or numbers
-   * @param {array} arr the array to be deduped
-   * @return {array} the deduped array
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
    */
-  function dedupe(arr) {
+  function getSelectedValue(e) {
+    var selected = e.options[e.selectedIndex],
+      val = selected.value,
+      txt = selected.textContent,
+      idx = e.selectedIndex;
+    return {
+      value: val,
+      text: txt,
+      index: idx
+    };
+  }
+
+  /**
+   * get array of values for checked boxes in a collection
+   * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+   * @return {Array} array of the values of the checked boxes
+   */
+  function getCheckedBoxValues(checkBoxCollection) {
+    var checkedValues = [],
+      i,
+      iMax;
+    if (checkBoxCollection) {
+      iMax = checkBoxCollection.length;
+      for (i = 0; i < iMax; i++) {
+        if (checkBoxCollection[i].checked === true) {
+          checkedValues.push(checkBoxCollection[i].value);
+        }
+      }
+      return checkedValues;
+    } else {
+      console.log('Error: no input received');
+      return null;
+    }
+  }
+
+  /**
+   * selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function selectAllCheckboxes(checkboxCollection) {
     var i,
-      len = arr.length,
-      out = [],
-      obj = {};
-    for (i = 0; i < len; i++) {
-      obj[arr[i]] = 0;
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].setAttribute('checked', 'checked');
     }
-    for (i in obj) {
-      out.push(i);
+  }
+
+  /**
+   * deselects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function deselectAllCheckboxes(checkboxCollection) {
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].removeAttribute('checked');
     }
-    return out;
   }
 
   /**
@@ -86,42 +214,24 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * determines whether specified item is in an array of objects
-   *
-   * @param {array} array to check
-   * @param {string} prop the object property to check
-   * @param {string} item to check for
-   * @return {boolean} true if item is in the array, else false
+   * convert spaces in a string to %20 for URI encoding
+   * @param {String} str string to process
+   * @return {String} trimmed string
    */
-  function arrayContains(arr, prop, item) {
-    var i,
-      iMax = arr.length;
-    for (i = 0; i < iMax; i++) {
-      if (arr[i].hasOwnProperty(prop)) {
-        if (arr[i][prop] === item) {
-          return true;
-        }
-      }
-    }
-    return false;
+  function convertSpaces(str) {
+    str = str.replace(/\s/g, '%20');
+    return str;
   }
 
   /**
-   * adds new affiliate id to affiliate_ids array
+   * adds a new message to the logging element
+   * @param  {string} message string to add
    */
-  function addAffiliate() {
-    var str;
-    if (isDefined(affiliateId.value)) {
-      // remove any spaces
-      str = removeSpaces(affiliateId.value);
-      affiliate_ids.push(str);
-      // dedupe in case same affiliate added twice
-      affiliate_ids = dedupe(affiliate_ids);
-      affiliateIds.textContent = affiliate_ids.join('\n');
-      affiliateId.value = '';
-    } else {
-      alert('no affiliate id was entered');
-    }
+  function logMessage(message) {
+    lineBreak = document.createElement('br');
+    logger.appendChild(lineBreak);
+    message = document.createTextNode(message);
+    logger.appendChild(message);
   }
 
   /**
@@ -129,97 +239,200 @@ var BCLS = (function(window, document) {
    * @param  {string} type the request type
    */
   function createRequest(type) {
-    var options  = {},
-      cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + accountId.value,
+    var options = {},
+      cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
-      body       = {},
+      body = [],
       responseDecoded,
+      fragment = document.createDocumentFragment(),
+      input,
+      space,
+      label,
+      br,
       i,
       iMax;
 
     // set credentials
-    options.client_id = clientId.value;
-    options.client_secret = clientSecret.value;
+    options.client_id = client_id;
+    options.client_secret = client_secret;
+    options.account_id = account_id;
 
     // set proxyURL
-    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php';
+    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
 
     switch (type) {
-      case 'getChannels':
-        endpoint            = '/channels';
-        options.url         = cmsBaseURL + endpoint;
+      case 'getVideoCount':
+        endpoint = '/counts/videos';
+        if (isDefined(searchString)) {
+          endpoint += '?q=' + searchString;
+        }
+        options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          if (responseDecoded.length === 0) {
-            logger2.textContent = 'There are no channels; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-          } else if (!arrayContains(responseDecoded, 'name', 'default')) {
-            logger2.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-            addChannel.removeAttribute('style');
+          videoCount = JSON.parse(response).count;
+          apiResponse.textContent = JSON.stringify(JSON.parse(response), null, '  ');
+          videoCountDisplay.textContent = videoCount;
+          if (videoCount === 0) {
+            logMessage('The search returned no videos - try using different search criteria (or none at all)');
           } else {
-            logger2.textContent = 'Default channel found - ok to proceed';
+            totalVideoCalls = Math.ceil(videoCount / limit);
             createRequest('getAffiliates');
           }
         });
         break;
-      case 'addChannel':
-        endpoint            = '/channels/default';
-        options.url         = cmsBaseURL + endpoint;
-        body.account_id     = accountId.value;
-        body.name           = 'default';
-        options.requestBody = JSON.stringify(body);
-        options.requestType = 'PUT';
-        makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          if (responseDecoded.length === 0) {
-            logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-          } else if (!arrayContains(responseDecoded, 'default')) {
-            logger.textContent = 'The default channel does not exist; click the Add Default Channel button to create one';
-            addChannel.removeAttribute('disabled');
-          }
-        });
-        break;
       case 'getAffiliates':
-        endpoint            = '/channels/default/members';
-        options.url         = cmsBaseURL + endpoint;
+        endpoint = '/channels/default/members';
+        options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          existingAffiliates = JSON.parse(response);
-          i = affiliate_ids.length;
-          while (i > 0) {
-            i--;
-            if (arrayContains(existingAffiliates, 'account_id', affiliate_ids[i])) {
-              affiliate_ids.splice(i, 1);
-            }
-          }
-          totalCalls = affiliate_ids.length;
-          createRequest('addAffiliate');
-        });
-        break;
-      case 'addAffiliate':
-        endpoint            = '/channels/default/members/' + affiliate_ids[callNumber];
-        options.url         = cmsBaseURL + endpoint;
-        body.account_id     = affiliate_ids[callNumber];
-        options.requestBody = JSON.stringify(body);
-        options.requestType = 'PUT';
-        makeRequest(options, function(response) {
-          responseDecoded = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseDecoded, null, '  ');
-          logger.textContent = 'There are no channels; click the Add Default Channel button to create one';
-          callNumber++;
-          if (callNumber < totalCalls) {
-            createRequest('addAffiliate');
+          affiliates = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
+          if (affiliates.length === 0) {
+            logMessage('There are no affiliate accounts set up for sharing; please add one or more affiliates and try again');
           } else {
-            logger.textContent = 'All affiliates successfully added';
+            logMessage('Affiliates retrieved');
+            input = document.createElement('input');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'affiliatesChkAll');
+            input.setAttribute('id', 'affiliatesChkAll');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', 'all');
+            label.setAttribute('for', 'affiliatesChkAll');
+            label.setAttribute('style', 'color:#F3951D;');
+            text = document.createTextNode('Select All');
+            label.appendChild(text);
+            br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
+            iMax = affiliates.length;
+            for (i = 0; i < iMax; i++) {
+              input = document.createElement('input');
+              space = document.createTextNode(' ');
+              label = document.createElement('label');
+              input.setAttribute('name', 'affiliatesChk');
+              input.setAttribute('id', affiliates[i].account_id);
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', affiliates[i].account_id);
+              label.setAttribute('for', affiliates[i].account_id);
+              text = document.createTextNode(affiliates[i].account_name);
+              label.appendChild(text);
+              br = document.createElement('br');
+              fragment.appendChild(input);
+              fragment.appendChild(space);
+              fragment.appendChild(label);
+              fragment.appendChild(br);
+            }
+            affiliatesBlock.appendChild(fragment);
+            // get references to checkboxes
+            affiliatesCollection = document.getElementsByName('affiliatesChk');
+            affiliatesSelectAll = document.getElementById('affiliatesChkAll');
+            // add event listener for select allows
+            affiliatesSelectAll.addEventListener('change', function() {
+              if (this.checked) {
+                selectAllCheckboxes(affiliatesCollection);
+              } else {
+                deselectAllCheckboxes(affiliatesCollection);
+              }
+            });
           }
+          // get some videos
+          createRequest('getVideos');
         });
         break;
-        // additional cases
+      case 'getVideos':
+        endpoint = '/videos?limit=' + limit + '&offset=' + (limit * videoCallNumber);
+        if (isDefined(searchString)) {
+          endpoint += '&q=' + searchString;
+        }
+        options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+          getVideos.textContent = 'Get Next Set of Videos';
+          videos = JSON.parse(response);
+          logMessage(videos.length + ' videos retrieved');
+          apiResponse.textContent = JSON.stringify(videos, null, '  ');
+          input = document.createElement('input');
+          space = document.createTextNode(' ');
+          label = document.createElement('label');
+          input.setAttribute('name', 'videosChkAll');
+          input.setAttribute('id', 'videosChkAll');
+          input.setAttribute('type', 'checkbox');
+          input.setAttribute('value', 'all');
+          label.setAttribute('for', 'videosChkAll');
+          label.setAttribute('style', 'color:#F3951D;');
+          text = document.createTextNode('Select All');
+          label.appendChild(text);
+          br = document.createElement('br');
+          fragment.appendChild(input);
+          fragment.appendChild(space);
+          fragment.appendChild(label);
+          fragment.appendChild(br);
+            iMax = videos.length;
+            for (i = 0; i < iMax; i++) {
+              input = document.createElement('input');
+              space = document.createTextNode(' ');
+              label = document.createElement('label');
+              input.setAttribute('name', 'videosChk');
+              input.setAttribute('id', 'field' + videos[i].id);
+              input.setAttribute('type', 'checkbox');
+              input.setAttribute('value', videos[i].id);
+              label.setAttribute('for', 'field' + videos[i].id);
+              text = document.createTextNode(videos[i].name);
+              label.appendChild(text);
+              br = document.createElement('br');
+              fragment.appendChild(input);
+              fragment.appendChild(space);
+              fragment.appendChild(label);
+              fragment.appendChild(br);
+            }
+            // clear videos videos
+            videosBlock.innerHTML = '';
+            videosBlock.appendChild(fragment);
+            // get references to checkboxes
+            videosCollection = document.getElementsByName('videosChk');
+            videosSelectAll = document.getElementById('videosChkAll');
+            // add event listener for select allows
+            videosSelectAll.addEventListener('change', function() {
+              if (this.checked) {
+                selectAllCheckboxes(videosCollection);
+              } else {
+                deselectAllCheckboxes(videosCollection);
+              }
+            });
+          });
+          break;
+        case 'shareVideos':
+          endpoint = '/videos/' + videosToShare[shareCallNumber] + '/shares';
+          options.url = cmsBaseURL + endpoint;
+          apiRequest.textContent = options.url;
+          options.requestType = 'POST';
+          iMax = affiliatesToShareWith.length;
+          for (i = 0; i < iMax; i++) {
+            var o = {};
+            o.id = affiliatesToShareWith[i];
+            body.push(o);
+          }
+          options.requestBody = JSON.stringify(body);
+          makeRequest(options, function(response) {
+            responseDecoded = JSON.parse(response);
+            lineBreak = document.createElement(br);
+            apiResponse.appendChild(lineBreak);
+            apiResponse.textContent += JSON.stringify(responseDecoded, null, '  ');
+            logMessage('Video was shared with selected affiliates (see response to check for errors)');
+            shareCallNumber++;
+            if (shareCallNumber < totalShareCalls) {
+              createRequest('shareVideos');
+            } else {
+                logMessage('Share complete - click Get Next Set of Videos to share more videos');
+            }
+          });
+          break;
       default:
         console.log('Should not be getting to the default case - bad request type sent');
         break;
@@ -242,9 +455,9 @@ var BCLS = (function(window, document) {
       response,
       requestParams,
       dataString,
-      proxyURL      = options.proxyURL,
+      proxyURL = options.proxyURL,
       // response handler
-      getResponse   = function() {
+      getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -265,30 +478,15 @@ var BCLS = (function(window, document) {
       };
     /**
      * set up request data
-     * the proxy used here takes the following params:
-     * url - the full API request (required)
-     * requestType - the HTTP request type (default: GET)
-     * clientId - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * clientSecret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-     * requestBody - request body for write requests (optional JSON string)
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
      */
-    apiRequest.textContent = options.url;
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-    // only add client id and secret if both were submitted
-    if (options.client_id && options.client_secret) {
-      requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-    }
-    // add request data if any
-    if (options.requestBody) {
-      requestParams += '&requestBody=' + options.requestBody;
-    }
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // send request
-    httpRequest.send(requestParams);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 })(window, document);

@@ -1,0 +1,185 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>In this sample you click the <strong>Add Player</strong> button to dynamically build and load the player, and then play the video.</p>
+<!-- UPDATE codepen here -->
+
+<p data-height="457" data-theme-id="dark" data-slug-hash="JywoKE" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="18169-loading-player-dynamically" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/JywoKE/">18169-loading-player-dynamically</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18169-loading-player-dynamically">source code</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="Development_sequence" class="bcls-expander-head">Development sequence</h2>
+
+<div class="bcls-expander-content">
+<p>Here is the recommended development sequence:</p>
+
+<ol>
+	<li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+	<li>Use Studio to add the plugin and CSS to your player</li>
+	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+</ol>
+
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+<h3>iframe or In-Page embed</h3>
+
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+
+<ul>
+	<li>No collisions with existing JavaScript and/or CSS</li>
+	<li>Automatically responsive</li>
+	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+</ul>
+
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+
+<ul>
+	<li>Code in the containing page needs to listen for and act on player events</li>
+	<li>The player uses styles from the containing page</li>
+	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+</ul>
+
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+</div>
+<!-- id="expanderContent" --></section>
+
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>API Methods</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#play">play()</a></td>
+		</tr>
+	</tbody>
+</table>
+</section>
+<!-- UPDATE player and HTML configuration -->
+
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>No special configuration is required for the Brightcove Player you create for this sample. Of course, for this sample the player's code is NOT initially placed in the HTML page, it is dynamically built and injected.</p>
+
+<h3>Other HTML</h3>
+
+<p>A <code>&lt;button&gt;</code> is added to the HTML page that triggers the building and injection of the player. Also, a <code>&lt;div&gt;</code> element is added as the injection location.</p>
+</section>
+<!-- UPDATE application flow -->
+
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+	<li>Set variable values with the account ID, player ID and video ID you wish to use.</li>
+	<li>On button click, a valid <code>&lt;video&gt;</code> tag is built using simple string concatenation and that string injected into the HTML page.</li>
+	<li>A valid player's <code>&lt;script&gt;</code> tag is also built and injected into the HTML page. When this is done, the JavaScript will be executed on the page, dispatching an <code>onload</code> event.</li>
+	<li>In an event handler, the <code>videojs()</code> method is used to convert the generic video tag into a Brightcove Player, then the <code>play()</code> method is called.</li>
+</ul>
+<!-- UPDATE task 1 -->
+
+<h3>Supply desired account ID, player ID and video ID</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Set the data for the player ###</code></pre>
+
+<p>Assign variables the desired values for player configuration.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Build the player's in-page embed implementation code, and inject into the page</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Build the player and place in HTML DOM ###</code></pre>
+
+<p>This is JavaScript work. Use string concatenation to build a valid <code>&lt;video&gt;</code> tag. You then inject the tag into the HTML page. Next you build a valid Brightcove Player <code>&lt;script&gt;</code> tag. When you append this to the HTML page, the JavaScript will automatically be executed. This creates an <code>onload</code> event, for which you can write a handler.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Convert the player to a Brightcove Player, and play the video</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Initialize the player and start the video ###</code></pre>
+
+<p>You use the standard <code>ready()</code> method to convert the generic player into a Brightcove Player, then play the video using the <code>play()</code> method.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>The only CSS controls the size of the player.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="iframe_implementation">iframe implementation</h2>
+
+<p>The iframe implementation can be used in a very similar way as shown above. <a href="https://github.com/BrightcoveLearning/18169-loading-player-dynamically/blob/master/iframe-sample.html">Sample code</a> is available. If you wish to the have the video play on load, the best thing to do is in Studio set the player's <strong>Auto-start</strong> property to <strong>Yes</strong>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="bc_method_implementation">bc() method implementation</h2>
+
+<p>There are times where you will want to the use the <code>bc()</code> method to dynamically instantiate the player rather than the method show above. You will want to use the <code>bc()</code> method when you wish to load the player's JavaScript before the video element is loaded into the DOM. If you use the <code>videojs()</code> method NOT in conjunction with <code>bc()</code>, you will get the Video.js player, but without the customizations that are added by Brightcove Player.</p>
+
+<p>To use the <code>bc()</code> method follow this general approach:</p>
+
+<ul>
+	<li>Load the player's script. That is, the specific <strong>index.min.js</strong> file for a player.</li>
+	<li>Dynamically build and inject the video object into the page.</li>
+	<li>Use the <code>bc()</code> method.</li>
+	<li>Use the <code>videojs()</code> method.</li>
+</ul>
+
+<p><a href="https://github.com/BrightcoveLearning/18169-loading-player-dynamically/blob/master/bc-method-sample.html">Sample code</a> using the <code>bc()</code> method is available.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Plugin_code">Plugin code</h2>
+
+<p>This sample's code doesn't make sense as a plugin.</p>
+</section>
+</article>

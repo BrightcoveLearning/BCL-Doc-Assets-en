@@ -6,7 +6,7 @@
 
 <p class="video-cloud-only">For this option, you will need a Policy Key. If you are not familiar with Policy Keys, see <a href="/node/18003">Policy API Overview</a>.</p>
 
-<aside class="bcls-aside bcls-aside--tip">This example is written in Swift 3.0, but you can also experiment with Objective-C. See the following:
+<aside class="bcls-aside bcls-aside--tip">This example is written in Swift, but you can also experiment with Objective-C. See the following:
 <ul>
 	<li><a href="/node/18219">Quick Start: Create a Simple Video App using Obj-C</a></li>
 	<li><a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/VideoCloudBasicPlayer/objc">Obj-C version of the VideoCloudBasicPlayer</a></li>
@@ -19,30 +19,40 @@
 
 <p class="player-only">This example plays videos from an internal array of video files.</p>
 
-<p class="video-cloud-only">There are two ways to try out this sample:</p>
-
 <p class="player-only">Follow the steps below to get familiar with setting up an app project that uses the Brightcove Player SDK for iOS. You can view the complete code for each of the following:</p>
 
-<ol>
-	<li class="video-cloud-only">Follow the steps below to get familiar with setting up an app project that uses the Brightcove Player SDK for iOS. You can view the complete code for each of the following:
-	<ul>
-		<li><a href="#bridgingHeader">SVP-Bridging-Header</a></li>
-		<li><a href="#appdelegate">AppDelegate</a></li>
-		<li class="video-cloud-only"><a href="#viewController">ViewController</a></li>
-		<li class="player-only"><a href="#viewControllerPerform">ViewController</a></li>
-	</ul>
-	<br />
+<ul class="player-only">
+	<li><a href="#appdelegate">AppDelegate</a></li>
+	<li>
+	<p><a href="#viewControllerPerform">View Controller</a></p>
 	</li>
-	<li class="video-cloud-only">Download the entire Xcode project for experimentation.
-	<ol class="video-cloud-only" type="a">
-		<li>
-		<p>Download the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/VideoCloudBasicPlayer/swift">VideoCloudBasicPlayer</a> sample to your local system.</p>
-		</li>
-		<li>Run the <code>pod install</code> command.</li>
-		<li>Open and run the newly created workspace.</li>
-	</ol>
+</ul>
+
+<div class="video-cloud-only">
+<p>There are two ways to try out this sample:</p>
+
+<h3>Download the sample</h3>
+
+<p>Download the entire Xcode project for experimentation.</p>
+
+<ol>
+	<li>Clone or download the <a href="https://github.com/BrightcoveOS/ios-player-samples">Native SDK for iOS samples</a> to your local system.</li>
+	<li>Navigate to the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/VideoCloudBasicPlayer/swift">Player/VideoCloudBasicPlayer/swift</a> sample app.</li>
+	<li>Run the <code>pod install</code> command.</li>
+	<li>Open and run the newly created workspace.</li>
+</ol>
+
+<h3>Build the app by following the steps in this guide</h3>
+
+<p>Follow the steps below to get familiar with setting up an app project that uses the Brightcove Player SDK for tvOS. You can view the complete code for each of the following:</p>
+
+<ol>
+	<li><a href="#appdelegate">AppDelegate</a></li>
+	<li class="video-cloud-only">
+	<p><a href="#viewController">ViewController</a></p>
 	</li>
 </ol>
+</div>
 </section>
 
 <section class="bcls-section">
@@ -165,58 +175,6 @@ end</code></pre>
 </ul>
 </aside>
 </section>
-<!-- <section class="bcls-section">
-<h2 id="Import_the_Native_SDK">Import the Native SDK</h2>
-
-<p>Swift is compatible with Obj-C, and you can have both in the same project. Since the Brightcove Player SDK for iOS is currently written in Obj-C, we can use a bridging header file to add these libraries to our Swift project.</p>
-
-<h3>Create a bridging header</h3>
-
-<p>You will create a bridging header to import the Native SDK for iOS.</p>
-
-<ol class="bcls-tasklist">
-	<li>In Xcode, open the <strong>Simple-Video-Playback.xcworkspace</strong> file.</li>
-	<li>In the left project navigation, select the <strong>Simple-Video-Playback</strong> folder.
-	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Simple Video Playback folder" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/quick-start-swift/svp-folder.png" />
-	<figcaption class="bcls-caption--image">Simple Video Playback folder</figcaption>
-	</figure>
-	</li>
-	<li>In the top navigation, select <strong>File &gt; New &gt; File</strong></li>
-	<li>In the dialogue, select <strong>iOS &gt; Header File</strong> (in the Source section). Then, select the <strong>Next</strong> button.
-	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Header file" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/quick-start-swift/header-file.png" />
-	<figcaption class="bcls-caption--image">Header file</figcaption>
-	</figure>
-	</li>
-	<li>Name the file <strong>SVP-Bridging-Header.h</strong> and select the <strong>Create</strong> button.
-	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Bridging header" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/quick-start-swift/bridging-header.png" />
-	<figcaption class="bcls-caption--image">Bridging header</figcaption>
-	</figure>
-	</li>
-	<li>You should see the new file in your project.</li>
-	<li>In the <strong>SVP-Bridging-Header.h</strong> file, import the Brightcove Player SDK as follows:
-	<pre class="line-numbers" data-start="1">
-<code class="language-swift">#import &lt;BrightcovePlayerSDK/BrightcovePlayerSDK.h&gt;</code></pre>
-
-	<p>Your header file should look similar to this:</p>
-
-	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Import SDK" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/quick-start-swift/import-sdk.png" />
-	<figcaption class="bcls-caption--image">Import SDK</figcaption>
-	</figure>
-	</li>
-	<li>In the left navigation, select your project, open the <strong>Build Settings</strong> and navigate to the <strong>Swift Compiler - General</strong> section. Note that the <strong>All</strong> and <strong>Combined</strong> filtering options need to be selected.</li>
-	<li>Locate the <strong>Objective-C Bridging Header</strong> property, and add a value for the path to your bridging header file. In this case, the value is:
-	<pre class="line-numbers" data-start="1">
-<code class="language-swift">Simple-Video-Playback/SVP-Bridging-Header.h</code></pre>
-
-	<p>Your Build settings should look similar to this:</p>
-
-	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Build setting" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/getting-started/quick-start-swift/build-setting.png" />
-	<figcaption class="bcls-caption--image">Build setting</figcaption>
-	</figure>
-	</li>
-	<li>Now, you are ready to code the app.</li>
-</ol>
-</section> -->
 
 <section class="bcls-section">
 <h2 id="Code_the_video_app">Code the video app</h2>
@@ -252,8 +210,8 @@ end</code></pre>
 //  AppDelegate.swift
 //  Simple-Video-Playback
 //
-//  Created by on 9/28/17.
-//  Copyright © 2017 Brightcove. All rights reserved.
+//  Created by on 1/2/18.
+//  Copyright © 2018 Brightcove. All rights reserved.
 //
 
 import UIKit
@@ -262,49 +220,49 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-		var window: UIWindow?
+	var window: UIWindow?
 
-		func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
-				// Override point for customization after application launch.
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
+		// Override point for customization after application launch.
 
-<span class="bcls-highlight">        var categoryError :NSError?
-				var success: Bool
-				do {
-						try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-						success = true
-				} catch let error as NSError {
-						categoryError = error
-						success = false
-				}
-
-				if !success {
-						print("AppDelegate Debug - Error setting AVAudioSession category.  Because of this, there may be no sound. \(categoryError!)")
-				}</span>
-
-				return true
+<span class="bcls-highlight">       var categoryError :NSError?
+		var success: Bool
+		do {
+			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+			success = true
+		} catch let error as NSError {
+			categoryError = error
+			success = false
 		}
 
-		func applicationWillResignActive(_ application: UIApplication) {
-				// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-				// Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-		}
+		if !success {
+			print("AppDelegate Debug - Error setting AVAudioSession category.  Because of this, there may be no sound. \(categoryError!)")
+		}</span>
 
-		func applicationDidEnterBackground(_ application: UIApplication) {
-				// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-				// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-		}
+		return true
+	}
 
-		func applicationWillEnterForeground(_ application: UIApplication) {
-				// Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-		}
+	func applicationWillResignActive(_ application: UIApplication) {
+		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+		// Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+	}
 
-		func applicationDidBecomeActive(_ application: UIApplication) {
-				// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-		}
+	func applicationDidEnterBackground(_ application: UIApplication) {
+		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+	}
 
-		func applicationWillTerminate(_ application: UIApplication) {
-				// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-		}
+	func applicationWillEnterForeground(_ application: UIApplication) {
+		// Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+	}
+
+	func applicationDidBecomeActive(_ application: UIApplication) {
+		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+	}
+
+	func applicationWillTerminate(_ application: UIApplication) {
+		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+	}
 
 }</code></pre>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="1-62" data-gist-highlight-line="9,23-35"></code></p> --></li>
@@ -323,15 +281,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 <div class="video-cloud-only">
 <h4>Import the Native SDK</h4>
 
-<p>Although the Brightcove Native Player SDK for iOS is written in Obj-C, we can simply import the framework modules into our Swift project.</p>
+<p>Although the Brightcove Native Player SDK for iOS is written in Objective-C, we can simply import the framework modules into our Swift project.</p>
 
 <ol class="bcls-tasklist">
 	<li>
 	<p>Below the existing <code>import</code> directive, add the following to import the Brightcove Native Player SDK:</p>
 
 	<pre class="line-numbers" data-start="9">
-	<code class="language-swift">import BrightcovePlayerSDK
-	</code></pre>
+<code class="language-swift">import BrightcovePlayerSDK</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="158" data-gist-hide-footer="true"></code></p> -->
 </ol>
@@ -339,8 +296,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 <h4>Customize the project with your values</h4>
 
 <p>Add values to access your Video Cloud account.</p>
+<p>
+	This example plays a video returned from the <a href="/node/17906">Brightcove Playback API</a>, which is the latest and recommended API to retrieve content from your Video Cloud library. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a>.
+</p>
 
-<aside class="bcls-aside bcls-aside--tip">This example plays a video returned from the <a href="/node/17906">Brightcove Playback API</a>, which is the latest and recommended API to retrieve content from your Video Cloud library. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a>.</aside>
+<aside class="bcls-aside bcls-aside--information">
+			Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.
+</aside>
 
 <ol class="bcls-tasklist">
 	<li>
@@ -354,14 +316,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	<pre class="line-numbers" data-start="11">
 <code class="language-swift">// ** Customize these values with your own account information **
-let kViewControllerPlaybackServicePolicyKey = "BCpkADawqM2NZcfpTGYMHaafJU597X9J0XTvw8CXZcMITep7BFNYHFKGz3XJQfYzudYCp9GWn3u18OQdlqJxSKFrIipF4Ndx9umqQ5EtUaAn_oTXaQgIs1lAe4-FciLISBFDCTAA3j2qALp8"
-let kViewControllerAccountID = "3636334163001"
-let kViewControllerVideoID = "3637773814001"</code></pre>
+let kViewControllerPlaybackServicePolicyKey = "<span class="bcls-input">your policy key</span>"
+let kViewControllerAccountID = "<span class="bcls-input">your account id</span>"
+let kViewControllerVideoID = "<span class="bcls-input">your video id</span>"</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="153-156"></code></p> -->
 </ol>
 
-<h4>Set the class delegates</h4>
+<h4>Set the class delegate</h4>
 
 <p>This allows your app to listen and respond to video playback events and player control events.</p>
 
@@ -369,8 +331,8 @@ let kViewControllerVideoID = "3637773814001"</code></pre>
 	<li>
 	<p>Update the View Controller class as follows:</p>
 
-	<pre class="line-numbers" data-start="16">
-<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate {
+	<pre class="line-numbers" data-start="15">
+<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 </code></pre>
 	</li>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="158" data-gist-hide-footer="true"></code></p> -->
@@ -383,19 +345,20 @@ let kViewControllerVideoID = "3637773814001"</code></pre>
 	<p>In the <code>ViewController</code> class, add the following :</p>
 
 	<ul>
-		<li>Line 18: Defines a constant, which initializes the Brightcove playback service with your Account ID and Policy Key. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlaybackService.html"><code>BCOVPlaybackService</code></a> class provides asynchronous methods for retrieving data from the Playback API.</li>
-		<li>Line 19: Defines a constant for the playback controller. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html"><code>BCOVPlaybackController</code></a> has methods to control playback functionality.</li>
+		<li>Line 16: Initializes a shared manager. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlayerSDKManager.html"><code>BCOVPlayerSDKManager</code></a> class is a singleton that allows you to create other objects in the SDK ecosystem.</li>
+		<li>Line 17: Defines a constant, which initializes the Brightcove playback service with your Account ID and Policy Key. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlaybackService.html"><code>BCOVPlaybackService</code></a> class provides asynchronous methods for retrieving data from the Playback API.</li>
+		<li>Line 18: Defines a constant for the playback controller. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html"><code>BCOVPlaybackController</code></a> has methods to control playback functionality.</li>
 		<li>
-		<p>Line 20: Defines a variable for the view.</p>
+		<p>Line 19: Defines a variable for the view.</p>
 		</li>
 	</ul>
 
-	<pre class="line-numbers" data-start="16">
-<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate {
-
-		let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)!
-		let playbackController :BCOVPlaybackController
-		@IBOutlet weak var videoContainer: UIView!</code></pre>
+	<pre class="line-numbers" data-start="15">
+<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
+  let sharedSDKManager = BCOVPlayerSDKManager.shared()
+  let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)!
+  let playbackController :BCOVPlaybackController
+  @IBOutlet weak var videoContainer: UIView!</code></pre>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="158-162" data-gist-highlight-line="160-162"></code></p> --></li>
 </ol>
 
@@ -405,31 +368,29 @@ let kViewControllerVideoID = "3637773814001"</code></pre>
 	<li>Below the code in the previous step, create an <code>init()</code> function as follows:
 
 	<ul>
-		<li>Line 23: Initializes a shared manager. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlayerSDKManager.html"><code>BCOVPlayerSDKManager</code></a> class is a singleton that allows you to create other objects in the SDK ecosystem.</li>
-		<li>Line 24: Uses the shared manager to create a playback controller.</li>
+		<li>Line 23: Uses the shared manager to create a playback controller.</li>
 		<li>
-		<p>Line 25: <strong>Optional:</strong> Sends your Video Cloud Account ID to analytics. This is only needed if you override the <code>BCOVVideo</code> class or do not use the Brightcove Playback service or catalog.</p>
+		<p>Line 27: <strong>Optional:</strong> Sends your Video Cloud Account ID to analytics. This is only needed if you override the <code>BCOVVideo</code> class or do not use the Brightcove Playback service or catalog.</p>
 
 		<aside class="bcls-aside bcls-aside--tip">For details about sending data to Video Cloud Analytics, see the <a href="/node/18214">Using Brightcove Analytics</a> guide.</aside>
 		</li>
 		<li>
-		<p>Lines 30-32: set the delegate and turn on the auto-advance and autoplay features.</p>
+		<p>Lines 29-31: set the delegate and turn on the auto-advance and autoplay features.</p>
 		</li>
 	</ul>
 
 	<pre class="line-numbers" data-start="22">
 <code class="language-swift"> required init?(coder aDecoder: NSCoder) {
-		let manager = BCOVPlayerSDKManager.shared()!
-		playbackController = manager.createPlaybackController()
+	playbackController = manager.createPlaybackController()
 
-		super.init(coder: aDecoder)
+	super.init(coder: aDecoder)
 
-		playbackController.analytics.account = kViewControllerAccountID
+	playbackController.analytics.account = kViewControllerAccountID
 
-		playbackController.delegate = self
-		playbackController.isAutoAdvance = true
-		playbackController.isAutoPlay = true
-	}</code></pre>
+	playbackController.delegate = self
+	playbackController.isAutoAdvance = true
+	playbackController.isAutoPlay = true
+}</code></pre>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="164-175"></code></p>  --></li>
 </ol>
 
@@ -440,34 +401,31 @@ let kViewControllerVideoID = "3637773814001"</code></pre>
 	<p>In the <code>viewDidLoad()</code> function, add the following:</p>
 
 	<ul>
-		<li>Lines 40-41: Create and set the options for the player view.</li>
-		<li>Lines 44-45: Create and set the Brightcove player controls.</li>
-		<li>Lines 47-49: Configure the playback controller's view.</li>
-		<li>Line 51: Adds the player view as a subview of the main view.</li>
-		<li>Line 53: Calls the <code>requestContentFromPlaybackService</code> function, which you will define in the next step.</li>
+		<li>Line 37: Create and set the Brightcove player controls, using the standard VOD layout.</li>
+		<li>Lines 40-41: Configure the playback controller's view.</li>
+		<li>Line 42: Adds the player view as a subview of the main view.</li>
+		<li>Line 45: Associate the player view with the playback controller.</li>
+		<li>Line 47: Calls the <code>requestContentFromPlaybackService</code> function, which you will define in the next step.</li>
 	</ul>
 
-	<pre class="line-numbers" data-start="35">
-<code class="language-swift"> override func viewDidLoad() {
-		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+	<pre class="line-numbers" data-start="32">
+<code class="language-swift">override func viewDidLoad() {
+	super.viewDidLoad()
+	// Do any additional setup after loading the view, typically from a nib.
 
-		// Create and set options
-		let options = BCOVPUIPlayerViewOptions()
-		options.presentingViewController = self
+  // Set up our player view. Create with a standard VOD layout.
+  let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
 
-		// Create and configure Control View
-		let controlsView = BCOVPUIBasicControlView.withVODLayout()
-		let playerView = BCOVPUIPlayerView.init(playbackController: playbackController, options: options, controlsView: controlsView)!
+  // Install in the container view and match its size.
+  playerView?.frame = self.videoContainerView.bounds
+  playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+  self.videoContainerView.addSubview(playerView!)
 
-		playerView.delegate = self
-		playerView.frame = videoContainer.bounds
-		playerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+  // Associate the playerView with the playback controller.
+  playerView?.playbackController = playbackController
 
-		videoContainer.addSubview(playerView)
-
-		requestContentFromPlaybackService()
-	}</code></pre>
+  requestContentFromPlaybackService()
+}</code></pre>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="177-185" data-gist-hide-footer="true" data-gist-highlight-line="180-184"></code></p> --></li>
 </ol>
 
@@ -480,22 +438,22 @@ let kViewControllerVideoID = "3637773814001"</code></pre>
 	<p>Below the <code>viewDidLoad()</code> function, create a function named <code>requestContentFromPlaybackService()</code> as follows:</p>
 
 	<ul>
-		<li>Line 57: Returns a video object from the Playback API based on the given video id.</li>
-		<li>Line 60: Adds the video to the playback controller.</li>
-		<li>Line 64: Writes an error message if a playlist is not returned.</li>
+		<li>Line 50: Returns a video object from the Playback API based on the given video id.</li>
+		<li>Line 54: Adds the video to the playback controller.</li>
+		<li>Line 56: Writes an error message if a playlist is not returned.</li>
 	</ul>
 
-	<pre class="line-numbers" data-start="56">
-<code class="language-swift"> func requestContentFromPlaybackService() {
-		playbackService.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) {
-				(video: BCOVVideo?, dict: [AnyHashable:Any]?, error: Error?) in
-				if let v = video {
-						self.playbackController.setVideos([v] as NSFastEnumeration!)
-				} else {
-						print("ViewController Debug - Error retrieving video: %@", error!)
-				}
-		}
-	}</code></pre>
+	<pre class="line-numbers" data-start="50">
+<code class="language-swift">func requestContentFromPlaybackService() {
+  playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+
+    if let v = video {
+        self.playbackController.setVideos([v] as NSArray)
+    } else {
+        print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+    }
+  }
+}</code></pre>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="187-198"></code></p> --></li>
 </ol>
 <!--
@@ -513,78 +471,73 @@ let kViewControllerVideoID = "3637773814001"</code></pre>
 <p>The View Controller is now complete. Here is the full code:</p>
 
 <pre class="line-numbers" data-start="1">
-<code class="language-swift">//  ViewController.swift
-//  Simple-Video-Playback
+<code class="language-swift">//
+//  ViewController.swift
+//  VideoCloudBasicPlayer
 //
-//  Created by on 9/28/17.
-//  Copyright © 2017 Brightcove. All rights reserved.
+//  Copyright © 2018 Brightcove, Inc. All rights reserved.
 //
 
 import UIKit
 import BrightcovePlayerSDK
 
-// ** Customize these values with your own account information **
-let kViewControllerPlaybackServicePolicyKey = "BCpkADawqM2NZcfpTGYMHaafJU597X9J0XTvw8CXZcMITep7BFNYHFKGz3XJQfYzudYCp9GWn3u18OQdlqJxSKFrIipF4Ndx9umqQ5EtUaAn_oTXaQgIs1lAe4-FciLISBFDCTAA3j2qALp8"
-let kViewControllerAccountID = "3636334163001"
-let kViewControllerVideoID = "3637773814001"
+let kViewControllerPlaybackServicePolicyKey = "<span class="bcls-input">your policy key</span>"
+let kViewControllerAccountID = "<span class="bcls-input">your account id</span>"
+let kViewControllerVideoID = "<span class="bcls-input">your video id</span>"
 
-class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate {
+class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 
-		let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)!
-		let playbackController :BCOVPlaybackController
-		@IBOutlet weak var videoContainer: UIView!
+  let sharedSDKManager = BCOVPlayerSDKManager.shared()
+  let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)
+  let playbackController :BCOVPlaybackController
+  @IBOutlet weak var videoContainerView: UIView!
 
-		required init?(coder aDecoder: NSCoder) {
-				let manager = BCOVPlayerSDKManager.shared()!
-				playbackController = manager.createPlaybackController()
+  required init?(coder aDecoder: NSCoder) {
+    playbackController = (sharedSDKManager?.createPlaybackController())!
 
-				super.init(coder: aDecoder)
+    super.init(coder: aDecoder)
 
-				playbackController.analytics.account = kViewControllerAccountID
+    playbackController.delegate = self
+    playbackController.isAutoAdvance = true
+    playbackController.isAutoPlay = true
+  }
 
-				playbackController.delegate = self
-				playbackController.isAutoAdvance = true
-				playbackController.isAutoPlay = true
-		}
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view, typically from a nib.
 
-		override func viewDidLoad() {
-				super.viewDidLoad()
-				// Do any additional setup after loading the view, typically from a nib.
+    // Set up our player view. Create with a standard VOD layout.
+    let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
 
-				// Create and set options
-				let options = BCOVPUIPlayerViewOptions()
-				options.presentingViewController = self
+    // Install in the container view and match its size.
+    playerView?.frame = self.videoContainerView.bounds
+    playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    self.videoContainerView.addSubview(playerView!)
 
-				// Create and configure Control View
-				let controlsView = BCOVPUIBasicControlView.withVODLayout()
-				let playerView = BCOVPUIPlayerView.init(playbackController: playbackController, options: options, controlsView: controlsView)!
+    // Associate the playerView with the playback controller.
+    playerView?.playbackController = playbackController
 
-				playerView.delegate = self
-				playerView.frame = videoContainer.bounds
-				playerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    requestContentFromPlaybackService()
+  }
 
-				videoContainer.addSubview(playerView)
+  func requestContentFromPlaybackService() {
+    playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-				requestContentFromPlaybackService()
-		}
+      if let v = video {
+          self.playbackController.setVideos([v] as NSArray)
+      } else {
+          print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+      }
+    }
+  }
 
-		func requestContentFromPlaybackService() {
+  func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
+    print("Advanced to new session")
+  }
 
-				playbackService.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) {
-						(video: BCOVVideo?, dict: [AnyHashable:Any]?, error: Error?) in
-						if let v = video {
-								self.playbackController.setVideos([v] as NSFastEnumeration!)
-						} else {
-								print("ViewController Debug - Error retrieving video: %@", error!)
-						}
-				}
-		}
-
-		override func didReceiveMemoryWarning() {
-				super.didReceiveMemoryWarning()
-				// Dispose of any resources that can be recreated.
-		}
-
+  func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didProgressTo progress: TimeInterval) {
+    print("Progress: \(progress) seconds")
+  }
 }</code></pre>
 <!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="143-205"></code></p> --></div>
 <!--class="video-cloud-only"-->
@@ -598,9 +551,8 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<li>
 	<p>Below the existing <code>import</code> directive, add the following to import the Brightcove Native Player SDK:</p>
 
-	<pre class="line-numbers" data-start="8">
-	<code class="language-swift">import BrightcovePlayerSDK
-	</code></pre>
+	<pre class="line-numbers" data-start="10">
+	<code class="language-swift">import BrightcovePlayerSDK</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="ffab3777678c48c7212d" data-gist-line="158" data-gist-hide-footer="true"></code></p> -->
 </ol>
@@ -611,10 +563,10 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 
 <ol class="bcls-tasklist">
 	<li>
-	<p>Below the <code>#import</code> directives, add your own value for your Brightcove Account Id.</p>
+	<p>Below the <code>#import</code> directives, add your own value for your Brightcove Account Id. This will be used to register your app with Brightcove.</p>
 
-	<pre class="line-numbers" data-start="10">
-<code class="language-swift">let kViewControllerAccountID = "123456789" // for analytics</code></pre>
+	<pre class="line-numbers" data-start="12">
+<code class="language-swift">let kViewControllerAccountID = "<span class="bcls-input">your account id</span>" // For Brightcove registration</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="75" data-gist-hide-footer="true"></code></p> -->
 </ol>
@@ -627,8 +579,8 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<li>
 	<p>Update the View Controller class as follows:</p>
 
-	<pre class="line-numbers" data-start="12">
-<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate {</code></pre>
+	<pre class="line-numbers" data-start="14">
+<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate {</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="77" data-gist-hide-footer="true"></code></p> -->
 </ol>
@@ -640,17 +592,18 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<p>In the <code>ViewController</code> class, add the following :</p>
 
 	<ul>
-		<li>Line 14: defines a constant for the playback controller. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html"><code>BCOVPlaybackController</code></a> has methods to control playback functionality.</li>
+		<li>Line 15: Initializes a shared manager. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlayerSDKManager.html"><code>BCOVPlayerSDKManager</code></a> class is a singleton that allows you to create other objects in the SDK ecosystem.</li>
+		<li>Line 16: Defines a constant for the playback controller. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html"><code>BCOVPlaybackController</code></a> has methods to control playback functionality.</li>
 		<li>
-		<p>Line 15: defines a variable for the view.</p>
+		<p>Line 17: Defines a variable for the view.</p>
 		</li>
 	</ul>
 
-	<pre class="line-numbers" data-start="12">
-<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate {
-
-		let playbackController :BCOVPlaybackController
-		@IBOutlet weak var videoContainer: UIView!</code></pre>
+	<pre class="line-numbers" data-start="14">
+<code class="language-swift">class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
+    let sharedSDKManager = BCOVPlayerSDKManager.shared()
+    let playbackController :BCOVPlaybackController
+    @IBOutlet weak var videoContainerView: UIView!</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="77-80" data-gist-hide-footer="true" data-gist-highlight-line="79-80"></code></p> -->
 </ol>
@@ -661,28 +614,29 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<li>Below the code in the previous step, create an <code>init()</code> function as follows:
 
 	<ul>
-		<li>Line 18: initializes a shared manager. The <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPlayerSDKManager.html"><code>BCOVPlayerSDKManager</code></a> class is a singleton that allows you to create other objects in the SDK ecosystem.</li>
-		<li>Line 19: uses the shared manager to create a playback controller with the default view strategy.</li>
+		<li>Line 21: Uses the shared manager to create a playback controller.</li>
 		<li>
-		<p>Line 23: Sends your Video Cloud Publisher ID to analytics.</p>
+		<p>Line 26: Sends your Video Cloud Publisher ID to Brightcove analytics to register your app.</p>
 		</li>
 		<li>
-		<p>Lines 25-27: set the delegate and turn on the auto-advance and autoplay features.</p>
+		<p>Lines 29-31: Set the delegate and turns on the auto-advance and autoplay features.</p>
 		</li>
 	</ul>
 
-	<pre class="line-numbers" data-start="17">
+	<pre class="line-numbers" data-start="19">
 <code class="language-swift">required init?(coder aDecoder: NSCoder) {
-		let manager = BCOVPlayerSDKManager.shared()!
-		playbackController = manager.createPlaybackController()
+    // Create the Brightcove playback controller
+    playbackController = (sharedSDKManager?.createPlaybackController())!
 
-		super.init(coder: aDecoder)
+    super.init(coder: aDecoder)
 
-		playbackController.analytics.account = kViewControllerAccountID
+    // Register your app with Brightcove
+    playbackController.analytics.account = kViewControllerAccountID
 
-		playbackController.delegate = self
-		playbackController.isAutoAdvance = true
-		playbackController.isAutoPlay = true
+    // Configure the player
+    playbackController.delegate = self
+    playbackController.isAutoAdvance = true
+    playbackController.isAutoPlay = true
 }</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="82-93"></code></p> -->
@@ -695,39 +649,38 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<p>In the <code>viewDidLoad()</code> function, add the following:</p>
 
 	<ul>
-		<li>Lines 33-35: create an array of video sources using url paths.</li>
-		<li>Lines 37-38: configure the playback controller's view.</li>
-		<li>Line 39: adds the player view as a subview of the main view.</li>
-		<li>Line 41: adds the video array to the controller's playback queue.</li>
-		<li>Line 42: starts playback of the first video.</li>
+		<li>Lines 39-41: Create an array of video sources using url paths.</li>
+		<li>Lines 44-48: Configures the playback controller's view.</li>
+		<li>Line 49: Adds the player view as a subview of the main view.</li>
+		<li>Line 52: Associates the player view with the playback controller.</li>
+		<li>Line 55: Adds the video array to the controller's playback queue.</li>
+		<li>Line 56: Starts playback of the first video.</li>
 	</ul>
 
-	<pre class="line-numbers" data-start="30">
+	<pre class="line-numbers" data-start="34">
 <code class="language-swift">override func viewDidLoad() {
-		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+    super.viewDidLoad()
+    // Do any additional setup after loading the view, typically from a nib.
 
-		// create an array of videos
-		var videoArray = [AnyObject]()
-		videoArray = [videoWithURL(url: NSURL(string: "http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4")!),
-				videoWithURL(url: NSURL(string: "http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8")!)]
+    // Create an array of videos
+    var videoArray = [AnyObject]()
+    videoArray = [videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4")!),
+                  videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4")!)]
 
-		// Create and set options
-		let options = BCOVPUIPlayerViewOptions()
-		options.presentingViewController = self
+    // Set up the player view with a standard VOD layout.
+    let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
 
-		// Create and configure Control View
-		let controlsView = BCOVPUIBasicControlView.withVODLayout()
-		let playerView = BCOVPUIPlayerView.init(playbackController: playbackController, options: options, controlsView: controlsView)!
+    // Install in the container view and match its size.
+    playerView?.frame = self.videoContainerView.bounds
+    playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    self.videoContainerView.addSubview(playerView!)
 
-		playerView.delegate = self
-		playerView.frame = videoContainer.bounds
-		playerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    // Associate the playerView with the playback controller.
+    playerView?.playbackController = playbackController
 
-		videoContainer.addSubview(playerView)
-
-		playbackController.setVideos(videoArray as NSFastEnumeration!)
-		playbackController.play();
+    // Load the video array into the player and start video playback
+    playbackController.setVideos(videoArray as NSArray)
+    playbackController.play();
 }</code></pre>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="95-108" data-gist-highlight-line="97-107"></code></p> --></li>
 </ol>
@@ -738,12 +691,12 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<li>
 	<p>Below the <code>viewDidLoad()</code> function, create a function that sets the delivery method for <code>BCOVSources</code> that belong to a video.</p>
 
-	<pre class="line-numbers" data-start="56">
+	<pre class="line-numbers" data-start="59">
 <code class="language-swift">func videoWithURL(url: NSURL) -&gt; BCOVVideo {
-	// set the delivery method for BCOVSources that belong to a video
-	let source:BCOVSource = BCOVSource(url: url as URL!, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
-	let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
-	return video!
+    // Set the delivery method for BCOVSources that belong to a video
+    let source:BCOVSource = BCOVSource(url: url as URL!, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
+    let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
+    return video!
 }</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="110-115"></code></p> -->
@@ -753,11 +706,11 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 
 <ol class="bcls-tasklist">
 	<li>
-	<p>Below the <code>videoWithURL()</code> function, create a function to handle when the playback session advances.</p>
+	<p>Optional: Below the <code>videoWithURL()</code> function, create a function to handle when the playback session advances.</p>
 
 	<pre class="line-numbers" data-start="63">
 <code class="language-swift">private func playbackController(controller: BCOVPlaybackController!, didAdvanceToPlaybackSession session: BCOVPlaybackSession!) {
-		print("ViewController Debug - Advanced to new session.")
+    print("ViewController Debug - Advanced to new session.")
 }</code></pre>
 	</li>
 	<!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="117-119" data-gist-hide-footer="true"></code></p> --><!-- <li><p>Create a function to set the status bar style.</p>
@@ -774,74 +727,77 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 <pre class="line-numbers" data-start="1">
 <code class="language-swift">//
 //  ViewController.swift
-//  Simple Video Playback - Perform
+//  Simple-Video-Playback for Brightcove Player Customers
 //
-//  Copyright © 2017 Brightcove. All rights reserved.
+//  Created on 1/2/18.
+//  Copyright © 2018 Brightcove. All rights reserved.
+//
 
 import UIKit
 import BrightcovePlayerSDK
 
-let kViewControllerAccountID = "123456789" // for analytics
+let kViewControllerAccountID = "<span class="bcls-input">your account id</span>" // For Brightcove registration
 
-class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIPlayerViewDelegate  {
+class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
+    let sharedSDKManager = BCOVPlayerSDKManager.shared()
+    let playbackController :BCOVPlaybackController
+    @IBOutlet weak var videoContainerView: UIView!
 
-		let playbackController :BCOVPlaybackController
-		@IBOutlet weak var videoContainer: UIView!
+    required init?(coder aDecoder: NSCoder) {
+        // Create the Brightcove playback controller
+        playbackController = (sharedSDKManager?.createPlaybackController())!
 
-		required init?(coder aDecoder: NSCoder) {
-		let manager = BCOVPlayerSDKManager.shared()!
-		playbackController = manager.createPlaybackController()
+        super.init(coder: aDecoder)
 
-		super.init(coder: aDecoder)
+        // Register your app with Brightcove
+        playbackController.analytics.account = kViewControllerAccountID
 
-		playbackController.analytics.account = kViewControllerAccountID
+        // Configure the player
+        playbackController.delegate = self
+        playbackController.isAutoAdvance = true
+        playbackController.isAutoPlay = true
+    }
 
-		playbackController.delegate = self
-		playbackController.isAutoAdvance = true
-		playbackController.isAutoPlay = true
-		}
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
 
-		override func viewDidLoad() {
-			super.viewDidLoad()
+        // Create an array of videos
+        var videoArray = [AnyObject]()
+        videoArray = [videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4")!),
+                      videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4")!)]
 
-			// Load an array of videos
-			var videoArray = [AnyObject]()
-			videoArray = [videoWithURL(url: NSURL(string: "http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4")!),
-					videoWithURL(url: NSURL(string: "http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8")!)]
+        // Set up the player view with a standard VOD layout.
+        let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
 
-			// Create and set options
-			let options = BCOVPUIPlayerViewOptions()
-			options.presentingViewController = self
+        // Install in the container view and match its size.
+        playerView?.frame = self.videoContainerView.bounds
+        playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        self.videoContainerView.addSubview(playerView!)
 
-			// Create and configure Control View
-			let controlsView = BCOVPUIBasicControlView.withVODLayout()
-			let playerView = BCOVPUIPlayerView.init(playbackController: playbackController, options: options, controlsView: controlsView)!
+        // Associate the playerView with the playback controller.
+        playerView?.playbackController = playbackController
 
-			playerView.delegate = self
-			playerView.frame = videoContainer.bounds
-			playerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        // Load the video array into the player and start video playback
+        playbackController.setVideos(videoArray as NSArray)
+        playbackController.play();
+    }
 
-			videoContainer.addSubview(playerView)
+    func videoWithURL(url: NSURL) -&gt; BCOVVideo {
+        // Set the delivery method for BCOVSources that belong to a video
+        let source:BCOVSource = BCOVSource(url: url as URL!, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
+        let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
+        return video!
+    }
 
-			playbackController.setVideos(videoArray as NSFastEnumeration!)
-			playbackController.play();
-			}
+    func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
+        print("Advanced to new session")
+    }
 
-		func videoWithURL(url: NSURL) -&gt; BCOVVideo {
-			// set the delivery method for BCOVSources that belong to a video
-			let source:BCOVSource = BCOVSource(url: url as URL!, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
-			let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
-			return video!
-		}
-
-		private func playbackController(controller: BCOVPlaybackController!, didAdvanceToPlaybackSession session: BCOVPlaybackSession!) {
-			print("ViewController Debug - Advanced to new session.")
-		}
-
-		override func didReceiveMemoryWarning() {
-			super.didReceiveMemoryWarning()
-			// Dispose of any resources that can be recreated.
-		}
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
 
 }</code></pre>
 <!-- <p><code data-gist-id="aa87403235764a27cae1" data-gist-line="66-131"></code></p> --></div>
@@ -891,18 +847,26 @@ class ViewController: UIViewController, BCOVPlaybackControllerDelegate, BCOVPUIP
 	<p>One of the following situations will apply to your app:</p>
 
 	<ul>
-		<li>
+		<li class="video-cloud-only">
 		<p>By default the Brightcove Native SDK for iOS uses a source selection policy to choose HTTPS over HTTP sources, so you can build your apps with ATS enabled.</p>
 
 		<p>That's it, you are ready to run your app.</p>
+
+		<p>&nbsp;</p>
 		</li>
-		<br />
+		<li class="player-only">
+		<p>If your remote assets use HTTPS instead of HTTP sources, then you can build your apps with ATS enabled.</p>
+
+		<p>That's it, you are ready to run your app.</p>
+
+		<p>&nbsp;</p>
+		</li>
 		<li>
 		<p>If you are using HTTP sources or have other HTTP calls in your app, you may encounter the following error message:</p>
 
 		<pre class="line-numbers" data-start="1">
-				<code class="language-swift">App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure.
-						Temporary exceptions can be configured via your app's Info.plist file.</code></pre>
+<code class="language-swift">App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure.
+Temporary exceptions can be configured via your app's Info.plist file.</code></pre>
 
 		<p>This means that ATS is enabled, but your system is not configured to meet the ATS requirements. To fix this situation, see the <a href="/node/18215">Working with App Transport Security (ATS)</a> document.</p>
 		</li>

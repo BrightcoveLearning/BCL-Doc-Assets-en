@@ -9,7 +9,7 @@
 
 <p><strong>Default:</strong> standard</p>
 
-<p><strong>Valid Values:</strong> standard, segmented, playlist, and transfer-only</p>
+<p><strong>Valid Values:</strong> standard, segmented, captions, playlist, and transfer-only</p>
 
 <p><strong>Compatible Job Types:</strong> All</p>
 
@@ -21,6 +21,12 @@
 
 <ul>
 	<li><strong>segmented</strong>: The typical use-case for segmentation is for Apple's Live HTTP Streaming (see <a href="/node/17863">Segmented Streaming</a>). For segmented outputs the default format will be changed to ts instead of mp4.</li>
+  <li><strong>captions</strong>: <em><strong><a href="/node/17894">API V2 Only</a></strong></em><br>
+          The captions output type creates a file containing just the captions from the source video, rather than a video with captions added to it. <em>Note: captions type outputs may not be the only outputs for a job.</em><br>
+          Captions may be provided to Zencoder as a separate file (using the <a href="/node/17862#caption_url">caption_url</a> option), or will be extracted from the source video by default.<br>
+          Supported formats for extracting captions from the source video are MP4 and TS. In an MP4 file, the captions may be located in a separate track (in CEA-608 format); otherwise captions in an MP4 or TS file must be embedded in an MPEG2 or AVC video stream, compliant to A/53 or SCTE-128 (CC1 and CC3) standards.<br>
+          Supported output formats for captions type outputs: 'mp4', 'scc', 'webvtt', 'vtt', 'm3u8', 'dfxp'.
+      </li>
 	<li><strong>playlist</strong>: The playlist output type is used in multi-bitrate output streams to generate the master M3U8 playlist file. <em>Note: playlist type outputs may not be the only outputs for a job.</em></li>
 	<li><strong>transfer-only</strong>: <em><strong><a href="/node/17894">API V2 Only</a></strong></em><br />
 	A transfer-only output skips encoding and sends the original video to a <a href="#url">url</a>.<br />
@@ -37,7 +43,7 @@
   ]
 }</code></pre>
 
-<p><strong>See Also:</strong> <a href="#source">source</a></p>
+<p><strong>See Also:</strong> <a href="#source">source</a> and <a href="/node/17862#caption_url">caption_url</a></p>
 </section>
 
 <section class="bcls-section">
@@ -662,6 +668,8 @@
 <p>HTTP headers to send with your file when we upload it. This feature is currently supported when using S3, GCS and Cloud Files.</p>
 
 <p>Zencoder supports setting a limited subset of these headers: Cache-Control, Content-Disposition, Content-Encoding, Content-Type, Expires, x-amz-acl, x-amz-storage-class, x-amz-server-side-encryption, x-amz-meta-*, x-goog-acl and x-goog-meta-*.</p>
+
+<aside class="bcls-aside bcls-aside--information">To use <a href="https://aws.amazon.com/blogs/aws/aws-storage-update-new-lower-cost-s3-storage-option-glacier-price-reduction/">S3's Standard_IA feature</a>, you will need to set the <code>x-amz-storage-class</code> header to the appropriate value. These values change and are controlled by AWS and Google, so you will need to get correct values from them.</aside>
 
 <p>Headers will be ignored when an output location is not specified.</p>
 

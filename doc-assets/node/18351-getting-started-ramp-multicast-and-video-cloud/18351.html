@@ -1,0 +1,126 @@
+<h2 id="introduction">Introduction</h2>
+
+<p>Ramp's&nbsp;<a href="https://ramp.com/product/altitudecdn/multicast/">AltitudeCDN™ Multicast+</a>&nbsp;product is an enterprise live video distribution system&nbsp;that makes use of multicast enabled networks to&nbsp;reduce video traffic over the local network, the internet gateway, and&nbsp;limited bandwidth links within the enterprise network. With Multicast+, client desktop computers&nbsp;using the Brightcove Player will pull the stream from a Multicast+ receiver client on the local computer which "tunes in" to the live stream delivered on the network by the Multicast+ server. &nbsp;The Multicast+ server pulls the live stream from the Brightcove CDN or an on-premise streaming server.&nbsp;&nbsp;Multicast+ is a completely on-premise solution delivered as a software appliance and is managed by the AltitudeCDN™ Altimeter management console. &nbsp;Multicast+ can be used standalone or in concert with&nbsp;AltitudeCDN™ Omnicache&nbsp;for mixed unicast/multicast networks.</p>
+
+<p>The integration with the Brightcove uses the <a href="https://livetools.ramp.com/omnicache/plugin/multicastplugin.js">Multicast+ Video.js plug-in</a> to rewrite the stream URL to the local Multicast+ receiver client server. &nbsp;For complete details on setting up the Multicast+ server for use with Video Cloud, see this <a target="_blank" href="https://files.brightcove.com/Altitude%20CDN_OmniCache_Brightcove_TechNote_v14.pdf">TechNote</a> from Ramp.</p>
+
+<p>Before proceeding with the instructions below, please complete the Multicast+ Quickstart process with the Ramp team to ensure that the Multicast+ server, local Multicast+ receivers,&nbsp;and the local network are configured properly.</p>
+
+<h2 id="playerconfig">Player Configuration</h2>
+
+<p>Start by configuring a Brightcove player to use the Multicast+ plug-in. Create a new player with the desired skin and options.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-player-setup.png" /></p>
+
+<p>Then, add the Multicast+ Video.js plug-in.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-player-setup-plugins-javascript.png" /></p>
+
+<p>Copy and paste from here:</p>
+<!--Drupal editor breaks <pre> formatting.  Here is the original
+//livetools.ramp.com/omnicache/plugin/brightcove-omnicache-1.4.js
+-->
+
+<pre class="brush:as3;">
+//livetools.ramp.com/omnicache/plugin/multicastplugin.allinone.min.js
+</pre>
+
+<p>Finally, set the Multicast+ plug-in options. &nbsp;First, the player will need to know the multicast IP address and port for the live multicast broadcast. &nbsp;The player can be locked to a particular multicast address by specifying a "maddr" parameter in the Options such as</p>
+
+<pre>
+<code class="language-json">"maddr": "239.0.0.1",</code></pre>
+
+<p>However, ideally the player would get the multicast address from the Brightcove media object that it is currently playing. &nbsp;This is especially useful if the player needs to fall back to an Omnicache server or the stream from the CDN because it will already have the original stream URL. &nbsp;If "maddr" is not specified in the plug-in Options, the plug-in will look for the multicast IP address in a Custom Field named "multicastaddress". To set the Custom Field value on a media object, open the media object in Brightcove Studio and click Edit on the Custom Fields section:</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-customfield-metadata.png" /></p>
+
+<p>For a mixed unicast/multicast environment, use the "omnicache" parameter in the Options to specify an&nbsp;Omnicache server for the player to fall back to if the Multicast+ receiver client is not available on the playback device or if the multicast stream is not available on that segment of the network.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-player-setup-plugins-options.png" /></p>
+
+<p>Copy and paste from here:</p>
+<!--Drupal editor breaks <pre> formatting.  Here is the original
+{
+   "params":{
+      "allowHttpFallback": false,
+      "receiverHost": "brightcove.multicast-receiver-altitudecdn.net",
+      "receiverType": "native",
+      "omnicache": "https://omnicachedemo.ramp.com"
+   },
+   "verbose": true
+}
+-->
+
+<p class="line-numbers"><code class="language-json">{&nbsp;<br />
+&nbsp; "params": {<br />
+&nbsp;&nbsp;&nbsp; "minTime1": 15,<br />
+&nbsp;&nbsp;&nbsp; "minTime0": 5,<br />
+&nbsp;&nbsp;&nbsp; "keyStoreUri": "default",<br />
+&nbsp;&nbsp;&nbsp; "receiverType": "native",<br />
+&nbsp;&nbsp;&nbsp; "receiverHost": "hostname",<br />
+&nbsp;&nbsp;&nbsp; "allowHttpFallback": false,<br />
+&nbsp;&nbsp;&nbsp; "omnicache": "https://omnicache_backup_server"<br />
+&nbsp; },&nbsp; </code><br />
+<code class="language-json">&nbsp; "verbose": true<br />
+}</code></p>
+
+<p class="line-numbers">&nbsp;</p>
+
+<p>Parameter definitions:</p>
+
+<ul>
+	<li><strong>maddr</strong>: - The multicast stream address and port.&nbsp; This plug-in also is aware of the 'multicastaddress' custom field which can be used instead of hard-coding the maddr in the player plug-in.</li>
+	<li><strong>allowHttpFallback</strong>: (default false) - prevents the code from trying to connect to an insecure receiver when on a secure page (possible in some situations)</li>
+	<li><strong>keyStoreUri</strong>: (default "default") - allows the code to use an embedded key store rather than looking for one to load</li>
+	<li><strong>receiverHost</strong>: "brightcove.multicast-receiver.altitude.net" - supplies the certified name for localhost</li>
+	<li><strong>receiverType</strong>: "native" - allows the code to use default settings rather than trying to locate an external file that is specific to the OS</li>
+	<li><strong>minTime0</strong>: limits the polling of the receiver to specified number of&nbsp;seconds of 0-bytes received</li>
+	<li><strong>minTime1</strong>: limits the polling of the receiver to specified number of seconds of not having received the first segment of 3</li>
+	<li><strong>omnicache</strong>: URL for omnicache back up server if the multicast stream cannot be found</li>
+</ul>
+
+<h2 id="embed">Embed Brightcove Player</h2>
+
+<p>Finally, embed the Brightcove player on your web page using the standard player publishing process.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-player-embed.png" /></p>
+
+<p><br />
+<img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-player-embed_copy_code.png" /></p>
+
+<h2 id="liveworkflow">Providing Live Stream Manifest to Multicast+</h2>
+
+<p>To broadcast a live stream on the enterprise network, Multicast+ needs to know the stream manifest URL delivered by the Brightcove CDN or an internal streaming server. When using the Live workflow in Brightcove Video Cloud, the stream manifest URL is not known until the live event starts streaming. To provide the manifest URL to Multicast+, you will start the live stream, copy the stream manifest, and then save the stream manifest on the Multicast+ server via the Altimeter console.</p>
+
+<h3>Start Live Stream and Determine Stream Manifest</h3>
+
+<p>To determine the stream manifest, first create the live event. Note that you can create a live event days or weeks prior to starting the live stream. In that case you will complete a portion of the instructions below first and then later you will complete the remainder of the instructions.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-live-event-create.png" /></p>
+
+<p>Select the default player, not the Multicast+ enabled player.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-live-event-select-player.png" /></p>
+
+<p>Choose your live stream profile.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-live-event-select-rendition-profile.png" /></p>
+
+<p>Ensure that your output options do not have any RTMP formatted renditions as it will be easier to find the HLS stream manifest URL.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-live-event-remove-rtmp-rendition.png" /></p>
+
+<p>Start the encoder for the live stream and copy the manifest URL. If you see a live event preview player instead of the QR code as shown below, you still have an RTMP formatted rendition.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-new-ticket-live-copy-manifest-hls-preview.png" /></p>
+
+<p>If you need to keep RTMP renditions in your live stream, you can always start the stream playback and grab the manifest URL from the browser debugger. To do this, copy the player URL.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-live-event-copy-player.png" /></p>
+
+<p>Paste the player URL into a new tab in the browser, open up the browser debugger (Chrome shown in this example) and copy the master.m3u8 HLS stream manifest URL.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18351-new-ticket-live-copy-manifest.png" /></p>
+
+<p>Finally, follow the instructions in this Multicast+ <a target="_blank" href="https://files.brightcove.com/Altitude%20CDN_OmniCache_Brightcove_TechNote_v14.pdf">TechNote</a> or other Multicast+ and Altimeter documentation to configure a new broadcast with the stream URL.</p>
+<!-- End of Drupal content -->

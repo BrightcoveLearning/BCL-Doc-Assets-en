@@ -16,7 +16,9 @@
 
 <p>You can add as many additional permissions as you like to get credentials that will be usable for a wider range of API requests. Also note that you get credentials that will work for multiple accounts if you like.</p>
 
-<aside class="bcls-aside bcls-aside--information">In order to generate client credentials you must have Admin permissions for Studio, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
+<p>You can use <a href="/node/18521">this online app</a> if you prefer. If you do, you need to specify at least <code>video-cloud/player/all</code> permissions.</p>
+
+<aside class="bcls-aside bcls-aside--information">In order to generate client credentials you must have Admin permissions for the Brightcove account, or get someone in your organization who has Admin permissions to generate the credentials for you.</aside>
 </section>
 
 <section class="bcls-section">
@@ -28,47 +30,84 @@
 
 <ol class="bcls-tasklist">
 	<li>Launch the Postman app.</li>
-	<li>Go to the <strong>Authorization</strong> section:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Postman Authorization Section" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-authorization-section.png" />
-	<figcaption class="bcls-caption--image">Postman Authorization Section</figcaption>
+  <li>Create a new request:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-create-new-request.png" alt="Create New Request">
+      <figcaption class="bcls-caption--image">Create New Request</figcaption>
+    </figure>
+  </li>
+  <li>
+    In the new request dialog, enter "Get Players" for the Request Name:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-add-request-name.png" alt="Request Name">
+      <figcaption class="bcls-caption--image">Request Name</figcaption>
+    </figure>
+  </li>
+  <li>Click Create Collection, and then enter "Player Management API" for the collection name:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-name-collection.png" alt="Create Request Collection">
+      <figcaption class="bcls-caption--image">Create Request Collection</figcaption>
+    </figure>
+  </li>
+  <li>Save the collection.</li>
+  <li>Find the Player Management API collection in the list on the left and click it to open your new request:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-pmapi-collection.png" alt="Player Managment API Collection">
+      <figcaption class="bcls-caption--image">Player Managment API Collection</figcaption>
+    </figure>
+  </li>
+	<li>Go to the <strong>Authorization</strong> tab, choose OAuth 2.o as the type, and make sure that Add authorization data to Request Headers is selected:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Authorization Section" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-add-auth-to-request-headers.png" />
+	<figcaption class="bcls-caption--image">Authorization Section</figcaption>
 	</figure>
 	</li>
-	<li>For the <strong>Type</strong>, select <strong>OAuth 2.0</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Authorization Type" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-authorization-type.png" />
-	<figcaption class="bcls-caption--image">Authorization Type</figcaption>
-	</figure>
-	</li>
-	<li>Click <strong>Get New Access Token</strong></li>
+	<li>Click <strong>Get New Access Token</strong>:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-get-new-access-token.png" alt="Get New Access Token">
+      <figcaption class="bcls-caption--image">Get New Access Token</figcaption>
+    </figure>
+  </li>
 	<li>In the dialog, enter the following information:
 	<ul>
-		<li><strong>Token name</strong>: (enter some name)</li>
-		<li><strong>Auth URL</strong>: (leave blank)</li>
-		<li><strong>Access Token URL</strong>: <code>https://oauth.brightcove.com/v3/access_token </code></li>
+		<li><strong>Token name</strong>: Player Management API</li>
+		<li><strong>Grant Type</strong>: Client Credentials</li>
+		<li><strong>Access Token URL</strong>: <code>https://oauth.brightcove.com/v4/access_token </code></li>
 		<li><strong>Client ID</strong>: (enter your client id)</li>
 		<li><strong>Client Secret</strong>: (enter your client secret)</li>
 		<li><strong>Scope</strong>: (leave blank)</li>
-		<li><strong>Grant Type</strong>: Client Credentials</li>
-		<li>Check <strong>Request Access Token Locally</strong></li>
+		<li><strong>Client Authentication</strong>: Send client credentials in body</li>
 	</ul>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Grant Access Token Dialog" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-get-new-access-token.png" />
-	<figcaption class="bcls-caption--image">Grant Access Token Dialog</figcaption>
+	<figure class="bcls-figure"><img class="bcls-image" alt="Get Access Token Dialog" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-get-access-token-dialog.png" />
+	<figcaption class="bcls-caption--image">Get Access Token Dialog</figcaption>
 	</figure>
 	</li>
 	<li>Click <strong>Request Token</strong></li>
-	<li>Click on the name of the token to see you now have access to the new token:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Access Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-access-token.png" />
-	<figcaption class="bcls-caption--image">Access Token</figcaption>
-	</figure>
-	</li>
-	<li>To use this token, select it, make sure <strong>Add token to</strong> selector is set to <strong>Header</strong>, and click <strong>Use Token</strong>
-	<figure class="bcls-figure"><img class="bcls-image" alt="Set Access Token" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-set-add-token-to.png" />
-	<figcaption class="bcls-caption--image">Set Access Token</figcaption>
-	</figure>
-	</li>
+  <li>You should see a new access token appear:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="" alt="New Access Token">
+      <figcaption class="bcls-caption--image">New Access Token</figcaption>
+    </figure>
+  </li>
 </ol>
 
-<aside class="bcls-aside bcls-aside--information">Your token will expire after 5 minutes. When it does, your API requests will return an <strong>Unauthorized</strong> error. When that happens, just delete the token and click <strong>Get New Access Token</strong> again. Postman will remember all the information you entered into the dialog before, so you won't have to enter it again. Don't forget you need to click the <strong>Use Token</strong> button after you create a new one.</aside>
+<aside class="bcls-aside bcls-aside--information">
+  <p>For each request you make, you will need to select an access token to use:</p>
+  <figure class="bcls-figure">
+    <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-new-access-token.png" alt="Select Access Token">
+    <figcaption class="bcls-caption--image">Select Access Token</figcaption>
+  </figure>
+  <p>Your token will expire after 5 minutes. When it does, your API requests will return an <strong>Unauthorized</strong> error. When that happens, just click <strong>Get New Access Token</strong> again. Postman will remember all the information you entered into the dialog before, so you won't have to enter it again. Don't forget you need to select the appropriate token from the Available Tokens list after you create a new one. </p>
+  <p>Since old tokens are of no value, you'll probably want to keep the list clean by deleting old tokens when you create new ones:</p>
+  <figure class="bcls-figure">
+    <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-manage-tokens.png" alt="Manage Tokens">
+    <figcaption class="bcls-caption--image">Manage Tokens</figcaption>
+  </figure>
+    <figure class="bcls-figure">
+    <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-delete-access-token .png" alt="Delete Token">
+    <figcaption class="bcls-caption--image">Delete Token</figcaption>
+  </figure>
+</aside>
 </section>
 
 <section class="bcls-section">
@@ -82,17 +121,21 @@
 	<li>Now enter the following URL into the <strong>Enter request URL</strong> field, substituting your account id for {account_id}:
 
 	<pre class="line-numbers">
-<code class="language-http">https://players.api.brightcove.com/v1/accounts/{account_id}/players
+<code class="language-http">https://players.api.brightcove.com/v2/accounts/<span class="bcls-input">YOUR_ACCOUNT_ID</span>/players
 </code>
 </pre>
+<figure class="bcls-figure">
+  <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-request_url.png" alt="Enter Request URL">
+  <figcaption class="bcls-caption--image">Enter Request URL</figcaption>
+</figure>
 	</li>
 	<li>Leave the method as GET, and click <strong>Send</strong>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="GET Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-get-request-pm.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="GET Request" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-click-send.png" />
 	<figcaption class="bcls-caption--image">GET Request</figcaption>
 	</figure>
 	</li>
 	<li>The response should look something like this:
-	<figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-get-response-pm.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="GET Response" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-get-players-response.png" />
 	<figcaption class="bcls-caption--image">GET Response</figcaption>
 	</figure>
 
@@ -109,59 +152,42 @@
 <h3>Make a POST request</h3>
 
 <ol class="bcls-tasklist">
-	<li>Use the same URL as you did for the GET request steps above, but now choose <strong>POST</strong> to be the selected HTTP method.
+  <li>Duplicate your Get Players request:
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-duplicate-request.png" alt="Duplicate Request">
+      <figcaption class="bcls-caption--image">Duplicate Request</figcaption>
+    </figure>
+  </li>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="POST Request" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-pm.png" />
+  <li>Open your new request and rename it "Create Player"
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-edit-request-name.png" alt="Rename Request">
+      <figcaption class="bcls-caption--image">Rename Request</figcaption>
+    </figure>
+  </li>
+
+  <li>Use the same URL as you did for the GET request steps above, but now choose <strong>POST</strong> to be the selected HTTP method.
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="POST Request" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-select-request-type.png" />
 	<figcaption class="bcls-caption--image">POST Request</figcaption>
 	</figure>
 	</li>
-	<li>Click the <strong>Headers</strong> button:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Headers Section" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-headers-section.png" />
-	<figcaption class="bcls-caption--image">Headers Section</figcaption>
-	</figure>
-	</li>
-	<li>Click on "key" to enter a new <strong>key - value</strong> pair <strong>Content-Type - application/json</strong>. Simply begin typing in the input areas and you will be supplied with options from which you can choose the indicated values.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Header" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-add-header.png" />
-	<figcaption class="bcls-caption--image">Add Header</figcaption>
-	</figure>
-	</li>
-	<li>Click the <strong>Body</strong> section just under the URL, then the <strong>raw</strong> radio button:
-	<figure class="bcls-figure"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-select.png" />
+	<li>Click the <strong>Body</strong> tab just under the URL, then choose the <strong>raw</strong> radio button and <strong>JSON (application/json)</strong> from the type dropdown menu:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-request-body-type.png" />
 	<figcaption class="bcls-caption--image">Request Body</figcaption>
 	</figure>
 	</li>
+  <li>You may note that a new Header gets automatically added to the request. Requests that send data need a header telling the API what kind of data is being sent. Click the <strong>Headers</strong> tab to see the <code>Content-Type: application/json</code> header:
+    <figure class="bcls-figure"><img class="bcls-image" alt="Add Header" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-content-type-header.png" />
+      <figcaption class="bcls-caption--image">Add Header</figcaption>
+    </figure>
+  </li>
 	<li>For the raw data, enter the following JSON code for the body (the screenshot following the JSON shows how the request should appear):
-	<pre class="line-numbers player-only">
+	<pre class="line-numbers">
 <code class="language-json">{
-"name": "MySamplePlayer",
-"configuration": {
-"media": {
-"sources": [{
-"src":"http://solutions.brightcove.com/bcls/assets/videos/Tiger.mp4",
-"type":"video/mp4"
-}]
-}
-}
-}
-</code>
+	"name": "Postman Test Player"
+}</code>
 </pre>
-
-	<pre class="line-numbers video-cloud-only">
-<code class="language-json">{
-"name": "MySamplePlayer",
-"configuration": {}
-}
-}
-</code>
-</pre>
-
-	<figure class="bcls-figure player-only"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-pm.png" />
-	<figcaption class="bcls-caption--image">Request Body</figcaption>
-	</figure>
-
-	<figure class="bcls-figure video-cloud-only"><img class="bcls-image" alt="Request Body" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-request-body-vc.png" />
-	<figcaption class="bcls-caption--image">Request Body</figcaption>
-	</figure>
 	</li>
 	<li>Click <strong>Send</strong>.
 	<aside class="bcls-aside bcls-aside--information">If you have recently submitted a request you may not be asked to authenticate again. If you get an Unauthorized error, request a new access token and click Send again.</aside>
@@ -169,7 +195,7 @@
 	<li>
 	<p>Your response will look similar to the following (You can click the <strong>Pretty</strong> button for more nicely formatted JSON):</p>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="POST Response" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-post-response-pm.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="POST Response" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-create-player-response.png" />
 	<figcaption class="bcls-caption--image">POST Response</figcaption>
 	</figure>
 	</li>
@@ -191,45 +217,31 @@
 	<figcaption class="bcls-caption--image">Environments Menu</figcaption>
 	</figure>
 	</li>
-	<li>In the <strong>Manage Environments</strong> dialog, click <strong>Add</strong>.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-add-environment.png" />
-	<figcaption class="bcls-caption--image">Add Environment</figcaption>
-	</figure>
+	<li>In the <strong>Manage Environments</strong> dialog, click <strong>Add</strong> to add an environment.
 	</li>
 	<li>For the new environment, enter:
 	<ul>
-		<li>A name (whatever you like)</li>
+		<li>A name (Brightcove APIS, or whatever you like)</li>
+    <li>An environment variable called <code>account_id</code> with a value of your account id</li>
 		<li>An environment variable called <code>client_id </code> with a value of your client id</li>
 		<li>An environment variable called <code>client_secret </code> with a value of your client secret</li>
 	</ul>
 
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-add-environment-variables.png" />
+	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-add-environment-variables.png" />
 	<figcaption class="bcls-caption--image">Add Environment Variables</figcaption>
 	</figure>
 	</li>
 	<li>Click <strong>Add</strong> to add the environment</li>
-	<li>Optionally, if you use Postman on multiple systems, you can share the environment and be able to access it on your other systems if you upgrade to Postman Pro. To do this, click the <strong>Share</strong> button in the environment listing.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Share an Environment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-share-environment.png" />
-	<figcaption class="bcls-caption--image">Share an Environment</figcaption>
-	</figure>
-	</li>
-	<li>If you do share, in the <strong>Environment Templates</strong> dialog, click <strong>Share</strong> to share the environment.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Add Environment to Shared Environments" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-share-environment2.png" />
-	<figcaption class="bcls-caption--image">Add Environment to Shared Environments</figcaption>
-	</figure>
-	</li>
-	<li>Add more environments for additional client credentials</li>
-	<li>Close the <strong>Manage Environments</strong> dialog to return to Postman and select one of your environments from the menu.
-	<figure class="bcls-figure"><img class="bcls-image" alt="Select an Enviroment" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-environments-menu2.png" />
+	<li>Close the <strong>Manage Environments</strong> dialog to return to Postman and select your environment from the menu.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Select an Enviroment" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-select-envoronment.png" />
 	<figcaption class="bcls-caption--image">Select an Environment</figcaption>
 	</figure>
 	</li>
-	<li>Now click <strong>Get New Access Token</strong> again, but change the hard-coded values for Client ID and Client Secret to point to the environment variables <code>{{client_id}} </code> and <code>{{client_secret}} </code>
-	<figure class="bcls-figure"><img class="bcls-image" alt="Use Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/postman/postman-use-environment-variables.png" />
+	<li>Now you can start replacing hard-coded values in your requests with variables. To do so, just type <code>{{</code> anywhere, and a dropdown list of variables will appear:
+	<figure class="bcls-figure"><img class="bcls-image" alt="Use Environment Variables" src="//learning-services-media.brightcove.com/doc-assets/node/17919-use-postman-http-requests/node17919-use-environment-variables.png" />
 	<figcaption class="bcls-caption--image">Use Environment Variables</figcaption>
 	</figure>
 	</li>
-	<li>Postman will remember these values, so when you change to a different environment for another API or account, you will be able to get access tokens without changing the client id and client secret values.</li>
 </ol>
 </section>
 </article>

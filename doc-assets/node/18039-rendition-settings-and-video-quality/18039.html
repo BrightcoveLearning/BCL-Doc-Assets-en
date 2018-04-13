@@ -2,6 +2,8 @@
 <section class="bcls-section">
 <h2 id="introduction">Introduction</h2>
 
+<aside class="bcls-aside bcls-aside--information">The information in this topic applies to the legacy ingest system, <strong>not</strong> to <a href="/node/18476">Dynamic Delivery</a>.</aside>
+
 <p>We all want the best possible video and audio quality in our online video. At the same time, we want the videos to perform well, meaning that the delay between the moment the viewer clicks play and the actual beginning of playback is as small as possible, and that once playback begins, it continues smoothly, with no stalling or pausing while additional data is buffered.</p>
 
 <p>Unfortunately, these are conflicting desires: the quality of the video depends primarily on the amount of data delivered to and processed by the viewer's system; performance, on the other hand, depends on not delivering more data than the internet connection and the client application and system can handle. To make things more complicated, there are considerable variations in connection bandwidth and system capacity based on geography, time of day, internet provider, type of device, and so forth.</p>
@@ -35,6 +37,8 @@
 <p>The max bitrate fed to the decoder via a buffer. This setting is typically used only for streaming (RTMP, HLS, or broadcast video).</p>
 
 <p>Only use this setting if you understand its implications, as it can decrease video quality.</p>
+
+<p>Also see the <a href="#max_video_bitrate"><code>max_video_bitrate</code></a> section below.</p>
 </section>
 
 <section class="bcls-section">
@@ -56,20 +60,31 @@
 
 <p>A maximum average bitrate for a movie. Overrides both the quality and video_bitrate settings to ensure that a bitrate doesn't exceed the provided number.</p>
 
+<p>The <code>max_video_bitrate</code> setting works in conjunction with the quality setting to allow for encoding to a specific quality level (in variable bitrate mode) but having a "safety" limit in place.  Brightcove will start by trying to encode to the quality setting specified, but while encoding, if we detect that the final average bitrate will be higher than <code>max_video_bitrate</code>, we'll stop encoding, and go back and do a second pass that encodes to the <code>max_video_bitrate</code> (in average bitrate mode), ensuring that the average bitrate of the video does not end up too high.</p>
+
+<p>Using max_video_bitrate in conjunction with video_bitrate does not really make sense, so we just encode to the lesser of the two values specified.</p>
+
+<p>The <code><a href="#decoder_bitrate_cap">decoder_bitrate_cap</a></code> setting, however, sets a maximum peak bitrate for the encoding, so that there will not be any "spikes" going higher than this bitrate, allowing for streaming the video without needing to stop and rebuffer.  Note, however, that calculating those peaks is not straightforward, because it is limiting the fill rate for the video buffer, as opposed to limiting the bitrate of a single frame or a single time period.  That is why the <code>decoder_buffer_size</code> is generally used together with this.  The video encoder will still be able to pre-fill the buffer when needed (such as in a time when there is low action followed by very high action), so the bitrate of a single frame or even short period of time may be significantly higher than the value specified for <code>decoder_bitrate_cap</code>.  Yet, if the video is transferred over a connection with a bandwidth at least equal to <code>decoder_bitrate_cap</code>, then it will never have to stop and rebuffer.</p>
+
+<p>Note that <code>max_video_bitrate</code> does not limit peak values, and is not recommended for streaming situations.</p>
+
 <p><code>max_video_bitrate</code> is especially useful when encoding for mobile devices using the quality setting, which autoselects a bitrate. Mobile devices sometimes have fixed bitrate limits; for example, the iPhone 3GS has a bitrate limit of 1500 kbps.</p>
 
 <p><code>max_video_bitrate</code> can also help to avoid bitrate spikes that can occur at transition points between, say, a talking-head segment and a high-action or screencast segment. Such spikes can cause a video to stall because the data fed to the decoder temporarily exceeds its processing capacity.</p>
 </section>
+
 <section class="bcls-section">
-    <h2 id="quality">quality</h2>
-    <p>By setting the <code>quality</code> for your renditions, you indicate the desired quality of the output, and the Video Cloud transcoding system will automatically select a bitrate that achieves that quality. The available settings are:</p>
-    <ol class="integer">
-        <li>Highly compressed. Mediocre visual quality, but small files</li>
-        <li>Acceptable quality</li>
-        <li>Good quality. <em>Better than most web video</em></li>
-        <li>Great quality. Looks excellent</li>
-        <li>Nearly lossless. Large files. Not recommended unless you plan to encode this output again</li>
-    </ol>
+<h2 id="quality">quality</h2>
+
+<p>By setting the <code>quality</code> for your renditions, you indicate the desired quality of the output, and the Video Cloud transcoding system will automatically select a bitrate that achieves that quality. The available settings are:</p>
+
+<ol class="integer">
+	<li>Highly compressed. Mediocre visual quality, but small files</li>
+	<li>Acceptable quality</li>
+	<li>Good quality. <em>Better than most web video</em></li>
+	<li>Great quality. Looks excellent</li>
+	<li>Nearly lossless. Large files. Not recommended unless you plan to encode this output again</li>
+</ol>
 </section>
 
 <section class="bcls-section">
@@ -83,10 +98,12 @@
 
 <p>The target output bitrate for a video, expressed in kbps. This results in a predictable output bitrate, but not predictable quality. For example, at 640x480, 500kbps might be enough for a video blog to look good, but an action movie might look bad at the same bitrate. Similarly, it might be too high for a screencast, resulting in a file that is larger than it needs to be.</p>
 </section>
+
 <section class="bcls-section">
-    <h2 id="Platform_specific_issues">Platform specific issues</h2>
-    <ul>
-        <li>The Edge browser uses Microsoft's "Media Foundation" (MF) codecs built into Windows for playback. There is a limitation in the "AAC Decoder" from MF that limits the maximum sampling rate of AAC to 48khz. If the player loads a rendition with an audio sampling rate greater than 48khz, the browser may return a <code>MEDIA_ERR_SRC_NOT_SUPPORTED</code> error.</li>
-    </ul>
+<h2 id="Platform_specific_issues">Platform specific issues</h2>
+
+<ul>
+	<li>The Edge browser uses Microsoft's "Media Foundation" (MF) codecs built into Windows for playback. There is a limitation in the "AAC Decoder" from MF that limits the maximum sampling rate of AAC to 48khz. If the player loads a rendition with an audio sampling rate greater than 48khz, the browser may return a <code>MEDIA_ERR_SRC_NOT_SUPPORTED</code> error.</li>
+</ul>
 </section>
 </article>

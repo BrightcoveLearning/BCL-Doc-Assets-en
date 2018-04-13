@@ -1,0 +1,214 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>Zencoder supports high-dynamic-range (HDR) video, initially adding options to produce HDR10 outputs from HDR color-graded masters.</p>
+
+<p>Other HDR formats such as PQ10, HLG, and Dolby Vision are not currently supported.</p>
+
+<p>HDR10 is commonly defined as video using the ITU-R Rec (see <a href="https://docs.google.com/document/d/1MNORJGjXj-_rjy-wkJ4SXOzvq3u8HzN4iYsEo05IsYM/edit?ts=5ac223b9#heading=h.waqfatkuoxxo">this document</a> for more details). BT.2020 color space, SMPTE ST-2084 or <span class="”notranslate”">Perceptual Quantizer (PQ) Opto-Electronic Transfer Function</span> (OETF), along with SMPTE ST-2086 mastering display color metadata and CEA 861.3 content light level metadata. HDR10 streams are most commonly encoded using H.265/HEVC codec, operating in Main10 profile, and carrying all these metadata within elementary streams.</p>
+
+<p>If you plan to target Apple devices with HDR content, the <a href="https://developer.apple.com/library/content/documentation/General/Reference/HLSAuthoringSpec/Requirements.html">HLS Authoring Specification for Apple Devices</a> document contains useful guidance.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="requirements">Requirements</h2>
+
+<p>You must meet the following requirements to produce HDR10 outputs using Zencoder.</p>
+
+<ul>
+	<li>Source files must already be color-graded and in the Rec. 2020 color space.</li>
+	<li>Ideally, the source files will be high-quality masters or mezzanines using intra-frame codecs. Formats such as Apple ProRes 4444, Avid DNxHD, and JPEG 2000 (J2K) in OP1a MXF are examples of supported mastering formats. Source file video bit depths should be 10-bit or 12-bit.</li>
+	<li>For 4K source files, the target resolution should be DCI 4K (4096x2160), UHD-1 (3840x2160), or 1080p HD (1920x1080), with a frame rate of 23.976, 24, 25, 29.97, 30, 50, 59.94, 60, 100, or 120 fps. For optimal results, source file video should not be interlaced.</li>
+	<li>Mastering display metadata must be provided as described <a href="#api_options">below</a>.</li>
+	<li>While Zencoder will attempt to convert most video formats to HDR10 when mastering display metadata is provided, it does not convert from SDR to HDR, or from HDR to SDR. For example, if a Rec. 709 SDR source file is used to create an HDR10 output, it will appear darker than expected.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="api_options">API options</h2>
+
+<p>There are a number of options that are new or otherwise relevant to creating HDR10 outputs. The most important are those related to the SMPTE ST-2086 mastering display color volume, white point, and luminance.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note that Zencoder will enable HDR encoding when master_display options are specified for an output.</aside>
+
+<section class="bcls-subsection">
+<h3>Color volume and white point settings</h3>
+
+<p>The following options are specified in <span class="”notranslate”">CIE 1931 x/y chromaticity units</span>, as floating point values:</p>
+
+<ul>
+  <li>
+    <code><a href="/node/18575#master_display">master_display</a></code>
+    <ul>
+      <li>
+        <code><a href="/node/18575#master_display_red">red</a></code>
+        <ul>
+          <li><code><a href="/node/18575#master_display_red_x">x</a></code></li>
+          <li><code><a href="/node/18575#master_display_red_y">y</a></code></li>
+        </ul>
+      </li>
+      <li>
+        <code><a href="/node/18575#master_display_green">green</a></code>
+        <ul>
+          <li><code><a href="/node/18575#master_display_green_x">x</a></code></li>
+          <li><code><a href="/node/18575#master_display_green_x">y</a></code></li>
+        </ul>
+      </li>
+      <li>
+        <code><a href="/node/18575#master_display_blue">blue</a></code>
+        <ul>
+          <li><code><a href="/node/18575#master_display_blue_x">x</a></code></li>
+          <li><code><a href="/node/18575#master_display_blue_x">y</a></code></li>
+        </ul>
+      </li>
+      <li>
+        <code><a href="/node/18575#master_display_white_point">white_point</a></code>
+        <ul>
+          <li><code><a href="/node/18575#master_display_white_point_x">x</a></code></li>
+          <li><code><a href="/node/18575#master_display_white_point_x">y</a></code></li>
+        </ul>
+      </li>
+    </ul>
+</li>
+</ul>
+
+<p>The x coordinates shall be in the range <code>[0.0001-0.7400]</code> and the y coordinates shall be in the range <code>[0.0001-0.8400]</code>.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>Luminance</h3>
+
+<p>The following options are specified in <code>nits</code> or <span class="”notranslate”">candelas per square meter (cd/m2)</span> as floating point values:</p>
+
+<ul>
+  <li>
+    <code><a href="/node/18575#master_display">master_display</a></code>
+    <ul>
+      <li>
+        <code><a href="/node/18575#master_display_luminance">luminance</a></code>
+        <ul>
+          <li><code><a href="/node/18575#master_display_luminance_min">min</a></code></li>
+          <li><code><a href="/node/18575#master_display_luminance_max">max</a></code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>The <code>master_display:luminance:max</code> value should be in the range <code>[5.0-10000.0]</code>, and <code>master_display:luminance:min</code> value should be in the range <code>[0.0001-5.0]</code>.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>Light level</h3>
+
+<p>Light level metadata is also specified in <code>nits</code>, though as integers rather than floats. These parameters are defined in CEA 861.3, as well as ITU-T Rec. H.265, Annex 3.35.</p>
+
+<ul>
+	<li><code><a href="/node/18575#max_content_light_level">max_content_light_level</a></code></li>
+	<li><code><a href="/node/18575#max_frame_average_light_level">max_frame_average_light_level</a></code></li>
+</ul>
+
+<p>The <code>max_content_light_level</code> and <code>max_frame_average_light_level</code> value should be in the range <code>[0-10000]</code>. Values of <code>max_frame_average_light_level</code> around 100 generally produce the best results, however.</p>
+</section>
+
+<section class="bcls-subsection">
+<h3>Other output settings with specific values/ranges for HDR</h3>
+
+<p>There are some other general video output settings that must specific values or a specific range of values for HDR10.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Video Settings for HDR10</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Setting</th>
+			<th>Value(s) for HDR10</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>video_codec</code></td>
+			<td><code>hvec</code></td>
+		</tr>
+		<tr>
+			<td><code>video_codec_profile</code></td>
+			<td><code>main10</code></td>
+		</tr>
+		<tr>
+			<td><code>video_codec_level</code></td>
+			<td>up to <code>5.1</code></td>
+		</tr>
+		<tr>
+			<td><code>video_codec_tier</code></td>
+			<td><code>high</code></td>
+		</tr>
+		<tr>
+			<td><code>video_bit_depth</code></td>
+			<td>automatically set to <code>10</code> by using the profile <code>main10</code></td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-subsection">
+<h4>Notes</h4>
+
+<ol>
+	<li>Transmuxing HEVC source files (including HDR10) is currently not supported and will result in an error.
+	<ol>
+		<li>HLS and DASH outputs need separate encodes.</li>
+	</ol>
+	</li>
+	<li>If a source file is HDR and <code>master_display</code> options are not provided, Zencoder will treat the source file as SDR, so the output coloring may not be accurate.</li>
+	<li>For segmented outputs, include these settings in <strong>each</strong> of the video outputs.
+	<ul>
+		<li>DASH: <a href="/node/17790">DASH Streaming and Playlists</a></li>
+		<li>HLS: <a href="/node/18549">HTTP Live Streaming using fragmented MP4</a></li>
+	</ul>
+	</li>
+</ol>
+</section>
+</section>
+
+<section class="bcls-section">
+<h2 id="Sample_request">Sample request</h2>
+
+<p>Below is a sample request for an HDR10 output:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://mybucket/hdr_master.mov",
+  "outputs": [
+    {
+      "video_codec": "hevc",
+      "video_bit_depth": 10,
+      "master_display": {
+        "red": {
+          "x": 0.708,
+          "y": 0.292
+        },
+        "green": {
+          "x": 0.17,
+          "y": 0.797
+        },
+        "blue": {
+          "x": 0.131,
+          "y": 0.046
+        },
+        "white_point": {
+          "x": 0.31273,
+          "y": 0.329
+        },
+        "luminance": {
+          "max": 1000,
+          "min": 0.0001
+        }
+      },
+      "max_content_light_level": 1000,
+      "max_frame_average_light_level": 180
+    }
+  ]
+}
+</code></pre>
+</section>
+</article>

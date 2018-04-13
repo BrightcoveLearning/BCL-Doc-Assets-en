@@ -1,6 +1,6 @@
 <article class="bcls-article">
-<section id="introduction" class="bcls-section">
-<h2>Introduction</h2>
+<section class="bcls-section">
+<h2 id="introduction">Introduction</h2>
 
 <p>The ability to associate multiple audio tracks with a single title can be useful in a couple of key scenarios:</p>
 
@@ -20,8 +20,8 @@
 <p>Below is a simple example of a video with multiple audio tracks.</p>
 <iframe src="//players.brightcove.net/57838016001/default_default/index.html?videoId=5413700943001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="600" height="337.5"></iframe></section>
 
-<section class="bcls-section" id="setup">
-<h2>Setup</h2>
+<section class="bcls-section">
+<h2 id="setup">Setup</h2>
 
 <p>The setup for Dynamic Ingest requests is the same, whether you are ingesting a video, images, audio tracks, WebVTT files, or all of these:</p>
 
@@ -40,34 +40,48 @@
 	</dd>
 </dl>
 
-<h3 class="bcls-expander-head">Getting client credentials</h3>
-
-<div class="bcls-expander-content">
-<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
-
-<p>You can also get your credentials via CURL or Postman - see:</p>
-
-<ul>
-	<li>
-	<ul>
-		<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
-	</ul>
-
-	<ul>
-		<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
-		<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
-	</ul>
-	</li>
-</ul>
-</div>
-
 <h3>Note on S3</h3>
 
 <p>If your source files will be pulled from a protected S3 bucket, you will need to set a bucket policy to allow Video Cloud to access the files. See <a href="/node/17934#setPolicy">Using Dynamic Ingest with S3</a> for details.</p>
 </section>
 
-<section class="bcls-section" id="workflow">
-<h2>Workflow</h2>
+<section class="bcls-section">
+<h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
+
+<div class="bcls-expander-content">
+<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+
+<ul>
+	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
+</ul>
+
+<p>These are the permissions you will need:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Dynamic Ingest Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/di-permissions.png" />
+<figcaption class="bcls-caption--image">Dynamic Ingest Permissions</figcaption>
+</figure>
+
+<p>You can also get your credentials via CURL or Postman - see:</p>
+
+<ul>
+	<li><a href="/node/17924">Get Client Credentials Using CURL</a></li>
+	<li><a href="/node/17923">Get Client Credentials Using Postman</a></li>
+</ul>
+
+<p>If you are getting credentials directly from the API, these are the permissions you need:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
+  "video-cloud/video/all",
+  "video-cloud/ingest-profiles/profile/read",
+  "video-cloud/ingest-profiles/account/read",
+  "video-cloud/upload-urls/read"
+]</code></pre>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="workflow">Workflow</h2>
 
 <p>There are two primary use cases:</p>
 
@@ -87,8 +101,8 @@
 <p>We will look at the details of the API requests in a section below.</p>
 </section>
 
-<section id="Audio_track_metadata" class="bcls-section">
-<h2>Audio track metadata</h2>
+<section class="bcls-section">
+<h2 id="Audio_track_metadata">Audio track metadata</h2>
 
 <p>There are some metadata fields attached to audio tracks - some of these are set when you ingest the tracks, while others are created by Video Cloud. Some of these fields are read-only, and others can be updated by you. The metadata fields will be detailed below in the context of the relevant API requests, but two particular ones require some explanation here, as they are crucial in determining how the Brightcove Player will handle the multiple audio tracks.</p>
 
@@ -110,11 +124,11 @@
 
 <h3>Account defaults</h3>
 
-<p>You can set account defaults for <code>language</code> and <code>variant</code> to determine what audio track will be treated as the default by the Brightcove Player (the default can also be overridden by updating the track metadata, as we will see in a section below). To set the defaults for your account, contact Support.</p>
+<p>You can set account defaults for <code>language</code> and <code>variant</code> to determine what audio track will be treated as the default by the Brightcove Player (the default can also be overridden by updating the track metadata, as we will see in a section below). To set the defaults for your account,  <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
 </section>
 
-<section class="bcls-section" id="Ingest_audio_tracks">
-<h2>Ingest audio tracks</h2>
+<section class="bcls-section">
+<h2 id="Ingest_audio_tracks">Ingest audio tracks</h2>
 
 <p>Now we will look at the API calls to ingest audio tracks for the two use cases described earlier.</p>
 
@@ -185,10 +199,12 @@
 
 <p>To add additional audio tracks to an existing video, the procedure is the same, except that you do not need to make the request to the CMS API to create the video, because it already exists. And in the request to the Dynamic Ingest API, you will not need to include the URL for the video file or the <code>audio_tracks</code> under <code>master</code> providing the metadata for the muxed in audio. You do, however, want to include the metadata for the muxed in audio track in the existing video. So the JSON for the ingest request will look like this:</p>
 
+<aside class="bcls-aside bcls-aside--warning">Note that <code>merge_with_existing</code> currently must be set to <code>false</code>. This will cause new audio tracks to overwrite any existing ones. Merging audio tracks will be added later.</aside>
+
 <pre class="line-numbers">
 <code class="language-json">{
   "audio_tracks": {
-      "merge_with_existing": true,
+      "merge_with_existing": false,
       "masters": [
           {
               "url": "<span class="bcls-input">http://learning-services-media.brightcove.com/audio/celtic_lullaby.m4a</span>",
@@ -270,8 +286,8 @@
 </table>
 </section>
 
-<section id="Notifications" class="bcls-section">
-<h2>Notifications</h2>
+<section class="bcls-section">
+<h2 id="Notifications">Notifications</h2>
 
 <p>If you specify one or more <strong>callback</strong> URLs (as in the sample JSON for the ingest request above), Video Cloud will send a notification for each of the audio tracks you ingest. Notifications will look like this:</p>
 
@@ -293,8 +309,8 @@
 <p>To identify notifications for audio tracks, look for the <code>language</code> and <code>variant</code> fields in the notification. The <code>"action": "CREATE"</code> and <code>"status": "SUCCESS"</code> fields indicate that the track was successfully ingested.</p>
 </section>
 
-<section id="Managing_audio_tracks" class="bcls-section">
-<h2>Managing audio tracks</h2>
+<section class="bcls-section">
+<h2 id="Managing_audio_tracks">Managing audio tracks</h2>
 
 <p>Once you have ingested the audio tracks, you can manage them via the CMS API.</p>
 
@@ -434,8 +450,8 @@
 </table>
 </section>
 
-<section id="Playback" class="bcls-section">
-<h2>Playback</h2>
+<section class="bcls-section">
+<h2 id="Playback">Playback</h2>
 
 <p>For information on how the Brightcove web and SDK players handle multiple audio tracks see:</p>
 
@@ -445,8 +461,8 @@
 </ul>
 </section>
 
-<section id="Known_issues" class="bcls-section">
-<h2>Known issues</h2>
+<section class="bcls-section">
+<h2 id="Known_issues">Known issues</h2>
 
 <dl>
 	<dt>Audio masters not stored</dt>

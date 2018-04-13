@@ -2,7 +2,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     var filterAllowableValues = document.getElementById("filterAllowableValues"),
         paramTable = document.getElementById("paramTable"),
         combination,
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/aapi-proxy.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
         dimension,
         selectedDimensions      = [],
         fromDate,
@@ -429,70 +429,69 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
      * @param {String="getCount","getVideos","getData"} id the id for the call type
      */
     function setRequestData(id) {
-        var requestData = {},
+        var options = {},
         baseURL = 'https://analytics.api.brightcove.com/v1/data';
+        options.proxyURL = proxyURL;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         endPoint = '?accounts=' + accountId + '&dimensions=' + selectedDimensions.join(',') + '&fields=' + fieldsToReturn.join(',');
-        requestData.url = baseURL + endPoint;
-        requestData.requestType = 'GET';
-        apiRequest.textContent = requestData.url;
-        getMediaData(requestData, id);
+        options.url = baseURL + endPoint;
+        options.requestType = 'GET';
+        apiRequest.textContent = options.url;
+        makeRequest(options, function(response) {
+          var parsedData = JSON.parse(response);
+          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+        });
     }
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
-     * @param  {String} requestID the type of request = id of the button
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function getMediaData(options, requestID) {
-        var httpRequest = new XMLHttpRequest(),
-            responseRaw,
-            parsedData,
-            requestParams,
-            dataString,
-            i,
-            iMax,
-            // response handler
-            getResponse = function() {
-                try {
-                  if (httpRequest.readyState === 4) {
-                    if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                      // check for completion
-console.log('response', httpRequest.responseText);
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        responseData.textContent = JSON.stringify(parsedData, null, '  ');
-                        // Rerun Prism syntax highlighting on the current page
-                        // Prism.highlightAll();
-                        // re-enable buttons
-                        enableButtons();
-                    } else {
-                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                    }
-                  }
-                } catch (e) {
-                  alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-        if (options.requestBody) {
-            dataString = JSON.stringify(options.requestBody);
-            requestParams += "&requestBody=" + encodeURIComponent(dataString);
-        }
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
-
 
     function init() {
         buildParamTable();

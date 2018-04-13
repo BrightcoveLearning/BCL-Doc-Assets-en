@@ -4,6 +4,10 @@
 <section class="bcls-section video-cloud-only">
 <h2 id="introduction">Introduction</h2>
 
+<p>Data Collecion API v2 is the current standard. The v1 version is deprecated. If you have a v1 implementation, see the <a href="#changesFromV1">Changes from v1</a> section below.</p>
+
+<p>In addition to this overview and the <a href="https://brightcovelearning.github.io/Brightcove-API-References/data-collection-api/v2/doc/index.html">API Reference</a>, also see this <a href="/node/17987">sample implementation</a>.</p>
+
 <p>The Analytics Data Collection API is the endpoint for realtime analytics events. Event data is sent to Brightcove via a series of parameters submitted via HTTP requests, such as:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
@@ -82,6 +86,13 @@
 	<li>Test in a controlled environment for at least a day.</li>
 	<li>Check the analytics data either through the Analytics Module or the Analytics API to ensure that what was collected matches your expectations.</li>
 </ol>
+
+<h3>Sending the request - avoiding CORS issues</h3>
+<aside class="bcls-aside bcls-aside--tip">
+  <p>Note that the best way to "send" to the Data Collection API is by setting the request URL as the <code>src</code> value for a new image (<code>img</code>) element and then injecting that element into the page.</p>
+  <p>You should use the same method rather than <code>XMLHttpRequest</code> or some other in order to avoid <a href="/node/17916">CORS</a> issues.</p>
+  <p>For a sample implementation, see the <a href="/node/17987">Data Collection Sample</a>.</p>
+</aside>
 </section>
 
 <section class="bcls-section video-cloud-only">
@@ -402,7 +413,7 @@
 			<p>City name <strong>Not typically included</strong></p>
 			</td>
 		</tr>
-		<tr>
+		<tr id="userData">
 			<td><code>user</code> <span class="label label-optional" style="float:right;">optional</span></td>
 			<td>String</td>
 			<td>
@@ -467,9 +478,9 @@
 
 <p>For more information on plugin development see the <a href="/node/18081">Quick Start: Plugin Development</a> document.</p>
 
-<h3 id="device_type-and-device_os-parameters">device_type, device_os and device_os_version parameters</h3>
+<h3 id="device_type-and-device_os-parameters"><code>device_type</code>, <code>device_os</code>, <code>device_os_version</code>, <code>device_manufacturer</code>, and <code>browser_type</code> parameters</h3>
 
-<p>By default, the Analytics system will attempt to detect device type and OS information from the User-Agent header. If <strong>both</strong> <code>device_type</code> and <code>device_os</code> are sent, the information from the User-Agent header will be ignored in favor of <code>device_type</code> and <code>device_os</code>. <strong>In most cases, <code>device_type</code> and <code>device_os</code> are not required</strong> -- this override should only be used if the User-Agent is unreliable or otherwise not available.</p>
+<p>By default, the Analytics system will attempt to detect device type and OS information from the User-Agent header. If <strong>both</strong> <code>device_type</code> and <code>device_os</code> are sent, the information from the User-Agent header will be ignored in favor of <code>device_type</code> and <code>device_os</code>. <strong>In most cases, you do not need to send device, OS, and browser information</strong> -- this override should only be used if the User-Agent is unreliable or otherwise not available.</p>
 
 <p>The Analytics system will record <code>other</code> if a request includes unrecognized values for device parameter overrides.</p>
 
@@ -722,7 +733,7 @@ ex. https://www.example.com/foo/bar/baz
 			<td><code>range</code> <span class="label label-optional" style="float:right;">optional</span></td>
 			<td>String</td>
 			<td>
-			<p>the range of the video video viewed for <code>video_engagement</code> events in the format <code>StartSecond..EndSecond</code> - range can be left out of an engagement event to show that during the period covered by the event, there was no viewing activity. (for example, when there is only re-buffering activity)</p>
+			<p>the range of the video video viewed for <code>video_engagement</code> events in the format <code>StartSecond..EndSecond</code> (the StartSecond and EndSecond values must be whole numbers [integers]) - range can be left out of an engagement event to show that during the period covered by the event, there was no viewing activity. (for example, when there is only re-buffering activity)</p>
 			</td>
 		</tr>
 		<tr>

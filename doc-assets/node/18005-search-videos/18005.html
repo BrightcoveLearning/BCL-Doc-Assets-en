@@ -64,7 +64,7 @@
 
 	<p>or</p>
 
-	<p><code>q=namemy%20favorite%20video</code></p>
+	<p><code>q=name:my%20favorite%20video</code></p>
 
 	<aside class="bcls-aside bcls-aside--information">Note that this does not produce results that include only video that have the phrase "my favorite video" in the name; rather it will search for videos that have "my" and/or "favorite" and/or "video". To search for videos based on a multi-word string, see the note that follows this list.</aside>
 	</li>
@@ -145,6 +145,8 @@
 
 <p>The search terms that you specify should be a url encoded list of terms separated by a space.</p>
 
+<p>Search supports <em>stemming</em>. Stemming is the mapping of a word to the word root and others words that stem from the same root. For example, a search on "run" should match videos that have "running" or "ran" in the specified field(s). It would <strong>not</strong> match "rune" because "rune" does not have "run" as its root.</p>
+
 <p>When you provide no qualifier for a search term, such as <code>q=bird</code>, the request will search for that value in the following fields:</p>
 
 <ul>
@@ -180,7 +182,7 @@
 
 <p>The supported search fields are:</p>
 
-<table class="bcls-table">
+<table class="bcls-table" id="supported_search_fields">
 	<caption class="bcls-caption--table">Supported Search Fields</caption>
 	<thead class="bcls-table__head">
 		<tr>
@@ -211,7 +213,7 @@
 		</tr>
 		<tr>
 			<td>state</td>
-			<td>ACTIVE, INACTIVE, PENDING</td>
+			<td>ACTIVE, INACTIVE, PENDING, DELETEDf<sup><strong><a href="#note2-3">[2-3]</a></strong></sup></td>
 		</tr>
 		<tr>
 			<td>updated_at</td>
@@ -245,6 +247,12 @@
 <ul>
 	<li id="note2-1"><sup><strong>[2-1]</strong></sup> It is <strong>not</strong> possible to search for videos that have a custom field that has no value or a value of <code>null</code>, because unless the field has been given a value, it is not included in the video metadata at all.</li>
 	<li id="note2-2"><sup><strong>[2-2]</strong></sup> when you create a new video, the <code>complete</code> property is automatically set to <code>false</code>. As soon as one rendition exists for the video, the <code>complete</code> property will be automatically set to <code>true</code>.</li>
+	<li id="note2-3"><sup><strong>[2-3]</strong></sup> The following limitations apply to searching for DELETED videos:
+	<ul>
+		<li>Search for deleted videos is <strong>only</strong> available using the CMS API; the Playback API will <strong>not</strong> return deleted videos</li>
+		<li>Only <strong>videos deleted during the previous 10 days (the current time minus 10 days) will be returned</strong></li>
+	</ul>
+	</li>
 </ul>
 
 <aside class="bcls-aside bcls-aside--information">The fields that use a string value perform a text search against that field.</aside>
@@ -500,10 +508,16 @@ q=my_field:"foo"</code></pre>
 <section class="bcls-section">
 <h2 id="searchByState">Search by state</h2>
 
-<p>You can perform or filter searches by the state of the video using the paramater:</p>
+<p>You can perform or filter searches by the state of the video using the parameter:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING)</code></pre>
+<code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING | DELETED)<sup><strong><a href="#note3">[3]</a></strong></sup></code></pre>
+
+<h3>Notes</h3>
+
+<ul>
+	<li id="note3"><sup><strong>[3]</strong></sup> Search for DELETED videos is only available for videos deleted in the past 10 days (the current time minus 10 days), and only through the CMS API (not the Playback API).</li>
+</ul>
 </section>
 
 <section class="bcls-section">
@@ -568,23 +582,23 @@ q=my_field:"foo"</code></pre>
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td>q=foo,bar</td>
-			<td>q=foo,bar</td>
+			<td><code>q=foo,bar</code></td>
+			<td><code>q=foo,bar</code></td>
 			<td>returned items have "foo" OR "bar"</td>
 		</tr>
 		<tr>
-			<td>q=foo bar</td>
-			<td>q=foo%20+bar</td>
+			<td><code>q=foo bar</code></td>
+			<td><code>q=foo%20+bar</code></td>
 			<td>returned items have "foo" OR "bar" (identical to the search above)</td>
 		</tr>
 		<tr>
-			<td>q=foo +bar</td>
-			<td>q=foo%20+%2Bbar</td>
+			<td><code>q=foo +bar</code></td>
+			<td><code>q=foo%20+%2Bbar</code></td>
 			<td>returned items must have "bar", may have "foo"</td>
 		</tr>
 		<tr>
-			<td>q=+foo bar</td>
-			<td>q=%2Bfoo%20+bar</td>
+			<td><code>q=+foo bar</code></td>
+			<td>q<code>=%2Bfoo%20+bar</code></td>
 			<td>returned items must have "foo", may have "bar"</td>
 		</tr>
 		<tr>
@@ -593,9 +607,32 @@ q=my_field:"foo"</code></pre>
 			<td>returned item must have "foo" AND "bar"</td>
 		</tr>
 		<tr>
-			<td>q=-foo +bar</td>
-			<td>q=%2Dfoo%20+%2Bbar</td>
+			<td><code>q=-foo +bar</code></td>
+			<td><code>q=%2Dfoo%20+%2Bbar</code></td>
 			<td>returned item must have "bar" AND not have "foo"</td>
+		</tr>
+		<tr>
+			<th colspan="3">Multiple tag searches</th>
+		</tr>
+		<tr>
+			<td><code>q=tags:bee,bop</code></td>
+			<td><code>q=tags:bee,bop</code></td>
+			<td>returns videos with tag "bee" OR "bop"</td>
+		</tr>
+		<tr>
+			<td><code>q=tags:bee+tags:bop</code></td>
+			<td><code>q=tags:bee+tags:bop</code></td>
+			<td>returns videos with tag "bee" OR "bop"</td>
+		</tr>
+		<tr>
+			<td><code>q=+tags:bee+tags:bop</code></td>
+			<td><code>q=%2Btags:bee+tags:bop</code></td>
+			<td>all videos returned will have tag "bee"; they may have tag "bop" as well</td>
+		</tr>
+		<tr>
+			<td><code>q=+tags:bee++tags:bop</code></td>
+			<td><code>q=%2Btags:bee+%2Btags:bop</code></td>
+			<td>all videos returned will have tag "bee" AND tag "bop"</td>
 		</tr>
 	</tbody>
 </table>
