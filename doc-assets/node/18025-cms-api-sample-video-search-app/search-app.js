@@ -14,7 +14,7 @@ function cmsSearchModel() {
         self.limit = [10, 25, 50, 100];
         self.dateRangeType = ["updated_at", "created_at", "published_at", "schedule.starts_at", "schedule.ends_at"];
         self.sortOptions = ["name", "reference_id", "created_at", "published_at", "updated_at", "schedule_starts_at", "schedule_ends_at", "state", "plays_total", "plays_trailing_week"];
-        self.proxyURL = ko.observable("https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php");
+        self.proxyURL = ko.observable("https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php");
 
         // editable data
         self.client_id = ko.observable("");
@@ -247,13 +247,11 @@ function cmsSearchModel() {
             options.client_secret = self.client_secret();
             options.url = self.apiURL.value;
             options.requestType = 'GET';
-            requestData = "client_id=" + self.client_id() + "&client_secret=" + self.client_secret() + "&url=" + encodeURIComponent(self.apiURL.value) + "&requestType=GET";
+            requestData = JSON.stringify(options);
             // set response handler
             httpRequest.onreadystatechange = getResponse;
             // open the request
             httpRequest.open("POST", self.proxyURL());
-            // set headers
-            httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             // open and send request
             httpRequest.send(requestData);
         };
