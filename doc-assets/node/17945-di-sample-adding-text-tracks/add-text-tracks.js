@@ -238,11 +238,14 @@ var BCLS = (function(window, document) {
                 endpoint            = '/videos/' + selectedVideos[diCallNumber] + '/ingest-requests';
                 options.url         = diBaseURL + endpoint;
                 options.requestType = 'POST';
-                options.requestBody = '{"text_tracks":[';
+                requestBody.text_track = [];
                 iMax = text_tracks.length;
                 for (i = 0; i < iMax; i++) {
                     track = text_tracks[i];
                     // note that default must be a boolean, so no quotes around the value
+                    requestBody.text_tracks[i] = {};
+                    requestBody.text_tracks[i].url = track.url;
+                    requestBody.text_tracks[i].srclang = track.srclang;
                     options.requestBody += '{"url":"' + track.url + '","srclang":"' + track.srclang + '","kind":"' + track.kind + '","label":"' + track.label + '","default":' + track.default + '}';
                     if (i < (iMax - 1)) {
                         options.requestBody += ',';
