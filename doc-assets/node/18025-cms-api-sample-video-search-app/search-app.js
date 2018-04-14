@@ -102,7 +102,8 @@ function cmsSearchModel() {
         // operations
         // function to write the request to the page
         self.logResponse = function(data) {
-            response.innerHTML += data + ",<br />";
+            data = JSON.parse(data);
+            response.textContent += JSON.stringify(data, null, '  ') + "\n\n";
         };
         // function to set up the request
         self.setupURL = (function() {
