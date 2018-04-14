@@ -110,7 +110,7 @@ var BCLS = (function(window, document) {
         options.requestBody.callbacks = ['http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php'];
         di_url.textContent = JSON.stringify(options.requestBody, null, '  ');
 
-
+console.log('di options', options);
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           responseEl.textContent = 'Your request has been submitted - your Job ID is ' + responseDecoded.id;
