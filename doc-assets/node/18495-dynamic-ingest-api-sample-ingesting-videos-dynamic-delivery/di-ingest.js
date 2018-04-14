@@ -16,7 +16,7 @@ var BCLS = (function(window, document) {
     profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
     di_url_display = document.getElementById('di_url'),
     di_submit_display = document.getElementById('di_Submit'),
-    diURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
+    diURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     response = document.getElementById('response'),
     videoData = [],
     totalVideos,
