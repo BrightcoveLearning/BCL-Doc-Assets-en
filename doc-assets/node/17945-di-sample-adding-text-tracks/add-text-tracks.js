@@ -1,182 +1,332 @@
-var BCLS = ( function (window, document) {
-    var // CMS API stuff
-        account_id_display = document.getElementById("account_id"),
-        account_id,
-        client_id_display = document.getElementById("client_id"),
-        client_id,
-        client_secret_display = document.getElementById("client_secret"),
-        client_secret,
-        ingest_profile_display = document.getElementById("ingest_profile_display"),
-        ingest_profile,
-        custom_profile_display = document.getElementById("custom_profile_display"),
-        cms_url_display = document.getElementById("cms_url"),
-        cmsURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        videoDataDisplay = document.getElementById("videoData"),
-        // Dynamic Ingest API stuff
-        profilesArray = ['high-resolution', 'balanced-nextgen-player', 'screencast-1280', 'mp4-only', 'smart-player-transition', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'Live - Premium HD', 'Live - HD', 'single-bitrate-standard', 'screencast'],
-        di_url_display = document.getElementById("di_url"),
-        di_submit_display = document.getElementById("di_Submit"),
-        diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        response = document.getElementById("response"),
-        videoData = [],
-        totalVideos,
-        videoNumber = 0,
-        currentJobs = 0,
-        t1,
-        t2,
-        totalIngested = 0,
-        defaults = {account_id: 57838016001,client_id: "37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1",client_secret: "gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ"},
-        callbacks = '["http://solutions.brightcove.com/bcls/di-api/di-callbacks.php"]';
+var BCLS = (function(window, document) {
+    var videoTableBody      = document.getElementById('videoTableBody'),
+        getPreviousVideos   = document.getElementById('getPreviousVideos'),
+        getNextVideos       = document.getElementById('getNextVideos'),
+        addCaptions         = document.getElementById('addCaptions'),
+        selectAll           = document.getElementById('selectAll'),
+        statusMessages      = document.getElementById('statusMessages'),
+        totalVideos         = 0,
+        totalVideoSets      = 0,
+        nextVideoSet        = 0,
+        diCallNumber        = 0,
+        totalDiCalls        = 0,
+        // placeholder for a collection of checkboxes we'll get later
+        checkBoxes,
+        // place holder for the array of selected video ids
+        selectedVideos      = [],
+        /**
+         * since i don't have captions per video, i'm just adding
+         * sample captions to all videos
+         * note i'm adding English and Spanish both in case you do
+         * multilanguage
+         */
+        text_tracks         = [{url:'https://solutions.brightcove.com/bcls/assets/vtt/sample.vtt', srclang:'en', kind:'captions', label:'English',default:'true'}, {url:'https://solutions.brightcove.com/bcls/assets/vtt/sample-es.vtt', srclang:'es', kind:'captions', label:'Español',default:'false'}],
+        /**
+         * in case this is for a multi-user environment
+         * with multiple accounts, I'm simulating
+         * user/account information obtained from some backend system
+         */
+        customer_id         = 'customer1',
+        brightcoveAccountId = '1485884786001';
 
-    /*************************
-    logging
-    *************************/
-    function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
-          console.log(context, message);
-        };
-    };
-
-    // is defined
-    function isDefined(x){
-        if(x === "" || x === null || x === undefined){
-            return false;
-        } else{
-            return true;
+    /**
+     * event listeners
+     */
+    // initial operations on page load
+    window.addEventListener('load', function() {
+        // get the video count and load the first set immediately
+        disableButton(getPreviousVideos);
+        createRequest('getVideoCount');
+        createRequest('getVideos');
+    });
+    // get next set of videos
+    getNextVideos.addEventListener('click', function() {
+        // get the next video set
+        statusMessages.textContent = '';
+        enableButton(getPreviousVideos);
+        nextVideoSet++;
+        if (nextVideoSet === (totalVideoSets - 1)) {
+            disableButton(getNextVideos);
         }
-    };
-    // set options for the CMS API request
-    function setCMSOptions() {
-        var options = {};
-        // truncate description if too long
-        videoData[videoNumber].description = videoData[videoNumber].description.substr(0, 120) + "...";
-        options.client_id = client_id;
-        options.client_secret = client_secret;
-        options.requestBody = '{"name":"' + videoData[videoNumber].name + '","description":"' + videoData[videoNumber].description + '","reference_id":"' + videoData[videoNumber].reference_id + '","tags":' + JSON.stringify(videoData[videoNumber].tags) + '}';
-        options.requestType = "POST";
-        options.url = cms_url_display.value;
-        bclslog("cmsoptions", options);
-        // now submit the request
-        submitRequest(options, cmsURL, "cms");
-    };
-    // set options for the Dynamic Ingest API request
-    function setDIOptions() {
-        var options = {},
-        custom_profile_display_value = custom_profile_display.value;
-        // get the ingest profile
-        if (isDefined(custom_profile_display_value)) {
-            ingest_profile = custom_profile_display_value;
-        } else {
-            ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
+        createRequest('getVideos');
+    });
+    // get previous set of videos
+    getPreviousVideos.addEventListener('click', function() {
+        // get the next video set
+        statusMessages.textContent = '';
+        enableButton(getNextVideos);
+        nextVideoSet--;
+        if (nextVideoSet === 0) {
+            disableButton(getPreviousVideos);
         }
-        options.client_id = client_id;
-        options.client_secret = client_secret;
-        options.requestBody = '{"master":{"url":"' + videoData[videoNumber].url +'"},"profile":"' + ingest_profile + '","callbacks":' + callbacks + '}';
-        bclslog("di request body ", options.requestBody);
-        options.requestType = "POST";
-        options.url = di_url_display.value;
-        bclslog("dioptions", options);
-        // now submit the request
-        submitRequest(options, diURL, "di");
-    };
-    // function to set the request
-    function logResponse(type, data) {
-        response.textContent += type + ": " + data + ",\n";
-    };
+        createRequest('getVideos');
+    });
+    // add captions to selected videos
+    addCaptions.addEventListener('click', function() {
+        // add captions to selected videos
+        getSelectedCheckboxes(checkBoxes, selectedVideos);
+        totalDiCalls = selectedVideos.length;
+        statusMessages.textContent = 'Adding captions...';
+        createRequest('addCaptions');
+    });
+    // select all videos in the current set
+    selectAll.addEventListener('change', function() {
+        if (selectAll.checked) {
+            selectAllCheckboxes(checkBoxes);
+        } else if (!selectAll.checked) {
+            deselectAllCheckboxes(checkBoxes);
+        }
+    });
 
-    // function to submit Request
-    function submitRequest(options, proxyURL, type) {
+    /**
+     * getSelectedCheckboxes returns an array of the values
+     * of checked checkboxes
+     * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+     * @param {Array} targetArray the array to store the values in
+     * @returns {Array} the target array
+     */
+    function getSelectedCheckboxes(checkboxCollection, targetArray) {
+        var i,
+            iMax = checkboxCollection.length;
+        for (i = 0; i < iMax; i += 1) {
+            if (checkboxCollection[i].checked) {
+                targetArray.push(checkboxCollection[i].value);
+            }
+        }
+    }
+
+    /**
+     * Enable a button
+     * @param {htmlElement} el the button
+     */
+    function enableButton(el) {
+        el.removeAttribute('disabled');
+        el.setAttribute('style', 'cursor:pointer;opacity:1;');
+    }
+
+    /**
+    * Disable a button
+    * @param {htmlElement} el the button
+    */
+    function disableButton(el) {
+        el.setAttribute('disabled', 'disabled');
+        el.setAttribute('style', 'cursor:not-allowed;opacity:.7;');
+    }
+
+    /**
+     * selects all checkboxes in a collection
+     * of checked checkboxes
+     * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+     */
+    function selectAllCheckboxes(checkboxCollection) {
+        var i,
+            iMax = checkboxCollection.length;
+        for (i = 0; i < iMax; i += 1) {
+            checkboxCollection[i].setAttribute('checked', 'checked');
+        }
+    }
+
+    /**
+     * deselects all checkboxes in a collection
+     * of checked checkboxes
+     * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+     */
+    function deselectAllCheckboxes(checkboxCollection) {
+        var i,
+            iMax = checkboxCollection.length;
+        for (i = 0; i < iMax; i += 1) {
+            checkboxCollection[i].removeAttribute('checked');
+        }
+    }
+
+    /**
+     * createRequest sets up requests, send them to makeRequest(), and handles responses
+     * @param  {string} type the request type
+     */
+    function createRequest(type) {
+        var options    = {},
+            cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + brightcoveAccountId,
+            diBaseURL  = 'https://ingest.api.brightcove.com/v1/accounts/' + brightcoveAccountId,
+            endpoint,
+            responseDecoded,
+            limit      = 20,
+            track,
+            i,
+            iMax;
+
+        options.customer_id = customer_id;
+        options.account_id  = brightcoveAccountId;
+        switch (type) {
+            case 'getVideoCount':
+                endpoint            = '/counts/videos';
+                options.url         = cmsBaseURL + endpoint;
+                options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    responseDecoded = JSON.parse(response);
+                    totalVideos     = parseInt(responseDecoded.count);
+                    totalVideoSets  = Math.ceil(totalVideos / limit);
+                });
+                break;
+            case 'getVideos':
+                endpoint            = '/videos?limit=' + limit + '&offset=' + (nextVideoSet * limit);
+                options.url         = cmsBaseURL + endpoint;
+                options.requestType = 'GET';
+                makeRequest(options, function(response) {
+                    var video,
+                        tr,
+                        td,
+                        br,
+                        input,
+                        img,
+                        txt,
+                        docFragment = document.createDocumentFragment();
+                    // parse the response
+                    responseDecoded = JSON.parse(response);
+                    // inject the table rows for the videos
+                    iMax = responseDecoded.length;
+                    for (i = 0; i < iMax; i++) {
+                        video = responseDecoded[i];
+                        if (video.id) {
+                            tr = document.createElement('tr');
+                            // checkbox cell
+                            td = document.createElement('td');
+                            input = document.createElement('input');
+                            input.setAttribute('type', 'checkbox');
+                            input.setAttribute('id', video.id);
+                            input.setAttribute('name', 'videoSelect');
+                            input.setAttribute('value', video.id);
+                            td.appendChild(input);
+                            tr.appendChild(td);
+                            // thumbnail cell
+                            if (video.images && video.images.thumbnail) {
+                                td = document.createElement('td');
+                                img = document.createElement('img');
+                                img.setAttribute('src', video.images.thumbnail.src);
+                                img.setAttribute('alt', video.name);
+                                td.appendChild(img);
+                                tr.appendChild(td);
+                            } else {
+                                td = document.createElement('td');
+                                txt = document.createTextNode('(no image)');
+                                td.appendChild(txt);
+                                tr.appendChild(td);
+                            }
+                            // add title cell
+                            td = document.createElement('td');
+                            txt = document.createTextNode(video.name);
+                            td.appendChild(txt);
+                            br = document.createElement('br');
+                            td.appendChild(br);
+                            txt = document.createTextNode(video.description);
+                            td.appendChild(txt);
+                            tr.appendChild(td);
+                            // append this row to the doc fragment
+                            docFragment.appendChild(tr);
+                        }
+                    }
+                    // clear the table body and append the doc fragment to the table body
+                    videoTableBody.innerHTML = '';
+                    videoTableBody.appendChild(docFragment);
+                    // get a reference to the checkbox collection
+                    checkBoxes = document.getElementsByName('videoSelect');
+                });
+                break;
+            case 'addCaptions':
+                options.proxyURL    = './retranscode-proxy.php';
+                endpoint            = '/videos/' + selectedVideos[diCallNumber] + '/ingest-requests';
+                options.url         = diBaseURL + endpoint;
+                options.requestType = 'POST';
+                options.requestBody = '{"text_tracks":[';
+                iMax = text_tracks.length;
+                for (i = 0; i < iMax; i++) {
+                    track = text_tracks[i];
+                    // note that default must be a boolean, so no quotes around the value
+                    options.requestBody += '{"url":"' + track.url + '","srclang":"' + track.srclang + '","kind":"' + track.kind + '","label":"' + track.label + '","default":' + track.default + '}';
+                    if (i < (iMax - 1)) {
+                        options.requestBody += ',';
+                    }
+                }
+                options.requestBody += ']}';
+                makeRequest(options, function(response) {
+                    responseDecoded = JSON.parse(response);
+                    diCallNumber++;
+                    if (diCallNumber < totalDiCalls) {
+                        createRequest('addCaptions');
+                    } else {
+                        statusMessages.textContent = 'Captions added to ' + totalDiCalls + ' videos';
+                        deselectAllCheckboxes(checkBoxes);
+                    }
+                });
+                break;
+            default:
+                // shouldn't be here
+                console.log('somehow got to default case');
+        }
+    }
+
+    /**
+     * send API request to the proxy
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.account_id the account id
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
+     */
+    function makeRequest(options, callback) {
         var httpRequest = new XMLHttpRequest(),
-            requestData,
-            responseData,
-            parsedData,
-            getResponse = function () {
+            response,
+            requestParams,
+            dataString,
+            proxyURL    = 'https://solutions.brightcove.com/bcls/add-captions/videos-proxy.php',
+            // response handler
+            getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                        logResponse(type, httpRequest.responseText);
-                        responseData = httpRequest.responseText;
-                        switch (type) {
-                            case "cms":
-                            if (responseData.indexOf("TIMEOUT") > 0) {
-                                // videoNumber++;
-                                t1 = setTimeout(setCMSOptions, 1000);
-                            } else {
-                                parsedData = JSON.parse(responseData);
-                                di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + parsedData.id + "/ingest-requests";
-                                setDIOptions();
+                        if (httpRequest.status === 200) {
+                            response = httpRequest.responseText;
+                            // some API requests return '{null}' for empty responses - breaks JSON.parse
+                            if (response === '{null}') {
+                                response = null;
                             }
-                            break;
-                            case "di":
-                            totalIngested++;
-                            logResponse("totalIngested", totalIngested);
-                            if (videoNumber < totalVideos - 1) {
-                                videoNumber++;
-                                currentJobs++;
-                                logResponse('Processing video number', videoNumber);
-                                logResponse('Current jobs: ', currentJobs);
-                                // if currentJobs is > 99, need to pause
-                                if (currentJobs > 99) {
-                                    // reset currentJobs
-                                    currentJobs = 0;
-                                    // wait 30 min before resuming
-                                    t2 = setTimeout(setCMSOptions, 1800000);
-                                } else {
-                                    // pause to avoid CMS API timeouts
-                                    t2 = setTimeout(setCMSOptions, 1000);
-                                }
-                            }
-                            break;
+                            // return the response
+                            callback(response);
+                        } else {
+                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
                         }
-                      } else {
-                        alert("There was a problem with the request. Request returned " + httpRequest.status);
-                      }
                     }
-                  }
-                  catch(e) {
+                } catch (e) {
                     alert('Caught Exception: ' + e);
-                  }
+                }
             };
-        // set up request data
-        requestData = "client_id=" + options.client_id + "&client_secret=" + options.client_secret + "&url=" + encodeURIComponent(options.url) + "&requestBody=" + encodeURIComponent(options.requestBody) + "&requestType=" + options.requestType;
+        /**
+         * set up request data
+         * the proxy used here takes the following params:
+         * options.url - the full API request (required)
+         * options.account_id - the account id
+         * options.requestType - the HTTP request type (default: GET)
+         * options.client_id - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
+         * options.client_secret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
+         * options.requestBody - request body for write requests (optional JSON string)
+         */
+        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&account_id=' + options.account_id + '&customer_id=' + options.customer_id;
+        // only add client id and secret if both were submitted
+        if (options.client_id && options.client_secret) {
+            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
+        }
+        // add request data if any
+        if (options.requestBody) {
+            requestParams += '&requestBody=' + encodeURIComponent(options.requestBody);
+        }
         // set response handler
         httpRequest.onreadystatechange = getResponse;
         // open the request
-        httpRequest.open("POST", proxyURL);
+        httpRequest.open('POST', proxyURL);
         // set headers
         httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         // open and send request
-        httpRequest.send(requestData);
-    };
-    di_submit_display.addEventListener("click", function () {
-        var i, now = new Date().valueOf();
-        videoData = JSON.parse(videoDataDisplay.value);
-        totalVideos = videoData.length;
-        // to insure uniqueness,
-        for (i = 0; i < totalVideos; i++) {
-            videoData[i].reference_id += "_" + now.toString();
-        }
-        // in case of stop/start, reset videoNumber to 0
-        videoNumber = 0;
-        // get account inputs
-        account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-        client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
-        client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
-        cms_url_display.value = "https://cms.api.brightcove.com/v1/accounts/" + account_id + "/videos";
-        // set CMS API options for first video
-        setCMSOptions();
-    });
-    // initialize
-    function init() {
-        var i,
-            iMax = profilesArray.length,
-            newOpt;
-        // add options for standard ingest profiles
-        for (i = 0; i < iMax; i++) {
-            newOpt = new Option(profilesArray[i]);
-            ingest_profile_display.add(newOpt);
-        }
-    };
-    // call init to set things up
-    init();
+        httpRequest.send(requestParams);
+    }
+
+
 })(window, document);
