@@ -252,7 +252,6 @@ var BCLS = (function(window, document) {
         requestBody.text_tracks = [];
         iMax = text_tracks.length;
         for (i = 0; i < iMax; i++) {
-          var obj = {};
           track = text_tracks[i];
           // note that default must be a boolean, so no quotes around the value
           requestBody.text_tracks[i] = {};
