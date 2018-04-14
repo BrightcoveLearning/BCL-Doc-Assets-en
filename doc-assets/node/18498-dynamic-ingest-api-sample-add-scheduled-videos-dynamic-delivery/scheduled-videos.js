@@ -67,6 +67,7 @@ var BCLS = (function(window, document) {
       cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account,
       diBaseURL = 'https://ingest.api.brightcove.com/v1/accounts/' + account,
       endpoint,
+      requestBody = {},
       responseDecoded;
 
 
@@ -83,13 +84,13 @@ var BCLS = (function(window, document) {
         endpoint = '/videos';
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'POST';
-        options.requestBody = {};
-        options.requestBody.name = name;
-        options.requestBody.schedule = {};
-        options.requestBody.schedule.starts_at = starts_at;
+        requestBody.name = name;
+        requestBody.schedule = {};
+        requestBody.schedule.starts_at = starts_at;
         if (isDefined(ends_at)) {
-          options.requestBody.schedule.ends_at = ends_at;
+          requestBody.schedule.ends_at = ends_at;
         }
+        options.requestBody = JSON.stringify(requestBody);
         cms_url.textContent = JSON.stringify(options.requestBody, null, '  ');
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
@@ -103,11 +104,11 @@ var BCLS = (function(window, document) {
         endpoint = '/videos/' + video_id + '/ingest-requests';
         options.url = diBaseURL + endpoint;
         options.requestType = 'POST';
-        options.requestBody = {};
-        options.requestBody.master = {};
-        options.requestBody.master.url = video;
-        options.requestBody.profile = profile;
-        options.requestBody.callbacks = ['http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php'];
+        requestBody.master = {};
+        requestBody.master.url = video;
+        requestBody.profile = profile;
+        requestBody.callbacks = ['http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php'];
+        options.requestBody = JSON.stringify(requestBody);
         di_url.textContent = JSON.stringify(options.requestBody, null, '  ');
 
 console.log('di options', options);
