@@ -246,12 +246,11 @@ var BCLS = (function(window, document) {
                     requestBody.text_tracks[i] = {};
                     requestBody.text_tracks[i].url = track.url;
                     requestBody.text_tracks[i].srclang = track.srclang;
-                    options.requestBody += '{"url":"' + track.url + '","srclang":"' + track.srclang + '","kind":"' + track.kind + '","label":"' + track.label + '","default":' + track.default + '}';
-                    if (i < (iMax - 1)) {
-                        options.requestBody += ',';
-                    }
+                    requestBody.text_tracks.kind = track.kind;
+                    requestBody.text_tracks.label = track.label;
+                    requestBody.text_tracks.default = track.default;
                 }
-                options.requestBody += ']}';
+                options.requestBody = JSON.stringify(requestBody);
                 makeRequest(options, function(response) {
                     responseDecoded = JSON.parse(response);
                     diCallNumber++;
@@ -274,64 +273,48 @@ var BCLS = (function(window, document) {
      * @param  {Object} options for the request
      * @param  {String} options.url the full API request URL
      * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
-     * @param  {String} options.account_id the account id
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
      * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
      * @param  {Function} [callback] callback function that will process the response
      */
     function makeRequest(options, callback) {
-        var httpRequest = new XMLHttpRequest(),
-            response,
-            requestParams,
-            dataString,
-            proxyURL    = 'https://solutions.brightcove.com/bcls/add-captions/videos-proxy.php',
-            // response handler
-            getResponse = function() {
-                try {
-                    if (httpRequest.readyState === 4) {
-                        if (httpRequest.status === 200) {
-                            response = httpRequest.responseText;
-                            // some API requests return '{null}' for empty responses - breaks JSON.parse
-                            if (response === '{null}') {
-                                response = null;
-                            }
-                            // return the response
-                            callback(response);
-                        } else {
-                            alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                        }
-                    }
-                } catch (e) {
-                    alert('Caught Exception: ' + e);
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        /**
-         * set up request data
-         * the proxy used here takes the following params:
-         * options.url - the full API request (required)
-         * options.account_id - the account id
-         * options.requestType - the HTTP request type (default: GET)
-         * options.client_id - the client id (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-         * options.client_secret - the client secret (defaults here to a Brightcove sample account value - this should always be stored on the server side if possible)
-         * options.requestBody - request body for write requests (optional JSON string)
-         */
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&account_id=' + options.account_id + '&customer_id=' + options.customer_id;
-        // only add client id and secret if both were submitted
-        if (options.client_id && options.client_secret) {
-            requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-        }
-        // add request data if any
-        if (options.requestBody) {
-            requestParams += '&requestBody=' + encodeURIComponent(options.requestBody);
-        }
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
-
 
 })(window, document);
