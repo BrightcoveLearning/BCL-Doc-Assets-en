@@ -141,11 +141,8 @@ var BCLS = (function(window, document) {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
-              // some API requests return '{null}' for empty responses - breaks JSON.parse
-              if (response === '{null}') {
-                response = null;
-              }
               // return the response
+console.log('response', response);
               callback(response);
             } else {
               alert('There was a problem with the request. Request returned ' + httpRequest.status);
@@ -155,6 +152,7 @@ var BCLS = (function(window, document) {
           alert('Caught Exception: ' + e);
         }
       };
+console.log('options', options);
     /**
      * set up request data
      * the proxy used here takes the following request body:
