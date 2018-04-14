@@ -168,6 +168,7 @@ var BCLS = (function(window, document) {
     // open and send request
     httpRequest.send(JSON.stringify(options));
   }
+
   // initialize
   function init() {
     var i,
