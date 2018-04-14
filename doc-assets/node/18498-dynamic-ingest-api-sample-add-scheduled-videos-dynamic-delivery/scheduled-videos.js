@@ -72,8 +72,10 @@ var BCLS = (function(window, document) {
 
     // set credentials
     options.account_id = account;
-    options.client_id = cid;
-    options.client_secret = csec;
+    if (isDefined(cid) && isDefined(csec)) {
+      options.client_id = cid;
+      options.client_secret = csec;
+    }
     options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
 
     switch (type) {
@@ -162,7 +164,6 @@ console.log('options', options);
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers if there is a set header line, remove it
     // open and send request
     httpRequest.send(JSON.stringify(options));
   }
