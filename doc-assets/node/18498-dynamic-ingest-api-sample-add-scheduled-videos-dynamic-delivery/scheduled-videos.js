@@ -91,7 +91,7 @@ var BCLS = (function(window, document) {
           requestBody.schedule.ends_at = ends_at;
         }
         options.requestBody = JSON.stringify(requestBody);
-        cms_url.textContent = JSON.stringify(options.requestBody, null, '  ');
+        cms_url.textContent = JSON.stringify(requestBody, null, '  ');
         makeRequest(options, function(response) {
           responseDecoded = JSON.parse(response);
           responseEl.textContent = JSON.stringify(responseDecoded, null, '  ');
@@ -109,7 +109,7 @@ var BCLS = (function(window, document) {
         requestBody.profile = profile;
         requestBody.callbacks = ['http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php'];
         options.requestBody = JSON.stringify(requestBody);
-        di_url.textContent = JSON.stringify(options.requestBody, null, '  ');
+        di_url.textContent = JSON.stringify(requestBody, null, '  ');
 
 console.log('di options', options);
         makeRequest(options, function(response) {
