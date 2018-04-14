@@ -246,21 +246,21 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'addCaptions':
-        options.proxyURL = './retranscode-proxy.php';
         endpoint = '/videos/' + selectedVideos[diCallNumber] + '/ingest-requests';
         options.url = diBaseURL + endpoint;
         options.requestType = 'POST';
-        requestBody.text_track = [];
+        requestBody.text_tracks = [];
         iMax = text_tracks.length;
         for (i = 0; i < iMax; i++) {
+          var obj = {};
           track = text_tracks[i];
           // note that default must be a boolean, so no quotes around the value
           requestBody.text_tracks[i] = {};
           requestBody.text_tracks[i].url = track.url;
           requestBody.text_tracks[i].srclang = track.srclang;
-          requestBody.text_tracks.kind = track.kind;
-          requestBody.text_tracks.label = track.label;
-          requestBody.text_tracks.default = track.default;
+          requestBody.text_tracks[i].kind = track.kind;
+          requestBody.text_tracks[i].label = track.label;
+          requestBody.text_tracks[i].default = track.default;
         }
         options.requestBody = JSON.stringify(requestBody);
         makeRequest(options, function(response) {
