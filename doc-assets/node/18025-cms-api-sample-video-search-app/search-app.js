@@ -210,6 +210,7 @@ function cmsSearchModel() {
         self.submitRequest = function(type, callback) {
             var httpRequest = new XMLHttpRequest(),
                 requestData,
+                options = {},
                 // handler for response from the proxy
                 getResponse = function() {
                     try {
@@ -241,6 +242,11 @@ function cmsSearchModel() {
                 return;
             }
             // set up request data
+            options.account_id = self.account_id();
+            options.client_id = self.client_id();
+            options.client_secret = self.client_secret();
+            options.url = self.apiURL.value;
+            options.requestType = 'GET';
             requestData = "client_id=" + self.client_id() + "&client_secret=" + self.client_secret() + "&url=" + encodeURIComponent(self.apiURL.value) + "&requestType=GET";
             // set response handler
             httpRequest.onreadystatechange = getResponse;
