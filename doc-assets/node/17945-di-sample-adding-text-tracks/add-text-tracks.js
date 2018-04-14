@@ -157,7 +157,7 @@ var BCLS = (function(window, document) {
 
         options.customer_id = customer_id;
         options.account_id  = brightcoveAccountId;
-        options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php'
+        options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
         switch (type) {
             case 'getVideoCount':
                 endpoint            = '/counts/videos';
