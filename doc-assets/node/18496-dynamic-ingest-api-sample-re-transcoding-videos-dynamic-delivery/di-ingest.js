@@ -12,9 +12,10 @@ var BCLS = (function(window, document) {
     videoDataDisplay = document.getElementById('videoData'),
     // Dynamic Ingest API stuff
     profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
+    di_url = "https://ingest.api.brightcove.com/v1/accounts/",
     di_url_display = document.getElementById('di_url'),
     di_submit_display = document.getElementById('di_Submit'),
-    diURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     response = document.getElementById('response'),
     videoData = [],
     totalVideos,
@@ -152,7 +153,7 @@ var BCLS = (function(window, document) {
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
     client_id = isDefined(client_id_display.value) ? client_id_display.value : null;
     client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : null;
-    di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
+    di_url_display.value = di_url + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
     // set CMS API options for first video
     setDIOptions();
   });
