@@ -6,7 +6,7 @@
 
 <p>If you archive a master when you ingest a video, you will be able to re-transcode the video later without ingesting it again. This topic explains your options for archiving your masters.</p>
 
-<aside class="bcls-aside bcls-aside--information">Note that if you store the digital master when you ingest the video, and then retranscode the video using a profile that does not archive masters, the digital master for the video will <strong>not</strong> be removed, and you will still be able to retranscode the video.</aside>
+<p>Note that if you store the digital master when you ingest the video, and then retranscode the video using a profile that does not archive masters, the digital master for the video will <strong>not</strong> be removed, and you will still be able to retranscode the video.</p>
 </section>
 
 <section class="bcls-section">
@@ -29,7 +29,9 @@
 <section class="bcls-section">
 <h2 id="originalRendition">Source or rendition</h2>
 
-<p>You can choose to use your video source file as the master, or you can select a high-quality rendition to use as the master.</p>
+<p>For Dynamic Delivery (including Context Aware Encoding) profiles, you can archive the video source file as a master (in other words, set <code>"rendition": "passthrough"</code> in the <code>digital_master</code> part of the profile).  The digital_master will <strong>not</strong> be distributed (pushed to the CDN as an available rendition) for these profiles, even if you set <code>"distribute": true</code>.</p>
+
+<p>For Legacy Ingest profiles, you can choose to use your video source file as the master, or you can select a high-quality rendition to use as the master.</p>
 
 <p>To use the video source file you ingest as the master, include the following code in your ingest profile:</p>
 
@@ -39,9 +41,7 @@
     "distribute": false
 }</code></pre>
 
-<p>To use a rendition for the master instead of your source file, set the <code>rendition</code> field of the <code>digital_master</code> object to the <strong>reference id</strong> for the rendition:</p>
-
-<aside class="bcls-aside bcls-aside--information">For Dynamic Delivery and CAE profiles, the only supported values for <code>rendition</code> are <code>passthrough</code> and <code>none</code>.</aside>
+<p>To use a rendition for the master instead of your source file (Legacy Ingest profiles only), set the <code>rendition</code> field of the <code>digital_master</code> object to the <strong>reference id</strong> for the rendition:</p>
 
 <pre class="line-numbers">
 <code class="language-json"><strong>"digital_master": {
@@ -55,11 +55,13 @@
         "media_type": "video",
         <strong>"reference_id": "av0"</strong>, ...</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">If you set <code>rendition</code> to <code>none</code>, no master will be archived.</aside>
+<p>If you set <code>rendition</code> to <code>none</code>, <strong>no master will be archived</strong>, and you will <strong>not</strong> be able to retranscode the video. You can, however, <a href="/node/17949#replaceVideo">replace</a> the video by ingesting it again.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="distribution">Distribution</h2>
+
+<p>Distribution will only work for <strong>Legacy Ingest profiles</strong>.</p>
 
 <p>You can choose whether the master is distributed or not. Distributed means that the master is pushed to the CDN and available as a playable rendition. If the master is not distributed, it is archived by Video Cloud but not pushed to the CDN.</p>
 
