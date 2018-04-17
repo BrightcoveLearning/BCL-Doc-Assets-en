@@ -24,9 +24,7 @@ var BCLS = (function(window, document) {
     t2,
     totalIngested = 0,
     defaults = {
-      account_id: 57838016001,
-      client_id: '37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1',
-      client_secret: 'gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ'
+      account_id: 57838016001
     },
     callbacks = ["http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php"];
 
