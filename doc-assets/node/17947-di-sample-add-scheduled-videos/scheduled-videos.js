@@ -67,13 +67,16 @@ var BCLS = ( function (window, document) {
             cmsBaseURL = 'https://cms.api.brightcove.com/v1/accounts/' + account,
             diBaseURL  = 'https://ingest.api.brightcove.com/v1/accounts/' + account,
             endpoint,
+            requestBody,
             responseDecoded;
 
-
+        options.account_id = account;
         // set credentials
-        options.client_id     = cid;
-        options.client_secret = csec;
-        options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy.php';
+        if (isDefined(cid) && isDefined(csec)) {
+          options.client_id     = cid;
+          options.client_secret = csec;
+        }
+        options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
 
         switch (type) {
             case 'createVideo':
