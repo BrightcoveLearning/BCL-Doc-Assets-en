@@ -47,8 +47,11 @@ var BCLS = (function(window, document) {
     } else {
       ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
     }
-    options.client_id = client_id;
-    options.client_secret = client_secret;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
+    options.account_id = account_id;
     reqBody.master = {};
     reqBody.master.url = videoData[videoNumber].url;
     reqBody.profile = ingest_profile;
@@ -57,7 +60,27 @@ var BCLS = (function(window, document) {
     options.requestType = 'POST';
     options.url = di_url_display.value;
     // now submit the request
-    submitRequest(options, diURL, 'di');
+    submitRequest(options, function(response) {
+      response = JSON.parse(response);
+      totalIngested++;
+      logResponse('totalIngested', totalIngested);
+      if (videoNumber < totalVideos - 1) {
+        videoNumber++;
+        currentJobs++;
+        logResponse('Processing video number', videoNumber);
+        logResponse('Current jobs: ', currentJobs);
+        // if currentJobs is > 99, need to pause
+        if (currentJobs > 99) {
+          // reset currentJobs
+          currentJobs = 0;
+          // wait 30 sec before resuming
+          t2 = setTimeout(setDIOptions, 180000);
+        } else {
+          // pause to avoid DI API timeouts
+          t2 = setTimeout(setDIOptions, 1000);
+        }
+      }
+    });
   }
   // function to set the request
   function logResponse(type, data) {
@@ -129,9 +152,9 @@ var BCLS = (function(window, document) {
     videoNumber = 0;
     // get account inputs
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-    client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
-    client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
-    di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
+    client_id = isDefined(client_id_display.value) ? client_id_display.value : null;
+    client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : null;
+    di_url_display.value = di_url + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
     // set DI API options for first video
     setDIOptions();
   });
