@@ -312,7 +312,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
 
         }
         sectionSubHeadingNode = document.createElement('h3');
-        content = document.createTextNode('Context Aware Encoding Profiles (Beta)');
+        content = document.createTextNode('Context Aware Encoding Profiles');
         sectionSubHeadingNode.appendChild(content);
         profileTableNodeCAE.setAttribute("id", "profileSummaryTableCAE");
         profileTableNodeCAE.setAttribute("class", "bcls-table");
