@@ -21,18 +21,18 @@
 <li><a href="#Google_Analytics">Google Analytics</a></li>
 </ul>
 <!--
-									<h3 class="bcls-question">Captions</h3>
-									<ul class="bcls-answer">
-									</ul>
-	--><!--
-									<h3 class="bcls-question">Concepts</h3>
-									<ul class="bcls-answer">
-									</ul>
-	--><!--
-									<h3 class="bcls-question">Content security (DRM)</h3>
-									<ul class="bcls-answer">
-									</ul>
-	-->
+							<h3 class="bcls-question">Captions</h3>
+							<ul class="bcls-answer">
+							</ul>
+--><!--
+							<h3 class="bcls-question">Concepts</h3>
+							<ul class="bcls-answer">
+							</ul>
+--><!--
+							<h3 class="bcls-question">Content security (DRM)</h3>
+							<ul class="bcls-answer">
+							</ul>
+-->
 
 <h5 class="bcls-question">Cue points</h5>
 
@@ -40,14 +40,15 @@
 <li><a href="#Programmatically_adding_cue_points">Programmatically adding cue points</a></li>
 </ul>
 <!--
-									<h3 class="bcls-question">Live streams</h3>
-									<ul class="bcls-answer">
-									</ul>
-	-->
+							<h3 class="bcls-question">Live streams</h3>
+							<ul class="bcls-answer">
+							</ul>
+-->
 
 <h5 class="bcls-question">Playback</h5>
 
 <ul class="bcls-answer">
+<li><a href="#Custom_controls_for_AirPlay">Custom controls for AirPlay</a></li>
 <li><a href="#Limiting_the_bitrate">Limiting the bitrate</a></li>
 <li><a href="#Looping_a_video">Looping a video</a></li>
 <li><a href="#Media_progress_values">Media progress values</a></li>
@@ -57,14 +58,14 @@
 <li><a href="#Setting_VR_Goggles_mode_for_360_videos">Setting VR Goggles mode for 360° videos</a></li>
 </ul>
 <!--
-									<h3 class="bcls-question">Player controls</h3>
-									<ul class="bcls-answer">
-									</ul>
-	--><!--
-									<h3 class="bcls-question">Playlists</h3>
-									<ul class="bcls-answer">
-									</ul>
-	-->
+							<h3 class="bcls-question">Player controls</h3>
+							<ul class="bcls-answer">
+							</ul>
+--><!--
+							<h3 class="bcls-question">Playlists</h3>
+							<ul class="bcls-answer">
+							</ul>
+-->
 
 <h5 class="bcls-question">Styling</h5>
 
@@ -74,23 +75,49 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="Custom_controls_for_AirPlay">Custom controls for AirPlay</h2>
+
+<p>If you use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/index.html#PlayerUI">Brightcove PlayerUI controls</a>, you are all set. AirPlay functionality works out-of-the-box, allowing users to stream video to high-definition displays with Apple TV.</p>
+<p>
+If you are using custom controls, you can follow these steps:
+</p>
+
+<ol class="bcls-tasklist__restart">
+<li>
+<p>Learn about AirPlay in <a href="">Apple's developer documentation for AirPlay</a>.</p>
+</li>
+<li>
+<p>Use the playback controller’s <code>allowsExternalPlayback</code> property to set the AVPlayer’s <code>allowsExternalPlayback</code> property:</p>
+
+<pre>
+<code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html#//api/name/allowsExternalPlayback">_playbackController.allowsExternalPlayback = YES;</a></code></pre>
+</li>
+<li>
+<p>Set up an AirPlay router control and handle its selection. For details, see <a href="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AirPlayGuide/Introduction/Introduction.html">Apple's AirPlay Overview</a> document.</p>
+</li>
+</ol>
+</section>
+
+<section class="bcls-section">
 <h2 id="Google_Analytics">Google Analytics</h2>
 
 <p>If you use the Brightcove player and the catalog class, video analytics will be automatically collected and will appear in your Video Cloud Analytics module. For additional metrics, you can add Google Analytics to your app.</p>
 
 <p>To integrate Google Analytics with your app, follow these steps:</p>
 
-<ol>
+<ol class="bcls-tasklist__restart">
 <li>
 <p>In your project Podfile, add the following dependency:</p>
 
-<pre class="line-numbers"><code class="language-swift"><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">pod 'Google/Analytics'</a></code></pre>
+<pre class="line-numbers">
+<code class="language-swift"><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">pod 'Google/Analytics'</a></code></pre>
 <!-- <p><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config"><code data-gist-id="e31445438f3a98f54a67" data-gist-hide-footer="true" data-gist-line="29" data-gist-hide-line-numbers="true"></code></a></p></li> --></li>
 <li>Get a Google configuration file and add it to your project.</li>
 <li>
 <p>Initialize analytics for your app:</p>
 
-<pre class="line-numbers" data-start="1"><code class="language-swift"><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">// AppDelegate.m
+<pre class="line-numbers" data-start="1">
+<code class="language-swift"><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">// AppDelegate.m
 #import &lt;Google/Analytics.h&gt;
 
 // Configure tracker from GoogleService-Info.plist.
@@ -106,7 +133,8 @@ gai.logger.logLevel = kGAILogLevelVerbose;  // remove before app release</a></co
 <li>
 <p>Send screen view to analytcis:</p>
 
-<pre class="line-numbers"><code class="language-swift"><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">// ViewController.m
+<pre class="line-numbers">
+<code class="language-swift"><a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">// ViewController.m
 #import &lt;Google/Analytics.h&gt;
 
 id&lt;GAITracker&gt; tracker = [[GAI sharedInstance] defaultTracker];
@@ -127,7 +155,8 @@ id&lt;GAITracker&gt; tracker = [[GAI sharedInstance] defaultTracker];
 
 <p>Use one of the following declarations:</p>
 
-<pre class="line-numbers"><code class="language-swift">// Swift
+<pre class="line-numbers">
+<code class="language-swift">// Swift
 var preferredPeakBitRate: Double
 
 // Obj-C
@@ -141,16 +170,17 @@ var preferredPeakBitRate: Double
 
 <p>This code assumes that you have set the delegate of the playbackController to the object with this method:</p>
 
-<pre class="line-numbers"><code class="language-swift">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent
+<pre class="line-numbers">
+<code class="language-swift">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent
 {
 if ([kBCOVPlaybackSessionLifecycleEventEnd isEqualToString:lifecycleEvent.eventType])
 {
-	[controller seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
-			if (finished)
-			{
-				 [controller play];
-			}
-	}];
+[controller seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
+	if (finished)
+	{
+		 [controller play];
+	}
+}];
 }
 }</code></pre>
 </section>
@@ -162,7 +192,8 @@ if ([kBCOVPlaybackSessionLifecycleEventEnd isEqualToString:lifecycleEvent.eventT
 
 <p>If these values are not important to you or interfere with your own progress tracking, they can be easily ignored with a conditional statement like this:</p>
 
-<pre class="line-numbers"><code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackControllerBasicDelegate.html#//api/name/playbackController:playbackSession:didProgressTo:">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didProgressTo:(NSTimeInterval)progress
+<pre class="line-numbers">
+<code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackControllerBasicDelegate.html#//api/name/playbackController:playbackSession:didProgressTo:">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didProgressTo:(NSTimeInterval)progress
 {
 if (progress &lt; 0.0 || progress &gt;= INFINITY)
 return;
@@ -178,14 +209,16 @@ return;
 
 <p>Here are the observed events that are fired through the end of a pre-roll ad, when the quartile offsets are absent:</p>
 
-<pre class="line-numbers"><code class="language-html">impression
+<pre class="line-numbers">
+<code class="language-html">impression
 companionCreativeView
 creativeView
 complete</code></pre>
 
 <p>Here are the observed events when valid offset values are used:</p>
 
-<pre class="line-numbers"><code class="language-html">companionCreativeView
+<pre class="line-numbers">
+<code class="language-html">companionCreativeView
 impression
 creativeView
 start
@@ -211,7 +244,8 @@ complete</code></pre>
 
 <p>This example returns 6 videos starting with the 10th video in the playlist:</p>
 
-<pre class="line-numbers"><code class="language-objectivec">NSDictionary *params =
+<pre class="line-numbers">
+<code class="language-objectivec">NSDictionary *params =
 @{
 @"limit": @6,
 @"offset": @9
@@ -230,75 +264,76 @@ completion:^(BCOVPlaylist *playlist, NSDictionary *jsonResponse, NSError *error)
 
 <p>You can also add cue points to your video programmatically. The code below adds quarterly interval cue points to the video returned from the Playback API:</p>
 
-<pre class="line-numbers"><code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk//Protocols/BCOVVideo.html#//api/name/update:">// programmatically add cue points to a video
+<pre class="line-numbers">
+<code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk//Protocols/BCOVVideo.html#//api/name/update:">// programmatically add cue points to a video
 - (void)requestContentFromPlaybackService
 {
 [self.service findVideoWithVideoID:kViewControllerVideoID parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
 
-  if (video)
-  {
+if (video)
+{
 <span class="bcls-highlight">// Get the video duration from the properties dictionary
- NSNumber *durationNumber = video.properties[@&quot;duration&quot;]; // milliseconds
- float duration = durationNumber.floatValue / 1000.0; // convert to seconds
+NSNumber *durationNumber = video.properties[@"duration"]; // milliseconds
+float duration = durationNumber.floatValue / 1000.0; // convert to seconds
 
-  video = [video update:^(id&lt;BCOVMutableVideo&gt; mutableVideo)
-  {
-	  // Add quarterly interval cue points of your own type
-	  BCOVCuePoint *cp1 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 250, 1000)];
-	  BCOVCuePoint *cp2 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 500, 1000)];
-	  BCOVCuePoint *cp3 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 750, 1000)];
-	  BCOVCuePoint *cp4 = [[BCOVCuePoint alloc] initWithType:@&quot;<span class="bcls-input">your cue point type</span>&quot; position:CMTimeMake(duration * 1000, 1000)];
-	  // Create new cue point collection using existing cue points and new cue points
-	  NSMutableArray *newCuePoints = [[NSMutableArray alloc] initWithArray:mutableVideo.cuePoints.array];
-	  [newCuePoints addObject:cp1];
-	  [newCuePoints addObject:cp2];
-	  [newCuePoints addObject:cp3];
-	  [newCuePoints addObject:cp4];
-	  mutableVideo.cuePoints = [[BCOVCuePointCollection alloc] initWithArray:newCuePoints];
-  }];</span>
+video = [video update:^(id&lt;BCOVMutableVideo&gt; mutableVideo)
+{
+// Add quarterly interval cue points of your own type
+BCOVCuePoint *cp1 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 250, 1000)];
+BCOVCuePoint *cp2 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 500, 1000)];
+BCOVCuePoint *cp3 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 750, 1000)];
+BCOVCuePoint *cp4 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 1000, 1000)];
+// Create new cue point collection using existing cue points and new cue points
+NSMutableArray *newCuePoints = [[NSMutableArray alloc] initWithArray:mutableVideo.cuePoints.array];
+[newCuePoints addObject:cp1];
+[newCuePoints addObject:cp2];
+[newCuePoints addObject:cp3];
+[newCuePoints addObject:cp4];
+mutableVideo.cuePoints = [[BCOVCuePointCollection alloc] initWithArray:newCuePoints];
+}];</span>
 
-  [self.playbackController setVideos:@[ video ]];
-  }
-  else
-  {
-    NSLog(@&quot;ViewController Debug - Error retrieving video: `%@`&quot;, error);
-  }
+[self.playbackController setVideos:@[ video ]];
+}
+else
+{
+NSLog(@"ViewController Debug - Error retrieving video: `%@`", error);
+}
 
 }];
 }</a></code></pre>
-<p>
-Note that the value of <code>your cue point type</code> can be any string value that you want, as long as you are not using any of the <a href="https://support.brightcove.com/node/18227#Integrations">iOS plugins</a>. For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVCuePoint.html#//api/name/type">BCOVCuePoint Protocol Reference</a> document.
-</p>
-<p>
-If you are using cue points with the IMA plugin, learn more about it in the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima#vast-and-vmapserver-side-ad-rules">VAST and VMAP/Server Side Ad Rules</a> section of the IMA Plugin for the Native SDK for iOS notes. The <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima/blob/06bb6f8dff6075340737017a966ad19b20bf6adb/ios/BrightcoveIMA.framework/Headers/BCOVIMAComponent.h#L39-L42">IMA sample app</a> shows you the value required for IMA ad cue points.
-</p>
+
+<p>Note that the value of <code>your cue point type</code> can be any string value that you want, as long as you are not using any of the <a href="https://support.brightcove.com/node/18227#Integrations">iOS plugins</a>. For details, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVCuePoint.html#//api/name/type">BCOVCuePoint Protocol Reference</a> document.</p>
+
+<p>If you are using cue points with the IMA plugin, learn more about it in the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima#vast-and-vmapserver-side-ad-rules">VAST and VMAP/Server Side Ad Rules</a> section of the IMA Plugin for the Native SDK for iOS notes. The <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima/blob/06bb6f8dff6075340737017a966ad19b20bf6adb/ios/BrightcoveIMA.framework/Headers/BCOVIMAComponent.h#L39-L42">IMA sample app</a> shows you the value required for IMA ad cue points.</p>
 
 <p>The code below listens for your cue points and displays a message:</p>
 
-<pre class="line-numbers"><code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVCuePoint.html">// listen for cue points and display them
+<pre class="line-numbers">
+<code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVCuePoint.html">// listen for cue points and display them
 -(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didPassCuePoints:(NSDictionary *)cuePointInfo {
-  BCOVCuePointCollection *cpc = cuePointInfo[@&quot;kBCOVPlaybackSessionEventKeyCuePoints&quot;];
-  for (BCOVCuePoint *cp in cpc) {
-	  if ([cp.type isEqualToString:@&quot;<span class="bcls-input">your cue point type</span>&quot;])
-    {
-      NSLog(@&quot;Found your cue point at %f&quot;, CMTimeGetSeconds(cp.position));
-	  }
-  }
+BCOVCuePointCollection *cpc = cuePointInfo[@"kBCOVPlaybackSessionEventKeyCuePoints"];
+for (BCOVCuePoint *cp in cpc) {
+if ([cp.type isEqualToString:@"<span class="bcls-input">your cue point type</span>"])
+{
+	NSLog(@"Found your cue point at %f", CMTimeGetSeconds(cp.position));
+}
+}
 }</a></code></pre>
 </section>
 <!-- <section class="bcls-section" id="Setting_the_buffer_size">
-									<h2>Setting the buffer size</h2>
-									<p>You may consider increasing the buffer length to eliminate buffering in the player if the delivery of the next segment is delayed from the CDN. But, you may not be able to do anything better manually that HLS already does.</p>
-									<p>The <code>AVPlayer</code> contains the <code>AVPlayerItem</code>, essentially the video being played, that contains the <code>loadedTimeRanges</code> property. This tells you how much is buffered.</p>
-									<p>HLS is designed to play right away and drop quality if it can't keep up. This way, it does not need to preload a buffer. If it can't keep up, it will load as much of the video as it can at the best quality to prevent interruption.</p>
-				</section> -->
+							<h2>Setting the buffer size</h2>
+							<p>You may consider increasing the buffer length to eliminate buffering in the player if the delivery of the next segment is delayed from the CDN. But, you may not be able to do anything better manually that HLS already does.</p>
+							<p>The <code>AVPlayer</code> contains the <code>AVPlayerItem</code>, essentially the video being played, that contains the <code>loadedTimeRanges</code> property. This tells you how much is buffered.</p>
+							<p>HLS is designed to play right away and drop quality if it can't keep up. This way, it does not need to preload a buffer. If it can't keep up, it will load as much of the video as it can at the best quality to prevent interruption.</p>
+		</section> -->
 
 <section class="bcls-section">
 <h2 id="Setting_the_playback_rate">Setting the playback rate</h2>
 
 <p>To control the playback rate, you can set the <code>rate</code> property on the <code>AVPlayer</code> class exposed on the session. For a <code>BCOVPlaybackSession</code>, you could do something like this:</p>
 
-<pre class="line-numbers"><code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackSession.html">session.player.rate = 2;</a></code></pre>
+<pre class="line-numbers">
+<code class="language-swift"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackSession.html">session.player.rate = 2;</a></code></pre>
 
 <p>Note the following:</p>
 
@@ -322,7 +357,8 @@ If you are using cue points with the IMA plugin, learn more about it in the <a h
 
 <p>When playing a 360° video, users can select the Video 360 button on the control bar to switch to VR Goggles mode. You may also want to do this programmatically, before playback starts. You can do this by updating the <code>BCOVPlaybackController</code> protocol's <code>viewProjection</code> property as follows:</p>
 
-<pre class="line-numbers"><code class="language-objectivec"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
+<pre class="line-numbers">
+<code class="language-objectivec"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Protocols/BCOVPlaybackController.html">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
 {
 BCOVVideo360ViewProjection *viewProjection = [self.playbackController.viewProjection copy];
 [viewProjection setProjectionStyle:BCOVVideo360ProjectionStyleVRGoggles];
@@ -346,7 +382,8 @@ BCOVVideo360ViewProjection *viewProjection = [self.playbackController.viewProjec
 
 <p>This example shows how to customize the accessibility values for the play button:</p>
 
-<pre class="line-numbers"><code class="language-objectivec"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPUIPlayerView.html#//api/name/controlsView">// After creating the BCOVPUIPlayerView, store it in a playerView property
+<pre class="line-numbers">
+<code class="language-objectivec"><a href="https://brightcovelearning.github.io/Brightcove-API-References/ios-sdk/Classes/BCOVPUIPlayerView.html#//api/name/controlsView">// After creating the BCOVPUIPlayerView, store it in a playerView property
 // Then set the accessibilityLabel and accessibilityHint properties
 self.playerView.controlsView.playbackButton.accessibilityLabel = @"Playback Button";
 self.playerView.controlsView.playbackButton.accessibilityHint = @"Play or pause the video";</a></code></pre>
@@ -363,7 +400,8 @@ self.playerView.controlsView.playbackButton.accessibilityHint = @"Play or pause 
 
 <p>You can change the player layer background with the following code:</p>
 
-<pre class="line-numbers"><code class="language-objectivec">(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
+<pre class="line-numbers">
+<code class="language-objectivec">(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
 {
 session.playerLayer.backgroundColor = UIColor.whiteColor.CGColor;
 }</code></pre>
