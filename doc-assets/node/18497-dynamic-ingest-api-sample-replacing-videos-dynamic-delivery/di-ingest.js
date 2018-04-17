@@ -60,7 +60,7 @@ var BCLS = (function(window, document) {
     options.requestType = 'POST';
     options.url = di_url_display.value;
     // now submit the request
-    submitRequest(options, function(response) {
+    makeRequest(options, function(response) {
       response = JSON.parse(response);
       totalIngested++;
       logResponse('totalIngested', totalIngested);
