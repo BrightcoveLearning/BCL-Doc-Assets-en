@@ -52,6 +52,7 @@ var BCLS = (function(window, document) {
       options.client_secret = client_secret;
     }
     options.account_id = account_id;
+    options.proxyURL = proxyURL;
     reqBody.master = {};
     reqBody.master.url = videoData[videoNumber].url;
     reqBody.profile = ingest_profile;
