@@ -10,7 +10,7 @@ var BCLS = ( function (window, document) {
         ingest_profile,
         custom_profile_display = document.getElementById("custom_profile_display"),
         cms_url_display = document.getElementById("cms_url"),
-        cmsURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+        cms_url = "https://cms.api.brightcove.com/v1/accounts/",
         videoDataDisplay = document.getElementById("videoData"),
         // Dynamic Ingest API stuff
         profilesArray = ['high-resolution', 'screencast-1280',  'balanced-high-definition', 'balanced-standard-definition', 'single-rendition', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
@@ -20,6 +20,7 @@ var BCLS = ( function (window, document) {
         di_url = 'https://ingest.api.brightcove.com/v1/accounts/',
         response = document.getElementById("response"),
         videoData = [],
+        requestBody = {},
         totalVideos,
         videoNumber = 0,
         currentJobs = 0,
@@ -39,16 +40,34 @@ var BCLS = ( function (window, document) {
     };
     // set options for the CMS API request
     function setCMSOptions() {
-        var options = {};
+        var options = {},
+        parsedData;
         // truncate description if too long
         videoData[videoNumber].description = videoData[videoNumber].description.substr(0, 120) + "...";
-        options.client_id = client_id;
-        options.client_secret = client_secret;
-        options.requestBody = '{"name":"' + videoData[videoNumber].name + '","description":"' + videoData[videoNumber].description + '","reference_id":"' + videoData[videoNumber].reference_id + '","tags":' + JSON.stringify(videoData[videoNumber].tags) + '}';
+        if (isDefined(client_id) && isDefined(client_secret)) {
+          options.client_id = client_id;
+          options.client_secret = client_secret;
+        }
+        options.account_id = account_id;
+        options.proxyURL = proxyURL;
+        requestBody.name = videoData[videoNumber].name;
+        requestBody.description = videoData[videoNumber].description;
+        requestBody.reference_id = videoData[videoNumber].reference_id;
+        requestBody.tags = videoData[videoNumber].tags;
+        options.requestBody = JSON.stringify(requestBody);
         options.requestType = "POST";
         options.url = cms_url_display.value;
         // now submit the request
-        submitRequest(options, cmsURL, "cms");
+        submitRequest(options, function(response) {
+          if (responseData.indexOf("TIMEOUT") > 0) {
+              // videoNumber++;
+              t1 = setTimeout(setCMSOptions, 1000);
+          } else {
+              parsedData = JSON.parse(responseData);
+              di_url_display.value = di_url + " + account_id + "/videos/" + parsedData.id + "/ingest-requests";
+              setDIOptions();
+          }
+        });
     };
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
@@ -147,15 +166,15 @@ var BCLS = ( function (window, document) {
         totalVideos = videoData.length;
         // to insure uniqueness,
         for (i = 0; i < totalVideos; i++) {
-            videoData[i].reference_id += "_" + now.toString();
+            videoData[i].reference_id += "_" + now.toISOString();
         }
         // in case of stop/start, reset videoNumber to 0
         videoNumber = 0;
         // get account inputs
         account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-        client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
-        client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
-        cms_url_display.value = "https://cms.api.brightcove.com/v1/accounts/" + account_id + "/videos";
+        client_id = isDefined(client_id_display.value) ? client_id_display.value : null;
+        client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : null;
+        cms_url_display.value = cms_url + account_id + "/videos";
         // set CMS API options for first video
         setCMSOptions();
     });
