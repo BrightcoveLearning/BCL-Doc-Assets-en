@@ -160,8 +160,8 @@ var BCLS = ( function (window, document) {
         videoNumber = 0;
         // get account inputs
         account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-        client_id = isDefined(client_id_display.value) ? client_id_display.value : defaults.client_id;
-        client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : defaults.client_secret;
+        client_id = isDefined(client_id_display.value) ? client_id_display.value : null;
+        client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : null;
         // set CMS API options for first video
         setDIOptions();
     });
