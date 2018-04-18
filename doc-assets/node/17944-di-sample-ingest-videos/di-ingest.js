@@ -37,7 +37,7 @@ var BCLS = ( function (window, document) {
         } else{
             return true;
         }
-    };
+    }
     // set options for the CMS API request
     function setCMSOptions() {
         var options = {},
@@ -64,11 +64,11 @@ var BCLS = ( function (window, document) {
               t1 = setTimeout(setCMSOptions, 1000);
           } else {
               parsedData = JSON.parse(responseData);
-              di_url_display.value = di_url + " + account_id + "/videos/" + parsedData.id + "/ingest-requests";
+              di_url_display.value = di_url  + account_id + "/videos/" + parsedData.id + "/ingest-requests";
               setDIOptions();
           }
         });
-    };
+    }
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
         var options = {},
@@ -90,7 +90,7 @@ var BCLS = ( function (window, document) {
         requestBody.master = {};
         requestBody.master.url = videoData[videoNumber].url;
         requestBody.profile = ingest_profile;
-        requestBody.callbacks = [],
+        requestBody.callbacks = [];
         requestBody.callbacks.push(callbacks);
         options.requestBody = JSON.stringify(requestBody);
         options.requestType = "POST";
@@ -117,11 +117,11 @@ var BCLS = ( function (window, document) {
               }
           }
         });
-    };
+    }
     // function to set the request
     function logResponse(type, data) {
         response.textContent += type + ": " + data + ",\n";
-    };
+    }
 
     // function to submit Request
     function makeRequest(options, proxyURL, type) {
@@ -186,7 +186,7 @@ var BCLS = ( function (window, document) {
         httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         // open and send request
         httpRequest.send(requestData);
-    };
+    }
     di_submit_display.addEventListener("click", function () {
         var i, now = new Date().valueOf();
         videoData = JSON.parse(videoDataDisplay.value);
@@ -215,7 +215,7 @@ var BCLS = ( function (window, document) {
             newOpt = new Option(profilesArray[i]);
             ingest_profile_display.add(newOpt);
         }
-    };
+    }
     // call init to set things up
     init();
 })(window, document);
