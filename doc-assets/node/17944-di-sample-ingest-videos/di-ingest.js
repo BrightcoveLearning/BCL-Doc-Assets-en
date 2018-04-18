@@ -13,7 +13,7 @@ var BCLS = (function(window, document) {
     cms_url = "https://cms.api.brightcove.com/v1/accounts/",
     videoDataDisplay = document.getElementById("videoData"),
     // Dynamic Ingest API stuff
-    profilesArray = ['high-resolution', 'screencast-1280', 'balanced-high-definition', 'balanced-standard-definition', 'single-rendition', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
+    profilesArray = ['high-resolution', 'screencast-1280', 'single-rendition', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
     di_url_display = document.getElementById("di_url"),
     di_submit_display = document.getElementById("di_Submit"),
     proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
