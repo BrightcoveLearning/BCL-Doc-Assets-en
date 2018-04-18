@@ -61,11 +61,11 @@ var BCLS = (function(window, document) {
     options.url = cms_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
-      response = JSON.parse(response);
       if (response.indexOf("TIMEOUT") > 0) {
         // videoNumber++;
         t1 = setTimeout(setCMSOptions, 1000);
       } else {
+        response = JSON.parse(response);
         di_url_display.value = di_url + account_id + "/videos/" + parsedData.id + "/ingest-requests";
         setDIOptions();
       }
