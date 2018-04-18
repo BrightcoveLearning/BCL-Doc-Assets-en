@@ -42,8 +42,7 @@ var BCLS = (function(window, document) {
   }
   // set options for the CMS API request
   function setCMSOptions() {
-    var options = {},
-      parsedData;
+    var options = {};
     // truncate description if too long
     videoData[videoNumber].description = videoData[videoNumber].description.substr(0, 120) + "...";
     if (isDefined(client_id) && isDefined(client_secret)) {
@@ -66,7 +65,7 @@ var BCLS = (function(window, document) {
         t1 = setTimeout(setCMSOptions, 1000);
       } else {
         response = JSON.parse(response);
-        di_url_display.value = di_url + account_id + "/videos/" + parsedData.id + "/ingest-requests";
+        di_url_display.value = di_url + account_id + "/videos/" + response.id + "/ingest-requests";
         setDIOptions();
       }
     });
@@ -75,7 +74,6 @@ var BCLS = (function(window, document) {
   function setDIOptions() {
     var options = {},
       requestBody = {},
-      parsedData,
       custom_profile_display_value = custom_profile_display.value;
     // get the ingest profile
     if (isDefined(custom_profile_display_value)) {
