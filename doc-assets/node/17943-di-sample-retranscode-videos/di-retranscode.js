@@ -56,8 +56,10 @@ var BCLS = ( function (window, document) {
             ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
         }
         options.account_id = account_id;
-        options.client_id = client_id;
-        options.client_secret = client_secret;
+        if (isDefined(client_id) && isDefined(client_secret)) {
+          options.client_id = client_id;
+          options.client_secret = client_secret;
+        }
         options.proxyURL = proxyURL;
         di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
         body.master = {};
@@ -93,7 +95,7 @@ var BCLS = ( function (window, document) {
           } else {
           logResponse("DI", "Request failed; retrying video number: " + videoData[videoNumber].id);
           videoNumber++;
-          // give proxy a second to rest
+          // give api a second to rest to prevent ingest queue overrun
           t2 = setTimeout(setDIOptions, 1000);
           }
         });
