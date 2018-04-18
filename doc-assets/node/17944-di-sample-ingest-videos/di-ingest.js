@@ -30,7 +30,7 @@ var BCLS = (function(window, document) {
     defaults = {
       account_id: '57838016001'
     },
-    callbacks = '["http://solutions.brightcove.com/bcls/di-api/di-callbacks.php"]';
+    callbacks = ["http://solutions.brightcove.com/bcls/di-api/di-callbacks.php"];
 
   // is defined
   function isDefined(x) {
@@ -90,14 +90,14 @@ var BCLS = (function(window, document) {
     requestBody.master = {};
     requestBody.master.url = videoData[videoNumber].url;
     requestBody.profile = ingest_profile;
-    requestBody.callbacks = [];
-    requestBody.callbacks.push(callbacks);
+    requestBody.callbacks = callbacks;
     options.requestBody = JSON.stringify(requestBody);
     options.requestType = "POST";
     options.url = di_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
       response = JSON.parse(response);
+console.log(response);
       totalIngested++;
       logResponse("totalIngested", totalIngested);
       if (videoNumber < totalVideos - 1) {
