@@ -189,7 +189,7 @@ var BCLS = (function(window, document) {
     httpRequest.send(requestData);
   }
   di_submit_display.addEventListener("click", function() {
-    var i, now = new Date().valueOf();
+    var i, now = new Date();
     videoData = JSON.parse(videoDataDisplay.value);
     totalVideos = videoData.length;
     // to insure uniqueness,
