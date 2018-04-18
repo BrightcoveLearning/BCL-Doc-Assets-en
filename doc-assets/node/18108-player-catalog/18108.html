@@ -1,0 +1,474 @@
+<article class="bcls-artice">
+<section class="bcls-section">
+<h2 id="Basic_syntax">Basic syntax</h2>
+
+<p>The basic syntax for using the catalog is as follows:</p>
+
+<ul>
+	<li>Methods: <code>playerName.catalog.methodName()</code></li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="getVideo">getVideo( ) method</h2>
+
+<p>The <code>getVideo(videoID,callback)</code> method makes a catalog request for the video with the specified id and invokes a callback when the request completes.</p>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><strong>videoID</strong>: A string containing the video ID or a reference ID prefixed with <strong>ref:</strong>.</li>
+	<li><strong>callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:
+	<ul>
+		<li>The first argument will contain an error object, if an an error occurs. This object contains details of the error. If no error occurs, this object is <strong>null</strong>.</li>
+		<li>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</li>
+	</ul>
+	</li>
+</ul>
+
+<p>An example use of the method follows:</p>
+
+<pre class="line-numbers">
+      <code class="language-html">  &lt;video id="myPlayerID"
+          data-account="1507807800001"
+          data-player="3bc25a34-086a-4060-8745-dd87af3d53b4"
+          data-embed="default"
+          data-video-id=""
+
+          class="video-js" controls&gt;&lt;/video&gt;
+        &lt;script src="//players.brightcove.net/1507807800001/3bc25a34-086a-4060-8745-dd87af3d53b4_default/index.min.js"&gt;&lt;/script&gt;
+
+
+        &lt;script type="text/javascript"&gt;
+          videojs("myPlayerID").ready(function() {
+            var myPlayer = this;
+            <span class="bcls-highlight">myPlayer.catalog.getVideo('2114345471001', function(error, video){</span>
+              //deal with error
+              myPlayer.catalog.load(video);
+            });
+          });
+        &lt;/script&gt;</code></pre>
+
+<h5>Returned value:</h5>
+
+<p>The catalog call itself returns an object of type <strong>XMLHttpRequest</strong>. An example of this object follows:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="request object" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/request-object.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="getPlaylist">getPlaylist( ) method</h2>
+
+<p>The <code>getPlaylist(playlistID,callback)</code> method makes a catalog request for the playlist with the specified id and invokes a callback when the request completes.</p>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><strong>playlistID</strong>: A string containing the playlist ID or a reference ID prefixed with <strong>ref:</strong>.</li>
+	<li><strong>callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:
+	<ul>
+		<li>The first argument will contain an error object, if an an error occurs. This object contains details of the error. If no error occurs, this object is <strong>null</strong>.</li>
+		<li>If no error occurs, the second argument is the requested playlist object. If an error occurs, this value contains the empty string.</li>
+	</ul>
+	</li>
+</ul>
+
+<p>An example use of the method follows:</p>
+
+<pre class="line-numbers" data-start="26">
+      <code class="language-html">  &lt;video id="myPlayerID"
+          data-account="1752604059001"
+          data-player="f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe"
+          data-embed="default"
+          class="video-js" controls&gt;&lt;/video&gt;
+
+        &lt;script src="//players.brightcove.net/1752604059001/f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe_default/index.min.js"&gt;&lt;/script&gt;
+
+        &lt;script type="text/javascript"&gt;
+          var myPlayer;
+
+          videojs('myPlayerID').ready(function(){
+            myPlayer = this;
+            <span class="bcls-highlight">myPlayer.catalog.getPlaylist('1754200320001', function(error, playlist){</span>
+              //deal with error
+              myPlayer.catalog.load(playlist);
+            })
+          });
+        &lt;/script&gt;</code></pre>
+
+<h5>Returned value:</h5>
+
+<p>The catalog call itself returns an <strong>array of objects</strong>. An example of this data structure follows:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="playlist object" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/playlist-vc-object.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="load">load( ) method</h2>
+
+<p>The <code>load(mediaobject)</code> method loads a video or playlist object into the player. This method will update the player's <code>mediainfo</code> property, and update the video source and poster. In most cases, you would call this method with the result of a call to <code>getVideo()</code> or <code>getPlaylist()</code>. If you'd like to be notified when <code>mediainfo</code> has been updated, listen for the <code>loadstart</code> event.</p>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><strong>mediaobject</strong>: A video or playlist object to load. This object should have the same format as the response object from a call to <code>getVideo()</code> or <code>getPlaylist()</code>method.</li>
+</ul>
+
+<pre class="line-numbers">
+      <code class="language-html">  &lt;video id="myPlayerID"
+          data-account="1507807800001"
+          data-player="3bc25a34-086a-4060-8745-dd87af3d53b4"
+          data-embed="default"
+          data-video-id=""
+
+          class="video-js" controls&gt;&lt;/video&gt;
+        &lt;script src="//players.brightcove.net/1507807800001/3bc25a34-086a-4060-8745-dd87af3d53b4_default/index.min.js"&gt;&lt;/script&gt;
+
+
+        &lt;script type="text/javascript"&gt;
+          videojs("myPlayerID").ready(function() {
+            var myPlayer = this;
+            myPlayer.catalog.getVideo('2114345471001', function(error, video) {
+              //deal with error
+              <span class="bcls-highlight">myPlayer.catalog.load(video);</span>
+            });
+          });
+        &lt;/script&gt;</code></pre>
+</section>
+
+<section id="autoFindAndLoadMedia_method" class="bcls-section">
+<h2>autoFindAndLoadMedia() method</h2>
+
+<p>The <code>autoFindAndLoadMedia(options)</code> method looks for the last-defined video or playlist ID, requests it from the API, and loads it into the player. This method defines the default behavior for the Brightcove Player.</p>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><code>options</code>: Any of the follow options are recognized:
+
+	<ul>
+		<li><code>adConfigId</code> (number): A numeric value for an ad configuration that will be passed along to the playback API. Will be called ad_config_id in the end.</li>
+		<li><code>embedHasPoster</code> (boolean): Whether or not the original embed had a poster.</li>
+		<li><code>embedHasSources</code> (boolean): Whether or not the original embed had sources.</li>
+		<li><code>embedHasTracks</code> (boolean): Whether or not the original embed had tracks.</li>
+		<li><code>videoId</code> (string): A video ID provided in the player configuration.</li>
+		<li><code>playlistId</code> (string): A playlist ID provided in the player configuration.</li>
+		<li><code>playlistVideoId</code> (string): A video ID, which will be the first video in a playlist to be loaded if it's present in the playlist. You would use this in conjunction with the <code>playlistId</code> option.</li>
+	</ul>
+	</li>
+</ul>
+
+<p>The following example gets the video object based on the <code>videoId</code> and loads it into the player:</p>
+
+<pre class="line-numbers">
+      <code class="language-javascript">&lt;script type="text/javascript"&gt;
+        videojs('myPlayerID').ready(function(){
+          var myPlayer = this,
+      		options = {};
+          options.videoId = '5141730843001';
+          myPlayer.catalog.autoFindAndLoadMedia(options);
+        });
+      &lt;/script&gt;</code></pre>
+
+<aside class="bcls-aside bcls-aside--tip">You can also load a video by reference id by using <code>options.videoId = 'ref:yourrefid';</code></aside>
+
+<p>The following example gets the playlist object based on <code>playlistId</code> and loads it into the player. It also gets the video object based on <code>playlistVideoId</code> and loads it as the first video to play in the playlist:</p>
+
+<pre class="line-numbers">
+      <code class="language-javascript">&lt;script type="text/javascript"&gt;
+        videojs('myPlayerID').ready(function(){
+          var myPlayer = this,
+              options = {};
+          options.playlistId = '4845949311001';
+          options.playlistVideoId = '4845831078001'
+          myPlayer.catalog.autoFindAndLoadMedia(options);
+        });
+      &lt;/script&gt;</code></pre>
+</section>
+
+<section id="transformVideoResponse_method" class="bcls-section">
+<h2>transformVideoResponse( ) method</h2>
+
+<p>The <code>transformVideoResponse(data)</code> method converts a raw video object from either the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html">CMS API</a> or the <a href="https://brightcovelearning.github.io/Brightcove-API-References/playback-api/v1/doc/index.html">Playback API</a> into a format compatible with the player and browsers. This includes duration times and https image compatibility. It also re-arranges the sources to ensure that the sources that are expected to provide the highest quality viewing experience on this platform are attempted first.</p>
+
+<aside class="bcls-aside bcls-aside--tip">When using the <code>catalog.getVideo()</code> or <code>catalog.getPlaylist()</code> methods, the <code>transformVideoResponse()</code> is called automatically, so that your returned data is in the appropriate format.</aside>
+
+<h5>Parameters:</h5>
+
+<ul>
+	<li><code>data</code>: A raw video object parsed from a catalog API response.</li>
+</ul>
+
+<p>An example use of the method follows:</p>
+
+<pre class="line-numbers">
+      <code class="language-html"> for (var i=0; i&lt;limitValue; i++) {
+        	mediaData.videos[i] = myPlayer.catalog.transformVideoResponse (mediaData.videos[i], myPlayer);
+        }</code></pre>
+
+<p>For the complete code sample, see the <a href="/node/18171">Playback API Paging</a> document.</p>
+
+<h5>Returned value:</h5>
+
+<p>An object that is more consistent with the player and browser environment.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Catalog_events">Catalog events</h2>
+
+<p>There are three catalogs events for which you can listen. They are:</p>
+
+<ul>
+	<li><code>catalog_request</code>: An event dispatched when a request to the catalog is made.</li>
+	<li><code>catalog_response</code>: An event dispatched when a response from the catalog is received. The JSON formatted response contains the raw data the Catalog API returned. See the <a href="#Response_information">Response information</a> content later in this section for more details.</li>
+	<li><code>catalog_request_error</code>: An event dispatched when there is an error when interacting with the catalog.</li>
+</ul>
+
+<p>The following shows the console log of the events from a request to, and response from, the catalog:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Request and response event objects" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/events.png" /></figure>
+
+<p>You see many standard properties of an event object. Of special interest for catalog events is <strong>type</strong> and <strong>url</strong>.</p>
+
+<p>The following shows a console log of a catalog request error object:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Error event object" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/error-event-object.png" /></figure>
+
+<h3 id="Response_information">Response information</h3>
+
+<p>The <code>catalog_response</code> event object contains a JSON formatted <code>response</code> property that contains the raw data from the Catalog API response. The following shows the console log of the response property:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Response event objects" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/parsed-response.png" /></figure>
+
+<p>To actually use data from the response property, you need to parse the raw JSON formatted string into an object. The following shows accessing the <code>name</code> property:</p>
+
+<pre class="line-numbers">
+      <code class="language-javascript">myPlayer.on('catalog_response',function(evt){
+        var api_response = JSON.parse(evt.response.response);
+        console.log('api_response.name',api_response.name);
+      });</code></pre>
+
+<p>Below is the JSON of an example <code>response</code> property:</p>
+
+<pre class="line-numbers">
+      <code class="language-json">{
+        "description": null,
+        "poster_sources": [{
+          "src": "http://brightcove.vo.llnwd.net/e1/pd/1507807800001/1507807800001_4784518686001_4784463159001-vs.jpg?pubId=1507807800001&amp;videoId=4784463159001"
+        }, {
+          "src": "https://brightcove.hs.llnwd.net/e1/pd/1507807800001/1507807800001_4784518686001_4784463159001-vs.jpg?pubId=1507807800001&amp;videoId=4784463159001"
+        }],
+        "tags": [],
+        "cue_points": [{
+          "id": "4784326156001",
+          "name": "First cue point",
+          "type": "CODE",
+          "time": 3.0,
+          "metadata": "5;This is the first CTA;http://www.brightcove.com",
+          "force_stop": false
+        }, {
+          "id": "4784326155001",
+          "name": "Second cue point",
+          "type": "CODE",
+          "time": 13.0,
+          "metadata": "3;This is the second CTA;http://docs.brightcove.com/",
+          "force_stop": false
+        }],
+        "custom_fields": {},
+        "account_id": "1507807800001",
+        "sources": [{
+          "avg_bitrate": 513000,
+          "width": 480,
+          "duration": 21098,
+          "size": 1357587,
+          "stream_name": "mp4:1507807800001/1507807800001_4784519206001_4784463159001.mp4&amp;1483545600000&amp;c190f37500f15373c964858e54b4e2a1",
+          "codec": "H264",
+          "asset_id": "4784519206001",
+          "container": "MP4",
+          "height": 270,
+          "app_name": "rtmp://brightcove.fcod.llnwd.net/a500/e1/uds/rtmp/ondemand"
+        }, {
+          "avg_bitrate": 513000,
+          "width": 480,
+          "src": "http://brightcove.vo.llnwd.net/e1/uds/pd/1507807800001/1507807800001_4784519206001_4784463159001.mp4?pubId=1507807800001&amp;videoId=4784463159001",
+          "size": 1357587,
+          "height": 270,
+          "duration": 21098,
+          "container": "MP4",
+          "codec": "H264",
+          "asset_id": "4784519206001"
+        }, {
+          "avg_bitrate": 1804000,
+          "width": 960,
+          "src": "https://brightcove.hs.llnwd.net/e1/uds/pd/1507807800001/1507807800001_4784519221001_4784463159001.mp4?pubId=1507807800001&amp;videoId=4784463159001",
+          "size": 4752091,
+          "height": 540,
+          "duration": 21098,
+          "container": "MP4",
+          "codec": "H264",
+          "asset_id": "4784519221001"
+        }, {
+          "type": "application/x-mpegURL",
+          "src": "http://c.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=4784463159001&amp;pubId=1507807800001",
+          "container": "M2TS",
+          "codec": "H264"
+        }, {
+          "type": "application/x-mpegURL",
+          "src": "https://secure.brightcove.com/services/mobile/streaming/index/master.m3u8?videoId=4784463159001&amp;pubId=1507807800001&amp;secure=true",
+          "container": "M2TS",
+          "codec": "H264"
+        }],
+        "name": "small-waterfall.mp4",
+        "reference_id": null,
+        "long_description": null,
+        "duration": 21098,
+        "economics": "AD_SUPPORTED",
+        "published_at": "2016-03-03T14:56:42.982Z",
+        "text_tracks": [],
+        "updated_at": "2016-05-03T18:53:43.573Z",
+        "thumbnail": "http://brightcove.vo.llnwd.net/e1/pd/1507807800001/1507807800001_4784518327001_4784463159001-th.jpg?pubId=1507807800001&amp;videoId=4784463159001",
+        "poster": "http://brightcove.vo.llnwd.net/e1/pd/1507807800001/1507807800001_4784518686001_4784463159001-vs.jpg?pubId=1507807800001&amp;videoId=4784463159001",
+        "link": null,
+        "id": "4784463159001",
+        "ad_keys": "key1%3Dvalue1%26key2%3Dvalue2",
+        "thumbnail_sources": [{
+          "src": "http://brightcove.vo.llnwd.net/e1/pd/1507807800001/1507807800001_4784518327001_4784463159001-th.jpg?pubId=1507807800001&amp;videoId=4784463159001"
+        }, {
+          "src": "https://brightcove.hs.llnwd.net/e1/pd/1507807800001/1507807800001_4784518327001_4784463159001-th.jpg?pubId=1507807800001&amp;videoId=4784463159001"
+        }],
+        "created_at": "2016-03-03T14:56:42.982Z"
+      }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="catalogerrors">Catalog errors</h2>
+
+<p>The catalog will throw errors when there are issues retrieving or initially playing the video or playlist. The errors are detailed below.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Catalog Error</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>VIDEO_CLOUD_ERR_ACCOUNT_NOT_FOUND</td>
+			<td>The player has been configured with an invalid Video Cloud account ID.</td>
+		</tr>
+		<tr>
+			<td>VIDEO_CLOUD_ERR_RESOURCE_NOT_FOUND</td>
+			<td>The default playlist ID is invalid.</td>
+		</tr>
+		<tr>
+			<td>VIDEO_CLOUD_ERR_VIDEO_NOT_FOUND</td>
+			<td>The default video is invalid.</td>
+		</tr>
+		<tr>
+			<td>VIDEO_CLOUD_ERR_NOT_PLAYABLE</td>
+			<td>The Video Cloud video is not playable.&nbsp;Frequent causes of this error include when a video ID is deactivated or when the scheduled availability has expired.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="catalog-error">Handle bc-catalog-error</h2>
+
+<p>It is possible that handling errors in the normal <code>ready()</code> section in the <code>script</code> block can cause issues. For instance, it can happen that the <code>bc-catalog-error</code> event could be dispatched before the player is ready, and if you listen for the error in the <code>ready()</code> section, you will not be able to handle the error. This issue can occur when using geo-filtering, a video is unpublished, a video is out of scheduling range, or in a different account. You may find that there is not a problem in your code, but the issue can browser dependent, so test thoroughly.</p>
+
+<p>If this is a possibility in your implementation, your error handling code should use the <code>one()</code> event handling method to listen for the <code>bc-catalog-error</code> in a separate code block rather than inside the <code>ready()</code> section.</p>
+
+<p>In the code sample below, you see a code block handle the <code>bc-catalog-error</code> (line 62), and also a code block for <code>ready</code> (line 71).</p>
+
+<pre class="line-numbers" data-start="50">
+      <code class="language-html">  &lt;video id="myPlayerID"
+          data-account="1486906377"
+          data-player="77a8e8b7-e8d1-4a3c-8a1b-292ba8233006"
+          data-embed="default"
+          data-video-id="4040394419001"
+          class="video-js" controls&gt;&lt;/video&gt;
+
+        &lt;p id="textTarget"&gt;&lt;/p&gt;
+
+        &lt;script src="//players.brightcove.net/1486906377/77a8e8b7-e8d1-4a3c-8a1b-292ba8233006_default/index.min.js"&gt;&lt;/script&gt;
+
+        &lt;script type="text/javascript"&gt;
+          <span class="bcls-highlight">videojs('myPlayerID').one('bc-catalog-error', function(){</span>
+            var myPlayer = this,
+              specificError;
+            if (myPlayer.catalog.error !== undefined) {
+              specificError = myPlayer.catalog.error.data[0];
+              console.log('bc-catalog-error:', specificError);
+            };
+          });
+
+          <span class="bcls-highlight">videojs("myPlayerID").ready(function(){</span>
+            var myPlayer = this;
+            console.log('in ready');
+          });
+        &lt;/script&gt;  </code></pre>
+
+<h3>Using custom error</h3>
+
+<p>The best solution to handle a specific <strong>bc-catalog-error</strong> maybe using a custom error. The following code shows a plugin that uses a custom error to notify a viewer of an inactive video why the video won't play:</p>
+
+<pre class="line-numbers">
+      <code class="language-javascript">videojs.registerPlugin('inactiveErrorCheck', function(options) {
+        var myPlayer = this;
+        myPlayer.one('bc-catalog-error', function(){
+          var specificError;
+          myPlayer.errors({
+            'errors': {
+              'inactive-error': {
+                'headline': options.inactiveMessage,
+                'dismiss': false
+              }
+            }
+          });
+          if (typeof(myPlayer.catalog.error) !== 'undefined') {
+            specificError = myPlayer.catalog.error.data[0];
+            if (specificError !== 'undefined' &amp; specificError.error_code == "VIDEO_NOT_PLAYABLE") {
+              myPlayer.error({code:'inactive-error'});
+            };
+          };
+        });
+      });</code></pre>
+
+<p>The code to use the plugin, utilizing an in-page embed player implementation, follows:</p>
+
+<pre class="line-numbers">
+      <code class="language-html">&lt;video id="myPlayerID" data-video-id="5350958927001"
+        data-account="1507807800001"
+        data-player="default"
+        data-embed="default"
+        data-application-id
+        class="video-js"
+        controls&gt;&lt;/video&gt;
+      &lt;script src="//players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
+
+      &lt;script type="text/javascript" src="inactive-error-check.js"&gt;&lt;/script&gt;
+
+      &lt;script type="text/javascript"&gt;
+        videojs('myPlayerID').ready(function(){
+          var myPlayer = this,
+          options =[];
+          options.inactiveMessage = "This is the message to display for inactive videos.";
+          myPlayer.inactiveErrorCheck(options);
+      });&lt;/script&gt;</code></pre>
+
+<p>If you are adding the plugin via the <strong>PLUGINS</strong> section in Studio, you would supply the correct URL where you stored your JavaScript code, then in the <strong>Name, Option (JSON)</strong> entry supply:</p>
+
+<ul>
+	<li>Name: <strong>inactiveErrorCheck</strong></li>
+	<li>Options: <strong>{ "inactiveMessage": "This is the message to display for inactive videos." }</strong></li>
+</ul>
+</section>
+
+<!-- <section class="bcls-section">
+<h2 id="requestlimit">Request limit</h2>
+
+<p>Although most likely not an issue for most use cases, requests made through the player catalog are limited to 10 per second.</p>
+</section> -->
+</article>
