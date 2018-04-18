@@ -58,7 +58,7 @@ var BCLS = ( function (window, document) {
         options.requestType = "POST";
         options.url = cms_url_display.value;
         // now submit the request
-        submitRequest(options, function(response) {
+        makeRequest(options, function(response) {
           if (responseData.indexOf("TIMEOUT") > 0) {
               // videoNumber++;
               t1 = setTimeout(setCMSOptions, 1000);
@@ -73,6 +73,7 @@ var BCLS = ( function (window, document) {
     function setDIOptions() {
         var options = {},
         requestBody = {},
+        parsedData,
         custom_profile_display_value = custom_profile_display.value;
         // get the ingest profile
         if (isDefined(custom_profile_display_value)) {
@@ -85,11 +86,37 @@ var BCLS = ( function (window, document) {
           options.client_secret = client_secret;
         }
         options.account_id = account_id;
-        options.requestBody = '{"master":{"url":"' + videoData[videoNumber].url +'"},"profile":"' + ingest_profile + '","callbacks":' + callbacks + '}';
+        options.proxyURL = proxyURL;
+        requestBody.master = {};
+        requestBody.master.url = videoData[videoNumber].url;
+        requestBody.profile = ingest_profile;
+        requestBody.callbacks = [],
+        requestBody.callbacks.push(callbacks);
+        options.requestBody = JSON.stringify(requestBody);
         options.requestType = "POST";
         options.url = di_url_display.value;
         // now submit the request
-        submitRequest(options, diURL, "di");
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(response);
+          totalIngested++;
+          logResponse("totalIngested", totalIngested);
+          if (videoNumber < totalVideos - 1) {
+              videoNumber++;
+              currentJobs++;
+              logResponse('Processing video number', videoNumber);
+              logResponse('Current jobs: ', currentJobs);
+              // if currentJobs is > 99, need to pause
+              if (currentJobs > 99) {
+                  // reset currentJobs
+                  currentJobs = 0;
+                  // wait 30 min before resuming
+                  t2 = setTimeout(setCMSOptions, 1800000);
+              } else {
+                  // pause to avoid CMS API timeouts
+                  t2 = setTimeout(setCMSOptions, 1000);
+              }
+          }
+        });
     };
     // function to set the request
     function logResponse(type, data) {
@@ -97,7 +124,7 @@ var BCLS = ( function (window, document) {
     };
 
     // function to submit Request
-    function submitRequest(options, proxyURL, type) {
+    function makeRequest(options, proxyURL, type) {
         var httpRequest = new XMLHttpRequest(),
             requestData,
             responseData,
