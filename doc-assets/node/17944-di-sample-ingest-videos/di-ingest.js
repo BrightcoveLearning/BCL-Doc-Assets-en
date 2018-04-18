@@ -16,7 +16,8 @@ var BCLS = ( function (window, document) {
         profilesArray = ['high-resolution', 'screencast-1280',  'balanced-high-definition', 'balanced-standard-definition', 'single-rendition', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
         di_url_display = document.getElementById("di_url"),
         di_submit_display = document.getElementById("di_Submit"),
-        diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+        di_url = 'https://ingest.api.brightcove.com/v1/accounts/',
         response = document.getElementById("response"),
         videoData = [],
         totalVideos,
@@ -25,17 +26,8 @@ var BCLS = ( function (window, document) {
         t1,
         t2,
         totalIngested = 0,
-        defaults = {account_id: 57838016001,client_id: "37cd3c5d-6f18-4702-bfb6-4fbc1cd095f1",client_secret: "gLSQANqe6A2PzJce_6xA4bTNu844up5-CSrC-jxNfur4EaOgWKRcqq_GTxKjhMpPSflMdNEhFdBmNe0qsTIZSQ"},
+        defaults = {account_id: '57838016001'},
         callbacks = '["http://solutions.brightcove.com/bcls/di-api/di-callbacks.php"]';
-
-    /*************************
-    logging
-    *************************/
-    function bclslog(context, message) {
-        if (window["console"] && console["log"]) {
-          console.log(context, message);
-        };
-    };
 
     // is defined
     function isDefined(x){
@@ -55,13 +47,13 @@ var BCLS = ( function (window, document) {
         options.requestBody = '{"name":"' + videoData[videoNumber].name + '","description":"' + videoData[videoNumber].description + '","reference_id":"' + videoData[videoNumber].reference_id + '","tags":' + JSON.stringify(videoData[videoNumber].tags) + '}';
         options.requestType = "POST";
         options.url = cms_url_display.value;
-        bclslog("cmsoptions", options);
         // now submit the request
         submitRequest(options, cmsURL, "cms");
     };
     // set options for the Dynamic Ingest API request
     function setDIOptions() {
         var options = {},
+        requestBody = {},
         custom_profile_display_value = custom_profile_display.value;
         // get the ingest profile
         if (isDefined(custom_profile_display_value)) {
@@ -69,13 +61,14 @@ var BCLS = ( function (window, document) {
         } else {
             ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
         }
-        options.client_id = client_id;
-        options.client_secret = client_secret;
+        if (isDefined(client_id) && isDefined(client_secret)) {
+          options.client_id = client_id;
+          options.client_secret = client_secret;
+        }
+        options.account_id = account_id;
         options.requestBody = '{"master":{"url":"' + videoData[videoNumber].url +'"},"profile":"' + ingest_profile + '","callbacks":' + callbacks + '}';
-        bclslog("di request body ", options.requestBody);
         options.requestType = "POST";
         options.url = di_url_display.value;
-        bclslog("dioptions", options);
         // now submit the request
         submitRequest(options, diURL, "di");
     };
