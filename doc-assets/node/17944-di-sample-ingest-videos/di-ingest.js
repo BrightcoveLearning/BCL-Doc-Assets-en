@@ -18,7 +18,7 @@ var BCLS = (function(window, document) {
     di_submit_display = document.getElementById("di_Submit"),
     proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
     di_url = 'https://ingest.api.brightcove.com/v1/accounts/',
-    response = document.getElementById("response"),
+    response_display = document.getElementById("response"),
     videoData = [],
     requestBody = {},
     totalVideos,
@@ -61,11 +61,11 @@ var BCLS = (function(window, document) {
     options.url = cms_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
-      if (responseData.indexOf("TIMEOUT") > 0) {
+      response = JSON.parse(response);
+      if (response.indexOf("TIMEOUT") > 0) {
         // videoNumber++;
         t1 = setTimeout(setCMSOptions, 1000);
       } else {
-        parsedData = JSON.parse(responseData);
         di_url_display.value = di_url + account_id + "/videos/" + parsedData.id + "/ingest-requests";
         setDIOptions();
       }
@@ -99,7 +99,7 @@ var BCLS = (function(window, document) {
     options.url = di_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
-      parsedData = JSON.parse(response);
+      response = JSON.parse(response);
       totalIngested++;
       logResponse("totalIngested", totalIngested);
       if (videoNumber < totalVideos - 1) {
@@ -122,7 +122,7 @@ var BCLS = (function(window, document) {
   }
   // function to set the request
   function logResponse(type, data) {
-    response.textContent += type + ": " + data + ",\n";
+    response_display.textContent += type + ": " + data + ",\n";
   }
 
   /**
