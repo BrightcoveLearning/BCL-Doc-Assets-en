@@ -57,6 +57,7 @@ var BCLS = ( function (window, document) {
     // set options for the Dynamic Ingest API request
     setDIOptions = function () {
         var options = {},
+          requestBody = {},
             custom_profile_display_value = custom_profile_display.value;
         // get the ingest profile
         if (isDefined(custom_profile_display_value)) {
@@ -64,8 +65,12 @@ var BCLS = ( function (window, document) {
         } else {
             ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
         }
-        options.client_id = client_id;
-        options.client_secret = client_secret;
+        if (isDefined(client_id) && isDefined(client_secret)) {
+          options.client_id = client_id;
+          options.client_secret = client_secret;
+        }
+        options.account_id = account_id;
+        options.proxyURL = proxyURL;
         di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
         options.requestBody = '{"master":{"url":"' + videoData[videoNumber].url +'"},"profile":"' + ingest_profile + '"}';
         options.requestType = "POST";
