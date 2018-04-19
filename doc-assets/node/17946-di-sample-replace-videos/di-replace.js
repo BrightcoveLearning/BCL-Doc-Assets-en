@@ -82,7 +82,7 @@ var BCLS = (function(window, document) {
     options.url = di_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
-      logResponse(type, httpRequest.responseText);
+      logResponse('response', httpRequest.responseText);
       response = httpRequest.responseText;
       if (response.indexOf("error_code") < 0) {
         // handle the response
