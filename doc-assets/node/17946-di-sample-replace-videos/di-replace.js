@@ -11,11 +11,11 @@ var BCLS = ( function (window, document) {
         custom_profile_display = document.getElementById("custom_profile_display"),
         videoDataDisplay = document.getElementById("videoData"),
         // Dynamic Ingest API stuff
-        profilesArray = ['high-resolution', 'balanced-nextgen-player', 'screencast-1280', 'mp4-only', 'smart-player-transition', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'Live - Premium HD', 'Live - HD', 'single-bitrate-standard', 'screencast'],
+        profilesArray = ['high-resolution', 'screencast-1280', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
         di_url_display = document.getElementById("di_url"),
         di_submit_display = document.getElementById("di_Submit"),
-        diURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-        response = document.getElementById("response"),
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+        response_display = document.getElementById("response"),
         videoData = [],
         totalVideos,
         videoNumber = 0,
@@ -76,7 +76,7 @@ var BCLS = ( function (window, document) {
     };
     // function to set the request
     logResponse = function (type, data) {
-        response.textContent += type + ": " + data + ",\n";
+        response_display.textContent += type + ": " + data + ",\n";
     };
 
     // function to submit Request
