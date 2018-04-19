@@ -72,12 +72,43 @@ var BCLS = ( function (window, document) {
         options.account_id = account_id;
         options.proxyURL = proxyURL;
         di_url_display.value = "https://ingest.api.brightcove.com/v1/accounts/" + account_id + "/videos/" + videoData[videoNumber].id + "/ingest-requests";
-        options.requestBody = '{"master":{"url":"' + videoData[videoNumber].url +'"},"profile":"' + ingest_profile + '"}';
+        requestBody.master = {};
+        requestBody.master.url = videoData[videoNumber].url;
+        requestBody.profile = ingest_profile;
+        options.requestBody = JSON.stringify(requestBody);
         options.requestType = "POST";
         options.url = di_url_display.value;
-        bclslog('options', options);
         // now submit the request
-        submitRequest(options, diURL, "di");
+        submitRequest(options, function(response) {
+          logResponse(type, httpRequest.responseText);
+          response = httpRequest.responseText;
+          if (response.indexOf("error_code") < 0) {
+              // handle the response
+          totalIngested++;
+          logResponse("totalIngested", totalIngested);
+          if (videoNumber < totalVideos - 1) {
+              videoNumber++;
+              currentJobs++;
+              logResponse('Processing video number', videoNumber);
+              logResponse('Current jobs: ', currentJobs);
+              // if currentJobs is > 99, need to pause
+              if (currentJobs > 99) {
+                  // reset currentJobs
+                  currentJobs = 0;
+                  // wait 30 min before resuming
+                  t2 = setTimeout(setDIOptions, 1800000);
+              } else {
+                  // pause to avoid CMS API timeouts
+                  t2 = setTimeout(setDIOptions, 1000);
+              }
+          }
+      } else {
+          logResponse("DI", "Request failed; retrying video number: " + videoData[videoNumber].id);
+          videoNumber++;
+          // give proxy a second to rest
+          t2 = setTimeout(setDIOptions, 1000);
+      }
+        });
     };
     // function to set the request
     logResponse = function (type, data) {
@@ -88,15 +119,15 @@ var BCLS = ( function (window, document) {
     submitRequest = function (options, proxyURL, type) {
         var httpRequest = new XMLHttpRequest(),
             requestData,
-            responseData,
+            response,
             parsedData,
             getResponse = function () {
                 try {
                     if (httpRequest.readyState === 4) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         logResponse(type, httpRequest.responseText);
-                        responseData = httpRequest.responseText;
-                        if (responseData.indexOf("error_code") < 0) {
+                        response = httpRequest.responseText;
+                        if (response.indexOf("error_code") < 0) {
                             // handle the response
                         totalIngested++;
                         logResponse("totalIngested", totalIngested);
