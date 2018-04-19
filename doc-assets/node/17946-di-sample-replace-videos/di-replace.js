@@ -82,9 +82,9 @@ var BCLS = (function(window, document) {
     options.url = di_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
-      logResponse('response', httpRequest.responseText);
-      response = httpRequest.responseText;
+      logResponse('response', response);
       if (response.indexOf("error_code") < 0) {
+        response = JSON.parse(response);
         // handle the response
         totalIngested++;
         logResponse("totalIngested", totalIngested);
