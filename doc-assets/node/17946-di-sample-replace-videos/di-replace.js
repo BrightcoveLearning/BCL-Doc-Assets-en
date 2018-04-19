@@ -30,7 +30,7 @@ var BCLS = (function(window, document) {
     bclslog,
     logResponse,
     doIngest,
-    submitRequest,
+    makeRequest,
     setDIOptions,
     init;
 
@@ -81,7 +81,7 @@ var BCLS = (function(window, document) {
     options.requestType = "POST";
     options.url = di_url_display.value;
     // now submit the request
-    submitRequest(options, function(response) {
+    makeRequest(options, function(response) {
       logResponse(type, httpRequest.responseText);
       response = httpRequest.responseText;
       if (response.indexOf("error_code") < 0) {
