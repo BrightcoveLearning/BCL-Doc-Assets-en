@@ -7,7 +7,7 @@ var BCLS = ( function (window, document) {
     apiResponse      = document.getElementById('apiResponse'),
     sendButton       = document.getElementById('sendButton'),
     reqBody          = document.getElementById('reqBody'),
-    proxyURL         = 'https://solutions.brightcove.com/bcls/bcls-proxy/live-proxy.php',
+    proxyURL         = 'https://solutions.brightcove.com/bcls/bcls-proxy/live-proxy-v2.php',
     regions          = ['us-west-2', 'us-east-1', 'ap-northeast-1', 'ap-southeast-1',  'ap-southeast-2', 'ap-south-1', 'eu-central-1', 'eu-west-1', 'sa-east-1'],
     apiKey           = '6aaXAZSSzRatgbVo7P12v7g13ovsuemr3y0CLGkR',
     body             = JSON.parse('{"live_stream":true,"region":"us-west-2","reconnect_time":20,"outputs":[{"label":"hls1080p","live_stream":true,"width":1920,"height":1080,"video_codec":"h264","h264_profile":"main","video_bitrate":2400,"segment_seconds":6,"keyframe_interval":60},{"label":"hls720p","live_stream":true,"width":1280,"height":720,"video_codec":"h264","h264_profile":"main","video_bitrate":1843,"segment_seconds":6,"keyframe_interval":60},{"label":"hls480p","live_stream":true,"width":640,"height":360,"video_codec":"h264","h264_profile":"main","video_bitrate":819,"segment_seconds":6,"keyframe_interval":60}]}'),
@@ -142,17 +142,13 @@ console.log('response', responseRaw);
         }
       };
 console.log('options', options);
-    // set up request data
-    requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType + '&apiKey=' + options.apiKey + '&requestBody=' + options.requestBody;
-
+    // send request
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     // open and send request
-    httpRequest.send(requestParams);
+    httpRequest.send(JSON.stringify(options));
   }
 
 })(window, document);
