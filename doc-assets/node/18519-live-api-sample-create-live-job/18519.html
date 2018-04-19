@@ -35,8 +35,8 @@
 <pre class="line-numbers">
 <code class="language-php">&lt;?php
 /**
- * bcls-proxy.php - proxy for Brightcove RESTful APIs
- * gets an access token, makes the request, and returns the response
+ * live-proxy.php - proxy for Brightcove Live APIs
+ * makes the request, and returns the response
  * Accessing:
  *    (note you should *always* access the proxy via HTTPS)
  *    Method: POST
@@ -44,7 +44,7 @@
  * @post {string} url - the URL for the API request
  * @post {string} [requestType=GET] - HTTP method for the request
  * @post {string} [requestBody] - JSON data to be sent with write requests
- * @post {string} apiKey - <span class=”notranslate”>Live API</span> key
+ * @post {string} apiKey - Live API key
  *
  * @returns {string} $response - JSON response received from the API
  */
@@ -57,34 +57,32 @@ header("X-Content-Type-Options: nosniff");
 header("X-XSS-Protection");
 
 
+$requestData = json_decode(file_get_contents('php://input'));
+
 // set up the API call
-// get data
-if ($_POST["requestBody"]) {
-    $data = json_decode($_POST["requestBody"]);
-}
 // get api key
-$apikey = $_POST["apiKey"];
+$apikey = $requestData-&gt;apiKey;
 // get request type or default to GET
-if ($_POST["requestType"]) {
-    $method = $_POST["requestType"];
+if ($requestData-&gt;requestType) {
+    $method = $requestData-&gt;requestType;
 } else {
     $method = "GET";
 }
-// security checks
+// more security checks
 $needle = '.io';
-$endapi = strpos($_POST["url"], $needle) + 3;
+$endapi = strpos($requestData-&gt;url, $needle) + 3;
 
-$nextChar = substr($_POST['url'], $endapi, 1);
+$nextChar = substr($requestData-&gt;url, $endapi, 1);
 
-if (strpos($_POST["url"], 'api.bcovlive.io') == false) {
-    exit('{"ERROR":"Only requests to Brightcove <span class=”notranslate”>Live API</span>s are accepted by this proxy"}');
-} else if ($nextChar !== '/' &amp;&amp; $nextChar !== '?') {
+if (strpos($requestData-&gt;url, 'api.bcovlive.io') == false) {
+    exit('{"ERROR":"Only requests to Brightcove Live APIs are accepted by this proxy"}');
+} else if ($nextChar !== '/' && $nextChar !== '?') {
     exit('{"ERROR": "There was a problem with your API request - please check the URL"}');
 }
 // get the URL and authorization info from the form data
-$request = $_POST["url"];
+$request = $requestData-&gt;url;
 //send the http request
-if ($_POST["requestBody"]) {
+if ($requestData-&gt;requestBody) {
   $ch = curl_init($request);
   curl_setopt_array($ch, array(
     CURLOPT_CUSTOMREQUEST  =&gt; $method,
@@ -94,7 +92,7 @@ if ($_POST["requestBody"]) {
       'Content-type: application/json',
       "X-API-KEY: {$apikey}",
     ),
-    CURLOPT_POSTFIELDS =&gt; json_encode($data)
+    CURLOPT_POSTFIELDS =&gt; $requestData-&gt;requestBody
   ));
   $response = curl_exec($ch);
   curl_close($ch);
