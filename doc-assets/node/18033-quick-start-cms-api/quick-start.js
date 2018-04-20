@@ -101,6 +101,7 @@ var BCLS = (function(window, document) {
                   for (i = 0; i < iMax; i++) {
                     playlist_videos.push(parsedData[i].id);
                   }
+                  enableButtons();
                 });
                 break;
             case 'get5more':
@@ -118,6 +119,7 @@ var BCLS = (function(window, document) {
                   for (i = 0; i < iMax; i++) {
                     playlist_videos.push(parsedData[i].id);
                   }
+                  enableButtons();
                 });
                 break;
             case 'sort':
@@ -129,6 +131,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'get1video':
@@ -140,6 +143,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'sources':
@@ -151,6 +155,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'search':
@@ -162,6 +167,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'searchCount':
@@ -173,6 +179,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'createVideo':
@@ -188,6 +195,7 @@ var BCLS = (function(window, document) {
                   displayResponse(response);
                   parsedData = JSON.parse(response);
                   newVideo_id = parsedData.id;
+                  enableButtons();
                 });
                 break;
             case 'updateVideo':
@@ -202,6 +210,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'addRendition':
@@ -222,6 +231,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'addPoster':
@@ -235,6 +245,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'addThumbnail':
@@ -248,6 +259,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'get3playlists':
@@ -259,6 +271,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'get1playlist':
@@ -270,6 +283,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'getPlaylistVideoCount':
@@ -281,6 +295,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'getPlaylistVideos':
@@ -292,6 +307,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'createPlaylist':
@@ -308,6 +324,7 @@ var BCLS = (function(window, document) {
                 makeRequest(options, function(response) {
                   displayResponse(response);
                   newPlaylist_id = parsedData.id;
+                  enableButtons();
                 });
                 break;
             case 'updatePlaylist':
@@ -322,6 +339,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'getFolders':
@@ -333,6 +351,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'getFolderVideos':
@@ -344,6 +363,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  enableButtons();
                 });
                 break;
             case 'addVideoToFolder':
@@ -355,6 +375,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   responseData.textContent = 'This request returns 204 No Content';
+                  enableButtons();
                 });
                 break;
             case 'removeVideoFromFolder':
@@ -366,6 +387,7 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   responseData.textContent = 'This request returns 204 No Content';
+                  enableButtons();
                 });
                 break;
         }
