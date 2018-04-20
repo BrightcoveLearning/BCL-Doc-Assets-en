@@ -236,6 +236,19 @@ var BCLS = (function(window, document) {
                   displayResponse(response);
                 });
                 break;
+            case 'addThumbnail':
+                endPoint = '/videos/' + newVideo_id + '/assets/thumbnail';
+                options.url = baseURL + endPoint;
+                options.requestType = 'POST';
+                requestBody.remote_url = 'https://learning-services-media.brightcove.com/images/great-blue-heron-thumbnail.png';
+                options.requestBody = JSON.stringify(requestBody);
+                apiRequest.textContent = options.url;
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
+                apiMethod.textContent = options.requestType;
+                makeRequest(options, function(response) {
+                  displayResponse(response);
+                });
+                break;
             case 'get3playlists':
                 endPoint = '/playlists?limit=3';
                 options.url = baseURL + endPoint;
