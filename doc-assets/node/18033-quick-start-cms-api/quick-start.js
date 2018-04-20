@@ -204,7 +204,7 @@ var BCLS = (function(window, document) {
                 });
                 break;
             case 'addRendition':
-                endPoint = '/videos/' + newVideo_id;
+                endPoint = '/videos/' + newVideo_id + '/assets/renditions';
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
                 options.requestBody = {name:'Updated Video from CMS API Quick Start',description:'This is only a test',tags:['test','quick_start']};
