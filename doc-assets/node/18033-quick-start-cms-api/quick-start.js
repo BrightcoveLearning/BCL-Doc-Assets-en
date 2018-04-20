@@ -257,7 +257,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'get1playlist':
@@ -268,7 +268,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'getPlaylistVideoCount':
@@ -279,7 +279,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'getPlaylistVideos':
@@ -290,19 +290,22 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'createPlaylist':
                 endPoint = '/playlists';
                 options.url = baseURL + endPoint;
                 options.requestType = 'POST';
+                requestBody.name = 'New Manual Playlist from CMS API Quick Start ' + nowISO;
+                requestBody.type = 'EXPLICIT';
                 options.requestBody = {name:'New Playlist from CMS API Quick Start',type:'ALPHABETICAL',search:'tags:sealife'};
                 apiRequest.textContent = options.url;
                 apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
+                  newPlaylist_id = parsedData.id;
                 });
                 break;
             case 'updatePlaylist':
