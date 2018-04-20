@@ -26,6 +26,7 @@ var BCLS = (function(window, document) {
     getPlaylistVideos       = document.getElementById('getPlaylistVideos'),
     createPlaylist          = document.getElementById('createPlaylist'),
     updatePlaylist          = document.getElementById('updatePlaylist'),
+    addVideos               = document.getElementById('updatePlaylist'),
     getFolders              = document.getElementById('getFolders'),
     getFolderVideos         = document.getElementById('getFolderVideos'),
     addVideoToFolder        = document.getElementById('addVideoToFolder'),
@@ -299,9 +300,10 @@ var BCLS = (function(window, document) {
                 options.requestType = 'POST';
                 requestBody.name = 'New Manual Playlist from CMS API Quick Start ' + nowISO;
                 requestBody.type = 'EXPLICIT';
-                options.requestBody = {name:'New Playlist from CMS API Quick Start',type:'ALPHABETICAL',search:'tags:sealife'};
+                requestBody.name = 'New Playlist from CMS API Quick Start' + nowISO;
+                options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
-                apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
@@ -312,12 +314,14 @@ var BCLS = (function(window, document) {
                 endPoint = '/playlists/' + newPlaylist_id;
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
-                options.requestBody = {name:'Updated Playlist from CMS API Quick Start',type:'ACTIVATED_NEWEST_TO_OLDEST',search:'tags:sealife'};
+                requestBody.name = 'Updated Playlist from CMS API Quick Start' + nowISO;
+                requestBody.video_ids = playlist_videos;
+                options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
-                apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'getFolders':
