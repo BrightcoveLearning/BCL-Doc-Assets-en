@@ -140,7 +140,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'searchCount':
@@ -151,7 +151,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'createVideo':
@@ -163,7 +163,9 @@ var BCLS = (function(window, document) {
                 apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
+                  parsedData = JSON.parse(response);
+                  newVideo_id = parsedData.id;
                 });
                 break;
             case 'updateVideo':
@@ -276,7 +278,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  responseData.textContent = 'This request returns 204 No Content';
                 });
                 break;
             case 'removeVideoFromFolder':
@@ -287,7 +289,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  responseData.textContent = 'This request returns 204 No Content';
                 });
                 break;
         }
