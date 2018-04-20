@@ -34,7 +34,8 @@ var BCLS = (function(window, document) {
     apiData                 = document.getElementById('apiData'),
     apiMethod               = document.getElementById('apiMethod'),
     generatedContent        = document.getElementById('generatedContent'),
-    responseData            = document.getElementById('responseData');
+    responseData            = document.getElementById('responseData'),
+    nowISO                  = new Date().toISOString();
 
     /**
      * disables all buttons so user can't submit new request until current one finishes
@@ -177,7 +178,7 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos';
                 options.url = baseURL + endPoint;
                 options.requestType = 'POST';
-                requestBody.name = 'Great Blue Heron - from CMS API Quick Start';
+                requestBody.name = 'Great Blue Heron - from CMS API Quick Start - ' + nowISO;
                 options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
                 apiData.textContent = JSON.stringify(requestBody, null, '  ');
@@ -192,12 +193,14 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos/' + newVideo_id;
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
-                options.requestBody = {name:'Updated Video from CMS API Quick Start',description:'This is only a test',tags:['test','quick_start']};
+                requestBody.description = 'This video was updated ' + nowISO;
+                requestBody.tags = ['test','quick_start'];
+                options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
-                apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'addRendition':
