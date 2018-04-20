@@ -6,6 +6,7 @@ var BCLS = (function(window, document) {
     playlist_id             = '4492151631001',
     newPlaylist_id          = '730486831001',
     folder_id               = '560039e5e4b0e69e4b01cacd',
+    playlist_videos         = [],
     allButtons              = document.getElementsByTagName('button'),
     get5videos              = document.getElementById('get5videos'),
     get5more                = document.getElementById('get5more'),
@@ -75,11 +76,13 @@ var BCLS = (function(window, document) {
         var endPoint = '',
             options = {},
             requestBody = {},
-            parsedData;
+            parsedData,
+            i,
+            iMax;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         options.account_id = '57838016001';
-        options.proxyURL = proxyURL
+        options.proxyURL = proxyURL;
         switch (id) {
             case 'get5videos':
                 endPoint = '/videos?limit=5';
@@ -90,6 +93,12 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  parsedData = JSON.parse(response);
+                  // add ids to array to add to playlist later
+                  iMax = parsedData.length;
+                  for (i = 0; i < iMax; i++) {
+                    playlist_videos.push(parsedData[i].id);
+                  }
                 });
                 break;
             case 'get5more':
@@ -101,6 +110,12 @@ var BCLS = (function(window, document) {
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  parsedData = JSON.parse(response);
+                  // add ids to array to add to playlist later
+                  iMax = parsedData.length;
+                  for (i = 0; i < iMax; i++) {
+                    playlist_videos.push(parsedData[i].id);
+                  }
                 });
                 break;
             case 'sort':
