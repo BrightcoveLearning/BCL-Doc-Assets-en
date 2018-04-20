@@ -1,6 +1,6 @@
 var BCLS = (function(window, document) {
   var baseURL                 = 'https://cms.api.brightcove.com/v1/accounts/57838016001',
-    proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     video_id                = '5191499941001',
     newVideo_id             = '5191509290001',
     playlist_id             = '4492151631001',
@@ -55,14 +55,27 @@ var BCLS = (function(window, document) {
     }
 
     /**
+     * display the api response
+     * @param  {String} response API raw response
+     */
+    function displayResponse(response) {
+      var parsedData = JSON.parse(response);
+      responseData.textContent = JSON.stringify(parsedData, null, '  ');
+      return;
+    }
+
+    /**
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
      */
     function setoptions(id) {
         var endPoint = '',
-            options = {};
+            options = {},
+            parsedData;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        options.account_id = '57838016001';
+        options.proxyURL = proxyURL
         switch (id) {
             case 'get5videos':
                 endPoint = '/videos?limit=5';
@@ -72,6 +85,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
+                  parsedData = JSON.parse(response);
 
                 });
                 break;
@@ -274,7 +288,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-                  
+
                 });
                 break;
         }
