@@ -207,12 +207,40 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos/' + newVideo_id + '/assets/renditions';
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
-                options.requestBody = {name:'Updated Video from CMS API Quick Start',description:'This is only a test',tags:['test','quick_start']};
+                requestBody.progressive_download = true;
+                requestBody.remote_url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
+                requestBody.video_duration = 31000;
+                requestBody.size = 90990884;
+                requestBody.frame_height = 1080;
+                requestBody.frame_width = 1920;
+                requestBody.video_codec = 'h264';
+                requestBody.video_container = 'MP4';
+                options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
-                apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
+                });
+                break;
+            case 'addPoster':
+                endPoint = '/videos/' + newVideo_id + '/assets/renditions';
+                options.url = baseURL + endPoint;
+                options.requestType = 'PATCH';
+                requestBody.progressive_download = true;
+                requestBody.remote_url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
+                requestBody.video_duration = 31000;
+                requestBody.size = 90990884;
+                requestBody.frame_height = 1080;
+                requestBody.frame_width = 1920;
+                requestBody.video_codec = 'h264';
+                requestBody.video_container = 'MP4';
+                options.requestBody = JSON.stringify(requestBody);
+                apiRequest.textContent = options.url;
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
+                apiMethod.textContent = options.requestType;
+                makeRequest(options, function(response) {
+                  displayResponse(response);
                 });
                 break;
             case 'get3playlists':
