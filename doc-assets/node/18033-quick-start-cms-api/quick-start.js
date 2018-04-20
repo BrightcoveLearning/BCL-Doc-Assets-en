@@ -332,7 +332,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'getFolderVideos':
@@ -343,7 +343,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'addVideoToFolder':
@@ -373,63 +373,53 @@ var BCLS = (function(window, document) {
 
     /**
      * send API request to the proxy
-     * @param  {Object} options options for the request
-     * @param  {String} requestID the type of request = id of the button
+     * @param  {Object} options for the request
+     * @param  {String} options.url the full API request URL
+     * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+     * @param  {String} options.proxyURL proxyURL to send the request to
+     * @param  {String} options.client_id client id for the account (default is in the proxy)
+     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+     * @param  {Function} [callback] callback function that will process the response
      */
-    function makeRequest(options, requestID) {
-        var httpRequest = new XMLHttpRequest(),
-            responseRaw,
-            parsedData,
-            requestParams,
-            dataString,
-            // response handler
-            getResponse = function() {
-                try {
-                  if (httpRequest.readyState === 4) {
-                    if (httpRequest.status === 200) {
-                      console.log(httpRequest.responseText);
-                      // add/remove folder video return no data
-                      if (requestID === 'addVideoToFolder' || requestID === 'removeVideoFromFolder') {
-                        responseData.textContent = 'This request returns 204 No Content';
-                      } else {
-                        responseRaw = httpRequest.responseText;
-                        responseData.textContent = responseRaw;
-                        parsedData = JSON.parse(responseRaw);
-                        // save new ids on create requests
-                        if (requestID === 'createVideo') {
-                            newVideo_id = parsedData.id;
-                        } else if (requestID === 'createPlaylist') {
-                            newPlaylist_id = parsedData.id;
-                        }
-                        responseData.textContent = JSON.stringify(parsedData, null, '  ');
-                      }
-                      // re-enable the buttons
-                      enableButtons();
-                    } else {
-                      alert('There was a problem with the request. Request returned ' + httpRequest.status);
-                    }
-                  }
-                } catch (e) {
-                  alert('Caught Exception: ' + e);
+    function makeRequest(options, callback) {
+      var httpRequest = new XMLHttpRequest(),
+        response,
+        proxyURL = options.proxyURL,
+        // response handler
+        getResponse = function() {
+          try {
+            if (httpRequest.readyState === 4) {
+              if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                response = httpRequest.responseText;
+                // some API requests return '{null}' for empty responses - breaks JSON.parse
+                if (response === '{null}') {
+                  response = null;
                 }
-            };
-        // set up request data
-        requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-        if (options.requestBody) {
-            dataString = JSON.stringify(options.requestBody);
-            requestParams += "&requestBody=" + encodeURIComponent(dataString);
-        }
-        console.log(requestParams);
-
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
-        // open the request
-        httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        // open and send request
-        httpRequest.send(requestParams);
+                // return the response
+                callback(response);
+              } else {
+                alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              }
+            }
+          } catch (e) {
+            alert('Caught Exception: ' + e);
+          }
+        };
+      /**
+       * set up request data
+       * the proxy used here takes the following request body:
+       * JSON.stringify(options)
+       */
+      // set response handler
+      httpRequest.onreadystatechange = getResponse;
+      // open the request
+      httpRequest.open('POST', proxyURL);
+      // set headers if there is a set header line, remove it
+      // open and send request
+      httpRequest.send(JSON.stringify(options));
     }
+
     // event listeners
     get5videos.addEventListener('click', function() {
         setoptions('get5videos');
