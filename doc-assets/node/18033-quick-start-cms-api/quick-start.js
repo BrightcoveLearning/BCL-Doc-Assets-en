@@ -16,6 +16,9 @@ var BCLS = (function(window, document) {
     searchCount             = document.getElementById('searchCount'),
     createVideo             = document.getElementById('createVideo'),
     updateVideo             = document.getElementById('updateVideo'),
+    addRendition            = document.getElementById('addRendition'),
+    addPoster               = document.getElementById('addPoster'),
+    addThumbnail            = document.getElementById('addThumbnail'),
     get3playlists           = document.getElementById('get3playlists'),
     get1playlist            = document.getElementById('get1playlist'),
     getPlaylistVideoCount   = document.getElementById('getPlaylistVideoCount'),
@@ -71,6 +74,7 @@ var BCLS = (function(window, document) {
     function setoptions(id) {
         var endPoint = '',
             options = {},
+            requestBody = {},
             parsedData;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
@@ -158,9 +162,10 @@ var BCLS = (function(window, document) {
                 endPoint = '/videos';
                 options.url = baseURL + endPoint;
                 options.requestType = 'POST';
-                options.requestBody = {name:'New Video from CMS API Quick Start'};
+                requestBody.name = 'Great Blue Heron - from CMS API Quick Start';
+                options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
-                apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+                apiData.textContent = JSON.stringify(requestBody, null, '  ');
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
@@ -169,6 +174,18 @@ var BCLS = (function(window, document) {
                 });
                 break;
             case 'updateVideo':
+                endPoint = '/videos/' + newVideo_id;
+                options.url = baseURL + endPoint;
+                options.requestType = 'PATCH';
+                options.requestBody = {name:'Updated Video from CMS API Quick Start',description:'This is only a test',tags:['test','quick_start']};
+                apiRequest.textContent = options.url;
+                apiData.textContent = JSON.stringify(options.requestBody, null, '  ');
+                apiMethod.textContent = options.requestType;
+                makeRequest(options, function(response) {
+
+                });
+                break;
+            case 'addRendition':
                 endPoint = '/videos/' + newVideo_id;
                 options.url = baseURL + endPoint;
                 options.requestType = 'PATCH';
