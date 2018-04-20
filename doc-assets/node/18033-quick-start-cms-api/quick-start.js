@@ -85,8 +85,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-                  parsedData = JSON.parse(response);
-
+                  displayResponse(response)
                 });
                 break;
             case 'get5more':
