@@ -85,7 +85,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-                  displayResponse(response)
+                  displayResponse(response);
                 });
                 break;
             case 'get5more':
@@ -96,7 +96,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'sort':
@@ -107,7 +107,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'get1video':
@@ -118,7 +118,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'sources':
@@ -129,7 +129,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 apiData.textContent = '';
                 makeRequest(options, function(response) {
-
+                  displayResponse(response);
                 });
                 break;
             case 'search':
