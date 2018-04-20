@@ -206,7 +206,7 @@ var BCLS = (function(window, document) {
             case 'addRendition':
                 endPoint = '/videos/' + newVideo_id + '/assets/renditions';
                 options.url = baseURL + endPoint;
-                options.requestType = 'PATCH';
+                options.requestType = 'POST';
                 requestBody.progressive_download = true;
                 requestBody.remote_url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
                 requestBody.video_duration = 31000;
@@ -224,17 +224,10 @@ var BCLS = (function(window, document) {
                 });
                 break;
             case 'addPoster':
-                endPoint = '/videos/' + newVideo_id + '/assets/renditions';
+                endPoint = '/videos/' + newVideo_id + '/assets/poster';
                 options.url = baseURL + endPoint;
-                options.requestType = 'PATCH';
-                requestBody.progressive_download = true;
-                requestBody.remote_url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
-                requestBody.video_duration = 31000;
-                requestBody.size = 90990884;
-                requestBody.frame_height = 1080;
-                requestBody.frame_width = 1920;
-                requestBody.video_codec = 'h264';
-                requestBody.video_container = 'MP4';
+                options.requestType = 'POST';
+                requestBody.remote_url = 'https://learning-services-media.brightcove.com/images/great-blue-heron-poster.png';
                 options.requestBody = JSON.stringify(requestBody);
                 apiRequest.textContent = options.url;
                 apiData.textContent = JSON.stringify(requestBody, null, '  ');
