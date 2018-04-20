@@ -470,6 +470,15 @@ var BCLS = (function(window, document) {
     updateVideo.addEventListener('click', function() {
         setoptions('updateVideo');
     });
+    addRendition.addEventListener('click', function() {
+        setoptions('addRendition');
+    });
+    addPoster.addEventListener('click', function() {
+        setoptions('addPoster');
+    });
+    addThumbnail.addEventListener('click', function() {
+        setoptions('addThumbnail');
+    });
     get3playlists.addEventListener('click', function() {
         setoptions('get3playlists');
     });
