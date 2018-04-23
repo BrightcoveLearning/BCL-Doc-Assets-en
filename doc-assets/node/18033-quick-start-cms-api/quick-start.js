@@ -323,6 +323,7 @@ var BCLS = (function(window, document) {
                 apiMethod.textContent = options.requestType;
                 makeRequest(options, function(response) {
                   displayResponse(response);
+                  parsedData = JSON.parse(response);
                   newPlaylist_id = parsedData.id;
                   enableButtons();
                 });
