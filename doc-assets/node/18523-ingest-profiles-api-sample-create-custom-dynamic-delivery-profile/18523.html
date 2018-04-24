@@ -1,28 +1,29 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="Introduction">Introduction</h2>
-    <p>In most cases, the <a href="/node/18386">Standard Ingest Profiles</a> should work well for you videos. In case you do need to create a custom profile, however, this sample allows you to do it using the Ingest Profiles API.</p>
-    <aside class="bcls-aside bcls-aside--information">Note that you can also create and update profiles in Studio: see <a href="/node/15628">Managing Ingest Profiles</a>.</aside>
-    <p>This sample shows you how to use the Ingest Profiles API from a web app. Because the Brightcove APIs are not CORS-enabled and requests must be made from the server side, the app sends necessary information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
-  </section>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
-  <section class="bcls-section">
-    <h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+<p>In most cases, the <a href="/node/18386">Standard Ingest Profiles</a> should work well for you videos. In case you do need to create a custom profile, however, this sample allows you to do it using the Ingest Profiles API.</p>
 
-    <div class="bcls-expander-content">
-      <p>To use the CMS API you will need proper credentials.</p>
+<aside class="bcls-aside bcls-aside--information">Note that you can also create and update profiles in Studio: see <a href="/node/15628">Managing Ingest Profiles</a>.</aside>
 
-      <p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases,
-        you probably just want to get permissions for all Ingest Profiles API operation:</p>
+<p>This sample shows you how to use the Ingest Profiles API from a web app. Because the Brightcove APIs are not CORS-enabled and requests must be made from the server side, the app sends necessary information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
+</section>
 
-      <figure class="bcls-figure"><img class="bcls-image" alt="Ingest Profiles API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/ingest-profiles-permissions.png" />
-        <figcaption class="bcls-caption--image">Ingest Profiles API Permissions</figcaption>
-      </figure>
+<section class="bcls-section">
+<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
 
-      <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need
-        to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the Ingest Profiles API:</p>
+<div class="bcls-expander-content">
+<p>To use the CMS API you will need proper credentials.</p>
 
-      <pre class="line-numbers">
+<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all Ingest Profiles API operation:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Ingest Profiles API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/ingest-profiles-api/ingest-profiles-permissions.png" />
+<figcaption class="bcls-caption--image">Ingest Profiles API Permissions</figcaption>
+</figure>
+
+<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the Ingest Profiles API:</p>
+
+<pre class="line-numbers">
   <code class="language-json">"operations": [
     "video-cloud/ingest-profiles/profile/read",
     "video-cloud/ingest-profiles/profile/write",
@@ -30,72 +31,92 @@
     "video-cloud/ingest-profiles/account/write"
   ]</code></pre>
 
-      <ul>
-        <li><a href="/node/18521">OAuth API Sample: Create Client Credentials</a></li>
-        <li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
-        <li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
-      </ul>
-    </div>
-  </section>
-
-<section class="bcls-section">
-  <h2 id="app">The app</h2>
-  <fieldset>
-    <legend>Inputs</legend>
-    <p>Account id: <input id="account_id_input" type="text" placeholder="1752604059001" /></p>
-
-    <p>Client id: <input id="client_id_input" type="text" size="60" placeholder="c5d0a622-5479-46d8-8d8a-5f034b943fab" /></p>
-
-    <p>Client secret: <input id="client_secret_input" type="text" size="60" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWKJ1BUwHIvSFG" /></p>
-    <p>Name for the profile (must be unique in the account): <input id="profile_name_input" type="text" size="50"></p>
-    <p>Description for the profile: <input id="profile_description_input" type="text" size="80"></p>
-    <p>Digital master:</p>
-    <p><input id="archive_master_input" type="checkbox" checked>&nbsp; <label for="archive_master_input">Archive the master</label></p>
-    <p><input id="distribute_master_input" type="checkbox" checked>&nbsp; <label for="distribute_master_input">Distribute the master</label></p>
-    <p>Images:</p>
-    <p><input id="capture_images_input" type="checkbox" checked>&nbsp; <label for="captureImages">Set up image renditions for image capture</label></p>
-    <table id="imageSizes">
-      <thead>
-        <tr>
-          <th style="padding:.5em;">Poster</th>
-          <th style="padding:.5em;">Thumbnail</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="padding:.5em;">Poster width: <input id="poster_width_input" type="text" value="1280"></td>
-          <td style="padding:.5em;">Thumbnail width: <input id="thumbnail_width_input" type="text" value="160"></td>
-        </tr>
-        <tr>
-          <td style="padding:.5em;">Poster height: <input id="poster_height_input" type="text" value="720"></td>
-          <td style="padding:.5em;">Thumbnail height: <input id="thumbnail_height_input" type="text" value="90"></td>
-        </tr>
-      </tbody>
-    </table>
-    <p>Renditions to include:</p>
-    <div id="rendition_selector">
-
-    </div>
-    <p><button id="create_profile" class="bcls-button">Create Profile</button></p>
-    <p>API request:</p>
-    <textarea name="api_request_display" id="api_request_display" class="bcls-code"></textarea>
-    <p>Full API request body:</p>
-    <textarea name="apiRequest" id="api_request_body_display" class="bcls-code"></textarea>
-  </fieldset>
-  <fieldset>
-    <legend>Output</legend>
-    <h3>Message log</h3>
-    <div id="logger" style="color:#F3951D;">
-      <p>Awaiting input....</p>
-    </div>
-    <h3>Full response</h3>
-  <pre class="line-numbers"><code id="api_response" class="language-json">Full API response will appear here...</code></pre>
-  </fieldset>
+<ul>
+	<li><a href="/node/18521">OAuth API Sample: Create Client Credentials</a></li>
+	<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+</ul>
+</div>
 </section>
+
 <section class="bcls-section">
-  <h2 id="code">Code for the app</h2>
-  <h3>HTML</h3>
-<pre class="line-numbers"><code class="language-html">&lt;section class="bcls-section"&gt;
+<h2 id="app">The app</h2>
+
+<fieldset><legend>Inputs</legend>
+
+<p>Account id: <input id="account_id_input" type="text" placeholder="1752604059001" /></p>
+
+<p>Client id: <input id="client_id_input" type="text" size="60" placeholder="c5d0a622-5479-46d8-8d8a-5f034b943fab" /></p>
+
+<p>Client secret: <input id="client_secret_input" type="text" size="60" placeholder="w7NQYu0vUloM4GYYy2SXAxrvyFpt8fwI35qAFZcS13-VIgs0itwKNsAwHOS80sOWKJ1BUwHIvSFG" /></p>
+
+<p>Name for the profile (must be unique in the account): <input id="profile_name_input" type="text" size="50" /></p>
+
+<p>Description for the profile: <input id="profile_description_input" type="text" size="80" /></p>
+
+<p>Digital master:</p>
+
+<p><input id="archive_master_input" type="checkbox" checked="checked" />&nbsp; <label for="archive_master_input">Archive the master</label></p>
+
+<p><input id="distribute_master_input" type="checkbox" checked="checked" />&nbsp; <label for="distribute_master_input">Distribute the master</label></p>
+
+<p>Images:</p>
+
+<p><input id="capture_images_input" type="checkbox" checked="checked" />&nbsp; <label for="captureImages">Set up image renditions for image capture</label></p>
+
+<table id="imageSizes">
+	<thead>
+		<tr>
+			<th style="padding:.5em;">Poster</th>
+			<th style="padding:.5em;">Thumbnail</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="padding:.5em;">Poster width: <input id="poster_width_input" type="text" value="1280" /></td>
+			<td style="padding:.5em;">Thumbnail width: <input id="thumbnail_width_input" type="text" value="160" /></td>
+		</tr>
+		<tr>
+			<td style="padding:.5em;">Poster height: <input id="poster_height_input" type="text" value="720" /></td>
+			<td style="padding:.5em;">Thumbnail height: <input id="thumbnail_height_input" type="text" value="90" /></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Renditions to include:</p>
+
+<div id="rendition_selector">&nbsp;</div>
+
+<p><button id="create_profile" class="bcls-button">Create Profile</button></p>
+
+<p>API request:</p>
+<textarea name="api_request_display" id="api_request_display" class="bcls-code"></textarea>
+
+<p>Full API request body:</p>
+<textarea name="apiRequest" id="api_request_body_display" class="bcls-code"></textarea></fieldset>
+
+<fieldset><legend>Output</legend>
+
+<h3>Message log</h3>
+
+<div id="logger" style="color:#F3951D;">
+<p>Awaiting input....</p>
+</div>
+
+<h3>Full response</h3>
+
+<pre class="line-numbers">
+<code id="api_response" class="language-json">Full API response will appear here...</code></pre>
+</fieldset>
+</section>
+
+<section class="bcls-section">
+<h2 id="code">Code for the app</h2>
+
+<h3>HTML</h3>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;section class="bcls-section"&gt;
   &lt;h2 id="app"&gt;The app&lt;/h2&gt;
   &lt;fieldset&gt;
     &lt;legend&gt;Inputs&lt;/legend&gt;
@@ -149,8 +170,11 @@
   &lt;pre class="line-numbers"&gt;&lt;code id="api_response" class="language-json"&gt;Full API response will appear here...&lt;/code&gt;&lt;/pre&gt;
   &lt;/fieldset&gt;
 &lt;/section&gt;</code></pre>
-  <h3>JavaScript</h3>
-<pre class="line-numbers"><code class="language-javascript">var BCLS = (function(window, document) {
+
+<h3>JavaScript</h3>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function(window, document) {
   var account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
@@ -615,12 +639,14 @@
 
 })(window, document);
 </code></pre>
-  <h3>Proxy (PHP)</h3>
-  <aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-    <ul>
-        <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-        <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-    </ul>
+
+<h3>Proxy (PHP)</h3>
+
+<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
+<ul>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
+</ul>
 </aside>
 </section>
 </article>
