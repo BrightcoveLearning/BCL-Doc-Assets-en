@@ -88,8 +88,6 @@ var BCLS = (function(window, document) {
     },
     nowISO = new Date().toISOString();
 
-  // set default profile name
-  profile_name_input.value = 'Custom CAE Profile - ' + nowISO;
 
   // event listeners
   create_profile.addEventListener('click', function() {
@@ -546,6 +544,10 @@ var BCLS = (function(window, document) {
 
   function init() {
     addCheckboxes(rendition_selector, renditions);
+    // set default profile name and description
+    profile_name_input.value = 'Custom CAE Profile - ' + nowISO;
+    profile_description_input.value = 'Profiles created by Brightcove Learning Services app on ' + nowISO;
+
   }
 
   init();
