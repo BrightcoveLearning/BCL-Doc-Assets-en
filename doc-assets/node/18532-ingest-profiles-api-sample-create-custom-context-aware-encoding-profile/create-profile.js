@@ -546,7 +546,7 @@ var BCLS = (function(window, document) {
     addCheckboxes(rendition_selector, renditions);
     // set default profile name and description
     profile_name_input.value = 'Custom CAE Profile - ' + nowISO;
-    profile_description_input.value = 'Profiles created by Brightcove Learning Services app on ' + nowISO;
+    profile_description_input.value = 'Profile created by Brightcove Learning Services app on ' + nowISO;
 
   }
 
