@@ -67,8 +67,24 @@ var BCLS = (function(window, document) {
     existingProfileNames = [],
     checkboxCollection,
     defaults = {
+      account_id: '57838016001',
       poster_width: 1280,
       poster_height: 720,
+      thumbnail_width: 160,
+      thumbnail_height: 90,
+      min_renditions: 2,
+      max_renditions: 8,
+      min_resolution: {
+        width: 320,
+        height: 180
+      },
+      max_resolution: {
+        width: 1920,
+        height: 1080
+      },
+      max_bitrate: 4200,
+      max_first_rendition_bitrate: 250,
+      select_baseline_profile_configuration: true
     };
 
   // event listeners
