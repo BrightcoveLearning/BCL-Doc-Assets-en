@@ -186,6 +186,10 @@ var BCLS = (function(window, document) {
     }
   }
 
+  function processedSharedVideos() {
+
+  }
+
   /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
