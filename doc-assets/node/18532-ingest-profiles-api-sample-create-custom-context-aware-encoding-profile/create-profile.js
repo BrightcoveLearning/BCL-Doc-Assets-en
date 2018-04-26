@@ -452,7 +452,7 @@ var BCLS = (function(window, document) {
             requestBody.dynamic_origin.dynamic_profile_options.max_resolution.width = max_resolution_width;
           }
           if (isDefined(max_resolution_height)) {
-            requestBody.dynamic_origin.dynamic_profile_options.max_resolution.height = min_resolution_height;
+            requestBody.dynamic_origin.dynamic_profile_options.max_resolution.height = max_resolution_height;
           }
         }
         if (isDefined(max_bitrate)) {
