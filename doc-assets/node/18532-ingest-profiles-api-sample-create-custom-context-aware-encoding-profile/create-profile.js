@@ -65,7 +65,11 @@ var BCLS = (function(window, document) {
     selectAll,
     selectedRenditions = [],
     existingProfileNames = [],
-    checkboxCollection;
+    checkboxCollection,
+    defaults = {
+      poster_width: 1280,
+      poster_height: 720,
+    };
 
   // event listeners
   create_profile.addEventListener('click', function() {
@@ -378,7 +382,7 @@ var BCLS = (function(window, document) {
             }
             // check to see if input name already exists
             if (arrayContains(existingProfileNames, profile_name)) {
-              alert('The profile name you entered is already in use in this account; please enter a different name and try again');
+              logMessage('The profile name you entered is already in use in this account; please enter a different name and try again');
             } else {
               createRequest('create_profile');
             }
