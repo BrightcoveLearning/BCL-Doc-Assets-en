@@ -4,19 +4,16 @@
 <h2 id="Player_example">Player example</h2>
 <!-- UPDATE description -->
 
-<p>This example uses a Brightcove player that sets a browser cookie each time the viewer watches the video. After two video playbacks, an error message will display stating that you have reached the view limit for the day.</p>
+<p>When the player initially loads, a cookie will be checked for the last watched position of the video. If the cookie is present, the video will begin playing at that point. When the video finishes playing, the cookie will be set to zero.</p>
 <p>
-  Start video playback, and then refresh the page. You don't have to watch the entire video. Then repeat. The third time you try to play the video, you should see an error message.
-</p>
-<p>
-  Clear your browser's history/browsing data to remove the cookie and start over.
+  Play the video and stop it at some point during playback. When you refresh the page, the video will resume playing where you left off.
 </p>
 <!-- UPDATE codepen here -->
-<p data-height="485" data-theme-id="dark" data-slug-hash="rpgRjz" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="Limited Plays" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/rpgRjz/">Limited Plays</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<p data-height="525" data-theme-id="dark" data-slug-hash="LmNJda" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="Multiple Session Playback" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/LmNJda/">Multiple Session Playback</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 <!-- UPDATE link to GitHub source -->
-<p>View the <a href="https://github.com/BrightcoveLearning/18196-limited-plays">source code</a>.</p>
+<p>View the <a href="https://github.com/BrightcoveLearning/18198-multiple-session-playback">source code</a>.</p>
 
 <aside class="bcls-aside bcls-aside--information">The Codepen above should work as expected on this page. If you choose to edit the code  on the Codepen site, be aware that most of their Pen views use a sandboxed iframe and cannot set cookies. To test the cookie behavior, either switch to <a href="https://blog.codepen.io/documentation/views/debug-view/">Codepen's Debug View</a>, or copy the code into your web page.
 </aside>
@@ -93,20 +90,16 @@
 	</thead>
 	<tbody class="bcls-table__body">
     <tr>
-			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#ready">ready()</a></td>
 			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:loadedmetadata">loadedmetadata</a></td>
 		</tr>
     <tr>
-			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.one">one()</a></td>
-			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#play">play</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:timeupdate">timeupdate</a></td>
 		</tr>
 		<tr>
-			<td><a href="/node/18145">errors()</a></td>
-			<td></td>
-		</tr>
-    <tr>
-			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#error">error()</a></td>
-			<td></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#currentTime">currentTime()</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:play">play</a></td>
 		</tr>
 	</tbody>
 </table>
@@ -132,10 +125,11 @@
 ...</code></pre>
 
 <p>
-  For testing purposes, we've added an element to display the number of video views that have been watched. This field is updated when the browser is refreshed.
+  For testing purposes, we've added two HTML elements below the player to display the initial value of the session cookie and the current value of the cookie as the video plays.
 </p>
-<pre>
-<code class="language-html">&lt;p&gt;Number of views = &lt;span id=&quot;cookieDisplay1&quot;&gt;&lt;/span&gt;&lt;/p&gt;</code></pre>
+<pre class="line-numbers">
+<code class="language-html">&lt;p&gt;video start cookie value = &lt;span id=&quot;cookieDisplay1&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;current cookie value = &lt;span id=&quot;cookieDisplay2&quot;&gt;&lt;/span&gt;&lt;/p&gt;</code></pre>
 </section>
 
 <!-- UPDATE application flow -->
@@ -146,9 +140,10 @@
 
 <ul>
 	<li>Read the browser cookie.</li>
-  <li>Define a custom error message.</li>
-  <li>Increment the browser cookie.</li>
-  <li>Display the custom error message.</li>
+  <li>Check the cookie value.</li>
+  <li>Start video playback.</li>
+  <li>Increment the cookie.</li>
+  <li>Reset the cookie.</li>
 </ul>
 
 <!-- UPDATE task 1 -->
@@ -160,20 +155,32 @@
 <pre>
 <code class="language-javascript">// +++ Read browser cookie +++</code></pre>
 
-<p>Initialize variables and read the browser cookie associated with Brightcove video views. The cookie is named <code>BC_views</code>.</p>
+<p>Initialize variables and read the browser cookie associated with the Brightcove video position. The cookie is named <code>BC_position</code>.</p>
 
 <!-- UPDATE task 2 -->
 
-<h3>Define a custom error message</h3>
+<h3>Check the cookie value</h3>
 
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// +++ Define custom error message +++</code></pre>
+<code class="language-javascript">// +++ Check the cookie value +++</code></pre>
 
-<p>Define an error message for when the user has reached the max number of views. For details on how to do this, see the <a href="/node/18145">Display Error Messages Plugin</a> document.</p>
+<p>If the cookie exists, then set the video start position to this value. Otherwise, start from the beginning of the video.</p>
 
 <!-- UPDATE task 3 -->
+
+<h3>Start video playback</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Start video playback +++</code></pre>
+
+<p>If video position is greater than zero, than start playback at that point. Otherwise, let the user start video playback from the beginning.</p>
+
+
+<!-- UPDATE task 4 -->
 
 <h3>Increment the cookie</h3>
 
@@ -182,18 +189,18 @@
 <pre>
 <code class="language-javascript">// +++ Increment the cookie +++</code></pre>
 
-<p>Each time the user plays the video and refreshes the browser, increment the browser cookie.</p>
+<p>Listen for when the current playback position has changed. This should be every 15-250 milliseconds. When the integer value for the current playback position changes, then update the cookie.</p>
 
-<!-- UPDATE task 4 -->
+<!-- UPDATE task 5 -->
 
-<h3>Display the custom error message</h3>
+<h3>Reset the cookie</h3>
 
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// +++ Display custom error message +++</code></pre>
+<code class="language-javascript">// +++ Reset the cookie +++</code></pre>
 
-<p>If the cookie value is greater than or equal to 2, then display the custom error message. This will take place the next time the browser is refreshed.</p>
+<p>When video playback reaches the end, then reset the cookie value to zero.</p>
 
 </section>
 
@@ -226,7 +233,7 @@
   ...
 });</code></pre>
 <!-- UPDATE path to plugin's JavaScript -->
-<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18196-limited-plays/blob/master/plugin/limited-plays.js">limited-plays.js</a>.</p>
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18198-multiple-session-playback/blob/master/plugin/multiple-session.js">multiple-session.js</a>.</p>
 
 <h3>Using the plugin with a player</h3>
 

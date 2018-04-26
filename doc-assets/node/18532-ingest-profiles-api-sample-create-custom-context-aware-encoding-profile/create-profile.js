@@ -8,7 +8,7 @@ var BCLS = (function(window, document) {
     archive_master_input = document.getElementById('archive_master_input'),
     capture_images_input = document.getElementById('capture_images_input'),
     poster_height_input = document.getElementById('poster_height_input'),
-    poster_width_input = document.getElementById('poster_height_input'),
+    poster_width_input = document.getElementById('poster_width_input'),
     thumbnail_height_input = document.getElementById('thumbnail_height_input'),
     thumbnail_width_input = document.getElementById('thumbnail_width_input'),
     min_renditions_input = document.getElementById('min_renditions_input'),
@@ -65,15 +65,35 @@ var BCLS = (function(window, document) {
     selectAll,
     selectedRenditions = [],
     existingProfileNames = [],
-    checkboxCollection;
+    checkboxCollection,
+    defaults = {
+      account_id: '57838016001',
+      poster_width: 1280,
+      poster_height: 720,
+      thumbnail_width: 160,
+      thumbnail_height: 90,
+      min_renditions: 2,
+      max_renditions: 8,
+      min_resolution: {
+        width: 320,
+        height: 180
+      },
+      max_resolution: {
+        width: 1920,
+        height: 1080
+      },
+      max_bitrate: 4200,
+      max_first_rendition_bitrate: 250,
+      select_baseline_profile_configuration: true
+    },
+    nowISO = new Date().toISOString();
+
 
   // event listeners
   create_profile.addEventListener('click', function() {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
     if (getAccountInfo()) {
       createRequest('get_profiles');
-    } else {
-      alert('Account id, client id, client secret, and a name for the new profile are required');
     }
   });
 
@@ -82,8 +102,7 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value) && isDefined(profile_name_input.value)) {
-      account_id = removeSpaces(account_id_input.value);
+      account_id = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : defaults.account_id;
       client_id = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
       profile_name = (profile_name_input.value);
@@ -95,7 +114,7 @@ var BCLS = (function(window, document) {
       thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
       if (capture_images) {
         if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
-          alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
+          logMessage('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
           return false;
         }
       }
@@ -111,13 +130,10 @@ var BCLS = (function(window, document) {
       keyframe_rate = parseFloat(removeSpaces(keyframe_rate_input.value));
       select_baseline_profile_configuration = isChecked(select_baseline_profile_configuration_input);
       if (!isDefined(min_renditions) || !isDefined(max_renditions)) {
-        alert('The minimum and maximum number of renditions are required');
+        logMessage('The minimum and maximum number of renditions are required');
         return false;
       }
       return true;
-    } else {
-      return false;
-    }
   }
 
   /**
@@ -350,9 +366,12 @@ var BCLS = (function(window, document) {
       iMax;
 
     // set credentials
-    options.client_id = client_id;
-    options.client_secret = client_secret;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
     options.proxyURL = proxyURL;
+    options.account_id = account_id;
 
     switch (type) {
       case 'get_profiles':
@@ -378,7 +397,7 @@ var BCLS = (function(window, document) {
             }
             // check to see if input name already exists
             if (arrayContains(existingProfileNames, profile_name)) {
-              alert('The profile name you entered is already in use in this account; please enter a different name and try again');
+              logMessage('The profile name you entered is already in use in this account; please enter a different name and try again');
             } else {
               createRequest('create_profile');
             }
@@ -432,8 +451,8 @@ var BCLS = (function(window, document) {
           if (isDefined(max_resolution_width)) {
             requestBody.dynamic_origin.dynamic_profile_options.max_resolution.width = max_resolution_width;
           }
-          if (isDefined(min_resolution_height)) {
-            requestBody.dynamic_origin.dynamic_profile_options.min_resolution.height = min_resolution_height;
+          if (isDefined(max_resolution_height)) {
+            requestBody.dynamic_origin.dynamic_profile_options.max_resolution.height = max_resolution_height;
           }
         }
         if (isDefined(max_bitrate)) {
@@ -499,11 +518,11 @@ var BCLS = (function(window, document) {
               // return the response
               callback(response);
             } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              logMessage('There was a problem with the request. Request returned ' + httpRequest.status);
             }
           }
         } catch (e) {
-          alert('Caught Exception: ' + e);
+          logMessage('Caught Exception: ' + e);
         }
       };
     /**
@@ -525,6 +544,10 @@ var BCLS = (function(window, document) {
 
   function init() {
     addCheckboxes(rendition_selector, renditions);
+    // set default profile name and description
+    profile_name_input.value = 'Custom CAE Profile - ' + nowISO;
+    profile_description_input.value = 'Profile created by Brightcove Learning Services app on ' + nowISO;
+
   }
 
   init();
