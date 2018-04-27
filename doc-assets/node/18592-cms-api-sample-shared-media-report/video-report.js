@@ -260,9 +260,9 @@ var BCLS = (function(window, document) {
           if (callNumber < totalCalls) {
             createRequest('getVideos');
           } else {
-            console.log(videosArray);
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
+              console.log(videosArray[i]);
               var o = {};
               if (videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
                 if (videosArray[i].sharing.by_external_account) {
