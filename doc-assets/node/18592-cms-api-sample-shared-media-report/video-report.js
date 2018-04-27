@@ -220,7 +220,7 @@ var BCLS = (function(window, document) {
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
             var o = {};
-            o.account_id = responseParsed[i].account_id;
+            o.account_id = responseParsed[i].channel.account_id;
             o.account_name = responseParsed[i].channel_account_name;
             affiliates.push(o);
           }
