@@ -245,7 +245,8 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideos':
-        var offset = (limit * callNumber);
+        var offset = (limit * callNumber),
+        idx;
         endPoint = '/videos?limit=' + limit + '&offset=' + offset;
         if (isDefined(searchString)) {
           endPoint += '&q=' + searchString;
@@ -279,7 +280,12 @@ var BCLS = (function(window, document) {
                   o.name = videosArray[i].name;
                   o.sharer_id = videosArray[i].sharing.by_id;
                   o.sharer_video_id = videosArray[i].sharing.source_id;
-                  o.sharer_name = affiliates[findObjectInArray(affiliates, 'account_id', o.sharer_id)].account_name;
+                  idx = findObjectInArray(affiliates, 'account_id', o.sharer_id);
+                  if (idx !== -1) {
+                    o.sharer_name = affiliates[idx].account_name;
+                  } else {
+                    o.sharer_name = "Sharer account unknown";
+                  }
                   sharedVideos.push(o);
                   console.log('sharedVideos', sharedVideos);
                 }
