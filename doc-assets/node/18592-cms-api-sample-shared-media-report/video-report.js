@@ -215,6 +215,7 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
+          console.log('response', response);
           responseParsed = JSON.parse(response);
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
