@@ -281,7 +281,7 @@ var BCLS = (function(window, document) {
             }
             totalSharedVideos = sharedVideos.length;
             logMessage('All videos retrieved; creating report');
-            createRequest('getShares');
+            writeReport();
           }
         });
         break;
