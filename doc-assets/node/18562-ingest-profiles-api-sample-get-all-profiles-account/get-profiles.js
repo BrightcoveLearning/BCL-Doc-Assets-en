@@ -94,6 +94,31 @@ var BCLS = (function(window, document) {
       return true;
   }
 
+  /**
+   * determines if checkbox is checked
+   * @param  {htmlElement}  e the checkbox to check
+   * @return {Boolean}  true if box is checked
+   */
+  function isChecked(e) {
+    if (e.checked) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+  * get value of a selected radio buttom
+  * @param {htmlElementCollection} rgroup the collection of radio buttom elements
+  */
+  function getRadioValue(rgroup) {
+      var i = 0,
+      iMax = rgroup.length;
+      for (i; i < iMax; i++) {
+          if (rgroup[i].checked) {
+              return rgroup[i].value;
+          }
+      }
+  }
 
   /**
    * determines whether specified item is in an array
@@ -141,6 +166,7 @@ var BCLS = (function(window, document) {
   function toggleObsoleteProfiles() {
     // below are the obsolete profiles - you just have to know their names
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
+    if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
       while (i > 0) {
         i--;
@@ -151,6 +177,18 @@ var BCLS = (function(window, document) {
           obsoletes_hidden = true;
         }
       }
+    } else {
+      var index;
+      if (obsoletes_hidden) {
+        iMax = deprecated_profiles.length;
+        for (i = 0; i < iMax; i++) {
+          index = findObjectInArray(all_profiles, 'name', deprecated_profiles[i]);
+          all_current_profiles.push(all_profiles[index]);
+          obsoletes_hidden = false;
+        }
+        obsoletes_hidden = false;
+      }
+    }
     displayFilteredProfiles();
     return;
   }
