@@ -264,15 +264,17 @@ var BCLS = (function(window, document) {
             for (i = 0; i < iMax; i++) {
               console.log(videosArray[i]);
               var o = {};
-              if (typeof videosArray[i].sharing === 'object' && videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
-                if (videosArray[i].sharing.by_external_account) {
-                  o.id = videosArray[i].id;
-                  o.name = videosArray[i].name;
-                  o.sharer_id = videosArray[i].sharing.by_id;
-                  o.sharer_video_id = videosArray[i].sharing.source_id;
-                  o.sharer_name = affiliates[findObjectInArray(affiliates, 'account_id', o.sharer_id)].account_name;
-                  sharedVideos.push(o);
-                  console.log('sharedVideos', sharedVideos);
+              if (typeof videosArray[i].sharing === 'object') {
+                if (videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
+                  if (videosArray[i].sharing.by_external_account) {
+                    o.id = videosArray[i].id;
+                    o.name = videosArray[i].name;
+                    o.sharer_id = videosArray[i].sharing.by_id;
+                    o.sharer_video_id = videosArray[i].sharing.source_id;
+                    o.sharer_name = affiliates[findObjectInArray(affiliates, 'account_id', o.sharer_id)].account_name;
+                    sharedVideos.push(o);
+                    console.log('sharedVideos', sharedVideos);
+                  }
                 }
               }
             }
