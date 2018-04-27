@@ -3,7 +3,7 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     // api stuff
-    proxyURL            = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+    proxyURL            = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
     baseURL             = 'https://cms.api.brightcove.com/v1/accounts/',
     limit               = 25,
     totalVideos         = 0,
@@ -403,10 +403,10 @@ var BCLS = (function(window, document) {
         window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
         client_id     = '';
         client_secret = '';
-        account_id    = '57838016001';
+        account_id    = '1485884786001';
       }
     } else {
-      account_id = '57838016001';
+      account_id = '1485884786001';
     }
     // get video count
     createRequest('getAffiliates');
