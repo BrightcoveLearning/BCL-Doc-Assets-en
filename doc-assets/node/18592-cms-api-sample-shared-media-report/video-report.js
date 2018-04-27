@@ -224,7 +224,7 @@ var BCLS = (function(window, document) {
             affiliates.push(o);
           }
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
-          logMessage('Affiliates retrieved);
+          logMessage('Affiliates retrieved');
           console.log(affiliates);
           // get some videos
           createRequest('getCount');
