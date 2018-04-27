@@ -221,6 +221,7 @@ var BCLS = (function(window, document) {
             var o = {};
             o.account_id = responseParsed[i].account_id;
             o.account_name = responseParsed[i].channel_account_name;
+            affiliates.push(o);
           }
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           logMessage('Affiliates retrieved');
