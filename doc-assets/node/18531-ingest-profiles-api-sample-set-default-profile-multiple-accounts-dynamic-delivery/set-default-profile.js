@@ -45,7 +45,7 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    account_id    = removeSpaces(account_id_input.value);
+    account_id    = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : '57838016001';
     client_id     = removeSpaces(client_id_input.value);
     client_secret = removeSpaces(client_secret_input.value);
   }
