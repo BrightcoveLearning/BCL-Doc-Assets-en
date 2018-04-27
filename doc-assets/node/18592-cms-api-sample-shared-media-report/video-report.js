@@ -274,7 +274,7 @@ var BCLS = (function(window, document) {
               console.log(videosArray[i].sharing);
               var o = {};
               if (videosArray[i].sharing !== null) {
-                if (videosArray[i].sharing.by_external_account) {
+                if (videosArray[i].sharing.by_external_acct) {
                   o.id = videosArray[i].id;
                   o.name = videosArray[i].name;
                   o.sharer_id = videosArray[i].sharing.by_id;
