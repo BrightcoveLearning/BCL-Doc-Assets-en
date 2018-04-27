@@ -3,43 +3,43 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     // api stuff
-    proxyURL            = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
-    baseURL             = 'https://cms.api.brightcove.com/v1/accounts/',
-    limit               = 25,
-    totalVideos         = 0,
-    totalCalls          = 0,
-    totalSharedVideos   = 0,
-    callNumber          = 0,
-    videosCompleted     = 0,
-    videosArray         = [],
-    sharedVideos        = [],
-    affiliates          = [],
-    summaryData         = {},
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
+    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
+    limit = 25,
+    totalVideos = 0,
+    totalCalls = 0,
+    totalSharedVideos = 0,
+    callNumber = 0,
+    videosCompleted = 0,
+    videosArray = [],
+    sharedVideos = [],
+    affiliates = [],
+    summaryData = {},
     csvStr,
     summaryCsvStr,
     // elements
-    account_id_input          = document.getElementById('account_id'),
-    client_id_input           = document.getElementById('client_id'),
-    client_secret_input       = document.getElementById('client_secret'),
-    searchTags          = document.getElementById('searchTags'),
-    searchField         = document.getElementById('searchField'),
-    searchFieldValue    = document.getElementById('searchFieldValue'),
-    dateRangeType       = document.getElementById('dateRangeType'),
-    fromDate            = document.getElementById('fromDate'),
-    toDate              = document.getElementById('toDate'),
-    videoCount          = document.getElementById('videoCount'),
-    makeReport          = document.getElementById('makeReport'),
+    account_id_input = document.getElementById('account_id'),
+    client_id_input = document.getElementById('client_id'),
+    client_secret_input = document.getElementById('client_secret'),
+    searchTags = document.getElementById('searchTags'),
+    searchField = document.getElementById('searchField'),
+    searchFieldValue = document.getElementById('searchFieldValue'),
+    dateRangeType = document.getElementById('dateRangeType'),
+    fromDate = document.getElementById('fromDate'),
+    toDate = document.getElementById('toDate'),
+    videoCount = document.getElementById('videoCount'),
+    makeReport = document.getElementById('makeReport'),
     content,
-    logger              = document.getElementById('logger'),
-    csvData             = document.getElementById('csvData'),
-    apiRequest          = document.getElementById('apiRequest'),
-    apiResponse         = document.getElementById('apiResponse'),
-    allButtons          = document.getElementsByName('button'),
-    pLogGettingVideos   = document.createElement('p'),
-    gettingVideoShares  = document.createElement('p'),
-    pLogFinish          = document.createElement('p'),
-    spanIntro2          = document.createElement('span'),
-    spanOf2             = document.createElement('span'),
+    logger = document.getElementById('logger'),
+    csvData = document.getElementById('csvData'),
+    apiRequest = document.getElementById('apiRequest'),
+    apiResponse = document.getElementById('apiResponse'),
+    allButtons = document.getElementsByName('button'),
+    pLogGettingVideos = document.createElement('p'),
+    gettingVideoShares = document.createElement('p'),
+    pLogFinish = document.createElement('p'),
+    spanIntro2 = document.createElement('span'),
+    spanOf2 = document.createElement('span'),
     spanRenditionsTotal = document.createElement('span'),
     spanRenditionsCount = document.createElement('span'),
     dateTypeValue,
@@ -96,18 +96,19 @@ var BCLS = (function(window, document) {
    * @param {string} objProperty object property to search
    * @param {string} value of the property to search for
    * @return {integer} index of first instance if found, otherwise returns -1
-  */
+   */
   function findObjectInArray(targetArray, objProperty, value) {
-      var i, totalItems = targetArray.length, objFound = false;
-      for (i = 0; i < totalItems; i++) {
-          if (targetArray[i][objProperty] === value) {
-              objFound = true;
-              return i;
-          }
+    var i, totalItems = targetArray.length,
+      objFound = false;
+    for (i = 0; i < totalItems; i++) {
+      if (targetArray[i][objProperty] === value) {
+        objFound = true;
+        return i;
       }
-      if (objFound === false) {
-          return -1;
-      }
+    }
+    if (objFound === false) {
+      return -1;
+    }
   }
 
   /**
@@ -175,7 +176,7 @@ var BCLS = (function(window, document) {
         video = sharedVideos[i];
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.sharer_id + '","' + video.sharer_name + '","' + video.sharer_video_id + '","';
-          csvStr += '\r\n';
+        csvStr += '\r\n';
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
@@ -265,16 +266,14 @@ var BCLS = (function(window, document) {
               console.log(videosArray[i]);
               var o = {};
               if (videosArray[i].sharing !== null) {
-                if (videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
-                  if (videosArray[i].sharing.by_external_account) {
-                    o.id = videosArray[i].id;
-                    o.name = videosArray[i].name;
-                    o.sharer_id = videosArray[i].sharing.by_id;
-                    o.sharer_video_id = videosArray[i].sharing.source_id;
-                    o.sharer_name = affiliates[findObjectInArray(affiliates, 'account_id', o.sharer_id)].account_name;
-                    sharedVideos.push(o);
-                    console.log('sharedVideos', sharedVideos);
-                  }
+                if (videosArray[i].sharing.by_external_account) {
+                  o.id = videosArray[i].id;
+                  o.name = videosArray[i].name;
+                  o.sharer_id = videosArray[i].sharing.by_id;
+                  o.sharer_video_id = videosArray[i].sharing.source_id;
+                  o.sharer_name = affiliates[findObjectInArray(affiliates, 'account_id', o.sharer_id)].account_name;
+                  sharedVideos.push(o);
+                  console.log('sharedVideos', sharedVideos);
                 }
               }
             }
@@ -354,9 +353,9 @@ var BCLS = (function(window, document) {
   // button event handlers
   makeReport.addEventListener('click', function() {
     // get the inputs
-    client_id     = client_id_input.value;
+    client_id = client_id_input.value;
     client_secret = client_secret_input.value;
-    totalVideos  = getSelectedValue(videoCount);
+    totalVideos = getSelectedValue(videoCount);
     // check for search terms
     if (isDefined(searchTags.value)) {
       tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
@@ -404,9 +403,9 @@ var BCLS = (function(window, document) {
         account_id = account_id_input.value;
       } else {
         window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        client_id     = '';
+        client_id = '';
         client_secret = '';
-        account_id    = '1485884786001';
+        account_id = '1485884786001';
       }
     } else {
       account_id = '1485884786001';
