@@ -263,7 +263,7 @@ var BCLS = (function(window, document, Rome) {
           } else {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
-              console.log(videosArray[i]);
+              console.log(videosArray[i].sharing);
               var o = {};
               if (videosArray[i].sharing !== null) {
                 if (videosArray[i].sharing.by_external_account) {
