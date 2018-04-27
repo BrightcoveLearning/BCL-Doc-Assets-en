@@ -6,8 +6,8 @@
         padding-right: 10px;
       }
 </style>
-</article>
-<link href="//solutions.brightcove.com/bcls/brightcove-player/overlay-toggle/overlay-button.css" rel="stylesheet" />
+
+<!-- <link href="//solutions.brightcove.com/bcls/brightcove-player/overlay-toggle/overlay-button.css" rel="stylesheet" /> -->
 <section class="bcls_section">
 <h2>The app</h2>
 
@@ -19,11 +19,12 @@
 
 <p>Account Id: <input id="account_id" type="text" value="" placeholder="1752604059001" name="account_id" /></p>
 
-<p>Player Id: <input id="player_id" type="text" value="" placeholder="01163bbc-a536-443f-9646-318d0d0694ae" name="player_id" /></p>
+<p>Player Id: <input id="player_id" type="text" value="" placeholder="default" name="player_id" /></p>
 
 <p>Video Id: <input id="video_id" type="text" value="" placeholder="1754261691001" name="video_id" /></p>
+<br />
 
-<p><button id="techButton">Display playback technology</button></p>
+<p><button class="bcls-button" id="techButton">Display playback technology</button></p>
 
 <p>If left blank, these values will default to a Brightcove sample account, player and video.</p>
 </fieldset>
@@ -48,130 +49,132 @@
 </section>
 
 <p style="clear:both;">&nbsp;</p>
+  </article>
 <script type="text/javascript">
-              /******** Any scripts specific to page samples should go here *********/
+/******** Any scripts specific to page samples should go here *********/
 
-                  var myPlayer,
-                      source,
-                      front,
-                      sourceType,
-                      sourceTypeText,
-                      outputText,
-                      skinValue,
-                      accountId = document.getElementById("account_id"),
-                      playerId = document.getElementById("player_id"),
-                      playerIdString,
-                      videoId = document.getElementById("video_id"),
-                      playerEmbed = document.getElementById("player_embed"),
-                      displayTechButton = document.getElementById("techButton"),
-                      response = document.getElementById("outputArea");
+  var myPlayer,
+      source,
+      front,
+      sourceType,
+      sourceTypeText,
+      outputText,
+      skinValue,
+      accountId = document.getElementById("account_id"),
+      playerId = document.getElementById("player_id"),
+      playerIdString,
+      videoId = document.getElementById("video_id"),
+      playerEmbed = document.getElementById("player_embed"),
+      displayTechButton = document.getElementById("techButton"),
+      response = document.getElementById("outputArea");
 
-                  displayTechButton.onclick = function() {
-                      accountId.value = (accountId.value == "") ? "1752604059001" : accountId.value;
-                      playerId.value = (playerId.value == "") ? "01163bbc-a536-443f-9646-318d0d0694ae" : playerId.value;
-                      videoId.value = (videoId.value == "") ? "1754261691001" : videoId.value;
+  displayTechButton.onclick = function() {
+      accountId.value = (accountId.value == "") ? "1752604059001" : accountId.value;
+      // playerId.value = (playerId.value == "") ? "01163bbc-a536-443f-9646-318d0d0694ae" : playerId.value;
+      playerId.value = (playerId.value == "") ? "default" : playerId.value;
+      videoId.value = (videoId.value == "") ? "1754261691001" : videoId.value;
 
-                      response.innerHTML = "";
+      response.innerHTML = "";
 
-                      // dynamically build the player video element
-                      playerHTML = '<video id=\"video_1\" width=\"300px\" height=\"150px\" data-video-id=\"' + videoId.value + '\" data-account=\"' + accountId.value + '\" data-player=\"' + playerId.value + '\" data-embed=\"default\" class=\"video-js\" controls>' + '<script src=\"//players.brightcove.net/' + accountId.value + '/' + playerId.value + '_default/index.min.js\"><' + '/script>';
+      // dynamically build the player video element
+      playerHTML = '<video id=\"video_1\" width=\"400px\" height=\"225px\" data-video-id=\"' + videoId.value + '\" data-account=\"' + accountId.value + '\" data-player=\"' + playerId.value + '\" data-embed=\"default\" class=\"video-js\" controls>' + '<script src=\"//players.brightcove.net/' + accountId.value + '/' + playerId.value + '_default/index.min.js\"><' + '/script>';
 
-                      // inject the player code into the DOM
-                      playerEmbed.innerHTML = playerHTML;
+      // inject the player code into the DOM
+      playerEmbed.innerHTML = playerHTML;
 
-                      playerIdString = playerId.value.toString();
-                      // console.log("playerIdString= ", playerIdString);
-                      if (playerIdString.lastIndexOf("_") >= 0) {
-                          playerScriptFile = '//players.brightcove.net/' + accountId.value + '/' + playerId.value + '/index.min.js';
-                      } else {
-                          playerScriptFile = '//players.brightcove.net/' + accountId.value + '/' + playerId.value + '_default/index.min.js';
-                      }
+      playerIdString = playerId.value.toString();
+      // console.log("playerIdString= ", playerIdString);
+      if (playerIdString.lastIndexOf("_") >= 0) {
+          playerScriptFile = '//players.brightcove.net/' + accountId.value + '/' + playerId.value + '/index.min.js';
+      } else {
+          playerScriptFile = '//players.brightcove.net/' + accountId.value + '/' + playerId.value + '_default/index.min.js';
+      }
 
-                      loadJS(playerScriptFile, function() {
-                          // put code here to run after script is loaded
-                          playerLoaded();
-                      });
+      loadJS(playerScriptFile, function() {
+          // put code here to run after script is loaded
+          playerLoaded();
+      });
 
-                   }
+   }
 
-                  function loadJS(src, callback) {
-                      var s = document.createElement('script');
-                      s.src = src;
-                      s.async = true;
-                      s.onreadystatechange = s.onload = function() {
-                          var state = s.readyState;
-                          if (!callback.done && (!state || /loaded|complete/.test(state))) {
-                              callback.done = true;
-                              callback();
-                          }
-                      };
-                      document.getElementsByTagName('head')[0].appendChild(s);
-                  }
+  function loadJS(src, callback) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.onreadystatechange = s.onload = function() {
+          var state = s.readyState;
+          if (!callback.done && (!state || /loaded|complete/.test(state))) {
+              callback.done = true;
+              callback();
+          }
+      };
+      document.getElementsByTagName('head')[0].appendChild(s);
+  }
 
-                  function playerLoaded() {
-                       videojs("video_1").one('loadedmetadata', function(){
-                          myPlayer = this;
-                          source = myPlayer.currentSrc();
-                          front = source.slice(0,source.indexOf("?"));
-                          sourceType = front.slice(front.lastIndexOf("."));
+  function playerLoaded() {
+       videojs("video_1").one('loadedmetadata', function(){
+          myPlayer = this;
+          source = myPlayer.currentSrc();
+          front = source.slice(0,source.indexOf("?"));
+          sourceType = front.slice(front.lastIndexOf("."));
 
-                         switch(sourceType) {
-                            case ".m3u8":
-                                sourceTypeText = "HLS";
-                                break;
-                            case ".mp4":
-                                sourceTypeText = "MP4";
-                                break;
-                            default:
-                                sourceTypeText = sourceType;
-                          }
+         switch(sourceType) {
+            case ".m3u8":
+                sourceTypeText = "HLS";
+                break;
+            case ".mp4":
+                sourceTypeText = "MP4";
+                break;
+            default:
+                sourceTypeText = sourceType;
+          }
 
-                          mimeType = myPlayer.currentType();
+          mimeType = myPlayer.currentType();
 
-          //			  find object tag with class="vjs-tech" - Flash
-          //			  find video tag with class="vjs-tech" - HTML5
+//			  find object tag with class="vjs-tech" - Flash
+//			  find video tag with class="vjs-tech" - HTML5
 
-                            elements = document.getElementsByClassName("vjs-tech");
-                          tagType = elements[0].tagName;
+            elements = document.getElementsByClassName("vjs-tech");
+          tagType = elements[0].tagName;
 
-                            switch(tagType) {
-                          case "OBJECT":
-                              tagTypeText = "Flash";
-                              break;
-                          case "VIDEO":
-                              tagTypeText = "HTML5";
-                              break;
-                          default:
-                              tagTypeText = tagType;
-                          }
+            switch(tagType) {
+          case "OBJECT":
+              tagTypeText = "Flash";
+              break;
+          case "VIDEO":
+              tagTypeText = "HTML5";
+              break;
+          default:
+              tagTypeText = tagType;
+          }
 
-                          mediaInfo = myPlayer.mediainfo;
+          mediaInfo = myPlayer.mediainfo;
 
-                  outputText = "Video ID = " + mediaInfo.id + "<br/>";
-                  outputText += "Source type = " + sourceTypeText + "<br/>";
-                  outputText += "MIME type = " + mimeType + "<br/>";
-                        outputText += "Browser technology used = " + tagTypeText + "<br/>";
-                  outputText += "Player dimensions = " + myPlayer.width() + " x "+ myPlayer.height() + "<br/>";
-                  outputText += "Video dimensions = " + myPlayer.videoWidth() + " x " + myPlayer.videoHeight() + "<br/>";
-                          outputText += "Player version = " + bc.VERSION + "<br/>";
+  outputText = "Video ID = " + mediaInfo.id + "<br/>";
+  outputText += "Source type = " + sourceTypeText + "<br/>";
+  outputText += "MIME type = " + mimeType + "<br/>";
+        outputText += "Browser technology used = " + tagTypeText + "<br/>";
+  outputText += "Player dimensions = " + myPlayer.width() + " x "+ myPlayer.height() + "<br/>";
+  outputText += "Video dimensions = " + myPlayer.videoWidth() + " x " + myPlayer.videoHeight() + "<br/>";
+          outputText += "Player version = " + bc.VERSION + "<br/>";
 
-                          if (bc.SKIN) {
-                              switch(bc.SKIN){
-                                  case "false":
-                                      skinValue = "No skin";
-                                      break;
-                                  case "graphite":
-                                      skinValue = "Graphite";
-                                      break;
-                                  default:
-                                      skinValue = "Luna (default)";
-                              }
-                          } else {
-                              skinValue = "Luna (default)";
-                          }
-
-                          outputText += "Player skin = " + skinValue;
-                  response.innerHTML = outputText;
-                  });
+          if (bc.SKIN) {
+              switch(bc.SKIN){
+                  case "false":
+                      skinValue = "No skin";
+                      break;
+                  case "graphite":
+                      skinValue = "Graphite";
+                      break;
+                  default:
+                      skinValue = "Luna (default)";
               }
-            </script>
+          } else {
+              skinValue = "Luna (default)";
+          }
+
+          outputText += "Player skin = " + skinValue;
+  response.innerHTML = outputText;
+  });
+}
+</script>
