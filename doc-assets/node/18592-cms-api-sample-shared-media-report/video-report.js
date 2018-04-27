@@ -175,7 +175,7 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i += 1) {
         video = sharedVideos[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.sharer_id + '","' + video.sharer_name + '","' + video.sharer_video_id + '","';
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.sharer_id + '","' + video.sharer_name + '","' + video.sharer_video_id + '",';
         csvStr += '\r\n';
       }
       csvData.textContent += csvStr;
@@ -210,12 +210,18 @@ var BCLS = (function(window, document) {
 
     switch (id) {
       case 'getAffiliates':
-        endpoint = '/channels/default/members';
+        endpoint = '/contracts';
         options.url = cmsBaseURL + endpoint;
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          affiliates = JSON.parse(response);
+          responseParsed = JSON.parse(response);
+          iMax = responseParsed.length;
+          for (i = 0; i < iMax; i++) {
+            var o = {};
+            o.account_id = responseParsed[i].account_id;
+            o.account_name = responseParsed[i].channel_account_name;
+          }
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           logMessage('Affiliates retrieved');
           // get some videos
