@@ -264,7 +264,7 @@ var BCLS = (function(window, document) {
             for (i = 0; i < iMax; i++) {
               console.log(videosArray[i]);
               var o = {};
-              if (videosArray[i].sharing !== null && videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
+              if (typeof videosArray[i].sharing === 'object' && videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
                 if (videosArray[i].sharing.by_external_account) {
                   o.id = videosArray[i].id;
                   o.name = videosArray[i].name;
