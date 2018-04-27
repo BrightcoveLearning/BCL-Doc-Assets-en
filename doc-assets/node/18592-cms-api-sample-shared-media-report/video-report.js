@@ -170,12 +170,12 @@ var BCLS = (function(window, document) {
       jMax,
       video;
     if (sharedVideoData.length > 0) {
-      csvStr = '"ID","Name","Sharer ID","Sharer Name","Sharer Video ID","Share Status",\r\n';
+      csvStr = '"ID","Name","Sharer ID","Sharer Name","Sharer Video ID",\r\n';
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
         video = sharedVideoData[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.affiliate_id + '","' + video.affiliate_name + '","' + video.affiliate_video_id + '","' + video.share_status + '","' ;
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.sharer_id + '","' + video.sharer_name + '","' + video.sharer_video_id + '","';
           csvStr += '\r\n';
       }
       csvData.textContent += csvStr;
@@ -187,6 +187,18 @@ var BCLS = (function(window, document) {
   }
 
   function processedSharedVideos() {
+
+    for (i = 0; i < iMax; i++) {
+      var o = {};
+      o.id = sharedVideos[callNumber].id;
+      o.name = sharedVideos[callNumber].name;
+      o.affiliate_id = responseParsed[i].affiliate_id;
+      // look up affiliate name from get affiliates response
+      o.affiliate_name = affiliates[findObjectInArray(affiliates, 'account_id', responseParsed[i].affiliate_id)].account_name;
+      o.affiliate_video_id = responseParsed[i].affiliate_video_id;
+      o.share_status = responseParsed[i].status;
+      sharedVideoData.push(o);
+    }
 
   }
 
@@ -269,10 +281,13 @@ var BCLS = (function(window, document) {
             for (i = 0; i < iMax; i++) {
               var o = {};
               if (isDefined(videosArray[i].sharing)) {
-                o.id = videosArray[i].id;
-                o.name = videosArray[i].name;
-                sharedVideos.push(o);
-console.log('sharedVideos', sharedVideos);
+                if (videosArray[i].sharing.by_external_account) {
+                  o.id = videosArray[i].id;
+                  o.name = videosArray[i].name;
+                  o.sharer_id = videosArray[i].sharing
+                  sharedVideos.push(o);
+                  console.log('sharedVideos', sharedVideos);
+                }
               }
             }
             if (sharedVideos.length === 0) {
@@ -280,39 +295,8 @@ console.log('sharedVideos', sharedVideos);
               return;
             }
             totalSharedVideos = sharedVideos.length;
-            logMessage('All videos retrieved; checking for shares...');
-            callNumber = 0;
+            logMessage('All videos retrieved; creating report');
             createRequest('getShares');
-          }
-        });
-        break;
-      case 'getShares':
-        endPoint = '/videos/' + sharedVideos[callNumber].id + '/shares';
-        options.url = cmsBaseURL + endPoint;
-        apiRequest.textContent = options.url;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          responseParsed = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
-          iMax = responseParsed.length;
-          for (i = 0; i < iMax; i++) {
-            var o = {};
-            o.id = sharedVideos[callNumber].id;
-            o.name = sharedVideos[callNumber].name;
-            o.affiliate_id = responseParsed[i].affiliate_id;
-            // look up affiliate name from get affiliates response
-            o.affiliate_name = affiliates[findObjectInArray(affiliates, 'account_id', responseParsed[i].affiliate_id)].account_name;
-            o.affiliate_video_id = responseParsed[i].affiliate_video_id;
-            o.share_status = responseParsed[i].status;
-            sharedVideoData.push(o);
-          }
-          callNumber++;
-          if (callNumber < totalSharedVideos) {
-            createRequest('getShares');
-          } else {
-            logMessage('Video sharing info retrieved; writing report...');
-            writeReport();
           }
         });
         break;
