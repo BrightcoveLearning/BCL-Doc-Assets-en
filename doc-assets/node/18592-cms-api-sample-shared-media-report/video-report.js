@@ -215,7 +215,6 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          console.log('response', response);
           responseParsed = JSON.parse(response);
           iMax = responseParsed.length;
           for (i = 0; i < iMax; i++) {
@@ -226,7 +225,6 @@ var BCLS = (function(window, document) {
           }
           apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
           logMessage('Affiliates retrieved');
-          console.log(affiliates);
           // get some videos
           createRequest('getCount');
         });
@@ -281,7 +279,6 @@ var BCLS = (function(window, document) {
 
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
-              console.log(videosArray[i].sharing);
               var o = {};
               if (videosArray[i].sharing !== null) {
                 if (videosArray[i].sharing.by_external_acct) {
@@ -296,7 +293,6 @@ var BCLS = (function(window, document) {
                     o.sharer_name = "Sharer account unknown";
                   }
                   sharedVideos.push(o);
-                  console.log('sharedVideos', sharedVideos);
                 }
               }
             }
