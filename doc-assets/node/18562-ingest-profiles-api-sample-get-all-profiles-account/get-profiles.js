@@ -151,7 +151,6 @@ var BCLS = (function(window, document) {
           obsoletes_hidden = true;
         }
       }
-    }
     displayFilteredProfiles();
     return;
   }
