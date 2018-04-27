@@ -263,7 +263,7 @@ var BCLS = (function(window, document) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
               var o = {};
-              if (isDefined(videosArray[i].sharing)) {
+              if (videosArray[i].sharing.hasOwnProperty('by_external_acct')) {
                 if (videosArray[i].sharing.by_external_account) {
                   o.id = videosArray[i].id;
                   o.name = videosArray[i].name;
