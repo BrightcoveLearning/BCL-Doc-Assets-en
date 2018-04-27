@@ -284,7 +284,9 @@ var BCLS = (function(window, document) {
                 if (videosArray[i].sharing.by_external_account) {
                   o.id = videosArray[i].id;
                   o.name = videosArray[i].name;
-                  o.sharer_id = videosArray[i].sharing
+                  o.sharer_id = videosArray[i].sharing.by_id;
+                  o.sharer_video_id = videosArray[i].sharing.source_id;
+                  o.sharer_name = affiliates[findObjectInArray(affiliates, 'account_id', o.sharer_id)].account_name;
                   sharedVideos.push(o);
                   console.log('sharedVideos', sharedVideos);
                 }
