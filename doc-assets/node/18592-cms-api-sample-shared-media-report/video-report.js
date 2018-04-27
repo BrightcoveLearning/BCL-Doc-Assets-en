@@ -13,7 +13,6 @@ var BCLS = (function(window, document) {
     videosCompleted     = 0,
     videosArray         = [],
     sharedVideos        = [],
-    sharedVideoData     = [],
     affiliates          = [],
     summaryData         = {},
     csvStr,
@@ -169,11 +168,11 @@ var BCLS = (function(window, document) {
       j,
       jMax,
       video;
-    if (sharedVideoData.length > 0) {
+    if (sharedVideos.length > 0) {
       csvStr = '"ID","Name","Sharer ID","Sharer Name","Sharer Video ID",\r\n';
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
-        video = sharedVideoData[i];
+        video = sharedVideos[i];
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.sharer_id + '","' + video.sharer_name + '","' + video.sharer_video_id + '","';
           csvStr += '\r\n';
@@ -184,22 +183,6 @@ var BCLS = (function(window, document) {
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
     }
-  }
-
-  function processedSharedVideos() {
-
-    for (i = 0; i < iMax; i++) {
-      var o = {};
-      o.id = sharedVideos[callNumber].id;
-      o.name = sharedVideos[callNumber].name;
-      o.affiliate_id = responseParsed[i].affiliate_id;
-      // look up affiliate name from get affiliates response
-      o.affiliate_name = affiliates[findObjectInArray(affiliates, 'account_id', responseParsed[i].affiliate_id)].account_name;
-      o.affiliate_video_id = responseParsed[i].affiliate_video_id;
-      o.share_status = responseParsed[i].status;
-      sharedVideoData.push(o);
-    }
-
   }
 
   /**
