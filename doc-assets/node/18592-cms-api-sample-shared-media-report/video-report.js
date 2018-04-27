@@ -261,6 +261,14 @@ var BCLS = (function(window, document) {
           if (callNumber < totalCalls) {
             createRequest('getVideos');
           } else {
+            i = videosArray.length;
+            while (i > 0) {
+              i--;
+              if (videosArray[i].sharing === null) {
+                videosArray.splice(i, 1);
+              }
+            }
+
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
               console.log(videosArray[i].sharing);
