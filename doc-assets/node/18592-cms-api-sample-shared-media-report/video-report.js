@@ -1,4 +1,4 @@
-var BCLS = (function(window, document, Rome) {
+var BCLS = (function(window, document) {
   var account_id,
     client_id,
     client_secret,
@@ -416,4 +416,4 @@ var BCLS = (function(window, document, Rome) {
   });
 
   init();
-})(window, document, Rome);
+})(window, document);
