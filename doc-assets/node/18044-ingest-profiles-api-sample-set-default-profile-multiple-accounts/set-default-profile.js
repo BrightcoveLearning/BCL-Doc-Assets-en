@@ -6,14 +6,14 @@ var BCLS = (function(window, document) {
     clientSecret,
     newProfile,
     // api stuff
-    ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip-proxy.php',
+    ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
     ipURLsuffix = '/configuration',
     totalCalls = 0,
     callNumber = 0,
     responseArray = [],
     accountsArray = [],
-    defaultAccounts = ['57838016001', '921483702001', '1937897674001'],
+    defaultAccounts = ['1485884786001'],
     profilesArray = ['smart-player-transition', 'videocloud-default-v1', 'high-resolution', 'screencast-1280', 'single-bitrate-high', 'single-bitrate-standard'],
     // elements
     account_ids = document.getElementById('account_ids'),
@@ -77,10 +77,10 @@ var BCLS = (function(window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setRequestData(id, type, configId) {
+  function setoptions(id, type, configId) {
     var i,
       iMax,
-      requestData = {};
+      options = {};
     switch (id) {
       case 'setDefaults':
         var reqBody = {},
@@ -88,18 +88,18 @@ var BCLS = (function(window, document) {
     logger.textContent = 'Processing account: ' + accountsArray[callNumber];
     endPoint = accountsArray[callNumber];
     proxyURL = ipProxyURL;
-    requestData.url = ipURL + endPoint + ipURLsuffix;
-    requestData.requestType = type;
+    options.url = ipURL + endPoint + ipURLsuffix;
+    options.requestType = type;
     reqBody.account_id = parseInt(accountsArray[callNumber]);
     reqBody.default_profile_id = newProfile;
     if (isDefined(configId)) {
       bclslog('configId', configId);
       reqBody.id = configId;
     }
-    requestData.requestBody = JSON.stringify(reqBody);
-    bclslog('requestBody', requestData.requestBody);
-    apiRequest.textContent = requestData.url;
-    sendRequest(requestData, proxyURL, id, function(response) {
+    options.requestBody = JSON.stringify(reqBody);
+    bclslog('requestBody', options.requestBody);
+    apiRequest.textContent = options.url;
+    sendRequest(options, proxyURL, id, function(response) {
       now = new Date().toISOString();
       logger.textContent = 'Finished at ' + now;
       apiResponse.textContent = JSON.stringify(response, null, '  ');
@@ -110,7 +110,7 @@ var BCLS = (function(window, document) {
 
 /**
  * send API request to the proxy
- * @param  {Object} requestData options for the request
+ * @param  {Object} options options for the request
  * @param  {String} requestID the type of request = id of the button
  * @param  {Function} [callback] callback function
  */
@@ -138,12 +138,12 @@ function sendRequest(options, proxyURL, requestID, callback) {
               bclslog('parsedData', parsedData);
               if (options.requestType === 'POST') {
                 configId = parsedData.id;
-                setRequestData('setDefaults', 'PUT', configId);
+                setoptions('setDefaults', 'PUT', configId);
               } else if (options.requestType === 'PUT') {
                 responseArray.push(parsedData);
                 callNumber++;
                 if (callNumber < totalCalls) {
-                  setRequestData('setDefaults', 'POST');
+                  setoptions('setDefaults', 'POST');
                 } else {
                   callback(responseArray);
                 }
@@ -218,7 +218,7 @@ function init() {
       accountsArray = defaultAccounts;
     }
     totalCalls = accountsArray.length;
-    setRequestData('setDefaults', 'POST');
+    setoptions('setDefaults', 'POST');
   });
 
   apiResponse.addEventListener('click', function() {
