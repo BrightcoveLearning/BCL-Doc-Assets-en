@@ -77,7 +77,7 @@ var BCLS = (function(window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setoptions(id, type, configId) {
+  function setoptions(id, type) {
     var i,
       iMax,
       options = {};
@@ -98,28 +98,18 @@ var BCLS = (function(window, document) {
     options.requestType = type;
     reqBody.account_id = parseInt(accountsArray[callNumber]);
     reqBody.default_profile_id = newProfile;
-    if (isDefined(configId)) {
-      reqBody.id = configId;
-    }
     options.requestBody = JSON.stringify(reqBody);
     apiRequest.textContent = options.url;
     makeRequest(options, function(response) {
       var now = new Date().toISOString();
       parsedData = JSON.parse(response);
-      callback(parsedData);
-    } else if (requestID === 'setDefaults') {
-      response = httpRequest.responseText;
-      parsedData = JSON.parse(response);
-      if (options.requestType === 'POST') {
-        configId = parsedData.id;
-        setoptions('setDefaults', 'PUT', configId);
-      } else if (options.requestType === 'PUT') {
+      if (isDefined(parsedData.code)) {
+        setoptions('setDefaults', 'PUT');
+      } else {
         responseArray.push(parsedData);
         callNumber++;
         if (callNumber < totalCalls) {
           setoptions('setDefaults', 'POST');
-        } else {
-          callback(responseArray);
         }
       }
 
