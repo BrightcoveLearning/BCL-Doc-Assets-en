@@ -81,13 +81,19 @@ var BCLS = (function(window, document) {
     var i,
       iMax,
       options = {};
+
+    options.account_id = account_id;
+    options.proxyURL = proxyURL;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = clientId;
+      options.client_secret = client_secret;
+    }
     switch (id) {
       case 'setDefaults':
         var reqBody = {},
           now;
     logger.textContent = 'Processing account: ' + accountsArray[callNumber];
     endPoint = accountsArray[callNumber];
-    proxyURL = ipProxyURL;
     options.url = ipURL + endPoint + ipURLsuffix;
     options.requestType = type;
     reqBody.account_id = parseInt(accountsArray[callNumber]);
@@ -99,8 +105,8 @@ var BCLS = (function(window, document) {
     options.requestBody = JSON.stringify(reqBody);
     bclslog('requestBody', options.requestBody);
     apiRequest.textContent = options.url;
-    sendRequest(options, proxyURL, id, function(response) {
-      now = new Date().toISOString();
+    sendRequest(options, function(response) {
+      var now = new Date().toISOString();
       logger.textContent = 'Finished at ' + now;
       apiResponse.textContent = JSON.stringify(response, null, '  ');
     });
