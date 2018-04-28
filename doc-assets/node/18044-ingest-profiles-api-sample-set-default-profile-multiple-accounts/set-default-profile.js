@@ -99,11 +99,9 @@ var BCLS = (function(window, document) {
     reqBody.account_id = parseInt(accountsArray[callNumber]);
     reqBody.default_profile_id = newProfile;
     if (isDefined(configId)) {
-      bclslog('configId', configId);
       reqBody.id = configId;
     }
     options.requestBody = JSON.stringify(reqBody);
-    bclslog('requestBody', options.requestBody);
     apiRequest.textContent = options.url;
     makeRequest(options, function(response) {
       var now = new Date().toISOString();
