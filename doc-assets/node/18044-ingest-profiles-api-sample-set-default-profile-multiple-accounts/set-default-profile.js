@@ -105,8 +105,26 @@ var BCLS = (function(window, document) {
     options.requestBody = JSON.stringify(reqBody);
     bclslog('requestBody', options.requestBody);
     apiRequest.textContent = options.url;
-    sendRequest(options, function(response) {
+    makeRequest(options, function(response) {
       var now = new Date().toISOString();
+      parsedData = JSON.parse(response);
+      callback(parsedData);
+    } else if (requestID === 'setDefaults') {
+      response = httpRequest.responseText;
+      parsedData = JSON.parse(response);
+      if (options.requestType === 'POST') {
+        configId = parsedData.id;
+        setoptions('setDefaults', 'PUT', configId);
+      } else if (options.requestType === 'PUT') {
+        responseArray.push(parsedData);
+        callNumber++;
+        if (callNumber < totalCalls) {
+          setoptions('setDefaults', 'POST');
+        } else {
+          callback(responseArray);
+        }
+      }
+
       logger.textContent = 'Finished at ' + now;
       apiResponse.textContent = JSON.stringify(response, null, '  ');
     });
@@ -116,78 +134,51 @@ var BCLS = (function(window, document) {
 
 /**
  * send API request to the proxy
- * @param  {Object} options options for the request
- * @param  {String} requestID the type of request = id of the button
- * @param  {Function} [callback] callback function
+ * @param  {Object} options for the request
+ * @param  {String} options.url the full API request URL
+ * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+ * @param  {String} options.proxyURL proxyURL to send the request to
+ * @param  {String} options.client_id client id for the account (default is in the proxy)
+ * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+ * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+ * @param  {Function} [callback] callback function that will process the response
  */
-function sendRequest(options, proxyURL, requestID, callback) {
+function makeRequest(options, callback) {
   var httpRequest = new XMLHttpRequest(),
-    responseRaw,
-    parsedData,
-    requestParams,
-    dataString,
-    configId,
+    response,
+    proxyURL = options.proxyURL,
     // response handler
     getResponse = function() {
       try {
         if (httpRequest.readyState === 4) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
-            // check for completion
-            if (requestID === 'getCredentials') {
-              responseRaw = httpRequest.responseText;
-              parsedData = JSON.parse(responseRaw);
-              callback(parsedData);
-            } else if (requestID === 'setDefaults') {
-              responseRaw = httpRequest.responseText;
-              bclslog('responseRaw', responseRaw);
-              parsedData = JSON.parse(responseRaw);
-              bclslog('parsedData', parsedData);
-              if (options.requestType === 'POST') {
-                configId = parsedData.id;
-                setoptions('setDefaults', 'PUT', configId);
-              } else if (options.requestType === 'PUT') {
-                responseArray.push(parsedData);
-                callNumber++;
-                if (callNumber < totalCalls) {
-                  setoptions('setDefaults', 'POST');
-                } else {
-                  callback(responseArray);
-                }
-              }
-            } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+            response = httpRequest.responseText;
+            // some API requests return '{null}' for empty responses - breaks JSON.parse
+            if (response === '{null}') {
+              response = null;
             }
+            // return the response
+            callback(response);
+          } else {
+            alert('There was a problem with the request. Request returned ' + httpRequest.status);
           }
         }
       } catch (e) {
         alert('Caught Exception: ' + e);
       }
     };
-  // set up request data
-  requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-  // for the IP API call
-  // add request body if any
-  if (isDefined(options.requestBody)) {
-    requestParams += '&requestBody=' + options.requestBody;
-  }
-  // only add client id and secret if both were submitted
-  if (isDefined(clientId) && isDefined(clientSecret)) {
-    requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-  }
-  // for the OAuth API call
-  if (isDefined(options.name) && isDefined(options.maximum_scope) && isDefined(options.bc_token)) {
-    requestParams += '&name=' + options.name + '&maximum_scope=' + options.maximum_scope.replace(reSlash, '') + '&bc_token=' + options.bc_token;
-  }
-
+  /**
+   * set up request data
+   * the proxy used here takes the following request body:
+   * JSON.stringify(options)
+   */
   // set response handler
   httpRequest.onreadystatechange = getResponse;
   // open the request
   httpRequest.open('POST', proxyURL);
-  // set headers
-  httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // set headers if there is a set header line, remove it
   // open and send request
-  bclslog('requestParams', requestParams);
-  httpRequest.send(requestParams);
+  httpRequest.send(JSON.stringify(options));
 }
 
 function init() {
