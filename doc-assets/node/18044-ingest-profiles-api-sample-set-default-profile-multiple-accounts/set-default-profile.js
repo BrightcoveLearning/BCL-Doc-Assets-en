@@ -105,7 +105,7 @@ console.log('type', type);
       parsedData = JSON.parse(response);
       responseArray.push(parsedData);
       console.log(parsedData);
-      if (parsedData.code === 'CONFLICT') {
+      if (parsedData[0].code === 'CONFLICT') {
         console.log('conflict');
         setoptions('setDefaults', 'PUT');
       } else {
