@@ -86,7 +86,7 @@ var BCLS = (function(window, document) {
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = clientId;
-      options.client_secret = client_secret;
+      options.client_secret = clientSecret;
     }
     switch (id) {
       case 'setDefaults':
