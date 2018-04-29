@@ -106,10 +106,9 @@ console.log('type', type);
       responseArray.push(parsedData);
       console.log(parsedData);
       if Array.isArray(parsedData) {
-        if (parsedData[0].code === 'CONFLICT') {
+        // we have an error, most likely a conflict
           console.log('conflict');
           setoptions('setDefaults', 'PUT');
-        }
       } else {
         console.log('put instead');
         callNumber++;
