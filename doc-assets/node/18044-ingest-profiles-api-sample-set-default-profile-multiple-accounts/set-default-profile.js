@@ -112,11 +112,12 @@ console.log('type', type);
         callNumber++;
         if (callNumber < totalCalls) {
           setoptions('setDefaults', 'POST');
+        } else {
+          logger.textContent = 'Finished at ' + now;
+          apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
         }
       }
 
-      logger.textContent = 'Finished at ' + now;
-      apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
     });
     break;
   }
