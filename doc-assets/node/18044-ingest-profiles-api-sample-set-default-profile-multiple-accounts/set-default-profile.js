@@ -104,7 +104,7 @@ console.log('type', type);
       var now = new Date().toISOString();
       parsedData = JSON.parse(response);
       responseArray.push(parsedData);
-      if (isDefined(parsedData.code)) {
+      if (parsedData.hasOwnProperty('code')) {
         console.log('conflict');
         setoptions('setDefaults', 'PUT');
       } else {
