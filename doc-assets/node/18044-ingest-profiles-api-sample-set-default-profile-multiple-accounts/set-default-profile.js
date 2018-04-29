@@ -6,7 +6,7 @@ var BCLS = (function(window, document) {
     clientSecret,
     newProfile,
     // api stuff
-    ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
     ipURLsuffix = '/configuration',
     totalCalls = 0,
