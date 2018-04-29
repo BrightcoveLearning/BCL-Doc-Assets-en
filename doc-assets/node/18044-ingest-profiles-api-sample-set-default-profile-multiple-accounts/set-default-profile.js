@@ -81,7 +81,7 @@ var BCLS = (function(window, document) {
     var i,
       iMax,
       options = {};
-
+console.log('type', type);
     options.account_id = accountsArray[callNumber];
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
