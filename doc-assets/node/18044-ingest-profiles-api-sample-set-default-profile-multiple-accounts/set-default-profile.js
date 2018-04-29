@@ -82,7 +82,7 @@ var BCLS = (function(window, document) {
       iMax,
       options = {};
 
-    options.account_id = account_id;
+    options.account_id = accountsArray[callNumber];
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = clientId;
