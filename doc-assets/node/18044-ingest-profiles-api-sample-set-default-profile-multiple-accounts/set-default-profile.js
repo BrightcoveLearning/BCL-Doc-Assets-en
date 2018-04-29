@@ -105,9 +105,11 @@ console.log('type', type);
       parsedData = JSON.parse(response);
       responseArray.push(parsedData);
       console.log(parsedData);
-      if (parsedData[0].code === 'CONFLICT') {
-        console.log('conflict');
-        setoptions('setDefaults', 'PUT');
+      if Array.isArray(parsedData) {
+        if (parsedData[0].code === 'CONFLICT') {
+          console.log('conflict');
+          setoptions('setDefaults', 'PUT');
+        }
       } else {
         console.log('put instead');
         callNumber++;
