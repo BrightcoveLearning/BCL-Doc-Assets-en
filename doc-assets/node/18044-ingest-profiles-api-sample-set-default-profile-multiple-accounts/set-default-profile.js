@@ -81,7 +81,6 @@ var BCLS = (function(window, document) {
     var i,
       iMax,
       options = {};
-console.log('type', type);
     options.account_id = accountsArray[callNumber];
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
@@ -104,13 +103,10 @@ console.log('type', type);
       var now = new Date().toISOString();
       parsedData = JSON.parse(response);
       responseArray.push(parsedData);
-      console.log(parsedData);
       if (Array.isArray(parsedData)) {
         // we have an error, most likely a conflict
-          console.log('conflict');
           setoptions('setDefaults', 'PUT');
       } else {
-        console.log('put instead');
         callNumber++;
         if (callNumber < totalCalls) {
           setoptions('setDefaults', 'POST');
