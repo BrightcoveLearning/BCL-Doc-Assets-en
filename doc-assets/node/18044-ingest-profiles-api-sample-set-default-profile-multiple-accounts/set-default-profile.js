@@ -116,7 +116,7 @@ var BCLS = (function(window, document) {
       }
 
       logger.textContent = 'Finished at ' + now;
-      apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
+      apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
     });
     break;
   }
