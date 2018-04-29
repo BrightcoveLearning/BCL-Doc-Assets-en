@@ -103,12 +103,12 @@ var BCLS = (function(window, document) {
     makeRequest(options, function(response) {
       var now = new Date().toISOString();
       parsedData = JSON.parse(response);
+      responseArray.push(parsedData);
       if (isDefined(parsedData.code)) {
         console.log('conflict');
         setoptions('setDefaults', 'PUT');
       } else {
         console.log('put instead');
-        responseArray.push(parsedData);
         callNumber++;
         if (callNumber < totalCalls) {
           setoptions('setDefaults', 'POST');
