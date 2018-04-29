@@ -105,7 +105,7 @@ console.log('type', type);
       parsedData = JSON.parse(response);
       responseArray.push(parsedData);
       console.log(parsedData);
-      if Array.isArray(parsedData) {
+      if (Array.isArray(parsedData)) {
         // we have an error, most likely a conflict
           console.log('conflict');
           setoptions('setDefaults', 'PUT');
