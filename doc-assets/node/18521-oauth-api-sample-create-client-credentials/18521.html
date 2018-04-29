@@ -1,59 +1,76 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="Introduction">Introduction</h2>
-    <p>Getting client credentials is a one-time prerequisite for getting access tokens, which the majority of Brightcove APIs use ato authenticate requests.</p>
-    <p>For a full explanation of client credentials, see <a href="/node/17928">how the Brightcove OAuth service works</a>.</p>
-    <p>This sample shows you how to get client credentials from a web app. Because the OAuth API is not CORS-enabled and requests must be made from the server side, the app sends necessary information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
-  </section>
-  <section class="bcls-section">
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>Getting client credentials is a one-time prerequisite for getting access tokens, which the majority of Brightcove APIs use ato authenticate requests.</p>
+
+<p>For a full explanation of client credentials, see <a href="/node/17928">how the Brightcove OAuth service works</a>.</p>
+
+<p>This sample shows you how to get client credentials from a web app. Because the OAuth API is not CORS-enabled and requests must be made from the server side, the app sends necessary information to a proxy, which then makes the api request and sends the response back to the client. The proxy here is written in PHP, but any server-side language will do - you just need to be able to send a POST request to the app over the internet.</p>
+</section>
+
+<section class="bcls-section">
 <h2 id="gettingCredentials" class="bcls-expander-head">Getting your BC_TOKEN</h2>
 
 <div class="bcls-expander-content">
 <p>To get a <code>client_id</code> and <code>client_secret</code> via the OAuth API, you will need a <code>BC_TOKEN</code> to authenticate your request. Your BC_TOKEN is set as a cookie when you login to Studio. You can get that cookie any way you like, but to make it easier, we have created the following JavaScript snippet - you can paste it into the developer console when you are logged into Studio, press <strong>return</strong>, and a prompt will appear containing the BC_TOKEN:</p>
 <textarea class="bcls-code">var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
-for (i = 0; i < cookiesArray.length; i++) {
+for (i = 0; i &lt; cookiesArray.length; i++) {
     tmpArray = cookiesArray[i].split("=");
-    if (tmpArray[0].indexOf('BC_TOKEN') > -1) {
+    if (tmpArray[0].indexOf('BC_TOKEN') &gt; -1) {
         cookiesObj.BC_TOKEN = tmpArray[1];
     }
 }
 window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</textarea>
+
 <aside class="bcls-aside bcls-aside--information">Note that you must be an admin for your account (or get an admin's BC_TOKEN) in order to create client credentials. If you do not have an admin BC_TOKEN, the request below will return an error.</aside>
 </div>
 </section>
-<section class="bcls-section">
-  <h2 id="app">The app</h2>
-  <fieldset>
-    <legend>Inputs</legend>
-    <p>Name for the credentials (no special characters): <input id="credentialsName" type="text" size="50"></p>
-    <p>BC_TOKEN: <input id="bcToken" type="text" size="50"></p>
-    <p>Account(s) to create credentials for (comma-delimited list): <input id="accountIds" type="text" size="50" placeholder="57838016001,1752604059001,921483702001"></p>
-    <p>Account(s) type: <select name="accountTypeSelector" id="accountTypeSelector">
-      <option value="video-cloud-account">Video Cloud</option>
-      <option value="video-cloud-account">Brightcove Player</option>
-    </select></p>
-    <p>API operations to enable (see <a href="/node/17922">API Operations for Client Credentials</a> for more information):</p>
-    <div id="operationsList">
 
-    </div>
-    <p><button id="submitButton" class="bcls-button">Get Client Credentials</button></p>
-    <p>Full API request body:</p>
-    <textarea name="apiRequest" id="apiRequest" class="bcls-code"></textarea>
-  </fieldset>
-  <fieldset>
-    <legend>Output</legend>
-    <h3>Client ID</h3>
-    <textarea name="clientId" id="clientId" class="bcls-code">CLient ID will appear here...</textarea>
-    <h3>Client Secret</h3>
-    <textarea name="clientSecret" id="clientSecret" class="bcls-code">CLient Secret will appear here...</textarea>
-    <h3>Full response</h3>
-  <pre class="line-numbers"><code id="apiResponse" class="language-json">Full API response will appear here...</code></pre>
-  </fieldset>
-</section>
 <section class="bcls-section">
-  <h2 id="code">Code for the app</h2>
-  <h3>HTML</h3>
-<pre class="line-numbers"><code class="language-html">&lt;section class="bcls-section"&gt;
+<h2 id="app">The app</h2>
+
+<fieldset><legend>Inputs</legend>
+
+<p>Name for the credentials (no special characters): <input id="credentialsName" type="text" size="50" /></p>
+
+<p>BC_TOKEN: <input id="bcToken" type="text" size="50" /></p>
+
+<p>Account(s) to create credentials for (comma-delimited list): <input id="accountIds" type="text" size="50" placeholder="57838016001,1752604059001,921483702001" /></p>
+
+<p>Account(s) type: <select name="accountTypeSelector" id="accountTypeSelector"><option value="video-cloud-account">Video Cloud</option><option value="video-cloud-account">Brightcove Player</option> </select></p>
+
+<p>API operations to enable (see <a href="/node/17922">API Operations for Client Credentials</a> for more information):</p>
+
+<div id="operationsList">&nbsp;</div>
+
+<p><button id="submitButton" class="bcls-button">Get Client Credentials</button></p>
+
+<p>Full API request body:</p>
+<textarea name="apiRequest" id="apiRequest" class="bcls-code"></textarea></fieldset>
+
+<fieldset><legend>Output</legend>
+
+<h3>Client ID</h3>
+<textarea name="clientId" id="clientId" class="bcls-code">CLient ID will appear here...</textarea>
+
+<h3>Client Secret</h3>
+<textarea name="clientSecret" id="clientSecret" class="bcls-code">CLient Secret will appear here...</textarea>
+
+<h3>Full response</h3>
+
+<pre class="line-numbers">
+<code id="apiResponse" class="language-json">Full API response will appear here...</code></pre>
+</fieldset>
+</section>
+
+<section class="bcls-section">
+<h2 id="code">Code for the app</h2>
+
+<h3>HTML</h3>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;section class="bcls-section"&gt;
   &lt;h2 id="app"&gt;The app&lt;/h2&gt;
   &lt;fieldset&gt;
     &lt;legend&gt;Inputs&lt;/legend&gt;
@@ -83,8 +100,11 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</textarea>
   &lt;/fieldset&gt;
 &lt;/section&gt;
 </code></pre>
-  <h3>JavaScript</h3>
-<pre class="line-numbers"><code class="language-javascript">var BCLS = ( function (window, document) {
+
+<h3>JavaScript</h3>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function (window, document) {
   var bcToken   = document.getElementById('bcToken'),
     credentialsName = document.getElementById('credentialsName'),
     accountIds = document.getElementById('accountIds'),
@@ -363,8 +383,11 @@ function makeRequest(options, callback) {
 
 })(window, document);
 </code></pre>
-  <h3>Proxy (PHP)</h3>
-<pre class="line-numbers"><code class="language-php">&lt;?php
+
+<h3>Proxy (PHP)</h3>
+
+<pre class="line-numbers">
+<code class="language-php">&lt;?php
 /**
  * client-credentials-proxy.php - proxy for Brightcove RESTful APIs
  * gets a client id and client secret and returns the whole response
