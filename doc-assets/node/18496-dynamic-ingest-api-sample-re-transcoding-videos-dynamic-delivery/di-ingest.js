@@ -188,7 +188,8 @@ var BCLS = (function(window, document) {
       reqBody.callbacks = callbacks;
       options.requestBody = JSON.stringify(reqBody);
       options.requestType = "POST";
-      options.url = di_url_display.value;
+      options.url = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + videoData[videoNumber] + '/ingest-requests';
+      di_url_display = options.url;
       // now submit the request
       makeRequest(options, function(response) {
         response = JSON.parse(response);
