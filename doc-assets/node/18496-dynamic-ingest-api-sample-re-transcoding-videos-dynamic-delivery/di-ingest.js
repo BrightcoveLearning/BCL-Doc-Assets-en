@@ -107,7 +107,6 @@ var BCLS = (function(window, document) {
   function toggleObsoleteProfiles() {
     // below are the obsolete profiles - you just have to know their names
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
-    if (isChecked(hide_obsolete)) {
       i = all_current_profiles.length;
       while (i > 0) {
         i--;
@@ -116,21 +115,8 @@ var BCLS = (function(window, document) {
         }
         if (!obsoletes_hidden) {
           obsoletes_hidden = true;
-        }
-      }
-    } else {
-      var index;
-      if (obsoletes_hidden) {
-        iMax = deprecated_profiles.length;
-        for (i = 0; i < iMax; i++) {
-          index = findObjectInArray(all_profiles, 'name', deprecated_profiles[i]);
-          all_current_profiles.push(all_profiles[index]);
-          obsoletes_hidden = false;
-        }
-        obsoletes_hidden = false;
       }
     }
-    displayFilteredProfiles();
     return;
   }
 
