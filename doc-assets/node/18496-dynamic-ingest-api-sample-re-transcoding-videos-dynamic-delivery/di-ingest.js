@@ -72,7 +72,7 @@ var BCLS = (function(window, document) {
     makeRequest(options, function(response) {
       response = JSON.parse(response);
       totalIngested++;
-      logResponse("totalIngested", totalIngested);
+      logResponse("total transcoded", totalIngested);
       if (videoNumber < totalVideos - 1) {
         videoNumber++;
         currentJobs++;
