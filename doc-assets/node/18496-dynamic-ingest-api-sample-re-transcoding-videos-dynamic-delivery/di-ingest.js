@@ -145,8 +145,8 @@ var BCLS = (function(window, document) {
       option.value = all_current_profiles[i].name;
       fragment.appendChild(option);
     }
-    profile_list.innerHTML = '';
-    profile_list.appendChild(ul);
+    ingest_profile_display.innerHTML = '';
+    profile_list.appendChild(fragment);
     return;
   }
 
