@@ -204,10 +204,10 @@ var BCLS = (function(window, document) {
             // reset currentJobs
             currentJobs = 0;
             // wait 5 min before resuming
-            t2 = setTimeout(setDIOptions, 30000);
+            t2 = setTimeout(createRequest('transcodeVideos'), 30000);
           } else {
             // pause slightly to reduce change of hitting jobs overload
-            t2 = setTimeout(setDIOptions, 1000);
+            t2 = setTimeout(createRequest('transcodeVideos'), 1000);
           }
         }
       });
