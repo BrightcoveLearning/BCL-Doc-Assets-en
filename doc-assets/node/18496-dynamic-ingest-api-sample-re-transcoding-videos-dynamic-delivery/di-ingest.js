@@ -245,6 +245,7 @@ var BCLS = (function(window, document) {
                 response = null;
               }
               // return the response
+              console.log(response);
               callback(response);
             } else {
               alert(
