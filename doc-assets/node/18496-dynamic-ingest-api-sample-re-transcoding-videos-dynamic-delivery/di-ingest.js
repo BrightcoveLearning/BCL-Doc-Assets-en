@@ -46,6 +46,22 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
+
+
+
+  /**
    * determines whether specified item is in an array
    *
    * @param {array} array to check
