@@ -140,9 +140,10 @@ var BCLS = (function(window, document) {
       iMax;
     iMax = all_current_profiles.length;
     for (i = 0; i < iMax; i++) {
-      li = document.createElement('li');
-      li.textContent = all_current_profiles[i].name;
-      ul.appendChild(li);
+      options = document.createElement('option');
+      option.textContent = all_current_profiles[i].name;
+      option.value = all_current_profiles[i].name;
+      fragment.appendChild(option);
     }
     profile_list.innerHTML = '';
     profile_list.appendChild(ul);
