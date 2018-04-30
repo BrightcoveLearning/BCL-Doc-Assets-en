@@ -159,10 +159,9 @@ var BCLS = (function(window, document) {
       makeRequest(options, function(response) {
         if (isJson(response)) {
           current_profiles = JSON.parse(response);
-          resetAllCurrentProfiles();
           toggleObsoleteProfiles();
           // hide legacy profiles
-          i = all_current_profiles.length;
+          i = current_profiles.length;
           while (i > 0) {
             i--;
             if (!current_profiles[i].hasOwnProperty('dynamic_origin')) {
