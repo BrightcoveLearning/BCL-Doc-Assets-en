@@ -308,6 +308,14 @@ var BCLS = (function(window, document) {
     this.select();
   });
 
+  account_id_display.addEventListener('blur', function() {
+    // refresh Profiles
+    account_id = account_id_display.value;
+    // get account profiles
+    createRequest('getProfiles');
+
+  })
+
   di_submit_display.addEventListener("click", function() {
     var i,
       now = new Date().valueOf();
@@ -335,11 +343,14 @@ var BCLS = (function(window, document) {
       "/videos/" +
       videoData[videoNumber].id +
       "/ingest-requests";
-    // set CMS API options for first video
+
+    // set DI API options for first video
     createRequest('transcodeVideos');
   });
   // initialize
   function init() {
+    // default account id
+    account_id = defaults.account_id;
     // get account profiles
     createRequest('getProfiles');
   }
