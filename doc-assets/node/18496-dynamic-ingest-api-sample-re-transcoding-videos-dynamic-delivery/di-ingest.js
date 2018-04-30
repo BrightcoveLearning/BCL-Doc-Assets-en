@@ -183,7 +183,7 @@ var BCLS = (function(window, document) {
         ingest_profile_display.options[ingest_profile_display.selectedIndex]
         .value;
       reqBody.master = {};
-      reqBody.master.url = videoData[videoNumber].url;
+      reqBody.master.use_archived_master = true;
       reqBody.profile = ingest_profile;
       reqBody.callbacks = callbacks;
       options.requestBody = JSON.stringify(reqBody);
