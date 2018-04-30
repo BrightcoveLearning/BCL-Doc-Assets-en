@@ -291,10 +291,6 @@ var BCLS = (function(window, document) {
       now = new Date().valueOf();
     videoData = JSON.parse(videoDataDisplay.value);
     totalVideos = videoData.length;
-    // to insure uniqueness,
-    for (i = 0; i < totalVideos; i++) {
-      videoData[i].reference_id += "_" + now.toString();
-    }
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
     // get account inputs
@@ -311,7 +307,7 @@ var BCLS = (function(window, document) {
       di_url +
       account_id +
       "/videos/" +
-      videoData[videoNumber].id +
+      videoData[videoNumber] +
       "/ingest-requests";
 
     // set DI API options for first video
