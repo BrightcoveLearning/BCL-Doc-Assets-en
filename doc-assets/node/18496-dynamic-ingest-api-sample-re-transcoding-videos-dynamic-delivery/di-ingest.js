@@ -126,7 +126,7 @@ var BCLS = (function(window, document) {
       iMax;
     iMax = current_profiles.length;
     for (i = 0; i < iMax; i++) {
-      options = document.createElement('option');
+      option = document.createElement('option');
       option.textContent = current_profiles[i].name;
       option.value = current_profiles[i].name;
       fragment.appendChild(option);
