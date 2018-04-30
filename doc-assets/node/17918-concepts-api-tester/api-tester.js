@@ -7,19 +7,6 @@
             $submit = document.getElementById("submit"),
             $response = document.getElementById("response");
 
-        /**
-         * Logging function - safe for IE
-         * @param  {string} context - description of the data
-         * @param  {*} message - the data to be logged by the console
-         * @return {}
-         */
-        function bclslog(context, message) {
-            if (window["console"] && console["log"]) {
-              console.log(context, message);
-            }
-            return;
-        }
-
         // is defined
         function isDefined(x){
             if(x === "" || x === null || x === undefined){
@@ -30,10 +17,8 @@
         // function to remove spaces and line breaks
         function cleanString(str) {
             if (str !== "") {
-                bclslog('str', str);
                 // remove line breaks
                 str = str.replace(/(\r\n|\n|\r)/gm,"");
-                bclslog('str - no line breaks', str);
                 // remove spaces
                 // here we have to be careful - spaces fine within strings
                 // but not outside them

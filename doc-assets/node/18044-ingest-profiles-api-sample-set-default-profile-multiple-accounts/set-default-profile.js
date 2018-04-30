@@ -6,14 +6,14 @@ var BCLS = (function(window, document) {
     clientSecret,
     newProfile,
     // api stuff
-    ipProxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/ip-proxy.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
     ipURLsuffix = '/configuration',
     totalCalls = 0,
     callNumber = 0,
     responseArray = [],
     accountsArray = [],
-    defaultAccounts = ['57838016001', '921483702001', '1937897674001'],
+    defaultAccounts = ['1485884786001'],
     profilesArray = ['smart-player-transition', 'videocloud-default-v1', 'high-resolution', 'screencast-1280', 'single-bitrate-high', 'single-bitrate-standard'],
     // elements
     account_ids = document.getElementById('account_ids'),
@@ -77,32 +77,45 @@ var BCLS = (function(window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setRequestData(id, type, configId) {
+  function setoptions(id, type) {
     var i,
       iMax,
-      requestData = {};
+      options = {};
+    options.account_id = accountsArray[callNumber];
+    options.proxyURL = proxyURL;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = clientId;
+      options.client_secret = clientSecret;
+    }
     switch (id) {
       case 'setDefaults':
         var reqBody = {},
           now;
     logger.textContent = 'Processing account: ' + accountsArray[callNumber];
     endPoint = accountsArray[callNumber];
-    proxyURL = ipProxyURL;
-    requestData.url = ipURL + endPoint + ipURLsuffix;
-    requestData.requestType = type;
+    options.url = ipURL + endPoint + ipURLsuffix;
+    options.requestType = type;
     reqBody.account_id = parseInt(accountsArray[callNumber]);
     reqBody.default_profile_id = newProfile;
-    if (isDefined(configId)) {
-      bclslog('configId', configId);
-      reqBody.id = configId;
-    }
-    requestData.requestBody = JSON.stringify(reqBody);
-    bclslog('requestBody', requestData.requestBody);
-    apiRequest.textContent = requestData.url;
-    sendRequest(requestData, proxyURL, id, function(response) {
-      now = new Date().toISOString();
-      logger.textContent = 'Finished at ' + now;
-      apiResponse.textContent = JSON.stringify(response, null, '  ');
+    options.requestBody = JSON.stringify(reqBody);
+    apiRequest.textContent = options.url;
+    makeRequest(options, function(response) {
+      var now = new Date().toISOString();
+      parsedData = JSON.parse(response);
+      responseArray.push(parsedData);
+      if (Array.isArray(parsedData)) {
+        // we have an error, most likely a conflict
+          setoptions('setDefaults', 'PUT');
+      } else {
+        callNumber++;
+        if (callNumber < totalCalls) {
+          setoptions('setDefaults', 'POST');
+        } else {
+          logger.textContent = 'Finished at ' + now;
+          apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
+        }
+      }
+
     });
     break;
   }
@@ -110,78 +123,51 @@ var BCLS = (function(window, document) {
 
 /**
  * send API request to the proxy
- * @param  {Object} requestData options for the request
- * @param  {String} requestID the type of request = id of the button
- * @param  {Function} [callback] callback function
+ * @param  {Object} options for the request
+ * @param  {String} options.url the full API request URL
+ * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+ * @param  {String} options.proxyURL proxyURL to send the request to
+ * @param  {String} options.client_id client id for the account (default is in the proxy)
+ * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+ * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+ * @param  {Function} [callback] callback function that will process the response
  */
-function sendRequest(options, proxyURL, requestID, callback) {
+function makeRequest(options, callback) {
   var httpRequest = new XMLHttpRequest(),
-    responseRaw,
-    parsedData,
-    requestParams,
-    dataString,
-    configId,
+    response,
+    proxyURL = options.proxyURL,
     // response handler
     getResponse = function() {
       try {
         if (httpRequest.readyState === 4) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
-            // check for completion
-            if (requestID === 'getCredentials') {
-              responseRaw = httpRequest.responseText;
-              parsedData = JSON.parse(responseRaw);
-              callback(parsedData);
-            } else if (requestID === 'setDefaults') {
-              responseRaw = httpRequest.responseText;
-              bclslog('responseRaw', responseRaw);
-              parsedData = JSON.parse(responseRaw);
-              bclslog('parsedData', parsedData);
-              if (options.requestType === 'POST') {
-                configId = parsedData.id;
-                setRequestData('setDefaults', 'PUT', configId);
-              } else if (options.requestType === 'PUT') {
-                responseArray.push(parsedData);
-                callNumber++;
-                if (callNumber < totalCalls) {
-                  setRequestData('setDefaults', 'POST');
-                } else {
-                  callback(responseArray);
-                }
-              }
-            } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+            response = httpRequest.responseText;
+            // some API requests return '{null}' for empty responses - breaks JSON.parse
+            if (response === '{null}') {
+              response = null;
             }
+            // return the response
+            callback(response);
+          } else {
+            alert('There was a problem with the request. Request returned ' + httpRequest.status);
           }
         }
       } catch (e) {
         alert('Caught Exception: ' + e);
       }
     };
-  // set up request data
-  requestParams = "url=" + encodeURIComponent(options.url) + "&requestType=" + options.requestType;
-  // for the IP API call
-  // add request body if any
-  if (isDefined(options.requestBody)) {
-    requestParams += '&requestBody=' + options.requestBody;
-  }
-  // only add client id and secret if both were submitted
-  if (isDefined(clientId) && isDefined(clientSecret)) {
-    requestParams += '&client_id=' + clientId + '&client_secret=' + clientSecret;
-  }
-  // for the OAuth API call
-  if (isDefined(options.name) && isDefined(options.maximum_scope) && isDefined(options.bc_token)) {
-    requestParams += '&name=' + options.name + '&maximum_scope=' + options.maximum_scope.replace(reSlash, '') + '&bc_token=' + options.bc_token;
-  }
-
+  /**
+   * set up request data
+   * the proxy used here takes the following request body:
+   * JSON.stringify(options)
+   */
   // set response handler
   httpRequest.onreadystatechange = getResponse;
   // open the request
   httpRequest.open('POST', proxyURL);
-  // set headers
-  httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // set headers if there is a set header line, remove it
   // open and send request
-  bclslog('requestParams', requestParams);
-  httpRequest.send(requestParams);
+  httpRequest.send(JSON.stringify(options));
 }
 
 function init() {
@@ -218,7 +204,7 @@ function init() {
       accountsArray = defaultAccounts;
     }
     totalCalls = accountsArray.length;
-    setRequestData('setDefaults', 'POST');
+    setoptions('setDefaults', 'POST');
   });
 
   apiResponse.addEventListener('click', function() {
