@@ -119,6 +119,37 @@ var BCLS = (function(window, document) {
     return;
   }
 
+  /**
+   * resets the current profiles array to all profiles
+   */
+  function resetAllCurrentProfiles() {
+    iMax = all_profiles.length;
+    all_current_profiles = [];
+    for (i = 0; i < iMax; i++) {
+      all_current_profiles.push(all_profiles[i]);
+    }
+  }
+
+  /**
+   * displays the filtered list of profiles
+   */
+  function displayFilteredProfiles() {
+    var option,
+      fragment = document.createDocumentFragment(),
+      i,
+      iMax;
+    iMax = all_current_profiles.length;
+    for (i = 0; i < iMax; i++) {
+      li = document.createElement('li');
+      li.textContent = all_current_profiles[i].name;
+      ul.appendChild(li);
+    }
+    profile_list.innerHTML = '';
+    profile_list.appendChild(ul);
+    return;
+  }
+
+
 
   // set options for the Dynamic Ingest API request
   function createRequest(type) {
@@ -134,6 +165,7 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getProfiles':
+      var i;
       endpoint = '/profiles';
       options.url = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id + endpoint;
       api_request_display.textContent = options.url;
@@ -145,6 +177,15 @@ var BCLS = (function(window, document) {
           all_profiles = responseDecoded;
           resetAllCurrentProfiles();
           toggleObsoleteProfiles();
+          // hide legacy profiles
+          i = all_current_profiles.length;
+          while (i > 0) {
+            i--;
+            if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              all_current_profiles.splice(i, 1);
+            }
+          }
+
           displayFilteredProfiles();
         } else {
           api_response.textContent = response;
