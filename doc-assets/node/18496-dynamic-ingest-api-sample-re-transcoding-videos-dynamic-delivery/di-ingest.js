@@ -8,7 +8,6 @@ var BCLS = (function(window, document) {
     client_secret,
     ingest_profile_display = document.getElementById("ingest_profile_display"),
     ingest_profile,
-    custom_profile_display = document.getElementById("custom_profile_display"),
     videoDataDisplay = document.getElementById("videoData"),
     all_profiles = [],
     all_current_profiles = [],
@@ -196,15 +195,10 @@ var BCLS = (function(window, document) {
       });
         break;
       case 'transcodeVideos':
-      var custom_profile_display_value = custom_profile_display.value;
       // get the ingest profile
-      if (isDefined(custom_profile_display_value)) {
-        ingest_profile = custom_profile_display_value;
-      } else {
         ingest_profile =
         ingest_profile_display.options[ingest_profile_display.selectedIndex]
         .value;
-      }
       reqBody.master = {};
       reqBody.master.url = videoData[videoNumber].url;
       reqBody.profile = ingest_profile;
@@ -294,6 +288,11 @@ var BCLS = (function(window, document) {
     httpRequest.send(JSON.stringify(options));
   }
 
+  // event listeners
+  videoDataDisplay.addEventListener('click', function() {
+    this.select();
+  });
+
   di_submit_display.addEventListener("click", function() {
     var i,
       now = new Date().valueOf();
@@ -322,18 +321,12 @@ var BCLS = (function(window, document) {
       videoData[videoNumber].id +
       "/ingest-requests";
     // set CMS API options for first video
-    setDIOptions();
+    createRequest('transcodeVideos');
   });
   // initialize
   function init() {
-    var i,
-      iMax = profilesArray.length,
-      newOpt;
-    // add options for standard ingest profiles
-    for (i = 0; i < iMax; i++) {
-      newOpt = new Option(profilesArray[i]);
-      ingest_profile_display.add(newOpt);
-    }
+    // get account profiles
+    createRequest('getProfiles');
   }
   // call init to set things up
   init();
