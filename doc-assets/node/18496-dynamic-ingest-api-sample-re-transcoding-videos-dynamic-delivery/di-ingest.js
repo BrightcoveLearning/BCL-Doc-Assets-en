@@ -9,8 +9,7 @@ var BCLS = (function(window, document) {
     ingest_profile_display = document.getElementById("ingest_profile_display"),
     ingest_profile,
     videoDataDisplay = document.getElementById("videoData"),
-    all_profiles = [],
-    all_current_profiles = [],
+    current_profiles = [],
     live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
     // Dynamic Ingest API stuff
     profilesArray = [
@@ -107,28 +106,14 @@ var BCLS = (function(window, document) {
   function toggleObsoleteProfiles() {
     // below are the obsolete profiles - you just have to know their names
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
-      i = all_current_profiles.length;
+      i = current_profiles.length;
       while (i > 0) {
         i--;
-        if (arrayContains(deprecated_profiles, all_current_profiles[i].name)) {
-          all_current_profiles.splice(i, 1);
+        if (arrayContains(deprecated_profiles, current_profiles[i].name)) {
+          current_profiles.splice(i, 1);
         }
-        if (!obsoletes_hidden) {
-          obsoletes_hidden = true;
-      }
     }
     return;
-  }
-
-  /**
-   * resets the current profiles array to all profiles
-   */
-  function resetAllCurrentProfiles() {
-    iMax = all_profiles.length;
-    all_current_profiles = [];
-    for (i = 0; i < iMax; i++) {
-      all_current_profiles.push(all_profiles[i]);
-    }
   }
 
   /**
@@ -139,11 +124,11 @@ var BCLS = (function(window, document) {
       fragment = document.createDocumentFragment(),
       i,
       iMax;
-    iMax = all_current_profiles.length;
+    iMax = current_profiles.length;
     for (i = 0; i < iMax; i++) {
       options = document.createElement('option');
-      option.textContent = all_current_profiles[i].name;
-      option.value = all_current_profiles[i].name;
+      option.textContent = current_profiles[i].name;
+      option.value = current_profiles[i].name;
       fragment.appendChild(option);
     }
     ingest_profile_display.innerHTML = '';
@@ -173,15 +158,15 @@ var BCLS = (function(window, document) {
       options.requestType = 'GET';
       makeRequest(options, function(response) {
         if (isJson(response)) {
-          all_profiles = JSON.parse(response);
+          current_profiles = JSON.parse(response);
           resetAllCurrentProfiles();
           toggleObsoleteProfiles();
           // hide legacy profiles
           i = all_current_profiles.length;
           while (i > 0) {
             i--;
-            if (all_current_profiles[i].hasOwnProperty('dynamic_origin')) {
-              all_current_profiles.splice(i, 1);
+            if (!current_profiles[i].hasOwnProperty('dynamic_origin')) {
+              current_profiles.splice(i, 1);
             }
           }
 
