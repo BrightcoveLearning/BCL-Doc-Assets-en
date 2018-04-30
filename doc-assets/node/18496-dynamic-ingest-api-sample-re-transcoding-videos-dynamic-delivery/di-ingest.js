@@ -168,7 +168,6 @@ var BCLS = (function(window, document) {
       var i;
       endpoint = '/profiles';
       options.url = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id + endpoint;
-      api_request_display.textContent = options.url;
       options.requestType = 'GET';
       makeRequest(options, function(response) {
         if (isJson(response)) {
