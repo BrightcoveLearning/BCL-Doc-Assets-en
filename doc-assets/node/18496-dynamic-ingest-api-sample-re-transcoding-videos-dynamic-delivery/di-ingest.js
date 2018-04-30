@@ -187,9 +187,7 @@ var BCLS = (function(window, document) {
       options.requestType = 'GET';
       makeRequest(options, function(response) {
         if (isJson(response)) {
-          responseDecoded = JSON.parse(response);
-          api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
-          all_profiles = responseDecoded;
+          all_profiles = JSON.parse(response);
           resetAllCurrentProfiles();
           toggleObsoleteProfiles();
           // hide legacy profiles
