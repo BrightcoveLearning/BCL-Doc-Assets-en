@@ -132,7 +132,7 @@ var BCLS = (function(window, document) {
       fragment.appendChild(option);
     }
     ingest_profile_display.innerHTML = '';
-    profile_list.appendChild(fragment);
+    ingest_profile_display.appendChild(fragment);
     return;
   }
 
