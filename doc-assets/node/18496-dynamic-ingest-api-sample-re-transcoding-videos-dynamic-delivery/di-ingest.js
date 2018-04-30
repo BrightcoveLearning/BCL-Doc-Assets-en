@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var // CMS API stuff
+  var // Ingest Profiles API stuff
     account_id_display = document.getElementById("account_id"),
     account_id,
     client_id_display = document.getElementById("client_id"),
@@ -10,6 +10,9 @@ var BCLS = (function(window, document) {
     ingest_profile,
     custom_profile_display = document.getElementById("custom_profile_display"),
     videoDataDisplay = document.getElementById("videoData"),
+    all_profiles = [],
+    all_current_profiles = [],
+    live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
     // Dynamic Ingest API stuff
     profilesArray = [
       "multi-platform-extended-static",
@@ -42,54 +45,155 @@ var BCLS = (function(window, document) {
     }
     return true;
   }
-  // set options for the Dynamic Ingest API request
-  function setDIOptions() {
-    var options = {},
-      reqBody = {};
-    custom_profile_display_value = custom_profile_display.value;
-    // get the ingest profile
-    if (isDefined(custom_profile_display_value)) {
-      ingest_profile = custom_profile_display_value;
-    } else {
-      ingest_profile =
-        ingest_profile_display.options[ingest_profile_display.selectedIndex]
-          .value;
-    }
-    if (isDefined(client_id) && isDefined(client_secret)) {
-      options.client_id = client_id;
-      options.client_secret = client_secret;
-    }
-    options.account_id = account_id;
-    options.proxyURL = proxyURL;
-    reqBody.master = {};
-    reqBody.master.url = videoData[videoNumber].url;
-    reqBody.profile = ingest_profile;
-    reqBody.callbacks = callbacks;
-    options.requestBody = JSON.stringify(reqBody);
-    options.requestType = "POST";
-    options.url = di_url_display.value;
-    // now submit the request
-    makeRequest(options, function(response) {
-      response = JSON.parse(response);
-      totalIngested++;
-      logResponse("total transcoded", totalIngested);
-      if (videoNumber < totalVideos - 1) {
-        videoNumber++;
-        currentJobs++;
-        logResponse("Processing video number", videoNumber);
-        logResponse("Current jobs: ", currentJobs);
-        // if currentJobs is > 99, need to pause
-        if (currentJobs > 99) {
-          // reset currentJobs
-          currentJobs = 0;
-          // wait 5 min before resuming
-          t2 = setTimeout(setDIOptions, 30000);
-        } else {
-          // pause slightly to reduce change of hitting jobs overload
-          t2 = setTimeout(setDIOptions, 1000);
+
+  /**
+   * determines whether specified item is in an array
+   *
+   * @param {array} array to check
+   * @param {string} item to check for
+   * @return {boolean} true if item is in the array, else false
+   */
+  function arrayContains(arr, item) {
+      var i,
+          iMax = arr.length;
+      for (i = 0; i < iMax; i++) {
+          if (arr[i] === item) {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  /**
+   * find index of an object in array of objects
+   * based on some property value
+   *
+   * @param {array} targetArray array to search
+   * @param {string} objProperty object property to search
+   * @param {string} value of the property to search for
+   * @return {integer} index of first instance if found, otherwise returns -1
+  */
+  function findObjectInArray(targetArray, objProperty, value) {
+      var i, totalItems = targetArray.length, objFound = false;
+      for (i = 0; i < totalItems; i++) {
+          if (targetArray[i][objProperty] === value) {
+              objFound = true;
+              return i;
+          }
+      }
+      if (objFound === false) {
+          return -1;
+      }
+  }
+
+/**
+ * remove or add obsolete profiles from the current profiles list
+ */
+  function toggleObsoleteProfiles() {
+    // below are the obsolete profiles - you just have to know their names
+    var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
+    if (isChecked(hide_obsolete)) {
+      i = all_current_profiles.length;
+      while (i > 0) {
+        i--;
+        if (arrayContains(deprecated_profiles, all_current_profiles[i].name)) {
+          all_current_profiles.splice(i, 1);
+        }
+        if (!obsoletes_hidden) {
+          obsoletes_hidden = true;
         }
       }
-    });
+    } else {
+      var index;
+      if (obsoletes_hidden) {
+        iMax = deprecated_profiles.length;
+        for (i = 0; i < iMax; i++) {
+          index = findObjectInArray(all_profiles, 'name', deprecated_profiles[i]);
+          all_current_profiles.push(all_profiles[index]);
+          obsoletes_hidden = false;
+        }
+        obsoletes_hidden = false;
+      }
+    }
+    displayFilteredProfiles();
+    return;
+  }
+
+
+  // set options for the Dynamic Ingest API request
+  function createRequest(type) {
+    var options = {},
+      reqBody = {};
+
+      if (isDefined(client_id) && isDefined(client_secret)) {
+        options.client_id = client_id;
+        options.client_secret = client_secret;
+      }
+      options.account_id = account_id;
+      options.proxyURL = proxyURL;
+
+    switch (type) {
+      case 'getProfiles':
+      endpoint = '/profiles';
+      options.url = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id + endpoint;
+      api_request_display.textContent = options.url;
+      options.requestType = 'GET';
+      makeRequest(options, function(response) {
+        if (isJson(response)) {
+          responseDecoded = JSON.parse(response);
+          api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+          all_profiles = responseDecoded;
+          resetAllCurrentProfiles();
+          toggleObsoleteProfiles();
+          displayFilteredProfiles();
+        } else {
+          api_response.textContent = response;
+          logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
+          return;
+        }
+      });
+        break;
+      case 'transcodeVideos':
+      var custom_profile_display_value = custom_profile_display.value;
+      // get the ingest profile
+      if (isDefined(custom_profile_display_value)) {
+        ingest_profile = custom_profile_display_value;
+      } else {
+        ingest_profile =
+        ingest_profile_display.options[ingest_profile_display.selectedIndex]
+        .value;
+      }
+      reqBody.master = {};
+      reqBody.master.url = videoData[videoNumber].url;
+      reqBody.profile = ingest_profile;
+      reqBody.callbacks = callbacks;
+      options.requestBody = JSON.stringify(reqBody);
+      options.requestType = "POST";
+      options.url = di_url_display.value;
+      // now submit the request
+      makeRequest(options, function(response) {
+        response = JSON.parse(response);
+        totalIngested++;
+        logResponse("total transcoded", totalIngested);
+        if (videoNumber < totalVideos - 1) {
+          videoNumber++;
+          currentJobs++;
+          logResponse("Processing video number", videoNumber);
+          logResponse("Current jobs: ", currentJobs);
+          // if currentJobs is > 99, need to pause
+          if (currentJobs > 99) {
+            // reset currentJobs
+            currentJobs = 0;
+            // wait 5 min before resuming
+            t2 = setTimeout(setDIOptions, 30000);
+          } else {
+            // pause slightly to reduce change of hitting jobs overload
+            t2 = setTimeout(setDIOptions, 1000);
+          }
+        }
+      });
+
+    }
   }
   // function to set the request
   function logResponse(type, data) {
