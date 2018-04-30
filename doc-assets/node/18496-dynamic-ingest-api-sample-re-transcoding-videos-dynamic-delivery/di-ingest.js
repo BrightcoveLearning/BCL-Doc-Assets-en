@@ -1,22 +1,26 @@
 var BCLS = (function(window, document) {
   var // CMS API stuff
-    account_id_display = document.getElementById('account_id'),
+    account_id_display = document.getElementById("account_id"),
     account_id,
-    client_id_display = document.getElementById('client_id'),
+    client_id_display = document.getElementById("client_id"),
     client_id,
-    client_secret_display = document.getElementById('client_secret'),
+    client_secret_display = document.getElementById("client_secret"),
     client_secret,
-    ingest_profile_display = document.getElementById('ingest_profile_display'),
+    ingest_profile_display = document.getElementById("ingest_profile_display"),
     ingest_profile,
-    custom_profile_display = document.getElementById('custom_profile_display'),
-    videoDataDisplay = document.getElementById('videoData'),
+    custom_profile_display = document.getElementById("custom_profile_display"),
+    videoDataDisplay = document.getElementById("videoData"),
     // Dynamic Ingest API stuff
-    profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
+    profilesArray = [
+      "multi-platform-extended-static",
+      "multi-platform-standard-static"
+    ],
     di_url = "https://ingest.api.brightcove.com/v1/accounts/",
-    di_url_display = document.getElementById('di_url'),
-    di_submit_display = document.getElementById('di_Submit'),
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
-    response = document.getElementById('response'),
+    di_url_display = document.getElementById("di_url"),
+    di_submit_display = document.getElementById("di_Submit"),
+    proxyURL =
+      "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+    response = document.getElementById("response"),
     videoData = [],
     totalVideos,
     videoNumber = 0,
@@ -27,12 +31,13 @@ var BCLS = (function(window, document) {
     defaults = {
       account_id: 57838016001
     },
-    callbacks = ["http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php"];
-
+    callbacks = [
+      "http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php"
+    ];
 
   // is defined
   function isDefined(x) {
-    if (x === '' || x === null || x === undefined) {
+    if (x === "" || x === null || x === undefined) {
       return false;
     }
     return true;
@@ -41,12 +46,14 @@ var BCLS = (function(window, document) {
   function setDIOptions() {
     var options = {},
       reqBody = {};
-      custom_profile_display_value = custom_profile_display.value;
+    custom_profile_display_value = custom_profile_display.value;
     // get the ingest profile
     if (isDefined(custom_profile_display_value)) {
       ingest_profile = custom_profile_display_value;
     } else {
-      ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
+      ingest_profile =
+        ingest_profile_display.options[ingest_profile_display.selectedIndex]
+          .value;
     }
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = client_id;
@@ -59,18 +66,18 @@ var BCLS = (function(window, document) {
     reqBody.profile = ingest_profile;
     reqBody.callbacks = callbacks;
     options.requestBody = JSON.stringify(reqBody);
-    options.requestType = 'POST';
+    options.requestType = "POST";
     options.url = di_url_display.value;
     // now submit the request
     makeRequest(options, function(response) {
       response = JSON.parse(response);
       totalIngested++;
-      logResponse('totalIngested', totalIngested);
+      logResponse("totalIngested", totalIngested);
       if (videoNumber < totalVideos - 1) {
         videoNumber++;
         currentJobs++;
-        logResponse('Processing video number', videoNumber);
-        logResponse('Current jobs: ', currentJobs);
+        logResponse("Processing video number", videoNumber);
+        logResponse("Current jobs: ", currentJobs);
         // if currentJobs is > 99, need to pause
         if (currentJobs > 99) {
           // reset currentJobs
@@ -82,12 +89,11 @@ var BCLS = (function(window, document) {
           t2 = setTimeout(setDIOptions, 1000);
         }
       }
-
     });
   }
   // function to set the request
   function logResponse(type, data) {
-    response.textContent += type + ': ' + data + ',\n';
+    response.textContent += type + ": " + data + ",\n";
   }
 
   /**
@@ -112,17 +118,20 @@ var BCLS = (function(window, document) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
               // some API requests return '{null}' for empty responses - breaks JSON.parse
-              if (response === '{null}') {
+              if (response === "{null}") {
                 response = null;
               }
               // return the response
               callback(response);
             } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              alert(
+                "There was a problem with the request. Request returned " +
+                  httpRequest.status
+              );
             }
           }
         } catch (e) {
-          alert('Caught Exception: ' + e);
+          alert("Caught Exception: " + e);
         }
       };
     /**
@@ -133,27 +142,39 @@ var BCLS = (function(window, document) {
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
-    httpRequest.open('POST', proxyURL);
+    httpRequest.open("POST", proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
     httpRequest.send(JSON.stringify(options));
   }
 
-  di_submit_display.addEventListener('click', function() {
-    var i, now = new Date().valueOf();
+  di_submit_display.addEventListener("click", function() {
+    var i,
+      now = new Date().valueOf();
     videoData = JSON.parse(videoDataDisplay.value);
     totalVideos = videoData.length;
     // to insure uniqueness,
     for (i = 0; i < totalVideos; i++) {
-      videoData[i].reference_id += '_' + now.toString();
+      videoData[i].reference_id += "_" + now.toString();
     }
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
     // get account inputs
-    account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-    client_id = isDefined(client_id_display.value) ? client_id_display.value : null;
-    client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : null;
-    di_url_display.value = di_url + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
+    account_id = isDefined(account_id_display.value)
+      ? account_id_display.value
+      : defaults.account_id;
+    client_id = isDefined(client_id_display.value)
+      ? client_id_display.value
+      : null;
+    client_secret = isDefined(client_secret_display.value)
+      ? client_secret_display.value
+      : null;
+    di_url_display.value =
+      di_url +
+      account_id +
+      "/videos/" +
+      videoData[videoNumber].id +
+      "/ingest-requests";
     // set CMS API options for first video
     setDIOptions();
   });
