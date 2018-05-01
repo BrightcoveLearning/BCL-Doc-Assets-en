@@ -76,7 +76,8 @@
             alert('Caught Exception: ' + e);
           }
         };
-        // set up request data
+        // set response handler
+        httpRequest.onreadystatechange = getResponse;
         // open the request
         httpRequest.open('POST', proxyURL);
         // open and send request
