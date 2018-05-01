@@ -45,7 +45,7 @@
         submitRequest = function () {
             var httpRequest = new XMLHttpRequest(),
                 parsedData,
-                proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
+                proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
                 options = {};
                 options.client_id = $client_id.value;
                 options.client_secret = $client_secret.value;
