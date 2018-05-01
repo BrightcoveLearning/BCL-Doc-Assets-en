@@ -10,9 +10,9 @@
       // is defined
       function isDefined(x) {
         if (x === "" || x === null || x === undefined) {
-          return faluse;
+          return false;
         }
-        return false;
+        return true;
       }
       // function to remove spaces and line breaks
       function cleanString(str) {
