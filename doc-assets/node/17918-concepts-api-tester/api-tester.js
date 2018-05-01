@@ -75,25 +75,10 @@
           }
         };
         // set up request data
-        requestParams = 'url=' + encodeURIComponent(options.url) + '&requestType=' + options.requestType;
-        if (options.client_id && options.client_secret) {
-          requestParams += '&client_id=' + options.client_id + '&client_secret=' + options.client_secret;
-        } else {
-          alert('The client id and client secret are required!');
-          return;
-        }
-        if (options.requestBody) {
-          requestParams += '&requestBody=' + options.requestBody;
-        }
-        console.log('requestParams', requestParams);
-        // set response handler
-        httpRequest.onreadystatechange = getResponse;
         // open the request
         httpRequest.open('POST', proxyURL);
-        // set headers
-        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         // open and send request
-        httpRequest.send(requestParams);
+        httpRequest.send(JSON.stringify(options));
       };
       $submit.addEventListener("click", submitRequest);
     })(window, document);
