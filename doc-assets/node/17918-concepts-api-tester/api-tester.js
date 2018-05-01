@@ -51,7 +51,9 @@
           options.client_id = $client_id.value;
           options.client_secret = $client_secret.value;
         }
-        options.requestBody = cleanString($requestBody.value);
+        if (isDefined($requestBody.value)) {
+          options.requestBody = cleanString($requestBody.value);
+        }
         options.requestType = $requestType.value;
         options.url = $url.value;
         console.log('options', options);
