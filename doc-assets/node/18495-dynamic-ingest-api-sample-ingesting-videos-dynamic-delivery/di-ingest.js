@@ -279,10 +279,34 @@ var BCLS = (function(window, document) {
   });
 
   account_id_display.addEventListener('blur', function() {
-    // refresh Profiles
-    account_id = account_id_display.value;
-    // get account profiles
-    createRequest('getProfiles');
+    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+      // refresh Profiles
+      account_id = account_id_display.value;
+      client_id = client_id_display.value;
+      client_secret = client_secret_display.value;
+      // get account profiles
+      createRequest('getProfiles');
+    }
+
+  client_id_display.addEventListener('blur', function() {
+    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+      // refresh Profiles
+      account_id = account_id_display.value;
+      client_id = client_id_display.value;
+      client_secret = client_secret_display.value;
+      // get account profiles
+      createRequest('getProfiles');
+    }
+
+  client_secret_display.addEventListener('blur', function() {
+    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+      // refresh Profiles
+      account_id = account_id_display.value;
+      client_id = client_id_display.value;
+      client_secret = client_secret_display.value;
+      // get account profiles
+      createRequest('getProfiles');
+    }
 
   })
 
