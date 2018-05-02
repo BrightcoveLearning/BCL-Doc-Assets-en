@@ -19,6 +19,7 @@ var BCLS = (function(window, document) {
     di_url = "https://ingest.api.brightcove.com/v1/accounts/",
     di_url_display = document.getElementById("di_url"),
     di_submit_display = document.getElementById("di_Submit"),
+    api_response_display = document.getElementById('api_response'),
     proxyURL =
       "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
     response = document.getElementById("response"),
@@ -193,6 +194,7 @@ var BCLS = (function(window, document) {
       // now submit the request
       makeRequest(options, function(response) {
         response = JSON.parse(response);
+        api_response_display.textContent = JSON.stringify(response, null, '  ');
         totalIngested++;
         logResponse("total transcoded", totalIngested);
         if (videoNumber < totalVideos - 1) {
