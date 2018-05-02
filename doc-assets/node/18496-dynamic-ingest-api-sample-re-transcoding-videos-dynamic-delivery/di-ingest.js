@@ -287,7 +287,7 @@ var BCLS = (function(window, document) {
     if (isDefined(account_id) && isDefined(client_id) && isDefined(client_secret)) {
       // refresh Profiles
       createRequest('getProfiles');
-      logResponse('Updating profiles list...');
+      logResponse('New account info...', 'updating profiles list');
     }
   })
 
@@ -298,7 +298,7 @@ var BCLS = (function(window, document) {
     if (isDefined(account_id) && isDefined(client_id) && isDefined(client_secret)) {
       // refresh Profiles
       createRequest('getProfiles');
-      logResponse('Updating profiles list...');
+      logResponse('New account info...', 'updating profiles list');
     }
   })
 
@@ -309,7 +309,7 @@ var BCLS = (function(window, document) {
     if (isDefined(account_id) && isDefined(client_id) && isDefined(client_secret)) {
       // refresh Profiles
       createRequest('getProfiles');
-      logResponse('Updating profiles list...');
+      logResponse('New account info...', 'updating profiles list');
     }
   })
 
