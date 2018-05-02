@@ -1,15 +1,44 @@
 <article class="bcls-article">
+
 <section class="bcls-section">
 <h2 id="Player_example">Player example</h2>
 <!-- UPDATE description -->
 
-<p>In the following example, you will see the player with a playlist appearing to the right. The playlist is populated by retrieving the most popular videos, based on most number of plays, via the CMS API.</p>
+<p>In the following example, you will see the player with a playlist appearing to the right. The playlist is populated by retrieving the most popular videos, based on most number of plays, using the <a href="/node/18108">Brightcove Player catalog</a>.</p>
+
 <!-- UPDATE codepen here -->
+<p data-height="485" data-theme-id="dark" data-slug-hash="ELNeBb" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18175-most-watched-videos-playlist" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/ELNeBb/">18175-most-watched-videos-playlist</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-<p data-height="349" data-theme-id="dark" data-slug-hash="zRzZNG" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Most Watched Videos in a Playlist" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/zRzZNG/">Most Watched Videos in a Playlist</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
-
+<!-- UPDATE link to GitHub source -->
 <p>View the <a href="https://github.com/BrightcoveLearning/18175-most-watched-videos-playlist">source code</a>.</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+<p>This example returns the most viewed videos from your account using the <a href="/node/18108">Brightcove Player catalog</a>, which accesses the Playback API. It is similar to the <a href="/node/18183">Popular Videos Playlist</a> sample, which uses data from the Analytics API. There are few differences to keep in mind:</p>
+
+<h3>Brightcove Player catalog (Playback API)</h3>
+<ul>
+  <li>
+    The <code>plays_total</code> field is the all time video views for a video.
+  </li>
+  <li>
+    You can use the <a href="/node/18108#getSearch_method">catalog.getSearch()</a> method to easily retrieve data from the Playback API.
+  </li>
+</ul>
+
+<h3>Analytics API</h3>
+<ul>
+  <li>
+    If you don't specify the <code>from</code> parameter and value, the default is the past 30 days.
+  </li>
+  <li>
+    To retrieve the same results from the Analytics API that you would get from the Playback API, use the <code>?alltime</code> URL parameter in the API request.
+  </li>
+</ul>
+
 </section>
 
 <section class="bcls-section">
@@ -33,7 +62,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+<h2 id="Development_sequence" class="bcls-expander-head">Development sequence</h2>
 
 <div class="bcls-expander-content">
 <p>Here is the recommended development sequence:</p>
@@ -46,7 +75,7 @@
 	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
 </ol>
 
-<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
+<p>For details about these steps, review the <a href="https://support.brightcove.com/node/18081">Quick Start: Plugin Development</a> guide.</p>
 
 <h3>iframe or In-Page embed</h3>
 
@@ -77,23 +106,23 @@
 <table class="bcls-table">
 	<thead class="bcls-table__head">
 		<tr>
-			<th>API Methods</th>
+			<th>Player API Methods</th>
 		</tr>
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="/node/18108#getVideo">player.catalog.getVideo()</a></td>
+			<td><a href="https://support.brightcove.com/node/18108#getSearch_method">catalog.getSearch()</a></td>
 		</tr>
 		<tr>
-			<td><a href="/node/18099#playlist">player.playlist()</a></td>
+			<td><a href="/node/18099#playlist">playlist()</a></td>
 		</tr>
 	</tbody>
 </table>
 
-<aside class="bcls-aside bcls-aside--tip">This code sample uses one of the Brightcove REST APIs. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside>
-</section>
-<!-- UPDATE player and HTML configuration -->
 
+</section>
+
+<!-- UPDATE player and HTML configuration -->
 <section class="bcls-section">
 <h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
 
@@ -104,92 +133,77 @@
 <p>No special configuration is required for the Brightcove Player you create for this sample.</p>
 
 <h3>Other HTML</h3>
+<p>
+  When using the Advanced (in-page embed) player, you need to add an HTML element to specify the location of the playlist. For details, see the <a href="/node/18055#inpageembed">Implementing Playlists</a> document.
+</p>
+<pre>
+<code class="language-html">&lt;div class=&quot;vjs-playlist&quot;&gt;&lt;/div&gt;</code></pre>
 
-<p>A <code>div</code> element is added to specify the location of the playlist:</p>
+<p>Remember to add the <code>id</code> attribute to the <code>video</code> tag in the player embed code.</p>
 
-<pre class="line-numbers">
-<code class="language-html">&lt;div class="vjs-playlist"&gt;&lt;/div&gt;</code></pre>
+<pre>
+<code class="language-html">&lt;video <span class="bcls-highlight">id="myPlayerID"</span>
+...</code></pre>
+
 </section>
-<!-- UPDATE application flow -->
 
+<!-- UPDATE application flow -->
 <section class="bcls-section">
 <h2 id="Application_flow">Application flow</h2>
 
 <p>The basic logic behind this application is:</p>
 
 <ul>
-	<li>Build an object with info for API call.</li>
-	<li>Call the CMS API to return the 10 most watched videos.</li>
-	<li>Extract the video IDs from the returned data.</li>
-	<li>For each ID, use the Video Cloud catalog to get the corresponding video object. Store the video objects in an array.</li>
-	<li>Assign the array of video objects to the player as a playlist.</li>
+	<li>Define the search parameters</li>
+  <li>Get the video objects</li>
+  <li>Load the playlist</li>
 </ul>
+
 <!-- UPDATE task 1 -->
 
-<h3>Create object with API call info</h3>
+<h3>Define the search parameters</h3>
 
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// +++ Initialize variables and option object for CMS API call +++</code></pre>
+<code class="language-javascript">// +++ Define the search parameters +++</code></pre>
 
-<p>The key information needed for the API call are:</p>
+<p>When using the <a href="https://support.brightcove.com/node/18108#getSearch_method">catalog.getSearch()</a> method, you must first define the search parameters. This query will return 10 videos from your account, sorted in descending order by all-time video views (<code>plays_total</code>).</p>
+<aside class="bcls-aside bcls-aside--information">To perform a sort on all videos in your account, you must set the <code>query.q</code> parameter as follows:
+<pre><code class="language-javascript">queryObject.q = '*';</code></pre>
+</aside>
 
-<ul>
-	<li>Account ID</li>
-	<li>Base URL</li>
-	<li>End point</li>
-	<li>HTTP method</li>
-</ul>
 
-<p>Variables are then concatenated to create properly formed values for the API call.</p>
 <!-- UPDATE task 2 -->
 
-<h3>Make the CMS API request</h3>
+<h3>Get the video objects</h3>
 
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// +++ Make the CMS API request to get matching video IDs +++</code></pre>
+<code class="language-javascript">// +++ Get the video objects +++</code></pre>
 
-<p>Note that the <code>makeRequest()</code> method is called and the options object, built earlier, and a callback function are passed to the method. The information returned by the CMS API will be returned in the <code>mostWatchedVideos</code> parameter. The data is returned as a string, so it needs to be JSON parsed to be usable.</p>
+<p>Retrieve an array of video objects based on the search parameters for the <code>catalog.getSearch()</code> method.</p>
+
 <!-- UPDATE task 3 -->
 
-<h3>Extract video IDs from returned data</h3>
+<h3>Load the playlist</h3>
 
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// +++ Helper Function: Extract video IDs from data CMS API response +++</code></pre>
+<code class="language-javascript">// +++ Load the playlist +++</code></pre>
 
-<p>The <code>extractVideoData()</code> method loops over the data returned from the CMS API and extracts the IDs, and pushing them into an array.</p>
-<!-- UPDATE task 2 -->
+<p>Use the <code>playlist()</code> method to load the returned video objects into the player's playlist.</p>
 
-<h3>Retrieve video objects based on extracted IDs</h3>
-
-<p>Find the code which is labeled:</p>
-
-<pre>
-<code class="language-javascript">// +++ Helper Function: Retrieve video objects from video IDs +++</code></pre>
-
-<p>The <code>catalog.getVideo()</code> method is used to get the video object, then the objects are pushed into another array, this one containing the video objects.</p>
-<!-- UPDATE task 3 -->
-
-<h3>Assign array of video objects to the player's playlist</h3>
-
-<p>Find the code which is labeled:</p>
-
-<pre>
-<code class="language-javascript">// Add the most watched videos list to the player as a playlist</code></pre>
-
-<p>The Playlist API's <code>playlist()</code> method is used to assign the array of video objects to the player's playlist.</p>
 </section>
+
 <!-- UPDATE CSS description -->
 
 <section class="bcls-section">
 <h2 id="Application_styling">Application styling</h2>
 
-<p>The CSS is used to position size the player and playlist.</p>
+<p>CSS is used to style the player and playlist.</p>
 </section>
 
 <section class="bcls-section">
@@ -213,13 +227,13 @@
   ...
 });</code></pre>
 <!-- UPDATE path to plugin's JavaScript -->
-
 <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18175-most-watched-videos-playlist/blob/master/plugin/most-watched-playlist.js">most-watched-playlist.js</a>.</p>
 
 <h3>Using the plugin with a player</h3>
 
 <p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
 
-<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="//support.brightcove.com/node/14053">Configuring Player Plugins</a> document.</aside>
 </section>
+
 </article>
