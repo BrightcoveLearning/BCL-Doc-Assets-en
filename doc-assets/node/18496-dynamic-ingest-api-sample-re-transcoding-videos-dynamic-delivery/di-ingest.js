@@ -281,11 +281,36 @@ var BCLS = (function(window, document) {
   });
 
   account_id_display.addEventListener('blur', function() {
-    // refresh Profiles
     account_id = account_id_display.value;
-    // get account profiles
-    createRequest('getProfiles');
+    client_id = client_id_display.value;
+    client_secret = client_secret_display.value;
+    if (isDefined(account_id) && isDefined(client_id) && isDefined(client_secret)) {
+      // refresh Profiles
+      createRequest('getProfiles');
+      logResponse('Updating profiles list...');
+    }
+  })
 
+  client_id_display.addEventListener('blur', function() {
+    account_id = account_id_display.value;
+    client_id = client_id_display.value;
+    client_secret = client_secret_display.value;
+    if (isDefined(account_id) && isDefined(client_id) && isDefined(client_secret)) {
+      // refresh Profiles
+      createRequest('getProfiles');
+      logResponse('Updating profiles list...');
+    }
+  })
+
+  client_secret_display.addEventListener('blur', function() {
+    account_id = account_id_display.value;
+    client_id = client_id_display.value;
+    client_secret = client_secret_display.value;
+    if (isDefined(account_id) && isDefined(client_id) && isDefined(client_secret)) {
+      // refresh Profiles
+      createRequest('getProfiles');
+      logResponse('Updating profiles list...');
+    }
   })
 
   di_submit_display.addEventListener("click", function() {
