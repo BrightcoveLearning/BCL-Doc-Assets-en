@@ -29,11 +29,14 @@
 <section class="bcls-section">
   <h2 id="downloadable_renditions">Downloadable renditions</h2>
   <p>For general information on downloadable videos, see <a href="/node/14363">Downloading Videos from Video Cloud</a>. Here we will look at how MP4 renditions (also called PMP4 renditions) are created during ingestion using Dynamic Delivery and Context Aware Encoding profiles. In order for downloadable renditions to be created, your Video Cloud account must be enabled for this - if you need to have your account enabled,  <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
-  <p>Brightcove attempts to create two PMP4 renditions, which are denoted as "high" and "mid". The encoding settings for these renditions are determined by the encoding settings included in the ingest profile.</p>
+  <p>Brightcove attempts to create two PMP4 renditions, which are denoted as <code>high</code> and <code>mid</code>. The encoding settings for these renditions are determined by the encoding settings included in the ingest profile.</p>
   <h3>For the audio tracks</h3>
-  <p> If there are multiple audio renditions we use the one with the highest “audio_bitrate”. The same audio encoding settings are used for both the “high” and “mid” PMP4s.</p>
-  <h3>For the “high” video track</h3>
-
+  <p> If there are multiple audio renditions, we use the one with the highest <code>audio_bitrate</code>. The same audio encoding settings are used for both the <code>high</code> and <code>mid</code> PMP4s.</p>
+  <h3>For the <code>high</code> video track</h3>
+  <p>If there are multiple video renditions, we use the one with the highest <code>video_bitrate</code>.</p>
+  <p>If no standard video renditions are included in the profile, we look for Context Awared Encoding settings - if they are present, we use a bitrate of 2048kbps. The resolution of the <code>high</code> PMP4 rendition in this case will be that of the source video.</p>
+  <h3>For the <code>mid</code> video track</h3>
+  <p>If there are multiple video renditions we use the one with the closest <code>video_bitrate</code> to 500Kbps.</p>
 </section>
 
 <section class="bcls-section">
