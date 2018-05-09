@@ -17,6 +17,7 @@ var BCLS = (function(window, document) {
     di_submit_display = document.getElementById('di_Submit'),
     diURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     response = document.getElementById('response'),
+    logger = document.getElementById('logger'),
     current_profiles = [],
     rawVideoData = [],
     videoData = [],
@@ -67,13 +68,17 @@ var BCLS = (function(window, document) {
       return val;
   }
 
+/**
+ * Just a simple logger to inject messages into the page
+ * it requires an element with id="logger" referenced as logger
+ * @param  {string} m the message to display
+ */
 function logMessage(m) {
-
+  logger.textContent = m;
 }
 
   /**
    * determines whether specified item is in an array
-   *
    * @param {array} array to check
    * @param {string} item to check for
    * @return {boolean} true if item is in the array, else false
@@ -222,7 +227,7 @@ function logMessage(m) {
           response = JSON.parse(response);
           // errors will come back as array
           if (isArray(response)) {
-
+            logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
           }
         });
         break;
