@@ -16,7 +16,7 @@ var BCLS = (function(window, document) {
     di_url_display = document.getElementById('di_url'),
     di_submit_display = document.getElementById('di_Submit'),
     diURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
-    response = document.getElementById('response'),
+    apiResponse = document.getElementById('apiResponse'),
     logger = document.getElementById('logger'),
     current_profiles = [],
     rawVideoData = [],
@@ -212,7 +212,7 @@ function logMessage(m) {
 
             displayFilteredProfiles();
           } else {
-            api_response.textContent = response;
+            apiResponse.textContent = response;
             logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
             return;
           }
@@ -225,6 +225,7 @@ function logMessage(m) {
         makeRequest(options, function(response){
           // parse response
           response = JSON.parse(response);
+          re
           // errors will come back as array
           if (isArray(response)) {
             logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
