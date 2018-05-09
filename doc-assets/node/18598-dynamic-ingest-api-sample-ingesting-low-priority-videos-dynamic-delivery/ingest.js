@@ -115,8 +115,8 @@ var BCLS = (function(window, document) {
   }
 
   function processVideoData() {
-
-    rawVideoData =
+    var i, iMax;
+    rawVideoData = JSON.parse(videoDataDisplay.value);
   }
 
   function createRequest(type) {
