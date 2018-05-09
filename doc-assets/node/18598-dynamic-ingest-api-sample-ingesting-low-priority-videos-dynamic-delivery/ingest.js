@@ -214,7 +214,7 @@ function logMessage(m) {
             displayFilteredProfiles();
           } else {
             apiResponse.textContent = response;
-            logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
+            logMessage('The get all profiles operation failed; see the API Response for the error');
             return;
           }
         });
@@ -230,11 +230,14 @@ function logMessage(m) {
           // errors will come back as array
           if (isArray(response)) {
             logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
-          } else
+          } else {
+            current_video_id = response.id;
+            createRequest('ingestVideo');
+          }
         });
         break;
       case 'ingestVideo':
-
+        options.url = https://ingest.api.brightcove.com/v1/accounts/ + account_id + '/videos/' + current_video_id + '/ingest-requests'
         break;
       default:
         console.log('bad type - shouldn\'t be here: ', type);
