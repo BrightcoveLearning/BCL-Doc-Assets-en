@@ -121,13 +121,19 @@ var BCLS = (function(window, document) {
   }
 
   function processVideoData() {
-    var i, iMax;
+    var i, iMax, field;
     rawVideoData = JSON.parse(videoDataDisplay.value);
     iMax = rawVideoData.length;
     for (i = 0; i < iMax; i++) {
       videoData[i] = {};
       videoData[i].createVideoBody = {};
       videoData[i].ingestVideoBody = {};
+      for (field in rawVideoData[i]) {
+        if (field !== 'url') {
+          videoData[i].createVideoBody[field] = rawVideoData[i][field];
+        }
+      }
+
     }
   }
 
