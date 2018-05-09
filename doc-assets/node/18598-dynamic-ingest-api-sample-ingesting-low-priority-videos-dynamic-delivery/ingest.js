@@ -194,6 +194,7 @@ function logMessage(m) {
     }
     switch (type) {
       case 'getProfiles':
+      console.log('getting profiles');
         var i;
         endpoint = '/profiles';
         options.url = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id + endpoint;
