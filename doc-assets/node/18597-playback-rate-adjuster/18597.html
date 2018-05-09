@@ -1,0 +1,300 @@
+<article class="bcls-article">
+
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>Start video playback and select the playback rate button in the control bar (default is 1x). Choose a different rate to see how video playback speed changes. Notice that when you change the playback rate, the duration time displayed is re-calculated based on the selected rate.</p>
+<aside class="bcls-aside bcls-aside--tip">If you don't want to code the middleware functions, you can use a plug and play solution. For details, see the  <a href="#Code_in_a_separate_JavaScript_file">Code in a separate JavaScript file</a> section.</aside>
+
+<!-- UPDATE codepen here -->
+<p data-height="490" data-theme-id="dark" data-slug-hash="aGEVYZ" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="Playback Rate Adjuster" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/aGEVYZ/">Playback Rate Adjuster</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<!-- UPDATE link to GitHub source -->
+<p>View the <a href="https://github.com/BrightcoveLearning/18597-playback-rate-adjuster">source code</a>.</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="Development_sequence" class="bcls-expander-head">Development sequence</h2>
+
+<div class="bcls-expander-content">
+<p>Here is the recommended development sequence:</p>
+
+<ol>
+	<li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+	<li>Use Studio to add the plugin and CSS to your player</li>
+	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+</ol>
+
+<p>For details about these steps, review the <a href="https://support.brightcove.com/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+<h3>iframe or In-Page embed</h3>
+
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+
+<ul>
+	<li>No collisions with existing JavaScript and/or CSS</li>
+	<li>Automatically responsive</li>
+	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+</ul>
+
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+
+<ul>
+	<li>Code in the containing page needs to listen for and act on player events</li>
+	<li>The player uses styles from the containing page</li>
+	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+</ul>
+
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+</div>
+<!-- id="expanderContent" --></section>
+
+<section class="bcls-section">
+<h2 id="Middleware_functions">Middleware functions</h2>
+
+<p>This sample uses Video.js middleware to implement the code solution. At a very high level, the use cases where middleware is of most value is when you want to intercept and alter core behaviors of the player, such as setting the source or current time. Video.js middleware in general is not discussed at length in this document, but the actual code used for the middleware function is explained. Here are documents from Video.js sources that do detail middleware:</p>
+
+<ul>
+	<li><a href="http://docs.videojs.com/tutorial-middleware.html">Middleware (from the Video.js documentation set)</a></li>
+	<li><a href="http://blog.videojs.com/feature-spotlight-middleware/">Feature Spotlight: Middleware (from the Video.js blog)</a></li>
+	<li><a href="https://github.com/videojs/videojs-playbackrate-adjuster">videojs-playbackrate-adjuster (a sample app)</a></li>
+</ul>
+
+<h3>Implementing middleware functions with Brightcove Player</h3>
+
+<p>The simplest way to use a middleware function is to:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>Write the middleware function.</li>
+	<li>Place the middleware function either on the page with the player in a <code>script</code> tag, or include the middleware function using the <code>src</code> attribute with a <code>script</code> tag. Both implementations will be shown in this document.</li>
+	<li>Register the middleware function with the player using the <code>use()</code> method, as shown here:
+	<pre class="line-numbers">
+<code class="language-javascript">videojs.use('mimeType', functionName);</code></pre>
+
+	<p>For the <strong>mimetype</strong> you can use a standard video mimetype, like <strong>video/mp4</strong>, or use an <strong>*</strong> if you wish the middleware function to act on all mimetypes.</p>
+  <aside class="bcls-aside bcls-aside--tip">Plugins and middleware may be set up to automatically register themselves when their scripts are included. In this case, you would not need to use the <code>videojs.use()</code> method.</aside>
+	</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
+
+<table class="bcls-table">
+  <thead class="bcls-table__head">
+    <tr>
+      <th>API Classes</th>
+			<th>API Methods</th>
+		</tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/ControlBar.html">ControlBar</a></td>
+			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/ControlBar.html#addChild">controlBar.addChild()</a></td>
+		</tr>
+    <tr><td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/PlaybackRateMenuButton.html">PlaybackRateMenuButton</a></td>
+			<td></td>
+		</tr>
+  </tbody>
+</table>
+
+
+</section>
+
+<!-- UPDATE player and HTML configuration -->
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+<h3>Other HTML</h3>
+
+<p>Remember to add the <code>id</code> attribute to the <code>video</code> tag in the player embed code.</p>
+
+<pre><code class="language-html">&lt;video <span class="bcls-highlight">id="myPlayerID"</span>
+...</code></pre>
+
+</section>
+
+<!-- UPDATE application flow -->
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+	<li>Define the middleware functions</li>
+  <li>Register the middleware with the player</li>
+  <li>Define the playback rate options</li>
+  <li>Initialize the playback rate button</li>
+</ul>
+
+
+<!-- UPDATE task 1 -->
+
+<h3>Define the middleware functions</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Define the middleware functions +++</code></pre>
+
+<p>
+  Create the following middleware functions:
+</p>
+<ol class="bcls-tasklist__restart">
+    <li>Create a supporting middleware function that will re-calculate the playback start and end times based on the selected playback rate.</li>
+    <li>
+      <p>
+        Create a middleware function that will update the start time, duration and even current time when seeking.
+      </p>
+      <p>The basic syntax for creating a middleware function is as follows:</p>
+      <pre class="line-numbers">
+      <code class="language-javascript">const playbackrateAdjuster = function(player) {
+        return {
+        ...
+      };</code></pre>
+
+      <p>Note that the <code>player</code> object is passed to the function.</p>
+      <p>
+        This middleware function does the following:
+      </p>
+      <ol>
+        <li>
+          <strong>Listen for the ratechange event</strong>: When the playback rate is changed, then trigger the <code>durationchange</code> and <code>timeupdate</code> events.
+        </li>
+        <br />
+        <li>
+            <strong>Implement the setSource() method</strong>: This is a required method for every middleware function. By using the syntax shown means the middleware will always be selected, irregardless of the video type:
+          <pre><code class="language-javascript">setSource(srcObj, next) {
+  next(null, srcObj);
+},</code></pre>
+        </li>
+        <br />
+        <li>
+          <strong>Override methods using current playback rate</strong>: Override the methods for <code>duration</code>, <code>currentTime</code>, <code>buffered</code>, <code>seekable</code> and <code>played</code> with values calculated using the current playback rate.
+        </li>
+      </ol>
+    </li>
+</ol>
+
+<!-- UPDATE task 5 -->
+
+<h3>Register the middleware with the player</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Register the middleware with the player +++</code></pre>
+
+<p>Register the middleware function with the player using the <code>use()</code> method.</p>
+
+<!-- UPDATE task 6 -->
+
+<h3>Define the playback rate options</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Define the playback rate options +++</code></pre>
+
+<p>Define the playback rates that you want displayed in the playback rate menu button.</p>
+
+<!-- UPDATE task 7 -->
+
+<h3>Initialize the playback rate button</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Initialize the playback rate button +++</code></pre>
+
+<p>Add the playback rate menu button to the player control bar, and initialize it with the values specified in the options object.</p>
+
+</section>
+
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>There are no additional styles for this sample.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_middleware_function">Using the middleware function</h2>
+
+<p>Once the middleware function has been written you want to use it. Two ways were mentioned earlier, and will be detailed now.</p>
+
+<h3>Code on same page as player</h3>
+
+<p>This is where you define the middleware function on the same page as the player, and then register it. The <a href="#Player_example">player example</a> in the Codepen above uses this method.</p>
+
+<h3 id="Code_in_a_separate_JavaScript_file">Code in a separate JavaScript file</h3>
+
+<p>In the following code, the JavaScript for the middleware functions and the <code>use()</code> method to register it are simply included in the page.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;video id=&quot;myPlayerID&quot;
+	  data-video-id=&quot;5604123528001&quot;
+	  data-account=&quot;1752604059001&quot;
+	  data-player=&quot;default&quot;
+	  data-embed=&quot;default&quot;
+	  data-application-id
+	  class=&quot;video-js&quot;
+	  width=&quot;640&quot; height=&quot;360&quot;
+	  controls muted&gt;&lt;/video&gt;
+	&lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;
+
+  &lt;!-- Include the rate adjuster middleware functions --&gt;
+  &lt;script src=&quot;//unpkg.com/videojs-playbackrate-adjuster@1.0.0/dist/browser/videojs-playbackrate-adjuster.min.js&quot;&gt;&lt;/script&gt;
+
+  &lt;script type=&quot;text/javascript&quot;&gt;
+  	videojs.getPlayer(&quot;myPlayerID&quot;).ready(function(){
+  		// When the player is ready, get a reference to it
+  		var myPlayer = this;
+  		console.log(&quot;myPlayer&quot;,myPlayer)
+  		// Define the playback rate options
+  		options = {&quot;playbackRates&quot;:[0.5, 1, 1.5, 2, 4]};
+  		// Initialize the playback rate button
+  		myPlayer.controlBar.playbackRateMenuButton = myPlayer.controlBar.addChild('PlaybackRateMenuButton', {
+      	playbackRates: options.playbackRates
+  	  });
+    });
+  &lt;/script&gt;</code></pre>
+
+<aside class="bcls-aside bcls-aside--tip">The <strong>videojs-playbackrate-adjuster</strong> middleware is published to <strong>npm</strong> and available to include in your project:  <a href="//unpkg.com/videojs-playbackrate-adjuster@1.0.0/dist/browser/videojs-playbackrate-adjuster.min.js">//unpkg.com/videojs-playbackrate-adjuster@1.0.0/dist/browser/videojs-playbackrate-adjuster.min.js</a></aside>
+<p>You can also host the middleware code yourself. For the complete code, see the <a href="https://github.com/BrightcoveLearning/18597-playback-rate-adjuster/tree/master/plugin">plugin section</a> in the GitHub repo.</p>
+</section>
+
+</article>
