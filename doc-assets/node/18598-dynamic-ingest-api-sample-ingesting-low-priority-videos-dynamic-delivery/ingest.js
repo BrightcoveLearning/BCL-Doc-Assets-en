@@ -67,7 +67,9 @@ var BCLS = (function(window, document) {
       return val;
   }
 
+function logMessage(m) {
 
+}
 
   /**
    * determines whether specified item is in an array
@@ -217,7 +219,11 @@ var BCLS = (function(window, document) {
         options.requestType = 'POST';
         makeRequest(options, function(response){
           // parse response
-          response = JSON.parse(response)
+          response = JSON.parse(response);
+          // errors will come back as array
+          if (isArray(response)) {
+
+          }
         });
         break;
       case 'ingestVideo':
@@ -333,6 +339,12 @@ var BCLS = (function(window, document) {
     // open and send request
     httpRequest.send(requestData);
   }
+
+  // event listeners
+videoDataDisplay.addEventListener('click', function(){
+  this.select();
+});
+
   di_submit_display.addEventListener('click', function() {
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
