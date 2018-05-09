@@ -171,7 +171,7 @@ var BCLS = (function(window, document) {
           displayFilteredProfiles();
         } else {
           api_response.textContent = response;
-          logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
+          console.log('The get all profiles operation failed; see the API Response for the error');
           return;
         }
       });
