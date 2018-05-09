@@ -19,6 +19,7 @@ var BCLS = (function(window, document) {
     apiResponse = document.getElementById('apiResponse'),
     logger = document.getElementById('logger'),
     current_profiles = [],
+    current_video_id,
     rawVideoData = [],
     videoData = [],
     totalVideos,
@@ -229,7 +230,7 @@ function logMessage(m) {
           // errors will come back as array
           if (isArray(response)) {
             logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
-          }
+          } else
         });
         break;
       case 'ingestVideo':
