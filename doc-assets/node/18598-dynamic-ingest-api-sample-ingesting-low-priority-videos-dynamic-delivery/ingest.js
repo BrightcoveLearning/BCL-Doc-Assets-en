@@ -379,6 +379,7 @@ client_secret_display.addEventListener('blur', function() {
   });
   // initialize
   function init() {
+    console.log('in init');
     // default account id
     account_id = defaults.account_id;
     // get account profiles
