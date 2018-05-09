@@ -102,6 +102,12 @@ var BCLS = (function(window, document) {
       fragment = document.createDocumentFragment(),
       i,
       iMax;
+    // add first option
+    option = document.createElement('option');
+    option.textContent = 'Use account default profile';
+    option.value = '';
+    fragment.appendChild(option);
+    // now add the rest
     iMax = current_profiles.length;
     for (i = 0; i < iMax; i++) {
       option = document.createElement('option');
@@ -117,6 +123,12 @@ var BCLS = (function(window, document) {
   function processVideoData() {
     var i, iMax;
     rawVideoData = JSON.parse(videoDataDisplay.value);
+    iMax = rawVideoData.length;
+    for (i = 0; i < iMax; i++) {
+      videoData[i] = {};
+      videoData[i].createVideoBody = {};
+      videoData[i].ingestVideoBody = {};
+    }
   }
 
   function createRequest(type) {
