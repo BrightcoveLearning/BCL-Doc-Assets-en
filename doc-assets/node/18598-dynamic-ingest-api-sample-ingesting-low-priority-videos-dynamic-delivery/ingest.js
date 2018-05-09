@@ -147,12 +147,21 @@ var BCLS = (function(window, document) {
       videoData[i] = {};
       videoData[i].createVideoBody = {};
       videoData[i].ingestVideoBody = {};
+      // create video request body
       for (field in rawVideoData[i]) {
         if (field !== 'url') {
           videoData[i].createVideoBody[field] = rawVideoData[i][field];
         }
       }
-
+      // now ingest request body
+      if (isDefined(ingest_profile)) {
+        videoData[i].ingestVideoBody.profile = ingest_profile;
+      }
+      videoData[i].ingestVideoBody.priority = 'low';
+      videoData[i].ingestVideoBody.master = {};
+      videoData[i].ingestVideoBody.master.url = rawVideoData[i].url;
+      videoData[i].ingestVideoBody[capture-images] = true;
+      videoData[i].ingestVideoBody.callbacks = callbacks;
     }
   }
 
@@ -191,7 +200,9 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'createVideo':
-
+        options.requestBody = JSON.stringify(videoData[videoNumber].createVideoBody);
+        options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
+        options.requestType = 'POST';
         break;
       case 'ingestVideo':
 
