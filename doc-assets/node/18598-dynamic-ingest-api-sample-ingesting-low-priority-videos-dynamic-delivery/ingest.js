@@ -43,6 +43,18 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * tests whether a variable is an array
+   * @param {*} a the variable to test
+   * @return {Boolean} true if variable is an array
+   */
+  function isArray(a) {
+    if (Array.isArray(a)) {
+        return true;
+    }
+    return false;
+  }
+
+  /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
    * @return {String} selected value
@@ -203,6 +215,10 @@ var BCLS = (function(window, document) {
         options.requestBody = JSON.stringify(videoData[videoNumber].createVideoBody);
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
         options.requestType = 'POST';
+        makeRequest(options, function(response){
+          // parse response
+          response = JSON.parse(response)
+        });
         break;
       case 'ingestVideo':
 
@@ -224,7 +240,7 @@ var BCLS = (function(window, document) {
     options.requestType = 'POST';
     options.url = cms_url_display.value;
     // now submit the request
-    submitRequest(options, cmsURL, 'cms');
+    makeRequest(options, cmsURL, 'cms');
   }
   // set options for the Dynamic Ingest API request
   function setDIOptions() {
@@ -247,7 +263,7 @@ var BCLS = (function(window, document) {
     options.requestType = 'POST';
     options.url = di_url_display.value;
     // now submit the request
-    submitRequest(options, diURL, 'di');
+    makeRequest(options, diURL, 'di');
   }
   // function to set the request
   function logResponse(type, data) {
@@ -255,7 +271,7 @@ var BCLS = (function(window, document) {
   }
 
   // function to submit Request
-  function submitRequest(options, proxyURL, type) {
+  function makeRequest(options, proxyURL, type) {
     var httpRequest = new XMLHttpRequest(),
       requestData,
       responseData,
