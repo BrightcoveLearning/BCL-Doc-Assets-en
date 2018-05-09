@@ -225,7 +225,7 @@ function logMessage(m) {
         makeRequest(options, function(response){
           // parse response
           response = JSON.parse(response);
-          re
+          apiResponse.textContent = JSON.stringify(response, null, '  ');
           // errors will come back as array
           if (isArray(response)) {
             logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
