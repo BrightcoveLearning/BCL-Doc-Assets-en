@@ -289,14 +289,10 @@ var BCLS = (function(window, document) {
   });
   // initialize
   function init() {
-    var i,
-      iMax = profilesArray.length,
-      newOpt;
-    // add options for standard ingest profiles
-    for (i = 0; i < iMax; i++) {
-      newOpt = new Option(profilesArray[i]);
-      ingest_profile_display.add(newOpt);
-    }
+    // default account id
+    account_id = defaults.account_id;
+    // get account profiles
+    createRequest('getProfiles');
   }
   // call init to set things up
   init();
