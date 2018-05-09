@@ -238,6 +238,8 @@ function logMessage(m) {
         break;
       case 'ingestVideo':
         options.url = https://ingest.api.brightcove.com/v1/accounts/ + account_id + '/videos/' + current_video_id + '/ingest-requests';
+        options.requestType = 'POST';
+        options.requestBody = JSON.stringify(videoData[videoNumber].ingestVideoBody);
         break;
       default:
         console.log('bad type - shouldn\'t be here: ', type);
