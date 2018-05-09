@@ -30,13 +30,32 @@ var BCLS = (function(window, document) {
     callbacks = ["http://solutions.brightcove.com/bcls/dynamic-delivery/di-callbacks.php"];
 
 
-  // is defined
+  /**
+   * tests for all the ways a variable might be undefined or not have a value
+   * @param {*} x the variable to test
+   * @return {Boolean} true if variable is defined and has a value
+   */
   function isDefined(x) {
-    if (x === '' || x === null || x === undefined) {
-      return false;
-    }
-    return true;
+      if ( x === '' || x === null || x === undefined) {
+          return false;
+      }
+      return true;
   }
+
+  /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {String} selected value
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value,
+          txt = selected.textContent,
+          idx = e.selectedIndex;
+      return val;
+  }
+
+
 
   /**
    * determines whether specified item is in an array
@@ -288,19 +307,14 @@ var BCLS = (function(window, document) {
     httpRequest.send(requestData);
   }
   di_submit_display.addEventListener('click', function() {
-    var i, now = new Date().valueOf();
-    videoData = JSON.parse(videoDataDisplay.value);
-    totalVideos = videoData.length;
-    // to insure uniqueness,
-    for (i = 0; i < totalVideos; i++) {
-      videoData[i].reference_id += '_' + now.toString();
-    }
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
     // get account inputs
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
     client_id = client_id_display;
     client_secret = client_secret_display;
+    ingest_profile = getSelectedValue(ingest_profile_display);
+    processVideoData();
     cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
     // set CMS API options for first video
     createRequest('createVideo');
