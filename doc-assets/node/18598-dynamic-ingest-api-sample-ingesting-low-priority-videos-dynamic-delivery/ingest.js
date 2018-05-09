@@ -238,59 +238,28 @@ function logMessage(m) {
         break;
       case 'ingestVideo':
         options.url = https://ingest.api.brightcove.com/v1/accounts/ + account_id + '/videos/' + current_video_id + '/ingest-requests';
+        di_url_display.textContent = options.url;
         options.requestType = 'POST';
         options.requestBody = JSON.stringify(videoData[videoNumber].ingestVideoBody);
         makeRequest(options, function(response) {
           // parse response
           response = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(response, null, '  ');
+          if (isArray(response)) {
+            // an error occurred
+            logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
+          } else {
+            videoNumber++;
+            currentJobs++;
+            logResponse('Processing video number', videoNumber);
+            logResponse('Current jobs: ', currentJobs);
+            createRequest('createVideo');
+          }
         })
         break;
       default:
         console.log('bad type - shouldn\'t be here: ', type);
     }
-  }
-  // set options for the CMS API request
-  function setCMSOptions() {
-    // truncate description if too long
-    videoData[videoNumber].description = videoData[videoNumber].description.substr(0, 120) + '...';
-    options.proxyURL = proxyURL;
-    reqBody.name = videoData[videoNumber].name;
-    reqBody.description = videoData[videoNumber].description;
-    reqBody.reference_id = videoData[videoNumber].reference_id;
-    reqBody.tags = videoData[videoNumber].tags;
-    options.requestBody = JSON.stringify(reqBody);
-    options.requestType = 'POST';
-    options.url = cms_url_display.value;
-    // now submit the request
-    makeRequest(options, cmsURL, 'cms');
-  }
-  // set options for the Dynamic Ingest API request
-  function setDIOptions() {
-    var options = {},
-      reqBody = {};
-      custom_profile_display_value = custom_profile_display.value;
-    // get the ingest profile
-    if (isDefined(custom_profile_display_value)) {
-      ingest_profile = custom_profile_display_value;
-    } else {
-      ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
-    }
-    options.client_id = client_id;
-    options.client_secret = client_secret;
-    reqBody.master = {};
-    reqBody.master.url = videoData[videoNumber].url;
-    reqBody.profile = ingest_profile;
-    reqBody.callbacks = callbacks;
-    options.requestBody = JSON.stringify(reqBody);
-    options.requestType = 'POST';
-    options.url = di_url_display.value;
-    // now submit the request
-    makeRequest(options, diURL, 'di');
-  }
-  // function to set the request
-  function logResponse(type, data) {
-    response.textContent += type + ': ' + data + ',\n';
   }
 
   // function to submit Request
