@@ -286,7 +286,6 @@ var BCLS = (function(window, document) {
             videoNumber++;
             currentJobs++;
             LogMessage('Processing video number', videoNumber);
-            LogMessage('Current jobs: ', currentJobs);
             createRequest('createVideo');
           }
         });
@@ -410,4 +409,8 @@ var BCLS = (function(window, document) {
   }
   // call init to set things up
   init();
+
+  return {
+    'logMessage': logMessage
+  }
 })(window, document);
