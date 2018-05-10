@@ -409,7 +409,7 @@ var BCLS = (function(window, document) {
   }
   // call init to set things up
   init();
-
+console.log('logMessage', logMessage);
   return {
     'logMessage': logMessage
   }
