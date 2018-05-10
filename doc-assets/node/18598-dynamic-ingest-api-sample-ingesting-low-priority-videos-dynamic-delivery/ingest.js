@@ -390,8 +390,8 @@ var BCLS = (function(window, document) {
     videoNumber = 0;
     // get account inputs
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-    client_id = client_id_display;
-    client_secret = client_secret_display;
+    client_id = client_id_display.value;
+    client_secret = client_secret_display.value;
     ingest_profile = getSelectedValue(ingest_profile_display);
     processVideoData(JSON.parse(data));
     cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
