@@ -263,50 +263,33 @@ function logMessage(m) {
     }
   }
 
-  // function to submit Request
-  function makeRequest(options, proxyURL, type) {
+  /**
+   * send API request to the proxy
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
+   */
+  function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
-      requestData,
-      responseData,
-      parsedData,
+      response,
+      proxyURL = options.proxyURL,
+      // response handler
       getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
-              logResponse(type, httpRequest.responseText);
-              responseData = httpRequest.responseText;
-              switch (type) {
-                case 'cms':
-                  if (responseData.indexOf('TIMEOUT') > 0) {
-                    // videoNumber++;
-                    t1 = setTimeout(setCMSOptions, 1000);
-                  } else {
-                    parsedData = JSON.parse(responseData);
-                    di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + parsedData.id + '/ingest-requests';
-                    setDIOptions();
-                  }
-                  break;
-                case 'di':
-                  totalIngested++;
-                  logResponse('totalIngested', totalIngested);
-                  if (videoNumber < totalVideos - 1) {
-                    videoNumber++;
-                    currentJobs++;
-                    logResponse('Processing video number', videoNumber);
-                    logResponse('Current jobs: ', currentJobs);
-                    // if currentJobs is > 99, need to pause
-                    if (currentJobs > 99) {
-                      // reset currentJobs
-                      currentJobs = 0;
-                      // wait 30 min before resuming
-                      t2 = setTimeout(setCMSOptions, 1800000);
-                    } else {
-                      // pause to avoid CMS API timeouts
-                      t2 = setTimeout(setCMSOptions, 1000);
-                    }
-                  }
-                  break;
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '{null}') {
+                response = null;
               }
+              // return the response
+              callback(response);
             } else {
               alert('There was a problem with the request. Request returned ' + httpRequest.status);
             }
@@ -315,16 +298,18 @@ function logMessage(m) {
           alert('Caught Exception: ' + e);
         }
       };
-    // set up request data
-    requestData = 'client_id=' + options.client_id + '&client_secret=' + options.client_secret + '&url=' + encodeURIComponent(options.url) + '&requestBody=' + encodeURIComponent(options.requestBody) + '&requestType=' + options.requestType;
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // set headers if there is a set header line, remove it
     // open and send request
-    httpRequest.send(requestData);
+    httpRequest.send(JSON.stringify(options));
   }
 
   // event listeners
