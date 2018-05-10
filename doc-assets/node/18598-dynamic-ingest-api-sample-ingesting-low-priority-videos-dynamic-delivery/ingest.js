@@ -238,7 +238,7 @@ function logMessage(m) {
         });
         break;
       case 'ingestVideo':
-        options.url = https://ingest.api.brightcove.com/v1/accounts/ + account_id + '/videos/' + current_video_id + '/ingest-requests';
+        options.url = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + current_video_id + '/ingest-requests';
         di_url_display.textContent = options.url;
         options.requestType = 'POST';
         options.requestBody = JSON.stringify(videoData[videoNumber].ingestVideoBody);
