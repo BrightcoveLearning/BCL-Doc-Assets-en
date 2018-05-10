@@ -1,6 +1,5 @@
 var BCLS = (function(window, document) {
-      var // CMS API stuff
-        account_id_display = document.getElementById('account_id'),
+      var account_id_display = document.getElementById('account_id'),
         account_id,
         client_id_display = document.getElementById('client_id'),
         client_id,
@@ -320,60 +319,60 @@ var BCLS = (function(window, document) {
       });
 
       account_id_display.addEventListener('blur', function() {
-            if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
-              // refresh Profiles
-              account_id = account_id_display.value;
-              client_id = client_id_display.value;
-              client_secret = client_secret_display.value;
-              // get account profiles
-              createRequest('getProfiles');
-            }
+        if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+          // refresh Profiles
+          account_id = account_id_display.value;
+          client_id = client_id_display.value;
+          client_secret = client_secret_display.value;
+          // get account profiles
+          createRequest('getProfiles');
+        }
 
-            client_id_display.addEventListener('blur', function() {
-                  if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
-                    // refresh Profiles
-                    account_id = account_id_display.value;
-                    client_id = client_id_display.value;
-                    client_secret = client_secret_display.value;
-                    // get account profiles
-                    createRequest('getProfiles');
-                  }
-                });
+        client_id_display.addEventListener('blur', function() {
+          if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+            // refresh Profiles
+            account_id = account_id_display.value;
+            client_id = client_id_display.value;
+            client_secret = client_secret_display.value;
+            // get account profiles
+            createRequest('getProfiles');
+          }
+        });
 
-                  client_secret_display.addEventListener('blur', function() {
-                    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
-                      // refresh Profiles
-                      account_id = account_id_display.value;
-                      client_id = client_id_display.value;
-                      client_secret = client_secret_display.value;
-                      // get account profiles
-                      createRequest('getProfiles');
-                    }
-                  });
+        client_secret_display.addEventListener('blur', function() {
+          if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+            // refresh Profiles
+            account_id = account_id_display.value;
+            client_id = client_id_display.value;
+            client_secret = client_secret_display.value;
+            // get account profiles
+            createRequest('getProfiles');
+          }
+        });
 
 
 
-                    di_submit_display.addEventListener('click', function() {
-                      // in case of stop/start, reset videoNumber to 0
-                      videoNumber = 0;
-                      // get account inputs
-                      account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-                      client_id = client_id_display;
-                      client_secret = client_secret_display;
-                      ingest_profile = getSelectedValue(ingest_profile_display);
-                      processVideoData();
-                      cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
-                      // set CMS API options for first video
-                      createRequest('createVideo');
-                    });
-                    // initialize
-                    function init() {
-                      console.log('in init');
-                      // default account id
-                      account_id = defaults.account_id;
-                      // get account profiles
-                      createRequest('getProfiles');
-                    }
-                    // call init to set things up
-                    init();
-                  })(window, document);
+        di_submit_display.addEventListener('click', function() {
+          // in case of stop/start, reset videoNumber to 0
+          videoNumber = 0;
+          // get account inputs
+          account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
+          client_id = client_id_display;
+          client_secret = client_secret_display;
+          ingest_profile = getSelectedValue(ingest_profile_display);
+          processVideoData();
+          cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
+          // set CMS API options for first video
+          createRequest('createVideo');
+        });
+        // initialize
+        function init() {
+          console.log('in init');
+          // default account id
+          account_id = defaults.account_id;
+          // get account profiles
+          createRequest('getProfiles');
+        }
+        // call init to set things up
+        init();
+      })(window, document);
