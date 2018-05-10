@@ -192,6 +192,7 @@ function logMessage(m) {
       options.client_id = client_id;
       options.client_secret = client_secret;
     }
+    options.proxyURL = proxyURL;
     switch (type) {
       case 'getProfiles':
       console.log('getting profiles');
