@@ -88,7 +88,9 @@ var BCLS = (function(window, document) {
    * @param  {string} m the message to display
    */
   function logMessage(m) {
-    logger.textContent = m;
+    var hr = document.createElement('hr');
+    logger.appendChild(hr);
+    logger.appendChild(document.createTextNode(m));
   }
 
   /**
@@ -283,8 +285,8 @@ var BCLS = (function(window, document) {
           } else {
             videoNumber++;
             currentJobs++;
-            logResponse('Processing video number', videoNumber);
-            logResponse('Current jobs: ', currentJobs);
+            LogMessage('Processing video number', videoNumber);
+            LogMessage('Current jobs: ', currentJobs);
             createRequest('createVideo');
           }
         });
