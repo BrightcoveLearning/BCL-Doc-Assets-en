@@ -205,7 +205,7 @@ var BCLS = (function(window, document) {
       videoData[i].ingestVideoBody.priority = 'low';
       videoData[i].ingestVideoBody.master = {};
       videoData[i].ingestVideoBody.master.url = rawVideoData[i].url;
-      videoData[i].ingestVideoBody[capture - images] = true;
+      videoData[i].ingestVideoBody['capture-images'] = true;
       videoData[i].ingestVideoBody.callbacks = callbacks;
     }
   }
