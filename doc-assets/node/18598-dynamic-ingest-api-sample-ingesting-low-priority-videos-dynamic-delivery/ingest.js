@@ -109,6 +109,18 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * remove all spaces and line breaks from a string
+   * @param {string} a the string to operate on
+   * @return {string} the string with spaces and line breaks removed
+   */
+  function removeSpaceAndBreaks(str) {
+    var regex = new RegExp('/\r?\n|\r/g');
+    return str.replace(regex, '');
+  }
+
+
+
+  /**
    * find index of an object in array of objects
    * based on some property value
    *
@@ -367,7 +379,7 @@ var BCLS = (function(window, document) {
 
 
   di_submit_display.addEventListener('click', function() {
-    var data = videoDataDisplay.value;
+    var data = removeSpaceAndBreaks(videoDataDisplay.value);
     console.log('data', data);
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
