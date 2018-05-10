@@ -251,6 +251,8 @@ var BCLS = (function(window, document) {
         options.requestBody = JSON.stringify(videoData[videoNumber].createVideoBody);
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
         options.requestType = 'POST';
+        cms_url_display.value = options.url;
+        console.log('cms options', options);
         makeRequest(options, function(response) {
           // parse response
           response = JSON.parse(response);
@@ -269,6 +271,8 @@ var BCLS = (function(window, document) {
         di_url_display.textContent = options.url;
         options.requestType = 'POST';
         options.requestBody = JSON.stringify(videoData[videoNumber].ingestVideoBody);
+        di_url_display.value = options.url;
+        console.log('cms options', options);
         makeRequest(options, function(response) {
           // parse response
           response = JSON.parse(response);
