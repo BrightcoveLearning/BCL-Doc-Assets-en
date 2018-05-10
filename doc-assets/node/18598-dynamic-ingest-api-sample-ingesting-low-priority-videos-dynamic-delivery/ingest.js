@@ -327,6 +327,7 @@ var BCLS = (function(window, document) {
           // get account profiles
           createRequest('getProfiles');
         }
+      });
 
         client_id_display.addEventListener('blur', function() {
           if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
