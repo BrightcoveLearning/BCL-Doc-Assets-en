@@ -173,9 +173,8 @@ var BCLS = (function(window, document) {
     return;
   }
 
-  function processVideoData() {
+  function processVideoData(rawVideoData) {
     var i, iMax, field;
-    rawVideoData = JSON.parse(videoDataDisplay.value);
     iMax = rawVideoData.length;
     for (i = 0; i < iMax; i++) {
       videoData[i] = {};
@@ -368,6 +367,8 @@ var BCLS = (function(window, document) {
 
 
   di_submit_display.addEventListener('click', function() {
+    var data = videoDataDisplay.value;
+    console.log('data', data);
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
     // get account inputs
@@ -375,7 +376,7 @@ var BCLS = (function(window, document) {
     client_id = client_id_display;
     client_secret = client_secret_display;
     ingest_profile = getSelectedValue(ingest_profile_display);
-    processVideoData();
+    processVideoData(JSON.parse(data));
     cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
     // set CMS API options for first video
     createRequest('createVideo');
