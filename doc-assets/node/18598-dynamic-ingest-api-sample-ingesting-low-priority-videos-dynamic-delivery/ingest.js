@@ -87,7 +87,7 @@ var BCLS = (function(window, document) {
    * it requires an element with id="logger" referenced as logger
    * @param  {string} m the message to display
    */
-  function logMessage(m) {
+  function LogNotification(m) {
     var hr = document.createElement('hr');
     logger.appendChild(hr);
     logger.appendChild(document.createTextNode(m));
@@ -244,7 +244,7 @@ var BCLS = (function(window, document) {
             displayFilteredProfiles();
           } else {
             apiResponse.textContent = response;
-            logMessage('The get all profiles operation failed; see the API Response for the error');
+            LogNotification('The get all profiles operation failed; see the API Response for the error');
             return;
           }
         });
@@ -261,7 +261,7 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(response, null, '  ');
           // errors will come back as array
           if (isArray(response)) {
-            logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
+            LogNotification('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
           } else {
             current_video_id = response.id;
             createRequest('ingestVideo');
@@ -281,11 +281,11 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(response, null, '  ');
           if (isArray(response)) {
             // an error occurred
-            logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
+            LogNotification('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
           } else {
             videoNumber++;
             currentJobs++;
-            LogMessage('Processing video number', videoNumber);
+            LogNotification('Processing video number', videoNumber);
             createRequest('createVideo');
           }
         });
@@ -409,8 +409,8 @@ var BCLS = (function(window, document) {
   }
   // call init to set things up
   init();
-console.log('logMessage', logMessage);
+console.log('LogNotification', LogNotification);
   return {
-    'logMessage': logMessage
+    'LogNotification': LogNotification
   }
 })(window, document);
