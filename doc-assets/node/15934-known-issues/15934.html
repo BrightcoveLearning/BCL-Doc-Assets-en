@@ -215,6 +215,10 @@
 
 <p>Check the <a href="/node/18049">Brightcove Player Release Notes</a> to see if a past known issue has been corrected by a recent release.</p>
 
+<h3>Videos without poster or thumbnail images</h3>
+
+<p>Videos without thumbnail / poster images may cuse an error to appear in the player when it loads. This affects mobile SDK players in a way that may crash the player.</p>
+
 <h3>Internet Explorer always resets its playback rate to 1.0 whenever playback is paused.</h3>
 
 <h3>IE11 images for audio only content not displaying</h3>
@@ -391,9 +395,7 @@ myPlayer.play();
 	<li>There are multiple accessibility issues with the <em>native</em> browser on both phones and tablets for all versions of Android. Talkback does not provide audio and vibration feedback for any of the player controls. (This issue does <em>not</em> apply to the add-on Chrome browser on Android devices, only to the native browser.</li>
 	<li>Captions cannot be enabled on Android 2.3 devices.</li>
 	<li>On devices, the tap events for error messages do not bubble up to the parent video element. This means that you can not close an error message once it appears.</li>
-	<li>
-		On Android devices, when navigating the player menus in the controlbar, such as captions or quality selection, the menu can get "stuck" in the open state following a long press on an item in the menu. This is because Chrome adds the <code>:hover</code> pseudo-class. Another long press elsewhere on the player will typically close the menu.
-	</li>
+	<li>On Android devices, when navigating the player menus in the controlbar, such as captions or quality selection, the menu can get "stuck" in the open state following a long press on an item in the menu. This is because Chrome adds the <code>:hover</code> pseudo-class. Another long press elsewhere on the player will typically close the menu.</li>
 </ul>
 
 <p class="BCL-aside">Learn how to create Android apps that utilize the <a href="/node/18245">Brightcove Player SDK for Android</a>.</p>
@@ -622,6 +624,18 @@ myPlayer.play();
 <h3>Scheduled Videos</h3>
 
 <p>Because the Playback API and Catalog cache videos for up to 10-15 minutes, a player requesting a video scheduled to become available during the next few minutes (up to 20), may not be able to get a playable video until the cache refreshes.</p>
+
+<h3><code>has_digital_master</code></h3>
+<p>If you are using this field to test whether a video can be retranscoded, it is not reliable for shared videos, as it will be true if the original video has a master, but still cannot be retranscoded by the affiliate account.</p>
+<p><strong>Workaround</strong>: If videos are shared to the account, you need to test for both <code>has_digital_master = true</code> and <code>sharing.by_external_account = false</code>. Sample code (JavaScript):</p>
+<pre class="line-numbers"><code class="language-javascript">var video={some_video_object}
+if (video.sharing !== null) {
+  if (video.sharing.by_external_account === false) {
+    if (video.has_digital_master) {
+      // video can be retranscoded
+    }
+  }
+}</code></pre>
 </section>
 
 <section class="bcls-section">
