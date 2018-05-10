@@ -21,7 +21,7 @@ var BCLS = (function(window, document) {
     current_video_id,
     rawVideoData = [],
     videoData = [],
-    totalVideos,
+    totalVideos = 0,
     videoNumber = 0,
     currentJobs = 0,
     totalIngested = 0,
@@ -210,7 +210,7 @@ var BCLS = (function(window, document) {
       videoData[i].ingestVideoBody['capture-images'] = true;
       videoData[i].ingestVideoBody.callbacks = callbacks;
     }
-    console.log('videoData', videoData);
+    totalVideos = videoData.length;
   }
 
   function createRequest(type) {
@@ -285,8 +285,12 @@ var BCLS = (function(window, document) {
           } else {
             videoNumber++;
             currentJobs++;
-            LogNotification('Processing video number', videoNumber);
-            createRequest('createVideo');
+            if (videoNumber < totalVideos) {
+              LogNotification('Processing video number ', videoNumber);
+              createRequest('createVideo');
+            } else {
+              LogNotification('All jobs submitted');
+            }
           }
         });
         break;
