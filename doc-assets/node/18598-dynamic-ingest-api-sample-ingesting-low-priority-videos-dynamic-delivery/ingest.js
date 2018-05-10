@@ -1,6 +1,5 @@
 var BCLS = (function(window, document) {
-  var // CMS API stuff
-    account_id_display = document.getElementById('account_id'),
+  var account_id_display = document.getElementById('account_id'),
     account_id,
     client_id_display = document.getElementById('client_id'),
     client_id,
@@ -15,14 +14,14 @@ var BCLS = (function(window, document) {
     profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
     di_url_display = document.getElementById('di_url'),
     di_submit_display = document.getElementById('di_Submit'),
-    diURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     apiResponse = document.getElementById('apiResponse'),
     logger = document.getElementById('logger'),
     current_profiles = [],
     current_video_id,
     rawVideoData = [],
     videoData = [],
-    totalVideos,
+    totalVideos = 0,
     videoNumber = 0,
     currentJobs = 0,
     totalIngested = 0,
@@ -38,10 +37,10 @@ var BCLS = (function(window, document) {
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-      if ( x === '' || x === null || x === undefined) {
-          return false;
-      }
-      return true;
+    if (x === '' || x === null || x === undefined) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -51,9 +50,23 @@ var BCLS = (function(window, document) {
    */
   function isArray(a) {
     if (Array.isArray(a)) {
-        return true;
+      return true;
     }
     return false;
+  }
+
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
   }
 
   /**
@@ -62,21 +75,23 @@ var BCLS = (function(window, document) {
    * @return {String} selected value
    */
   function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return val;
+    var selected = e.options[e.selectedIndex],
+      val = selected.value,
+      txt = selected.textContent,
+      idx = e.selectedIndex;
+    return val;
   }
 
-/**
- * Just a simple logger to inject messages into the page
- * it requires an element with id="logger" referenced as logger
- * @param  {string} m the message to display
- */
-function logMessage(m) {
-  logger.textContent = m;
-}
+  /**
+   * Just a simple logger to inject messages into the page
+   * it requires an element with id="logger" referenced as logger
+   * @param  {string} m the message to display
+   */
+  function LogNotification(m) {
+    var hr = document.createElement('hr');
+    logger.appendChild(hr);
+    logger.appendChild(document.createTextNode(m));
+  }
 
   /**
    * determines whether specified item is in an array
@@ -85,15 +100,27 @@ function logMessage(m) {
    * @return {boolean} true if item is in the array, else false
    */
   function arrayContains(arr, item) {
-      var i,
-          iMax = arr.length;
-      for (i = 0; i < iMax; i++) {
-          if (arr[i] === item) {
-              return true;
-          }
+    var i,
+      iMax = arr.length;
+    for (i = 0; i < iMax; i++) {
+      if (arr[i] === item) {
+        return true;
       }
-      return false;
+    }
+    return false;
   }
+
+  /**
+   * remove all spaces and line breaks from a string
+   * @param {string} a the string to operate on
+   * @return {string} the string with spaces and line breaks removed
+   */
+  function removeSpaceAndBreaks(str) {
+    var regex = new RegExp('/\r?\n|\r/g');
+    return str.replace(regex, '');
+  }
+
+
 
   /**
    * find index of an object in array of objects
@@ -103,32 +130,33 @@ function logMessage(m) {
    * @param {string} objProperty object property to search
    * @param {string} value of the property to search for
    * @return {integer} index of first instance if found, otherwise returns -1
-  */
+   */
   function findObjectInArray(targetArray, objProperty, value) {
-      var i, totalItems = targetArray.length, objFound = false;
-      for (i = 0; i < totalItems; i++) {
-          if (targetArray[i][objProperty] === value) {
-              objFound = true;
-              return i;
-          }
+    var i, totalItems = targetArray.length,
+      objFound = false;
+    for (i = 0; i < totalItems; i++) {
+      if (targetArray[i][objProperty] === value) {
+        objFound = true;
+        return i;
       }
-      if (objFound === false) {
-          return -1;
-      }
+    }
+    if (objFound === false) {
+      return -1;
+    }
   }
 
-/**
- * remove or add obsolete profiles from the current profiles list
- */
+  /**
+   * remove or add obsolete profiles from the current profiles list
+   */
   function toggleObsoleteProfiles() {
     // below are the obsolete profiles - you just have to know their names
     var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'];
-      i = current_profiles.length;
-      while (i > 0) {
-        i--;
-        if (arrayContains(deprecated_profiles, current_profiles[i].name)) {
-          current_profiles.splice(i, 1);
-        }
+    i = current_profiles.length;
+    while (i > 0) {
+      i--;
+      if (arrayContains(deprecated_profiles, current_profiles[i].name)) {
+        current_profiles.splice(i, 1);
+      }
     }
     return;
   }
@@ -159,9 +187,8 @@ function logMessage(m) {
     return;
   }
 
-  function processVideoData() {
+  function processVideoData(rawVideoData) {
     var i, iMax, field;
-    rawVideoData = JSON.parse(videoDataDisplay.value);
     iMax = rawVideoData.length;
     for (i = 0; i < iMax; i++) {
       videoData[i] = {};
@@ -180,9 +207,10 @@ function logMessage(m) {
       videoData[i].ingestVideoBody.priority = 'low';
       videoData[i].ingestVideoBody.master = {};
       videoData[i].ingestVideoBody.master.url = rawVideoData[i].url;
-      videoData[i].ingestVideoBody[capture-images] = true;
+      videoData[i].ingestVideoBody['capture-images'] = true;
       videoData[i].ingestVideoBody.callbacks = callbacks;
     }
+    totalVideos = videoData.length;
   }
 
   function createRequest(type) {
@@ -192,6 +220,7 @@ function logMessage(m) {
       options.client_id = client_id;
       options.client_secret = client_secret;
     }
+    options.proxyURL = proxyURL;
     switch (type) {
       case 'getProfiles':
         var i;
@@ -214,7 +243,7 @@ function logMessage(m) {
             displayFilteredProfiles();
           } else {
             apiResponse.textContent = response;
-            logMessage(logger, 'The get all profiles operation failed; see the API Response for the error', true);
+            LogNotification('The get all profiles operation failed; see the API Response for the error');
             return;
           }
         });
@@ -223,110 +252,77 @@ function logMessage(m) {
         options.requestBody = JSON.stringify(videoData[videoNumber].createVideoBody);
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
         options.requestType = 'POST';
-        makeRequest(options, function(response){
+        cms_url_display.value = options.url;
+        makeRequest(options, function(response) {
           // parse response
           response = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(response, null, '  ');
           // errors will come back as array
           if (isArray(response)) {
-            logMessage('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
-          } else
+            LogNotification('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
+          } else {
+            current_video_id = response.id;
+            createRequest('ingestVideo');
+          }
         });
         break;
       case 'ingestVideo':
-
+        options.url = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + current_video_id + '/ingest-requests';
+        di_url_display.textContent = options.url;
+        options.requestType = 'POST';
+        options.requestBody = JSON.stringify(videoData[videoNumber].ingestVideoBody);
+        di_url_display.value = options.url;
+        makeRequest(options, function(response) {
+          // parse response
+          response = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(response, null, '  ');
+          if (isArray(response)) {
+            // an error occurred
+            LogNotification('An error occurred. Look the current API response below, correct the issue with the video data, and try again');
+          } else {
+            videoNumber++;
+            currentJobs++;
+            if (videoNumber < totalVideos) {
+              LogNotification('Processing video number ' + videoNumber);
+              createRequest('createVideo');
+            } else {
+              LogNotification('All jobs submitted');
+            }
+          }
+        });
         break;
       default:
         console.log('bad type - shouldn\'t be here: ', type);
     }
   }
-  // set options for the CMS API request
-  function setCMSOptions() {
-    // truncate description if too long
-    videoData[videoNumber].description = videoData[videoNumber].description.substr(0, 120) + '...';
-    options.proxyURL = proxyURL;
-    reqBody.name = videoData[videoNumber].name;
-    reqBody.description = videoData[videoNumber].description;
-    reqBody.reference_id = videoData[videoNumber].reference_id;
-    reqBody.tags = videoData[videoNumber].tags;
-    options.requestBody = JSON.stringify(reqBody);
-    options.requestType = 'POST';
-    options.url = cms_url_display.value;
-    // now submit the request
-    makeRequest(options, cmsURL, 'cms');
-  }
-  // set options for the Dynamic Ingest API request
-  function setDIOptions() {
-    var options = {},
-      reqBody = {};
-      custom_profile_display_value = custom_profile_display.value;
-    // get the ingest profile
-    if (isDefined(custom_profile_display_value)) {
-      ingest_profile = custom_profile_display_value;
-    } else {
-      ingest_profile = ingest_profile_display.options[ingest_profile_display.selectedIndex].value;
-    }
-    options.client_id = client_id;
-    options.client_secret = client_secret;
-    reqBody.master = {};
-    reqBody.master.url = videoData[videoNumber].url;
-    reqBody.profile = ingest_profile;
-    reqBody.callbacks = callbacks;
-    options.requestBody = JSON.stringify(reqBody);
-    options.requestType = 'POST';
-    options.url = di_url_display.value;
-    // now submit the request
-    makeRequest(options, diURL, 'di');
-  }
-  // function to set the request
-  function logResponse(type, data) {
-    response.textContent += type + ': ' + data + ',\n';
-  }
 
-  // function to submit Request
-  function makeRequest(options, proxyURL, type) {
+  /**
+   * send API request to the proxy
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
+   */
+  function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
-      requestData,
-      responseData,
-      parsedData,
+      response,
+      proxyURL = options.proxyURL,
+      // response handler
       getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
-              logResponse(type, httpRequest.responseText);
-              responseData = httpRequest.responseText;
-              switch (type) {
-                case 'cms':
-                  if (responseData.indexOf('TIMEOUT') > 0) {
-                    // videoNumber++;
-                    t1 = setTimeout(setCMSOptions, 1000);
-                  } else {
-                    parsedData = JSON.parse(responseData);
-                    di_url_display.value = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + parsedData.id + '/ingest-requests';
-                    setDIOptions();
-                  }
-                  break;
-                case 'di':
-                  totalIngested++;
-                  logResponse('totalIngested', totalIngested);
-                  if (videoNumber < totalVideos - 1) {
-                    videoNumber++;
-                    currentJobs++;
-                    logResponse('Processing video number', videoNumber);
-                    logResponse('Current jobs: ', currentJobs);
-                    // if currentJobs is > 99, need to pause
-                    if (currentJobs > 99) {
-                      // reset currentJobs
-                      currentJobs = 0;
-                      // wait 30 min before resuming
-                      t2 = setTimeout(setCMSOptions, 1800000);
-                    } else {
-                      // pause to avoid CMS API timeouts
-                      t2 = setTimeout(setCMSOptions, 1000);
-                    }
-                  }
-                  break;
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '{null}') {
+                response = null;
               }
+              // return the response
+              callback(response);
             } else {
               alert('There was a problem with the request. Request returned ' + httpRequest.status);
             }
@@ -335,32 +331,70 @@ function logMessage(m) {
           alert('Caught Exception: ' + e);
         }
       };
-    // set up request data
-    requestData = 'client_id=' + options.client_id + '&client_secret=' + options.client_secret + '&url=' + encodeURIComponent(options.url) + '&requestBody=' + encodeURIComponent(options.requestBody) + '&requestType=' + options.requestType;
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open('POST', proxyURL);
-    // set headers
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // set headers if there is a set header line, remove it
     // open and send request
-    httpRequest.send(requestData);
+    httpRequest.send(JSON.stringify(options));
   }
 
   // event listeners
-videoDataDisplay.addEventListener('click', function(){
-  this.select();
-});
+  videoDataDisplay.addEventListener('click', function() {
+    this.select();
+  });
+
+  account_id_display.addEventListener('blur', function() {
+    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+      // refresh Profiles
+      account_id = account_id_display.value;
+      client_id = client_id_display.value;
+      client_secret = client_secret_display.value;
+      // get account profiles
+      createRequest('getProfiles');
+    }
+  });
+
+  client_id_display.addEventListener('blur', function() {
+    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+      // refresh Profiles
+      account_id = account_id_display.value;
+      client_id = client_id_display.value;
+      client_secret = client_secret_display.value;
+      // get account profiles
+      createRequest('getProfiles');
+    }
+  });
+
+  client_secret_display.addEventListener('blur', function() {
+    if (isDefined(account_id_display.value) && isDefined(client_id_display.value) && isDefined(client_secret_display.value)) {
+      // refresh Profiles
+      account_id = account_id_display.value;
+      client_id = client_id_display.value;
+      client_secret = client_secret_display.value;
+      // get account profiles
+      createRequest('getProfiles');
+    }
+  });
+
+
 
   di_submit_display.addEventListener('click', function() {
+    var data = removeSpaceAndBreaks(videoDataDisplay.value);
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
     // get account inputs
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
-    client_id = client_id_display;
-    client_secret = client_secret_display;
+    client_id = client_id_display.value;
+    client_secret = client_secret_display.value;
     ingest_profile = getSelectedValue(ingest_profile_display);
-    processVideoData();
+    processVideoData(JSON.parse(data));
     cms_url_display.value = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
     // set CMS API options for first video
     createRequest('createVideo');
