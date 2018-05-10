@@ -286,7 +286,7 @@ var BCLS = (function(window, document) {
             videoNumber++;
             currentJobs++;
             if (videoNumber < totalVideos) {
-              LogNotification('Processing video number ', videoNumber);
+              LogNotification('Processing video number ' + videoNumber);
               createRequest('createVideo');
             } else {
               LogNotification('All jobs submitted');
