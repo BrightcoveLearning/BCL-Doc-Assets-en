@@ -55,6 +55,20 @@ var BCLS = (function(window, document) {
     return false;
   }
 
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
+
   /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
