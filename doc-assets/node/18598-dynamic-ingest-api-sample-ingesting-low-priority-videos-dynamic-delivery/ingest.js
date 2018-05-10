@@ -256,7 +256,7 @@ function logMessage(m) {
             logResponse('Current jobs: ', currentJobs);
             createRequest('createVideo');
           }
-        })
+        });
         break;
       default:
         console.log('bad type - shouldn\'t be here: ', type);
