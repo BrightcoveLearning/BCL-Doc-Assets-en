@@ -208,6 +208,7 @@ var BCLS = (function(window, document) {
       videoData[i].ingestVideoBody['capture-images'] = true;
       videoData[i].ingestVideoBody.callbacks = callbacks;
     }
+    console.log('videoData', videoData);
   }
 
   function createRequest(type) {
