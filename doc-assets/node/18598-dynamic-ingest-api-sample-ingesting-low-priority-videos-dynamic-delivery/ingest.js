@@ -223,7 +223,6 @@ var BCLS = (function(window, document) {
     options.proxyURL = proxyURL;
     switch (type) {
       case 'getProfiles':
-        console.log('getting profiles');
         var i;
         endpoint = '/profiles';
         options.url = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id + endpoint;
@@ -254,7 +253,6 @@ var BCLS = (function(window, document) {
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos';
         options.requestType = 'POST';
         cms_url_display.value = options.url;
-        console.log('cms options', options);
         makeRequest(options, function(response) {
           // parse response
           response = JSON.parse(response);
@@ -274,7 +272,6 @@ var BCLS = (function(window, document) {
         options.requestType = 'POST';
         options.requestBody = JSON.stringify(videoData[videoNumber].ingestVideoBody);
         di_url_display.value = options.url;
-        console.log('cms options', options);
         makeRequest(options, function(response) {
           // parse response
           response = JSON.parse(response);
@@ -390,7 +387,6 @@ var BCLS = (function(window, document) {
 
   di_submit_display.addEventListener('click', function() {
     var data = removeSpaceAndBreaks(videoDataDisplay.value);
-    console.log('data', data);
     // in case of stop/start, reset videoNumber to 0
     videoNumber = 0;
     // get account inputs
@@ -405,7 +401,6 @@ var BCLS = (function(window, document) {
   });
   // initialize
   function init() {
-    console.log('in init');
     // default account id
     account_id = defaults.account_id;
     // get account profiles
@@ -413,8 +408,4 @@ var BCLS = (function(window, document) {
   }
   // call init to set things up
   init();
-console.log('LogNotification', LogNotification);
-  return {
-    'LogNotification': LogNotification
-  }
 })(window, document);
