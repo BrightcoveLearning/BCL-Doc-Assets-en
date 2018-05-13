@@ -30,9 +30,8 @@ header("X-XSS-Protection");
 
 // default account values
 // if you work on one Brightcove account, put in the values below
-// if you do not provide defaults, the account id, client id, and client secret must
+// if you do not provide defaults, the client id, and client secret must
 // be sent in the request body for each request
-$default_account_id    = 'YOUR_ACCOUNT_ID';
 $default_client_id     = 'YOUR_CLIENT_ID';
 $default_client_secret = 'YOUR_CLIENT_SECRET';
 
@@ -51,12 +50,6 @@ if ($requestData->client_secret) {
 } else {
     // default to the secret for all permissions for most BCLS accounts
     $client_secret = $default_client_secret;
-}
-if ($requestData->ccount_id) {
-    $account_id = $requestData->account_id;
-} else {
-    // default to Doc Samples account; change to default to BrightcoveLearning or another account
-    $account_id = $default_account_id;
 }
 
 $auth_string = "{$client_id}:{$client_secret}";
