@@ -12,7 +12,6 @@
  * {string} [requestBody] - JSON data to be sent with write requests
  * {string} [client_id] - OAuth2 client id with sufficient permissions for the request
  * {string} [client_secret] - OAuth2 client secret with sufficient permissions for the request
- * {string} [account_id] - Brightcove account id
  *
  * if client_id, client_secret, or account_id are not included in the request, default values will be used
  *
