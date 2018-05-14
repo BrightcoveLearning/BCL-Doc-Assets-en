@@ -37,32 +37,83 @@
 </section>
 
 <section class="bcls-section">
-  <h2 id="get_access_token_app">Get access token app</h2>
-  <p>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18520-oauth-api-sample-get-access-token">GitHub repository</a>.</p>
-  <p data-height="800" data-theme-id="dark" data-slug-hash="LmxBMG" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="OAuth API Sample: Get an Access Token" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/LmxBMG/">OAuth API Sample: Get an Access Token</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-  <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+<h2 id="get_access_token_app">Get access token app</h2>
+
+<p>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18520-oauth-api-sample-get-access-token">GitHub repository</a>.</p>
+
+<p data-height="800" data-theme-id="dark" data-slug-hash="LmxBMG" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="OAuth API Sample: Get an Access Token" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/LmxBMG/">OAuth API Sample: Get an Access Token</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+	<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18520-oauth-api-sample-get-access-token">GitHub repository</a>.</li>
+</ul>
+</div>
 </section>
 
 <section class="bcls-section">
-  <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
-  <div class="bcls-expander-content">
-    <p>Here are some tips to effectively use the above CodePen:</p>
-    <ul>
-      <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
-      <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-      <li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-      <li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18520-oauth-api-sample-get-access-token">GitHub repository</a>.</li>
-    </ul>
-  </div>
-</section>
+<h2 id="proxy">Proxy code</h2>
 
-<section class="bcls-section">
-  <h2 id="proxy">Proxy code</h2>
-  <p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:</p>
-    <ul>
-      <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-      <li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-    </ul>
-</section>
+<p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A version of the proxy code without the origin restrictions is shown below.</p>
 
+<pre class="line-numbers"><code class="language-php">&lt;?php
+/**
+ * access-token-proxy.php - proxy for Brightcove RESTful APIs
+ * gets an access token and returns it
+ * Accessing:
+ *         (note you should *always* access the proxy via HTTPS)
+ *     Method: POST
+ *
+ * @post {string} client_id - OAuth2 client id with sufficient permissions for the request
+ * @post {string} client_secret - OAuth2 client secret with sufficient permissions for the request
+ *
+ * @returns {string} $response - JSON response received from the OAuth API
+ */
+
+
+// CORS enablement and other headers
+header("Access-Control-Allow-Origin: *");
+header("Content-type: application/json");
+header("X-Content-Type-Options: nosniff");
+header("X-XSS-Protection");
+
+// note that if you are using this proxy for a single credential
+// you can just hardcode the client id and secret below instead of passing them
+
+$client_id     = $_POST["client_id"];
+$client_secret = $_POST["client_secret"];
+$auth_string   = "{$client_id}:{$client_secret}";
+$request       = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
+$ch            = curl_init($request);
+curl_setopt_array($ch, array(
+        CURLOPT_POST           => TRUE,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_SSL_VERIFYPEER => FALSE,
+        CURLOPT_USERPWD        => $auth_string,
+        CURLOPT_HTTPHEADER     => array(
+            'Content-type: application/x-www-form-urlencoded',
+        )
+    ));
+$response = curl_exec($ch);
+curl_close($ch);
+
+// Check for errors
+if ($response === FALSE) {
+    die(curl_error($ch));
+    echo 'An error occurred';
+} else {
+  echo $response;
+}
+
+?&gt;
+</code></pre>
+</section>
 </article>
