@@ -1,0 +1,86 @@
+<article class="bcls-article">
+
+<section class="bcls-section">
+<h2 id="BrightcovePlayer_class">BrightcovePlayer class</h2>
+
+<p>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcovePlayer.html">BrightcovePlayer</a> class resides in the core Brightcove SDK for Android and extends Android's <a href="https://developer.android.com/reference/android/app/Activity">Activity</a> class.</p>
+
+<p>As a basic <code>Activity</code>, the <code>BrightcovePlayer</code> class wraps a <code>BrightcoveExoPlayerVideoView</code> and sets up an <code>EventLogger</code> and default <code>MediaController</code>. It implements basic lifecycle management and full screen logic. It is meant to be subclassed.</p>
+
+<pre><code class="language-java">public class MainActivity extends BrightcovePlayer {
+...
+}</code></pre>
+
+<p>At a minimum the <code>onCreate()</code> method should be overridden with logic to wire up the <code>BrightcoveExoPlayerVideoView</code> variable to the <strong>layout.xml</strong> file. For example:</p>
+
+<pre><code class="language-java">brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);</code></pre>
+<p>
+For implementation details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicSampleApp/src/main">BasicSampleApp</a> code sample.
+</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Support_library_components">Support library components</h2>
+
+<p>
+If you choose not to use the <code>BrightcovePlayer</code> class, the <code>BrightcovePlayerActivity</code> and <code>BrightcovePlayerFragment</code> classes are available to you. To use either of these classes, you need to include the <code>appcompat</code> plugin in your <strong>build.gradle</strong> file as follows:
+</p>
+
+<pre><code class="language-java">compile &quot;com.brightcove.player:android-appcompat-plugin:${anpVersion}&quot;</code></pre>
+
+<h3 id="BrightcovePlayerFragment_class">BrightcovePlayerFragment class</h3>
+
+<p>
+The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/appcompat/BrightcovePlayerFragment.html">BrightcovePlayerFragment</a> class extends the <a href="https://developer.android.com/reference/android/support/v4/app/Fragment">android.support.v4.app.Fragment</a> class.
+</p>
+
+<p>If you want to combine the Brightcove Player with other design elements in your layout, you can use the <code>BrightcovePlayerFragment</code> class. This is useful when designing for a tablet or larger screen, which has more room to combine UI components. For example, with a tablet, you could display multiple fragments at the same time, both living within the same activity.</p>
+<pre><code class="language-java">public class MainFragment extends BrightcovePlayerFragment {
+...
+}</code></pre>
+
+<p>
+The <code>onCreateView()</code> should be extended to wire up the fragment's layout to the <code>baseVideoView</code> instance variable before calling <code>super.onCreateView()</code>.
+</p>
+
+<pre><code class="language-java">baseVideoView = (BaseVideoView) result.findViewById(R.id.brightcove_video_view);</code></pre>
+
+<p>
+For implementation details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/AppCompatFragmentSampleApp">AppCompatFragmentSampleApp</a> code sample.
+</p>
+
+<h3 id="BrightcovePlayerFragment_class">BrightcovePlayerActivity class</h3>
+<p>
+The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/appcompat/BrightcovePlayerActivity.html">BrightcovePlayerActivity</a> class extends the <a href="https://developer.android.com/reference/android/support/v7/app/AppCompatActivity">android.support.v7.app.AppCompatActivity</a> class.
+</p>
+
+<p>If you choose to use an Activity, you can use the <code>BrightcovePlayerActivity</code> class.</p>
+<pre><code class="language-java">public class MainActivity extends BrightcovePlayerActivity {
+...
+}</code></pre>
+
+<p>
+For implementation details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/AppCompatActivitySampleApp">AppCompatActivitySampleApp</a> code sample.
+</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Lifecycle_management">Lifecycle management</h2>
+
+<p>It is best practice to start with either the <code>BrightcovePlayer</code> activity or the <code>BrightcovePlayerFragment</code>, since these provide default lifecycle management implementation, including the following:</p>
+
+<ul>
+<li>When a user pauses the app, the class keeps track of where they stopped.</li>
+<li>When your app comes back from the background, the class remembers whether the video was playing or not, and restart playback where it left off.</li>
+<li>If your app is killed due to memory issues, the class will seek to time in video to where it was.</li>
+<li>An event logger is setup, which logs all events to logcat. This can be helpful for debugging.</li>
+<li>The class dispatches events to communicate with plugins.</li>
+</ul>
+</section>
+&nbsp;
+
+<p>Now that you have an activity, you are ready to choose a video view, as detailed in the next document.</p>
+
+<div style="text-align:center"><button class="bcls-button" type="button" title="Previous button" onclick="location.href='/node/18250';">&lt; Prev</button><button class="bcls-button" type="button" title="Next button" onclick="location.href='/node/18248';">Next &gt;</button></div>
+</article>
