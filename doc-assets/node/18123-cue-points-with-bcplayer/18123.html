@@ -451,13 +451,17 @@ for (var i = 0; i &lt; attLength; i++) {
 <ul>
 <li>
 <p>
-	Line 43: Adds a <code>textTrack</code> element to the player using the player's <code>addRemoteTextTrack()</code> method. Specify the <code>kind</code> to be <strong>metadata</strong>, and a <code>label</code>, in this case <strong>Timed Cue Point</strong>.
+	Lines 43,44: Adds a <code>textTrack</code> element to the player using the player's <code>addRemoteTextTrack()</code> method. Specify the <code>kind</code> to be <strong>metadata</strong>, and a <code>label</code>, in this case <strong>Timed Cue Point</strong>.
 </p>
-<aside class="bcls-aside bcls-aside--information">Note: You can use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#addTextTrack">addTextTrack()</a> method, but only remote text tracks can be removed from a player. Therefore, we recommend using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#addRemoteTextTrack">addRemoteTextTrack()</a> method.</aside>
+<aside class="bcls-aside bcls-aside--information">Note: Because only remote text tracks can be removed from a player, we recommend using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#addRemoteTextTrack">addRemoteTextTrack()</a> method.</aside>
 </li>
-<li>Lines 44,45: Create two cue points using the player's <code>addCue()</code> method. The cue points are instantiated using HTML5's <code>VTTCue()</code> constructor.</li>
+<li>
+<p>
+	Lines 45-48: Wait 10 milliseconds before creating two cue points using the player's <code>addCue()</code> method. The cue points are instantiated using HTML5's <code>VTTCue()</code> constructor.
+</p>
+<aside class="bcls-aside bcls-aside--tip">For Safari and iOS, you need to delay before adding cue points or they don't get added. This is because the Brightcove Player uses native, asynchronous tracks in the Safari browser and on iOS.</aside>
+</li>
 <li>Line 22: Listens for the <code>addtrack</code> event.
-<aside class="bcls-aside bcls-aside--tip">Listening for the <code>addtrack</code> event allows this code to work in every browser, including the Safari browser. Because the Brightcove Player uses native, asynchronous tracks in the Safari browser, you need to wait for the tracks to be added before processing them.</aside>
 </li>
 <li>Line 23: Retrieves all text tracks associated with the player.</li>
 <li>Line 24: Sets the <code>attLength</code> variable to the number of text tracks. This value will be used in a loop in the next code segment.</li>
@@ -508,9 +512,12 @@ myPlayer.textTracks().addEventListener('addtrack', function () {
 		}
 	}; //end oncuechange
 }); // end playing
-textTrack = myPlayer.addRemoteTextTrack({kind: 'metadata',label: 'Timed Cue Point',mode: 'hidden'}, false);
-textTrack.track.addCue(new window.VTTCue(2, 5, 'cue point 1 text'));
-textTrack.track.addCue(new window.VTTCue(10, 15, 'cue point 2 text'));
+textTrack = myPlayer.addRemoteTextTrack({kind: 'metadata', label: 'Timed Cue Point', mode: 'hidden'}, false);
+textTrack.track.mode = 'hidden';
+setTimeout(function(){
+	textTrack.track.addCue(new window.VTTCue(2, 5, 'cue point 1 text'));
+	textTrack.track.addCue(new window.VTTCue(10, 15, 'cue point 2 text'));
+}, 10);
 }); //end on loadedmetadata
 }); //end ready
 &lt;/script&gt;</code></pre>
