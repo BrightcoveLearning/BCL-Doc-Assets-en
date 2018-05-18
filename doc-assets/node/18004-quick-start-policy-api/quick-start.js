@@ -76,6 +76,7 @@ var BCLS = (function() {
         options.proxyURL = proxyURL;
         apiRequest.textContent = options.url;
         requestBody.textContent = JSON.stringify(JSON.parse(options.requestBody), null, '  ');
+        console.log('options', options);
         makeRequest(options, callback);
     }
 
