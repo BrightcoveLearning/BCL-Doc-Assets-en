@@ -65,9 +65,9 @@ var BCLS = (function() {
         disableButtons();
         options.url = baseURL + accountId + urlSuffix;
         options.requestType = 'POST';
-        body[key-data] = {};
-        body[key-data][account-id] = accountId;
-        body[key-data].apis = ["search"];
+        body['key-data'] = {};
+        body['key-data']['account-id'] = accountId;
+        body['key-data'].apis = ["search"];
         options.requestBody = JSON.stringify(body);
         if (isDefined(clientId) && isDefined(clientSecret)) {
           options.client_id = clientId;
