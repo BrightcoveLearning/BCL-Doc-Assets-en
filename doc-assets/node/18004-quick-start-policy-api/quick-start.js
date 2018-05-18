@@ -55,6 +55,7 @@ var BCLS = (function() {
      */
     function setRequestData() {
         var options = {},
+          body = {},
             callback = function(response) {
               response = JSON.parse(response);
                 apiResponse.textContent = JSON.stringify(response, null, '  ');
@@ -64,7 +65,10 @@ var BCLS = (function() {
         disableButtons();
         options.url = baseURL + accountId + urlSuffix;
         options.requestType = 'POST';
-        options.requestBody = '{"key-data": {"account-id": "' + accountId + '","apis": ["search"]}}';
+        body[key-data] = {};
+        body[key-data][account-id] = accountId;
+        body[key-data].apis = ["search"];
+        options.requestBody = JSON.stringify(body);
         if (isDefined(clientId) && isDefined(clientSecret)) {
           options.client_id = clientId;
           options.client_secret = clientSecret;
