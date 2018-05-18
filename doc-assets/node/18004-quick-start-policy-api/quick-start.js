@@ -103,9 +103,9 @@ var BCLS = (function() {
                 response = httpRequest.responseText;
                 console.log('response', response);
                 // some API requests return '{null}' for empty responses - breaks JSON.parse
-                // if (response === '{null}') {
-                //   response = null;
-                // }
+                if (response === '{null}') {
+                  response = null;
+                }
                 // return the response
                 callback(response);
               } else {
