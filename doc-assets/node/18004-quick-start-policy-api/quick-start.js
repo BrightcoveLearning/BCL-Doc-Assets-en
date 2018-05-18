@@ -69,6 +69,7 @@ var BCLS = (function() {
           options.client_id = clientId;
           options.client_secret = clientSecret;
         }
+        options.proxyURL = proxyURL;
         apiRequest.textContent = options.url;
         requestBody.textContent = JSON.stringify(JSON.parse(options.requestBody), null, '  ');
         makeRequest(options, callback);
