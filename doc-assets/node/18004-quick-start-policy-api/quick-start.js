@@ -122,6 +122,9 @@ function init() {
         // get the inputs
         clientId = client_id.value;
         clientSecret = client_secret.value;
+      console.log(clientId);
+      console.log(clientSecret);
+
         // only use entered account id if client id and secret are entered also
         if (isDefined(clientId) && isDefined(clientSecret)) {
             if (isDefined(account_id.value)) {
