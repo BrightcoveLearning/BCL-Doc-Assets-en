@@ -1,7 +1,7 @@
 <style type="text/css">.video-js {
-		width: 640px;
-		height: 360px;
-	}
+width: 640px;
+height: 360px;
+}
 </style>
 <article class="bcls-article">
 <section class="bcls-section">
@@ -76,7 +76,7 @@
 
 <h3>Setting Video Cloud cue points</h3>
 
-<p>Video Cloud cue points can be associated with a video using the Video Cloud Studio, and a number of other ways, detailed in this document: <a href="/node/15151">Adding Cue Points to Videos</a>.</p>
+<p>Video Cloud cue points can be associated with a video using the Video Cloud Studio, and a number of other ways, detailed in this document: <a href="/node/15151">Working with Cue Points in the Media Module</a>.</p>
 
 <h3>Acting on Video Cloud cue points - video statically bound to the player</h3>
 
@@ -96,34 +96,31 @@
 <li>Line 42: Play the video.</li>
 </ul>
 
-<pre class="line-numbers" data-start="17">
-<code class="language-html">  &lt;video id="myPlayerID"
-data-account="1507807800001"
-data-player="6aac508a-741e-41a2-bc7a-5805644cf089"
-data-embed="default"
-data-video-id="1507781667001"
-class="video-js" controls&gt;&lt;/video&gt;
+<pre class="line-numbers" data-start="17"><code class="language-html">&lt;video id=&quot;myPlayerID&quot;
+data-account=&quot;1507807800001&quot;
+data-player=&quot;6aac508a-741e-41a2-bc7a-5805644cf089&quot;
+data-embed=&quot;default&quot;
+data-video-id=&quot;1507781667001&quot;
+class=&quot;video-js&quot; controls&gt;&lt;/video&gt;
 
-&lt;p id="insertionPoint"&gt;&lt;/p&gt;
-
-&lt;script src="//players.brightcove.net/1507807800001/6aac508a-741e-41a2-bc7a-5805644cf089_default/index.min.js"&gt;&lt;/script&gt;
-
+&lt;p id=&quot;insertionPoint&quot;&gt;&lt;/p&gt;
+&lt;script src=&quot;//players.brightcove.net/1507807800001/6aac508a-741e-41a2-bc7a-5805644cf089_default/index.min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
-videojs("myPlayerID").ready(function(){
-	var player = this;
-	player.one("loadedmetadata",function(){
-		var tt = player.textTracks()[0];
-		tt.oncuechange = function() {
-			if(tt.activeCues[0] !== undefined){
-				var dynamicHTML = "id: " + tt.activeCues[0].id + ", ";
-				dynamicHTML += "text: " + tt.activeCues[0].text + ", ";
-				dynamicHTML += "startTime: " + tt.activeCues[0].startTime + ",  ";
-				dynamicHTML += "endTime: " + tt.activeCues[0].endTime;
-				document.getElementById("insertionPoint").innerHTML += dynamicHTML + "&lt;br/&gt;";
-			}
-		}
-		player.play();
-	});
+videojs(&quot;myPlayerID&quot;).ready(function () {
+var player = this;
+player.one(&quot;loadedmetadata&quot;, function () {
+var tt = player.textTracks()[0];
+tt.oncuechange = function () {
+	if (tt.activeCues[0] !== undefined) {
+		var dynamicHTML = &quot;id: &quot; + tt.activeCues[0].id + &quot;, &quot;;
+		dynamicHTML += &quot;text: &quot; + tt.activeCues[0].text + &quot;, &quot;;
+		dynamicHTML += &quot;startTime: &quot; + tt.activeCues[0].startTime + &quot;,  &quot;;
+		dynamicHTML += &quot;endTime: &quot; + tt.activeCues[0].endTime;
+		document.getElementById(&quot;insertionPoint&quot;).innerHTML += dynamicHTML + &quot;&lt;br/&gt;&quot;;
+	}
+}
+player.play();
+});
 });
 &lt;/script&gt;</code></pre>
 
@@ -144,38 +141,37 @@ videojs("myPlayerID").ready(function(){
 <li>Line 96: Play the video.</li>
 </ul>
 
-<pre class="line-numbers" data-start="69">
-<code class="language-html">&lt;video id="myPlayerID"
-data-account="1507807800001"
-data-player="3c59134e-89e8-4864-87e2-3cc871f8c361"
-data-embed="default"
-data-video-id=""
-class="video-js" controls&gt;&lt;/video&gt;
+<pre class="line-numbers" data-start="69"><code class="language-html">&lt;video id=&quot;myPlayerID&quot;
+data-account=&quot;1507807800001&quot;
+data-player=&quot;3c59134e-89e8-4864-87e2-3cc871f8c361&quot;
+data-embed=&quot;default&quot;
+data-video-id=&quot;&quot;
+class=&quot;video-js&quot; controls&gt;&lt;/video&gt;
 
-&lt;p id="insertionPoint"&gt;&lt;/p&gt;
+&lt;p id=&quot;insertionPoint&quot;&gt;&lt;/p&gt;
 
-&lt;script src="//players.brightcove.net/1507807800001/3c59134e-89e8-4864-87e2-3cc871f8c361_default/index.min.js"&gt;&lt;/script&gt;
+&lt;script src=&quot;//players.brightcove.net/1507807800001/3c59134e-89e8-4864-87e2-3cc871f8c361_default/index.min.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
-videojs("myPlayerID").ready(function(){
-	var player = this;
-	player.catalog.getVideo('1507781667001', function(error, video) {
-		//deal with error
-		player.catalog.load(video);
-		player.one("loadedmetadata",function(){
-				var tt = player.textTracks()[0];
-				tt.oncuechange = function() {
-					if(tt.activeCues[0] !== undefined){
-						var dynamicHTML = "id: " + tt.activeCues[0].id + ", ";
-						dynamicHTML += "text: " + tt.activeCues[0].text + ", ";
-						dynamicHTML += "startTime: " + tt.activeCues[0].startTime + ",  ";
-						dynamicHTML += "endTime: " + tt.activeCues[0].endTime;
-						document.getElementById("insertionPoint").innerHTML += dynamicHTML + "&lt;br/&gt;";
-					}
-				}
-		});
-		player.play();
-	});
+videojs(&quot;myPlayerID&quot;).ready(function () {
+var player = this;
+player.catalog.getVideo('1507781667001', function (error, video) {
+//deal with error
+player.catalog.load(video);
+player.one(&quot;loadedmetadata&quot;, function () {
+	var tt = player.textTracks()[0];
+	tt.oncuechange = function () {
+		if (tt.activeCues[0] !== undefined) {
+			var dynamicHTML = &quot;id: &quot; + tt.activeCues[0].id + &quot;, &quot;;
+			dynamicHTML += &quot;text: &quot; + tt.activeCues[0].text + &quot;, &quot;;
+			dynamicHTML += &quot;startTime: &quot; + tt.activeCues[0].startTime + &quot;,  &quot;;
+			dynamicHTML += &quot;endTime: &quot; + tt.activeCues[0].endTime;
+			document.getElementById(&quot;insertionPoint&quot;).innerHTML += dynamicHTML + &quot;&lt;br/&gt;&quot;;
+		}
+	}
+});
+player.play();
+});
 });
 &lt;/script&gt;</code></pre>
 
@@ -212,45 +208,43 @@ videojs("myPlayerID").ready(function(){
 <li>Lines 444-445: Debugging <code>console.log()</code> method calls, which should be removed in production code.</li>
 </ul>
 
-<pre class="line-numbers" data-start="426">
-<code class="language-html">&lt;script&gt;
-videojs("myPlayerID").ready(function(){
-	var myPlayer = this,
-		cuePointAra=[],
-		allCuePointData;
+<pre class="line-numbers" data-start="426"><code class="language-html">&lt;script&gt;
+videojs(&quot;myPlayerID&quot;).ready(function () {
+var myPlayer = this,
+cuePointAra = [],
+allCuePointData;
+myPlayer.on('loadstart', function () {
+//console.log('mediainfo', myPlayer.mediainfo);
+cuePointAra = myPlayer.mediainfo.cue_points;
+var tt = myPlayer.textTracks()[0];
+tt.oncuechange = function () {
+	if (tt.activeCues[0] !== undefined) {
+		var dynamicHTML = &quot;id: &quot; + tt.activeCues[0].id + &quot;, &quot;;
+		dynamicHTML += &quot;text: &quot; + tt.activeCues[0].text + &quot;, &quot;;
+		dynamicHTML += &quot;startTime: &quot; + tt.activeCues[0].startTime + &quot;,  &quot;;
+		dynamicHTML += &quot;endTime: &quot; + tt.activeCues[0].endTime;
+		document.getElementById(&quot;insertionPoint&quot;).innerHTML += dynamicHTML + &quot;&lt;br/&gt;&quot;;
+		allCuePointData = getSubArray(cuePointAra, 'time', tt.activeCues[0].startTime);
+		console.log('cue point data:', allCuePointData);
+		console.log('cue point metadata:', allCuePointData[0].metadata);
+	}
+}
+myPlayer.play();
+myPlayer.muted(true);
+});
 
-	myPlayer.on('loadstart',function(){
-		//console.log('mediainfo', myPlayer.mediainfo);
-		cuePointAra = myPlayer.mediainfo.cue_points;
-		var tt = myPlayer.textTracks()[0];
-		tt.oncuechange = function() {
-			if(tt.activeCues[0] !== undefined){
-				var dynamicHTML = "id: " + tt.activeCues[0].id + ", ";
-				dynamicHTML += "text: " + tt.activeCues[0].text + ", ";
-				dynamicHTML += "startTime: " + tt.activeCues[0].startTime + ",  ";
-				dynamicHTML += "endTime: " + tt.activeCues[0].endTime;
-				document.getElementById("insertionPoint").innerHTML += dynamicHTML + "&lt;br/&gt;";
-				allCuePointData = getSubArray(cuePointAra,'time',tt.activeCues[0].startTime);
-				console.log('cue point data:', allCuePointData);
-				console.log('cue point metadata:', allCuePointData[0].metadata);
-			}
-		}
-		myPlayer.play();
-		myPlayer.muted(true);
-	});
-
-	function getSubArray(targetArray, objProperty, value) {
-		var i, totalItems = targetArray.length,
-			objFound = false,
-			idxArr = [];
-		for (i = 0; i &lt; totalItems; i++) {
-			if (targetArray[i][objProperty] === value) {
-				objFound = true;
-				idxArr.push(targetArray[i]);
-			}
-		}
-		return idxArr;
-	};
+function getSubArray(targetArray, objProperty, value) {
+var i, totalItems = targetArray.length,
+	objFound = false,
+	idxArr = [];
+for (i = 0; i &lt; totalItems; i++) {
+	if (targetArray[i][objProperty] === value) {
+		objFound = true;
+		idxArr.push(targetArray[i]);
+	}
+}
+return idxArr;
+};
 });
 &lt;/script&gt;</code></pre>
 </section>
@@ -278,8 +272,7 @@ videojs("myPlayerID").ready(function(){
 
 <p>The following is a valid WebVTT cue point document that defines two cue points, one with a duration from 2-5 seconds and another with duration from 10-15 seconds:</p>
 
-<pre class="line-numbers">
-<code class="language-javascript">WEBVTT
+<pre class="line-numbers"><code class="language-javascript">WEBVTT
 
 multiCell
 00:00:02.000 --&gt; 00:00:05.000
@@ -343,46 +336,42 @@ insects
 <li>Line 150: Play the video.</li>
 </ul>
 
-<pre class="line-numbers" data-start="115">
-<code class="language-html">&lt;video id="myPlayerID2"
-data-account="1752604059001"
-data-player="8cfb6785-c4be-43b4-af68-7ca2fe3a6ebf"
-data-embed="default"
-data-video-id="3851380732001"
-class="video-js" controls&gt;
+<pre class="line-numbers" data-start="115"><code class="language-html">&lt;video id=&quot;myPlayerID2&quot;
+data-account=&quot;1752604059001&quot;
+data-player=&quot;8cfb6785-c4be-43b4-af68-7ca2fe3a6ebf&quot;
+data-embed=&quot;default&quot;
+data-video-id=&quot;3851380732001&quot;
+class=&quot;video-js&quot; controls&gt;
 
-&lt;track kind="metadata" src="https://solutions.brightcove.com/bcls/tests/player/cuepoints.vtt" /&gt;
-
+&lt;track kind=&quot;metadata&quot; src=&quot;https://solutions.brightcove.com/bcls/tests/player/cuepoints.vtt&quot; /&gt;
 &lt;/video&gt;
 
-&lt;p id="insertionPoint2"&gt;&lt;/p&gt;
+&lt;p id=&quot;insertionPoint2&quot;&gt;&lt;/p&gt;
 
-&lt;script src="//players.brightcove.net/1752604059001/8cfb6785-c4be-43b4-af68-7ca2fe3a6ebf_default/index.min.js"&gt;&lt;/script&gt;
+&lt;script src=&quot;//players.brightcove.net/1752604059001/8cfb6785-c4be-43b4-af68-7ca2fe3a6ebf_default/index.min.js&quot;&gt;&lt;/script&gt;
 
-&lt;script type="text/javascript"&gt;
-videojs("myPlayerID2").ready(function(){
-	var myPlayer = this;
-
-	myPlayer.one("loadedmetadata",function(){
-		var trackIndex = myPlayer.textTracks().length -1;
-		var tt = myPlayer.textTracks()[trackIndex];
-		tt.oncuechange = function() {
-			if(tt.activeCues[0] !== undefined){
-				var dynamicHTML = "id: " + tt.activeCues[0].id + ", ";
-				dynamicHTML += "text: " + tt.activeCues[0].text + ", ";
-				dynamicHTML += "startTime: " + tt.activeCues[0].startTime + ",  ";
-				dynamicHTML += "endTime: " + tt.activeCues[0].endTime;
-				document.getElementById("insertionPoint2").innerHTML += dynamicHTML + "&lt;br/&gt;&lt;br/&gt;";
-				jsonData = JSON.parse(tt.activeCues[0].text);
-				document.getElementById("insertionPoint2").innerHTML += jsonData.title + ": " + jsonData.description + "&lt;br/&gt;&lt;br/&gt;";
-			} else {
-				document.getElementById("insertionPoint2").innerHTML += "Cue point duration over" + "&lt;br/&gt;&lt;br/&gt;";
-			}
-		} //end oncuechange
-		myPlayer.play();
-		myPlayer.muted(true);
-	}); //end loadedmetadata
-
+&lt;script type=&quot;text/javascript&quot;&gt;
+videojs(&quot;myPlayerID2&quot;).ready(function () {
+var myPlayer = this;
+myPlayer.one(&quot;loadedmetadata&quot;, function () {
+var trackIndex = myPlayer.textTracks().length - 1;
+var tt = myPlayer.textTracks()[trackIndex];
+tt.oncuechange = function () {
+	if (tt.activeCues[0] !== undefined) {
+		var dynamicHTML = &quot;id: &quot; + tt.activeCues[0].id + &quot;, &quot;;
+		dynamicHTML += &quot;text: &quot; + tt.activeCues[0].text + &quot;, &quot;;
+		dynamicHTML += &quot;startTime: &quot; + tt.activeCues[0].startTime + &quot;,  &quot;;
+		dynamicHTML += &quot;endTime: &quot; + tt.activeCues[0].endTime;
+		document.getElementById(&quot;insertionPoint2&quot;).innerHTML += dynamicHTML + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
+		jsonData = JSON.parse(tt.activeCues[0].text);
+		document.getElementById(&quot;insertionPoint2&quot;).innerHTML += jsonData.title + &quot;: &quot; + jsonData.description + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
+	} else {
+		document.getElementById(&quot;insertionPoint2&quot;).innerHTML += &quot;Cue point duration over&quot; + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
+	}
+} //end oncuechange
+myPlayer.play();
+myPlayer.muted(true);
+}); //end loadedmetadata
 }); //end ready
 &lt;/script&gt;</code></pre>
 </div>
@@ -428,13 +417,13 @@ videojs("myPlayerID2").ready(function(){
 
 <p>This means it is very possible multiple text tracks could be associated with the player, and a way is needed to find the correct one for your application logic. The following code loops over the available text tracks until the <strong>metadata</strong> (cue point) value is found:</p>
 
-<pre class="line-numbers"><code class="language-html">&lt;script type="text/javascript"&gt;
-videojs('myPlayerID').ready(function(){
+<pre class="line-numbers"><code class="language-html">&lt;script type=&quot;text/javascript&quot;&gt;
+videojs('myPlayerID').ready(function () {
 var myPlayer = this,
 allTextTacks,
 attLength,
 tt;
-myPlayer.one("loadedmetadata",function(){
+myPlayer.one(&quot;loadedmetadata&quot;, function () {
 allTextTacks = myPlayer.textTracks();
 attLength = allTextTacks.length;
 for (var i = 0; i &lt; attLength; i++) {
@@ -455,16 +444,24 @@ for (var i = 0; i &lt; attLength; i++) {
 
 <p>It is possible to programmatically add cue points. The key method comes from the the HTML5 <code>VTTCue</code> interface. You can create cue points use the following syntax:</p>
 
-<pre class="line-numbers">
-<code class="language-javascript">new VTTCue( startTime, endTime, text )</code></pre>
+<pre><code class="language-javascript">new VTTCue( startTime, endTime, text )</code></pre>
 
 <p>The logic of processing the cue points is very similar to previous examples, so only the code different from that used above will be detailed.</p>
 
 <ul>
-<li>Line 45: Adds a <code>textTrack</code> element to the player using the player's <code>addTextTrack()</code> method. Specify the <code>kind</code> to be <strong>metadata</strong>, and a <code>label</code>, in this case <strong>Timed Cue Point</strong>.</li>
-<li>Lines 46,47: Create two cue points using the player's <code>addCue()</code> method. The cue points are instantiated using HTML5's <code>VTTCue()</code> constructor.</li>
+<li>
+<p>
+	Lines 43,44: Adds a <code>textTrack</code> element to the player using the player's <code>addRemoteTextTrack()</code> method. Specify the <code>kind</code> to be <strong>metadata</strong>, and a <code>label</code>, in this case <strong>Timed Cue Point</strong>.
+</p>
+<aside class="bcls-aside bcls-aside--information">Note: Because only remote text tracks can be removed from a player, we recommend using the <a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#addRemoteTextTrack">addRemoteTextTrack()</a> method.</aside>
+</li>
+<li>
+<p>
+	Lines 45-48: Wait 10 milliseconds before creating two cue points using the player's <code>addCue()</code> method. The cue points are instantiated using HTML5's <code>VTTCue()</code> constructor.
+</p>
+<aside class="bcls-aside bcls-aside--tip">For Safari and iOS, you need to delay before adding cue points or they don't get added. This is because the Brightcove Player uses native, asynchronous tracks in the Safari browser and on iOS.</aside>
+</li>
 <li>Line 22: Listens for the <code>addtrack</code> event.
-<aside class="bcls-aside bcls-aside--tip">Listening for the <code>addtrack</code> event allows this code to work in every browser, including the Safari browser. Because the Brightcove Player uses native, asynchronous tracks in the Safari browser, you need to wait for the tracks to be added before processing them.</aside>
 </li>
 <li>Line 23: Retrieves all text tracks associated with the player.</li>
 <li>Line 24: Sets the <code>attLength</code> variable to the number of text tracks. This value will be used in a loop in the next code segment.</li>
@@ -474,55 +471,55 @@ for (var i = 0; i &lt; attLength; i++) {
 <aside class="bcls-aside bcls-aside--tip">Note: Outside of the learning sample code that follows, it is very likely the cue points would be created looping over some data structure containing key cue point info.</aside>
 
 <pre class="line-numbers" data-start="1"><code class="language-html">&lt;video id=&quot;myPlayerID&quot;
-  data-video-id=&quot;4607746980001&quot;
-  data-account=&quot;1507807800001&quot;
-  data-player=&quot;default&quot;
-  data-embed=&quot;default&quot;
-  class=&quot;video-js&quot;
-  width=&quot;640&quot; height=&quot;360&quot;
-  controls&gt;&lt;/video&gt;
+data-video-id=&quot;4607746980001&quot;
+data-account=&quot;1507807800001&quot;
+data-player=&quot;default&quot;
+data-embed=&quot;default&quot;
+class=&quot;video-js&quot;
+width=&quot;640&quot; height=&quot;360&quot;
+controls&gt;&lt;/video&gt;
 
 &lt;script src=&quot;//players.brightcove.net/1507807800001/default_default/index.min.js&quot;&gt;&lt;/script&gt;
 
 &lt;p id=&quot;insertionPoint&quot;&gt;&lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
-  videojs(&quot;myPlayerID&quot;).ready(function () {
-    var myPlayer = this,
-      textTrack = [],
-      allTextTacks,
-      attLength,
-      tt;
-
-    myPlayer.one(&quot;loadedmetadata&quot;, function () {
-      myPlayer.textTracks().addEventListener('addtrack', function () {
-        allTextTacks = myPlayer.textTracks();
-        attLength = allTextTacks.length;
-        for (var i = 0; i &lt; attLength; i++) {
-          if (allTextTacks[i].label === 'Timed Cue Point') {
-            tt = allTextTacks[i];
-            break;
-          }
-        }
-
-        tt.oncuechange = function () {
-          if (tt.activeCues[0] !== undefined) {
-            var dynamicHTML = &quot;id: &quot; + tt.activeCues[0].id + &quot;, &quot;;
-            dynamicHTML += &quot;text: &lt;strong&gt;&quot; + tt.activeCues[0].text + &quot;&lt;/strong&gt;, &quot;;
-            dynamicHTML += &quot;startTime: &lt;strong&gt;&quot; + tt.activeCues[0].startTime + &quot;&lt;/strong&gt;,  &quot;;
-            dynamicHTML += &quot;endTime: &lt;strong&gt;&quot; + tt.activeCues[0].endTime + &quot;&lt;/strong&gt;&quot;;
-            document.getElementById(&quot;insertionPoint&quot;).innerHTML += dynamicHTML + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
-          } else {
-            document.getElementById(&quot;insertionPoint&quot;).innerHTML += &quot;Cue point duration over&quot; + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
-          }
-        }; //end oncuechange
-      }); // end playing
-
-      textTrack = myPlayer.addTextTrack('metadata', 'Timed Cue Point');
-      textTrack.addCue(new window.VTTCue(2, 5, 'cue point 1 text'));
-      textTrack.addCue(new window.VTTCue(10, 15, 'cue point 2 text'));
-    }); //end on loadedmetadata
-  }); //end ready
+videojs.getPlayer(&quot;myPlayerID&quot;).ready(function () {
+var myPlayer = this,
+textTrack = [],
+allTextTacks,
+attLength,
+tt;
+myPlayer.one(&quot;loadedmetadata&quot;, function () {
+myPlayer.textTracks().addEventListener('addtrack', function () {
+	allTextTacks = myPlayer.textTracks();
+	attLength = allTextTacks.length;
+	for (var i = 0; i &lt; attLength; i++) {
+		if (allTextTacks[i].label === 'Timed Cue Point') {
+			tt = allTextTacks[i];
+			break;
+		}
+	}
+	tt.oncuechange = function () {
+		if (tt.activeCues[0] !== undefined) {
+			var dynamicHTML = &quot;id: &quot; + tt.activeCues[0].id + &quot;, &quot;;
+			dynamicHTML += &quot;text: &lt;strong&gt;&quot; + tt.activeCues[0].text + &quot;&lt;/strong&gt;, &quot;;
+			dynamicHTML += &quot;startTime: &lt;strong&gt;&quot; + tt.activeCues[0].startTime + &quot;&lt;/strong&gt;,  &quot;;
+			dynamicHTML += &quot;endTime: &lt;strong&gt;&quot; + tt.activeCues[0].endTime + &quot;&lt;/strong&gt;&quot;;
+			document.getElementById(&quot;insertionPoint&quot;).innerHTML += dynamicHTML + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
+		} else {
+			document.getElementById(&quot;insertionPoint&quot;).innerHTML += &quot;Cue point duration over&quot; + &quot;&lt;br/&gt;&lt;br/&gt;&quot;;
+		}
+	}; //end oncuechange
+}); // end playing
+textTrack = myPlayer.addRemoteTextTrack({kind: 'metadata', label: 'Timed Cue Point', mode: 'hidden'}, false);
+textTrack.track.mode = 'hidden';
+setTimeout(function(){
+	textTrack.track.addCue(new window.VTTCue(2, 5, 'cue point 1 text'));
+	textTrack.track.addCue(new window.VTTCue(10, 15, 'cue point 2 text'));
+}, 10);
+}); //end on loadedmetadata
+}); //end ready
 &lt;/script&gt;</code></pre>
 
 <p>The code generates output as shown in the following screenshot. Note the the <strong>id</strong> values are not supplied a value when using the <code>VTTCue()</code> constructor method.</p>
@@ -530,78 +527,75 @@ for (var i = 0; i &lt; attLength; i++) {
 <figure class="bcls-figure"><img class="bcls-image" alt="dynamic cue points" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/cue-points/using-cue-points/cue-points-dynamic.png" /></figure>
 </section>
 </article>
-<script src="//players.brightcove.net/1752604059001/VkIrj2aFx_default/index.min.js"></script>
-<script src="//players.brightcove.net/3676484087001/4f14e962-a11f-441f-8c00-0c89b8edb0a6_default/index.min.js"></script>
-<script>
+<script src="//players.brightcove.net/1752604059001/VkIrj2aFx_default/index.min.js"></script><script src="//players.brightcove.net/3676484087001/4f14e962-a11f-441f-8c00-0c89b8edb0a6_default/index.min.js"></script><script>
 videojs("myPlayerID").ready(function(){
-	var player = this;
-	player.one("loadedmetadata",function(){
-		var tt = player.textTracks()[0];
-		tt.oncuechange = function() {
-			if(tt.activeCues[0] !== undefined){
-				var dynamicHTML = "id: <strong>" + tt.activeCues[0].id + ", ";
-				dynamicHTML += "text: <strong>" + tt.activeCues[0].text + ", ";
-				dynamicHTML += "startTime: <strong>" + tt.activeCues[0].startTime + ",  ";
-				dynamicHTML += "endTime: <strong>" + tt.activeCues[0].endTime + "";
-				document.getElementById("insertionPoint").innerHTML += dynamicHTML + "<br/>";
-			}
-		}
-		//player.play();
-		player.muted(true);
-	});
+var player = this;
+player.one("loadedmetadata",function(){
+var tt = player.textTracks()[0];
+tt.oncuechange = function() {
+	if(tt.activeCues[0] !== undefined){
+		var dynamicHTML = "id: <strong>" + tt.activeCues[0].id + ", ";
+		dynamicHTML += "text: <strong>" + tt.activeCues[0].text + ", ";
+		dynamicHTML += "startTime: <strong>" + tt.activeCues[0].startTime + ",  ";
+		dynamicHTML += "endTime: <strong>" + tt.activeCues[0].endTime + "";
+		document.getElementById("insertionPoint").innerHTML += dynamicHTML + "<br/>";
+	}
+}
+//player.play();
+player.muted(true);
+});
 });
 </script><script type="text/javascript">
 videojs("myPlayerID2").ready(function(){
-	var myPlayer = this;
+var myPlayer = this;
 
-	myPlayer.one("loadedmetadata",function(){
-		var trackIndex = myPlayer.textTracks().length -1;
-		var tt = myPlayer.textTracks()[trackIndex];
-		tt.oncuechange = function() {
-			if(tt.activeCues[0] !== undefined){
-				var dynamicHTML = "id: <strong>" + tt.activeCues[0].id + ", ";
-				dynamicHTML += "text: <strong>" + tt.activeCues[0].text + ", ";
-				dynamicHTML += "startTime: <strong>" + tt.activeCues[0].startTime + ",  ";
-				dynamicHTML += "endTime: <strong>" + tt.activeCues[0].endTime + "";
-				document.getElementById("insertionPoint2").innerHTML += dynamicHTML + "<br/><br/>";
-				jsonData = JSON.parse(tt.activeCues[0].text);
-				document.getElementById("insertionPoint2").innerHTML += jsonData.title + ": " + jsonData.description + "<br/><br/>";
-			} else {
-				document.getElementById("insertionPoint2").innerHTML += "<strong>Cue point duration over" + "<br/><br/>";
-			}
-		} //end oncuechange
-		//myPlayer.play();
-		myPlayer.muted(true);
-	}); //end loadedmetadata
+myPlayer.one("loadedmetadata",function(){
+var trackIndex = myPlayer.textTracks().length -1;
+var tt = myPlayer.textTracks()[trackIndex];
+tt.oncuechange = function() {
+	if(tt.activeCues[0] !== undefined){
+		var dynamicHTML = "id: <strong>" + tt.activeCues[0].id + ", ";
+		dynamicHTML += "text: <strong>" + tt.activeCues[0].text + ", ";
+		dynamicHTML += "startTime: <strong>" + tt.activeCues[0].startTime + ",  ";
+		dynamicHTML += "endTime: <strong>" + tt.activeCues[0].endTime + "";
+		document.getElementById("insertionPoint2").innerHTML += dynamicHTML + "<br/><br/>";
+		jsonData = JSON.parse(tt.activeCues[0].text);
+		document.getElementById("insertionPoint2").innerHTML += jsonData.title + ": " + jsonData.description + "<br/><br/>";
+	} else {
+		document.getElementById("insertionPoint2").innerHTML += "<strong>Cue point duration over" + "<br/><br/>";
+	}
+} //end oncuechange
+//myPlayer.play();
+myPlayer.muted(true);
+}); //end loadedmetadata
 
 }); //end ready
-</script>
-<script type="text/javascript">
+</script><script type="text/javascript">
 var myPlayer3,
 textTrack;
 
 videojs("myPlayerID3").on('loadstart',function(){
-	var myPlayer3 = this;
-	myPlayer3.src({
-		"type": "video/mp4",
-		"src": "//solutions.brightcove.com/bcls/assets/videos/Water-In-Motion.mp4"
-	});
-	textTrack = myPlayer3.addTextTrack('metadata', 'Timed Cue Point');
-	textTrack.addCue(new window.VTTCue(2,4,'cue point 1 text'));
-	textTrack.addCue(new window.VTTCue(6,8,'cue point 2 text'));
-	textTrack.addCue(new window.VTTCue(10,11,'cue point 3 text'));
-	textTrack.addCue(new window.VTTCue(15,20,'cue point 4 text - LAST CUEPOINT'));
-	var tt = myPlayer3.textTracks()[0];
-	tt.oncuechange = function() {
-		if(tt.activeCues[0] !== undefined){
-			//var dynamicHTML = "id: " + tt.activeCues[0].id + ", ";
-			var dynamicHTML = "text: <strong>" + tt.activeCues[0].text + ", ";
-			dynamicHTML += "startTime: <strong>" + tt.activeCues[0].startTime + ",  ";
-			dynamicHTML += "endTime: <strong>" + tt.activeCues[0].endTime + "";
-			document.getElementById("insertionPoint3").innerHTML += dynamicHTML + "<br/>";
-		} else {
-			document.getElementById("insertionPoint3").innerHTML += "Cue point duration over" + "<br/><br/>";
-		}
-	} //end oncuechange
+var myPlayer3 = this;
+myPlayer3.src({
+"type": "video/mp4",
+"src": "//solutions.brightcove.com/bcls/assets/videos/Water-In-Motion.mp4"
+});
+textTrack = myPlayer3.addTextTrack('metadata', 'Timed Cue Point');
+textTrack.addCue(new window.VTTCue(2,4,'cue point 1 text'));
+textTrack.addCue(new window.VTTCue(6,8,'cue point 2 text'));
+textTrack.addCue(new window.VTTCue(10,11,'cue point 3 text'));
+textTrack.addCue(new window.VTTCue(15,20,'cue point 4 text - LAST CUEPOINT'));
+var tt = myPlayer3.textTracks()[0];
+tt.oncuechange = function() {
+if(tt.activeCues[0] !== undefined){
+	//var dynamicHTML = "id: " + tt.activeCues[0].id + ", ";
+	var dynamicHTML = "text: <strong>" + tt.activeCues[0].text + ", ";
+	dynamicHTML += "startTime: <strong>" + tt.activeCues[0].startTime + ",  ";
+	dynamicHTML += "endTime: <strong>" + tt.activeCues[0].endTime + "";
+	document.getElementById("insertionPoint3").innerHTML += dynamicHTML + "<br/>";
+} else {
+	document.getElementById("insertionPoint3").innerHTML += "Cue point duration over" + "<br/><br/>";
+}
+} //end oncuechange
 }); //end ready
 </script>
