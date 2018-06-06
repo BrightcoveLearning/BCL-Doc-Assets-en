@@ -79,24 +79,25 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
     "video_container": "MP4",
     "progressive_download": true
 }</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">
+<h3>Notes</h3>
 <ol>
+  <li>Use this endpoint only for adding full length video renditions (typically an .mp4 or .mov file) - for adding segmented streams like HLS or DASH, use the manifest endpoints described in the next section.</li>
 	<li>
 	<p>Video Cloud does not inspect the remote video files, so providing additional metadata will enable Video Cloud to display this information in Studio (or in the Brightcove player, if you configure the player to display the metadata).</p>
 
 	<p>For details of the add rendition operation, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-Assets-Add_Rendition">API Reference</a>.</p>
 	</li>
 	<li>Renditions for remote assets must have the <code>video_codec</code> and <code>video_container</code> fields to work properly.</li>
-    <li>MP4 renditions <strong>must</strong> have the <code>"progressive_download": true</code> field set to work properly in the Brightcove player</li>
+	<li>MP4 renditions <strong>must</strong> have the <code>"progressive_download": true</code> field set to work properly in the Brightcove player</li>
 	<li>Mixed assets are not allowed - you cannot add a remote rendition to an ingested video</li>
 	<li>If your CDN or other remote repository supports both HTTP and HTTPS delivery, then specify the URL for remote assets with a <strong>protocol-neutral URL</strong> as shown in the example above (i.e. use "//my.domain/path/..." instead of "http://my.domain/path/...")</li>
 </ol>
-</aside>
 </section>
 
 <section class="bcls-section" id="addManifests">
 <h2>Add manifests</h2>
+
+<p>Note that to add remote segmented types such as DASH and HLS renditions, you only need to create the video and then add the manifests - you do <strong>not</strong> need to "add renditions" as explained in the previous section.</p>
 
 <p>In addition to adding full length renditions, you can also add manifests for segmented renditions such as HLS, HDS, and ISM, by making a POST request to the endpoint for the manifest type:</p>
 
