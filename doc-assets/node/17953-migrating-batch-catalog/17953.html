@@ -1,494 +1,615 @@
 <article class="bcls-article">
-<section id="Why_migrate" class="bcls-section">
-<h2>Why migrate?</h2>
+	<section id="Why_migrate" class="bcls-section">
+		<h2>Why migrate?</h2>
 
-<p>There are several good reasons why you should migrate to the Catalog APIs:</p>
+		<p>There are several good reasons why you should migrate to the Catalog APIs:</p>
 
-<ul>
-	<li>The Dynamic Ingest API provides pull-based or source file upload ingestion, with better performance and reliability.</li>
-	<li>The CMS API provides cacheless read access, so your changes are available via the APIs as soon as they are complete.</li>
-	<li>The new APIs are more scalable and reliable.</li>
-	<li>The new APIs are being actively enhanced, while the Media API and Batch Provisioning are deprecated and will be discontinued in 2017.</li>
-	<li>The Brightcove OAuth service provides a greater level of security for your content.</li>
-</ul>
-</section>
-
-<section id="FTP_DI" class="bcls-section">
-<h2>FTP versus Dynamic Ingest</h2>
-
-<p>You should understand that FTP is a push-based system for ingesting video and other asset files into Video Cloud. Dynamic Ingest, by contrast, is a pull-based system that fetches the files from a remote location, usually an S3 bucket.</p>
-
-<p>To migrate from Batch to Dynamic Ingest, you will either need to commission an S3 bucket to store your files for ingestion, or use the <a href="/node/18288">source file upload option</a>.</p>
-</section>
-
-<section id="Multiple_Files" class="bcls-section">
-<h2>Multiple Files</h2>
-
-<p>If you are using Batch Provisioning to add or modify multiple files at once, keep in mind that the Dynamic Ingest API and the CMS API write methods operate on <strong>one file at a time</strong>, and you will need to write your apps accordingly.</p>
-
-<aside class="bcls-aside bcls-aside--information">This is not as big a change as you might imagine. If you are working on multiple files, you are probably iterating over some set of files to generate the batch manifest. For the catalog APIs, you will instead create one (or sometimes more than one) API request for each video as you iterate. You will find examples of doing this in the code samples for both Dynamic Ingest and the CMS API.</aside>
-</section>
-
-<section id="Authentication" class="bcls-section">
-<h2>Authentication</h2>
-
-<p>Authentication for the Catalog APIs is managed through Brightcove's <a href="/node/17928">OAuth Service</a>.</p>
-</section>
-
-<section id="Migration_paths" class="bcls-section">
-<h2>Migration paths</h2>
-
-<p>The diagram below shows the primary migration paths from the legacy APIs to the new APIs. The sections that follow provide more detail on the paths.</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Batch Use Case to Catalog API" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/batch-migration/batch-migration.svg" />
-<figcaption class="bcls-caption--image">Batch Use Case to Catalog API</figcaption>
-</figure>
-</section>
-
-<section id="ingest" class="bcls-section">
-<h2>Video/Asset ingest</h2>
-
-<p>In the new Brightcove APIs, ingest functions are separate from media management functions - the rule to remember is that if you are sending files to Video Cloud, they will go via the <a href="/node/17948">Dynamic Ingest API</a>, <strong>never</strong> the CMS API. If you are currently using Batch Provisioning to upload videos, images, or captions, you should now migrate that functionality to the Dynamic Ingest API.</p>
-
-<h3>Use cases</h3>
-
-<p>Here is a breakdown of some specific batch use cases and the new API you would use:</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Use Case</th>
-			<th>Migration Path</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Using Batch to upload videos from your CMS or other source</td>
-			<td>Use the <a href="/node/17948">Dynamic Ingest API</a> instead. You will first need to create the video data object using the CMS API, then use the Dynamic Ingest API to either pull or upload the video source file.</td>
-		</tr>
-		<tr>
-			<td>Using Batch to upload poster and thumbnail images and/or captions</td>
-			<td>Use the <a href="/node/17948">Dynamic Ingest API</a> instead. Images and text tracks (WebVTT captions) can be added at the same time as you ingest the video file, or added later.<sup><strong><a href="#note2">[2]</a></strong></sup> If you are using Batch to add logo overlays, these are now handled differently.<sup><strong><a href="#note3">[3]</a></strong></sup></td>
-		</tr>
-		<tr>
-			<td>Using Batch Provisioning to replace or retranscode videos</td>
-			<td>Both of these operations can be performed using the <a href="/node/17948#replaceVideo">Dynamic Ingest API</a> - you can host the files on your own server or S3 bucket for pull-based ingest, or use <a href="/node/18288">source file upload</a><sup><strong><a href="#note2">[2]</a></strong></sup></td>
-		</tr>
-	</tbody>
-</table>
-
-<h4>Notes</h4>
-
-<ul>
-	<li id="note1"><sup><strong>[1]</strong></sup> The Dynamic Ingest API does not support multiple ingest on one request, but you can iterate over a set of video data as in <a href="/node/17944">this example</a></li>
-	<li id="note2"><sup><strong>[2]</strong></sup> Again, each video requires a separate request, but you can iterate over data sets as in these samples:
-	<ul>
-		<li><a href="/node/17946">Replace Multiple Videos</a></li>
-		<li><a href="/node/17943">Re-transcode Multiple Videos</a></li>
-	</ul>
-	</li>
-	<li id="note3"><sup><strong>[3]</strong></sup>
-	<aside class="bcls-aside bcls-aside--information">
-	<h4>Other media assets</h4>
-
-	<dl>
-		<dt>Logo overlays</dt>
-		<dd>Logo overlays will be handled differently:
 		<ul>
-			<li>For burned-in logos, you can specify a <a href="/node/18043#watermarkFields">watermark</a>, which is an image inserted into the video data during transcoding (just as the old burn-in logos were). Watermarks will travel with the video renditions even if they are played in non-Brightcove players (but not when the videos are distributed to social media via Brightcove Social, because we always send the digital master to social media providers).</li>
-			<li>For overlay images, a logo-overlay plugin for the Brightcove player is planned. If you need a solution now, you could use the regular overlay plugin, as in <a href="/node/18167">this sample</a>.</li>
+			<li>The Dynamic Ingest API provides pull-based or source file upload ingestion, with better performance and reliability.</li>
+			<li>The CMS API provides cacheless read access, so your changes are available via the APIs as soon as they are complete.</li>
+			<li>The new APIs are more scalable and reliable.</li>
+			<li>The new APIs are being actively enhanced, while the Media API and Batch Provisioning are deprecated and will be discontinued
+				in 2017.</li>
+			<li>The Brightcove OAuth service provides a greater level of security for your content.</li>
 		</ul>
-		</dd>
-		<dt>DFXP captions</dt>
-		<dd>DFXP captions are used only with the legacy smart player. The Brightcove Player uses text tracks in WebVTT format instead, though adding text tracks to videos is very similar - it's just the format of the captions file and where it is added to the video metadata that is different. See <a href="/node/17952">Working with Captions</a> for more information.</dd>
-	</dl>
-	</aside>
-	</li>
-</ul>
-</section>
+	</section>
 
-<section id="Adding_Videos" class="bcls-section">
-<h2>Adding Videos</h2>
+	<section id="FTP_DI" class="bcls-section">
+		<h2>FTP versus Dynamic Ingest</h2>
 
-<p>The best place to begin with adding videos using the Datalog APIs is the <a href="/node/17948">Dynamic Ingest API Overview</a>. Adding videos to Video Cloud is now a two step process:</p>
+		<p>You should understand that FTP is a push-based system for ingesting video and other asset files into Video Cloud. Dynamic
+			Ingest, by contrast, is a pull-based system that fetches the files from a remote location, usually an S3 bucket.</p>
 
-<ul>
-	<li><a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Video-Create_Video_Object">Create the video data object</a> using the CMS API</li>
-	<li><a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_AssetRequest">Ingest the video using Dynamic Ingest</a></li>
-</ul>
+		<p>To migrate from Batch to Dynamic Ingest, you will either need to commission an S3 bucket to store your files for ingestion,
+			or use the
+			<a href="/node/18288">source file upload option</a>.</p>
+	</section>
 
-<aside class="bcls-aside bcls-aside--information">Notes:
-<ol>
-	<li>The preferred method is to send the Dynamic Ingest system an address where your video file can be found and let Video Cloud retrieve it, but if you cannot put your videos in a location where Video Cloud can retreive them, there is also a <a href="/node/18288">source file upload option</a>.</li>
-	<li>Some video metadata can be set when you create the video object, but some fields must be added afterwards using the <a href="#Update_Video">CMS API to update the video</a>.</li>
-</ol>
-</aside>
+	<section id="Multiple_Files" class="bcls-section">
+		<h2>Multiple Files</h2>
 
-<p>See the <a href="#videoFields">Video fields comparison</a> to see where the names of video properties differ between the Media and CMS APIs.</p>
-</section>
+		<p>If you are using Batch Provisioning to add or modify multiple files at once, keep in mind that the Dynamic Ingest API and
+			the CMS API write methods operate on
+			<strong>one file at a time</strong>, and you will need to write your apps accordingly.</p>
 
-<section class="bcls-section" id="videoFields">
-<h2>Video Field Comparison</h2>
+		<aside class="bcls-aside bcls-aside--information">This is not as big a change as you might imagine. If you are working on multiple files, you are probably iterating over
+			some set of files to generate the batch manifest. For the catalog APIs, you will instead create one (or sometimes more
+			than one) API request for each video as you iterate. You will find examples of doing this in the code samples for both
+			Dynamic Ingest and the CMS API.</aside>
+	</section>
 
-<p>The table below lists Batch manifest field properties and equivalent properties for the CMS or Dynamic Ingest APIs.</p>
+	<section id="Authentication" class="bcls-section">
+		<h2>Authentication</h2>
 
-<h3><code>publisher-upload-manifest</code> tag attributes</h3>
+		<p>Authentication for the Catalog APIs is managed through Brightcove's
+			<a href="/node/17928">OAuth Service</a>.</p>
+	</section>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Batch manifest attribute</th>
-			<th>CMS/DI API Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>publisher-id</td>
-			<td>account_id</td>
-			<td>String</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>preparer</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>See <a href="/node/17939">Dynamic Ingest Notifications</a> and <a href="/node/18017">CMS API Notifications</a></td>
-		</tr>
-		<tr>
-			<td>report-success</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>See <a href="/node/17939">Dynamic Ingest Notifications</a> and <a href="/node/18017">CMS API Notifications</a></td>
-		</tr>
-	</tbody>
-</table>
+	<section id="Migration_paths" class="bcls-section">
+		<h2>Migration paths</h2>
 
-<h3>Tags relating to notifications</h3>
+		<p>The diagram below shows the primary migration paths from the legacy APIs to the new APIs. The sections that follow provide
+			more detail on the paths.</p>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Batch manifest attribute</th>
-			<th>CMS/DI API Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>notify</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>See <a href="/node/17939">Dynamic Ingest Notifications</a> and <a href="/node/18017">CMS API Notifications</a></td>
-		</tr>
-		<tr>
-			<td>callback</td>
-			<td>callbacks</td>
-			<td>array</td>
-			<td>See <a href="/node/17939">Dynamic Ingest Notifications</a> and <a href="/node/18017">CMS API Notifications</a></td>
-		</tr>
-	</tbody>
-</table>
+		<figure class="bcls-figure">
+			<img class="bcls-image" alt="Batch Use Case to Catalog API" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/batch-migration/batch-migration.svg"
+			/>
+			<figcaption class="bcls-caption--image">Batch Use Case to Catalog API</figcaption>
+		</figure>
+	</section>
 
-<h3><code>&lt;asset&gt;</code> attributes</h3>
+	<section id="ingest" class="bcls-section">
+		<h2>Video/Asset ingest</h2>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Batch manifest attribute</th>
-			<th>CMS/DI API Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>filename</td>
-			<td>master.url (DI)</td>
-			<td>string</td>
-			<td>See <a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Ingest Media Asset</a></td>
-		</tr>
-		<tr>
-			<td>refid</td>
-			<td>reference_id (CMS)</td>
-			<td>string</td>
-			<td>Can be included in the metadata when you create the video object, but note that you must use the video id to ingest the video, not the reference id</td>
-		</tr>
-		<tr>
-			<td>size</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>encoding-rate</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>frame-width</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>frame-height</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>hash-code</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>display-name</td>
-			<td>name (CMS)</td>
-			<td>string</td>
-			<td>Required when you create the video object</td>
-		</tr>
-		<tr>
-			<td>encode-to</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>This is handled by the <a href="/node/18045">ingest profile</a> you specify in the DI request body</td>
-		</tr>
-		<tr>
-			<td>encode-multiple</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>This is handled by the <a href="/node/18045">ingest profile</a> you specify in the DI request body</td>
-		</tr>
-		<tr>
-			<td>h264-preserve-as-rendition</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>This is handled by the <a href="/node/18045">ingest profile</a> you specify in the DI request body</td>
-		</tr>
-		<tr>
-			<td>h264-no-processing</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>This is no longer an option</td>
-		</tr>
-		<tr>
-			<td>type</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>This is indicated in the DI request body</td>
-		</tr>
-	</tbody>
-</table>
+		<p>In the new Brightcove APIs, ingest functions are separate from media management functions - the rule to remember is that
+			if you are sending files to Video Cloud, they will go via the
+			<a href="/node/17948">Dynamic Ingest API</a>,
+			<strong>never</strong> the CMS API. If you are currently using Batch Provisioning to upload videos, images, or captions, you should
+			now migrate that functionality to the Dynamic Ingest API.</p>
 
-<h3><code>&lt;title&gt;</code> tag attributes</h3>
+		<h3>Use cases</h3>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Batch manifest attribute</th>
-			<th>CMS API Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>name</td>
-			<td>name</td>
-			<td>string</td>
-			<td>The video title - required</td>
-		</tr>
-		<tr>
-			<td>refid</td>
-			<td>reference_id</td>
-			<td>string</td>
-			<td>Reference id - optional</td>
-		</tr>
-		<tr>
-			<td>active</td>
-			<td>state</td>
-			<td>string</td>
-			<td>set to <code>ACTIVE</code> or <code>INACTIVE</code></td>
-		</tr>
-		<tr>
-			<td>start-date</td>
-			<td>schedule.starts_at</td>
-			<td>date/time string</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>end-date</td>
-			<td>schedule.ends_at</td>
-			<td>date/time string</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>video-full-refid</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>thumbnail-refid</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>video-still-refid</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>flash-prebumper-refid</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>allow-viral-syndication</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>shared</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>auto-accept-shared</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>economic-type</td>
-			<td>economics</td>
-			<td>string</td>
-			<td>Note that the values are different: <code>AD_SUPPORTED</code> or <code>FREE</code></td>
-		</tr>
-		<tr>
-			<td>ad-keys</td>
-			<td>ad_keys</td>
-			<td>string</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>overlay-update</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-	</tbody>
-</table>
+		<p>Here is a breakdown of some specific batch use cases and the new API you would use:</p>
 
-<h3>Title sub-element tags</h3>
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Use Case</th>
+					<th>Migration Path</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>Using Batch to upload videos from your CMS or other source</td>
+					<td>Use the
+						<a href="/node/17948">Dynamic Ingest API</a> instead. You will first need to create the video data object using the CMS API, then use the
+						Dynamic Ingest API to either pull or upload the video source file.</td>
+				</tr>
+				<tr>
+					<td>Using Batch to upload poster and thumbnail images and/or captions</td>
+					<td>Use the
+						<a href="/node/17948">Dynamic Ingest API</a> instead. Images and text tracks (WebVTT captions) can be added at the same time as you ingest
+						the video file, or added later.
+						<sup>
+							<strong>
+								<a href="#note2">[2]</a>
+							</strong>
+						</sup> If you are using Batch to add logo overlays, these are now handled differently.
+						<sup>
+							<strong>
+								<a href="#note3">[3]</a>
+							</strong>
+						</sup>
+					</td>
+				</tr>
+				<tr>
+					<td>Using Batch Provisioning to replace or retranscode videos</td>
+					<td>Both of these operations can be performed using the
+						<a href="/node/17948#replaceVideo">Dynamic Ingest API</a> - you can host the files on your own server or S3 bucket for pull-based ingest, or use
+						<a href="/node/18288">source file upload</a>
+						<sup>
+							<strong>
+								<a href="#note2">[2]</a>
+							</strong>
+						</sup>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Batch manifest attribute</th>
-			<th>CMS API Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>short-description</td>
-			<td>description</td>
-			<td>string</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>long-description</td>
-			<td>long_description</td>
-			<td>string</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>related-link-url</td>
-			<td>link.url</td>
-			<td>string</td>
-			<td>Note that this cannot be added when you create the video object. It must be added on a subsequent video update.</td>
-		</tr>
-		<tr>
-			<td>related-link-text</td>
-			<td>link.text</td>
-			<td>string</td>
-			<td>Note that this cannot be added when you create the video object. It must be added on a subsequent video update.</td>
-		</tr>
-		<tr>
-			<td>captions-refid</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>custom-string-value</td>
-			<td>custom_fields.{fieldname}</td>
-			<td>string</td>
-			<td>Value must not exceed 1024 single-byte characters</td>
-		</tr>
-		<tr>
-			<td>custom-enum-value</td>
-			<td>custom_fields.{fieldname}</td>
-			<td>string</td>
-			<td>Value must not exceed 1024 single-byte characters</td>
-		</tr>
-		<tr>
-			<td>tag</td>
-			<td>tags</td>
-			<td>array</td>
-			<td>Individual tags must not exceed 128 single-byte characters</td>
-		</tr>
-		<tr>
-			<td>rendition-refid</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>share-to-id</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>logo-overlay</td>
-			<td>n/a</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-	</tbody>
-</table>
+		<h4>Notes</h4>
 
-<h3><code>&lt;reencode-from-new-source&gt;</code></h3>
+		<ul>
+			<li id="note1">
+				<sup>
+					<strong>[1]</strong>
+				</sup> The Dynamic Ingest API does not support multiple ingest on one request, but you can iterate over a set of video data
+				as in
+				<a href="/node/17944">this example</a>
+			</li>
+			<li id="note2">
+				<sup>
+					<strong>[2]</strong>
+				</sup> Again, each video requires a separate request, but you can iterate over data sets as in these samples:
+				<ul>
+					<li>
+						<a href="/node/17946">Replace Multiple Videos</a>
+					</li>
+					<li>
+						<a href="/node/17943">Re-transcode Multiple Videos</a>
+					</li>
+				</ul>
+			</li>
+			<li id="note3">
+				<sup>
+					<strong>[3]</strong>
+				</sup>
+				<aside class="bcls-aside bcls-aside--information">
+					<h4>Other media assets</h4>
 
-<p>See <a href="/node/17948#replaceVideo">Replace Video</a></p>
+					<dl>
+						<dt>Logo overlays</dt>
+						<dd>Logo overlays will be handled differently:
+							<ul>
+								<li>For burned-in logos, you can specify a
+									<a href="/node/18043#watermarkFields">watermark</a>, which is an image inserted into the video data during transcoding (just as the old burn-in logos
+									were). Watermarks will travel with the video renditions even if they are played in non-Brightcove players (but not
+									when the videos are distributed to social media via Brightcove Social, because we always send the digital master
+									to social media providers).</li>
+								<li>For overlay images, a logo-overlay plugin for the Brightcove player is planned. If you need a solution now, you could
+									use the regular overlay plugin, as in
+									<a href="/node/18167">this sample</a>.</li>
+							</ul>
+						</dd>
+						<dt>DFXP captions</dt>
+						<dd>DFXP captions are used only with the legacy smart player. The Brightcove Player uses text tracks in WebVTT format instead,
+							though adding text tracks to videos is very similar - it's just the format of the captions file and where it is added
+							to the video metadata that is different. See
+							<a href="/node/17952">Working with Captions</a> for more information.</dd>
+					</dl>
+				</aside>
+			</li>
+		</ul>
+	</section>
 
-<h3><code>&lt;reencode-from-existing-source&gt;</code></h3>
+	<section id="Adding_Videos" class="bcls-section">
+		<h2>Adding Videos</h2>
 
-<p>See <a href="/node/17948#retranscode">Retranscode Video</a></p>
+		<p>The best place to begin with adding videos using the Datalog APIs is the
+			<a href="/node/17948">Dynamic Ingest API Overview</a>. Adding videos to Video Cloud is now a two step process:</p>
 
-<h3><code>&lt;manual-lineup&gt;</code> and <code>&lt;automatic-lineup&gt;</code></h3>
+		<ul>
+			<li>
+				<a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Video-Create_Video_Object">Create the video data object</a> using the CMS API</li>
+			<li>
+				<a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_AssetRequest">Ingest the video using Dynamic Ingest</a>
+			</li>
+		</ul>
 
-<p>See <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-playlistGroup-Create_Playlist">Create Playlist</a></p>
+		<aside class="bcls-aside bcls-aside--information">Notes:
+			<ol>
+				<li>The preferred method is to send the Dynamic Ingest system an address where your video file can be found and let Video
+					Cloud retrieve it, but if you cannot put your videos in a location where Video Cloud can retreive them, there is also
+					a
+					<a href="/node/18288">source file upload option</a>.</li>
+				<li>Some video metadata can be set when you create the video object, but some fields must be added afterwards using the
+					<a
+					  href="#Update_Video">CMS API to update the video</a>.</li>
+			</ol>
+		</aside>
 
-<h3><code>&lt;cue point&gt;</code></h3>
+		<p>See the
+			<a href="#videoFields">Video fields comparison</a> to see where the names of video properties differ between the Media and CMS APIs.</p>
+	</section>
 
-<p>Use <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a>, entering data in the <code>cue_points</code> field.</p>
+	<section class="bcls-section" id="videoFields">
+		<h2>Video Field Comparison</h2>
 
-<h3>Deleting assets, videos, or playlists</h3>
+		<p>The table below lists Batch manifest field properties and equivalent properties for the CMS or Dynamic Ingest APIs.</p>
 
-<p>See the relevant Delete operations for the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html">CMS API</a></p>
-</section>
+		<h3>
+			<code>publisher-upload-manifest</code> tag attributes</h3>
+
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Batch manifest attribute</th>
+					<th>CMS/DI API Field</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>publisher-id</td>
+					<td>account_id</td>
+					<td>String</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>preparer</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>See
+						<a href="/node/17939">Dynamic Ingest Notifications</a> and
+						<a href="/node/18017">CMS API Notifications</a>
+					</td>
+				</tr>
+				<tr>
+					<td>report-success</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>See
+						<a href="/node/17939">Dynamic Ingest Notifications</a> and
+						<a href="/node/18017">CMS API Notifications</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>Tags relating to notifications</h3>
+
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Batch manifest attribute</th>
+					<th>CMS/DI API Field</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>notify</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>See
+						<a href="/node/17939">Dynamic Ingest Notifications</a> and
+						<a href="/node/18017">CMS API Notifications</a>
+					</td>
+				</tr>
+				<tr>
+					<td>callback</td>
+					<td>callbacks</td>
+					<td>array</td>
+					<td>See
+						<a href="/node/17939">Dynamic Ingest Notifications</a> and
+						<a href="/node/18017">CMS API Notifications</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>
+			<code>&lt;asset&gt;</code> attributes</h3>
+
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Batch manifest attribute</th>
+					<th>CMS/DI API Field</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>filename</td>
+					<td>master.url (DI)</td>
+					<td>string</td>
+					<td>See
+						<a href="https://brightcovelearning.github.io/Brightcove-API-References/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Ingest Media Asset</a>
+					</td>
+				</tr>
+				<tr>
+					<td>refid</td>
+					<td>reference_id (CMS)</td>
+					<td>string</td>
+					<td>Can be included in the metadata when you create the video object, but note that you must use the video id to ingest
+						the video, not the reference id</td>
+				</tr>
+				<tr>
+					<td>size</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>encoding-rate</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>frame-width</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>frame-height</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>hash-code</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>display-name</td>
+					<td>name (CMS)</td>
+					<td>string</td>
+					<td>Required when you create the video object</td>
+				</tr>
+				<tr>
+					<td>encode-to</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>This is handled by the
+						<a href="/node/18045">ingest profile</a> you specify in the DI request body</td>
+				</tr>
+				<tr>
+					<td>encode-multiple</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>This is handled by the
+						<a href="/node/18045">ingest profile</a> you specify in the DI request body</td>
+				</tr>
+				<tr>
+					<td>h264-preserve-as-rendition</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>This is handled by the
+						<a href="/node/18045">ingest profile</a> you specify in the DI request body</td>
+				</tr>
+				<tr>
+					<td>h264-no-processing</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>This is no longer an option</td>
+				</tr>
+				<tr>
+					<td>type</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>This is indicated in the DI request body</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>
+			<code>&lt;title&gt;</code> tag attributes</h3>
+
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Batch manifest attribute</th>
+					<th>CMS API Field</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>name</td>
+					<td>name</td>
+					<td>string</td>
+					<td>The video title - required</td>
+				</tr>
+				<tr>
+					<td>refid</td>
+					<td>reference_id</td>
+					<td>string</td>
+					<td>Reference id - optional</td>
+				</tr>
+				<tr>
+					<td>active</td>
+					<td>state</td>
+					<td>string</td>
+					<td>set to
+						<code>ACTIVE</code> or
+						<code>INACTIVE</code>
+					</td>
+				</tr>
+				<tr>
+					<td>start-date</td>
+					<td>schedule.starts_at</td>
+					<td>date/time string</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>end-date</td>
+					<td>schedule.ends_at</td>
+					<td>date/time string</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>video-full-refid</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>thumbnail-refid</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>video-still-refid</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>flash-prebumper-refid</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>allow-viral-syndication</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>shared</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>auto-accept-shared</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>economic-type</td>
+					<td>economics</td>
+					<td>string</td>
+					<td>Note that the values are different:
+						<code>AD_SUPPORTED</code> or
+						<code>FREE</code>
+					</td>
+				</tr>
+				<tr>
+					<td>ad-keys</td>
+					<td>ad_keys</td>
+					<td>string</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>overlay-update</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>Title sub-element tags</h3>
+
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th>Batch manifest attribute</th>
+					<th>CMS API Field</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>short-description</td>
+					<td>description</td>
+					<td>string</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>long-description</td>
+					<td>long_description</td>
+					<td>string</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>related-link-url</td>
+					<td>link.url</td>
+					<td>string</td>
+					<td>Note that this cannot be added when you create the video object. It must be added on a subsequent video update.</td>
+				</tr>
+				<tr>
+					<td>related-link-text</td>
+					<td>link.text</td>
+					<td>string</td>
+					<td>Note that this cannot be added when you create the video object. It must be added on a subsequent video update.</td>
+				</tr>
+				<tr>
+					<td>captions-refid</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>custom-string-value</td>
+					<td>custom_fields.{fieldname}</td>
+					<td>string</td>
+					<td>Value must not exceed 1024 single-byte characters</td>
+				</tr>
+				<tr>
+					<td>custom-enum-value</td>
+					<td>custom_fields.{fieldname}</td>
+					<td>string</td>
+					<td>Value must not exceed 1024 single-byte characters</td>
+				</tr>
+				<tr>
+					<td>tag</td>
+					<td>tags</td>
+					<td>array</td>
+					<td>Individual tags must not exceed 128 single-byte characters</td>
+				</tr>
+				<tr>
+					<td>rendition-refid</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>share-to-id</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>logo-overlay</td>
+					<td>n/a</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>
+			<code>&lt;reencode-from-new-source&gt;</code>
+		</h3>
+
+		<p>See
+			<a href="/node/17948#replaceVideo">Replace Video</a>
+		</p>
+
+		<h3>
+			<code>&lt;reencode-from-existing-source&gt;</code>
+		</h3>
+
+		<p>See
+			<a href="/node/17948#retranscode">Retranscode Video</a>
+		</p>
+
+		<h3>
+			<code>&lt;manual-lineup&gt;</code> and
+			<code>&lt;automatic-lineup&gt;</code>
+		</h3>
+
+		<p>See
+			<a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-playlistGroup-Create_Playlist">Create Playlist</a>
+		</p>
+
+		<h3>
+			<code>&lt;cue point&gt;</code>
+		</h3>
+
+		<p>Use
+			<a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video</a>, entering data in the
+			<code>cue_points</code> field.</p>
+
+		<h3>Deleting assets, videos, or playlists</h3>
+
+		<p>See the relevant Delete operations for the
+			<a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html">CMS API</a>
+		</p>
+	</section>
 </article>
