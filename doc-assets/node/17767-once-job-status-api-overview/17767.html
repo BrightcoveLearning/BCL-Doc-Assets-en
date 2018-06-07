@@ -1,88 +1,102 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Overview">Overview</h2>
+    <section class="bcls-section">
+        <h2 id="Overview">Overview</h2>
 
-<p>The Status API is a RESTful API which allows customers to query the processing statuses of a particular Request ID (returned in the response body of an ingest request). Only the HTTP GET verb is supported and must be made over SSL. If you do not know the Request ID you can query by Foreign Key, which will return a list of all the Request IDs for that particular item. The status data returned will be summary of the major milestones along with any errors that occurred during processing.</p>
+        <p>The Status API is a RESTful API which allows customers to query the processing statuses of a particular Request ID
+            (returned in the response body of an ingest request). Only the HTTP GET verb is supported and must be made over
+            SSL. If you do not know the Request ID you can query by Foreign Key, which will return a list of all the Request
+            IDs for that particular item. The status data returned will be summary of the major milestones along with any
+            errors that occurred during processing.</p>
 
-<p>Also see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/once-status-api/v1/doc/index.html">Status API Reference</a>.</p>
-</section>
+        <p>Also see the
+            <a href="https://brightcovelearning.github.io/Brightcove-API-References/once-status-api/v1/doc/index.html">Status API Reference</a>.</p>
+    </section>
 
-<section class="bcls-section">
-<h2 id="baseURL">API Base URL:</h2>
+    <section class="bcls-section">
+        <h2 id="baseURL">API Base URL:</h2>
 
-<pre class="line-numbers">
+        <pre class="line-numbers">
 <code class="language-http">https://api.unicornmedia.com/status-api/</code></pre>
-</section>
+    </section>
 
-<section class="bcls-section">
-<h2 id="checkStatus">Checking a Job Status</h2>
+    <section class="bcls-section">
+        <h2 id="checkStatus">Checking a Job Status</h2>
 
-<p>Syntax:</p>
+        <p>Syntax:</p>
 
-<pre class="line-numbers">
+        <pre class="line-numbers">
 <code class="language-http">https://api.unicornmedia.com/status-api/statuses/{referenceId}</code></pre>
 
-<pre class="line-numbers">
+        <pre class="line-numbers">
 <code class="language-http">https://api.unicornmedia.com/status-api/statuses?catalog={catalogId}&amp;foreignKey={foreignKey}</code></pre>
 
-<h3>Status Definitions:</h3>
+        <h3>Status Definitions:</h3>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>PENDING</td>
-			<td>The activity or overall job has been received and scheduled in a queue</td>
-		</tr>
-		<tr>
-			<td>PROCESSING</td>
-			<td>The activity or overall job is currently being processed. The overall status will remain in processing if any activity has not been completed.</td>
-		</tr>
-		<tr>
-			<td>SKIPPED</td>
-			<td>The particular activity for the job was not configured or necessary for processing.</td>
-		</tr>
-		<tr>
-			<td>WARN</td>
-			<td>A particular activity has failed that does not impact playback, but the overall job has succeeded. (e.g. timed text)</td>
-		</tr>
-		<tr>
-			<td>ERROR</td>
-			<td>The activity or overall job has failed with an error. Any activity error will result in an overall job error.</td>
-		</tr>
-		<tr>
-			<td>COMPLETE</td>
-			<td>The activity has completed successfully.</td>
-		</tr>
-	</tbody>
-</table>
+        <table class="bcls-table">
+            <thead class="bcls-table__head">
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="bcls-table__body">
+                <tr>
+                    <td>PENDING</td>
+                    <td>The activity or overall job has been received and scheduled in a queue</td>
+                </tr>
+                <tr>
+                    <td>PROCESSING</td>
+                    <td>The activity or overall job is currently being processed. The overall status will remain in processing
+                        if any activity has not been completed.</td>
+                </tr>
+                <tr>
+                    <td>SKIPPED</td>
+                    <td>The particular activity for the job was not configured or necessary for processing.</td>
+                </tr>
+                <tr>
+                    <td>WARN</td>
+                    <td>A particular activity has failed that does not impact playback, but the overall job has succeeded. (e.g.
+                        timed text)</td>
+                </tr>
+                <tr>
+                    <td>ERROR</td>
+                    <td>The activity or overall job has failed with an error. Any activity error will result in an overall job
+                        error.</td>
+                </tr>
+                <tr>
+                    <td>COMPLETE</td>
+                    <td>The activity has completed successfully.</td>
+                </tr>
+            </tbody>
+        </table>
 
-<h3>Example: Status API Job Requests</h3>
+        <h3>Example: Status API Job Requests</h3>
 
-<p>Request ID (GET):</p>
+        <p>Request ID (GET):</p>
 
-<p><code>https://api.unicornmedia.com/status-api/statuses/2796350e-2125-4f04-b33a-59488aaa76c7</code></p>
+        <p>
+            <code>https://api.unicornmedia.com/status-api/statuses/2796350e-2125-4f04-b33a-59488aaa76c7</code>
+        </p>
 
-<p>Foreign Key &amp; Catalog (GET):</p>
+        <p>Foreign Key &amp; Catalog (GET):</p>
 
-<p><code>https://api.unicornmedia.com/status-api/statuses?catalog=bc6cb7d4-be99-471b-adf3-7c501172b317&amp;foreignKey=brightcove-once</code></p>
+        <p>
+            <code>https://api.unicornmedia.com/status-api/statuses?catalog=bc6cb7d4-be99-471b-adf3-7c501172b317&amp;foreignKey=brightcove-once</code>
+        </p>
 
-<h4>Request header</h4>
+        <h4>Request header</h4>
 
-<p>Required HTTP Header:</p>
+        <p>Required HTTP Header:</p>
 
-<p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+        <p>
+            <code>X-BC-ONCE-API-KEY : {yourApiKey}</code>
+        </p>
 
-<h4>Response(s)</h4>
+        <h4>Response(s)</h4>
 
-<h5>Body (Request ID)</h5>
+        <h5>Body (Request ID)</h5>
 
-<pre>
+        <pre>
 <code>{
 "status": "COMPLETE",
 "startTime": 1415648939000,
@@ -185,9 +199,9 @@
 }
 }</code></pre>
 
-<h4>Body (Foreign Key &amp; Catalog)</h4>
+        <h4>Body (Foreign Key &amp; Catalog)</h4>
 
-<pre>
+        <pre>
 <code>{
 "requests": [
 {
@@ -202,59 +216,69 @@
 }
 ]
 }</code></pre>
-</section>
+    </section>
 
-<section class="bcls-section">
-<h2 id="checkNotificationStatus">Check Notification Status <span style="color:#990000">DEPRECATED</span></h2>
+    <section class="bcls-section">
+        <h2 id="checkNotificationStatus">Check Notification Status
+            <span style="color:#990000">DEPRECATED</span>
+        </h2>
 
-<p>Syntax:</p>
+        <p>Syntax:</p>
 
-<p>https://api.unicornmedia.com/status-api/notifications/{requestId}</p>
+        <p>https://api.unicornmedia.com/status-api/notifications/{requestId}</p>
 
-<h3>Status Definitions:</h3>
+        <h3>Status Definitions:</h3>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>PENDING</td>
-			<td>The activity has been received and scheduled in a queue</td>
-		</tr>
-		<tr>
-			<td>PROCESSING</td>
-			<td>The activity is currently being processed.</td>
-		</tr>
-		<tr>
-			<td>COMPLETE</td>
-			<td>The activity has completed successfully.</td>
-		</tr>
-		<tr>
-			<td>FAILED</td>
-			<td>The activity has encountered a problem and failed</td>
-		</tr>
-	</tbody>
-</table>
+        <table class="bcls-table">
+            <thead class="bcls-table__head">
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="bcls-table__body">
+                <tr>
+                    <td>PENDING</td>
+                    <td>The activity has been received and scheduled in a queue</td>
+                </tr>
+                <tr>
+                    <td>PROCESSING</td>
+                    <td>The activity is currently being processed.</td>
+                </tr>
+                <tr>
+                    <td>COMPLETE</td>
+                    <td>The activity has completed successfully.</td>
+                </tr>
+                <tr>
+                    <td>FAILED</td>
+                    <td>The activity has encountered a problem and failed</td>
+                </tr>
+            </tbody>
+        </table>
 
-<h4>Example: Notification Statuses</h4>
+        <h4>Example: Notification Statuses</h4>
 
-<h5>Request (GET):</h5>
+        <h5>Request (GET):</h5>
 
-<p>https://api.unicornmedia.com/status-api/notifications/<a href="about:blank">2796350e-2125-4f04-b33a-59488aaa76c7</a></p>
+        <p>https://api.unicornmedia.com/status-api/notifications/
+            <a href="about:blank">2796350e-2125-4f04-b33a-59488aaa76c7</a>
+        </p>
 
-<p><strong>Request header</strong></p>
+        <p>
+            <strong>Request header</strong>
+        </p>
 
-<p>Required HTTP Header:</p>
+        <p>Required HTTP Header:</p>
 
-<p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+        <p>
+            <code>X-BC-ONCE-API-KEY : {yourApiKey}</code>
+        </p>
 
-<p><strong>Response Body</strong></p>
+        <p>
+            <strong>Response Body</strong>
+        </p>
 
-<pre>
+        <pre>
 <code>{
 "notifications": [{
 "sentTime": 1416417989795,
@@ -393,36 +417,46 @@
 ]
 }]
 }</code></pre>
-</section>
+    </section>
 
-<section class="bcls-section">
-<h2 id="resend">Resending Notifications</h2>
+    <section class="bcls-section">
+        <h2 id="resend">Resending Notifications</h2>
 
-<aside class="bcls-aside bcls-aside--warning">This method is deprecated.</aside>
+        <aside class="bcls-aside bcls-aside--warning">This method is deprecated.</aside>
 
-<p>Syntax:</p>
+        <p>Syntax:</p>
 
-<p><strong>POST</strong></p>
+        <p>
+            <strong>POST</strong>
+        </p>
 
-<p><code>https://api.unicornmedia.com/status-api/notifications/{requestId}/{notificationType}</code></p>
+        <p>
+            <code>https://api.unicornmedia.com/status-api/notifications/{requestId}/{notificationType}</code>
+        </p>
 
-<p><code>https://api.unicornmedia.com/status-api/notifications/{requestId}/{notificationType}?id={event}</code></p>
+        <p>
+            <code>https://api.unicornmedia.com/status-api/notifications/{requestId}/{notificationType}?id={event}</code>
+        </p>
 
-<h3>Example: Resending All Notifications by Type</h3>
+        <h3>Example: Resending All Notifications by Type</h3>
 
-<h4>Request</h4>
+        <h4>Request</h4>
 
-<p><code>https://api.unicornmedia.com/status-api/notifications/2796350e-2125-4f04-b33a-59488aaa76c7/transcode</code></p>
+        <p>
+            <code>https://api.unicornmedia.com/status-api/notifications/2796350e-2125-4f04-b33a-59488aaa76c7/transcode</code>
+        </p>
 
-<h5>Request header</h5>
+        <h5>Request header</h5>
 
-<p>Required HTTP Header:</p>
+        <p>Required HTTP Header:</p>
 
-<p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+        <p>
+            <code>X-BC-ONCE-API-KEY : {yourApiKey}</code>
+        </p>
 
-<h4>Response Body</h4>
+        <h4>Response Body</h4>
 
-<pre>
+        <pre>
 <code>{
 "transcode": [
 {
@@ -440,21 +474,25 @@
 ]
 }</code></pre>
 
-<h3>Example: Resending a Single Notification from an Array</h3>
+        <h3>Example: Resending a Single Notification from an Array</h3>
 
-<h4>Request</h4>
+        <h4>Request</h4>
 
-<p><code>https://api.unicornmedia.com/status-api/notifications/2796350e-2125-4f04-b33a-59488aaa76c7/transcode?id=77</code></p>
+        <p>
+            <code>https://api.unicornmedia.com/status-api/notifications/2796350e-2125-4f04-b33a-59488aaa76c7/transcode?id=77</code>
+        </p>
 
-<h5>Request header</h5>
+        <h5>Request header</h5>
 
-<p>Required HTTP Header:</p>
+        <p>Required HTTP Header:</p>
 
-<p><code>X-BC-ONCE-API-KEY : {yourApiKey}</code></p>
+        <p>
+            <code>X-BC-ONCE-API-KEY : {yourApiKey}</code>
+        </p>
 
-<h4>Response</h4>
+        <h4>Response</h4>
 
-<pre>
+        <pre>
 <code>{
 "transcode": [
 {
@@ -463,5 +501,5 @@
 }
 ]
 }</code></pre>
-</section>
+    </section>
 </article>
