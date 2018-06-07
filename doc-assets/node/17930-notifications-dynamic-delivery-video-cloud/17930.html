@@ -1,53 +1,62 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="diAPI">Dynamic Ingest API notifications</h2>
+  <section class="bcls-section">
+    <h2 id="diAPI">Dynamic Ingest API notifications</h2>
 
-<p>You can specify one or more callback URLs to receive notifications for the results of the ingest process. The URLs you specify should be for apps than can accept POST requests. Notifications will be sent in JSON format.</p>
+    <p>You can specify one or more callback URLs to receive notifications for the results of the ingest process. The URLs you
+      specify should be for apps than can accept POST requests. Notifications will be sent in JSON format.</p>
 
-<aside class="bcls-aside bcls-aside--information">
-<h3>Notes</h3>
+    <aside class="bcls-aside bcls-aside--information">
+      <h3>Notes</h3>
 
-<ul>
-	<li>Up to 10 subscribers for error notifications are supported. You can include more than 10 URLs to have notifications sent to, but only the first 10 will be processed</li>
-	<li>URLs ending in a slash (/) will not be accepted; for example, the url “https://my.domain.com/notification-receiver” works, but “https://my.domain.com/notification-receiver/” does not</li>
-	<li>Alternatively, you can use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Status_of_Ingest_Jobs">status APIs of the CMS API</a> to get the status of ingest jobs for a particular video.</li>
-</ul>
-</aside>
+      <ul>
+        <li>Up to 10 subscribers for error notifications are supported. You can include more than 10 URLs to have notifications
+          sent to, but only the first 10 will be processed</li>
+        <li>URLs ending in a slash (/) will not be accepted; for example, the url “https://my.domain.com/notification-receiver”
+          works, but “https://my.domain.com/notification-receiver/” does not</li>
+        <li>Alternatively, you can use the
+          <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Get_Status_of_Ingest_Jobs">status APIs of the CMS API</a> to get the status of ingest jobs for a particular video.</li>
+      </ul>
+    </aside>
 
-<h3>Setup</h3>
+    <h3>Setup</h3>
 
-<p>Here’s an example.</p>
+    <p>Here’s an example.</p>
 
-<ul>
-	<li>User with pub id 57838016001</li>
-	<li>Wants to use Dynamic Ingest to upload a source video file located at https://s3.amazonaws.com/bucket/mysourcevideo.mp4</li>
-	<li>Wants to upload an existing title in the catalog with video id 5199670523001</li>
-	<li>Using the multi-platform-standard-static profile</li>
-	<li>Wants to receive callbacks at two endpoints located at http://host1/path1 and http://host2/path2 respectively</li>
-</ul>
+    <ul>
+      <li>User with pub id 57838016001</li>
+      <li>Wants to use Dynamic Ingest to upload a source video file located at https://s3.amazonaws.com/bucket/mysourcevideo.mp4</li>
+      <li>Wants to upload an existing title in the catalog with video id 5199670523001</li>
+      <li>Using the multi-platform-standard-static profile</li>
+      <li>Wants to receive callbacks at two endpoints located at http://host1/path1 and http://host2/path2 respectively</li>
+    </ul>
 
-<p>The DI request would look like this:</p>
+    <p>The DI request would look like this:</p>
 
-<h4>POST Request</h4>
-<textarea class="bcls-code">https://ingest.api.brightcove.com/v1/accounts/57838016001/videos/5199670523001/ingest-requests</textarea>
+    <h4>POST Request</h4>
+    <textarea class="bcls-code">https://ingest.api.brightcove.com/v1/accounts/57838016001/videos/5199670523001/ingest-requests</textarea>
 
-<h4>Request body</h4>
+    <h4>Request body</h4>
 
-<pre class="line-numbers">
-<code class="language-json">{
+    <pre class="line-numbers">
+<code class="language-json">{ 
   "master": {
     "url": "https://s3.amazonaws.com/bucket/mysourcevideo.mp4"
   },
   "profile": "multi-platform-standard-static",
   "callbacks": ["http://host1/path1”, “http://host2/path2”]
 }</code></pre>
-<textarea class="bcls-code" style="height:10em;"></textarea>
+    <textarea class="bcls-code" style="height:10em;"></textarea>
 
-<h3>Sample notification</h3>
+    <h3>Sample notification</h3>
 
-<p>Notifications are sent as POST requests with the notification in the request body as JSON<sup><strong><a href="#note1">[1]</a></strong></sup>. Here is a full set of notifications from a typical video ingest job:</p>
+    <p>Notifications are sent as POST requests with the notification in the request body as JSON
+      <sup>
+        <strong>
+          <a href="#note1">[1]</a>
+        </strong>
+      </sup>. Here is a full set of notifications from a typical video ingest job:</p>
 
-<pre class="line-numbers">
+    <pre class="line-numbers">
 <code class="language-json">{
   "entity": "default\/audio192",
   "entityType": "DYNAMIC_RENDITION",
@@ -263,76 +272,118 @@
   "status": "SUCCESS"
 }</code></pre>
 
-<h3>Notification fields</h3>
+    <h3>Notification fields</h3>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Item</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>status</code></td>
-			<td>will be <code>FAILED</code> if the ingest or creation of a rendition was not successful, <code>SUCCESS</code> if the request succeeded</td>
-		</tr>
-		<tr>
-			<td><code>accountId</code></td>
-			<td>the account id</td>
-		</tr>
-		<tr>
-			<td><code>videoId</code></td>
-			<td>the video id</td>
-		</tr>
-		<tr>
-			<td><code>jobId</code></td>
-			<td>the job id for the Dynamic Ingest request</td>
-		</tr>
-		<tr>
-			<td><code>entity</code></td>
-			<td>either the name of the entity, or the Video Cloud id of the video for the TITLE</td>
-		</tr>
-		<tr>
-			<td><code>entityType</code></td>
-			<td>the kind of asset reported on - for example: TITLE (a video), DIGITAL_MASTER, ASSET (a rendition, captions file, or image)</td>
-		</tr>
-		<tr>
-			<td><code>bitrate</code></td>
-			<td>bitrate for a rendition</td>
-		</tr>
-		<tr>
-			<td><code>width</code></td>
-			<td>frame-width for a rendition</td>
-		</tr>
-		<tr>
-			<td><code>height</code></td>
-			<td>frame-height for a rendition</td>
-		</tr>
-		<tr>
-			<td><code>errorMessage</code></td>
-			<td>an explanation of why the ingest failed if it did</td>
-		</tr>
-		<tr>
-			<td><code>version</code></td>
-			<td>a string always equal to <code>"1"</code></td>
-		</tr>
-		<tr>
-			<td><code>action</code></td>
-			<td>the action that occurred - for example, CREATE</td>
-		</tr>
-	</tbody>
-</table>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>
+            <code>status</code>
+          </td>
+          <td>will be
+            <code>FAILED</code> if the ingest or creation of a rendition was not successful,
+            <code>SUCCESS</code> if the request succeeded</td>
+        </tr>
+        <tr>
+          <td>
+            <code>accountId</code>
+          </td>
+          <td>the account id</td>
+        </tr>
+        <tr>
+          <td>
+            <code>videoId</code>
+          </td>
+          <td>the video id</td>
+        </tr>
+        <tr>
+          <td>
+            <code>jobId</code>
+          </td>
+          <td>the job id for the Dynamic Ingest request</td>
+        </tr>
+        <tr>
+          <td>
+            <code>entity</code>
+          </td>
+          <td>either the name of the entity, or the Video Cloud id of the video for the TITLE</td>
+        </tr>
+        <tr>
+          <td>
+            <code>entityType</code>
+          </td>
+          <td>the kind of asset reported on - for example: TITLE (a video), DIGITAL_MASTER, ASSET (a rendition, captions file,
+            or image)</td>
+        </tr>
+        <tr>
+          <td>
+            <code>bitrate</code>
+          </td>
+          <td>bitrate for a rendition</td>
+        </tr>
+        <tr>
+          <td>
+            <code>width</code>
+          </td>
+          <td>frame-width for a rendition</td>
+        </tr>
+        <tr>
+          <td>
+            <code>height</code>
+          </td>
+          <td>frame-height for a rendition</td>
+        </tr>
+        <tr>
+          <td>
+            <code>errorMessage</code>
+          </td>
+          <td>an explanation of why the ingest failed if it did</td>
+        </tr>
+        <tr>
+          <td>
+            <code>version</code>
+          </td>
+          <td>a string always equal to
+            <code>"1"</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>action</code>
+          </td>
+          <td>the action that occurred - for example, CREATE</td>
+        </tr>
+      </tbody>
+    </table>
 
-<h3>Interpreting notifications</h3>
+    <h3>Interpreting notifications</h3>
 
-<p>A notification containing <code>"action": "CREATE"</code> and <code>"status": "SUCCESS"</code> indicates completion of a process.</p>
+    <p>A notification containing
+      <code>"action": "CREATE"</code> and
+      <code>"status": "SUCCESS"</code> indicates completion of a process.</p>
 
-<ul>
-	<li>If the <code>entityType</code> is <code>TITLE</code>, then processing of an ingested video is complete.</li>
-	<li>If the <code>entityType</code> is <code>ASSET</code>, <code>DYNAMIC_RENDITION</code> or <code>DIGITAL_MASTER</code>, then a rendition, image, manifest, WebVTT file, or digital master has been successfully added to your video.</li>
-</ul>
+    <ul>
+      <li>If the
+        <code>entityType</code> is
+        <code>TITLE</code>, then processing of an ingested video is complete.</li>
+      <li>If the
+        <code>entityType</code> is
+        <code>ASSET</code>,
+        <code>DYNAMIC_RENDITION</code> or
+        <code>DIGITAL_MASTER</code>, then a rendition, image, manifest, WebVTT file, or digital master has been successfully added
+        to your video.</li>
+    </ul>
 
-<aside class="bcls-aside bcls-aside--information">Note: a <code>"status": "SUCCESS"</code> on a <strong>title</strong> indicates that processing is complete, but does not necessarily mean that it was all renditions were created successfully. To determine whether Dynamic Ingest of videos was successful, see <a href="/node/17954">Get Status of Dynamic Ingest Requests</a>.</aside>
-</section>
+    <aside class="bcls-aside bcls-aside--information">Note: a
+      <code>"status": "SUCCESS"</code> on a
+      <strong>title</strong> indicates that processing is complete, but does not necessarily mean that it was all renditions were
+      created successfully. To determine whether Dynamic Ingest of videos was successful, see
+      <a href="/node/17954">Get Status of Dynamic Ingest Requests</a>.</aside>
+  </section>
 </article>
