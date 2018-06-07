@@ -13,35 +13,115 @@
 <p>With HLS and DASH video, there are two options for captions playback:</p>
 
 <ul>
-	<li><a href="#In_manifest_WebVTT">In-manifest WebVTT</a></li>
-	<li><a href="#External_WebVTT">External (Sidecar) WebVTT</a></li>
+<li><a href="#In_manifest_WebVTT">In-manifest WebVTT</a></li>
+<li><a href="#External_WebVTT">External (Sidecar) WebVTT</a></li>
 </ul>
 
 <h3 id="In_manifest_WebVTT">In-manifest WebVTT</h3>
 
 <p>When using In-manifest WebVTT captions with HLS or DASH videos, your captions will just work. There is nothing extra that you need to do to implement these captions.</p>
 
-<p>In-manifest WebVTT captions are ingested with your videos. This can be done when you first ingest your video or after your video has been ingested. You can create in-manifest captions as follows:</p>
+<p>In-manifest WebVTT captions are ingested with your videos. You can only create in-manifest files if you use Dynamic Ingest with Dynamic Delivery. For details, see the following:</p>
 
 <ul>
-	<li><a href="/node/17938">Ingesting WebVTT files</a></li>
-	<li><a href="/node/17949#ingest_captions">Ingesting Captions using the Dynamic Ingest API</a></li>
+<li><a href="/node/17938">Ingesting WebVTT files</a></li>
+<li><a href="/node/17949#ingest_captions">Ingesting Captions using the Dynamic Ingest API</a></li>
 </ul>
+
+<p>
+Captions are recognized as in-manifest when the <strong>m3u8</strong> file contains the following tag:
+</p>
+<pre><code class="language-json">#EXT-X-MEDIA:TYPE=SUBTITLES</code></pre>
+
+<h4 id="Example1" class="bcls-expander-head">Example</h4>
+<div class="bcls-expander-content">
+<table class="bcls-table">
+<thead class="bcls-table__head">
+		<tr>
+			<th>Scenario</th>
+				<th>Location of text track</th>
+				<th>Type of text track</th>
+				<th>#EXT-X-MEDIA:TYPE=SUBTITLES tag</th>
+		</tr>
+</thead>
+<tbody class="bcls-table__body">
+		<tr>
+				<td>Dynamic Delivery ingested video<br />
+					 Dynamic Ingest API</td>
+				<td>CDN</td>
+				<td>Segmented</td>
+				<td>Yes</td>
+		</tr>
+</tbody>
+</table>
+</div>
+
+<aside class="bcls-aside bcls-aside--information">
+Notes:
+<ul>
+<li>
+	Using the Media Module in Studio to add captions to a video will not create in-manifest captions.
+</li>
+<li>
+	Using legacy ingestion does not create in-manifest captions.
+</li>
+</ul>
+</aside>
+
 
 <h3 id="External_WebVTT">External (Sidecar) WebVTT</h3>
 
 <p>External WebVTT captions are text files separate from the video. You can associate captions files with a video as follows:</p>
 
 <ul>
-	<li><a href="/node/15481">Adding Captions using the Media Module</a></li>
-	<li><a href="/node/18013">Adding Captions using the CMS API</a></li>
+<li><a href="/node/15481">Adding Captions using the Media Module</a></li>
+<li><a href="/node/18013">Adding Captions using the CMS API</a></li>
 </ul>
 
-<p><strong>Android</strong></p>
+<h4 id="Example2" class="bcls-expander-head">Examples</h4>
+<div class="bcls-expander-content">
+<table class="bcls-table">
+<thead class="bcls-table__head">
+		<tr>
+				<th>Scenario</th>
+				<th>Location of text track</th>
+				<th>Type of text track</th>
+				<th>#EXT-X-MEDIA:TYPE=SUBTITLES tag</th>
+		</tr>
+</thead>
+<tbody class="bcls-table__body">
+		<tr>
+				<td>Legacy ingested video (no Dynamic Delivery)<br />
+					 Dynamic Ingest API</td>
+				<td>CDN</td>
+				<td>Not segmented</td>
+				<td>No</td>
+		</tr>
+		<tr>
+			<td>Legacy ingested video (no Dynamic Delivery)<br />
+				 Remote URL<br />
+					Media Module or CMS API</td>
+				<td>Original</td>
+				<td>Not segmented</td>
+				<td>No</td>
+		</tr>
+		<tr>
+			<td>Dynamic Delivery ingested video<br />
+				 remote URL<br />
+					Media Module or CMS APII</td>
+			<td>Original</td>
+			<td>Not segmented</td>
+			<td>No</td>
+		</tr>
+</tbody>
+</table>
+</div>
+
+<h4>Android</h4>
 
 <p>The <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-mediaplayer/WebVTTSampleApp/src/main">WebVTTSampleApp</a> shows you how to add WebVTT captions files for video playback.</p>
 
-<p><strong>iOS/tvOS</strong></p>
+<h4>iOS/tvOS</h4>
 
 <p>When using external WebVTT captions, you need to use the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/SidecarSubtitles.md">Sidecar Subtitles</a> functionality for the Player SDK for iOS and tvOS.</p>
 
