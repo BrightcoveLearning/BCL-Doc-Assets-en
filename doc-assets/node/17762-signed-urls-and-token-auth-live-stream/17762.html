@@ -1,16 +1,30 @@
 <article class="bcls-article">
     <section id="Overview" class="bcls-section">
-                        <h2>Overview</h2>
-                        <p>If you are delivering premium or confidential content, you will be looking for all ways to ensure it remains secure. You do not want end users to be able to copy video URLs or continue to play back content without the proper authorization. Brightcove supports signing of RTMP, HLS, and DASH URLs.</p>
-                        <p>If you will be generating your own token, there is one step to this process. If you want the Live system to generate a tokenized URL, there are two steps, detailed in the sections that follow, required to enable token authentication for live streams.</p>
-                        <aside class="bcls-aside bcls-aside--information">Currently, token authentication is supported with Akamai EdgeAuth 2.0 only.</aside>
-                    </section>
-                    <section id="Implementation" class="bcls-section">
-                        <h2>Implementation</h2>
-                        <aside class="bcls-aside bcls-aside--information">Note: if you are creating your own token and adding it to the URL, you should only complete step 1.</aside>
-                        <h3>Step 1: Creating the live job</h3>
-                        <p>To enable token authentication, include the following in the request body when you <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">create a job</a>:</p>
-    <pre class="line-numbers"><code class="language-json">"add_cdns": [
+        <h2>Overview</h2>
+
+        <p>If you are delivering premium or confidential content, you will be looking for all ways to ensure it remains secure.
+            You do not want end users to be able to copy video URLs or continue to play back content without the proper authorization.
+            Brightcove supports signing of RTMP, HLS, and DASH URLs.</p>
+
+        <p>If you will be generating your own token, there is one step to this process. If you want the Live system to generate
+            a tokenized URL, there are two steps, detailed in the sections that follow, required to enable token authentication
+            for live streams.</p>
+
+        <aside class="bcls-aside bcls-aside--information">Currently, token authentication is supported with Akamai EdgeAuth 2.0 only.</aside>
+    </section>
+
+    <section id="Implementation" class="bcls-section">
+        <h2>Implementation</h2>
+
+        <aside class="bcls-aside bcls-aside--information">Note: if you are creating your own token and adding it to the URL, you should only complete step 1.</aside>
+
+        <h3>Step 1: Creating the live job</h3>
+
+        <p>To enable token authentication, include the following in the request body when you
+            <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">create a job</a>:</p>
+
+        <pre class="line-numbers">
+<code class="language-json">"add_cdns": [
           {
             "label": "<span class="bcls-input">My CDN</span>",
             "prepend": "mycdn-a.akamaihd.net",
@@ -28,23 +42,49 @@
             }
           }
         ]</code></pre>
-                        <h3>Step 2: After the live job is created</h3>
-                        <aside class="bcls-aside bcls-aside--information">Only complete this step if you are <strong>not</strong> creating your own token and instead want the Live API to generate a tokenized URL.</aside>
-                        <p>After the live job is created, you need to make another request to generate the master manifest URLs. To do this, send a <code>POST</code> request to:</p>
-    <pre class="line-numbers"><code class="language-http">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/authurls</code></pre>
-                        <p>Include the following JSON as the request body:</p>
-    <pre class="line-numbers"><code class="language-json">{
+
+        <h3>Step 2: After the live job is created</h3>
+
+        <aside class="bcls-aside bcls-aside--information">Only complete this step if you are
+            <strong>not</strong> creating your own token and instead want the Live API to generate a tokenized URL.</aside>
+
+        <p>After the live job is created, you need to make another request to generate the master manifest URLs. To do this,
+            send a
+            <code>POST</code> request to:</p>
+
+        <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/authurls</code></pre>
+
+        <p>Include the following JSON as the request body:</p>
+
+        <pre class="line-numbers">
+<code class="language-json">{
         "ttl": <span class="bcls-input">number in seconds for time to live</span>
     }</code></pre>
-                    </section>
-                    <section id="Notes" class="bcls-section">
-                        <h2>Notes</h2>
-                        <ul>
-                            <li>The <code>ttl</code> value for both steps above should be equal to or greater than the DVR window - otherwise the DVR window will be limited to the <code>ttl</code> value</li>
-                            <li>Both http and https are supported</li>
-                            <li>The <code>token_name</code> must be 5-12 characters and must match what is configured in Akamai</li>
-                            <li><code>start_time</code> is optional and can be <code>"now"</code> (the default) or an epoch time value in seconds</li>
-                            <li><code>end_time</code> is optional and can be an epoch time value in seconds - either <code>end_time</code> or <code>ttl</code> is required; if not specified, <code>ttl</code> is assumed to be the greater of <code>live_dvr_sliding_window_duration</code> and <code>vod_sliding_window_duration</code></li>
-                        </ul>
-                    </section>
+    </section>
+
+    <section id="Notes" class="bcls-section">
+        <h2>Notes</h2>
+
+        <ul>
+            <li>The
+                <code>ttl</code> value for both steps above should be equal to or greater than the DVR window - otherwise the DVR
+                window will be limited to the
+                <code>ttl</code> value</li>
+            <li>Both http and https are supported</li>
+            <li>The
+                <code>token_name</code> must be 5-12 characters and must match what is configured in Akamai</li>
+            <li>
+                <code>start_time</code> is optional and can be
+                <code>"now"</code> (the default) or an epoch time value in seconds</li>
+            <li>
+                <code>end_time</code> is optional and can be an epoch time value in seconds - either
+                <code>end_time</code> or
+                <code>ttl</code> is required; if not specified,
+                <code>ttl</code> is assumed to be the greater of
+                <code>live_dvr_sliding_window_duration</code> and
+                <code>vod_sliding_window_duration</code>
+            </li>
+        </ul>
+    </section>
 </article>
