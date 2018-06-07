@@ -4,7 +4,7 @@
 
 <p>Offline Playback with the Brightcove Native Player SDKs for iOS and Android allows publishers to reach their viewers in entirely new ways while ensuring their content remains secure. Our SDKs offer powerfully simple solutions for complex offline playback problems including download management, offline catalog management, analytics, DRM, and of course playback.</p>
 
-<p>Using offline playback, users can download both DRM-protected and non-encrypted video content to their devices and watch it when they are not connected.</p>
+<p>Using offline playback, users can download both DRM-protected and clear (non-encrypted) video content to their devices and watch it when they are not connected.</p>
 
 <aside class="bcls-aside bcls-aside--information">To use this feature, you need to be a Video Cloud customer using Dynamic Delivery.</aside>
 </section>
@@ -41,8 +41,8 @@
 <ul>
 	<li>For DRM-protected content, the Native SDKs use the following technologies:
 	<ul>
-		<li><strong>Android</strong>: <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a></li>
-		<li><strong>iOS</strong>: <a href="https://developer.apple.com/streaming/fps/">FairPlay</a></li>
+		<li><strong>Android</strong>: DASH with <a href="http://www.widevine.com/wv_drm.html">Widevine Modular</a></li>
+		<li><strong>iOS</strong>: HLS with <a href="https://developer.apple.com/streaming/fps/">FairPlay</a></li>
 	</ul>
 	</li>
 	<li>Video content can only be watched on the device and app that has downloaded the content.</li>
@@ -125,6 +125,10 @@
 <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Display content" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/content-list.png" />
 <figcaption class="bcls-caption--image">Display content</figcaption>
 </figure>
+
+<p>
+	When working with clear content, see the <a href="#Best_practices">Best practices</a> section for tips on how to display your content.
+</p>
 
 <h3 class="BCL_conceptTitle" id="Show_download_status">Show download status</h3>
 
@@ -266,19 +270,20 @@
 
 <p>The following notes apply to the offline playback feature supported by the Native SDKs:</p>
 
-<h3>Android</h3>
+<h3>All</h3>
+<p>
+	Currently, HLSe content is not supported with offline playback using the Brightcove Native SDK for Android, iOS or tvOS.
+</p>
 
-<p>When the app is deleted, all downloaded content is removed. This is true as long as the default storage location is not overridden.</p>
+<h3>Android</h3>
+<p>
+	When the app is deleted, all downloaded content is removed. This is true as long as the default storage location is not overridden.
+</p>
 
 <h3>iOS</h3>
-<ul>
-	<li>
-		As a security feature, you cannot stream an offline HLS video to an AirPlay device for playback. This is confirmed by Apple to be an <code>AVFoundation</code> limitation.
-	</li>
-	<li>
-		Currently, HLSe content is not supported with offline playback using the Brightcove Native SDK for iOS/tvOS.
-	</li>
-</ul>
+<p>
+	As a security feature, you cannot stream an offline HLS video to an AirPlay device for playback. This is confirmed by Apple to be an <code>AVFoundation</code> limitation.
+</p>
 
 </section>
 
@@ -333,6 +338,12 @@ Downloading of the main video content can happen while the app is in the backgro
 <p><strong>Android:</strong> You should display the pause and cancel buttons as part of calling the <code>onDownloadStarted</code> callback in the <code>DownloadEventListener</code>. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">Offline Playback sample app</a>.</p>
 
 <p><strong>iOS:</strong> For details about how to create an app for Offline Playback, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md">iOS App Developer's Guide</a>.</p>
+
+<h3>Displaying clear content</h3>
+<p>
+	If your account is not DRM-enabled or you are working with clear content, the Brightcove Native SDKs will not perform a server-side license request. Therefore, clear content is not considered available for rental or purchase. In most cases, it is recommended that you hide the <strong>rent</strong> and <strong>buy</strong> buttons for clear content.
+	</p>
+
 </section>
 
 <section class="bcls-section">
