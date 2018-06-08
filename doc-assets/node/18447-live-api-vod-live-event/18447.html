@@ -1,20 +1,28 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+    <section class="bcls-section">
+        <h2 id="Introduction">Introduction</h2>
 
-<p>For shorter live streaming events, you may want to make a recording of the event available as a video-on-demand (VOD) in your Video Cloud account after the event has completed. You can easily do this by adding some configuration for the VOD when you <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">create your live job</a>.</p>
+        <p>For shorter live streaming events, you may want to make a recording of the event available as a video-on-demand (VOD)
+            in your Video Cloud account after the event has completed. You can easily do this by adding some configuration
+            for the VOD when you
+            <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">create your live job</a>.</p>
 
-<p><strong>Important</strong>: when the live streaming event is complete, stop your encoder, but <strong>do not <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Cancel_Live_Job">cancel</a> the job</strong>. Wait until the VOD clip has been created before cancelling the job, or it will not be created successfully.</p>
-</section>
+        <p>
+            <strong>Important</strong>: when the live streaming event is complete, stop your encoder, but
+            <strong>do not
+                <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Cancel_Live_Job">cancel</a> the job</strong>. Wait until the VOD clip has been created before cancelling the job, or it will
+            not be created successfully.</p>
+    </section>
 
-<section class="bcls-section">
-<h2 id="Implementation">Implementation</h2>
+    <section class="bcls-section">
+        <h2 id="Implementation">Implementation</h2>
 
-<h3>Send to Video Cloud</h3>
+        <h3>Send to Video Cloud</h3>
 
-<p>To have a VOD version of the event saved to your Video Cloud account, include a version of the highlight <strong>output</strong> below.</p>
+        <p>To have a VOD version of the event saved to your Video Cloud account, include a version of the highlight
+            <strong>output</strong> below.</p>
 
-<pre class="line-numbers">
+        <pre class="line-numbers">
 <code class="language-json">{
     "live_stream": true,
     "region": "us-west-2",
@@ -47,19 +55,31 @@
     ]
 }</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">A credential label for a valid client id + client secret should have been created when your Live account was set up, the credential label sent to you. If you do not have it, please <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</aside>
+        <aside class="bcls-aside bcls-aside--information">A credential label for a valid client id + client secret should have been created when your Live account was set
+            up, the credential label sent to you. If you do not have it, please
+            <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</aside>
 
-<p>Note that for the video metadata, you can include any fields listed for the <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">Create Video</a> operation of the CMS API.</p>
+        <p>Note that for the video metadata, you can include any fields listed for the
+            <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">Create Video</a> operation of the CMS API.</p>
 
-<p>Ingest profiles define the renditions that will be created for the VOD. For <code>valid-ingest-profile-name</code>, you can substitute the name of any custom or standard ingest profile for your account. What standard profiles you have depends on whether or not your account is enabled for Dynamic Delivery (if you are not sure, see the <a href="/node/18373">introductory paragraph on this page</a>). See the <a href="/node/18386">Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding</a> or the <a href="/node/18041">Standard Ingest Profiles for Legacy Transcoding</a>.</p>
+        <p>Ingest profiles define the renditions that will be created for the VOD. For
+            <code>valid-ingest-profile-name</code>, you can substitute the name of any custom or standard ingest profile for your
+            account. What standard profiles you have depends on whether or not your account is enabled for Dynamic Delivery
+            (if you are not sure, see the
+            <a href="/node/18373">introductory paragraph on this page</a>). See the
+            <a href="/node/18386">Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding</a> or the
+            <a href="/node/18041">Standard Ingest Profiles for Legacy Transcoding</a>.</p>
 
-<aside class="bcls-aside bcls-aside--information">Note that the <code>profile</code> field is optional. If you do not specify a profile, the default profile for the account will be used.</aside>
+        <aside class="bcls-aside bcls-aside--information">Note that the
+            <code>profile</code> field is optional. If you do not specify a profile, the default profile for the account will be
+            used.</aside>
 
-<h3>Send to S3</h3>
+        <h3>Send to S3</h3>
 
-<p>To have a VOD version of the event saved to your S3 bucket, include a version of the highlight <strong>output</strong> below.</p>
+        <p>To have a VOD version of the event saved to your S3 bucket, include a version of the highlight
+            <strong>output</strong> below.</p>
 
-<pre class="line-numbers">
+        <pre class="line-numbers">
 <code class="language-json">{
     "live_stream": true,
     "region": "us-west-2",
@@ -82,21 +102,29 @@
     ]
 }</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">A credential label for a valid username+password for your S3 bucket should have been created when your Live account was set up, the credential label sent to you. If you do not have it, please <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</aside>
-</section>
+        <aside class="bcls-aside bcls-aside--information">A credential label for a valid username+password for your S3 bucket should have been created when your Live account
+            was set up, the credential label sent to you. If you do not have it, please
+            <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</aside>
+    </section>
 
-<section class="bcls-section">
-<h2 id="Limitations">Limitations</h2>
+    <section class="bcls-section">
+        <h2 id="Limitations">Limitations</h2>
 
-<ul>
-	<li>If you <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Stop_Live_Job">stop (cancel)</a> the live job before the VOD has been created, it will not be created. Instead, stop your encoder to initiate creation of the VOD, and wait for that to finish before stopping the job.</li>
-	<li>For <a href="/node/18443">Static Entry Point</a> streams <strong>only</strong>, Live to VOD can not be set to archive the stream on completion.
-	<p style="font-weight:bold;">Alternatives:</p>
+        <ul>
+            <li>If you
+                <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Stop_Live_Job">stop (cancel)</a> the live job before the VOD has been created, it will not be created. Instead, stop your
+                encoder to initiate creation of the VOD, and wait for that to finish before stopping the job.</li>
+            <li>For
+                <a href="/node/18443">Static Entry Point</a> streams
+                <strong>only</strong>, Live to VOD can not be set to archive the stream on completion.
+                <p style="font-weight:bold;">Alternatives:</p>
 
-	<ul>
-		<li>Use <a href="/node/17761">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
-	</ul>
-	</li>
-</ul>
-</section>
+                <ul>
+                    <li>Use
+                        <a href="/node/17761">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for
+                        the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
 </article>
