@@ -20,6 +20,7 @@ var BCLSrenditions                = (function(window, document) {
         videoFields     = ['video_bitrate', 'height', 'aspect_mode', 'decoder_bitrate_cap', 'decoder_buffer_size', 'forced_keyframe_rate', 'fragment_duration', 'h264_bframes', 'h264_profile', 'segment_seconds', 'speed',  'video_codec'],
         audioTableBody  = document.getElementById('audioTableBody'),
         videoTableBody  = document.getElementById('videoTableBody'),
+        progressiveTableBody = getElementById('progressiveTableBody'),
         frag,
         rendition;
 
