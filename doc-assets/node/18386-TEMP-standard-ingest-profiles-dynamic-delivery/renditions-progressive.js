@@ -110,7 +110,7 @@ var BCLSrenditions                = (function(window, document) {
     console.log('videoRenditions', videoRenditions);
 
     // build the table bodies
-    buildTable(audioRenditions, audioFields, audioTableBody);
-    buildTable(videoRenditions, videoFields, videoTableBody);
+    // buildTable(audioRenditions, audioFields, audioTableBody);
+    buildTable(videoRenditions, videoFields, progressiveTableBody);
 
 })(window, document);
