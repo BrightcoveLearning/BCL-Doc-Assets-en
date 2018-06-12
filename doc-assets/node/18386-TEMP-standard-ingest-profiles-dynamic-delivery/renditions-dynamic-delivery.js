@@ -112,7 +112,7 @@ var BCLSrenditions                = (function(window, document) {
     progressiveData.sort(function(a, b) {
         x = a.encoding_settings.height - b.encoding_settings.height;
         return x === 0? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
-    console.log('videoRenditions', videoRenditions);
+    // console.log('videoRenditions', videoRenditions);
 
     // build the table bodies
     buildTable(audioRenditions, audioFields, audioTableBody);
