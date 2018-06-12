@@ -1,0 +1,124 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="introduction">Introduction</h2>
+
+<p>When creating a Dynamic Ingest request using the Dynamic Ingest API or uploading videos using the Upload module, you must supply a profile which determines the number and type of renditions created by the Video Cloud ingestion process. This topic provides detailed information on each of the Dynamic Delivery profiles. For non Dynamic Delivery accounts, see the <a href="/node/18041">Standard Ingest Profiles</a> topic.</p>
+
+<p>For an overview of Dynamic Delivery, see <a href="/node/18476">Overview of Dynamic Delivery</a>. For an overview of Context Aware Encoding, see <a href="/node/18505">Overview of Context Aware Encoding</a>.</p>
+
+<p>Notes:</p>
+
+<ul>
+	<li>This document shows profiles for regular Dynamic Delivery and Context Aware Encoding. See <a href="/node/18353">Context Aware Encoding</a> for details.</li>
+	<li>Because of the different ways that static Dynamic Delivery and Context Aware Encoding profiles work, you will see different information in profile details below:
+	<ul>
+		<li>For static Dynamic Delivery profiles, a list of included renditions is shown</li>
+		<li>For Context Aware Encoding profiles, a table of Dynamic Profile Settings that are used in determining what renditions to produce are shown</li>
+	</ul>
+	</li>
+</ul>
+
+<p>It is also possible to create your own custom ingest profiles. For information, see the appropriate topic:</p>
+
+<ul>
+	<li><a href="node/16840">Creating Ingest Profiles for Dynamic Delivery</a></li>
+	<li><a href="node/18434">Creating Ingest Profiles for Context Aware Encoding</a></li>
+</ul>
+</section>
+
+<!-- <section class="bcls-section">
+  <h2 id="downloadable_renditions">Downloadable renditions</h2>
+  <p>For general information on downloadable videos, see <a href="/node/14363">Downloading Videos from Video Cloud</a>. Here we will look at how MP4 renditions (also called PMP4 renditions) are created during ingestion using Dynamic Delivery and Context Aware Encoding profiles. In order for downloadable renditions to be created, your Video Cloud account must be enabled for this - if you need to have your account enabled,  <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
+  <p>Brightcove attempts to create two PMP4 renditions, which are denoted as <code>high</code> and <code>mid</code>. The encoding settings for these renditions are determined by the encoding settings included in the ingest profile.</p>
+  <h3>For the audio tracks</h3>
+  <p> If there are multiple audio renditions, we use the one with the highest <code>audio_bitrate</code>. The same audio encoding settings are used for both the <code>high</code> and <code>mid</code> PMP4s.</p>
+  <h3>For the <code>high</code> video track</h3>
+  <p>If there are multiple video renditions, we use the one with the highest <code>video_bitrate</code>.</p>
+  <p>If no standard video renditions are included in the profile, we look for Context Awared Encoding settings - if they are present, we use a bitrate of 2048kbps. The resolution of the <code>high</code> PMP4 rendition in this case will be that of the source video.</p>
+  <h3>For the <code>mid</code> video track</h3>
+  <p>If there are multiple video renditions we use the one with the closest <code>video_bitrate</code> to 500Kbps.</p>
+  <p>If no standard video renditions are included in the profile, we look for Context Awared Encoding settings - if they are present, we use a bitrate of 500kbps. The resolution of the <code>high</code> PMP4 rendition in this case will be that of the source video.</p>
+  <aside class="bcls-aside bcls-aside--information">If both the <code>high</code> and <code>mid</code> PMP4 encoding settings are the same we throw out the <code>mid</code> as there point in generating duplicates PMP4s with the same bitrates. This behavior can occur if only a single standard video rendition is requested.</aside>
+</section> -->
+
+<section class="bcls-section">
+<h2 id="Renditions">Renditions</h2>
+
+<p>For details on all available default renditions that you can use in your ingest profile, see the table below.</p>
+
+<aside class="bcls-aside bcls-aside--information">Notes:
+<ol>
+	<li>These are all the renditions available for use in Dynamic Delivery profiles. Some of them may not be currently used in the standard profiles.</li>
+	<li>The Fragment Duration and Segment Length you see in the table, do not reflect the actual segment lengths that are delivered. Dynamic Delivery can deliver different length segments depending on conditions for a particular playback session. By default, 10 second segments are delivered for HLS and 6 second segments for DASH.</li>
+</ol>
+</aside>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Audio Renditions</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Name<sup><strong><a href="#note1-1">[1-1]</a></strong></sup></th>
+			<th>Audio Bit Rate (kbps)</th>
+			<th>Audio Channels</th>
+			<th>Audio Codec</th>
+			<th>Forced Keyframe Rate</th>
+			<th>Fragment Duration (ms)</th>
+			<th>Fragment Track Timescale</th>
+			<th>Segment Length (sec)</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body" id="audioTableBody">
+	</tbody>
+</table>
+
+<h4>Notes</h4>
+
+<ul style="list-style-type:none">
+	<li id="note1-1"><sup><strong>[1-1]</strong></sup> When you reference a rendition in an ingest profile, <strong>be sure to prefix the name with <code>default/</code></strong> - for example: <code>default/audio128</code></li>
+</ul>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Video Renditions</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Name<sup><strong><a href="#note2-2">[2-2]</a></strong></sup></th>
+			<th>Bit Rate (kbps)</th>
+			<th>Height<sup><strong><a href="#note2-1">[2-1]</a></strong></sup> (px)</th>
+			<th>Aspect Mode</th>
+			<th>Decoder Bitrate Cap</th>
+			<th>Decoder Buffer Size</th>
+			<th>Forced Keyframe Rate</th>
+			<th>Fragment Duration (ms)</th>
+			<th>H264 b-frames</th>
+			<th>H264 Profile</th>
+			<th>Segment Length (sec)</th>
+			<th>Speed</th>
+			<th>Video Codec</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body" id="videoTableBody">
+	</tbody>
+</table>
+
+<h4>Notes</h4>
+
+<ul style="list-style-type:none">
+	<li id="note2-1"><sup><strong>[2-1]</strong></sup> Width of output renditions depends on input source aspect ratio</li>
+	<li id="note2-2"><sup><strong>[2-2]</strong></sup> When you reference a rendition in an ingest profile, <strong>be sure to prefix the name with <code>default/</code></strong> - for example: <code>default/video2000</code></li>
+</ul>
+
+<p>If you require renditions with bit rates/resolutions other than those in the table below, please <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
+</section>
+
+<section class="bcls-section" id="Document_data">
+<h2 id="profiles">Profiles</h2>
+
+<aside class="bcls-aside bcls-aside--information">Notes:
+<ul>
+	<li>This page is built using live data from the API; it may take a minute to fully load.</li>
+	<li>Standard profiles may <strong>not</strong> be edited - if you want a modified version, you will need to create a custom profile.</li>
+</ul>
+</aside>
+</section>
+<!-- the rest of the content of this page is generated by a script --></article>
+<script src="//learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/renditions-dynamic-delivery.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/BCLSprofilesArray.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/node/18386-standard-ingest-profiles-dynamic-delivery/standard-profiles.js"></script>
