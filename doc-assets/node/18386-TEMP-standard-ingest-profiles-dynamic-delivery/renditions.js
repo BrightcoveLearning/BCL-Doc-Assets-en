@@ -1,4 +1,4 @@
-{
+var renditonsObject = {
 	"renditions": [
 		{
 			"id": "default/video900",
@@ -2241,4 +2241,9 @@
 			}
 		}
 	]
-}
+},
+iMax,
+i,
+audioRenditions = [],
+progressiveRenditions = [],
+videoRenditions = [];
