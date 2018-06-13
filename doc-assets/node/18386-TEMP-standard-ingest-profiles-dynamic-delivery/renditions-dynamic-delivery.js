@@ -492,6 +492,6 @@ console.log('dataSet', dataSet);
         // build the table bodies
         buildTable(audioRenditions, audioFields, audioTableBody);
         buildTable(videoRenditions, videoFields, videoTableBody);
-        buildTable(progressiveData.reditions, progressiveFields, progressiveTableBody);
+        buildTable(progressiveData.renditions, progressiveFields, progressiveTableBody);
 
       })(window, document);
