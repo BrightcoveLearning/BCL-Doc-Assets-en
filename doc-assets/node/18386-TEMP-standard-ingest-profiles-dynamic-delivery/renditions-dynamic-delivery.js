@@ -109,16 +109,16 @@ var BCLSrenditions                = (function(window, document) {
         x = a.encoding_settings.height - b.encoding_settings.height;
         return x === 0? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
     });
-    progressiveData.sort(function(a, b) {
+    progressiveData.renditions.sort(function(a, b) {
         x = a.encoding_settings.height - b.encoding_settings.height;
         return x === 0? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
     // console.log('videoRenditions', videoRenditions);
-console.log('progressiveData', progressiveData);
+console.log('progressiveData', progressiveData.renditions);
 console.log('progressiveFields', progressiveFields);
 console.log('progressiveTableBody', progressiveTableBody);
     // build the table bodies
     buildTable(audioRenditions, audioFields, audioTableBody);
     buildTable(videoRenditions, videoFields, videoTableBody);
-    buildTable(progressiveData, progressiveFields, progressiveTableBody);
+    buildTable(progressiveData.reditions, progressiveFields, progressiveTableBody);
 
 })(window, document);
