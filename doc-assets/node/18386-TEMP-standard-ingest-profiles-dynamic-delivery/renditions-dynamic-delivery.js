@@ -432,6 +432,7 @@ var BCLSrenditions = (function(window, document) {
        * @param {HTMLElement} table body element to add the rows to
        */
       function buildTable(dataSet, fields, el) {
+console.log('dataSet', dataSet);
         var frag = new DocumentFragment(),
           tr,
           td,
@@ -486,8 +487,8 @@ var BCLSrenditions = (function(window, document) {
       });
         // console.log('videoRenditions', videoRenditions);
         console.log('progressiveData', progressiveData.renditions);
-        console.log('progressiveFields', progressiveFields);
-        console.log('progressiveTableBody', progressiveTableBody);
+        // console.log('progressiveFields', progressiveFields);
+        // console.log('progressiveTableBody', progressiveTableBody);
         // build the table bodies
         buildTable(audioRenditions, audioFields, audioTableBody);
         buildTable(videoRenditions, videoFields, videoTableBody);
