@@ -6,25 +6,25 @@ var BCLSrenditions                = (function(window, document) {
     {"aspect_mode":"preserve","audio_bitrate":192,"audio_channels":2,"audio_codec":"aac","decoder_bitrate_cap":6000,"decoder_buffer_size":8000,"force_aac_profile":"aac-lc","h264_bframes":2,"h264_profile":"high","height":1080,"speed":3,"upscale":false,"video_bitrate":4000,"video_codec":"h264","width":2048}},{"id":"default/progressive3500","version":0,"name":"Default Progressive3500","kind":"progressive","account_id":"default","created_at":"2018-06-11T22:34:01.503067518Z","updated_at":"2018-06-11T22:34:01.503067518Z","encoding_settings":
     {"aspect_mode":"preserve","audio_bitrate":192,"audio_channels":2,"audio_codec":"aac","decoder_bitrate_cap":5250,"decoder_buffer_size":7000,"force_aac_profile":"aac-lc","h264_bframes":2,"h264_profile":"high","height":1080,"speed":3,"upscale":false,"video_bitrate":3500,"video_codec":"h264","width":2048}},{"id":"default/progressive2500","version":0,"name":"Default Progressive2500","kind":"progressive","account_id":"default","created_at":"2018-06-11T22:33:45.851290928Z","updated_at":"2018-06-11T22:33:45.851290928Z","encoding_settings":
     {"aspect_mode":"preserve","audio_bitrate":192,"audio_channels":2,"audio_codec":"aac","decoder_bitrate_cap":3750,"decoder_buffer_size":5000,"force_aac_profile":"aac-lc","h264_bframes":2,"h264_profile":"main","height":720,"speed":3,"upscale":false,"video_bitrate":2500,"video_codec":"h264"}}],
-            audioRenditions = [],
-        videoRenditions = [],
-        th,
-        td,
-        tr,
-        txt,
-        i,
-        j,
-        x,
-        iMax,
-        jMax,
-        audioFields     = ['audio_bitrate', 'audio_channels', 'audio_codec', 'forced_keyframe_rate', 'fragment_duration', 'fragment_track_timescale', 'segment_seconds'],
-        videoFields     = ['video_bitrate', 'height', 'aspect_mode', 'decoder_bitrate_cap', 'decoder_buffer_size', 'forced_keyframe_rate', 'fragment_duration', 'h264_bframes', 'h264_profile', 'segment_seconds', 'speed',  'video_codec'],
-        progressiveFields     = ['video_bitrate', 'audio_bitrate', 'height', 'decoder_bitrate_cap', 'decoder_buffer_size', 'h264_profile'],
-        audioTableBody  = document.getElementById('audioTableBody'),
-        videoTableBody  = document.getElementById('videoTableBody'),
-        progressiveTableBody = document.getElementById('progressiveTableBody'),
-        frag,
-        rendition;
+    audioRenditions = [],
+    videoRenditions = [],
+    th,
+    td,
+    tr,
+    txt,
+    i,
+    j,
+    x,
+    iMax,
+    jMax,
+    audioFields     = ['audio_bitrate', 'audio_channels', 'audio_codec', 'forced_keyframe_rate', 'fragment_duration', 'fragment_track_timescale', 'segment_seconds'],
+    videoFields     = ['video_bitrate', 'height', 'aspect_mode', 'decoder_bitrate_cap', 'decoder_buffer_size', 'forced_keyframe_rate', 'fragment_duration', 'h264_bframes', 'h264_profile', 'segment_seconds', 'speed',  'video_codec'],
+    progressiveFields     = ['video_bitrate', 'audio_bitrate', 'height', 'decoder_bitrate_cap', 'decoder_buffer_size', 'h264_profile'],
+    audioTableBody  = document.getElementById('audioTableBody'),
+    videoTableBody  = document.getElementById('videoTableBody'),
+    progressiveTableBody = document.getElementById('progressiveTableBody'),
+    frag,
+    rendition;
 
     /**
      * sort an array of objects based on an object property
@@ -113,7 +113,9 @@ var BCLSrenditions                = (function(window, document) {
         x = a.encoding_settings.height - b.encoding_settings.height;
         return x === 0? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
     // console.log('videoRenditions', videoRenditions);
-
+console.log('progressiveData', progressiveData);
+console.log('progressiveFields', progressiveFields);
+console.log('progressiveTableBody', progressiveTableBody);
     // build the table bodies
     buildTable(audioRenditions, audioFields, audioTableBody);
     buildTable(videoRenditions, videoFields, videoTableBody);
