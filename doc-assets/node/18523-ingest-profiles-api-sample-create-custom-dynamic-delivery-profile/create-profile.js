@@ -35,7 +35,15 @@ var BCLS = (function(window, document) {
       { value: "default/video1700", label: "default/video1700" },
       { value: "default/video2000", label: "default/video2000" },
       { value: "default/video3500", label: "default/video3500" },
-      { value: "default/video3800", label: "default/video3800" }
+      { value: "default/video3800", label: "default/video3800" },
+      { value: "default/progressive450", label: "default/progressive450" },
+      { value: "default/progressive700", label: "default/progressive700" },
+      { value: "default/progressive900", label: "default/progressive900" },
+      { value: "default/progressive1200", label: "default/progressive1200" },
+      { value: "default/progressive1700", label: "default/progressive1700" },
+      { value: "default/progressive2500", label: "default/progressive2500" },
+      { value: "default/progressive3500", label: "default/progressive3500" },
+      { value: "default/progressive4000", label: "default/progressive4000" }
     ],
     account_id,
     client_id,
