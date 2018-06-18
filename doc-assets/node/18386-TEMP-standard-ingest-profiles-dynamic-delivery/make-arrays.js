@@ -13,13 +13,17 @@ var BCLS = ( function (window, document) {
     iMax = rendition_data.length;
     for (i = 0; i < iMax; i++) {
       var rendition = rendition_data[i];
-        if (rendition.name.indexOf('audio') >= 0) {
-          audioRenditions.push(rendition);
-        } else if (rendition.name.indexOf('video') >= 0) {
-          videoRenditions.push(rendition)
-        }
-        default:
-
+      if (rendition.name.indexOf('audio') >= 0) {
+        audioRenditions.push(rendition);
+      } else if (rendition.name.indexOf('video') >= 0) {
+        videoRenditions.push(rendition);
+      } else if (rendition.name.indexOf('progressive') >= 0) {
+        progressiveRenditions.push(rendition);
+      } else {
+        console.log('unknown rendition type', rendition);
       }
     }
+    audio_renditions.textContent = JSON.stringify(audioRenditions);
+    video_renditions.textContent = JSON.stringify(videoRenditions);
+    progressive_renditions.textContent = JSON.stringify(progressiveRenditions);
 })(window, document);
