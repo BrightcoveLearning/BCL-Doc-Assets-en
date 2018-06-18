@@ -10,5 +10,8 @@ var BCLS = ( function (window, document) {
     i,
     iMax;
 
-    for (i = 0; i < iMax; i++)
+    iMax = rendition_data.length;
+    for (i = 0; i < iMax; i++) {
+      
+    }
 })(window, document);
