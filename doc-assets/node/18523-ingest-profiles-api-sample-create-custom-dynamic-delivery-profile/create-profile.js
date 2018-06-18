@@ -1,23 +1,42 @@
 var BCLS = (function(window, document) {
-  var account_id_input = document.getElementById('account_id_input'),
-    client_id_input = document.getElementById('client_id_input'),
-    client_secret_input = document.getElementById('client_secret_input'),
-    rendition_selector = document.getElementById('rendition_selector'),
-    profile_name_input = document.getElementById('profile_name_input'),
-    profile_description_input = document.getElementById('profile_description_input'),
-    archive_master_input = document.getElementById('archive_master_input'),
-    distribute_master_input = document.getElementById('distribute_master_input'),
-    capture_images_input = document.getElementById('capture_images_input'),
-    poster_height_input = document.getElementById('poster_height_input'),
-    poster_width_input = document.getElementById('poster_height_input'),
-    thumbnail_height_input = document.getElementById('thumbnail_height_input'),
-    thumbnail_width_input = document.getElementById('thumbnail_width_input'),
-    create_profile = document.getElementById('create_profile'),
-    logger = document.getElementById('logger'),
-    api_request_display = document.getElementById('api_request_display'),
-    api_request_body_display = document.getElementById('api_request_body_display'),
-    api_response = document.getElementById('api_response'),
-    renditions = [ {value:'default/audio64', label:'default/audio64'}, {value:'default/audio96', label:'default/audio96'}, {value:'default/audio128', label:'default/audio128'}, {value:'default/audio192', label:'default/audio192'}, {value:'default/video450', label:'default/video450'}, {value:'default/video700', label:'default/video700'}, {value:'default/video900', label:'default/video900'}, {value:'default/video1200', label:'default/video1200'}, {value:'default/video1700', label:'default/video1700'}, {value:'default/video2000', label:'default/video2000'}, {value:'default/video3500', label:'default/video3500'}, {value:'default/video3800', label:'default/video3800'} ],
+  var account_id_input = document.getElementById("account_id_input"),
+    client_id_input = document.getElementById("client_id_input"),
+    client_secret_input = document.getElementById("client_secret_input"),
+    rendition_selector = document.getElementById("rendition_selector"),
+    profile_name_input = document.getElementById("profile_name_input"),
+    profile_description_input = document.getElementById(
+      "profile_description_input"
+    ),
+    archive_master_input = document.getElementById("archive_master_input"),
+    distribute_master_input = document.getElementById(
+      "distribute_master_input"
+    ),
+    capture_images_input = document.getElementById("capture_images_input"),
+    poster_height_input = document.getElementById("poster_height_input"),
+    poster_width_input = document.getElementById("poster_height_input"),
+    thumbnail_height_input = document.getElementById("thumbnail_height_input"),
+    thumbnail_width_input = document.getElementById("thumbnail_width_input"),
+    create_profile = document.getElementById("create_profile"),
+    logger = document.getElementById("logger"),
+    api_request_display = document.getElementById("api_request_display"),
+    api_request_body_display = document.getElementById(
+      "api_request_body_display"
+    ),
+    api_response = document.getElementById("api_response"),
+    renditions = [
+      { value: "default/audio64", label: "default/audio64" },
+      { value: "default/audio96", label: "default/audio96" },
+      { value: "default/audio128", label: "default/audio128" },
+      { value: "default/audio192", label: "default/audio192" },
+      { value: "default/video450", label: "default/video450" },
+      { value: "default/video700", label: "default/video700" },
+      { value: "default/video900", label: "default/video900" },
+      { value: "default/video1200", label: "default/video1200" },
+      { value: "default/video1700", label: "default/video1700" },
+      { value: "default/video2000", label: "default/video2000" },
+      { value: "default/video3500", label: "default/video3500" },
+      { value: "default/video3800", label: "default/video3800" }
+    ],
     account_id,
     client_id,
     client_secret,
@@ -36,29 +55,37 @@ var BCLS = (function(window, document) {
     checkboxCollection;
 
   // event listeners
-  create_profile.addEventListener('click', function() {
+  create_profile.addEventListener("click", function() {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
     if (renditions.length === 0) {
-      alert('Please select the renditions you want to include and click this button again');
+      alert(
+        "Please select the renditions you want to include and click this button again"
+      );
     } else {
       if (getAccountInfo()) {
-        createRequest('get_profiles');
+        createRequest("get_profiles");
       } else {
-        alert('Account id, client id, client secret, and a name for the new profile are required');
+        alert(
+          "Account id, client id, client secret, and a name for the new profile are required"
+        );
       }
     }
   });
-
 
   /**
    * get account info from input fields
    */
   function getAccountInfo() {
-    if (isDefined(account_id_input.value) && isDefined(client_id_input.value) && isDefined(client_secret_input.value) && isDefined(profile_name_input.value)) {
-      account_id    = removeSpaces(account_id_input.value);
-      client_id     = removeSpaces(client_id_input.value);
+    if (
+      isDefined(account_id_input.value) &&
+      isDefined(client_id_input.value) &&
+      isDefined(client_secret_input.value) &&
+      isDefined(profile_name_input.value)
+    ) {
+      account_id = removeSpaces(account_id_input.value);
+      client_id = removeSpaces(client_id_input.value);
       client_secret = removeSpaces(client_secret_input.value);
-      profile_name = (profile_name_input.value);
+      profile_name = profile_name_input.value;
       archive_master = isChecked(archive_master_input);
       distribute_master = isChecked(distribute_master_input);
       if (distribute_master && !archive_master) {
@@ -66,13 +93,23 @@ var BCLS = (function(window, document) {
         archive_master = true;
       }
       capture_images = isChecked(capture_images_input);
-      poster_width     = parseInt(removeSpaces(poster_width_input.value), 10);
-      poster_height    = parseInt(removeSpaces(poster_height_input.value), 10);
-      thumbnail_width  = parseInt(removeSpaces(thumbnail_width_input.value), 10);
-      thumbnail_height = parseInt(removeSpaces(thumbnail_height_input.value), 10);
+      poster_width = parseInt(removeSpaces(poster_width_input.value), 10);
+      poster_height = parseInt(removeSpaces(poster_height_input.value), 10);
+      thumbnail_width = parseInt(removeSpaces(thumbnail_width_input.value), 10);
+      thumbnail_height = parseInt(
+        removeSpaces(thumbnail_height_input.value),
+        10
+      );
       if (capture_images) {
-        if (!isDefined(poster_width) || !isDefined(poster_height) || !isDefined(thumbnail_width) || !isDefined(thumbnail_height)) {
-          alert('If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail');
+        if (
+          !isDefined(poster_width) ||
+          !isDefined(poster_height) ||
+          !isDefined(thumbnail_width) ||
+          !isDefined(thumbnail_height)
+        ) {
+          alert(
+            "If you want to capture images using this profile, you must provide dimensions for the poster and thumbnail"
+          );
           return false;
         }
       }
@@ -88,8 +125,8 @@ var BCLS = (function(window, document) {
    * @param  {string} message the message to insert
    */
   function logMessage(message) {
-    var p = document.createElement('p'),
-        txt = document.createTextNode(message);
+    var p = document.createElement("p"),
+      txt = document.createTextNode(message);
     p.appendChild(txt);
     logger.appendChild(p);
   }
@@ -100,10 +137,10 @@ var BCLS = (function(window, document) {
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-      if ( x === '' || x === null || x === undefined) {
-          return false;
-      }
-      return true;
+    if (x === "" || x === null || x === undefined) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -112,8 +149,8 @@ var BCLS = (function(window, document) {
    * @return {String} trimmed string
    */
   function removeSpaces(str) {
-      str= str.replace(/\s/g, '');
-      return str;
+    str = str.replace(/\s/g, "");
+    return str;
   }
 
   /**
@@ -122,8 +159,8 @@ var BCLS = (function(window, document) {
    * @return {String} processed string
    */
   function replaceSpaces(str) {
-      str= str.replace(/\s/g, '_');
-      return str;
+    str = str.replace(/\s/g, "_");
+    return str;
   }
 
   /*
@@ -132,12 +169,12 @@ var BCLS = (function(window, document) {
    * @return {Boolean}
    */
   function isJson(str) {
-      try {
-          JSON.parse(str);
-      } catch (e) {
-          return false;
-      }
-      return true;
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -148,14 +185,14 @@ var BCLS = (function(window, document) {
    * @return {boolean} true if item is in the array, else false
    */
   function arrayContains(arr, item) {
-      var i,
-          iMax = arr.length;
-      for (i = 0; i < iMax; i++) {
-          if (arr[i] === item) {
-              return true;
-          }
+    var i,
+      iMax = arr.length;
+    for (i = 0; i < iMax; i++) {
+      if (arr[i] === item) {
+        return true;
       }
-      return false;
+    }
+    return false;
   }
 
   /**
@@ -164,19 +201,19 @@ var BCLS = (function(window, document) {
    * @return {Object} object containing the `value`, text, and selected `index`
    */
   function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
+    var selected = e.options[e.selectedIndex],
+      val = selected.value,
+      txt = selected.textContent,
+      idx = e.selectedIndex;
+    return {
+      value: val,
+      text: txt,
+      index: idx
+    };
   }
 
   /**
- * determines if checkbox is checked
+   * determines if checkbox is checked
    * @param  {htmlElement}  e the checkbox to check
    * @return {Boolean}  true if box is checked
    */
@@ -186,8 +223,6 @@ var BCLS = (function(window, document) {
     }
     return false;
   }
-
-
 
   /**
    * get array of values for checked boxes in a collection
@@ -207,7 +242,7 @@ var BCLS = (function(window, document) {
       }
       return checkedValues;
     } else {
-      console.log('Error: no input recieved');
+      console.log("Error: no input recieved");
       return null;
     }
   }
@@ -217,11 +252,11 @@ var BCLS = (function(window, document) {
    * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
    */
   function selectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i < iMax; i += 1) {
-          checkboxCollection[i].setAttribute('checked', 'checked');
-      }
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].setAttribute("checked", "checked");
+    }
   }
 
   /**
@@ -229,11 +264,11 @@ var BCLS = (function(window, document) {
    * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
    */
   function unselectAllCheckboxes(checkboxCollection) {
-      var i,
-          iMax = checkboxCollection.length;
-      for (i = 0; i < iMax; i += 1) {
-          checkboxCollection[i].removeAttribute('checked');
-      }
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].removeAttribute("checked");
+    }
   }
 
   /**
@@ -241,7 +276,7 @@ var BCLS = (function(window, document) {
    * @param {HTMLelement} parentElement the parent element for the checkboxes
    * @param {Array} valuesArray the array of value/labels  e.g. [{value:'a',label:'alpha'},{value:'b',label:'beta'}]
    */
-  function addCheckboxes (parentElement, valuesArray) {
+  function addCheckboxes(parentElement, valuesArray) {
     var i,
       iMax,
       input,
@@ -252,28 +287,28 @@ var BCLS = (function(window, document) {
     if (parentElement && valuesArray) {
       iMax = valuesArray.length;
       // add select all option
-      input             = document.createElement('input');
-      input.setAttribute('type', 'checkbox');
-      input.setAttribute('id', 'selectAll');
-      txt               = document.createTextNode(' ');
-      label             = document.createElement('label');
-      label.setAttribute('for', 'selectAll');
-      label.textContent = ' Select All';
-      br                = document.createElement('br');
+      input = document.createElement("input");
+      input.setAttribute("type", "checkbox");
+      input.setAttribute("id", "selectAll");
+      txt = document.createTextNode(" ");
+      label = document.createElement("label");
+      label.setAttribute("for", "selectAll");
+      label.textContent = " Select All";
+      br = document.createElement("br");
       fragment.appendChild(input);
       fragment.appendChild(txt);
       fragment.appendChild(label);
       fragment.appendChild(br);
       for (i = 0; i < iMax; i++) {
-        input             = document.createElement('input');
-        input.setAttribute('type', 'checkbox');
-        input.setAttribute('value', valuesArray[i].value);
-        input.setAttribute('name', 'checkboxCollection');
-        txt               = document.createTextNode(' ');
-        label             = document.createElement('label');
-        label.setAttribute('for', valuesArray[i].value);
-        label.textContent = ' ' + valuesArray[i].label;
-        br                = document.createElement('br');
+        input = document.createElement("input");
+        input.setAttribute("type", "checkbox");
+        input.setAttribute("value", valuesArray[i].value);
+        input.setAttribute("name", "checkboxCollection");
+        txt = document.createTextNode(" ");
+        label = document.createElement("label");
+        label.setAttribute("for", valuesArray[i].value);
+        label.textContent = " " + valuesArray[i].label;
+        br = document.createElement("br");
         fragment.appendChild(input);
         fragment.appendChild(txt);
         fragment.appendChild(label);
@@ -282,9 +317,9 @@ var BCLS = (function(window, document) {
       parentElement.appendChild(fragment);
 
       // set up select all option
-      checkboxCollection = document.getElementsByName('checkboxCollection');
-      selectAll = document.getElementById('selectAll');
-      selectAll.addEventListener('change', function() {
+      checkboxCollection = document.getElementsByName("checkboxCollection");
+      selectAll = document.getElementById("selectAll");
+      selectAll.addEventListener("change", function() {
         if (this.checked) {
           selectAllCheckboxes(checkboxCollection);
         } else {
@@ -292,10 +327,9 @@ var BCLS = (function(window, document) {
         }
       });
     } else {
-      console.log('function addCheckboxes: no parameters provided');
+      console.log("function addCheckboxes: no parameters provided");
     }
   }
-
 
   /**
    * createRequest sets up requests, send them to makeRequest(), and handles responses
@@ -304,8 +338,10 @@ var BCLS = (function(window, document) {
   function createRequest(type) {
     var options = {},
       requestBody = {},
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
-      baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
+      proxyURL =
+        "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+      baseURL =
+        "https://ingestion.api.brightcove.com/v1/accounts/" + account_id,
       endpoint,
       responseDecoded,
       i,
@@ -320,20 +356,27 @@ var BCLS = (function(window, document) {
     options.proxyURL = proxyURL;
 
     switch (type) {
-      case 'get_profiles':
-        logMessage('Checking existing profiles to see if name is already used');
-        endpoint = '/profiles';
+      case "get_profiles":
+        logMessage("Checking existing profiles to see if name is already used");
+        endpoint = "/profiles";
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
-        api_request_body_display.textContent = 'no request body for this operation';
-        options.requestType = 'GET';
+        api_request_body_display.textContent =
+          "no request body for this operation";
+        options.requestType = "GET";
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+            api_response.textContent = JSON.stringify(
+              responseDecoded,
+              null,
+              "  "
+            );
           } else {
             api_response.textContent = response;
-            logMessage('The get profiles operation failed; see the API Response for the error');
+            logMessage(
+              "The get profiles operation failed; see the API Response for the error"
+            );
             return;
           }
           if (Array.isArray(responseDecoded)) {
@@ -343,19 +386,21 @@ var BCLS = (function(window, document) {
             }
             // check to see if input name already exists
             if (arrayContains(existingProfileNames, profile_name)) {
-              alert('The profile name you entered is already in use in this account; please enter a different name and try again');
+              alert(
+                "The profile name you entered is already in use in this account; please enter a different name and try again"
+              );
             } else {
-              createRequest('create_profile');
+              createRequest("create_profile");
             }
           }
         });
         break;
-      case 'create_profile':
-        logMessage('Creating profile');
-        endpoint = '/profiles';
+      case "create_profile":
+        logMessage("Creating profile");
+        endpoint = "/profiles";
         options.url = baseURL + endpoint;
         api_request_display.textContent = options.url;
-        options.requestType = 'POST';
+        options.requestType = "POST";
         requestBody.name = profile_name;
         if (isDefined(profile_description)) {
           requestBody.description = profile_description;
@@ -363,32 +408,54 @@ var BCLS = (function(window, document) {
         requestBody.account_id = account_id;
         if (archive_master) {
           requestBody.digital_master = {};
-          requestBody.digital_master.rendition = 'passthrough';
+          requestBody.digital_master.rendition = "passthrough";
           requestBody.digital_master.distribute = true;
         }
         requestBody.dynamic_origin = {};
         requestBody.dynamic_origin.renditions = selectedRenditions;
         if (capture_images) {
           requestBody.dynamic_origin.images = [];
-          requestBody.dynamic_origin.images.push({label:'poster', height: poster_height, width: poster_width});
-          requestBody.dynamic_origin.images.push({label:'thumbnail', height: thumbnail_height, width: thumbnail_width});
+          requestBody.dynamic_origin.images.push({
+            label: "poster",
+            height: poster_height,
+            width: poster_width
+          });
+          requestBody.dynamic_origin.images.push({
+            label: "thumbnail",
+            height: thumbnail_height,
+            width: thumbnail_width
+          });
         }
-        api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
+        api_request_body_display.textContent = JSON.stringify(
+          requestBody,
+          null,
+          "  "
+        );
         options.requestBody = JSON.stringify(requestBody);
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
-            logMessage('Profile create operation complete - check the response below to sure there were no errors');
+            api_response.textContent = JSON.stringify(
+              responseDecoded,
+              null,
+              "  "
+            );
+            logMessage(
+              "Profile create operation complete - check the response below to sure there were no errors"
+            );
           } else {
             api_response.textContent = response;
-            logMessage('The create profile operation failed; see the response below for the error');
+            logMessage(
+              "The create profile operation failed; see the response below for the error"
+            );
             return;
           }
         });
         break;
       default:
-        console.log('Should not be getting to the default case - bad request type sent');
+        console.log(
+          "Should not be getting to the default case - bad request type sent"
+        );
         break;
     }
   }
@@ -415,17 +482,20 @@ var BCLS = (function(window, document) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
               // some API requests return '{null}' for empty responses - breaks JSON.parse
-              if (response === '{null}') {
+              if (response === "{null}") {
                 response = null;
               }
               // return the response
               callback(response);
             } else {
-              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+              alert(
+                "There was a problem with the request. Request returned " +
+                  httpRequest.status
+              );
             }
           }
         } catch (e) {
-          alert('Caught Exception: ' + e);
+          alert("Caught Exception: " + e);
         }
       };
     /**
@@ -436,7 +506,7 @@ var BCLS = (function(window, document) {
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
-    httpRequest.open('POST', proxyURL);
+    httpRequest.open("POST", proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
     httpRequest.send(JSON.stringify(options));
@@ -447,5 +517,4 @@ var BCLS = (function(window, document) {
   }
 
   init();
-
 })(window, document);
