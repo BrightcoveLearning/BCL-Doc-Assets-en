@@ -12,6 +12,14 @@ var BCLS = ( function (window, document) {
 
     iMax = rendition_data.length;
     for (i = 0; i < iMax; i++) {
-      
+      var rendition = rendition_data[i];
+        if (rendition.name.indexOf('audio') >= 0) {
+          audioRenditions.push(rendition);
+        } else if (rendition.name.indexOf('video') >= 0) {
+          videoRenditions.push(rendition)
+        }
+        default:
+
+      }
     }
 })(window, document);
