@@ -1,1070 +1,758 @@
 <article class="bcls-article">
-	<section class="bcls-section">
-		<h2 id="videoFields">Video fields</h2>
+<section class="bcls-section">
+<h2 id="videoFields">Video fields</h2>
 
-		<div class="BCL-aside">
-			<p>See the following links to see which fields can be set when you are creating or updating a video:</p>
+<div class="BCL-aside">
+<p>See the following links to see which fields can be set when you are creating or updating a video:</p>
 
-			<ul>
-				<li>
-					<a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">Fields that can be set when creating a video</a>
-				</li>
-				<li>
-					<a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Fields that can be set when updating a video</a>
-				</li>
-			</ul>
-		</div>
+<ul>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">Fields that can be set when creating a video</a></li>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Fields that can be set when updating a video</a></li>
+</ul>
+</div>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>account_id</code>
-					</td>
-					<td>String</td>
-					<td>The Video Cloud account id</td>
-				</tr>
-				<tr>
-					<td>
-						<code>ad_keys</code>
-					</td>
-					<td>String</td>
-					<td>String representing the ad key/value pairs assigned to the video. Key/value pairs are formatted as key=value and are
-						separated by ampersands. For example:
-						<code>"adKeys": "category=sports&amp;live=true"</code>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<code>clip_source_video_id</code>
-					</td>
-					<td>String</td>
-					<td>The ID of the source video that was clipped to produce this video or
-						<code>null</code> if this video is not a clip of another video.</td>
-				</tr>
-				<tr>
-					<td>
-						<code>complete</code>
-					</td>
-					<td>Boolean</td>
-					<td>Whether processing is complete — Note: when you create a new video, the complete property is automatically set to
-						<code>false</code>. As soon as one rendition exists for the video, the complete property will be automatically set to
-						<code>true</code>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<code>created_at</code>
-					</td>
-					<td>Number, milliseconds from epoch</td>
-					<td>When the video was created in the Video Cloud system</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#cuepoint">
-							<code>cue_points</code>
-						</a>
-					</td>
-					<td>Array of Maps</td>
-					<td>array of cue point maps</td>
-				</tr>
-				<tr>
-					<td>
-						<code>custom_fields</code>
-					</td>
-					<td>Map of field-value pairs (Strings)</td>
-					<td>Custom field values set for the video - note that custom field that do
-						<strong>not</strong> have a value for this video are not included in this map; custom field values have a maximum length of
-						1024 single-byte characters</td>
-				</tr>
-				<tr>
-					<td>
-						<code>dash_manifest_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for a DASH manifest</td>
-				</tr>
-				<tr>
-					<td>description</td>
-					<td>String; takes the place of the old shortDescription</td>
-					<td>Short description of the video (maximum length: 248 single-byte characters)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>digital_master_id</code>
-					</td>
-					<td>String</td>
-					<td>The system id for the digital master</td>
-				</tr>
-				<tr>
-					<td>
-						<code>duration</code>
-					</td>
-					<td>Number, milliseconds</td>
-					<td>Duration of the video in milleseconds</td>
-				</tr>
-				<tr>
-					<td>
-						<code>economics</code>
-					</td>
-					<td>String, must be one of valid enum values</td>
-					<td>either "AD_SUPPORTED" (default) or "FREE"</td>
-				</tr>
-				<tr>
-					<td>
-						<code>folder_id</code>
-					</td>
-					<td>String</td>
-					<td>ID of folder to which video belongs</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#geo">
-							<code>geo</code>
-						</a>
-						<sup>
-							<strong>
-								<a href="#note1-3">[1-3]</a>
-							</strong>
-						</sup>
-					</td>
-					<td>Map of property-value pairs</td>
-					<td>Geo-restriction properties for the video</td>
-				</tr>
-				<tr>
-					<td>
-						<code>has_digital_master</code>
-					</td>
-					<td>Boolean</td>
-					<td>whether video has an archived master than can be used for retranscoding; note that if you are using this field to test
-						whether a video can be retranscoded, it is not reliable for shared videos. If videos are shared to the account, you
-						need to test for both
-						<code>has_digital_master = true</code> and
-						<code>sharing.by_external_account = false</code>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<code>id</code>
-					</td>
-					<td>String</td>
-					<td>The video id</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#images">
-							<code>images</code>
-						</a>
-					</td>
-					<td>Map of property-value pairs</td>
-					<td>Map of information about the poster and thumbnail images</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#link">
-							<code>link</code>
-						</a>
-					</td>
-					<td>Map of property-value pairs</td>
-					<td>Map of related link properties</td>
-				</tr>
-				<tr>
-					<td>
-						<code>long_description</code>
-					</td>
-					<td>String</td>
-					<td>Long description (up to 5000 characters)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>name</code>
-					</td>
-					<td>String</td>
-					<td>The name of the video (maximum length: 248 single-byte characters)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>offline_enabled</code>
-					</td>
-					<td>Boolean</td>
-					<td>Whether the video is enabled for offline playback (DRM-packaged docs only)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>original_filename</code>
-					</td>
-					<td>String</td>
-					<td>Name of the video file that was ingested - will be null for remote asset videos</td>
-				</tr>
-				<tr>
-					<td>
-						<code>projection</code>
-					</td>
-					<td>String</td>
-					<td>The mapping projection for 360° videos, e.g. "equirectangular"</td>
-				</tr>
-				<tr>
-					<td>
-						<code>published_at</code>
-					</td>
-					<td>String</td>
-					<td>ISO-8601 date-time string indicating when the video was published - note that this field is writable; by default it
-						is set to the date that the video was first activated.</td>
-				</tr>
-				<tr>
-					<td>
-						<code>reference_id</code>
-					</td>
-					<td>String</td>
-					<td>A user-specified id that
-						<strong>uniquely identifies the video</strong>, limited to 150 characters. A referenceId can be used as a foreign-key to identify
-						this video in another system. The reference id should not contain spaces, commas, or special characters.</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#schedule">
-							<code>schedule</code>
-						</a>
-						<sup>
-							<strong>
-								<a href="#note1-1">[1-1]</a>
-							</strong>
-						</sup>
-					</td>
-					<td>Map of property-value pairs</td>
-					<td>Map of start and end date-times for the video availability</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#sharing">
-							<code>sharing</code>
-						</a>
-					</td>
-					<td>Map of property-value pairs</td>
-					<td>Map of the sharing properties for the video</td>
-				</tr>
-				<tr>
-					<td>
-						<code>smooth_client_manifest_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for a Smooth manifest</td>
-				</tr>
-				<tr>
-					<td>
-						<code>smooth_server_manifest_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the Smooth manifest server</td>
-				</tr>
-				<tr>
-					<td>
-						<code>state</code>
-						<sup>
-							<strong>
-								<a href="#note1-4">[1-4]</a>
-							</strong>
-						</sup>
-					</td>
-					<td>String</td>
-					<td>ACTIVE, INACTIVE, PENDING, DELETED</td>
-				</tr>
-				<tr>
-					<td>
-						<code>tags</code>
-						<sup>
-							<strong>
-								<a href="#note1-5">[1-5]</a>
-							</strong>
-						</sup>
-					</td>
-					<td>Array of tags (Strings)</td>
-					<td>Array of tags assigned to the video</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#text_tracks">
-							<code>text_tracks</code>
-						</a>
-					</td>
-					<td>Array of HTML5-style text tracks</td>
-					<td>Array of text tracks (WebVTT files) assigned to the video</td>
-				</tr>
-				<tr>
-					<td>
-						<code>updated_at</code>
-					</td>
-					<td>Date-time string</td>
-					<td>Date-time the video was last modified
-						<sup>
-							<strong>
-								<a href="#note1-2">[1-2]</a>
-							</strong>
-						</sup>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>account_id</code></td>
+			<td>String</td>
+			<td>The Video Cloud account id</td>
+		</tr>
+		<tr>
+			<td><code>ad_keys</code></td>
+			<td>String</td>
+			<td>String representing the ad key/value pairs assigned to the video. Key/value pairs are formatted as key=value and are separated by ampersands. For example: <code>"adKeys": "category=sports&amp;live=true"</code></td>
+		</tr>
+		<tr>
+			<td><code>clip_source_video_id</code></td>
+			<td>String</td>
+			<td>The ID of the source video that was clipped to produce this video or <code>null</code> if this video is not a clip of another video.</td>
+		</tr>
+		<tr>
+			<td><code>complete</code></td>
+			<td>Boolean</td>
+			<td>Whether processing is complete — Note: when you create a new video, the complete property is automatically set to <code>false</code>. As soon as one rendition exists for the video, the complete property will be automatically set to <code>true</code></td>
+		</tr>
+		<tr>
+			<td><code>created_at</code></td>
+			<td>Number, milliseconds from epoch</td>
+			<td>When the video was created in the Video Cloud system</td>
+		</tr>
+		<tr>
+			<td><a href="#cuepoint"><code>cue_points</code> </a></td>
+			<td>Array of Maps</td>
+			<td>array of cue point maps</td>
+		</tr>
+		<tr>
+			<td><code>custom_fields</code></td>
+			<td>Map of field-value pairs (Strings)</td>
+			<td>Custom field values set for the video - note that custom field that do <strong>not</strong> have a value for this video are not included in this map; custom field values have a maximum length of 1024 single-byte characters</td>
+		</tr>
+		<tr>
+			<td><code>dash_manifest_id</code></td>
+			<td>String</td>
+			<td>System id for a DASH manifest</td>
+		</tr>
+		<tr>
+			<td><code>description</code></td>
+			<td>String; takes the place of the old shortDescription</td>
+			<td>Short description of the video (maximum length: 248 single-byte characters)</td>
+		</tr>
+		<tr>
+			<td><code>digital_master_id</code></td>
+			<td>String</td>
+			<td>The system id for the digital master</td>
+		</tr>
+		<tr>
+			<td><code>duration</code></td>
+			<td>Number, milliseconds</td>
+			<td>Duration of the video in milleseconds</td>
+		</tr>
+		<tr>
+			<td><code>economics</code></td>
+			<td>String, must be one of valid enum values</td>
+			<td>either "AD_SUPPORTED" (default) or "FREE"</td>
+		</tr>
+		<tr>
+			<td><code>folder_id</code></td>
+			<td>String</td>
+			<td>ID of folder to which video belongs</td>
+		</tr>
+		<tr>
+			<td><a href="#geo"><code>geo</code> </a> <sup> <strong> <a href="#note1-3">[1-3]</a> </strong> </sup></td>
+			<td>Map of property-value pairs</td>
+			<td>Geo-restriction properties for the video</td>
+		</tr>
+		<tr>
+			<td><code>has_digital_master</code></td>
+			<td>Boolean</td>
+			<td>whether video has an archived master than can be used for retranscoding; note that if you are using this field to test whether a video can be retranscoded, it is not reliable for shared videos. If videos are shared to the account, you need to test for both <code>has_digital_master = true</code> and <code>sharing.by_external_account = false</code></td>
+		</tr>
+		<tr>
+			<td><code>id</code></td>
+			<td>String</td>
+			<td>The video id</td>
+		</tr>
+		<tr>
+			<td><a href="#images"><code>images</code> </a></td>
+			<td>Map of property-value pairs</td>
+			<td>Map of information about the poster and thumbnail images</td>
+		</tr>
+		<tr>
+			<td><a href="#link"><code>link</code> </a></td>
+			<td>Map of property-value pairs</td>
+			<td>Map of related link properties</td>
+		</tr>
+		<tr>
+			<td><code>long_description</code></td>
+			<td>String</td>
+			<td>Long description (up to 5000 characters)</td>
+		</tr>
+		<tr>
+			<td><code>name</code></td>
+			<td>String</td>
+			<td>The name of the video (maximum length: 248 single-byte characters)</td>
+		</tr>
+		<tr>
+			<td><code>offline_enabled</code></td>
+			<td>Boolean</td>
+			<td>Whether the video is enabled for offline playback (DRM-packaged docs only)</td>
+		</tr>
+		<tr>
+			<td><code>original_filename</code></td>
+			<td>String</td>
+			<td>Name of the video file that was ingested - will be null for remote asset videos</td>
+		</tr>
+		<tr>
+			<td><code>projection</code></td>
+			<td>String</td>
+			<td>The mapping projection for 360° videos, e.g. "equirectangular"</td>
+		</tr>
+		<tr>
+			<td><code>published_at</code></td>
+			<td>String</td>
+			<td>ISO-8601 date-time string indicating when the video was published - note that this field is writable; by default it is set to the date that the video was first activated.</td>
+		</tr>
+		<tr>
+			<td><code>reference_id</code></td>
+			<td>String</td>
+			<td>A user-specified id that <strong>uniquely identifies the video</strong>, limited to 150 characters. A referenceId can be used as a foreign-key to identify this video in another system. The reference id should not contain spaces, commas, or special characters.</td>
+		</tr>
+		<tr>
+			<td><a href="#schedule"><code>schedule</code> </a> <sup> <strong> <a href="#note1-1">[1-1]</a> </strong> </sup></td>
+			<td>Map of property-value pairs</td>
+			<td>Map of start and end date-times for the video availability</td>
+		</tr>
+		<tr>
+			<td><a href="#sharing"><code>sharing</code> </a></td>
+			<td>Map of property-value pairs</td>
+			<td>Map of the sharing properties for the video</td>
+		</tr>
+		<tr>
+			<td><code>smooth_client_manifest_id</code></td>
+			<td>String</td>
+			<td>System id for a Smooth manifest</td>
+		</tr>
+		<tr>
+			<td><code>smooth_server_manifest_id</code></td>
+			<td>String</td>
+			<td>System id for the Smooth manifest server</td>
+		</tr>
+		<tr>
+			<td><code>state</code> <sup> <strong> <a href="#note1-4">[1-4]</a> </strong> </sup></td>
+			<td>String</td>
+			<td>ACTIVE, INACTIVE, PENDING, DELETED</td>
+		</tr>
+		<tr>
+			<td><code>tags</code> <sup> <strong> <a href="#note1-5">[1-5]</a> </strong> </sup></td>
+			<td>Array of tags (Strings)</td>
+			<td>Array of tags assigned to the video</td>
+		</tr>
+		<tr>
+			<td><a href="#text_tracks"><code>text_tracks</code> </a></td>
+			<td>Array of HTML5-style text tracks</td>
+			<td>Array of text tracks (WebVTT files) assigned to the video</td>
+		</tr>
+		<tr>
+			<td><code>updated_at</code></td>
+			<td>Date-time string</td>
+			<td>Date-time the video was last modified <sup> <strong> <a href="#note1-2">[1-2]</a> </strong> </sup></td>
+		</tr>
+	</tbody>
+</table>
 
-		<h3>Notes</h3>
+<h3>Notes</h3>
 
-		<ul>
-			<li class="bcls-footnote" id="note1-1">
-				<sup>
-					<strong>[1-1]</strong>
-				</sup> Note that that a scheduled video is
-				<strong>not</strong> inactive outside the period of scheduled availability</li>
-			<li class="bcls-footnote" id="note1-2">
-				<sup>
-					<strong>[1-2]</strong>
-				</sup> The modification may have been made by a user or the Video Cloud system</li>
-			<li class="bcls-footnote" id="note1-3">
-				<sup>
-					<strong>[1-3]</strong>
-				</sup> Geo-restriction is a paid add-on to Video Cloud; if you want to purchase geo-filtering capability, contact your Account
-				Manager</li>
-			<li class="bcls-footnote" id="note1-4">
-				<sup>
-					<strong>[1-4]</strong>
-				</sup>
-				<code>state</code> can be set to
-				<code>ACTIVE</code> or
-				<code>INACTIVE</code>, but
-				<strong>not</strong> to
-				<code>PENDING</code> or
-				<code>DELETED</code>.</li>
-			<li id="note1-5">
-				<sup>
-					<strong>[1-5]</strong>
-				</sup> Note the following limitations for tags:
-				<ul>
-					<li>Tags can be up to 128 characters. If any tags have more than 128 characters, an error will be displayed when you attempt
-						to save changes</li>
-					<li>Tags can't contain commas; for example, a tag of
-						<code>roof, attic + front yard</code> is not supported</li>
-					<li>A video can have no more than a total of 1200 tags</li>
-					<li>A tag differing only in case (lowercase, uppercase) is handled as an identical tag and the case will automatically match
-						those of the original tag - issues with case sensitivity need to be handled externally to Video Cloud, for example,
-						using JavaScript methods to modify the strings</li>
-				</ul>
-			</li>
-		</ul>
-	</section>
+<ul>
+	<li class="bcls-footnote" id="note1-1"><sup><strong>[1-1]</strong> </sup> Note that that a scheduled video is <strong>not</strong> inactive outside the period of scheduled availability</li>
+	<li class="bcls-footnote" id="note1-2"><sup><strong>[1-2]</strong> </sup> The modification may have been made by a user or the Video Cloud system</li>
+	<li class="bcls-footnote" id="note1-3"><sup><strong>[1-3]</strong> </sup> Geo-restriction is a paid add-on to Video Cloud; if you want to purchase geo-filtering capability, contact your Account Manager</li>
+	<li class="bcls-footnote" id="note1-4"><sup><strong>[1-4]</strong> </sup> <code>state</code> can be set to <code>ACTIVE</code> or <code>INACTIVE</code>, but <strong>not</strong> to <code>PENDING</code> or <code>DELETED</code>.</li>
+	<li id="note1-5"><sup><strong>[1-5]</strong> </sup> Note the following limitations for tags:
+	<ul>
+		<li>Tags can be up to 128 characters. If any tags have more than 128 characters, an error will be displayed when you attempt to save changes</li>
+		<li>Tags can't contain commas; for example, a tag of <code>roof, attic + front yard</code> is not supported</li>
+		<li>A video can have no more than a total of 1200 tags</li>
+		<li>A tag differing only in case (lowercase, uppercase) is handled as an identical tag and the case will automatically match those of the original tag - issues with case sensitivity need to be handled externally to Video Cloud, for example, using JavaScript methods to modify the strings</li>
+	</ul>
+	</li>
+</ul>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="videoSources">Video Source Fields</h2>
+<section class="bcls-section">
+<h2 id="videoSources">Video Source Fields</h2>
 
-		<p>The tables below show fields for the sources (renditions).</p>
+<p>The tables below show fields for the sources (renditions).</p>
 
-		<h3 id="sources">Sources (Renditions)</h3>
+<h3 id="sources">Sources (Renditions)</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>src</code>
-					</td>
-					<td>String URL,
-						<em>for PD web assets and HLS assets only</em>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<code>app_name</code>
-					</td>
-					<td>String,
-						<em>for streaming web assets only</em>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<code>stream_name</code>
-					</td>
-					<td>String,
-						<em>for streaming web assets only</em>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<code>codec</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>
-						<code>container</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>
-						<code>duration</code>
-					</td>
-					<td>Long?</td>
-				</tr>
-				<tr>
-					<td>
-						<code>encoding_rate</code>
-					</td>
-					<td>Long?</td>
-				</tr>
-				<tr>
-					<td>
-						<code>height</code>
-					</td>
-					<td>Integer</td>
-				</tr>
-				<tr>
-					<td>
-						<code>id</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>
-						<code>size</code>
-					</td>
-					<td>Long</td>
-				</tr>
-				<tr>
-					<td>
-						<code>uploaded_at</code>
-					</td>
-					<td>String in ISO-8601 date format</td>
-				</tr>
-				<tr>
-					<td>
-						<code>width</code>
-					</td>
-					<td>Integer</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>src</code></td>
+			<td>String URL, <em>for PD web assets and HLS assets only</em></td>
+		</tr>
+		<tr>
+			<td><code>app_name</code></td>
+			<td>String, <em>for streaming web assets only</em></td>
+		</tr>
+		<tr>
+			<td><code>stream_name</code></td>
+			<td>String, <em>for streaming web assets only</em></td>
+		</tr>
+		<tr>
+			<td><code>codec</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td><code>container</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td><code>duration</code></td>
+			<td>Long?</td>
+		</tr>
+		<tr>
+			<td><code>encoding_rate</code></td>
+			<td>Long?</td>
+		</tr>
+		<tr>
+			<td><code>height</code></td>
+			<td>Integer</td>
+		</tr>
+		<tr>
+			<td><code>id</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td><code>size</code></td>
+			<td>Long</td>
+		</tr>
+		<tr>
+			<td><code>uploaded_at</code></td>
+			<td>String in ISO-8601 date format</td>
+		</tr>
+		<tr>
+			<td><code>width</code></td>
+			<td>Integer</td>
+		</tr>
+	</tbody>
+</table>
 
-		<h3 id="hls_manifest">HLS manifest</h3>
+<h3 id="hls_manifest">HLS manifest</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>src</code>
-					</td>
-					<td>String URL</td>
-				</tr>
-				<tr>
-					<td>
-						<code>type</code>
-					</td>
-					<td>String (application/x-mpegURL)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>codec</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>
-						<code>container</code>
-					</td>
-					<td>String</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>src</code></td>
+			<td>String URL</td>
+		</tr>
+		<tr>
+			<td><code>type</code></td>
+			<td>String (application/x-mpegURL)</td>
+		</tr>
+		<tr>
+			<td><code>codec</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td><code>container</code></td>
+			<td>String</td>
+		</tr>
+	</tbody>
+</table>
 
-		<h3 id="hds_manifest">HDS manifest</h3>
+<h3 id="hds_manifest">HDS manifest</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>asset_id</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>
-						<code>src</code>
-					</td>
-					<td>String URL</td>
-				</tr>
-				<tr>
-					<td>
-						<code>type</code>
-					</td>
-					<td>String (application/f4m)</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>asset_id</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td><code>src</code></td>
+			<td>String URL</td>
+		</tr>
+		<tr>
+			<td><code>type</code></td>
+			<td>String (application/f4m)</td>
+		</tr>
+	</tbody>
+</table>
 
-		<h3 id="dash_manifest">Dash manifest</h3>
+<h3 id="dash_manifest">Dash manifest</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>asset_id</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>src</td>
-					<td>String URL</td>
-				</tr>
-				<tr>
-					<td>
-						<code>type</code>
-					</td>
-					<td>String (application/dash+xml)</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>asset_id</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td>src</td>
+			<td>String URL</td>
+		</tr>
+		<tr>
+			<td><code>type</code></td>
+			<td>String (application/dash+xml)</td>
+		</tr>
+	</tbody>
+</table>
 
-		<h3 id="smooth_manifest">Smooth manifests (server and client)</h3>
+<h3 id="smooth_manifest">Smooth manifests (server and client)</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>asset_id</code>
-					</td>
-					<td>String</td>
-				</tr>
-				<tr>
-					<td>
-						<code>src</code>
-					</td>
-					<td>String URL</td>
-				</tr>
-				<tr>
-					<td>
-						<code>type</code>
-					</td>
-					<td>String (application/vnd.ms-sstr+xml)</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>asset_id</code></td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td><code>src</code></td>
+			<td>String URL</td>
+		</tr>
+		<tr>
+			<td><code>type</code></td>
+			<td>String (application/vnd.ms-sstr+xml)</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="cuepoint">Cuepoint fields</h2>
+<section class="bcls-section">
+<h2 id="cuepoint">Cuepoint fields</h2>
 
-		<p>The table below shows fields for cuepoints.</p>
+<p>The table below shows fields for cuepoints.</p>
 
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Cuepoint Fields</caption>
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the cue point</td>
-				</tr>
-				<tr>
-					<td>
-						<code>force_stop</code>
-					</td>
-					<td>
-						<em>Boolean</em>
-					</td>
-					<td>Whether the video should be stopped at the cue point</td>
-				</tr>
-				<tr>
-					<td>
-						<code>metadata</code>
-					</td>
-					<td>
-						<em>String; code point only</em>
-					</td>
-					<td>A metadata string associated with the cue point</td>
-				</tr>
-				<tr>
-					<td>
-						<code>name</code>
-					</td>
-					<td>
-						<em>String</em>
-					</td>
-					<td>The cue point name</td>
-				</tr>
-				<tr>
-					<td>
-						<code>time</code>
-					</td>
-					<td>
-						<em>Float</em>
-					</td>
-					<td>Time of the cue point in seconds measured from the start of the video</td>
-				</tr>
-				<tr>
-					<td>
-						<code>type</code>
-					</td>
-					<td>
-						<em>String</em>
-					</td>
-					<td>The cue point type (
-						<code>AD</code> or
-						<code>DATA</code>)</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Cuepoint Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>id</code></td>
+			<td>String</td>
+			<td>System id for the cue point</td>
+		</tr>
+		<tr>
+			<td><code>force_stop</code></td>
+			<td><em>Boolean</em></td>
+			<td>Whether the video should be stopped at the cue point</td>
+		</tr>
+		<tr>
+			<td><code>metadata</code></td>
+			<td><em>String; code point only</em></td>
+			<td>A metadata string associated with the cue point</td>
+		</tr>
+		<tr>
+			<td><code>name</code></td>
+			<td><em>String</em></td>
+			<td>The cue point name</td>
+		</tr>
+		<tr>
+			<td><code>time</code></td>
+			<td><em>Float</em></td>
+			<td>Time of the cue point in seconds measured from the start of the video</td>
+		</tr>
+		<tr>
+			<td><code>type</code></td>
+			<td><em>String</em></td>
+			<td>The cue point type ( <code>AD</code> or <code>DATA</code>)</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="geo">Geo fields</h2>
+<section class="bcls-section">
+<h2 id="geo">Geo fields</h2>
 
-		<p>The table below shows the geo object fields.</p>
+<p>The table below shows the geo object fields.</p>
 
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Geo-Filtering Fields</caption>
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>countries</code>
-					</td>
-					<td>Array of country code Strings</td>
-					<td>Array of ISO 3166 list of 2- or 4-letter codes (https://www.iso.org/obp/ui/) for countries in which the video is allowed
-						or not allowed to play</td>
-				</tr>
-				<tr>
-					<td>
-						<code>exclude_countries</code>
-					</td>
-					<td>Boolean</td>
-					<td>If true, country array is treated as a list of countries excluded from viewing</td>
-				</tr>
-				<tr>
-					<td>
-						<code>restricted</code>
-					</td>
-					<td>Boolean</td>
-					<td>Whether geo-filtering is enabled for this video</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Geo-Filtering Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>countries</code></td>
+			<td>Array of country code Strings</td>
+			<td>Array of ISO 3166 list of 2- or 4-letter codes (https://www.iso.org/obp/ui/) for countries in which the video is allowed or not allowed to play</td>
+		</tr>
+		<tr>
+			<td><code>exclude_countries</code></td>
+			<td>Boolean</td>
+			<td>If true, country array is treated as a list of countries excluded from viewing</td>
+		</tr>
+		<tr>
+			<td><code>restricted</code></td>
+			<td>Boolean</td>
+			<td>Whether geo-filtering is enabled for this video</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="images">Image fields</h2>
+<section class="bcls-section">
+<h2 id="images">Image fields</h2>
 
-		<p>The table below shows image object fields</p>
+<p>The table below shows image object fields</p>
 
-		<h3>Poster fields</h3>
+<h3>Poster fields</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>images.thumbnail</code>
-					</td>
-					<td>Map</td>
-					<td>Map the the thumbnail image properties</td>
-				</tr>
-				<tr>
-					<td>
-						<code>poster</code>
-					</td>
-					<td>Object</td>
-					<td>Properties for the video poster (aka video still)</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>poster.asset_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the default poster</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>poster.src</code>
-					</td>
-					<td>String URL</td>
-					<td>URL for the default poster</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>poster.sources</code>
-					</td>
-					<td>Array of Maps</td>
-					<td>Array of maps for posters</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>poster.sources.asset_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the poster</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>poster.sources.src</code>
-					</td>
-					<td>String URL</td>
-					<td>URL for the poster</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>poster.sources.height</code>
-					</td>
-					<td>Number</td>
-					<td>Poster height in pixels</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>poster.sources.width</code>
-					</td>
-					<td>Number</td>
-					<td>Poster width in pixels</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>&nbsp;&nbsp; <code>images.thumbnail</code></td>
+			<td>Map</td>
+			<td>Map the the thumbnail image properties</td>
+		</tr>
+		<tr>
+			<td><code>poster</code></td>
+			<td>Object</td>
+			<td>Properties for the video poster (aka video still)</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>poster.asset_id</code></td>
+			<td>String</td>
+			<td>System id for the default poster</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>poster.src</code></td>
+			<td>String URL</td>
+			<td>URL for the default poster</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>poster.sources</code></td>
+			<td>Array of Maps</td>
+			<td>Array of maps for posters</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>poster.sources.asset_id</code></td>
+			<td>String</td>
+			<td>System id for the poster</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>poster.sources.src</code></td>
+			<td>String URL</td>
+			<td>URL for the poster</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>poster.sources.height</code></td>
+			<td>Number</td>
+			<td>Poster height in pixels</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>poster.sources.width</code></td>
+			<td>Number</td>
+			<td>Poster width in pixels</td>
+		</tr>
+	</tbody>
+</table>
 
-		<h3>Thumbnail fields</h3>
+<h3>Thumbnail fields</h3>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>thumbnail</code>
-					</td>
-					<td>Object</td>
-					<td>Properties for the video thumbnail</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>thumbnail.asset_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the default thumbnail image</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>thumbnail.src</code>
-					</td>
-					<td>String URL</td>
-					<td>Source URL for the default thumbnail</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>thumbnail.sources</code>
-					</td>
-					<td>Array of Maps</td>
-					<td>Array of maps for thumbnail images</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>thumbnail.sources.asset_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the thumbnail</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>thumbnail.sources.src</code>
-					</td>
-					<td>String URL</td>
-					<td>URL for the thumbnail</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>thumbnail.sources.height</code>
-					</td>
-					<td>Number</td>
-					<td>Image height in pixels</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code>thumbnail.sources.width</code>
-					</td>
-					<td>Number</td>
-					<td>Image width in pixels</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>thumbnail</code></td>
+			<td>Object</td>
+			<td>Properties for the video thumbnail</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>thumbnail.asset_id</code></td>
+			<td>String</td>
+			<td>System id for the default thumbnail image</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>thumbnail.src</code></td>
+			<td>String URL</td>
+			<td>Source URL for the default thumbnail</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>thumbnail.sources</code></td>
+			<td>Array of Maps</td>
+			<td>Array of maps for thumbnail images</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>thumbnail.sources.asset_id</code></td>
+			<td>String</td>
+			<td>System id for the thumbnail</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>thumbnail.sources.src</code></td>
+			<td>String URL</td>
+			<td>URL for the thumbnail</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>thumbnail.sources.height</code></td>
+			<td>Number</td>
+			<td>Image height in pixels</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp; <code>thumbnail.sources.width</code></td>
+			<td>Number</td>
+			<td>Image width in pixels</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="link">Link fields</h2>
+<section class="bcls-section">
+<h2 id="link">Link fields</h2>
 
-		<p>The table below shows the link object fields.</p>
+<p>The table below shows the link object fields.</p>
 
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Link Fields</caption>
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>url</code>
-					</td>
-					<td>String</td>
-					<td>Related link URL</td>
-				</tr>
-				<tr>
-					<td>
-						<code>text</code>
-					</td>
-					<td>String</td>
-					<td>Related link text</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Link Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>url</code></td>
+			<td>String</td>
+			<td>Related link URL</td>
+		</tr>
+		<tr>
+			<td><code>text</code></td>
+			<td>String</td>
+			<td>Related link text</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="schedule">Schedule fields</h2>
+<section class="bcls-section">
+<h2 id="schedule">Schedule fields</h2>
 
-		<p>The table below shows the fields for the schedule objecty</p>
+<p>The table below shows the fields for the schedule objecty</p>
 
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Schedule Fields</caption>
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>ends_at</code>
-					</td>
-					<td>String in ISO-8601 date format</td>
-					<td>Date-time when the video becomes unavailable for viewing</td>
-				</tr>
-				<tr>
-					<td>
-						<code>starts_at</code>
-					</td>
-					<td>String in ISO-8601 date format</td>
-					<td>Date-time when the video becomes available for viewing</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Schedule Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>ends_at</code></td>
+			<td>String in ISO-8601 date format</td>
+			<td>Date-time when the video becomes unavailable for viewing</td>
+		</tr>
+		<tr>
+			<td><code>starts_at</code></td>
+			<td>String in ISO-8601 date format</td>
+			<td>Date-time when the video becomes available for viewing</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="sharing">Sharing fields</h2>
+<section class="bcls-section">
+<h2 id="sharing">Sharing fields</h2>
 
-		<p>The table below shows the sharing object fields</p>
+<p>The table below shows the sharing object fields</p>
 
-		<table class="bcls-table">
-			<caption class="bcls-caption--table">Sharing Fields</caption>
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>by_external_acct</code>
-					</td>
-					<td>Boolean</td>
-					<td>True if this video was shared from some other account.</td>
-				</tr>
-				<tr>
-					<td>
-						<code>by_id</code>
-					</td>
-					<td>String</td>
-					<td>Account id that originated the share</td>
-				</tr>
-				<tr>
-					<td>
-						<code>source_id</code>
-					</td>
-					<td>String</td>
-					<td>Video ID of the original video (sharer's copy)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>to_external_acct</code>
-					</td>
-					<td>Boolean</td>
-					<td>True if this video is shared to another account</td>
-				</tr>
-				<tr>
-					<td>
-						<code>by_reference</code>
-					</td>
-					<td>Boolean</td>
-					<td>True is this video is shared by reference (will always be
-						<code>true</code> for videos shared via the CMS API)</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Sharing Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>by_external_acct</code></td>
+			<td>Boolean</td>
+			<td>True if this video was shared from some other account.</td>
+		</tr>
+		<tr>
+			<td><code>by_id</code></td>
+			<td>String</td>
+			<td>Account id that originated the share</td>
+		</tr>
+		<tr>
+			<td><code>source_id</code></td>
+			<td>String</td>
+			<td>Video ID of the original video (sharer's copy)</td>
+		</tr>
+		<tr>
+			<td><code>to_external_acct</code></td>
+			<td>Boolean</td>
+			<td>True if this video is shared to another account</td>
+		</tr>
+		<tr>
+			<td><code>by_reference</code></td>
+			<td>Boolean</td>
+			<td>True is this video is shared by reference (will always be <code>true</code> for videos shared via the CMS API)</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="text_tracks">Text Track Fields</h2>
+<section class="bcls-section">
+<h2 id="text_tracks">Text Track Fields</h2>
 
-		<p>The table below shows the text track fields.</p>
+<p>The table below shows the text track fields.</p>
 
-		<table class="bcls-table">
-			<thead class="bcls-table__head">
-				<tr>
-					<th>Field</th>
-					<th>Type</th>
-					<th>Description</th>
-				</tr>
-			</thead>
-			<tbody class="bcls-table__body">
-				<tr>
-					<td>
-						<code>id</code>
-					</td>
-					<td>String</td>
-					<td>Sytem id for the text tracks item</td>
-				</tr>
-				<tr>
-					<td>
-						<code>src</code>
-					</td>
-					<td>String</td>
-					<td>Address of the track file (URL)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>srclang</code>
-					</td>
-					<td>String</td>
-					<td>Language of the track, e.g. "en"</td>
-				</tr>
-				<tr>
-					<td>
-						<code>label</code>
-					</td>
-					<td>String</td>
-					<td>A user-readable title for the text track set</td>
-				</tr>
-				<tr>
-					<td>
-						<code>kind</code>
-					</td>
-					<td>String</td>
-					<td>How the track is meant to be used: "subtitles", "captions", "descriptions", "chapters", "metadata"</td>
-				</tr>
-				<tr>
-					<td>
-						<code>mime_type</code>
-					</td>
-					<td>String</td>
-					<td>mime type of the text tracks, e.g. "text/vtt"</td>
-				</tr>
-				<tr>
-					<td>
-						<code>asset_id</code>
-					</td>
-					<td>String</td>
-					<td>System id for the track file; null if asset is remote</td>
-				</tr>
-				<tr>
-					<td>
-						<code>in_band_metadata_track_dispatch_type</code>
-					</td>
-					<td>String</td>
-					<td>System id for the track file; null if asset is remote</td>
-				</tr>
-				<tr>
-					<td>
-						<code>sources</code>
-					</td>
-					<td>Array</td>
-					<td>read-only</td>
-				</tr>
-				<tr>
-					<td>&nbsp;&nbsp;
-						<code>src</code>
-					</td>
-					<td>String</td>
-					<td>Address of the track file (URL)</td>
-				</tr>
-				<tr>
-					<td>
-						<code>default</code>
-					</td>
-					<td>Boolean</td>
-					<td>Indicates that the track should be enabled by default. Should only be true on one track.</td>
-				</tr>
-			</tbody>
-		</table>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>id</code></td>
+			<td>String</td>
+			<td>Sytem id for the text tracks item</td>
+		</tr>
+		<tr>
+			<td><code>src</code></td>
+			<td>String</td>
+			<td>Address of the track file (URL)</td>
+		</tr>
+		<tr>
+			<td><code>srclang</code></td>
+			<td>String</td>
+			<td>Language of the track, e.g. "en"</td>
+		</tr>
+		<tr>
+			<td><code>label</code></td>
+			<td>String</td>
+			<td>A user-readable title for the text track set</td>
+		</tr>
+		<tr>
+			<td><code>kind</code></td>
+			<td>String</td>
+			<td>How the track is meant to be used: "subtitles", "captions", "descriptions", "chapters", "metadata"</td>
+		</tr>
+		<tr>
+			<td><code>mime_type</code></td>
+			<td>String</td>
+			<td>mime type of the text tracks, e.g. "text/vtt"</td>
+		</tr>
+		<tr>
+			<td><code>asset_id</code></td>
+			<td>String</td>
+			<td>System id for the track file; null if asset is remote</td>
+		</tr>
+		<tr>
+			<td><code>in_band_metadata_track_dispatch_type</code></td>
+			<td>String</td>
+			<td>System id for the track file; null if asset is remote</td>
+		</tr>
+		<tr>
+			<td><code>sources</code></td>
+			<td>Array</td>
+			<td>read-only</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp; <code>src</code></td>
+			<td>String</td>
+			<td>Address of the track file (URL)</td>
+		</tr>
+		<tr>
+			<td><code>default</code></td>
+			<td>Boolean</td>
+			<td>Indicates that the track should be enabled by default. Should only be true on one track.</td>
+		</tr>
+	</tbody>
+</table>
 
-		<aside class="bcls-aside bcls-aside--warning">The entire array must be patched, not just the track or the field that is changing.</aside>
-	</section>
+<aside class="bcls-aside bcls-aside--warning">The entire array must be patched, not just the track or the field that is changing.</aside>
+</section>
 </article>
