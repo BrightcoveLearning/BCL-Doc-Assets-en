@@ -19,12 +19,12 @@
 <p>Once you know this, you can use styles to alter the player itself. For instance, to change the size of the player you can use this style:</p>
 
 <pre class="line-numbers">
-      <code class="language-html">&lt;style&gt;
-        .video-js {
-          width: 640px;
-          height: 360px;
-        }
-      &lt;/style&gt;</code></pre>
+<code class="language-html">&lt;style&gt;
+.video-js {
+width: 640px;
+height: 360px;
+}
+&lt;/style&gt;</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -39,27 +39,27 @@
 <p>If you do wish to customize the iframe itself, you can do this by adding a <code>class</code> attribute to the <code>iframe</code> element (line 27). In this case, the class value is <code>videoFrame</code>. Then use a <code>&lt;style&gt;</code> tag to modify as wished. In the example below the <code>width</code> and <code>height</code> are altered.</p>
 
 <pre class="line-numbers" data-start="10">
-      <code class="language-html">&lt;!doctype html&gt;
-      &lt;html&gt;
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
 
-      &lt;head&gt;
-        &lt;meta charset="UTF-8"&gt;
-        &lt;title&gt;Customize iframe&lt;/title&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;Customize iframe&lt;/title&gt;
 
-        &lt;!-- Page styles --&gt;
-        &lt;style&gt;
-      <span class="bcls-highlight">    .videoFrame {
-            width: 640px;
-            height: 360px;
-          }</span>
-        &lt;/style&gt;
-      &lt;/head&gt;
+&lt;!-- Page styles --&gt;
+&lt;style&gt;
+<span class="bcls-highlight">    .videoFrame {
+width: 640px;
+height: 360px;
+}</span>
+&lt;/style&gt;
+&lt;/head&gt;
 
-      &lt;body&gt;
-        &lt;iframe class="videoFrame" src='//players.brightcove.net/1752604059001/68f30408-8fb4-431d-accb-8c5baa8c4790_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
-      &lt;/body&gt;
+&lt;body&gt;
+&lt;iframe class="videoFrame" src='//players.brightcove.net/1752604059001/68f30408-8fb4-431d-accb-8c5baa8c4790_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+&lt;/body&gt;
 
-      &lt;/html&gt;</code></pre>
+&lt;/html&gt;</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -76,9 +76,9 @@
 <p>From the highlighted code above, you can see the class assigned to the button is <code>vjs-big-play-button</code>. The play button's color (to match the tiger) and opacity will be changed with these styles:</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.vjs-big-play-button {
-  background-color: #B37D5B;
-  opacity: .6;
+<code class="language-css">.vjs-big-play-button {
+background-color: #B37D5B;
+opacity: .6;
 }</code></pre>
 
 <p>You would think that this approach would work, but it does not. When working with CSS you need to be aware of property specificity. This refers to how the browser determines which property values get applied to an element based on their relevance.</p>
@@ -88,9 +88,9 @@
 <p>Then, reference the player's big play button in the CSS as follows:</p>
 
 <pre class="line-numbers">
-      <code class="language-css"><span class="bcls-highlight">.video-js</span> .vjs-big-play-button {
-  background-color: #B37D5B;
-  opacity: .6;
+<code class="language-css"><span class="bcls-highlight">.video-js</span> .vjs-big-play-button {
+background-color: #B37D5B;
+opacity: .6;
 }</code></pre>
 
 <p>Here is the result of changing the button from dark grey to orange:</p>
@@ -102,7 +102,7 @@
 <p>You can completely hide the play button by using the following style:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">display: none;</code></pre>
+<code class="language-javascript">display: none;</code></pre>
 
 <h3>Experiment</h3>
 
@@ -114,40 +114,70 @@
 <section class="bcls-section">
 <h2 id="Controls_visibility">Controls visibility</h2>
 
-<p>You can dictate if the controlbar hides once the video starts. To do this use the <code>transform.none</code> style. The selector is very long as six classes are used for the specificity of transforms.</p>
+<p>You can control if you want the controlbar, and controls contained therein, visible or not. If you wish to hide the controlbar from the start of player creation you can use this style:</p>
 
 <pre class="line-numbers">
-  <code class="language-css">.bc-player-default_default.not-hover.vjs-has-started.vjs-paused.vjs-user-active .vjs-control-bar,
+<code class="language-css">.video-js .vjs-control-bar {
+display: none;
+}</code></pre>
+
+<p>If you wish to do this dynamically based on some event, you can use the <code>controlBar.hide()/show()</code> methods. The code snippet below demonstrates the methods use (this assumes you have an <code>id</code> with a value of <code>myPlayer</code> on the video):</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">&lt;video id="myPlayerID"
+data-video-id="5781068653001"
+data-account="1507807800001"
+data-player="default"
+data-embed="default"
+data-application-id
+class="video-js"
+controls&gt;&lt;/video&gt;
+&lt;script src="//players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;button onclick="hideBtn()"&gt;hide controls&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button onclick="showBtn()"&gt;show controls&lt;/button&gt;&lt;/p&gt;
+
+&lt;script&gt;
+var myPlayer;
+videojs("myPlayerID").ready(function(){
+myPlayer = this;
+});
+
+function hideBtn() {
+myPlayer.controlBar.hide();
+}
+
+function showBtn() {
+myPlayer.controlBar.show();
+}
+&lt;/script&gt;</code></pre>
+
+<h3>Controls never hide</h3>
+
+<p>You can also make it so the controls never hide. To do this use the <code>transform.none</code> style. The selector is very long as six classes are used for the specificity of transforms.</p>
+
+<pre class="line-numbers">
+<code class="language-css">.bc-player-default_default.not-hover.vjs-has-started.vjs-paused.vjs-user-active .vjs-control-bar,
 .bc-player-default_default.not-hover.vjs-has-started.vjs-playing.vjs-user-active .vjs-control-bar,
 .bc-player-default_default.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive .vjs-control-bar,
 .bc-player-default_default.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-control-bar,
 .bc-player-default_default.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-control-bar,
 .bc-player-default_default.vjs-has-started.vjs-paused.vjs-ad-playing.vjs-user-inactive .vjs-control-bar {
-    transform: none;
-    -webkit-transform: none;
-    -ms-transform: none;
+transform: none;
+-webkit-transform: none;
+-ms-transform: none;
 }</code></pre>
 
 <aside class="bcls-aside bcls-aside--information">Although considered a bit of a hack, you can simply repeat the class of the controlbar six times to build its specificity to match the selector above:
 <pre class="line-numbers">
 <code class="language-css">.vjs-control-bar.vjs-control-bar.vjs-control-bar.vjs-control-bar.vjs-control-bar.vjs-control-bar {
-  transform: none;
-  -webkit-transform: none;
-  -ms-transform: none;
+transform: none;
+-webkit-transform: none;
+-ms-transform: none;
 }</code></pre>
 </aside>
-<!-- <p>The following CSS can be used to keep the volume bar displayed along with the controlbar.</p>
 
-    <pre class="line-numbers">
-    <code class="language-css">.vjs-volume-menu-button.vjs-menu-button-inline {
-      width: 12em;
-    }
-
-    .vjs-volume-menu-button.vjs-menu-button-inline .vjs-menu {
-      opacity: 1;
-    }</code></pre> -->
-
-<p>Using this CSS to stop the controlbar from disappearing is very helpful when right-clicking on elements in the controlbar to inspect them. If you don't do this, as you right-click the controlbar disappears. Also note, the first right-click displays the Brightcove Player information menu, and the <strong>second right-click will display the menu where you can choose to inspect</strong>.</p>
+<aside class="bcls-aside bcls-aside--tip">Using this CSS to stop the controlbar from disappearing is very helpful when right-clicking on elements in the controlbar to inspect them. If you don't do this, as you right-click the controlbar disappears. Also note, the first right-click displays the Brightcove Player information menu, and the <strong>second right-click will display the menu where you can choose to inspect</strong>.</aside>
 </section>
 
 <section class="bcls-section">
@@ -166,8 +196,8 @@
 <p>The <code>background-color</code> changes the color of the element and needs to be styled. The needed style is shown here:</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.video-js .vjs-play-progress {
-  background-color: green;
+<code class="language-css">.video-js .vjs-play-progress {
+background-color: green;
 }</code></pre>
 
 <p>Notice that the <code>.video-js</code> class was added into the selector. This is done to increase the selector's CSS specificity.</p>
@@ -179,7 +209,11 @@
 
 <section class="bcls-section">
 <h2 id="Volume_controls">Volume controls</h2>
+<p>
+You can customize the volume control by using CSS or by passing in the <code>options</code> object during player creation.
+</p>
 
+<h3>Update using CSS</h3>
 <p>Now you will see how to change the color of the volume controls. The default look is shown here, a white volume button with a fuchsia volume level bar:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="customize-player-elements" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/volume-standard.png" /></figure>
@@ -188,14 +222,14 @@
 
 <pre class="line-numbers">
 <code class="language-css">.vjs-volume-panel.vjs-control.vjs-volume-panel-horizontal {
-  color: yellow;
+color: yellow;
 }</code></pre>
 
 <p>To change the color of the volume bar, the <code>background-color</code> of the element needs to be styled. The needed style is shown here:</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.video-js .vjs-volume-level{
-  background-color: yellow;
+<code class="language-css">.video-js .vjs-volume-level{
+background-color: yellow;
 }</code></pre>
 
 <p>Notice that the <code>.video-js</code> class was added into the selector. This is done to increase the selector's CSS specificity.</p>
@@ -203,6 +237,50 @@
 <p>The results of styling the button and volume bar are shown here:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="customize-player-elements" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/volume-yellow.png" /></figure>
+
+<h3>Update using options object</h3>
+<p>
+To change the layout of the volume control, you can pass the <code>options</code> object into the <a href="/node/18051">bc() method</a> as follows:
+</p>
+<ol class="bcls-tasklist">
+<li>Delay player creation by removing the following attributes from the <code>video</code> tag:
+<ul>
+  <li>
+    <code>data-account</code>
+  </li>
+  <li>
+    <code>data-player</code>
+  </li>
+  <li>
+    <code>data-video-id</code>
+  </li>
+</ul>
+</li>
+<li>
+Define the <code>options</code> object so that the <code>volumePanel</code> is vertical and not inline with the controlbar.
+<pre class="line-numbers"><code class="language-css">var options = {
+controlBar: {
+volumePanel: {
+inline: false,
+vertical: true
+}
+}
+};</code></pre>
+</li>
+<li>
+Add the player attributes that were initially removed.
+</li>
+<li>
+Create the player by calling the <a href="/node/18051">bc() method</a> with the <code>options</code> object.
+<pre><code class="language-css">bc(&quot;myPlayerID&quot;, options);</code></pre>
+</li>
+<li>
+For details, see the <a href="/node/18608">Vertical Volume Control</a> player sample.
+<figure class="bcls-figure"><img class="bcls-image" alt="customize-player-elements" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/vertical-volume.png" /></figure>
+</li>
+</ol>
+
+
 </section>
 
 <section class="bcls-section">
@@ -215,25 +293,24 @@
 <p>You can affect both the title and description by setting a style on the <code>vjs-dock-text</code> class. Note that styles set on the <code>.vjs-dock-title</code> and <code>.vjs-dock-description</code> will, of course, not be completely overridden by the style set at a higher level. Some styles are inherited, as shown by the following style and its result on the text:</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.video-js .vjs-dock-text {
-        color: yellow;
-        font-size: .7em;
-      }</code></pre>
+<code class="language-css">.video-js .vjs-dock-text {
+color: yellow;
+font-size: .7em;
+}</code></pre>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="dock text selector example" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/dock-text-selector.png" /></figure>
 
 <p>You can directly style the individual title and description. The following shows styles set on the <code>.vjs-dock-title</code> and <code>.vjs-dock-description</code> class selectors, with the resulting text displaying the styles:</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.video-js .vjs-dock-title {
-        color: red;
-        font-size: 1.5em;
-      }
-      .video-js .vjs-dock-description {
-        color: yellow;
-        font-size: 1.0em;
-      }
-      </code></pre>
+<code class="language-css">.video-js .vjs-dock-title {
+color: red;
+font-size: 1.5em;
+}
+.video-js .vjs-dock-description {
+color: yellow;
+font-size: 1.0em;
+}</code></pre>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="title and description selectors" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/title-and-description-selectors.png" /></figure>
 </section>
@@ -248,17 +325,17 @@
 <p>Generally, this is the approach to take when placing in icon in the controlbar:</p>
 
 <ul>
-	<li>Dynamically build the element you wish to insert into the controlbar.</li>
-	<li>Get a reference to the controlbar element.</li>
-	<li>Get a reference to the element you wish to insert your new element in front of in the controlbar.</li>
-	<li>Use the JavaScript <code>insertBefore()</code> method to place the icon.</li>
+<li>Dynamically build the element you wish to insert into the controlbar.</li>
+<li>Get a reference to the controlbar element.</li>
+<li>Get a reference to the element you wish to insert your new element in front of in the controlbar.</li>
+<li>Use the JavaScript <code>insertBefore()</code> method to place the icon.</li>
 </ul>
 
 <aside class="bcls-aside bcls-aside--tip">
 <p>The syntax for <code>insertBefore()</code> is:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">parent.insertBefore(newElement,insertBeforeElement)</code></pre>
+<code class="language-javascript">parent.insertBefore(newElement,insertBeforeElement)</code></pre>
 
 <p>This means in the detailed code below you will see JavaScript to get a reference to the controlbar (parent), a new <code>&lt;div&gt;</code> with an icon to insert into the controlbar, and lastly a reference to the element which the new icon will be inserted in from of.</p>
 </aside>
@@ -266,58 +343,58 @@
 <p>Specifically, the following code is used to insert a download video icon in front of the volume icon:</p>
 
 <ul>
-	<li>Lines 280-285: Style for the download button.</li>
-	<li>Lines 291-295: Assign variables and create HTML elements for:
-	<ul>
-		<li>The <code>&lt;div&gt;</code> which will contain the icon for the download icon.</li>
-		<li>The anchor tag which make the icon clickable.</li>
-		<li>The icon image itself.</li>
-	</ul>
-	</li>
-	<li>Lines 297-2980: Assign and id and CSS classes to the new element.</li>
-	<li>Line 300: Assign a source to the image.</li>
-	<li>Line 301: Assign an <code>href</code> to the link.</li>
-	<li>Line 302: Append the image to the link.</li>
-	<li>Line 303: Append the link to the dynamically created <code>&lt;div&gt;</code>.</li>
-	<li>Line 306: Get a reference to the controlbar to use with <code>insertBefore()</code>.</li>
-	<li>Line 308: Get a reference to the element which the new icon will be insert in front of, to use with <code>insertBefore()</code>.</li>
-	<li>Line 310: Insert the dynamically created element.</li>
+<li>Lines 280-285: Style for the download button.</li>
+<li>Lines 291-295: Assign variables and create HTML elements for:
+<ul>
+<li>The <code>&lt;div&gt;</code> which will contain the icon for the download icon.</li>
+<li>The anchor tag which make the icon clickable.</li>
+<li>The icon image itself.</li>
+</ul>
+</li>
+<li>Lines 297-2980: Assign and id and CSS classes to the new element.</li>
+<li>Line 300: Assign a source to the image.</li>
+<li>Line 301: Assign an <code>href</code> to the link.</li>
+<li>Line 302: Append the image to the link.</li>
+<li>Line 303: Append the link to the dynamically created <code>&lt;div&gt;</code>.</li>
+<li>Line 306: Get a reference to the controlbar to use with <code>insertBefore()</code>.</li>
+<li>Line 308: Get a reference to the element which the new icon will be insert in front of, to use with <code>insertBefore()</code>.</li>
+<li>Line 310: Insert the dynamically created element.</li>
 </ul>
 
 <pre class="line-numbers" data-start="279">
-      <code class="language-javascript">  &lt;!-- styles for page --&gt;
-          /* Style the download icon */
-          #downloadButton {
-              width: 34px;
-              height: 33px;
-              margin-top: 6px;
-          }
-        &lt;/style&gt;
+<code class="language-javascript">&lt;!-- styles for page --&gt;
+/* Style the download icon */
+#downloadButton {
+width: 34px;
+height: 33px;
+margin-top: 6px;
+}
+&lt;/style&gt;
 
-        &lt;script type="text/javascript"&gt;
-          videojs('myPlayerID').ready(function(){
-            // Create variables and new div, anchor and image for download icon
-            var myPlayer = this,
-              controlBar,
-              newElement = document.createElement('div'),
-              newLink = document.createElement('a'),
-              newImage = document.createElement('img');
-            // Assign id and classes to div for icon
-            newElement.id = 'downloadButton';
-            newElement.className = 'downloadStyle vjs-control';
-            // Assign properties to elements and assign to parents
-            newImage.setAttribute('src','http://solutions.brightcove.com/bcls/brightcove-player/download-video/file-download.png');
-            newLink.setAttribute('href','http://www.brightcove.com');
-            newLink.appendChild(newImage);
-            newElement.appendChild(newLink);
-            // Get controlbar and insert before elements
-            // Remember that getElementsByClassName() returns an array
-            controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-            // Change the class name here to move the icon in the controlBar
-            insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-            // Insert the icon div in proper location
-            controlBar.insertBefore(newElement,insertBeforeNode);
-          });</code></pre>
+&lt;script type="text/javascript"&gt;
+videojs('myPlayerID').ready(function(){
+// Create variables and new div, anchor and image for download icon
+var myPlayer = this,
+controlBar,
+newElement = document.createElement('div'),
+newLink = document.createElement('a'),
+newImage = document.createElement('img');
+// Assign id and classes to div for icon
+newElement.id = 'downloadButton';
+newElement.className = 'downloadStyle vjs-control';
+// Assign properties to elements and assign to parents
+newImage.setAttribute('src','http://solutions.brightcove.com/bcls/brightcove-player/download-video/file-download.png');
+newLink.setAttribute('href','http://www.brightcove.com');
+newLink.appendChild(newImage);
+newElement.appendChild(newLink);
+// Get controlbar and insert before elements
+// Remember that getElementsByClassName() returns an array
+controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+// Change the class name here to move the icon in the controlBar
+insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+// Insert the icon div in proper location
+controlBar.insertBefore(newElement,insertBeforeNode);
+});</code></pre>
 
 <p>Here you see the result of the code, with the newly inserted icon highlighted in yellow:</p>
 
@@ -326,7 +403,7 @@
 <p>If you wish to have the icon in a different location, you need only to change the code which gets the element to insert in front of. For instance, to move the new icon in front of the fullscreen button, use this:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">insertBeforeNode = document.getElementsByClassName('vjs-fullscreen-control')[0];</code></pre>
+<code class="language-javascript">insertBeforeNode = document.getElementsByClassName('vjs-fullscreen-control')[0];</code></pre>
 
 <p>The result would appear as follows:</p>
 
@@ -337,7 +414,7 @@
 <p>If you wish the icon to appear at the far right of the controlbar, you would replace the <code>insertBefore()</code> with the <code>appendChild()</code> method, as shown here:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">controlBar.appendChild(newElement);</code></pre>
+<code class="language-javascript">controlBar.appendChild(newElement);</code></pre>
 
 <p>An example of adding an icon (for downloading a file in this case) is shown in the <a href="/node/18273">Brightcove Player Sample: Download Video Plugin</a> document.</p>
 
@@ -354,20 +431,39 @@
 <p>To place an icon in the spacer element, you use the following code, which is very similar to the code shown earlier in this section. The result of the code is shown in the screenshot which follows the code snippet.</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">      // Get the spacer element
-            spacer = document.getElementsByClassName('vjs-spacer')[0];
-            // Place the new element in the spacer
-            spacer.appendChild(newElement);</code></pre>
+<code class="language-javascript">// Get the spacer element
+spacer = document.getElementsByClassName('vjs-spacer')[0];
+// Place the new element in the spacer
+spacer.appendChild(newElement);</code></pre>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="spacer-left" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/spacer-left.png" /></figure>
 
 <p>If you wish to place the icon on the right side of the spacer, another line of code needs to be used. The spacer layout is controlled by an HTML Flexbox. So adding a Flexbox style you can push the added icon to the right. The result of the code is shown in the screenshot which follows the code snippet.</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">      // Set the content of the spacer to be right justified
-            spacer.setAttribute("style", "justify-content: flex-end;");</code></pre>
+<code class="language-javascript">// Set the content of the spacer to be right justified
+spacer.setAttribute("style", "justify-content: flex-end;");</code></pre>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="spacer-right" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/spacer-right.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="Remove_fullscreen_icon">Remove fullscreen button</h2>
+
+<p>There can be issues if you permit fullscreen viewing of videos on iOS, detailed in the <a href="/node/18106">iOS and Brightcove Player</a> document. If you wish to remove the fullscreen button from the controlbar you can so using this code:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;script type="text/javascript"&gt;
+videojs('myPlayerID').ready(function(){
+var myPlayer = this,
+<span class="bcls-highlight">fullScreenElement = document.getElementsByClassName("vjs-fullscreen-control")[0];
+if (videojs.browser.IS_IOS ) {
+fullScreenElement.parentNode.removeChild(fullScreenElement);
+}</span>
+});
+&lt;/script&gt;</code></pre>
+
+<p>Note the <code>if</code> statement so the button is only removed on iOS devices.</p>
 </section>
 
 <section class="bcls-section">
@@ -380,9 +476,9 @@
 <p>The affect shown is done by changing the CSS <code>text-shadow</code>. The selector determines that the change will only occur with the icon has focus or hover states.</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.video-js .vjs-control:hover:before, .video-js .vjs-control:focus:before {
-        text-shadow: 0 0 1em #f00,0 0 1em #f00,0 0 1em #f00;
-      }</code></pre>
+<code class="language-css">.video-js .vjs-control:hover:before, .video-js .vjs-control:focus:before {
+text-shadow: 0 0 1em #f00,0 0 1em #f00,0 0 1em #f00;
+}</code></pre>
 
 <p>For more information on the rather complex <code>text-shadow</code> style, see MDN's <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow">text-shadow</a> document.</p>
 </section>
@@ -395,25 +491,25 @@
 <p>The actual gradient is controlled by the CSS <code>linear-gradient</code> function in the <code>vjs-dock-text</code> HTML <code>&lt;div&gt;.</code> The size of the gradient can be controlled by the height of the <code>vjs-dock-text</code> HTML <code>&lt;div&gt;</code>. Here is that element, and its children, from the player:</p>
 
 <pre class="line-numbers">
-      <code class="language-html">&lt;div class="vjs-dock-text"&gt;
-        &lt;h1 class="vjs-dock-title"&gt;Tiger&lt;/h1&gt;
-        &lt;h2 class="vjs-dock-description"&gt;&lt;/h2&gt;
-      &lt;/div&gt;</code></pre>
+<code class="language-html">&lt;div class="vjs-dock-text"&gt;
+&lt;h1 class="vjs-dock-title"&gt;Tiger&lt;/h1&gt;
+&lt;h2 class="vjs-dock-description"&gt;&lt;/h2&gt;
+&lt;/div&gt;</code></pre>
 
 <p>The default values for the gradient use the <code>rgba()</code> (red-green-blue-alpha) function, as shown here:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">linear-gradient(180deg,rgba(0,0,0,.8) 25%,transparent 100%);</code></pre>
+<code class="language-javascript">linear-gradient(180deg,rgba(0,0,0,.8) 25%,transparent 100%);</code></pre>
 
 <p>These values cause the gradient to horizontally fade from black, with an alpha of <strong>.8</strong>, to transparent. The value of <strong>25%</strong> is a cut off value, meaning the value set in the <code>rgba</code> function will be used for the first 25% of the space before the fading to transparent begins.</p>
 
 <p>For instructional purposes, as you would not use this gradient in production, the following style creates the gradient in the screenshot.</p>
 
 <pre class="line-numbers">
-      <code class="language-css">.video-js .vjs-dock-text {
-        background: linear-gradient(45deg, rgba(0,0,255,.8) 35%, transparent);
-        height: 80%;
-      }</code></pre>
+<code class="language-css">.video-js .vjs-dock-text {
+background: linear-gradient(45deg, rgba(0,0,255,.8) 35%, transparent);
+height: 80%;
+}</code></pre>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="bad blue gradient" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/5x-player-styling/customize-appearance/gradient-blue.png" /></figure>
 
@@ -436,9 +532,9 @@
 <p>Here are three approaches to customize the big play button:</p>
 
 <ul>
-	<li>Reference an id assigned to the player.</li>
-	<li>Use multiple classes to raise the relevance of the properties.</li>
-	<li>Use JavaScript to set the id attribute on the player and then reference it in the CSS.</li>
+<li>Reference an id assigned to the player.</li>
+<li>Use multiple classes to raise the relevance of the properties.</li>
+<li>Use JavaScript to set the id attribute on the player and then reference it in the CSS.</li>
 </ul>
 
 <h3>Referencing an id</h3>
@@ -448,25 +544,25 @@
 <p>If you haven't already done so, add an <code>id</code> attribute to the <code>video</code> element as follows:</p>
 
 <pre class="line-numbers">
-      <code class="language-html"><span class="bcls-highlight">    &lt;video id="video_1"</span>
-            data-account="1752604059001"
-            data-player="68f30408-8fb4-431d-accb-8c5baa8c4790"
-            data-embed="default"
-            class="video-js" controls&gt;&lt;/video&gt;</code></pre>
+<code class="language-html"><span class="bcls-highlight">&lt;video id="video_1"</span>
+data-account="1752604059001"
+data-player="68f30408-8fb4-431d-accb-8c5baa8c4790"
+data-embed="default"
+class="video-js" controls&gt;&lt;/video&gt;</code></pre>
 
 <p>In the CSS, add the id value to the <code>.vjs-big-play-button</code> class selector. Override the background color and opacity as follows:</p>
 
 <pre class="line-numbers">
-      <code class="language-html">  &lt;style&gt;
-      <span class="bcls-highlight">    #video_1 .vjs-big-play-button {
-            background-color: #B37D5B;
-            opacity: .6;
-          }</span>
-          .video-js {
-            width: 640px;
-            height: 360px;
-          }
-        &lt;/style&gt;</code></pre>
+<code class="language-html">&lt;style&gt;
+<span class="bcls-highlight">  #video_1 .vjs-big-play-button {
+background-color: #B37D5B;
+opacity: .6;
+}</span>
+.video-js {
+width: 640px;
+height: 360px;
+}
+&lt;/style&gt;</code></pre>
 
 <p>You should see that the big play button is now orange.</p>
 
@@ -481,16 +577,16 @@
 <p>With these values, we are saying select all elements with a class name of <code>vjs-big-play-button</code> which are decedents of elements with a class name of <code>.video-js</code>.</p>
 
 <pre class="line-numbers">
-      <code class="language-html">&lt;style&gt;
-      <span class="bcls-highlight">  .video-js .vjs-big-play-button {</span>
-          background-color: #B37D5B;
-          opacity: .6;
-        }
-        .video-js {
-          width: 640px;
-          height: 360px;
-        }
-      &lt;/style&gt;</code></pre>
+<code class="language-html">&lt;style&gt;
+<span class="bcls-highlight">  .video-js .vjs-big-play-button {</span>
+background-color: #B37D5B;
+opacity: .6;
+}
+.video-js {
+width: 640px;
+height: 360px;
+}
+&lt;/style&gt;</code></pre>
 
 <p>You should see that the big play button is now orange. Working with multiple classes can be tricky and may affect multiple elements, whereas an id is specific to one element.</p>
 
@@ -501,31 +597,31 @@
 <p>Add code to add an id to the big play button element.</p>
 
 <ul>
-	<li>Line 173: Gets a reference to the first element which has a class of <code>vjs-big-play-button</code>.</li>
-	<li>Line 174: Adds an <code>id</code> attribute to the big play button.</li>
+<li>Line 173: Gets a reference to the first element which has a class of <code>vjs-big-play-button</code>.</li>
+<li>Line 174: Adds an <code>id</code> attribute to the big play button.</li>
 </ul>
 
 <pre class="line-numbers" data-start="171">
-      <code class="language-html">  &lt;script type="text/JavaScript"&gt;
+<code class="language-html">  &lt;script type="text/JavaScript"&gt;
 
-          var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
-          playButton.setAttribute("id", "myPlayButton");
+var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
+playButton.setAttribute("id", "myPlayButton");
 
-        &lt;/script&gt;</code></pre>
+&lt;/script&gt;</code></pre>
 
 <p>In the CSS, change the selector to use the <code>myPlayButton</code> id name.</p>
 
 <pre class="line-numbers">
-      <code class="language-html">&lt;style&gt;
-      <span class="bcls-highlight">    #myPlayButton {</span>
-            background-color: #B37D5B;
-            opacity: .6;
-          }
-          .video-js {
-            width: 640px;
-            height: 360px;
-          }
-        &lt;/style&gt;</code></pre>
+<code class="language-html">&lt;style&gt;
+<span class="bcls-highlight">    #myPlayButton {</span>
+background-color: #B37D5B;
+opacity: .6;
+}
+.video-js {
+width: 640px;
+height: 360px;
+}
+&lt;/style&gt;</code></pre>
 
 <p>You should see that the big play button is now orange.</p>
 </section>
@@ -546,85 +642,88 @@
 <h3>Summary of component selectors</h3>
 
 <table class="table-styles">
-	<thead>
-		<tr>
-			<th style="width:30%">Component</th>
-			<th style="width:70%">Selector</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>BigPlayButton</td>
-			<td><code>.video-js.vjs-mouse .vjs-big-play-button</code></td>
-		</tr>
-		<tr>
-			<td>ControlBar</td>
-			<td><code>.video-js .vjs-control-bar</code> (Inherited by icons in the ControlBar, but NOT the ProgressControl)</td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;PlayToggle</td>
-			<td><code>.video-js .vjs-play-control</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;MuteToggle</td>
-			<td><code>.vjs-volume-panel.vjs-control.vjs-volume-panel-horizontal</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VolumeBar</td>
-			<td><code>.vjs-volume-bar.vjs-slider-bar.vjs-slider.vjs-slider-horizontal</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VolumeLevel</td>
-			<td><code>.video-js .vjs-volume-level</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;CurrentTimeDisplay</td>
-			<td><code>.video-js .vjs-current-time</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;TimeDivider</td>
-			<td><code>.video-js .vjs-time-divider</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;DurationDisplay</td>
-			<td><code>.video-js .vjs-duration</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeekBar</td>
-			<td><code>.video-js .vjs-progress-control.vjs-control</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PlayProgressBar</td>
-			<td><code>.video-js .vjs-play-progress.vjs-slider-bar</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;ChaptersButton</td>
-			<td><code>.video-js .vjs-chapters-button.vjs-menu-button</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;CaptionsButton</td>
-			<td><code>.video-js .vjs-captions-button.vjs-menu-button</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;FullScreenToggle</td>
-			<td><code>.video-js .vjs-fullscreen-control.vjs-control</code></td>
-		</tr>
-		<tr>
-			<td>DockText</td>
-			<td><code>.vjs-dock-text</code> (Inherited by both DockTitle and DockDescription)</td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;DockTitle</td>
-			<td><code>.vjs-dock-title</code></td>
-		</tr>
-		<tr>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;DockDescription</td>
-			<td><code>.vjs-dock-description</code></td>
-		</tr>
-	</tbody>
+<thead>
+<tr>
+<th style="width:30%">Component</th>
+<th style="width:70%">Selector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BigPlayButton</td>
+<td><code>.video-js.vjs-mouse .vjs-big-play-button</code></td>
+</tr>
+<tr>
+<td>ControlBar</td>
+<td><code>.video-js .vjs-control-bar</code> (Inherited by icons in the ControlBar, but NOT the ProgressControl)</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;PlayToggle</td>
+<td><code>.video-js .vjs-play-control</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;MuteToggle</td>
+<td><code>.vjs-volume-panel.vjs-control.vjs-volume-panel-horizontal</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VolumeBar</td>
+<td><code>.vjs-volume-bar.vjs-slider-bar.vjs-slider.vjs-slider-horizontal</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VolumeLevel</td>
+<td><code>.video-js .vjs-volume-level</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;CurrentTimeDisplay</td>
+<td><code>.video-js .vjs-current-time</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;TimeDivider</td>
+<td><code>.video-js .vjs-time-divider</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;DurationDisplay</td>
+<td><code>.video-js .vjs-duration</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeekBar</td>
+<td><code>.video-js .vjs-progress-control.vjs-control</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LoadProgressBar</td>
+<td><code>.video-js .vjs-load-progress</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PlayProgressBar</td>
+<td><code>.video-js .vjs-play-progress.vjs-slider-bar</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;ChaptersButton</td>
+<td><code>.video-js .vjs-chapters-button.vjs-menu-button</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;CaptionsButton</td>
+<td><code>.video-js .vjs-captions-button.vjs-menu-button</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;FullScreenToggle</td>
+<td><code>.video-js .vjs-fullscreen-control.vjs-control</code></td>
+</tr>
+<tr>
+<td>DockText</td>
+<td><code>.vjs-dock-text</code> (Inherited by both DockTitle and DockDescription)</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;DockTitle</td>
+<td><code>.vjs-dock-title</code></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;DockDescription</td>
+<td><code>.vjs-dock-description</code></td>
+</tr>
+</tbody>
 </table>
 
 <p>If the selector you are seeking is not in the table, please let us know by emailing the <a id="selectorrequest" href="mailto:docs@brightcove.com">Knowledge Team</a> and we will get it into the table.</p>
 </section>
 </article>
-<!-- end drupal content -->
