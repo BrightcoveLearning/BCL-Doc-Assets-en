@@ -1,0 +1,463 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
+    <p>Context Aware Encoding creates multiple renditions of your source video based on guidelines you provide, but also based on the characteristics of the video itself. This helps to avoid the cost of transcoding and storing your videos by creating renditions that will be essentially worthless, given the characteristics of the source.</p>
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="min_renditions">min_renditions</h2>
+  <code>min_renditions:Integer</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 1-15</p>
+
+  <p><strong>Default Value:</strong> 1</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 3</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>The minium number of renditions to generate.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      <span class="bcls-highlight">"min_renditions": 2</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <section class="bcls-section">
+  <h2 id="max_renditions">max_renditions</h2>
+  <code>max_renditions:Integer</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 1-15</p>
+
+  <p><strong>Default Value:</strong> 8</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 10</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>The maximum number of renditions to generate.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      <span class="bcls-highlight">"max_renditions": 10</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="min_resolution">min_resolution</h2>
+  <code>min_resolution:Object</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 16x16 - 8192x8192</p>
+
+  <p><strong>Default Value:</strong> 192x108</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> see below</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Minimum resolution to be considered for the ladder.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      <span class="bcls-highlight">"min_resolution": {
+        "height": 180,
+        "width": 320
+      }</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="max_resolution">max_resolution</h2>
+  <code>max_resolution:Object</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 16x16 - 8192x8192</p>
+
+  <p><strong>Default Value:</strong> source resolution</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> see below</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Maximum resolution to be considered for the ladder.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      <span class="bcls-highlight">"max_resolution": {
+        "height": 1080,
+        "width": 1920
+      }</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="max_frame_rate">max_frame_rate</h2>
+  <code>max_frame_rate:Number</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 0.1 - 120</p>
+
+  <p><strong>Default Value:</strong> 30</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 60</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Maximum frame rate that can be used.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      <span class="bcls-highlight">"max_frame_rate": 60</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="keyframe_rate">keyframe_rate</h2>
+  <code>keyframe_rate:Number</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 0.5, 1.0</p>
+
+  <p><strong>Default Value:</strong> 0.5</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> o.5</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Keyframe rate. This value can be either 0.5 or 1. For SSAI enabled content, this value needs to be 1.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      "max_frame_rate": 60,
+      <span class="bcls-highlight">"max_frame_rate": 0.5</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="fixed_frame_rate">fixed_frame_rate</h2>
+  <code>fixed_frame_rate:Boolean</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> true or false</p>
+
+  <p><strong>Default Value:</strong> true</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> true</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Instructs generator to use same frame rate across all renditions. If false, H.264 baseline profile renditions at resolutions below 360p will be assigned halved frame rate.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      "max_frame_rate": 60,
+      <span class="bcls-highlight">"max_frame_rate": 0.5</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="min_bitrate">min_bitrate</h2>
+  <code>min_bitrate:Number</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 40 - 400</p>
+
+  <p><strong>Default Value:</strong> 200</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 300</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Minimum bitrate [kbps] that can be used.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      "max_frame_rate": 60,
+      "max_frame_rate": 0.5,
+      <span class="bcls-highlight">"min_bitrate": 300</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="max_bitrate">max_bitrate</h2>
+  <code>max_bitrate:Number</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 400 - 40000</p>
+
+  <p><strong>Default Value:</strong> 15000</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 20000</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Maximum bitrate [kbps] that can be used.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      "max_frame_rate": 60,
+      "max_frame_rate": 0.5,
+      "min_bitrate": 300,
+      <span class="bcls-highlight">"max_bitrate": 20000</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="max_first_rendition_bitrate">max_first_rendition_bitrate</h2>
+  <code>max_first_rendition_bitrate:Number</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 40 - 1000</p>
+
+  <p><strong>Default Value:</strong> 500</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 20000</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Maximum bitrate [kbps] that can be used.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      "max_frame_rate": 60,
+      "max_frame_rate": 0.5,
+      "min_bitrate": 300,
+      <span class="bcls-highlight">"max_bitrate": 20000</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+</article>
