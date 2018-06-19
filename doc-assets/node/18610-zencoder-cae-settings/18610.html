@@ -420,15 +420,15 @@
 
   <p><strong>Valid Values:</strong> 40 - 1000</p>
 
-  <p><strong>Default Value:</strong> 500</p>
+  <p><strong>Default Value:</strong> 400</p>
 
   <p><strong>Compatible Job Types:</strong> VOD</p>
 
-  <p><strong>Example:</strong> 20000</p>
+  <p><strong>Example:</strong> 700</p>
 
   <p><strong>Description:</strong></p>
 
-  <p>Maximum bitrate [kbps] that can be used.</p>
+  <p>Maximum bitrate [kbps] that can be used for first rendition.</p>
 
   <pre class="line-numbers">
   <code class="language-json">{
@@ -448,7 +448,60 @@
       "max_frame_rate": 60,
       "max_frame_rate": 0.5,
       "min_bitrate": 300,
-      <span class="bcls-highlight">"max_bitrate": 20000</span>
+      "max_bitrate": 20000
+      <span class="bcls-highlight">"max_first_rendition_bitrate": 700</span>
+    },
+    "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6}
+    ]
+  }</code></pre>
+  </section>
+  <section class="bcls-section">
+  <h2 id="min_granularity">min_granularity</h2>
+  <code>min_granularity:Number</code>
+
+  <p><strong>API Versions:</strong> V2</p>
+
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"></a></p>
+
+  <p><strong>Valid Values:</strong> 1 - 100 (%)</p>
+
+  <p><strong>Default Value:</strong> 30 (%)</p>
+
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+
+  <p><strong>Example:</strong> 20</p>
+
+  <p><strong>Description:</strong></p>
+
+  <p>Minimum relative change in bitrate between renditions.</p>
+
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      "min_resolution": {
+        "height": 180,
+        "width": 320
+      },
+      "max_resolution": {
+        "height": 1080,
+        "width": 1920
+      },
+      "max_frame_rate": 60,
+      "max_frame_rate": 0.5,
+      "min_bitrate": 300,
+      "max_bitrate": 20000,
+      "max_first_rendition_bitrate": 700
+      <span class="bcls-highlight">"min_granularity": 20</span>
     },
     "outputs" :[
      {"dynamic_profile_rendition": 1},
