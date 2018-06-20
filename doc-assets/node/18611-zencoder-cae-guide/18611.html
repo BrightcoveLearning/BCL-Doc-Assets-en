@@ -9,5 +9,30 @@
 <section class="bcls-section">
   <h2 id="process">Process</h2>
   <p>CAE is enabled on a Zencoder Job by setting <code><a href="/node/17878#generate_dynamic_profile">generate_dynamic_profile</a></code> to true and adding <a href="/node/17852#dynamic_profile_rendition">dynamic_profile_rendition</a> values to Outputs of the Job.  (Optionally, <a href="/node/18610">dynamic_profile_options</a> may also be configured.  After downloading and inspecting the Input source file for the Job, Zencoder runs the CAE dynamic profile generator on the source file. The resulting dynamic profile ladder settings are added to each corresponding Output before they are encoded.  The following settings are automatically set for Outputs with a dynamic_profile_rendition value: </p>
+  <ul>
+    <li>width</li>
+    <li>height</li>
+    <li>frame_rate</li>
+    <li>video_codec</li>
+    <li>video_codec_profile</li>
+    <li>video_codec_tier</li>
+    <li>video_codec_level</li>
+    <li>video_reference_frames</li>
+    <li>video_bframes</li>
+    <li>video_bitrate</li>
+    <li>decoder_bitrate_cap</li>
+    <li>decoder_buffer_size</li>
+    <li>keyframe_rate</li>
+    <li>fixed_keyframe_interval</li>
+  </ul>
+  <p>Other Outputs without a <a href="/node/17852#dynamic_profile_rendition">dynamic_profile_rendition</a> will begin encoding as soon as the Input source is inspected, concurrently while the the dynamic profile generator is running.</p>
+</section>
+
+<section class="bcls-section">
+  <h2 id="guidelines_for_configuring_dyanamic_profile_options">Guidelines for configuring dynamic_profile_options</h2>
+  <h3>Number of Renditions</h3>
+  <p>The minimum and maximum number of renditions to create is controlled with the <a href="/node/18610#min_renditions">min_renditions</a> and <a href="/node/18610#max_renditions">max_renditions</a> settings. It is best to set max_renditions at least 3 higher than min_renditions (e.g. 7 and 4, respectively). This range will allow the CAE to adapt the number of renditions based on characteristics of the content. For easy to encode content, it may produce fewer renditions, while for more complex content it may produce more. It is also recommended to set min_renditions to be as small as possible, to allow for saving bandwidth when more renditions are unnecessary.</p>
+  <h3>Resolutions</h3>
+  <p>By default, CAE uses a ladder of about 30 standard resolutions, ranging from 192x108 to 7680x4320. It can be limited on either the low or high end by using the <a href="/node/18610#min_resolution">min_resolution</a> and max_resolution settings. Alternately, a custom list of resolutions and associated codec settings can be provided in the  video_configurations setting.</p>
 </section>
 </article>
