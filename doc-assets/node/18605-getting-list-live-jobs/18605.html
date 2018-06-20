@@ -1,0 +1,127 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>A <code>GET</code> request to the <code>/v1/jobs</code> endpoint of the Live API allows you to get a list of live jobs you have created. Similarly, a <code>GET</code> request to <code>/v1/jobs/{job_id}/vods</code> gets a list of VOD jobs for a live job. Full details of these requests can be found in the <a href="https://docs.brightcove.com/live-api/v1/doc/index.html">API Reference</a>. This topic provides an overview and some additional detail. Unless noted, the parameters described below apply to both of these requests.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="pagination">Pagination</h2>
+
+<p>Pagination of results is handled through the <code>start_token</code> and <code>page_size</code> query parameters. The page size indicates the number of results to return on each request, and may be set to any number from 1 to 1000.</p>
+
+<p>Each response will include a <code>next_token</code> field if there are any additional results. Setting the <code>start_token</code> to the <code>next_token</code> value will return the next page of results.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="sorting">Sorting</h2>
+
+<p>The results can be sorted using the <code>sort</code> parameter, which can be set to <code>created_at</code> (default) or <code>modified_at</code>. You can also set the sort direction by setting the <code>sort_dir</code> parameter to <code>asc</code> (default) or <code>desc</code>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="search_filters">Search filters</h2>
+
+<p>You can limit results by adding search filter parameters. All search filters are optional. Multiple filters are treated as <code>AND</code> conditions - that is, all conditions must be met for a vod job to be included in the results.</p>
+
+<p>Multiple values can be specified for a single filter using the following format:</p>
+
+<pre>
+<code class="language-http">{filter}=[value1,value2]</code></pre>
+
+<p>Filter values specified this way are treated as <code>OR</code> conditions -- a job is returned if it matches any of the values.</p>
+
+<p>A comparison operator may be included before a filter value, separated by a colon:</p>
+
+<pre>
+<code class="language-http">{filter}={op}:{value}</code></pre>
+
+<p>Operators are: <code>gt</code> (greater than), <code>ge</code> (greater than or equal), <code>lt</code> (less than), <code>le</code> (less than or equal). For example, to search for vod jobs created after Jan 1, 2018:</p>
+
+<pre>
+<code class="language-http">created_at:gt:1514764800000</code></pre>
+
+<p>The filter type is inferred from the value. If a number or boolean needs to be treated as a string it can be enclosed in single quotes:</p>
+
+<pre>
+<code class="language-http">{filter}=’1234’</code></pre>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Search Filters</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Filter Name</th>
+			<th>Type</th>
+			<th>Description / Values</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>user_id</code></td>
+			<td>string, array of strings</td>
+			<td>User ID</td>
+		</tr>
+		<tr>
+			<td><code>created_at</code></td>
+			<td>integer</td>
+			<td>Unix time of job creation (in milliseconds)</td>
+		</tr>
+		<tr>
+			<td><code>modified_at</code></td>
+			<td>integer</td>
+			<td>Unix time of job's last change of state (in milliseconds)</td>
+		</tr>
+		<tr>
+			<td><code>static</code></td>
+			<td>boolean</td>
+			<td>Has static endpoint (for list job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>state</code></td>
+			<td>string, array of strings</td>
+			<td>One or more job states (for list job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>jvod_state</code></td>
+			<td>string, array of strings</td>
+			<td>One or more VOD job states (for list vod job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>jvod_type</code></td>
+			<td>string, array of strings</td>
+			<td>One or more VOD job typess (for list vod job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>label</code></td>
+			<td>string, array of strings</td>
+			<td>One or more VOD job labelss (for list vod job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>sep_state</code></td>
+			<td>string, array of strings</td>
+			<td>One or more static endpoint states (for list job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>ssai_state</code></td>
+			<td>string, array of strings</td>
+			<td>One or more SSAI states (for list job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>region</code></td>
+			<td>string, array of strings</td>
+			<td>One or more regions (for list job requests only)</td>
+		</tr>
+		<tr>
+			<td><code>account_id</code></td>
+			<td>string</td>
+			<td>Search a particular account, or specify ‘*’ to search all accounts. Default value is account API key belongs to</td>
+		</tr>
+		<tr>
+			<td><code>{other_job_fields}</code></td>
+			<td>inferred from the field type</td>
+			<td>Other job fields can be filtered on by specifying their internal name and a value</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+</article>

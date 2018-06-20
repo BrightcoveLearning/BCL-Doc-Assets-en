@@ -1,42 +1,113 @@
 <article class="bcls-article">
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
-    <p>WordPress Brightcove Video Connector allows you to manage Brightcove Video Cloud videos and players within WordPress, and easily embed videos in WordPress pages.</p>
+
+    <p>WordPress Brightcove Video Connector allows you to manage Brightcove Video Cloud videos and players within WordPress,
+      and easily embed videos in WordPress pages.</p>
   </section>
+
   <section class="bcls-section">
-    <h2 id="configuration_steps">Configuration Steps</h2>
+    <h2 id="configuration_steps">Connect to the Brightcove Account</h2>
+
+    <figure class="bcls-figure">
+      <img class="bcls-image" alt="The add account screen." width="800" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/wp-bc-add-account.png"
+      />
+    </figure>
+
     <ol class="bcls-tasklist">
       <li>Navigate to Brightcove settings and click add Brightcove Account</li>
-      <figure class="bcls-figure">
-        <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/wp-bc-add-account.png" alt="The add account screen." width="800">
-      </figure>
       <li>The Source Name can be anything, but using the same name as the account name on Brightcove will make it easier to identify.</li>
       <li>To find account ID, log into Brightcove Studio and look in the top left corner of your dashboard.
         <figure class="bcls-figure">
-          <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/account-id.png" alt= "Account ID.">
+          <img class="bcls-image" alt="Account ID." src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/account-id.png"
+          />
         </figure>
       </li>
-        <li>To get client ID and client secret, you will have to register an application. Navigate to API Authentication and click on Add New Application.
-          <figure class="bcls-figure">
-            <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/api-authentication.png" alt= "API authentication.">
-          </figure>
-        </li>
-        <li>Fill in name and short description.</li>
-        <li>Select an account. Pictured below are all required permissions.
-          <figure class="bcls-figure">
-            <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/recommended_permissions.png" alt= "Account and Permissions." width="800px">
-          </figure>
-        </li>
-        <li>Hit save.</li>
-        <li>Client ID and Client Secret appear.
-          <figure class="bcls-figure">
-            <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/client-id-and-secret.png" alt= "Client ID and Client secret.">
-          </figure>
-          <strong>Be sure to copy and save Client Secret to a secure location. You will not be able to access it again.</strong> </li>
-          <li>Click "Check Credentials." If successful, your videos should be displayed.</li>
-        </ol>
+      <li>To get client ID and client secret, you will have to register an application. Navigate to API Authentication and click
+        on Add New Application.
+        <figure class="bcls-figure">
+          <img class="bcls-image" alt="API authentication." src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/api-authentication.png"
+          />
+        </figure>
+      </li>
+      <li>Fill in name and short description.</li>
+      <li>Select an account. Pictured below are all required permissions.
+        <figure class="bcls-figure">
+          <img class="bcls-image" alt="Account and Permissions." width="800px" src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/recommended_permissions.png"
+          />
+        </figure>
+      </li>
+      <li>Hit save.</li>
+      <li>Client ID and Client Secret appear.
+        <figure class="bcls-figure">
+          <img class="bcls-image" alt="Client ID and Client secret." src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/client-id-and-secret.png"
+          />
+        </figure>
+        <strong>Be sure to copy and save Client Secret to a secure location. You will not be able to access it again.</strong>
+      </li>
+      <li>Click "Check Credentials." If successful, your videos should be displayed.</li>
+    </ol>
 
-        <p>You have now completed configuration of the WordPress-Brightcove connector. Proceed to <a href="https://support.brightcove.com/wordpress-brightcove-connector-using-connector">Using the Connector.</a> </p>
-    </section>
+    <h2>Set the Ingest Profile</h2>
 
+    <p>Version 1.4.1 of the connector and previous hardcode the Video Cloud ingest profile to be "videocloud-default-v1".&nbsp;
+      If the Brightcove account only has Dynamic Delivery or CAE enabled, this ingest profile will not exist and video upload
+      will fail.&nbsp; Below are several option to work around this behavior in the connector.</p>
+
+    <p>&nbsp;</p>
+
+    <ol class="bcls-tasklist">
+      <li>Create a new ingest profile in the Video Cloud account with the default profile name used in the connector. &nbsp;Navigate
+        to Admin-&gt;Ingest Profiles and create a new profile or duplicate an existing profile and name it “videocloud-default-v1”.
+        &nbsp;
+        <figure class="bcls-figure">
+          <img class="bcls-image" alt="Add profile with default name." src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/add-videocloud-default-v1-profile.png"
+          />
+        </figure>
+      </li>
+    </ol>
+
+    <p>&nbsp;</p>
+
+    <ol class="bcls-tasklist">
+      <li>Or change the ingest profile name in the connector source code by first determining which existing ingest profile under
+        Admin-&gt;Ingest in the Video Cloud account that you would like to use. Click on Show API Name and note it down.
+        <figure class="bcls-figure">
+          <img class="bcls-image" width="800" alt="Show profile API name." src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/profiles-show-api-name.png"
+          />
+        </figure>
+
+        <figure class="bcls-figure">
+          <img class="bcls-image" width="800" alt="Select a profile." src="//learning-services-media.brightcove.com/doc-assets/node/18580-wordpress-brightcove-connector-configuration/profiles-select-profile.png"
+          />
+        </figure>
+      </li>
+    </ol>
+
+    <ol class="bcls-tasklist">
+      <li>On the WordPress server, edit
+        <code>wp-content/plugins/brightcove-video-connect/includes/api/class-bc-cms-api.php</code> and change the profile from
+        the default profile name of 'videocloud-default-v1' to the desired profile name.&nbsp; For example, change
+        <br />
+        <code>public function video_upload( $video_id, $video_url, $profile = 'videocloud-default-v1' ) {</code>
+        <br /> to
+        <br />
+        <code>public function video_upload( $video_id, $video_url, $profile = 'multi-platform-standard-static' ) {</code>
+      </li>
+    </ol>
+
+    <ol class="bcls-tasklist">
+      <li>Or modify the connector to use the default ingest profile in the Video Cloud account. To do this, edit
+        <code>wp-content/plugins/brightcove-video-connect/includes/api/class-bc-cms-api.php</code> and comment out the line:
+        <br
+        />
+        <code>$data = array( 'profile' =&gt; sanitize_text_field( $profile ) );</code>
+        <br /> with
+        <code>/* */</code>.</li>
+    </ol>
+
+    <p>You have now completed configuration of the WordPress-Brightcove connector. Proceed to
+      <a href="https://support.brightcove.com/wordpress-brightcove-connector-using-connector">Using the Connector.</a>
+    </p>
+  </section>
 </article>

@@ -5,22 +5,13 @@
 <p>The <span class="”notranslate”">Live API</span> is a REST-based API that allows you to create and manage live streaming events. Optional features include:</p>
 
 <ul>
-	<li>Server-side ad insertion (<span class="”notranslate”">SSAI</span> )</li>
+	<li>Server-side ad insertion ( <span class="”notranslate”">SSAI</span> )</li>
 	<li><span class="”notranslate”">AES-128</span> encryption</li>
 	<li>Create video-on-demand assets from clips taken from the live stream</li>
 	<li><span class="”notranslate”">DVR</span> capability</li>
 	<li>Multiple <span class="”notranslate”">CDNs</span></li>
 </ul>
 </section>
-<!-- <section class="bcls-section">
-<h2 id="state_diagram">State diagram</h2>
-
-<p>The following state diagram will help you understand how live jobs work.</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="State Diagram" src="//learning-services-media.brightcove.com/doc-assets/node/17764-overview-brightcove-live-api/live-architecture-state-live-jobs.png" />
-<figcaption class="bcls-caption--image">State Diagram</figcaption>
-</figure>
-</section> -->
 
 <section class="bcls-section">
 <h2 id="baseURL">Base URL</h2>
@@ -167,7 +158,7 @@ Content-Type: application/json
 
 <ul>
 	<li>Use the <code>playback_url_dvr</code> URL for playback</li>
-	<li>Use a player that has <a href="https://support.brightcove.com/live-dvrux-plugin"><span class="”notranslate”">DVR</span> capability</a></li>
+	<li>Use a player that has <a href="/node/18089"><span class="”notranslate”">DVR</span> capability</a></li>
 </ul>
 
 <p>The <span class="”notranslate”">DVR</span> stream will remain available for 24 hours after the live stream is completed.</p>
@@ -184,6 +175,7 @@ Content-Type: application/json
 
 <ul>
 	<li><a href="#Create_a_Live_Job">Create a Live Job</a></li>
+	<li><a href="#List_Live_Jobs">List a Live Jobs</a></li>
 	<li><a href="#Get_Live_Job_Details">Get Live Job Details</a></li>
 	<li><a href="#Manual_Ad_Cue_Point_Insertion">Manual Ad Cue Point Insertion</a></li>
 	<li><a href="#Stop_a_Live_Job">Stop a Live Job</a></li>
@@ -219,9 +211,17 @@ Content-Type: application/json
 <span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/jobs
 </pre>
 
-<p>This endpoint is used to create live streams via a <code>POST </code> request. In addition to specifying properties of the live stream itself, the request can also specify VOD clips to be generated from the live stream (this can also be done later via the <a href="#vod">endpoint</a>). Details of the fields that can be included in the request body are given in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">API Reference</a>.</p>
+<p>This endpoint is used to create live streams via a <code>POST </code> request. In addition to specifying properties of the live stream itself, the request can also specify VOD clips to be generated from the live stream (this can also be done later via the <a href="#vod">endpoint</a>). Details of the fields that can be included in the request body are given in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Live_Jobs/CreateALiveJobb">API Reference</a>.</p>
 
-<p>The <a href="/node/17765"><span class="”notranslate”">Live API</span> Quick Start</a> walks you through creating a live stream job and setting up a Brightcove Player to play it.</p>
+<p>The <a href="/node/17765"> <span class="”notranslate”">Live API</span> Quick Start</a> walks you through creating a live stream job and setting up a Brightcove Player to play it.</p>
+
+<h3 id="List_Live_Jobs">List Live Jobs</h3>
+
+<pre>
+<span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/jobs
+</pre>
+
+<p>This endpoint is used to list your live streams via a <code>GET </code> request. The endpoint supports pagination, sorting, and search filtering. Details of the fields that can be included in the request body are given in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Live_Jobs/ListLiveJobs">API Reference</a> and some additional information can be found in <a href="/node/18605">Getting a List of Live or VOD Jobs</a>.</p>
 
 <h3 id="Get_Live_Job_Details">Get Live Job Details</h3>
 
@@ -229,7 +229,7 @@ Content-Type: application/json
 <span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/jobs/<span class="bcls-input">:jobId</span>
 </pre>
 
-<p>This endpoint allows you to get the detailed information about a live stream, which is also returned when you originally create the job. See the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Get_Live_Job_Details">API Reference</a> for details of the response fields.</p>
+<p>This endpoint allows you to get the detailed information about a live stream, which is also returned when you originally create the job. See the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Live_Jobs/GetLiveJobDetails">API Reference</a> for details of the response fields.</p>
 
 <h3 id="Manual_Ad_Cue_Point_Insertion">Manual Ad Cue Point Insertion</h3>
 
@@ -237,7 +237,7 @@ Content-Type: application/json
 <span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/jobs/<span class="bcls-input">:jobId</span>/cuepoint
 </pre>
 
-<p>Typically your encoder will be sending cue points for ad breaks, but you can also create an immediate ad break by sending a request to this endpoint. See the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Manual_Ad_Cue_Point_Insertion">API Reference</a> for details.</p>
+<p>Typically your encoder will be sending cue points for ad breaks, but you can also create an immediate ad break by sending a request to this endpoint. See the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Live_Jobs/ManualAdCuePointInsertion">API Reference</a> for details.</p>
 
 <p>Note that a <code>timecode</code> in the form <code>DD:HH:MM:SS</code> is required for the cue point.</p>
 
@@ -247,7 +247,7 @@ Content-Type: application/json
 <span class="bcls-highlight">PUT</span> https://api.bcovlive.io/v1/jobs/<span class="bcls-input">:jobId</span>/cancel
 </pre>
 
-<p>Use this endpoint to stop a live stream immediately. Once cancelled, a live stream cannot be restarted. See the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Live_Jobs-Stop_Live_Job">API Reference</a> for details.</p>
+<p>Use this endpoint to stop a live stream immediately. Once cancelled, a live stream cannot be restarted. See the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Live_Jobs/CancelLiveJob">API Reference</a> for details.</p>
 </section>
 
 <section class="bcls-section">
@@ -261,15 +261,19 @@ Content-Type: application/json
 <span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/vods
 </pre>
 
-<p>The start and end points for the clips can be defined in terms of offsets from the start of the stream or UNIX timestamps. Details of the request body fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-Clips-Create_VOD_Clip">API Reference</a>.</p>
+<p>The start and end points for the clips can be defined in terms of offsets from the start of the stream or UNIX timestamps. Details of the request body fields can be found in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Clips/CreateVodClip">API Reference</a>.</p>
+
+<h3>Get a list of VOD (clip) jobs</h3>
+
+<p>To get a list of your VOD jobs for clips, see <a href="/node/18605">Getting a List of Live or VOD Jobs</a> and the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Clips/ListVodClips">API Reference</a>.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="Managing_SSAI">Managing <span class="”notranslate”">SSAI</span></h2>
 
-<p>Using server-side ad insertion (<span class="”notranslate”">SSAI</span>), you can insert as many ad breaks as you like into your live stream. You can also ingest slate assets (VOD clips) to fill any unused ad time with a be-right-back message or whatever you like.</p>
+<p>Using server-side ad insertion ( <span class="”notranslate”">SSAI</span>), you can insert as many ad breaks as you like into your live stream. You can also ingest slate assets (VOD clips) to fill any unused ad time with a be-right-back message or whatever you like.</p>
 
-<p>More details of setting up <span class="”notranslate”">SSAI</span> can be found in <a href="/node/17763">Server-Side Ad Insertion Using the Brightcove <span class="”notranslate”">Live API</span></a> and the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI">API Reference</a>.</p>
+<p>More details of setting up <span class="”notranslate”">SSAI</span> can be found in <a href="/node/17763">Server-Side Ad Insertion Using the Brightcove <span class="”notranslate”">Live API</span> </a> and the <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-SSAI">API Reference</a>.</p>
 
 <h3 id="Get_Account_Ad_Configurations">Get Account Ad Configurations</h3>
 
@@ -277,7 +281,7 @@ Content-Type: application/json
 <span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/ssai/applications/<span class="bcls-input">:account_id</span>
 </pre>
 
-<p>This endpoint allows you to get all ad configurations that have been set up for an account. Details of the response fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI-Get_Account_Ad_Configurations">API Reference</a>.</p>
+<p>This endpoint allows you to get all ad configurations that have been set up for an account. Details of the response fields can be found in the <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-SSAI-Get_Account_Ad_Configurations">API Reference</a>.</p>
 
 <h3 id="Create_Ad_Configuration">Create Ad Configuration</h3>
 
@@ -285,7 +289,7 @@ Content-Type: application/json
 <span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/ssai/application
 </pre>
 
-<p>Create an ad configuration that defines how ads will be retrieved for <span class="”notranslate”">SSAI</span>. Details of the request body fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI-Create_Ad_Configuration">API Reference.</a></p>
+<p>Create an ad configuration that defines how ads will be retrieved for <span class="”notranslate”">SSAI</span>. Details of the request body fields can be found in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/SSAI/CreateAdConfiguration">API Reference.</a></p>
 
 <h3 id="Get_Ad_Configuration">Get Ad Configuration</h3>
 
@@ -293,7 +297,7 @@ Content-Type: application/json
 <span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/ssai/application/<span class="bcls-input">:application_id</span>
 </pre>
 
-<p>Use this endpoint to get the details of an ad configuration you have created. Details of the response fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI-Get_Ad_Configuration">API Reference</a>.</p>
+<p>Use this endpoint to get the details of an ad configuration you have created. Details of the response fields can be found in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/SSAI/GetuserAdConfigurations">API Reference</a>.</p>
 
 <h3 id="Update_Ad_Configuration">Update Ad Configuration</h3>
 
@@ -301,7 +305,7 @@ Content-Type: application/json
 <span class="bcls-highlight">PUT</span> https://api.bcovlive.io/v1/ssai/application/<span class="bcls-input">:application_id</span>
 </pre>
 
-<p>Update the details of an ad configuration. Details of the request body fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI-Update_Ad_Configuration">API Reference</a>.</p>
+<p>Update the details of an ad configuration. Details of the request body fields can be found in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/SSAI/UpdateAdConfiguration">API Reference</a>.</p>
 
 <h3 id="Get_Slate_Media_Source_Assets">Get Slate Media Source Assets</h3>
 
@@ -309,7 +313,7 @@ Content-Type: application/json
 <span class="bcls-highlight">GET</span> https://api.bcovlive.io/v1/ssai/slates/<span class="bcls-input">:ACCOUNT_ID</span>
 </pre>
 
-<p>Get the slate media assets that have been defined for an account. Slate media assets are used to fill ad break time that is not filled by ads. Details of the response fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI-Get_Slate_Media_Source_Assets">API Reference</a>.</p>
+<p>Get the slate media assets that have been defined for an account. Slate media assets are used to fill ad break time that is not filled by ads. Details of the response fields can be found in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/SSAI/GetUserSlateMediaSourceAssets">API Reference</a>.</p>
 
 <h3 id="Ingest_Slate_Media_Source_Asset">Ingest Slate Media Source Asset</h3>
 
@@ -317,7 +321,7 @@ Content-Type: application/json
 <span class="bcls-highlight">POST</span> https://api.bcovlive.io/v1/ssai/slates
 </pre>
 
-<p>Add a media asset for slates to fill unfilled ad break time. Details of the request body fields can be found in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/live-api/v1/doc/index.html#api-SSAI-Ingest_Slate_Media_Source_Asset">API Reference</a>.</p>
+<p>Add a media asset for slates to fill unfilled ad break time. Details of the request body fields can be found in the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/SSAI/IngestSlateMediaSourceAsset">API Reference</a>.</p>
 
 <h3 id="Delete_Slate_Media_Source_Asset">Delete Slate Media Source Asset</h3>
 
@@ -346,6 +350,11 @@ Content-Type: application/json
 <h2 id="Limitations">Limitations</h2>
 
 <ul>
+  <li>The initial connection from encoder provides the bandwidth information to be created with the Live playlist. If the initial connection is low, even if the job configuration had high output, the playlist will still maintain the same information on the playlist until the following is done:
+    <ul>
+      <li>Encoder is restarted</li>
+      <li>The CDN cache may also need to be cleared</li>
+    </ul>
 	<li>Currently the framerate for input streams is limited to 30 FPS. If you are interested in using a higher frame rate, please contact Support.</li>
 	<li>By default the resolution of the input stream is limited to 1080p.</li>
 	<li>When disconnecting and reconnecting, the stream settings must stay the same. Any changes to the number of audio channels, resolutions, or codec settings will result in unpredictable behavior.</li>

@@ -1,0 +1,194 @@
+<article class="bcls-article">
+
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>As of version 6.2.0+, the Brightcove Native SDK for Android supports methods for creating video and playlist objects from a JSON object.</p>
+<p>
+	This is useful if you want to use a server-side proxy to retrieve video and playlist data from your Brightcove account. With this approach, you won't expose your Policy Keys on the client side of your apps.
+</p>
+
+<p>
+	To create a playable video and playlist object, do the following:
+</p>
+<ol class="bcls-tasklist">
+	<li>Optional: Make a server-side call to the Playback API to return your video or playlist data.</li>
+	<li>
+		Create a JSON-formatted object based on the required fields below.
+	</li>
+	<li>
+		Pass in the JSON-formatted object and call the appropriate method to create the following:
+		<ul>
+			<li>
+				<a href="">Video objects</a>
+			</li>
+			<li>
+				<a href="">Playlist objects</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		Load the returned video or playlist into your player.
+	</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="Video_objects">Video objects</h2>
+
+<p>To create a video object, pass the following information to the <code>buildVideoFromJSON()</code> method:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+			<tr>
+					<th>Field</th>
+					<th>Description</th>
+			</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+			<tr>
+					<td><code>account_id</code></td>
+					<td>The account id associated with the video</td>
+			</tr>
+			<tr>
+					<td><code>id</code></td>
+					<td>The video id</td>
+			</tr>
+			<tr>
+					<td><code>sources</code></td>
+					<td>A JSON array of video sources. Each source in the array must have:
+					<ul>
+						<li>
+							A src field with a valid URL to content
+						</li>
+						<li>
+							For HLS or DASH content, a type field with the mime type of the content
+						</li>
+						<li>
+							For MP4 content, a container field with the value <strong>MP4</strong>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+					<td><code>duration</code></td>
+					<td>The video duration in milliseconds</td>
+			</tr>
+	</tbody>
+</table>
+
+<p>
+	When your server-side proxy returns video data, build a JSON object string with the values specified in the table above.
+</p>
+<pre class="line-numbers"><code class="language-json">{
+&quot;account_id&quot;: &quot;3636334163001&quot;,
+&quot;sources&quot;: [
+{
+	&quot;src&quot;: &quot;http://f1.media.brightcove.com/4/36356334163001/3636334163001_3637454559001_Cascada-Teaser.mp4&quot;,
+	&quot;container&quot;: &quot;MP4&quot;
+}, {
+	&quot;type&quot;: &quot;application/x-mpegURL&quot;,
+	&quot;src&quot;: &quot;http://c.brightcove.com/services/mobile/streaming/index/master.m3u8&quot;
+}],
+&quot;id&quot;: &quot;3637780364001&quot;,
+&quot;duration&quot;: 74700
+}</code></pre>
+
+<p>
+	Convert the JSON string to a JSON object and pass it to the to the <code>buildVideoFromJSON()</code> method:
+</p>
+<pre class="line-numbers"><code class="language-java">try {
+ JSONObject jsonObject = new JSONObject(response);
+ Video video = VideoParser.buildVideoFromJSON(jsonObject, eventEmitter);
+} catch (JSONException e) {
+	e.printStackTrace();
+} catch (VideoParseException e) {
+	e.printStackTrace();
+}</code></pre>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Playlist_objects">Playlist objects</h2>
+
+<p>To create a playlist object, pass the following information to the <code>buildPlaylistFromJSON()</code> method:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+			<tr>
+					<th>Field</th>
+					<th>Description</th>
+			</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+			<tr>
+					<td><code>account_id</code></td>
+					<td>The account id associated with the video</td>
+			</tr>
+			<tr>
+					<td><code>id</code></td>
+					<td>The video id</td>
+			</tr>
+			<tr>
+					<td><code>videos</code></td>
+					<td>A JSON array of video objects. This includes the required fields as described in the <a href="Video_objects">Video objects</a> section.
+				</td>
+			</tr>
+			<tr>
+					<td><code>duration</code></td>
+					<td>The video duration in milliseconds</td>
+			</tr>
+	</tbody>
+</table>
+
+<p>
+	When your server-side proxy returns playlist data, build a JSON object string with the values specified in the table above.
+</p>
+<pre class="line-numbers"><code class="language-json">{
+&quot;id&quot;: &quot;4970066630001&quot;,
+&quot;account_id&quot;: &quot;3636335163001&quot;,
+&quot;name&quot;: &quot;token auth playlist&quot;,
+&quot;videos&quot;: [{
+	&quot;account_id&quot;: &quot;3636335763001&quot;,
+	&quot;id&quot;: &quot;4973773347001&quot;,
+	&quot;sources&quot;: [{
+		&quot;type&quot;: &quot;application/dash+xml&quot;,
+		&quot;src&quot;: &quot;https://brightcove.hs.llnwd.net/v2/unsecured/media/3636334163001/201606/1923/3636334163001_4973820156001_4973773237001.mpd&quot;
+	}],
+	&quot;duration&quot;: 29000
+	},
+	{
+	&quot;account_id&quot;: &quot;3636334463001&quot;,
+	&quot;id&quot;: &quot;4973766826001&quot;,
+	&quot;sources&quot;: [{
+		&quot;type&quot;: &quot;application/dash+xml&quot;,
+		&quot;src&quot;: &quot;http://brightcove.vo.llnwd.net/v1/unsecured/media/3636334163001/201606/2933/3636334163001_4973816542001_4973737826001.mpd&quot;
+	}],
+	&quot;duration&quot;: 29000
+	}
+]
+}</code></pre>
+
+<p>
+	Convert the JSON string to a JSON object and pass it to the <code>buildPlaylistFromJSON()</code> method:
+</p>
+<pre class="line-numbers"><code class="language-java">try {
+ JSONObject jsonObject = new JSONObject(response);
+ Playlist playlist = VideoParser.buildPlaylistFromJSON(jsonObject, eventEmitter);
+} catch (JSONException e) {
+	e.printStackTrace();
+} catch (VideoParseException e) {
+	e.printStackTrace();
+}</code></pre>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Notes">Notes</h2>
+
+<p>If your content is governed by TTL (Time to live) and you want to create a long-lived video object,  you will need to ensure it continues to be playable. This is configured on the CDN that you are using.</p>
+
+</section>
+
+
+</article>
