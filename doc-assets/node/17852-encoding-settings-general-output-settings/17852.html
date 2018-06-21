@@ -84,23 +84,24 @@
 
 <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
 
-<p><strong>Valid Values:</strong> A string</p>
-
 <p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Example:</strong> iphone4</p>
 
 <p><strong>Description:</strong></p>
 
-<p>An optional label for the output. As of API v2, labels must be unique (case insensitive) per job when used on multiple outputs.</p>
+<p>The <code>dynamic_profile_rendition</code> setting specifies that this Output should use settings from the dynamically generated CAE profile, and specifically which rendition of the profile to use settings from.  When dynamic_profile_rendition is set, there is no need to specify encoding settings such as <code>resolution</code>, <code>bitrate</code>, etc.  (See the <a href="/node/18611">CAE Guide</a> for the full list of settings that are automatically set by CAE.)</p>
 
 <pre class="line-numbers">
 <code class="language-json">{
   "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "label": "iphone4"
-    }
+  "generate_dynamic_profile": true,
+  "dynamic_profile_options":{ "max_renditions": 6 },
+  "outputs" :[
+  <span class="bcls-highlight">{"dynamic_profile_rendition": 1},
+  {"dynamic_profile_rendition": 2},
+  {"dynamic_profile_rendition": 3},
+  {"dynamic_profile_rendition": 4},
+  {"dynamic_profile_rendition": 5},
+  {"dynamic_profile_rendition": 6}</span>
   ]
 }</code></pre>
 
