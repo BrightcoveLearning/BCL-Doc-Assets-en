@@ -23,6 +23,74 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="dynamic_profile_options">dynamic_profile_options</h2>
+<code>dynamic_profile_options:Object</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Description:</strong></p>
+
+<p>With CAE the number of outputs and parameters of such outputs may change dynamically for each input file. The <code>dynamic_profile_options</code> settings define the way renditions should be created. See <a href="/node/18610">CAE Settings</a> for details. You must also set <a href="#generate_dynamic_profile">generate_dynamic_profile</a> equal to <code>true</code> to use this feature.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "generate_dynamic_profile": true,
+  <span class="bcls-highlight">"dynamic_profile_options": {
+    "min_renditions": 2,
+    "max_renditions": 8
+  },</span>
+  "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6},
+     {"dynamic_profile_rendition": 7},
+     {"dynamic_profile_rendition": 8}
+  ]
+}</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="generate_dynamic_profile">generate_dynamic_profile</h2>
+<code>generate_dynamic_profile:Boolean</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Valid Values:</strong> true or false</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Description:</strong></p>
+
+<p>With CAE the number of outputs and parameters of such outputs may change dynamically for each input file. To specify limits on the number of outputs to be generated as well as other profile constraints, CAE job request must also include <a href="#dynamic_profile_options">dynamic_profile_options</a> object. The outputs reserved for CAE use should not include <code>resolution</code>, <code>bitrate</code>, or codec-related parameters. Instead, they should include labels <code>dynamic_profile_rendition</code>. The number of outputs reserved for CAE use must match the number specified as <a href="/node/18610#max_renditions"><code>max_renditions</code></a> in <a href="#dynamic_profile_options"><code>dynamic_profile_options</code></a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  <span class="bcls-highlight">"generate_dynamic_profile": true,</span>
+  "dynamic_profile_options": {
+    "min_renditions": 2,
+    "max_renditions": 8
+  },
+  "outputs" :[
+     {"dynamic_profile_rendition": 1},
+     {"dynamic_profile_rendition": 2},
+     {"dynamic_profile_rendition": 3},
+     {"dynamic_profile_rendition": 4},
+     {"dynamic_profile_rendition": 5},
+     {"dynamic_profile_rendition": 6},
+     {"dynamic_profile_rendition": 7},
+     {"dynamic_profile_rendition": 8}
+  ]
+}</code></pre>
+</section>
+
+<section class="bcls-section">
 <h2 id="input">input</h2>
 <code>input:String</code>
 
