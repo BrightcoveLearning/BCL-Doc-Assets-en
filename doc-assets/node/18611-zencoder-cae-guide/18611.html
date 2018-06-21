@@ -44,8 +44,10 @@
   <h3>Support for legacy devices</h3>
   <p>To support older devices that are only capable of <code>Baseline</code> profile H.264 playback, use the <a href="/node/18610#select_baseline_profile_configuration">select_baseline_profile_configuration</a> setting. When this is set, at least one rendition will be encoded with <code>Baseline</code> profile. Additional constraints (codec profile, level, number of reference frames, b-frames, etc.) can be controlled with a custom <a href="/node/18610#video_configurations">video_configurations</a> setting.</p>
   <h3>VBR variability control</h3>
-  <p>The maximum peak bitrates can be controlled with the <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> and <a href="/node/18610#bitrate_cap_offset">bitrate_cap_offset</a> settings. If a bitrate “<code>R</code>” is selected for a rendition, then the decoder_bitrate_cap is calculated as:</p>
+  <p>The maximum peak bitrates can be controlled with the <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> and <a href="/node/18610#bitrate_cap_offset">bitrate_cap_offset</a> settings. If a bitrate “<code>R</code>” is selected for a rendition, then the <a href="/node/17879#decoder_bitrate_cap">decoder_bitrate_cap</a> is calculated as:</p>
   <pre class="line-numbers"><code class="language-javascript">decoder_bitrate_cap = R * bitrate_cap_to_bitrate_ratio + bitrate_cap_offset</code></pre>
-  <p></p>
+  <p>Similarly, the decoder buffer limits can be controlled with the <a href="/node/18610#buffer_size_to_bitrate_ratio">buffer_size_to_bitrate_ratio</a> and <a href="/node/18610#buffer_size_offset">buffer_size_offset</a> settings.  The <a href="/node/17879#decoder_buffer_size">decoder_buffer_size</a> is calculated as:</p>
+  <pre class="line-numbers"><code class="language-javascript">decoder_buffer_size = R * buffer_size_to_bitrate_ratio + buffer_size_offset</code></pre>
+  <p>Note that peak bitrate and buffer limits may also be constrained by the codec profile and/or level settings.  Some general device compatibility issues can be avoided by limiting <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> to 2.0 or below, and <a href="/node/18610#buffer_size_to_bitrate_ratio">buffer_size_to_bitrate_ratio</a> to 2.0 * GOP length (in seconds).</p>
 </section>
 </article>
