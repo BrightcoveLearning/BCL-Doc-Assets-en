@@ -43,5 +43,9 @@
   <p>To ensure the bitrate ladder always starts with a low enough bitrate, use the <a href="/node/18610#max_first_rendition_bitrate">max_first_rendition_bitrate</a> setting. The lower the first rendition bitrate is set, the less likely a video player will need to buffer due to low connection speeds. Additionally, if the streaming manifest indicates to load the lowest bitrate first, this will also directly affect startup latency.</p>
   <h3>Support for legacy devices</h3>
   <p>To support older devices that are only capable of <code>Baseline</code> profile H.264 playback, use the <a href="/node/18610#select_baseline_profile_configuration">select_baseline_profile_configuration</a> setting. When this is set, at least one rendition will be encoded with <code>Baseline</code> profile. Additional constraints (codec profile, level, number of reference frames, b-frames, etc.) can be controlled with a custom <a href="/node/18610#video_configurations">video_configurations</a> setting.</p>
+  <h3>VBR variability control</h3>
+  <p>The maximum peak bitrates can be controlled with the <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> and <a href="/node/18610#bitrate_cap_offset">bitrate_cap_offset</a> settings. If a bitrate “<code>R</code>” is selected for a rendition, then the decoder_bitrate_cap is calculated as:</p>
+  <pre class="line-numbers"><code class="language-javascript">decoder_bitrate_cap = R * bitrate_cap_to_bitrate_ratio + bitrate_cap_offset</code></pre>
+  <p></p>
 </section>
 </article>
