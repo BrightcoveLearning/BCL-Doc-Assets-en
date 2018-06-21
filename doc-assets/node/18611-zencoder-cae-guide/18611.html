@@ -53,6 +53,150 @@
 <section class="bcls-section">
   <h2 id="CAE_and_Segmented_outputs">CAE and segmented outputs</h2>
   <p>CAE is compatible with segmented outputs in Zencoder.  On the <code>Output</code> rendition settings, set the <a href="/node/17852#type">type</a> as <code>segmented</code> and the appropriate <a href="/node/17863#segment_seconds">segment_seconds</a> value. Also, <a href="/node/18610#keyframe_rate">keyframe_rate</a> and <a href="/node/18610#fixed_keyframe_interval">fixed_keyframe_interval</a> settings must be set in dynamic_profile_options.</p>
-  
+  <h3>CAE - HLS example</h3>
+<pre class="line-numbers"><code class="language-json">{
+ "input": "s3://test_bucket/test_media.mp4",
+ "generate_dynamic_profile": true,
+ "dynamic_profile_options": {
+   "max_renditions": 6,
+   "min_renditions": 2,
+   "select_baseline_profile_configuration": true,
+   "keyframe_rate": "0.5",
+   "fixed_keyframe_interval": "true"
+ },
+ "outputs": [
+   {
+     "label": "CAE1",
+     "dynamic_profile_rendition": 1,
+     "base_url": "s3://test_bucket/outputs/HLS_CAE/CAE1",
+     "filename": "CAE1.m3u8",
+     "type": "segmented",
+     "segment_seconds": 2,
+     "byte_range_segmenting": true,
+     "generate_keyframe_manifest": "true",
+     "hls_protocol_version": 7,
+     "skip_audio": true
+   },
+   {
+     "label": "CAE2",
+     "dynamic_profile_rendition": 2,
+     "base_url": "s3://test_bucket/outputs/HLS_CAE/CAE2",
+     "filename": "CAE2.m3u8",
+     "type": "segmented",
+     "segment_seconds": 2,
+     "byte_range_segmenting": true,
+     "generate_keyframe_manifest": "true",
+     "hls_protocol_version": 7,
+     "skip_audio": true
+   },
+   {
+     "label": "CAE3",
+     "dynamic_profile_rendition": 3,
+     "base_url": "s3://test_bucket/outputs/HLS_CAE/CAE3",
+     "filename": "CAE3.m3u8",
+     "type": "segmented",
+     "segment_seconds": 2,
+     "byte_range_segmenting": true,
+     "generate_keyframe_manifest": "true",
+     "hls_protocol_version": 7,
+     "skip_audio": true
+   },
+   {
+     "label": "CAE4",
+     "dynamic_profile_rendition": 4,
+     "base_url": "s3://test_bucket/outputs/HLS_CAE/CAE4",
+     "filename": "CAE4.m3u8",
+     "type": "segmented",
+     "segment_seconds": 2,
+     "byte_range_segmenting": true,
+     "generate_keyframe_manifest": "true",
+     "hls_protocol_version": 7,
+     "skip_audio": true
+   },
+   {
+     "label": "CAE5",
+     "dynamic_profile_rendition": 5,
+     "base_url": "s3://test_bucket/outputs/HLS_CAE/CAE5",
+     "filename": "CAE5.m3u8",
+       "type": "segmented",
+       "segment_seconds": 2,
+       "byte_range_segmenting": true,
+       "generate_keyframe_manifest": "true",
+       "hls_protocol_version": 7,
+       "skip_audio": true
+     },
+     {
+       "label": "CAE6",
+       "dynamic_profile_rendition": 6,
+       "base_url": "s3://test_bucket/outputs/HLS_CAE/CAE6",
+       "filename": "CAE6.m3u8",
+       "type": "segmented",
+       "segment_seconds": 2,
+       "byte_range_segmenting": true,
+       "generate_keyframe_manifest": "true",
+       "hls_protocol_version": 7,
+       "skip_audio": true
+     }
+     {
+       "label": "Audio",
+       "audio_bitrate": "128",
+       "type": "segmented",
+       "segment_seconds": 2,
+       "byte_range_segmenting": true,
+       "skip_video": true,
+       "base_url": "s3://test_bucket/outputs/HLS_CAE/Audio/128k/",
+       "filename": "audio_128k.ac3"
+     },
+     {
+       "base_url": "s3://test_bucket/outputs/HLS_CAE/",
+       "filename": "master_playlist.m3u8",
+       "hls_protocol_version": 7,
+       "type": "playlist",
+       "allow_skipped_sources": true,
+       "alternate_audio": {
+          "128k_audio": {
+           "path": "Audio/128k/audio_128k.m3u8",
+           "language": "en",
+           "source": "Audio"
+         }
+       }
+       ],
+       "streams": [
+         {
+           "path": "CAE1/CAE1.m3u8",
+           "source": "CAE1",
+           "audio": "128k_audio"
+         },
+         {
+           "path": "CAE2/CAE2.m3u8",
+           "source": "CAE2",
+           "audio": "128k_audio"
+         },
+         {
+           "path": "CAE3/CAE3.m3u8",
+           "source": "CAE3",
+           "audio": "128k_audio"
+         },
+         {
+           "path": "CAE4/CAE4.m3u8",
+           "source": "CAE4",
+           "audio": "128k_audio"
+         },
+         {
+           "path": "CAE5/CAE5.m3u8",
+           "source": "CAE5",
+           "audio": "128k_audio"
+         },
+         {
+           "path": "CAE6/CAE6.m3u8",
+           "source": "CAE6",
+           "audio": "128k_audio"
+         }
+       ]
+     }
+   ]
+  }
+</code></pre>
+
 </section>
 </article>
