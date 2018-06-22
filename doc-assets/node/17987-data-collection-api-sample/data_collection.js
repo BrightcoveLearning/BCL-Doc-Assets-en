@@ -176,7 +176,7 @@
     // event logger
     function logEvent(eventType, event, data, dateTime) {
       var str = "";
-      str += "<span class=\"" + eventType + "\">" + dateTime + "<br />" + eventType + ": " + event;
+      str += "<span class=\"" + eventType + "\">" + dateTime + "<br>" + eventType + ": " + event;
       if (data !== "") {
         str += " (" + data + " )";
       }
