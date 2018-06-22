@@ -23,13 +23,13 @@
           "video_name": "Sea Turtle",
           "id": "4445295617001",
           "src": "//f1.media.brightcove.com/12/1752604059001/1752604059001_4445372009001_4445295617001.mp4?pubId=1752604059001&videoId=4445295617001",
-          "poster": "https://httpsak-a.akamaihd.net/1752604059001/1752604059001_4445372001001_4445295617001-vs.jpg?pubId=1752604059001&videoId=4445295617001"
+          "poster": "//httpsak-a.akamaihd.net/1752604059001/1752604059001_4445372001001_4445295617001-vs.jpg?pubId=1752604059001&videoId=4445295617001"
         },
         {
           "video_name": "Great Horned Owl",
           "id": "5566517295001",
           "src": "//f1.media.brightcove.com/4/57838016001/57838016001_5565773114001_5565770450001.mp4?pubId=1752604059001&videoId=5566517295001",
-          "poster": "http://f1.media.brightcove.com/8/57838016001/57838016001_5565771700001_5565770450001-vs.jpg?pubId=1752604059001&videoId=5566517295001"
+          "poster": "/f1.media.brightcove.com/8/57838016001/57838016001_5565771700001_5565770450001-vs.jpg?pubId=1752604059001&videoId=5566517295001"
         }
       ]
     },
