@@ -3,6 +3,7 @@
 <h2 id="Overview">Overview</h2>
 
 <p>Context Aware Encoding creates multiple renditions of your source video based on guidelines you provide, but also based on the characteristics of the video itself. This helps to avoid the cost of transcoding and storing your videos by creating renditions that will be essentially worthless, given the characteristics of the source.</p>
+<p>See the <a href="/node/18611">CAE Guide</a> for additional information and recommendations on settings.</p>
 </section>
 
 <section class="bcls-section">
@@ -523,22 +524,6 @@
     "dynamic_profile_options": {
       "min_renditions": 2,
       "max_renditions": 10,
-      "min_resolution": {
-        "height": 180,
-        "width": 320
-      },
-      "max_resolution": {
-        "height": 1080,
-        "width": 1920
-      },
-      "max_frame_rate": 60,
-      "keyframe_rate": 0.5,
-      "min_bitrate": 300,
-      "max_bitrate": 20000,
-      "max_first_rendition_bitrate": 700,
-      "min_granularity": 20,
-      "max_granularity": 80,
-      "video_codec": "h264",
       "bitrate_cap_to_bitrate_ratio": 1.5,
       "buffer_size_to_bitrate_ratio": 2.5,
       <span class="bcls-highlight">"bitrate_cap_offset": 128</span>
@@ -571,26 +556,43 @@
     "dynamic_profile_options": {
       "min_renditions": 2,
       "max_renditions": 10,
-      "min_resolution": {
-        "height": 180,
-        "width": 320
-      },
-      "max_resolution": {
-        "height": 1080,
-        "width": 1920
-      },
-      "max_frame_rate": 60,
-      "keyframe_rate": 0.5,
-      "min_bitrate": 300,
-      "max_bitrate": 20000,
-      "max_first_rendition_bitrate": 700,
-      "min_granularity": 20,
-      "max_granularity": 80,
-      "video_codec": "h264",
       "bitrate_cap_to_bitrate_ratio": 1.5,
       "buffer_size_to_bitrate_ratio": 2.5,
       bitrate_cap_offset": 128,
       <span class="bcls-highlight">"buffer_size_offset": 100</span>
+    }
+  }</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="quality_rate_tune">quality_rate_tune</h2>
+<code>quality_rate_tune:Number</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options">dynamic_profile_options</a></p>
+
+<p><strong>Valid Values:</strong> -20.0 - 20.0</p>
+
+
+<p><strong>Default Value:</strong> 0</p>
+
+<p><strong>Compatible Job Types:</strong> VOD</p>
+
+<p><strong>Example:</strong> 2</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Quality vs rate tuning parameter.</p>
+
+<pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options": {
+      "min_renditions": 2,
+      "max_renditions": 10,
+      <span class="bcls-highlight">"quality_rate_tune": 2</span>
     }
   }</code></pre>
 </section>
@@ -620,26 +622,6 @@
     "dynamic_profile_options": {
       "min_renditions": 2,
       "max_renditions": 10,
-      "min_resolution": {
-        "height": 180,
-        "width": 320
-      },
-      "max_resolution": {
-        "height": 1080,
-        "width": 1920
-      },
-      "max_frame_rate": 60,
-      "keyframe_rate": 0.5,
-      "min_bitrate": 300,
-      "max_bitrate": 20000,
-      "max_first_rendition_bitrate": 700,
-      "min_granularity": 20,
-      "max_granularity": 80,
-      "video_codec": "h264",
-      "bitrate_cap_to_bitrate_ratio": 1.5,
-      "buffer_size_to_bitrate_ratio": 2.5,
-      bitrate_cap_offset": 128,
-      "buffer_size_offset": 100
       <span class="bcls-highlight">"select_baseline_profile_configuration": true</span>
     }
   }</code></pre>
@@ -670,26 +652,6 @@
     "dynamic_profile_options": {
       "min_renditions": 2,
       "max_renditions": 10,
-      "min_resolution": {
-        "height": 180,
-        "width": 320
-      },
-      "max_resolution": {
-        "height": 1080,
-        "width": 1920
-      },
-      "max_frame_rate": 60,
-      "keyframe_rate": 0.5,
-      "min_bitrate": 300,
-      "max_bitrate": 20000,
-      "max_first_rendition_bitrate": 700,
-      "min_granularity": 20,
-      "max_granularity": 80,
-      "video_codec": "h264",
-      "bitrate_cap_to_bitrate_ratio": 1.5,
-      "buffer_size_to_bitrate_ratio": 2.5,
-      bitrate_cap_offset": 128,
-      "buffer_size_offset": 100,
       <span class="bcls-highlight">"video_configurations": [
         {
           "width": 1920,
@@ -758,6 +720,43 @@
 
 <h3>HDR settings</h3>
 <p>CAE also supports HDR10 and the following settings can be included in <code>dynamic_profile_options</code>.</p>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Additional Settings</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Description</th>
+			<th>Default</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="/node/17879#master_display"><code>master_display</code></a></td>
+			<td>Object</td>
+			<td>Hash containing color volume and luminance settings for HDR outputs.</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td><a href="/node/17879#max_content_light_level"><code>max_content_light_level</code></a></td>
+			<td>Integer</td>
+			<td>Maximum light level for the content as a whole nits or candelas per square meter (cd/m2) - integer values.</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td><a href="/node/17879#max_frame_average_light_level"><code>max_frame_average_light_level</code></a></td>
+			<td>Integer</td>
+			<td>Maximum average light level for content frames nits or candelas per square meter (cd/m2) - integer values. Although values up to 10000 are allowed, values in the 100-200 range will generally produce the best results.</td>
+			<td>none</td>
+		</tr>
+	</tbody>
+</table>
+
+"master_display": https://support.brightcove.com/zencoder-encoding-settings-hdr10#master_display
+
+"max_content_light_level: https://support.brightcove.com/zencoder-encoding-settings-hdr10#max_content_light_level
+
+"max_content_light_level": https://support.brightcove.com/zencoder-encoding-settings-hdr10#max_content_light_level
 </section>
 
 <section class="bcls-section">
@@ -775,7 +774,7 @@ b
 			<th>Name</th>
 			<th>Type</th>
 			<th>Description</th>
-			<th>Required</th>
+			<th>Required?</th>
 		</tr>
 	</thead>
 	<tbody class="bcls-table__body">
@@ -783,55 +782,55 @@ b
 			<td><code>width</code></td>
 			<td>Integer</td>
 			<td>Video frame width [pixels]</td>
-			<td style="text-align:center"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
+			<td style="text-align:center">required</td>
 		</tr>
 		<tr>
 			<td><code>height</code></td>
 			<td>Integer</td>
 			<td>Video frame height [pixels]</td>
-			<td style="text-align:center"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
+			<td style="text-align:center">required</td>
 		</tr>
 		<tr>
 			<td><code>sample_aspect_ratio</code></td>
 			<td>Integer:Integer pair</td>
 			<td>Sample aspect ratio (e.g. 1:1, 4:3)</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 		<tr>
 			<td><code>frame_rate</code></td>
 			<td>Number</td>
 			<td>Video frame rate [fps]</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 		<tr>
 			<td><code>video_codec_profile</code></td>
 			<td>String</td>
 			<td>video codec profile</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 		<tr>
 			<td><code>video_codec_level</code></td>
 			<td>String</td>
 			<td>video codec level</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 		<tr>
 			<td><code>video_reference_frames</code></td>
 			<td>Integer</td>
 			<td>Constraint on number of reference frames. Default=4 (3 for H.264 baseline).</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 		<tr>
 			<td><code>video_bframes</code></td>
 			<td>Integer</td>
 			<td>Constraint on number of B frames. Default=3 (0 for H.264 baseline).</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 		<tr>
 			<td><code>required</code></td>
 			<td>Boolean</td>
 			<td>Setting this to true will guarantee the suggested configuration settings in the output. Default = false.</td>
-			<td style="text-align:center"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center">optional</td>
 		</tr>
 	</tbody>
 </table>

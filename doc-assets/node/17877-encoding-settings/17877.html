@@ -17,6 +17,16 @@
 			<td>The API key for your Zencoder account.</td>
 		</tr>
 		<tr>
+			<td><a href="/node/17878#dynamic_profile_options"><code>dynamic_profile_options</code></a></td>
+			<td><span class="none">none</span></td>
+			<td>With CAE the number of outputs and parameters of such outputs may change dynamically for each input file. The dynamic_profile_options settings define the way renditions should be created.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/17878#generate_dynamic_profile"><code>generate_dynamic_profile</code></a></td>
+			<td>false</td>
+			<td>With CAE the number of outputs and parameters of such outputs may change dynamically for each input file. </td>
+		</tr>
+		<tr>
 			<td><a href="/node/17878#input"><code>input</code></a></td>
 			<td><span class="none">none</span></td>
 			<td>An HTTP, S3, Cloud Files, GCS, FTP, FTPS, SFTP, Azure, or Aspera URL where we can download file to transcode.</td>
@@ -118,6 +128,11 @@
 			<td>An optional label for this output.</td>
 		</tr>
 		<tr>
+			<td><a href="/node/17852#dynamic_profile_rendition"><code>dynamic_profile_rendition</code></a></td>
+			<td><span class="none">none</span></td>
+			<td>The dynamic_profile_rendition setting specifies that this Output should use settings from the dynamically generated CAE profile, and specifically which rendition of the profile to use settings from.</td>
+		</tr>
+		<tr>
 			<td><a href="/node/17852#url"><code>url</code></a></td>
 			<td><span class="none">none</span></td>
 			<td>A S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, HTTP, or RTMP URL where we'll put the transcoded file.</td>
@@ -196,6 +211,122 @@
 			<td><a href="/node/17852#rtmp_keep_alive"><code>rtmp_keep_alive</code></a></td>
 			<td>false</td>
 			<td>Send empty script packets in an RTMP output when no data is being recieved.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="cae-settings">CAE Settings</h2>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Setting</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="/node/18610#min_renditions"><code>min_renditions</code></a></td>
+			<td>1</td>
+			<td>The minium number of renditions to generate.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#The minium number of renditions to generate"><code>The minium number of renditions to generate</code></a></td>
+			<td>8</td>
+			<td>The maximum number of renditions to generate.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#min_resolution"><code>min_resolution</code></a></td>
+			<td>192x108</td>
+			<td>Minimum resolution to be considered for the ladder.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#max_resolution"><code>max_resolution</code></a></td>
+			<td>source resolution</td>
+			<td>Maximum resolution to be considered for the ladder.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#max_frame_rate"><code>max_frame_rate</code></a></td>
+			<td>30</td>
+			<td>Maximum frame rate that can be used.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#keyframe_rate"><code>keyframe_rate</code></a></td>
+			<td>0.5</td>
+			<td>Keyframe rate. This value can be either 0.5 or 1. For SSAI enabled content, this value needs to be 1.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#fixed_frame_rate"><code>fixed_frame_rate</code></a></td>
+			<td>true</td>
+			<td>Instructs generator to use same frame rate across all renditions. If false, H.264 baseline profile renditions at resolutions below 360p will be assigned halved frame rate.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#min_bitrate"><code>min_bitrate</code></a></td>
+			<td>200</td>
+			<td>Minimum bitrate [kbps] that can be used.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#max_bitrate"><code>max_bitrate</code></a></td>
+			<td>15000</td>
+			<td>Maximum bitrate [kbps] that can be used.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#max_first_rendition_bitrate"><code>max_first_rendition_bitrate</code></a></td>
+			<td>400</td>
+			<td>Maximum bitrate [kbps] that can be used for first rendition.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#min_granularity"><code>min_granularity</code></a></td>
+			<td>30</td>
+			<td>Minimum relative change in bitrate between renditions.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#max_granularity"><code>max_granularity</code></a></td>
+			<td>90</td>
+			<td>Maximum relative change in bitrate between renditions.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#video_codec"><code>video_codec</code></a></td>
+			<td>h264</td>
+			<td>Video codec to use.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#bitrate_cap_to_bitrate_ratio"><code>bitrate_cap_to_bitrate_ratio</code></a></td>
+			<td>1.3</td>
+			<td>Ratio of maximum bit rate to average bitrate to be used for VBR encoding.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#buffer_size_to_bitrate_ratio"><code>buffer_size_to_bitrate_ratio</code></a></td>
+			<td>2.0</td>
+			<td>Ratio of decoder buffer size to average bitrate to be used for VBR encoding.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#bitrate_cap_offset"><code>bitrate_cap_offset</code></a></td>
+			<td>64</td>
+			<td>Constant added when computing maximum bitrate.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#buffer_size_offset"><code>buffer_size_offset</code></a></td>
+			<td>85</td>
+			<td>Constant added when computing VBV buffer size.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#rtmp_keep_alive"><code>quality_rate_tune</code></a></td>
+			<td>0</td>
+			<td>Quality vs rate tuning parameter.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#select_baseline_profile_configuration"><code>select_baseline_profile_configuration</code></a></td>
+			<td>true</td>
+			<td>At least one rendition used in the profile will be baseline profile.</td>
+		</tr>
+		<tr>
+			<td><a href="/node/18610#video_configurations"><code>video_configurations</code></a></td>
+			<td><apan class="none">none</apan></td>
+			<td>An array of structures describing resolutions, frame rates and associated codec settings that should be preferentially or mandatorily generated as part of the CAE encoding.</td>
 		</tr>
 	</tbody>
 </table>
