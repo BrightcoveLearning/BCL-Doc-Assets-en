@@ -2,10 +2,8 @@ var codeBlocks;
 var BCLS = ( function (window, document, profiles_array) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
-                requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
-        navLabel = [],
-        standardProfileList = ['screencast-1280', 'smart-player-transition', 'Live - Standard', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'Live - Premium HD', 'Live - HD', 'single-bitrate-standard', 'high-resolution'];
+        navLabel = [];
         /**
          * determines whether specified item is in an array
          *
@@ -170,17 +168,13 @@ var BCLS = ( function (window, document, profiles_array) {
             td,
             a,
             content;
-        iMax = data.BCLSprofilesArray.length;
+        iMax = data.profiles_array.length;
         // massage data
         for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesArray[i];
+            item = data.profiles_array[i];
             item.videoRenditions = 0;
             item.audioRenditions = 0;
             item.imageRenditions = 0;
-            // add legacy description if none
-            if (!isDefined(item.description)) {
-                item.description = 'legacy profile - not recommended for use';
-            }
 
             jMax = item.renditions.length;
             item.numRenditions = jMax;
@@ -213,10 +207,10 @@ var BCLS = ( function (window, document, profiles_array) {
         profileTableNode.appendChild(profiletheadNode);
         profileTableNode.appendChild(profiletbodyNode);
         fragment.appendChild(newSectionNode);
-        // bclslog('data.BCLSprofilesArray', data.BCLSprofilesArray);
-        iMax = data.BCLSprofilesArray.length;
+        // bclslog('data.profiles_array', data.profiles_array);
+        iMax = data.profiles_array.length;
         for (i = 0; i < iMax; i++) {
-            item = data.BCLSprofilesArray[i];
+            item = data.profiles_array[i];
             tr = document.createElement('tr');
             profiletbodyNode.appendChild(tr);
             td = document.createElement('td');
@@ -298,7 +292,7 @@ var BCLS = ( function (window, document, profiles_array) {
             profilePre,
             profileCode,
             i, j, jMax,
-            iMax = data.BCLSprofilesArray.length,
+            iMax = data.profiles_array.length,
             headings,
             profile,
             rendition,
@@ -310,7 +304,7 @@ var BCLS = ( function (window, document, profiles_array) {
             var headersArray = [],
                 l,
                 lMax;
-            profile = data.BCLSprofilesArray[i];
+            profile = data.profiles_array[i];
             // remove id's and other stuff from data
             delete profile.id;
             delete profile.version;
@@ -460,10 +454,10 @@ var BCLS = ( function (window, document, profiles_array) {
                         //   bclslog('response', httpRequest.responseText);
                           tmpArr = JSON.parse(httpRequest.responseText);
                           iMax = tmpArr.length;
-                          data.BCLSprofilesArray = [];
+                          data.profiles_array = [];
                           for (i = 0; i < iMax; i += 1) {
                               if (isItemInArray(standardProfileList, tmpArr[i].name)) {
-                                  data.BCLSprofilesArray.push(tmpArr[i]);
+                                  data.profiles_array.push(tmpArr[i]);
                               }
                           }
                           buildSummaryTable();
