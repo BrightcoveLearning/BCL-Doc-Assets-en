@@ -1,7 +1,7 @@
 var codeBlocks;
-var BCLS = ( function (window, document, bclsProfiles_cached) {
+var BCLS = ( function (window, document, profiles_array) {
     var  mainSection = document.querySelector('.bcls-article'),
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
                 requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
         navLabel = [],
