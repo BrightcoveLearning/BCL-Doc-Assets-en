@@ -447,7 +447,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     }
     function getProfileData() {
         var httpRequest = new XMLHttpRequest(),
-            proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+            proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
             i,
             iMax,
             tmpArr,
