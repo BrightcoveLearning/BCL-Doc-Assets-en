@@ -1,0 +1,257 @@
+<article class="bcls-article">
+<section class="bcls-section">
+  <h2 id="Introduction">Introduction</h2>
+  <p>Responsive sizing means resizing player in response to changes in the size of the bounding window, while maintaining the aspect ratio, so that the video is not letterboxed (see image below).
+  </p>
+  <figure class="bcls-figure"><img class="bcls-image" alt="Letterbox Sample" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/responsive-sizing/responsive_img1.png" />
+    <figcaption class="bcls-caption--image">Letterbox Sample
+    </figcaption>
+  </figure>
+  <p>When you embed a video player in a page, you will notice that it does not resize with the browser window. This occurs because, by default, the video player is given a fixed width and height, preventing it from responding to changes in the browser. One aspect of responsive web design is ensuring that elements within your page adapt gracefully to different screen sizes.
+  </p>
+  <aside class="bcls-aside bcls-aside--information">The samples in this document do not address all the aspects of responsive web design, which might include font changes and whole layout transformations.
+  </aside>
+</section>
+
+<section class="bcls-section">
+  <h2 id="The_player">The player</h2>
+  <p>Resize the browser to see how the video player resizes while maintaining the video aspect ratio. You should not see any letter-boxing around the video. Note that this document page has a maximum width for content.
+  </p>
+  <div style="display: block; position: relative; max-width: 100%;">
+    <div style="padding-top: 56.25%;">
+      <iframe style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;" src="//players.brightcove.net/1752604059001/VyqgG8mql_default/index.html?videoId=4093643993001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- id="player" -->
+<section class="bcls-section">
+  <h2 id="How_it_works">How it works</h2>
+  <p>The following sections explain the player and the HTML code used in the example.
+  </p>
+  <h3>Create a responsive player
+  </h3>
+  <p>While you can manually add HTML to your player embed code to create a responsive player, the easiest way is to use the <strong>Players</strong> module in Studio.
+  </p>
+  <p>Follow these steps to create a responsive player:
+  </p>
+  <ol class="bcls-tasklist">
+    <li>In the <strong>Players</strong> module, create a new player or use an existing one.</li>
+    <li>Locate the <strong>Settings</strong> section and click <strong>Edit</strong>.</li>
+    <li>Set the <strong>Sizing</strong> property to <strong>Responsive</strong>.
+      <figure class="bcls-figure"><img class="bcls-image" alt="Responsive Size Settings" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/responsive-sizing/responsive_setting.png" />
+        <figcaption class="bcls-caption--image">Responsive Size Settings
+        </figcaption>
+      </figure>
+    </li>
+    <li>Optional: You can add a <strong>width</strong> property in the <strong>Player Dimensions</strong> setting. With a responsive player, this sets a maximum width for the player.</li>
+    <li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+    <li><p>
+      <span class="video-cloud-only">In the <strong>Media</strong> module, select a video and publish it with this player.</span><span class="player-only">Assign video content to the player and publish it.</span></p>
+    <aside class="bcls-aside bcls-aside--tip">You can also set the <strong>Sizing</strong> property to <strong>Responsive</strong> when you publish a video from the <strong>Media</strong> module.</aside></li>
+    <li>Copy either the Standard (iframe) or Advanced (In-Page) embed code and paste it into a new HTML file.</li>
+  </ol>
+  <h3>The player embed code
+  </h3>
+  <p>When you copy the Standard (iframe) embed code into your HTML page, notice that the player is wrapped in two
+    <code>&lt;div&gt;
+    </code> containers. Your code should look similar to the following:
+  </p>
+  <ul>
+    <li>Lines 1-10: Is the embed code that you copied when publishing a video with the player.</li>
+    <li>Line 1: Defines an outer container that sets the maximum width for the player. The default is set to 100%. If you set a width in Studio, your player will be responsive up to the maximum width size.</li>
+    <li>Line 2: Defines an inner container that uses an intrinsic ratio to set the height and maintain the correct aspect ratio. To learn more, see the <a href="#IntrinsicRatio">Understand intrinsic ratio</a> section.</li>
+    <li>Lines 3-8: Contain the player code for the iframe implementation. Notice that line 3 has a
+      <code>style
+      </code> attribute which positions the player to fill its parent container. This allows the player to change size as the browser changes size.</li>
+  </ul>
+  <pre class="line-numbers"><code class="language-html">&lt;div style=&quot;position: relative; display: block; max-width: 100%;&quot;&gt;
+&lt;div style=&quot;padding-top: 56.25%;&quot;&gt;
+&lt;iframe src=&quot;//players.brightcove.net/1752604059001/default_default/index.html?videoId=5802784116001&quot;
+  allowfullscreen
+  webkitallowfullscreen
+  mozallowfullscreen
+  style=&quot;position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;&quot;&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </section>
+
+  <section class="bcls-section">
+      <h2 id="iframe_example">iframe example</h2>
+      <p>When you copy the Standard (iframe) embed code into your HTML page, your code should look similar to this:
+      </p>
+      <div class="video-cloud-only">
+        <pre class="line-numbers"><code class="language-html">&lt;div style=&quot;position: relative; display: block; max-width: 640px;&quot;&gt;
+&lt;div style=&quot;padding-top: 56.25%;&quot;&gt;
+  &lt;iframe src=&quot;//players.brightcove.net/1752604059001/default_default/index.html?videoId=5802784116001&quot;
+    allowfullscreen
+    webkitallowfullscreen
+    mozallowfullscreen
+    style=&quot;position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;&quot;&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+      <div class="player-only">
+        <pre class="line-numbers"><code class="language-html">&lt;div style=&quot;position: relative; display: block; max-width: 640px;&quot;&gt;
+&lt;div style=&quot;padding-top: 56.25%;&quot;&gt;
+  &lt;iframe src=&quot;//players.brightcove.net/1752604059001/VyqgG8mql_default/index.html&quot;
+    allowfullscreen
+    webkitallowfullscreen
+    mozallowfullscreen
+    style=&quot;position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;&quot;&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+  </section>
+
+<section class="bcls-section">
+    <h2 id="In-Page_embed_example">In-Page embed example</h2>
+    <p>When you copy the Advanced (In-Page) embed code into your HTML page, your code should look similar to this:
+    </p>
+    <div class="video-cloud-only">
+      <pre class="line-numbers"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+
+&lt;head&gt;
+&lt;title&gt;Responsive Brightcove player&lt;/title&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;div style=&quot;position: relative; display: block; max-width: 640px;&quot;&gt;
+&lt;div style=&quot;padding-top: 56.25%;&quot;&gt;
+  &lt;video data-video-id=&quot;5802784116001&quot;
+    data-account=&quot;1752604059001&quot;
+    data-player=&quot;default&quot;
+    data-embed=&quot;default&quot;
+    data-application-id
+    class=&quot;video-js&quot;
+    controls
+    style=&quot;position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;&quot;&gt;&lt;/video&gt;
+  &lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+    <div class="player-only">
+      <pre class="line-numbers"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+
+&lt;head&gt;
+&lt;title&gt;Responsive Brightcove player&lt;/title&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;div style=&quot;position: relative; display: block; max-width: 640px;&quot;&gt;
+&lt;div style=&quot;padding-top: 56.25%;&quot;&gt;
+  &lt;video
+    data-account=&quot;1752604059001&quot;
+    data-player=&quot;VyqgG8mql&quot;
+    data-embed=&quot;default&quot;
+    data-application-id
+    class=&quot;video-js&quot;
+    controls
+    style=&quot;position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;&quot;&gt;&lt;/video&gt;
+  &lt;script src=&quot;//players.brightcove.net/1752604059001/VyqgG8mql_default/index.min.js&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+</section>
+
+<section class="bcls-section">
+    <h2 id="Understanding_intrinsic_ratio">Understanding intrinsic ratio</h2>
+    <p>In this solution, we used an intrinsic ratio, which is a CSS technique to fluidly constrain a child element to a ratio set in their parent element. To do this, we added a
+      <code>&lt;div&gt;
+      </code> container around the video player and set the
+      <code>padding-top
+      </code> property with the desired aspect ratio for the video.
+    </p>
+    <p>The padding property is the magic that styles a box with an intrinsic ratio. This is because the padding property is set as a percentage of the width of the containing block. It works well since padding styles are supported in all major browsers.
+    </p>
+    <aside class="bcls-aside bcls-aside--information">This solution is borrowed from a blog post by Thierry Koblentz. For more details about browser compatibility, refer to his <a href="http://alistapart.com/article/creating-intrinsic-ratios-for-video"> blog post</a>.
+    </aside>
+    <p>The aspect ratio is determined by a simple calculation to determine a percentage. For instance, calculate the percentage for a video with a 16:9 aspect ratio by dividing 9 by 16 (i.e. 9/16 = .5625) to get 56.25%. For a 16:9 video, you want the height to be 9/16ths of the width.
+    </p>
+</section>
+
+<section class="bcls-section">
+    <h2 id="Using_fluid_mode">Using fluid mode</h2>
+    <p>
+      The Video.js library v5.0.0+ has been updated to support simple responsive classes. These classes are supported by the Brightcove Player when using the Advanced (In-Page) embed code.
+    </p>
+    <p>
+      The responsive classes include the following:
+    </p>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Class</th>
+              <th>Default</th>
+              <th>Aspect ratio</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+          <tr>
+              <td><code>vjs-fluid</code></td>
+              <td>Yes</td>
+              <td>2.4:1</td>
+          </tr>
+          <tr>
+              <td><code>vjs-16-9</code></td>
+              <td>No</td>
+              <td>16:1</td>
+          </tr>
+          <tr>
+              <td><code>vjs-4-3</code></td>
+              <td>No</td>
+              <td>4:3</td>
+          </tr>
+          <!-- <tr>
+              <td><code>vjs-fill</code></td>
+              <td>No</td>
+              <td>The player will fill its container regardless of aspect ratio</td>
+          </tr> -->
+      </tbody>
+  </table>
+
+    <p>The fluid classes listed above apply the responsive sizing to the player. They accomplish this by applying a <code>padding-top</code> attribute to the <code>video</code> element.
+    </p>
+    <p>
+      To create a responsive player which fills the browser, add one of the fluid classes to your player embed code. For example, to use a 16:9 aspect ratio, your code should look similar to this:
+    </p>
+    <pre class="line-numbers"><code class="language-html">&lt;video data-video-id=&quot;5802784116001&quot;
+data-account=&quot;1752604059001&quot;
+data-player=&quot;default&quot;
+data-embed=&quot;default&quot;
+data-application-id
+class=&quot;video-js <span class="bcls-highlight">vjs-16-9</span>&quot;
+controls&gt;&lt;/video&gt;
+&lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+    <p>
+      If you want to set a maximum size for your player, simply add a <code>div</code> container around your embed code and set the <code>max-width</code> or <code>max-height</code> attribute. For example, this code limits the size of the player to 640px:
+    </p>
+    <pre class="line-numbers"><code class="language-html"><span class="bcls-highlight">&lt;div style=&quot;max-width: 640px;&quot;&gt;</span>
+&lt;video data-video-id=&quot;5802784116001&quot;
+data-account=&quot;1752604059001&quot;
+data-player=&quot;default&quot;
+data-embed=&quot;default&quot;
+data-application-id
+class=&quot;video-js <span class="bcls-highlight">vjs-16-9</span>&quot;
+controls&gt;&lt;/video&gt;
+&lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;
+<span class="bcls-highlight">&lt;/div&gt;</span></code></pre>
+</section>
+
+</article>
