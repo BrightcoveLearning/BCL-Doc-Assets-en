@@ -1,5 +1,5 @@
 var codeBlocks;
-var BCLS = (function(window, document, profiles_array) {
+var BCLS = (function(window, document, profiles_array_cached) {
   var mainSection = document.querySelector('.bcls-article'),
     proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
     data = bclsProfiles_cached,
@@ -522,4 +522,4 @@ var BCLS = (function(window, document, profiles_array) {
   }
   getProfileData();
   // BCLSmain.createInPageNav();
-})(window, document, bclsProfiles_cached);
+})(window, document, profiles_array_cached);
