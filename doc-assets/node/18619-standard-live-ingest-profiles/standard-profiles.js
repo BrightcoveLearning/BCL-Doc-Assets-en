@@ -495,12 +495,12 @@ var BCLS = (function(window, document, profiles_array_cached) {
     // open the request
     httpRequest.open("POST", proxyURL);
     // open and send request
-    httpRequest.send(options);
+    httpRequest.send(JSON.stringify(options));
   }
-  // getProfileData();
-  data.profiles_array = profiles_array_cached;
-  buildSummaryTable();
-  buildDetailTables();
+  getProfileData();
+  // data.profiles_array = profiles_array_cached;
+  // buildSummaryTable();
+  // buildDetailTables();
 
   // BCLSmain.createInPageNav();
 })(window, document, profiles_array_cached);
