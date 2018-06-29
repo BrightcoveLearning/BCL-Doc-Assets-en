@@ -471,7 +471,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
     options.url = 'https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles';
     function getResponse() {
       // bclslog("getting data");
-      try {
+      // try {
         if (httpRequest.readyState === 4) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
             // try {
@@ -495,7 +495,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
             }
 
 
-            }
+            // }
             // catch (e) {
             //   bclslog('invalid json', e);
             //   // just use cached data and build the tables
