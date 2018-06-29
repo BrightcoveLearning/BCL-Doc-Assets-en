@@ -506,7 +506,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
           } else {
             bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
             // just use cached data and build the tables
-            data = bclsProfiles_cached;
+            data.profiles_array = profiles_array_cached;
             buildSummaryTable();
             buildDetailTables();
 
