@@ -238,15 +238,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
     th.appendChild(content);
     tr.appendChild(th);
     th = document.createElement('th');
-    content = document.createTextNode('Video');
-    th.appendChild(content);
-    tr.appendChild(th);
-    th = document.createElement('th');
-    content = document.createTextNode('Audio');
-    th.appendChild(content);
-    tr.appendChild(th);
-    th = document.createElement('th');
-    content = document.createTextNode('Image');
+    content = document.createTextNode('Video Rendtions');
     th.appendChild(content);
     tr.appendChild(th);
     th = document.createElement('th');
