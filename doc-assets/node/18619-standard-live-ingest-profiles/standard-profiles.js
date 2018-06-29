@@ -2,7 +2,6 @@ var codeBlocks;
 var BCLS = (function(window, document, profiles_array_cached) {
   var mainSection = document.querySelector('.bcls-article'),
     proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
-    data = bclsProfiles_cached,
     navLabel = [];
   /**
    * determines whether specified item is in an array
