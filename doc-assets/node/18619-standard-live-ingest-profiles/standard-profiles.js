@@ -512,6 +512,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
         bclslog('Caught Exception: ', e);
       }
     };
+    console.log('options', options);
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
