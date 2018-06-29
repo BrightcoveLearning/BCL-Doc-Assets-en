@@ -1,1074 +1,1387 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Overview">Overview</h2>
-
-<p><span class="”notranslate”">SSAI</span> allows you display ads during a live streaming event at specified times. Here are the main features of <span class="”notranslate”">SSAI</span>:</p>
-
-<ul>
-	<li>Since ads are stitched into the live stream on the server side, they are not affected by ad blockers</li>
-	<li>Ads are inserted at cue points sent from your encoder or you can create an instant cue point using the Live API</li>
-	<li>You can ingest "slate" assets to fill any unused ad time</li>
-</ul>
-
-<aside class="bcls-aside bcls-aside--information">Before you can use <span class="”notranslate”">SSAI</span>, it must be enabled for your account. Contact your account manager for details.</aside>
-</section>
-
-<section class="bcls-section">
-<h2 id="Headers">Headers</h2>
-
-<p>The following headers are required with API requests:</p>
-
-<pre class="line-numbers">
+  <section class="bcls-section">
+    <h2 id="Overview">Overview
+    </h2>
+    <p><span class="”notranslate”">SSAI</span> allows you display ads during a live streaming event at specified times. Here are the main features of <span class="”notranslate”">SSAI</span>:
+    </p>
+    <ul>
+      <li>Since ads are stitched into the live stream on the server side, they are not affected by ad blockers</li>
+      <li>Ads are inserted at cue points sent from your encoder or you can create an instant cue point using the Live API</li>
+      <li>You can ingest "slate" assets to fill any unused ad time</li>
+    </ul>
+    <aside class="bcls-aside bcls-aside--information">Before you can use <span class="”notranslate”">SSAI</span>, it must be enabled for your account. Contact your account manager for details.
+    </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Headers">Headers
+    </h2>
+    <p>The following headers are required with API requests:
+    </p>
+    <pre class="line-numbers">
 <code class="language-http">x-api-key: <span class="bcle-input">APIKEY-HERE</span>
-Content-Type: application/json</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Ad_configuration_variables">Ad configuration variables</h2>
-
-<p>The following table provides a summary of ad configuration variables, which are used in the requests to manage ad configurations detailed in the sections that follow.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Ad Configuration Variables</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th style="width:20%;">Variable</th>
-			<th style="width:60%;">
-			<div style="word-wrap:break-word;">Description</div>
-			</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td style="width:20%"><code>session.session_id</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">unique session id</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>job.job_id</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">unique job id</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>application_ad_configuration.description</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">description value of the application at session creation</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.int32</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 32-bit signed integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.int64</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 64-bit signed integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.uint32</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 32-bit unsigned integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.uint64</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 64-bit unsigned integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.uuid</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random uuid</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>server.timestamputc</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">epoch time in milliseconds when the call from the ads-api has been made</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.useragent</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http user-agent header value at session creation</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.ipaddress</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http x-forwarded-for header value at session creation, if provided, otherwise the remote address</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.referrer</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http referer header value at session creation (note: that is the correct spelling)</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.referer</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http referer header value at session creation (http spelling)</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreak</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">(currently unused)</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreakduration</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">double-precision floating-point value in seconds</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreakdurationint</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">integer value in seconds</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreak.timestamputc.wallclock</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">epoch time in milliseconds when the call to the ads server has been made</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreak.timestamputc.origin</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">epoch time in milliseconds from the origin chunklist. This value indicates the time when the cue out chunk has been created in the origin chunklist.</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreak.timestamputc.session</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">epoch time in milliseconds from the ssai chunklist. This value indicates the time of the cue out chunk in the ssai chunklist. Since the adbreak content and the adbreak gap are NOT usually the same, after the 1st adbreak the <code>live.adbreak.timestamputc.origin</code> is different from <code>live.adbreak.timestamputc.session</code>. This value takes into account the time adjustments that have been made in the <span class="”notranslate”">SSAI</span> chunklist.</div>
-			</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Targeting_using_query_strings">Targeting using query strings (URL parameters)</h2>
-
-<p>Your ad tag, entered in the ad configuration (see <a href="#create_ad_configurations">Create ad configurations</a> below) will typically look something like this:</p>
-<textarea class="bcls-code">"https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}&amp;IDFA={{deviceid}}&amp;sitesection={{sitesection}}&amp;breakid={{breakid}}&amp;breaktheme={{breaktheme}}</textarea>
-
-<p>The items inside the double curly braces are variables, also called ad macros, which Live will replace with values, if they exist, when it sends the ad request.</p>
-
-<aside class="bcls-aside bcls-aside--information">Note that the variables that will be useful depend on the ad server.</aside>
-
-<p>These values can be supplied in three ways:</p>
-
-<ul>
-	<li>Header information, detailed in the <a href="#ad_configuration_variables">Ad configuration variables</a> above, is available for any request - you simply need to specify which ones you want with the appropriate key names in your ad configuration.</li>
-	<li>Additional session values can be appended to the URL for the live stream, like this:
-	<pre>
-<code class="language-http">http://playback.bcovlive.io/e058d9f2737e18/us-west-2/NA/playlist.m3u8<span class="bcls-highlight">?deviceid=123456&amp;sitesection=services</span>"</code></pre>
-
-	<p>Note that the key names in this example correspond to the variable names in the ad tag shown above.</p>
-	</li>
-	<li>Values for specific ad breaks can be sent with the <a href="#Manual_cue_point_insertion">Manual cue point insertion</a> request (discussed below).</li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="Custom_headers_for_ad_requests">Custom headers for ad requests</h2>
-
-<p>The <span class="”notranslate”">SSAI</span> platform can pass custom header with the Ad calls and all beacons used by the backend platform. Some ad servers such as VideoPlaza require custom headers. Custom headers are specified as a set of key-value pairs in an <code>ad_configuration_headers</code> object that is part of the <code>application_ad_configuration</code> (see the next section on <a href="#create_ad_configurations">creating an ad configuration</a>).</p>
-
-<h3>Notes</h3>
-
-<ul>
-	<li>Standard headers are handled by default such as:
-	<ul>
-		<li><code>X-Forwarded-For</code></li>
-		<li><code>X-Device-User-Agent</code></li>
-	</ul>
-	</li>
-	<li>Header values can use the <a href="#ad_configuration_variables">ad configuration variables</a></li>
-	<li>Header values can also be static strings</li>
-</ul>
-
-<aside class="bcls-aside bcls-aside--warning">Headers will be passed to all downstream requests including ad wrappers or impressions/quartiles so you should use them with caution.</aside>
-</section>
-
-<section class="bcls-section">
-<h2 id="Create_an_ad_configuration">Create an ad configuration</h2>
-
-<p>To create a new ad configuration, send a <code>POST</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/applications</code></pre>
-
-<h3>Sample request body</h3>
-
-<pre class="line-numbers">
+Content-Type: application/json
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Ad_configuration_variables">Ad configuration variables
+    </h2>
+    <p>The following table provides a summary of ad configuration variables, which are used in the requests to manage ad configurations detailed in the sections that follow.
+    </p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Ad Configuration Variables
+      </caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th style="width:20%;">Variable
+          </th>
+          <th style="width:60%;">
+            <div style="word-wrap:break-word;">Description
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td style="width:20%">
+            <code>session.session_id
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">unique session id
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>job.job_id
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">unique job id
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>application_ad_configuration.description
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">description value of the application at session creation
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.int32
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 32-bit signed integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.int64
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 64-bit signed integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.uint32
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 32-bit unsigned integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.uint64
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 64-bit unsigned integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.uuid
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random uuid
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>server.timestamputc
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">epoch time in milliseconds when the call from the ads-api has been made
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.useragent
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http user-agent header value at session creation
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.ipaddress
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http x-forwarded-for header value at session creation, if provided, otherwise the remote address
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.referrer
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http referer header value at session creation (note: that is the correct spelling)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.referer
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http referer header value at session creation (http spelling)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreak
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">(currently unused)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreakduration
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">double-precision floating-point value in seconds
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreakdurationint
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">integer value in seconds
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreak.timestamputc.wallclock
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">epoch time in milliseconds when the call to the ads server has been made
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreak.timestamputc.origin
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">epoch time in milliseconds from the origin chunklist. This value indicates the time when the cue out chunk has been created in the origin chunklist.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreak.timestamputc.session
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">epoch time in milliseconds from the ssai chunklist. This value indicates the time of the cue out chunk in the ssai chunklist. Since the adbreak content and the adbreak gap are NOT usually the same, after the 1st adbreak the
+              <code>live.adbreak.timestamputc.origin
+              </code> is different from
+              <code>live.adbreak.timestamputc.session
+              </code>. This value takes into account the time adjustments that have been made in the <span class="”notranslate”">SSAI</span> chunklist.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Targeting_using_query_strings">Targeting using query strings (URL parameters)
+    </h2>
+    <p>Your ad tag, entered in the ad configuration (see <a href="#create_ad_configurations">Create ad configurations</a> below) will typically look something like this:
+    </p>
+    <textarea class="bcls-code">"https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}&amp;IDFA={{deviceid}}&amp;sitesection={{sitesection}}&amp;breakid={{breakid}}&amp;breaktheme={{breaktheme}}</textarea>
+    <p>The items inside the double curly braces are variables, also called ad macros, which Live will replace with values, if they exist, when it sends the ad request.
+    </p>
+    <aside class="bcls-aside bcls-aside--information">Note that the variables that will be useful depend on the ad server.
+    </aside>
+    <p>These values can be supplied in three ways:
+    </p>
+    <ul>
+      <li>Header information, detailed in the <a href="#ad_configuration_variables">Ad configuration variables</a> above, is available for any request - you simply need to specify which ones you want with the appropriate key names in your ad configuration.</li>
+      <li>Additional session values can be appended to the URL for the live stream, like this:
+        <pre>
+<code class="language-http">http://playback.bcovlive.io/e058d9f2737e18/us-west-2/NA/playlist.m3u8<span class="bcls-highlight">?deviceid=123456&amp;sitesection=services</span>"
+</code>
+</pre>
+        <p>Note that the key names in this example correspond to the variable names in the ad tag shown above.
+        </p>
+      </li>
+      <li>Values for specific ad breaks can be sent with the <a href="#Manual_cue_point_insertion">Manual cue point insertion</a> request (discussed below).</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Custom_headers_for_ad_requests">Custom headers for ad requests
+    </h2>
+    <p>The <span class="”notranslate”">SSAI</span> platform can pass custom header with the Ad calls and all beacons used by the backend platform. Some ad servers such as VideoPlaza require custom headers. Custom headers are specified as a set of key-value pairs in an
+      <code>ad_configuration_headers
+      </code> object that is part of the
+      <code>application_ad_configuration
+      </code> (see the next section on <a href="#create_ad_configurations">creating an ad configuration</a>).
+    </p>
+    <h3>Notes
+    </h3>
+    <ul>
+      <li>Standard headers are handled by default such as:
+        <ul>
+          <li>
+            <code>X-Forwarded-For
+            </code></li>
+          <li>
+            <code>X-Device-User-Agent
+            </code></li>
+        </ul>
+      </li>
+      <li>Header values can use the <a href="#ad_configuration_variables">ad configuration variables</a></li>
+      <li>Header values can also be static strings</li>
+    </ul>
+    <aside class="bcls-aside bcls-aside--warning">Headers will be passed to all downstream requests including ad wrappers or impressions/quartiles so you should use them with caution.
+    </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Create_an_ad_configuration">Create an ad configuration
+    </h2>
+    <p>To create a new ad configuration, send a
+      <code>POST
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/applications
+</code>
+</pre>
+    <h3>Sample request body
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "application_ad_configuration": {
-        "ad_configuration_description": "Human readable description of the configuration",
-        "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>",
-        "ad_configuration_headers": {
-          "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
-        },
-        "ad_configuration_headers_for_impressions": false,
-        "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
-        "ad_configuration_transforms": [
-        {
-            "xpath": "/",
-            "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
-        }],
-        "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
-    },
-    "application_description": "Human readable description of the ad application",
-    "account_id": <span class="bcls-input">"USER'S ACCOUNT ID" [Optional - When omitted, Account ID of requesting user is used]</span>
-}</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+"application_ad_configuration": {
+"ad_configuration_description": "Human readable description of the configuration",
+"ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>",
+"ad_configuration_headers": {
+"X-Custom-Header-Rand": "{{random.int32}}",
+"X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+},
+"ad_configuration_headers_for_impressions": false,
+"ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
+"ad_configuration_transforms": [
+{
+"xpath": "/",
+"xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+}],
+"ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+},
+"application_description": "Human readable description of the ad application",
+"account_id": <span class="bcls-input">"USER'S ACCOUNT ID" [Optional - When omitted, Account ID of requesting user is used]</span>
+}
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "application": {
-    "account_id": "USER ACCOUNT ID",
-    "application_description": "Human readable description of the ad application",
-    "application_ad_configuration": {
-      "ad_configuration_description": "Human readable description of the configuration",
-      "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
-      "ad_configuration_headers": {
-          "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
-      },
-      "ad_configuration_headers_for_impressions": false,
-      "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
-      "ad_configuration_transforms": [
-        {
-          "xpath": "/",
-          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
-        }
-      ],
-      "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
-    },
-    "application_id": <span class="bcle-highlight">"APPLICATION ID"</span>
-  },
-  "inserted": true
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Update_an_ad_configuration">Update an ad configuration</h2>
-
-<p>Updating an ad configuration is very similar to creating one. Make a <code>PUT</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcle-input">APPLICATION_ID</span></code></pre>
-
-<h3>Sample request body</h3>
-
-<pre class="line-numbers">
+"application": {
+"account_id": "USER ACCOUNT ID",
+"application_description": "Human readable description of the ad application",
+"application_ad_configuration": {
+"ad_configuration_description": "Human readable description of the configuration",
+"ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
+"ad_configuration_headers": {
+"X-Custom-Header-Rand": "{{random.int32}}",
+"X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+},
+"ad_configuration_headers_for_impressions": false,
+"ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
+"ad_configuration_transforms": [
+{
+"xpath": "/",
+"xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+}
+],
+"ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+},
+"application_id": <span class="bcle-highlight">"APPLICATION ID"</span>
+},
+"inserted": true
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Update_an_ad_configuration">Update an ad configuration
+    </h2>
+    <p>Updating an ad configuration is very similar to creating one. Make a
+      <code>PUT
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcle-input">APPLICATION_ID</span>
+</code>
+</pre>
+    <h3>Sample request body
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "application_ad_configuration": {
-        "ad_configuration_description": "Some Updated Description Value",
-        "ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>,
-        "ad_configuration_headers": {
-          "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
-        },
-        "ad_configuration_headers_for_impressions": false,
-        "ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
-        "ad_configuration_transforms": [
-        {
-            "xpath": "/",
-            "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
-        }],
-        "ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
-    },
-    "application_description": "Human readable description of the ad application",
-    "account_id": <span class="bcls-input">"USER'S ACCOUNT ID" [Optional - When omitted, Account ID of requesting user is used]</span>
-}</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+"application_ad_configuration": {
+"ad_configuration_description": "Some Updated Description Value",
+"ad_configuration_expected_response_type": "<span class="bcls-input">Dfp or Vast or SmartXML</span>,
+"ad_configuration_headers": {
+"X-Custom-Header-Rand": "{{random.int32}}",
+"X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+},
+"ad_configuration_headers_for_impressions": false,
+"ad_configuration_strategy": "<span class="bcls-input">SingleAdResponse or MultipleAdResponse</span>",
+"ad_configuration_transforms": [
+{
+"xpath": "/",
+"xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+}],
+"ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+},
+"application_description": "Human readable description of the ad application",
+"account_id": <span class="bcls-input">"USER'S ACCOUNT ID" [Optional - When omitted, Account ID of requesting user is used]</span>
+}
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "account_id": "USER ACCOUNT ID",
-    "application_description": "Human readable description of the ad application",
-    "application_ad_configuration": {
-        "ad_configuration_description": "Some Updated Description Value",
-        "ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
-        "ad_configuration_headers": {
-          "X-Custom-Header-Rand": "{{random.int32}}",
-          "X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
-        },
-        "ad_configuration_headers_for_impressions": false,
-        "ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
-        "ad_configuration_transforms": [
-        {
-            "xpath": "/",
-            "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
-        }
-        ],
-        "ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
-    },
-    "application_id": <span class="bcle-highlight">"APPLICATION ID"</span>
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Get_all_ad_configurations">Get all ad configurations</h2>
-
-<p>To retrieve all the ad configurations for an account, submit a <code>GET</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/account/<span class="bcle-input">account_id</span></code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+"account_id": "USER ACCOUNT ID",
+"application_description": "Human readable description of the ad application",
+"application_ad_configuration": {
+"ad_configuration_description": "Some Updated Description Value",
+"ad_configuration_expected_response_type": "<span class="bcls-highlight">Dfp | Vast | SmartXML</span>",
+"ad_configuration_headers": {
+"X-Custom-Header-Rand": "{{random.int32}}",
+"X-VIDEOPLAZA-FORWARDED-FOR": "{{client.ipaddress}}"
+},
+"ad_configuration_headers_for_impressions": false,
+"ad_configuration_strategy": "<span class="bcls-highlight">SingleAdResponse | MultipleAdResponse</span>",
+"ad_configuration_transforms": [
+{
+"xpath": "/",
+"xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;"
+}
+],
+"ad_configuration_url_format": "https://updated-ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}"
+},
+"application_id": <span class="bcle-highlight">"APPLICATION ID"</span>
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Get_all_ad_configurations">Get all ad configurations
+    </h2>
+    <p>To retrieve all the ad configurations for an account, submit a
+      <code>GET
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/account/<span class="bcle-input">account_id</span>
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">[
-  {
-    "application_id": "APPLICATION_ID_1",
-    "application_description": "DFP Single Midroll",
-    "application_ad_configuration": {
-      "ad_configuration_description": "DFP Test Config Single Midroll",
-      "ad_configuration_strategy": "MultipleAdResponse",
-      "ad_configuration_transforms": [],
-      "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler",
-      "ad_configuration_expected_response_type": "Dfp"
-    },
-    "account_id": "ACCOUNT_ID"
-  },
-  {
-    "application_id": "APPLICATION_ID_2",
-    "application_description": "Test DFP Single Midroll"
-    "application_ad_configuration": {
-      "ad_configuration_description": "DFP Test Config Single Midroll",
-      "ad_configuration_strategy": "MultipleAdResponse",
-      "ad_configuration_transforms": [
-        {
-          "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
-          "xpath": "/"
-        }
-      ],
-      "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
-      "ad_configuration_expected_response_type": "Dfp"
-    },
-    "account_id": "ACCOUNT_ID"
-  }
-]</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Get_an_ad_configuration">Get an ad configuration</h2>
-
-<p>You can also retrieve a specific ad configuration by its <code>application_id</code> by sending <code>GET</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcle-input">APPLICATION_ID</span></code></pre>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+{
+"application_id": "APPLICATION_ID_1",
+"application_description": "DFP Single Midroll",
+"application_ad_configuration": {
+"ad_configuration_description": "DFP Test Config Single Midroll",
+"ad_configuration_strategy": "MultipleAdResponse",
+"ad_configuration_transforms": [],
+"ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler",
+"ad_configuration_expected_response_type": "Dfp"
+},
+"account_id": "ACCOUNT_ID"
+},
+{
+"application_id": "APPLICATION_ID_2",
+"application_description": "Test DFP Single Midroll"
+"application_ad_configuration": {
+"ad_configuration_description": "DFP Test Config Single Midroll",
+"ad_configuration_strategy": "MultipleAdResponse",
+"ad_configuration_transforms": [
+{
+"xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
+"xpath": "/"
+}
+],
+"ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
+"ad_configuration_expected_response_type": "Dfp"
+},
+"account_id": "ACCOUNT_ID"
+}
+]
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Get_an_ad_configuration">Get an ad configuration
+    </h2>
+    <p>You can also retrieve a specific ad configuration by its
+      <code>application_id
+      </code> by sending
+      <code>GET
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcle-input">APPLICATION_ID</span>
+</code>
+</pre>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "application_id": "APPLICATION_ID",
-  "application_description": "Test DFP Single Midroll",
-  "application_ad_configuration": {
-    "ad_configuration_description": "DFP Test Config Single Midroll",
-    "ad_configuration_strategy": "MultipleAdResponse",
-    "ad_configuration_transforms": [
-      {
-        "xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
-        "xpath": "/"
-      }
-    ],
-    "ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
-    "ad_configuration_expected_response_type": "Dfp"
-  },
-  "account_id": "ACCOUNT_ID"
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Delete_an_ad_configuration">Delete an ad configuration</h2>
-
-<p>To delete an ad configuration, send a <code>DELETE</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcle-input">APPLICATION_ID</span></code></pre>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+"application_id": "APPLICATION_ID",
+"application_description": "Test DFP Single Midroll",
+"application_ad_configuration": {
+"ad_configuration_description": "DFP Test Config Single Midroll",
+"ad_configuration_strategy": "MultipleAdResponse",
+"ad_configuration_transforms": [
+{
+"xslt": "&lt;xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:Det=\"http://Det.com\"&gt;&lt;xsl:output omit-xml-declaration=\"yes\"/&gt;&lt;xsl:template match=\"node()|@*\"&gt;&lt;xsl:copy&gt;&lt;xsl:apply-templates select=\"node()|@*\"/&gt;&lt;/xsl:copy&gt;&lt;/xsl:template&gt;&lt;/xsl:stylesheet&gt;",
+"xpath": "/"
+}
+],
+"ad_configuration_url_format": "https://ad-provider-host.com/path/to/ad-handler?ip={{client.ipaddress}}&amp;num={{random.int32}}&amp;ses={{session.session_id}}",
+"ad_configuration_expected_response_type": "Dfp"
+},
+"account_id": "ACCOUNT_ID"
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Delete_an_ad_configuration">Delete an ad configuration
+    </h2>
+    <p>To delete an ad configuration, send a
+      <code>DELETE
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/applications/application/<span class="bcle-input">APPLICATION_ID</span>
+</code>
+</pre>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "application_id": "APPLICATION_ID",
-  "deleted": true
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Cuepoints">Cuepoints</h2>
-
-<p>Ad breaks are triggered by cuepoints, which can be specified in two ways:</p>
-
-<ul>
-	<li>Sent to Brightcove by the encoder</li>
-	<li>Immediate cuepoints created via the Live API</li>
-</ul>
-
-<h3>From the encoder</h3>
-
-<p>The Brightcove live delivery system can interpret cuepoints submitted by the encoder in the AMF format:</p>
-
-<pre class="line-numbers">
+"application_id": "APPLICATION_ID",
+"deleted": true
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Cuepoints">Cuepoints
+    </h2>
+    <p>Ad breaks are triggered by cuepoints, which can be specified in two ways:
+    </p>
+    <ul>
+      <li>Sent to Brightcove by the encoder</li>
+      <li>Immediate cuepoints created via the Live API</li>
+    </ul>
+    <h3>From the encoder
+    </h3>
+    <p>The Brightcove live delivery system can interpret cuepoints submitted by the encoder in the AMF format:
+    </p>
+    <pre class="line-numbers">
 <code class="language-bash">AMFDataList
 [0]:onCuePoint
 [1]:{Obj[]:
-	time: 1.9889, //Difference from PTS of THIS packet to the first PTS of the 1st video frame in the adbreak
-	name: "scte35",
-	type: "event",
-	ad_server_data: "YWJjZGVmZ2g=",	// optional introduced by Brightcove. It is a base64 encoded json map of parameters e.g. {‘key’:’value’}
-	parameters: {Obj[]:
-		type: "avail_in",
-		duration: 12.0}}</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">See the <a href="#elementalSample">appendix below</a> for a screenshot of a sample cue point setup for the Elemental encoder.</aside>
-</section>
-
-<section class="bcls-section">
-<h2 id="Manual_cue_point_insertion">Manual cue point insertion</h2>
-
-<p>You can also create immediate cuepoints using the Live API by sending a <code>POST</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/cuepoint</code></pre>
-
-<p>Include a request body specifying the duration of the break in seconds and, optionally, a timecode to specify when a set of any variables (key/value pairs) that should be passed to the adServer.</p>
-
-<p>Note that a <code>timecode</code> in the form <code>DD:HH:MM:SS</code> is required for the cue point.</p>
-
-<h3>Sample request body</h3>
-
-<pre class="line-numbers">
+time: 1.9889, //Difference from PTS of THIS packet to the first PTS of the 1st video frame in the adbreak
+name: "scte35",
+type: "event",
+ad_server_data: "YWJjZGVmZ2g=",	// optional introduced by Brightcove. It is a base64 encoded json map of parameters e.g. {‘key’:’value’}
+parameters: {Obj[]:
+type: "avail_in",
+duration: 12.0}}
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">See the <a href="#elementalSample">appendix below</a> for a screenshot of a sample cue point setup for the Elemental encoder.
+    </aside>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Manual_cue_point_insertion">Manual cue point insertion
+    </h2>
+    <p>You can also create immediate cuepoints using the Live API by sending a
+      <code>POST
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/cuepoint
+</code>
+</pre>
+    <p>Include a request body specifying the duration of the break in seconds and, optionally, a timecode to specify when a set of any variables (key/value pairs) that should be passed to the adServer.
+    </p>
+    <p>Note that a
+      <code>timecode
+      </code> in the form
+      <code>DD:HH:MM:SS
+      </code> is required for the cue point.
+    </p>
+    <h3>Sample request body
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-   "duration": 30,
-   "timecode": "15:50:49:16",
-   "ad_server_data" : {
-        "adbreakid": 12312
-        "breaktheme": "fitness"
-   }
-}</code></pre>
-
-<h4>Notes</h4>
-
-<ul>
-	<li>The <code>timecode</code> format is <strong>HH:MM:SS:FF</strong> (FF = frames), and it is optional; if omitted, the cuepoint will be inserted immediately.</li>
-	<li>The <code>ad_server_data</code> is also optional, and what key/value pairs you pass will depend on the ad server you are using - see your ad server documentation and the <a href="#query_strings">Targeting</a> section above for more details.</li>
-</ul>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+"duration": 30,
+"timecode": "15:50:49:16",
+"ad_server_data" : {
+"adbreakid": 12312
+"breaktheme": "fitness"
+}
+}
+</code>
+</pre>
+    <h4>Notes
+    </h4>
+    <ul>
+      <li>The
+        <code>timecode
+        </code> format is <strong>HH:MM:SS:FF</strong> (FF = frames), and it is optional; if omitted, the cuepoint will be inserted immediately.</li>
+      <li>The
+        <code>ad_server_data
+        </code> is also optional, and what key/value pairs you pass will depend on the ad server you are using - see your ad server documentation and the <a href="#query_strings">Targeting</a> section above for more details.</li>
+    </ul>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "id": "JOB_ID",
-    "cue_point": {
-        "id": "adBreak-2f58393ada1442d98eca0817fa565ba4",
-        "duration": 30,
-        "accuracy": "segment", [ Can be <code>segment</code> or <code>frame</code> ]
-        "inserted_at": "2017-07-21T09:30:46.307Z" [ Time when the cue point was inserted in the stream ]
-    },
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Insert_ID3_timed_metadata">Insert ID3 timed metadata</h2>
-
-<p>To insert ID3 timed metadata for an ongoing job, make a <code>POST</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/id3tag</code></pre>
-
-<h3>Sample request body</h3>
-
-<pre class="line-numbers">
+"id": "JOB_ID",
+"cue_point": {
+"id": "adBreak-2f58393ada1442d98eca0817fa565ba4",
+"duration": 30,
+"accuracy": "segment", [ Can be
+<code>segment
+</code> or
+<code>frame
+</code> ]
+"inserted_at": "2017-07-21T09:30:46.307Z" [ Time when the cue point was inserted in the stream ]
+},
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Insert_ID3_timed_metadata">Insert ID3 timed metadata
+    </h2>
+    <p>To insert ID3 timed metadata for an ongoing job, make a
+      <code>POST
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">JOB_ID</span>/id3tag
+</code>
+</pre>
+    <h3>Sample request body
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "id3_tag": {
-        "name": "BCOV",
-        "value": "my value",
-        "timecode": "15:50:49:16"
-    }
-}</code></pre>
-
-<h4>Notes:</h4>
-
-<ul>
-	<li>ID3v2 states tag <code>name</code> can be up to 4 characters</li>
-	<li><code>value</code> can be up to 256KB</li>
-	<li><code>timecode</code> is optional - when omitted, insertion will be immediate
-	<aside class="bcls-aside bcls-aside--warning">Note:
-	<ol>
-		<li>If you use the <code>timecode</code> property, the job only stores the most recent request for insertion</li>
-		<li>If you use the <code>timecode</code> property, the encoder must be sending SMPTE-formatted (HH:MM:SS:FF) timecode stored in the tc property via OnFI</li>
-		<li>Software encoders such as Wirecast and OBS <strong>do not</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
-		<li>Elemental hardware encoders <strong>do</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
-	</ol>
-	</aside>
-	</li>
-</ul>
-
-<h3>Sample response</h3>
-
-<pre class="line-numbers">
+"id3_tag": {
+"name": "BCOV",
+"value": "my value",
+"timecode": "15:50:49:16"
+}
+}
+</code>
+</pre>
+    <h4>Notes:
+    </h4>
+    <ul>
+      <li>ID3v2 states tag
+        <code>name
+        </code> can be up to 4 characters</li>
+      <li>
+        <code>value
+        </code> can be up to 256KB</li>
+      <li>
+        <code>timecode
+        </code> is optional - when omitted, insertion will be immediate
+        <aside class="bcls-aside bcls-aside--warning">Note:
+          <ol>
+            <li>If you use the
+              <code>timecode
+              </code> property, the job only stores the most recent request for insertion</li>
+            <li>If you use the
+              <code>timecode
+              </code> property, the encoder must be sending SMPTE-formatted (HH:MM:SS:FF) timecode stored in the tc property via OnFI</li>
+            <li>Software encoders such as Wirecast and OBS <strong>do not</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
+            <li>Elemental hardware encoders <strong>do</strong> support the sending timecode via OnFI packets in the RTMP stream</li>
+          </ol>
+        </aside>
+      </li>
+    </ul>
+    <h3>Sample response
+    </h3>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "id": "JOB_ID",
-  "id3_tag": {
-    "tag_name": "BCOV",
-    "tag_value": "my value"
-  }
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Managing_slates">Managing slates</h2>
-
-<p>Slates are your own assets used to fill unused ad time. You can use slates to provide a "be right back" message or any content that you like.</p>
-
-<p>Below are details of the API requests to add and manage slate assets.</p>
-
-<h3>Ingest slate media source asset</h3>
-
-<p>To add a new slate asset, submit a <code>POST</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/slates</code></pre>
-
-<h4>Sample request body</h4>
-
-<pre class="line-numbers">
+"id": "JOB_ID",
+"id3_tag": {
+"tag_name": "BCOV",
+"tag_value": "my value"
+}
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Managing_slates">Managing slates
+    </h2>
+    <p>Slates are your own assets used to fill unused ad time. You can use slates to provide a "be right back" message or any content that you like.
+    </p>
+    <p>Below are details of the API requests to add and manage slate assets.
+    </p>
+    <h3>Ingest slate media source asset
+    </h3>
+    <p>To add a new slate asset, submit a
+      <code>POST
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/slates
+</code>
+</pre>
+    <h4>Sample request body
+    </h4>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "source_url": "https://somesourceasset.com/slate-to-ingest.mp4",
-    <em>"account_id": "ACCOUNT_ID", [Optional - When omitted, Account ID of the requesting user is used.</em>
-    <em>"source_description": "User identifiable description for the slate" [Optional]</em>
-}</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
+"source_url": "https://somesourceasset.com/slate-to-ingest.mp4",
+<em>"account_id": "ACCOUNT_ID", [Optional - When omitted, Account ID of the requesting user is used.</em>
+<em>"source_description": "User identifiable description for the slate" [Optional]</em>
+}
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "media_source_asset_id": "NEW_UUID",
-  "account_id": "ACCOUNT_ID",
-  "media_source_asset_default": false,
-  "media_source_asset_type": "slate",
-  "media_source_asset_url": "https://somesourceasset.com/slate-to-ingest.mp4",
-  "media_source_asset_status": "transcoding"
-  "media_source_asset_description": "User identifiable description for the slate"
-}</code></pre>
-
-<h3>Delete slate media source asset</h3>
-
-<p>To delete a slate media asset, send a <code>DELETE</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/slates/slate/<span class="bcls-input">SLATE_MSA_ID</span></code></pre>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
+"media_source_asset_id": "NEW_UUID",
+"account_id": "ACCOUNT_ID",
+"media_source_asset_default": false,
+"media_source_asset_type": "slate",
+"media_source_asset_url": "https://somesourceasset.com/slate-to-ingest.mp4",
+"media_source_asset_status": "transcoding"
+"media_source_asset_description": "User identifiable description for the slate"
+}
+</code>
+</pre>
+    <h3>Delete slate media source asset
+    </h3>
+    <p>To delete a slate media asset, send a
+      <code>DELETE
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/slates/slate/<span class="bcls-input">SLATE_MSA_ID</span>
+</code>
+</pre>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "media_source_asset_id": "MSA_UUID",
-  "media_source_asset_type": "slate",
-  "media_source_asset_url": "http://someS3urlpath/media.mp4",
-  "media_source_asset_default": false,
-  "media_source_asset_status": "ready",
-  "account_id": "ACCOUNT_ID"
-}</code></pre>
-
-<h3>Get slate media source assets</h3>
-
-<p>You can retrieve an array of all the slate assets for an account by sending a <code>GET</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/slates/account/<span class="bcls-input">account_id</span></code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
+"media_source_asset_id": "MSA_UUID",
+"media_source_asset_type": "slate",
+"media_source_asset_url": "http://someS3urlpath/media.mp4",
+"media_source_asset_default": false,
+"media_source_asset_status": "ready",
+"account_id": "ACCOUNT_ID"
+}
+</code>
+</pre>
+    <h3>Get slate media source assets
+    </h3>
+    <p>You can retrieve an array of all the slate assets for an account by sending a
+      <code>GET
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/slates/account/<span class="bcls-input">account_id</span>
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
 <code class="language-json">[
-  {
-    "media_source_asset_id": "MSA_UUID_1",
-    "media_source_asset_type": "slate",
-    "media_source_asset_default": false,
-    "media_source_asset_url": "http://someS3urlpath.com/media.mp4",
-    "account_id": "ACCOUNT_ID",
-    "media_source_asset_status": "ready"
-  },
-  {
-    "media_source_asset_id": "MSA_UUID_2",
-    "media_source_asset_type": "slate",
-    "media_source_asset_default": true,
-    "media_source_asset_url": "http://someS3urlpath.com/media.mp4",
-    "account_id": "ACCOUNT_ID",
-    "media_source_asset_status": "ready"
-  }
-]</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Beacons">Beacons</h2>
-
-<p>Beacons are data points on playback sent to third-party analytics to track whether and how much of ads were played. In this section we will look at the beacon types that can be set using the Live API, and variables that can be used to provide the data. The next section will detail the API requests use to create and manage beacon sets.</p>
-
-<h3>Beacon types</h3>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Beacon Types</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th style="width:20%;">Beacon Type</th>
-			<th style="width:60%;word-wrap:break-word">Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td style="width:20%"><code>Load</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Fired once per session and only triggered when top level manifest is requested</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>Play</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Content has been requested and the first segment returned</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>Heartbeat</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Configurable on some interval</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdStart</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Individual ad started</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdFirstQuartile</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">First ad quartile (25%)</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdMidpoint</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Second ad quartile (50%)</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdThirdQuartile</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Third ad quartile (75%)</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdComplete</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Individual ad completed</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdBreakStart</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">Ad break has started</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>AdBreakComplete</code></td>
-			<td style="text-align:left;width:60%;word-wrap:break-word">ad break has ended</td>
-		</tr>
-	</tbody>
-</table>
-
-<h3>Valid beacon variables</h3>
-
-<p>The table below shows the variables you can use to provide data for the beacon URLs. To include a variable, surround with double curly braces, like this: <code><span class="bcls-highlight">{{</span>job.job_id<span class="bcls-highlight">}}</span></code>. See the next section on managing beacon sets for full examples.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Beacon Variables</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th style="width:20%;">Variable</th>
-			<th style="width:60%;">
-			<div style="word-wrap:break-word;">Description</div>
-			</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td style="width:20%"><code>session.session_id</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">unique session id</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>job.job_id</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">unique job id</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>application_ad_configuration.description</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">description value of the application at session creation</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.int32</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 32-bit signed integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.int64</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 64-bit signed integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.uint32</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 32-bit unsigned integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.uint64</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random 64-bit unsigned integer</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>random.uuid</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">random uuid</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>server.timestamputc</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">epoch time in milliseconds when the call from the ads-api has been made</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.useragene</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http user-agent header value at session creation</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.ipaddress</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http x-forwarded-for header value at session creation, if provided, otherwise the remote address</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.referrer</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http referer header value at session creation (correct spelling)</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>client.referer</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">http referer header value at session creation (http spelling)</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreak</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">(currently unused)</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreakduration</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">double-precision floating-point value in seconds</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:20%"><code>live.adbreakdurationint</code></td>
-			<td style="text-align:left;width:60%;">
-			<div style="word-wrap:break-word;">integer value in seconds</div>
-			</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Manage_beacon_sets">Manage beacon sets</h2>
-
-<p>This section provides details on the API requests to manage beacon sets. See the previous section for beacon types and variables.</p>
-
-<p>To add a beacon set to a Live job, first create the beacon set, and then include the id when you create the job, like this:</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
- "live_stream": true,
-   "region": "us-west-2",
- "reconnect_time": 30,
- "ad_insertion": true,
- "beacon_set": "<span class="bcls-input">beacon_set_id</span>", ... </code></pre>
-
-<h3>Create a beacon set</h3>
-
-<p>To create a beacon set, send a <code>POST</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets</code></pre>
-
-<h4>Sample request body</h4>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    <em>"account_id": "USER's ACCOUNT ID", [Optional - If omitted, the Account ID of the requesting user is used.]</em>
-    "beacon_urls": [
-        {
-            "beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/load?position=load&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
-            "beacon_type": "Load"
-        },
-        {
-            "beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/play?position=play&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
-            "beacon_type": "Play"
-        }
-    ]
-}</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    "beacon_set": {
-        "beacon_urls": [{
-            "beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/load?position=load&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
-            "beacon_type": "Load"
-        },
-        {
-            "beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/play?position=play&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
-            "beacon_type": "Play"
-        }],
-        "beacon_set_id": "Inserted Beacon Set ID",
-        "account_id": "USER's ACCOUNT ID"
-    }
-    "inserted": true
-}</code></pre>
-
-<h3>Update a beacon set</h3>
-
-<p>Updating a beacon set is similar to creating one. Submit a <code>PUT</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/beaconset/<span class="bcle-input">BEACON_SET_ID</span></code></pre>
-
-<h4>Sample request body</h4>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    <em>"account_id": "USER's ACCOUNT ID", [OPTIONAL - If omitted, the account id of the requesting user is used.]</em>,
-    "beacon_urls": [
-        {
-            "beacon_url": "https://myserver.com/beaconRX/load",
-            "beacon_type": "Load"
-        },
-        {
-            "beacon_url": "https://myserver.com/beaconRX/play",
-            "beacon_type": "Play"
-        }
-    ]
-}</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    "beacon_set": {
-        "account_id": "USER's ACCOUNT ID",
-        "beacon_set_id": "BEACON_SET_ID",
-        "beacon_urls": [{
-            "beacon_url": "https://myserver.com/beaconRX/load",
-            "beacon_type": "Load"
-        },
-        {
-            "beacon_url": "https://myserver.com/beaconRX/play",
-            "beacon_type": "Play"
-        }],
-        "updated_beacon_set": {
-            "beacon_set_id": "BEACON_SET_ID",
-            "beacon_urls": [{
-                "beacon_url": "https://myserver.com/beaconRX/load",
-                "beacon_type": "Load"
-            },
-            {
-                "beacon_url": "https://myserver.com/beaconRX/play",
-                "beacon_type": "Play"
-            }],
-            "account_id": "USER's ACCOUNT ID"
-        }
-    }
-}</code></pre>
-
-<h3>Get beacon sets</h3>
-
-<p>To retrieve the beacon sets for an account, submit a <code>GET</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/account/account_id</code></pre>
-
-<aside class="bcls-aside bcls-aside--information">Note that the <code>account_id</code> here is the Live account id.</aside>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
-<code class="language-json">[{
-    "account_id": "USER's ACCOUNT ID",
-    "beacon_set_id": "BEACON_SET_ID_1",
-    "beacon_urls": [{
-        "beacon_url": "https://myserver.com/beaconRX/load",
-        "beacon_type": "Load"
-    }]
+{
+"media_source_asset_id": "MSA_UUID_1",
+"media_source_asset_type": "slate",
+"media_source_asset_default": false,
+"media_source_asset_url": "http://someS3urlpath.com/media.mp4",
+"account_id": "ACCOUNT_ID",
+"media_source_asset_status": "ready"
 },
 {
-    "account_id": "USER's ACCOUNT ID",
-    "beacon_set_id": "BEACON_SET_ID_2",
-    "beacon_urls": [{
-       "beacon_url": "https://myserver.com/beaconRX2/load",
-       "beacon_type": "Load"
-    },
-    {
-       "beacon_url": "https://myserver.com/beaconRX2/play",
-       "beacon_type": "Play"
-    }]
-}]</code></pre>
-
-<h3>Get beacon sets for requesting user</h3>
-
-<p>You can also get the beacon sets for the account of the requesting user without including the account id in the request URL:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets</code></pre>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
-<code class="language-json">[{
-    "account_id": "USER's ACCOUNT ID",
-    "beacon_set_id": "BEACON_SET_ID_1",
-    "beacon_urls": [{
-        "beacon_type": "Load",
-        "beacon_url": "https://myserver.com/beaconRX/load"
-    }]
+"media_source_asset_id": "MSA_UUID_2",
+"media_source_asset_type": "slate",
+"media_source_asset_default": true,
+"media_source_asset_url": "http://someS3urlpath.com/media.mp4",
+"account_id": "ACCOUNT_ID",
+"media_source_asset_status": "ready"
+}
+]
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Beacons">Beacons
+    </h2>
+    <p>Beacons are data points on playback sent to third-party analytics to track whether and how much of ads were played. In this section we will look at the beacon types that can be set using the Live API, and variables that can be used to provide the data. The next section will detail the API requests use to create and manage beacon sets.
+    </p>
+    <h3>Beacon types
+    </h3>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Beacon Types
+      </caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th style="width:20%;">Beacon Type
+          </th>
+          <th style="width:60%;word-wrap:break-word">Description
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td style="width:20%">
+            <code>Load
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Fired once per session and only triggered when top level manifest is requested
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>Play
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Content has been requested and the first segment returned
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>Heartbeat
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Configurable on some interval
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdStart
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Individual ad started
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdFirstQuartile
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">First ad quartile (25%)
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdMidpoint
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Second ad quartile (50%)
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdThirdQuartile
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Third ad quartile (75%)
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdComplete
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Individual ad completed
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdBreakStart
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">Ad break has started
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>AdBreakComplete
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;word-wrap:break-word">ad break has ended
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Valid beacon variables
+    </h3>
+    <p>The table below shows the variables you can use to provide data for the beacon URLs. To include a variable, surround with double curly braces, like this:
+      <code><span class="bcls-highlight">{{</span>job.job_id<span class="bcls-highlight">}}</span>
+      </code>. See the next section on managing beacon sets for full examples.
+    </p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">Beacon Variables
+      </caption>
+      <thead class="bcls-table__head">
+        <tr>
+          <th style="width:20%;">Variable
+          </th>
+          <th style="width:60%;">
+            <div style="word-wrap:break-word;">Description
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td style="width:20%">
+            <code>session.session_id
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">unique session id
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>job.job_id
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">unique job id
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>application_ad_configuration.description
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">description value of the application at session creation
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.int32
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 32-bit signed integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.int64
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 64-bit signed integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.uint32
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 32-bit unsigned integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.uint64
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random 64-bit unsigned integer
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>random.uuid
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">random uuid
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>server.timestamputc
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">epoch time in milliseconds when the call from the ads-api has been made
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.useragene
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http user-agent header value at session creation
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.ipaddress
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http x-forwarded-for header value at session creation, if provided, otherwise the remote address
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.referrer
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http referer header value at session creation (correct spelling)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>client.referer
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">http referer header value at session creation (http spelling)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreak
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">(currently unused)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreakduration
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">double-precision floating-point value in seconds
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <code>live.adbreakdurationint
+            </code>
+          </td>
+          <td style="text-align:left;width:60%;">
+            <div style="word-wrap:break-word;">integer value in seconds
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Manage_beacon_sets">Manage beacon sets
+    </h2>
+    <p>This section provides details on the API requests to manage beacon sets. See the previous section for beacon types and variables.
+    </p>
+    <p>To add a beacon set to a Live job, first create the beacon set, and then include the id when you create the job, like this:
+    </p>
+    <pre class="line-numbers">
+<code class="language-json">{
+"live_stream": true,
+"region": "us-west-2",
+"reconnect_time": 30,
+"ad_insertion": true,
+"beacon_set": "<span class="bcls-input">beacon_set_id</span>", ...
+</code>
+</pre>
+    <h3>Create a beacon set
+    </h3>
+    <p>To create a beacon set, send a
+      <code>POST
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets
+</code>
+</pre>
+    <h4>Sample request body
+    </h4>
+    <pre class="line-numbers">
+<code class="language-json">{
+<em>"account_id": "USER's ACCOUNT ID", [Optional - If omitted, the Account ID of the requesting user is used.]</em>
+"beacon_urls": [
+{
+"beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/load?position=load&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
+"beacon_type": "Load"
 },
 {
-    "account_id": "USER's ACCOUNT ID",
-    "beacon_set_id": "BEACON_SET_ID_2",
-    "beacon_urls": [{
-        "beacon_type": "Load",
-        "beacon_url": "https://myserver.com/beaconRX2/load"
-    },
-    {
-        "beacon_type": "Play",
-        "beacon_url": "https://myserver.com/beaconRX2/play"
-    }]
-}]</code></pre>
-
-<h3>Get a beacon set by id</h3>
-
-<p>To retrieve a single beacon set by its id, submit a <code>GET</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/beaconset/<span class="bcls-input">BEACON_SET_ID</span></code></pre>
-
-<h4>Sample response</h4>
-
-<pre class="line-numbers">
+"beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/play?position=play&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
+"beacon_type": "Play"
+}
+]
+}
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
 <code class="language-json">{
-    "account_id": "USER_ACCOUNT_ID",
-    "beacon_set_id": "BEACON_SET_ID",
-    "beacon_urls": [{
-        "beacon_type": "Load",
-        "beacon_url": "https://myserver.com/beaconRX2/load"
-    },
-    {
-        "beacon_type": "Play",
-        "beacon_url": "https://myserver.com/beaconRX2/play"
-    }]
-}</code></pre>
-
-<h3>Delete a beacon set</h3>
-
-<p>Finally, to delete a beacon set, send a <code>DELETE</code> request to:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/beaconset/<span class="bcls-input">BEACON_SET_ID</span></code></pre>
-
-<h4>Sample response</h4>
-
-<p>The response will look like this:</p>
-
-<pre class="line-numbers">
+"beacon_set": {
+"beacon_urls": [{
+"beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/load?position=load&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
+"beacon_type": "Load"
+},
+{
+"beacon_url": "https://myserver.com/beaconRX/{{job.job_id}}/play?position=play&amp;sid={{session.session_id}}&amp;jid={{job.job_id}}&amp;app={{application_ad_configuration.description}}&amp;rnd32={{random.int32}}&amp;rnd64={{random.int64}}&amp;bid={{random.uuid}}&amp;t={{server.timestamputc}}&amp;ua={{client.useragent}}&amp;ip={{client.ipaddress}}&amp;ref={{client.referrer}}&amp;ref={{client.referer}}&amp;ab={{live.adbreak}}&amp;abd={{live.adbreakduration}}&amp;abdi={{live.adbreakdurationint}}",
+"beacon_type": "Play"
+}],
+"beacon_set_id": "Inserted Beacon Set ID",
+"account_id": "USER's ACCOUNT ID"
+}
+"inserted": true
+}
+</code>
+</pre>
+    <h3>Update a beacon set
+    </h3>
+    <p>Updating a beacon set is similar to creating one. Submit a
+      <code>PUT
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/beaconset/<span class="bcle-input">BEACON_SET_ID</span>
+</code>
+</pre>
+    <h4>Sample request body
+    </h4>
+    <pre class="line-numbers">
 <code class="language-json">{
-  "beacon_set_id": "BEACON_SET_ID",
-  "deleted": true
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="notes_on_dfp">Notes on DFP</h2>
-
-<p>If you are obtaining ads from DFP, here are some things to keep in mind to help prevent issues.</p>
-
-<h3>Ad tag</h3>
-
-<p>When you are creating an ad tag for Live, be sure you are following the proper guidelines and including <code>/live</code>. See the DFP document <a href="https://support.google.com/dfp_premium/answer/1068325?hl=en">Create a master video tag manually</a> for full details.</p>
-
-<h3>Concurrency</h3>
-
-<p>If you are expecting a high amount of concurrency we recommended that you talk to your DFP account team.</p>
-
-<h3>Single/multiple ad responses</h3>
-
-<p>The <code>singleadresponse</code> and <code>multiadresponse</code> parameters are not currently used by <span class="”notranslate”">SSAI</span>.</p>
-
-<p>Live <span class="”notranslate”">SSAI</span> only makes a single ad server call and expects that the response will contain all the ads for the break with the exception that it will follow any necessary ad wrappers with a limit of 5 redirects per ad. The following ad response formats are accepted and will be parsed as follows:</p>
-
-<ul>
-	<li>VAST - Single response or a pod of ads in a single response</li>
-	<li>DFP Ad Rules - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
-	<li>Smart XML - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="Known_issues">Known issues</h2>
-
-<ul>
-	<li>If the VAST returned has the same ad ID, then the server will not request the ad content, even though the ad URL uses dynamic variables to make it a unique URL.</li>
-	<li>If an ad break has a duration less than the MAX duration of the ad URL (min_ad_duration=0&amp;max_ad_duration=30000), if ad is returned longer than the ad break, the ad will not be played.</li>
-	<li>VPAID or clickable ads are not supported for <span class="”notranslate”">Brightcove Live SSAI</span>.</li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="elementalSample">Appendix</h2>
-
-<p>Below is a screenshot to show a sample cue point setup for the Elemental encoder.</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Elemental Cue Point Setup" src="//learning-services-media.brightcove.com/doc-assets/node/17763-server-side-ad-insertion-using-brightcove-live-api/Elemental-SCTE53-tc.png" />
-<figcaption class="bcls-caption--image">Elemental Cue Point Setup</figcaption>
-</figure>
-</section>
+<em>"account_id": "USER's ACCOUNT ID", [OPTIONAL - If omitted, the account id of the requesting user is used.]</em>,
+"beacon_urls": [
+{
+"beacon_url": "https://myserver.com/beaconRX/load",
+"beacon_type": "Load"
+},
+{
+"beacon_url": "https://myserver.com/beaconRX/play",
+"beacon_type": "Play"
+}
+]
+}
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
+<code class="language-json">{
+"beacon_set": {
+"account_id": "USER's ACCOUNT ID",
+"beacon_set_id": "BEACON_SET_ID",
+"beacon_urls": [{
+"beacon_url": "https://myserver.com/beaconRX/load",
+"beacon_type": "Load"
+},
+{
+"beacon_url": "https://myserver.com/beaconRX/play",
+"beacon_type": "Play"
+}],
+"updated_beacon_set": {
+"beacon_set_id": "BEACON_SET_ID",
+"beacon_urls": [{
+"beacon_url": "https://myserver.com/beaconRX/load",
+"beacon_type": "Load"
+},
+{
+"beacon_url": "https://myserver.com/beaconRX/play",
+"beacon_type": "Play"
+}],
+"account_id": "USER's ACCOUNT ID"
+}
+}
+}
+</code>
+</pre>
+    <h3>Get beacon sets
+    </h3>
+    <p>To retrieve the beacon sets for an account, submit a
+      <code>GET
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/account/account_id
+</code>
+</pre>
+    <aside class="bcls-aside bcls-aside--information">Note that the
+      <code>account_id
+      </code> here is the Live account id.
+    </aside>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
+<code class="language-json">[{
+"account_id": "USER's ACCOUNT ID",
+"beacon_set_id": "BEACON_SET_ID_1",
+"beacon_urls": [{
+"beacon_url": "https://myserver.com/beaconRX/load",
+"beacon_type": "Load"
+}]
+},
+{
+"account_id": "USER's ACCOUNT ID",
+"beacon_set_id": "BEACON_SET_ID_2",
+"beacon_urls": [{
+"beacon_url": "https://myserver.com/beaconRX2/load",
+"beacon_type": "Load"
+},
+{
+"beacon_url": "https://myserver.com/beaconRX2/play",
+"beacon_type": "Play"
+}]
+}]
+</code>
+</pre>
+    <h3>Get beacon sets for requesting user
+    </h3>
+    <p>You can also get the beacon sets for the account of the requesting user without including the account id in the request URL:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets
+</code>
+</pre>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
+<code class="language-json">[{
+"account_id": "USER's ACCOUNT ID",
+"beacon_set_id": "BEACON_SET_ID_1",
+"beacon_urls": [{
+"beacon_type": "Load",
+"beacon_url": "https://myserver.com/beaconRX/load"
+}]
+},
+{
+"account_id": "USER's ACCOUNT ID",
+"beacon_set_id": "BEACON_SET_ID_2",
+"beacon_urls": [{
+"beacon_type": "Load",
+"beacon_url": "https://myserver.com/beaconRX2/load"
+},
+{
+"beacon_type": "Play",
+"beacon_url": "https://myserver.com/beaconRX2/play"
+}]
+}]
+</code>
+</pre>
+    <h3>Get a beacon set by id
+    </h3>
+    <p>To retrieve a single beacon set by its id, submit a
+      <code>GET
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/beaconset/<span class="bcls-input">BEACON_SET_ID</span>
+</code>
+</pre>
+    <h4>Sample response
+    </h4>
+    <pre class="line-numbers">
+<code class="language-json">{
+"account_id": "USER_ACCOUNT_ID",
+"beacon_set_id": "BEACON_SET_ID",
+"beacon_urls": [{
+"beacon_type": "Load",
+"beacon_url": "https://myserver.com/beaconRX2/load"
+},
+{
+"beacon_type": "Play",
+"beacon_url": "https://myserver.com/beaconRX2/play"
+}]
+}
+</code>
+</pre>
+    <h3>Delete a beacon set
+    </h3>
+    <p>Finally, to delete a beacon set, send a
+      <code>DELETE
+      </code> request to:
+    </p>
+    <pre class="line-numbers">
+<code class="language-http">https://api.bcovlive.io/v1/ssai/beaconsets/beaconset/<span class="bcls-input">BEACON_SET_ID</span>
+</code>
+</pre>
+    <h4>Sample response
+    </h4>
+    <p>The response will look like this:
+    </p>
+    <pre class="line-numbers">
+<code class="language-json">{
+"beacon_set_id": "BEACON_SET_ID",
+"deleted": true
+}
+</code>
+</pre>
+  </section>
+  <section class="bcls-section">
+    <h2 id="notes_on_dfp">Notes on DFP
+    </h2>
+    <p>If you are obtaining ads from DFP, here are some things to keep in mind to help prevent issues.
+    </p>
+    <h3>Ad tag
+    </h3>
+    <p>When you are creating an ad tag for Live, be sure you are following the proper guidelines and including
+      <code>/live
+      </code>. See the DFP document <a href="https://support.google.com/dfp_premium/answer/1068325?hl=en">Create a master video tag manually</a> for full details.
+    </p>
+    <h3>Concurrency
+    </h3>
+    <p>If you are expecting a high amount of concurrency we recommended that you talk to your DFP account team.
+    </p>
+    <h3>Single/multiple ad responses
+    </h3>
+    <p>The
+      <code>singleadresponse
+      </code> and
+      <code>multiadresponse
+      </code> parameters are not currently used by <span class="”notranslate”">SSAI</span>.
+    </p>
+    <p>Live <span class="”notranslate”">SSAI</span> only makes a single ad server call and expects that the response will contain all the ads for the break with the exception that it will follow any necessary ad wrappers with a limit of 5 redirects per ad. The following ad response formats are accepted and will be parsed as follows:
+    </p>
+    <ul>
+      <li>VAST - Single response or a pod of ads in a single response</li>
+      <li>DFP Ad Rules - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
+      <li>Smart XML - Aggregates all available ads in the response including pre-, mid-, post-roll defined ads</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Known_issues">Known issues
+    </h2>
+    <ul>
+      <li>If the VAST returned has the same ad ID, then the server will not request the ad content, even though the ad URL uses dynamic variables to make it a unique URL.</li>
+      <li>If an ad break has a duration less than the MAX duration of the ad URL (min_ad_duration=0&amp;max_ad_duration=30000), if ad is returned longer than the ad break, the ad will not be played.</li>
+      <li>VPAID or clickable ads are not supported for <span class="”notranslate”">Brightcove Live SSAI</span>.</li>
+    </ul>
+  </section>
+  <section class="bcls-section">
+    <h2 id="elementalSample">Appendix
+    </h2>
+    <p>Below is a screenshot to show a sample cue point setup for the Elemental encoder.
+    </p>
+    <figure class="bcls-figure"><img class="bcls-image" alt="Elemental Cue Point Setup" src="//learning-services-media.brightcove.com/doc-assets/node/17763-server-side-ad-insertion-using-brightcove-live-api/Elemental-SCTE53-tc.png" />
+      <figcaption class="bcls-caption--image">Elemental Cue Point Setup
+      </figcaption>
+    </figure>
+  </section>
 </article>
