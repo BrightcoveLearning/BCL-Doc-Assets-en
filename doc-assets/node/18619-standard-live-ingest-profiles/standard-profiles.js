@@ -478,15 +478,19 @@ var BCLS = (function(window, document, profiles_array) {
             // try {
             //   bclslog('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
-            iMax = tmpArr.length;
-            data.profiles_array = [];
-            for (i = 0; i < iMax; i += 1) {
-              if (isItemInArray(standardProfileList, tmpArr[i].name)) {
-                data.profiles_array.push(tmpArr[i]);
+            if (tmpArr[0].hasOwnProperty('error_code')) {
+              data.profiles_array = profiles_array_cached;
+            } else {
+              iMax = tmpArr.length;
+              data.profiles_array = [];
+              for (i = 0; i < iMax; i += 1) {
+                if (standardProfileList, tmpArr[i].hasOwnProperty('model_version'))) {
+                  data.profiles_array.push(tmpArr[i]);
+                }
               }
+              buildSummaryTable();
+              buildDetailTables();
             }
-            buildSummaryTable();
-            buildDetailTables();
 
 
             // } catch (e) {
