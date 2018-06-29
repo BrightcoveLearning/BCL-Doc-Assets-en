@@ -484,7 +484,7 @@ var BCLS = (function(window, document, profiles_array) {
               iMax = tmpArr.length;
               data.profiles_array = [];
               for (i = 0; i < iMax; i += 1) {
-                if (tmpArr[i].hasOwnProperty('model_version'))) {
+                if (tmpArr[i].hasOwnProperty('model_version')) {
                   data.profiles_array.push(tmpArr[i]);
                 }
               }
