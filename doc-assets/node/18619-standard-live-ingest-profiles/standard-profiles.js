@@ -172,8 +172,6 @@ var BCLS = (function(window, document, profiles_array_cached) {
     for (i = 0; i < iMax; i++) {
       item = data.profiles_array[i];
       item.videoRenditions = 0;
-      item.audioRenditions = 0;
-      item.imageRenditions = 0;
 
       jMax = item.renditions.length;
       item.numRenditions = jMax;
@@ -182,10 +180,6 @@ var BCLS = (function(window, document, profiles_array_cached) {
         // count up renditions of each kind
         if (item.renditions[j].media_type === "video") {
           item.videoRenditions++;
-        } else if (item.renditions[j].media_type === "image") {
-          item.imageRenditions++;
-        } else if (item.renditions[j].media_type === "audio") {
-          item.audioRenditions++;
         }
       }
 
@@ -222,16 +216,6 @@ var BCLS = (function(window, document, profiles_array_cached) {
       td = document.createElement('td');
       td.setAttribute('class', 'bcl-center');
       content = document.createTextNode(item.videoRenditions);
-      td.appendChild(content);
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.setAttribute('class', 'bcl-center');
-      content = document.createTextNode(item.audioRenditions);
-      td.appendChild(content);
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.setAttribute('class', 'bcl-center');
-      content = document.createTextNode(item.imageRenditions);
       td.appendChild(content);
       tr.appendChild(td);
       td = document.createElement('td');
