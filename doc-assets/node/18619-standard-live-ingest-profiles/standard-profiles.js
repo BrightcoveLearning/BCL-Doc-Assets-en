@@ -441,11 +441,14 @@ var BCLS = ( function (window, document, profiles_array) {
     }
     function getProfileData() {
         var httpRequest = new XMLHttpRequest(),
+          options = {},
             proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
             i,
             iMax,
-            tmpArr,
-            getResponse = function () {
+            tmpArr;
+
+        
+             function getResponse() {
                 // bclslog("getting data");
                 try {
                     if (httpRequest.readyState === 4) {
