@@ -479,7 +479,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
             console.log('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
             console.log('tmpArr', tmpArr);
-            if (tmpArr[0].hasOwnProperty('error_code')) {
+            if (tmpArr.hasOwnProperty('error_code')) {
               profiles_array.profiles_array = profiles_array_cached;
             } else {
               iMax = tmpArr.length;
