@@ -521,6 +521,10 @@ var BCLS = (function(window, document, profiles_array_cached) {
     // open and send request
     httpRequest.send(options);
   }
-  getProfileData();
+  // getProfileData();
+  data.profiles_array = profiles_array_cached;
+  buildSummaryTable();
+  buildDetailTables();
+
   // BCLSmain.createInPageNav();
 })(window, document, profiles_array_cached);
