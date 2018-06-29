@@ -495,13 +495,14 @@ var BCLS = (function(window, document, profiles_array_cached) {
             }
 
 
-            } catch (e) {
-              bclslog('invalid json', e);
-              // just use cached data and build the tables
-                data.profiles_array = profiles_array_cached;
-                buildSummaryTable();
-                buildDetailTables();
             }
+            // catch (e) {
+            //   bclslog('invalid json', e);
+            //   // just use cached data and build the tables
+            //     data.profiles_array = profiles_array_cached;
+            //     buildSummaryTable();
+            //     buildDetailTables();
+            // }
           } else {
             bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
             // just use cached data and build the tables
