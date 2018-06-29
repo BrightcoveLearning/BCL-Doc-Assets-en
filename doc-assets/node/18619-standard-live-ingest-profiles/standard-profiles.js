@@ -463,7 +463,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
   function getProfileData() {
     var httpRequest = new XMLHttpRequest(),
       options = {},
-      proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
+      proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
       i,
       iMax,
       tmpArr;
