@@ -111,7 +111,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
       txt = document.createTextNode(navLabel[i].text);
       aEl.appendChild(txt);
       liEl.appendChild(aEl);
-      sideNavList.insertBefore(liEl, lastLI);
+      sideNavList.insertAfter(liEl, lastLI);
     }
   }
 
