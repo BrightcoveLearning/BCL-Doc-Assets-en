@@ -469,7 +469,7 @@ var BCLS = (function(window, document, profiles_array) {
       iMax,
       tmpArr;
 
-
+    options.url = 'https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles';
     function getResponse() {
       // bclslog("getting data");
       try {
@@ -513,10 +513,8 @@ var BCLS = (function(window, document, profiles_array) {
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open("POST", proxyURL);
-    // set headers
-    httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     // open and send request
-    httpRequest.send(requestData);
+    httpRequest.send(options);
   }
   getProfileData();
   // BCLSmain.createInPageNav();
