@@ -476,7 +476,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
             // try {
             //   bclslog('response', httpRequest.responseText);
-            console.log('response', response);
+            console.log('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
             console.log('tmpArr', tmpArr);
             if (tmpArr[0].hasOwnProperty('error_code')) {
