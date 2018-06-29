@@ -481,6 +481,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
             console.log('tmpArr', tmpArr);
             if (tmpArr.hasOwnProperty('error_code')) {
               data.profiles_array = profiles_array_cached;
+              console.log('data', data.profiles_array);
             } else {
               iMax = tmpArr.length;
               data.profiles_array = [];
@@ -489,10 +490,9 @@ var BCLS = (function(window, document, profiles_array_cached) {
                   data.profiles_array.push(tmpArr[i]);
                 }
               }
-              console.log('data', profiles_array_cached);
-              buildSummaryTable();
-              buildDetailTables();
             }
+            buildSummaryTable();
+            buildDetailTables();
 
 
             // }
