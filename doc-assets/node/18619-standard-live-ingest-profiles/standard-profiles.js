@@ -1,7 +1,6 @@
 var codeBlocks;
 var BCLS = (function(window, document, profiles_array_cached) {
   var mainSection = document.querySelector('.bcls-article'),
-    proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
     navLabel = [];
   /**
    * determines whether specified item is in an array
@@ -477,6 +476,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
             // try {
             //   bclslog('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
+            console.log('tmpArr', tmpArr);
             if (tmpArr[0].hasOwnProperty('error_code')) {
               data.profiles_array = profiles_array_cached;
             } else {
