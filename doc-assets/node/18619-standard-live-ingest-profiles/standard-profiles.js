@@ -172,8 +172,6 @@ var BCLS = (function(window, document, profiles_array_cached) {
     for (i = 0; i < iMax; i++) {
       item = data.profiles_array[i];
       item.videoRenditions = 0;
-      item.audioRenditions = 0;
-      item.imageRenditions = 0;
 
       jMax = item.renditions.length;
       item.numRenditions = jMax;
@@ -182,10 +180,6 @@ var BCLS = (function(window, document, profiles_array_cached) {
         // count up renditions of each kind
         if (item.renditions[j].media_type === "video") {
           item.videoRenditions++;
-        } else if (item.renditions[j].media_type === "image") {
-          item.imageRenditions++;
-        } else if (item.renditions[j].media_type === "audio") {
-          item.audioRenditions++;
         }
       }
 
@@ -225,16 +219,6 @@ var BCLS = (function(window, document, profiles_array_cached) {
       td.appendChild(content);
       tr.appendChild(td);
       td = document.createElement('td');
-      td.setAttribute('class', 'bcl-center');
-      content = document.createTextNode(item.audioRenditions);
-      td.appendChild(content);
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.setAttribute('class', 'bcl-center');
-      content = document.createTextNode(item.imageRenditions);
-      td.appendChild(content);
-      tr.appendChild(td);
-      td = document.createElement('td');
       content = document.createTextNode(item.description);
       td.appendChild(content);
       tr.appendChild(td);
@@ -254,15 +238,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
     th.appendChild(content);
     tr.appendChild(th);
     th = document.createElement('th');
-    content = document.createTextNode('Video');
-    th.appendChild(content);
-    tr.appendChild(th);
-    th = document.createElement('th');
-    content = document.createTextNode('Audio');
-    th.appendChild(content);
-    tr.appendChild(th);
-    th = document.createElement('th');
-    content = document.createTextNode('Image');
+    content = document.createTextNode('Video Rendtions');
     th.appendChild(content);
     tr.appendChild(th);
     th = document.createElement('th');
@@ -463,7 +439,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
   function getProfileData() {
     var httpRequest = new XMLHttpRequest(),
       options = {},
-      proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/pristine-proxy-v2.php",
+      proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
       i,
       iMax,
       tmpArr;
@@ -471,16 +447,17 @@ var BCLS = (function(window, document, profiles_array_cached) {
     options.url = 'https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles';
     function getResponse() {
       // bclslog("getting data");
-      try {
+      // try {
         if (httpRequest.readyState === 4) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
             // try {
             //   bclslog('response', httpRequest.responseText);
-            console.log('response', response);
+            console.log('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
             console.log('tmpArr', tmpArr);
-            if (tmpArr[0].hasOwnProperty('error_code')) {
-              profiles_array.profiles_array = profiles_array_cached;
+            if (tmpArr.hasOwnProperty('error_code')) {
+              data.profiles_array = profiles_array_cached;
+              console.log('data', data.profiles_array);
             } else {
               iMax = tmpArr.length;
               data.profiles_array = [];
@@ -489,40 +466,41 @@ var BCLS = (function(window, document, profiles_array_cached) {
                   data.profiles_array.push(tmpArr[i]);
                 }
               }
-              console.log('data', data.profiles_array);
-              buildSummaryTable();
-              buildDetailTables();
             }
+            buildSummaryTable();
+            buildDetailTables();
 
 
-            } catch (e) {
-              bclslog('invalid json', e);
-              // just use cached data and build the tables
-                data.profiles_array = profiles_array_cached;
-                buildSummaryTable();
-                buildDetailTables();
-            }
+            // }
+            // catch (e) {
+            //   bclslog('invalid json', e);
+            //   // just use cached data and build the tables
+            //     data.profiles_array = profiles_array_cached;
+            //     buildSummaryTable();
+            //     buildDetailTables();
+            // }
           } else {
             bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
             // just use cached data and build the tables
-            data = bclsProfiles_cached;
+            data.profiles_array = profiles_array_cached;
             buildSummaryTable();
             buildDetailTables();
 
           }
         }
-      } catch (e) {
-        bclslog('Caught Exception: ', e);
       }
-    };
     console.log('options', options);
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
     httpRequest.open("POST", proxyURL);
     // open and send request
-    httpRequest.send(options);
+    httpRequest.send(JSON.stringify(options));
   }
   getProfileData();
+  // data.profiles_array = profiles_array_cached;
+  // buildSummaryTable();
+  // buildDetailTables();
+
   // BCLSmain.createInPageNav();
 })(window, document, profiles_array_cached);
