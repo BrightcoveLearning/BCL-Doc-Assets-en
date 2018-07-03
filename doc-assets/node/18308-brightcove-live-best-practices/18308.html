@@ -233,11 +233,14 @@
     <dl>
       <dt class="bcls-question">How soon do you have to start streaming after creating a live job?
       </dt>
-      <dd class="bcls-answer">By default, the job will finish 30 minutes after it is created if you do not connect a live stream. You can change this value by setting the
-        <code>reconnect_time
-        </code> value when you <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#/Live_Jobs/CreateALiveJob">create the job</a>. If you do not start the stream within the
-        <code>reconnect_time
-        </code>, the job will be cancelled.
+      <dd class="bcls-answer">In Brightcove Live, there are two conditions when the state transitions from <code>waiting</code> to <code>finishing</code>:
+<ol>
+  <li>When <code>max_waiting_time_ms</code> (1800 seconds = 30 minutes) passes after the job creation.</li>
+  <li>When <code>event_length</code> passes after the job creation.</li>
+</ol>
+<p>If the <code>event_length</code> is greater than 30 minutes, the job will terminate in 30 minutes. If the <code>event_length</code> is less than 30 minutes, the job will terminate in <code>event_length</code>.</p>
+<p>For example, if the <code>event_length</code> is 60 minutes, then, the live job will terminate in 30 minutes. If the <code>event_length</code> is 15 minutes, then, the live job will terminate in 15 minutes</p>
+<p>The <code>reconnect_time</code> has no effect for waiting state.</p>
       </dd>
       <dt class="bcls-question">How many jobs can I have in "waiting to connect" status?
       </dt>
