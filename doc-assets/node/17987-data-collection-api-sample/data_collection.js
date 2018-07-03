@@ -33,6 +33,9 @@
         }
       ]
     },
+    now = new Date().toISOString(),
+    rand = Math.random() * 1000000,
+    session = parseInt(rand) + '_' + now,
     settings,
     // functions
     extend,
@@ -126,7 +129,7 @@
         dateTime = new Date(parseInt(evt.timeStamp)),
         currentVideo = settings.videoCollection[lastVideoIndex];
       // add params for all requests
-      urlStr = "event=" + eventType + "&domain=videocloud&account=" + settings.accountID + "&time=" + time + "&destination=" + encodeURI(destination);
+      urlStr = "event=" + eventType + "&session=" + session "&domain=videocloud&account=" + settings.accountID + "&time=" + time + "&destination=" + encodeURI(destination);
       // source will be empty for direct traffic
       if (source !== "") {
         urlStr += "&source=" + encodeURI(source);
