@@ -35,7 +35,7 @@
     },
     now = new Date().toISOString(),
     rand = Math.random() * 1000000,
-    session = parseInt(rand) + '_' + now,
+    session = parseInt(rand).toString() + '_' + now,
     settings,
     // functions
     extend,
