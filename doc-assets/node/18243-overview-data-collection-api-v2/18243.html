@@ -14,18 +14,7 @@
 <code class="language-http">http://metrics.brightcove.com/v2/tracker?event=video_view&amp;amp;domain=videocloud&amp;account=123&amp;video=789
 </code>
 </pre>
-    <p>These parameters describe a <strong>fact</strong> about the state of the system when an event occurred. The example above describes the fact that a
-      <code>video_view
-      </code> event occurred for video
-      <code>789
-      </code> for account
-      <code>123
-      </code> (or: a user started watching account
-      <code>123
-      </code>'s video
-      <code>789
-      </code>. See <a href="#video-cloud-events">below</a> for a description of the current analytics events tracked).
-    </p>
+    <p>These parameters describe a <strong>fact</strong> about the state of the system when an event occurred. The example above describes the fact that a <code>video_view </code> event occurred for video <code>789 </code> for account <code>123 </code> (or: a user started watching account <code>123 </code>'s video <code>789 </code>. See <a href="#video-cloud-events">below</a> for a description of the current analytics events tracked). </p>
     <h3 id="dimensions">Dimensions
     </h3>
     <p>Dimensions are qualitative facts about the state of the system when an event occurs. For example, if the request is:
@@ -103,8 +92,7 @@
     <p>At a minimum, you should send a <code>session</code> id and <code>video_view </code> event for every video played during a session. The <code>video_view</code> should sent <em>after</em> any pre-roll ads complete. </p>
     <h3> <code>session </code> </h3>
     <p>This is the session identifier. The
-      <code>session
-      </code> value should be constant for the lifecycle of an experience and <strong>sent for all events from that experience</strong>. It should be as close as is possible to a universally unique identifier. If there are collisions, the two sessions may be discarded as invalid if they cannot be disentangled.
+      <code>session </code> is essentially one view of a page or app view that has a player in it, for as long as that lasts. The value should be constant for the duration of the session and <strong>sent for all events</strong>. It should be as close as is possible to a universally unique identifier. If there are collisions, the two sessions may be discarded as invalid if they cannot be disentangled.
     </p>
     <p>Note that JavaScript does not have a way to create UUIDs or any string guaranteed to be unique. There are various ways, though, of creating strings with a very high probability of uniqueness. Here is one possibility:
     </p>
@@ -131,12 +119,7 @@ var session = parseInt(rand).toString() + '_' + now;
     <h3>Sending the request - avoiding CORS issues
     </h3>
     <aside class="bcls-aside bcls-aside--tip">
-      <p>Note that the best way to "send" to the Data Collection API is by setting the request URL as the
-        <code>src
-        </code> value for a new image (
-        <code>img
-        </code>) element and then injecting that element into the page.
-      </p>
+      <p>Note that the best way to "send" to the Data Collection API is by setting the request URL as the <code>src</code> value for a new image ( <code>img </code>) element and then injecting that element into the page. </p>
       <p>You should use the same method rather than
         <code>XMLHttpRequest
         </code> or some other in order to avoid <a href="/node/17916">CORS</a> issues.
