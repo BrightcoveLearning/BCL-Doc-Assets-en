@@ -1,48 +1,112 @@
-<p class="player-only">This feature is for Video Cloud customers only. </p>
+<p class="player-only">This feature is for Video Cloud customers only.
+</p>
 <article class="bcls-article video-cloud-only">
   <section class="bcls-section video-cloud-only">
-    <h2 id="introduction">Introduction </h2>
-    <p>Data Collection API v2 is the current standard. The v1 version is deprecated. If you have a v1 implementation, see the <a href="#changesFromV1">Changes from v1</a> section below. </p>
-    <p>In addition to this overview and the <a href="https://docs.brightcove.com/data-collection-api/v2/doc/index.html">API Reference</a>, also see this <a href="/node/17987">sample implementation</a>. </p>
-    <p>The Analytics Data Collection API is the endpoint for realtime analytics events. Event data is sent to Brightcove via a series of parameters submitted via HTTP requests, such as: </p>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <h2 id="introduction">Introduction
+    </h2>
+    <p>Data Collection API v2 is the current standard. The v1 version is deprecated. If you have a v1 implementation, see the <a href="#changesFromV1">Changes from v1</a> section below.
+    </p>
+    <p>In addition to this overview and the <a href="https://docs.brightcove.com/data-collection-api/v2/doc/index.html">API Reference</a>, also see this <a href="/node/17987">sample implementation</a>.
+    </p>
+    <p>The Analytics Data Collection API is the endpoint for realtime analytics events. Event data is sent to Brightcove via a series of parameters submitted via HTTP requests, such as:
+    </p>
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/v2/tracker?event=video_view&amp;amp;domain=videocloud&amp;account=123&amp;video=789
 </code>
 </pre>
-    <p>These parameters describe a <strong>fact</strong> about the state of the system when an event occurred. The example above describes the fact that a <code>video_view </code> event occurred for video <code>789 </code> for account <code>123 </code> (or: a user started watching account <code>123 </code>'s video <code>789 </code>. See <a href="#video-cloud-events">below</a> for a description of the current analytics events tracked). </p>
-    <h3 id="dimensions">Dimensions </h3>
-    <p>Dimensions are qualitative facts about the state of the system when an event occurs. For example, if the request is: </p>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+    <p>These parameters describe a <strong>fact</strong> about the state of the system when an event occurred. The example above describes the fact that a
+      <code>video_view
+      </code> event occurred for video
+      <code>789
+      </code> for account
+      <code>123
+      </code> (or: a user started watching account
+      <code>123
+      </code>'s video
+      <code>789
+      </code>. See <a href="#video-cloud-events">below</a> for a description of the current analytics events tracked).
+    </p>
+    <h3 id="dimensions">Dimensions
+    </h3>
+    <p>Dimensions are qualitative facts about the state of the system when an event occurs. For example, if the request is:
+    </p>
+    <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker?event=video_view&amp;domain=videocloud&amp;account=123&amp;video=789
 </code>
 </pre>
-    <p>The video ID ( <code>789 </code>) and account ID ( <code>123 </code>), and any device and location information gleaned from the request itself are all dimensions related to the <code>video_view </code> event. The Analytics system will record that a <code>video_view </code> event occurred when this request was made, with these dimensions. </p>
-    <h3 id="event-and-domain-parameters">Event and domain parameters </h3>
-    <p>The <code>event </code> parameter describes which event has occurred. The <code>domain </code> parameter namespaces <code>event </code>s. Both <code>event </code> and <code>domain </code> are required parameters (the value of <code>domain </code> is always <code>videocloud </code>). </p>
-    <h3 id="additional-parameters">Additional parameters </h3>
+    <p>The video ID (
+      <code>789
+      </code>) and account ID (
+      <code>123
+      </code>), and any device and location information gleaned from the request itself are all dimensions related to the
+      <code>video_view
+      </code> event. The Analytics system will record that a
+      <code>video_view
+      </code> event occurred when this request was made, with these dimensions.
+    </p>
+    <h3 id="event-and-domain-parameters">Event and domain parameters
+    </h3>
+    <p>The
+      <code>event
+      </code> parameter describes which event has occurred. The
+      <code>domain
+      </code> parameter namespaces
+      <code>event
+      </code>s. Both
+      <code>event
+      </code> and
+      <code>domain
+      </code> are required parameters (the value of
+      <code>domain
+      </code> is always
+      <code>videocloud
+      </code>).
+    </p>
+    <h3 id="additional-parameters">Additional parameters
+    </h3>
     <p class="video-cloud-only">Certain parameters must be included with events so that the Analytics system can successfully analyze them (see <a href="#video-cloud-events">Events</a> for the current Brightcove Smart Player instrumentation details).
     </p>
-    <aside class="bcls-aside bcls-aside--warning">You should <strong>not</strong> send <code>player </code> (player ID) or <code>player_name </code> information for non-Brightcove players. Instead, use the <code>destination </code> parameter to track where the video was viewed. </aside>
+    <aside class="bcls-aside bcls-aside--warning">You should <strong>not</strong> send
+      <code>player
+      </code> (player ID) or
+      <code>player_name
+      </code> information for non-Brightcove players. Instead, use the
+      <code>destination
+      </code> parameter to track where the video was viewed.
+    </aside>
   </section>
   <section class="bcls-section video-cloud-only">
-    <h2 id="responseTypes">Response types </h2>
-    <p>The response to an analytics data collection API request includes an HTTP response code and a human-readable message. </p>
+    <h2 id="responseTypes">Response types
+    </h2>
+    <p>The response to an analytics data collection API request includes an HTTP response code and a human-readable message.
+    </p>
     <table class="bcls-table">
       <thead class="bcls-table__head">
         <tr>
-          <th>HTTP Status Code </th>
-          <th>Description </th>
-          <th>Example </th>
+          <th>HTTP Status Code
+          </th>
+          <th>Description
+          </th>
+          <th>Example
+          </th>
         </tr>
       </thead>
       <tbody class="bcls-table__body">
         <tr>
-          <td> <code>200 </code> </td>
-          <td>The request was successfully received by the collector and has been persisted. </td>
-          <td>(returns a 1x1 pixel transparent GIF image) </td>
+          <td>
+            <code>200
+            </code>
+          </td>
+          <td>The request was successfully received by the collector and has been persisted.
+          </td>
+          <td>(returns a 1x1 pixel transparent GIF image)
+          </td>
         </tr>
         <tr>
-          <td> <code>400 </code> </td>
+          <td>
+            <code>400
+            </code>
+          </td>
           <td>The request sent by the client is missing a required parameter:
             <code>domain
             </code>,
@@ -74,17 +138,31 @@
   <section class="bcls-section">
     <h2 id="minimal">Minimal data
     </h2>
-    <p>At a minimum, you should send a <code>session</code> <code>video_view </code> event for every video played during a session. The <code>video_view </code> should sent <em>after</em> any pre-roll ads complete. </p>
-    <h3><code>session</code></h3>
-    <p>This is the session identifier. The <code>session</code> value should be constant for the lifecycle of an experience and <strong>sent for all events from that experience</strong>. It should be as close as is possible to a universally unique identifier. If there are collisions, the two sessions may be discarded as invalid if they cannot be disentangled. </p>
-    <p>Note that JavaScript does not have a way to create UUIDs or any string guaranteed to be unique. There are various ways, though, of creating strings with a very high probability of uniqueness. Here is one possibility:</p>
-
-<pre class="line-numbers"><code class="language-javascript">var now = new Date().toISOString();
+    <p>At a minimum, you should send a
+      <code>session
+      </code>
+      <code>video_view
+      </code> event for every video played during a session. The
+      <code>video_view
+      </code> should sent <em>after</em> any pre-roll ads complete.
+    </p>
+    <h3>
+      <code>session
+      </code>
+    </h3>
+    <p>This is the session identifier. The
+      <code>session
+      </code> value should be constant for the lifecycle of an experience and <strong>sent for all events from that experience</strong>. It should be as close as is possible to a universally unique identifier. If there are collisions, the two sessions may be discarded as invalid if they cannot be disentangled.
+    </p>
+    <p>Note that JavaScript does not have a way to create UUIDs or any string guaranteed to be unique. There are various ways, though, of creating strings with a very high probability of uniqueness. Here is one possibility:
+    </p>
+    <pre class="line-numbers">
+<code class="language-javascript">var now = new Date().toISOString();
 var rand = Math.random() * 1000000;
 var session = parseInt(rand).toString() + '_' + now;
-// produces something like: 581136_2018-07-03T18:34:46.214Z" = $3</code></pre>
-
-
+// produces something like: 581136_2018-07-03T18:34:46.214Z" = $3
+</code>
+</pre>
     <aside class="bcls-aside bcls-aside--warning">Note that the Analytics system can only return what you give it - not sending full data will result in a lack of data in Video Cloud analytics.
     </aside>
   </section>
@@ -164,7 +242,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>A player session has been initiated by an end-user. This marks the beginning of the analytics session, and should be sent before any other events.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=player_load&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
 &amp;source=http%3A-%2F%2Fwww.google.com
@@ -185,7 +263,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>Sent when fatal errors which disrupt the playback experience are encountered.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=error&amp;error_code=MEDIA_ERR_SRC_NOT_SUPPORTED&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
 &amp;source=http%3A-%2F%2Fwww.google.com
@@ -206,7 +284,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>Sent when a request to the videocloud catalog api is made.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=catalog_request&amp;session=581136_2018-07-03T18:34:46.214Z&amp;catalog_url=https%3A%2F%2Fedge.api.brightcove.com%2Fplayback%2Fv1%2Faccounts%2F57838016001%2Fvideos%2F23823423800
 &amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
@@ -230,7 +308,7 @@ var session = parseInt(rand).toString() + '_' + now;
             </code> is received.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=catalog_response&amp;session=581136_2018-07-03T18:34:46.214Z&amp;catalog_url=https%3A%2F%2Fedge.api.brightcove.com%2Fplayback%2Fv1%2Faccounts%2F57838016001%2Fvideos%2F23823423800&amp;response_time_ms=243&amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
 &amp;source=http%3A-%2F%2Fwww.google.com
@@ -251,7 +329,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>Sent when the playback is initiated either by the user expressly clicking the play button, or automatically when the platform triggers playback in an auto-play scenario.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=play_request&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
 &amp;source=http%3A-%2F%2Fwww.google.com
@@ -272,7 +350,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>Sent when control is handed over to an advertising agent by the playback platform.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=ad_mode_begin&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
 &amp;source=http%3A-%2F%2Fwww.google.com
@@ -293,7 +371,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>Sent when control is handed over to an advertising agent by the playback platform.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=ad_mode_complete&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A-%2F%2Fsup-port.brightcove.com%2F
 &amp;source=http%3A-%2F%2Fwww.google.com
@@ -314,7 +392,7 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>The metadata for a video added to the player has finished loading and the player is ready to trigger the view event, either via auto-play or user interaction.
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=video_impression&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A%2F%2Fwww.current-times.com%2F
 &amp;time=1377191644801&amp;source=http%3A%2F%2Fwww.google.com
@@ -340,7 +418,7 @@ var session = parseInt(rand).toString() + '_' + now;
             </p>
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=video_view&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A%2F%2Fwww.current-times.com%2F
 &amp;video=2621468623001&amp;video_name=Debate-2&amp;video_duration=189
@@ -360,11 +438,10 @@ var session = parseInt(rand).toString() + '_' + now;
             <code>video_engagement
             </code> </a>
           </td>
-          <td>A user watched a range of seconds of a video's timeline. This event is a heartbeat for tracking video engagement and will likely be sent many times during playback, depending on the user interaction and the length of the video. The Brightcove
-            Smart player instrumentation sends this event every 10 seconds, if playback is not interrupted. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong>
+          <td>A user watched a range of seconds of a video's timeline. This event is a heartbeat for tracking video engagement and will likely be sent many times during playback, depending on the user interaction and the length of the video. The Brightcove Smart player instrumentation sends this event every 10 seconds, if playback is not interrupted. <strong>Events describing ranges over 20 seconds are discarded by the Analytics system.</strong>
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">http://metrics.brightcove.com/tracker
 ?event=video_engagement&amp;session=581136_2018-07-03T18:34:46.214Z&amp;destination=http%3A%2F%2Fwww.current-times.com%2F
 &amp;video=2621468623001&amp;video_name=Debate-2&amp;video_duration=189
@@ -386,8 +463,7 @@ var session = parseInt(rand).toString() + '_' + now;
   <section class="bcls-section video-cloud-only">
     <h2 id="all-event-parameters">Parameters for all events
     </h2>
-    <p>Parameters for these events should include any information relevant to the current state of the system when the event occurred, and be as specific as possible. This section details parameters that can be sent with all events, and the following sections
-      show parameters for specific events.
+    <p>Parameters for these events should include any information relevant to the current state of the system when the event occurred, and be as specific as possible. This section details parameters that can be sent with all events, and the following sections show parameters for specific events.
     </p>
     <table class="bcls-table">
       <thead class="bcls-table__head">
@@ -439,8 +515,32 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>String
           </td>
           <td>
-            <p>Override to specify the OS of the device that originated the event in cases where the User Agent is unreliable (ignored unless both device os and device type are included or if the value submitted is not in the list of values shown here. <strong>Not typically included</strong>) </p>
-            <p class="type-size">Allowed values: <code>"android" </code>, <code>"bada" </code>, <code>"ios" </code>, <code>"linux" </code>, <code>"mac" </code>, <code>"tv" </code>, <code>"os_x" </code>, <code>"rim" </code>, <code>"sybian" </code>, <code>"windows" </code>, <code>"other" </code> </p>
+            <p>Override to specify the OS of the device that originated the event in cases where the User Agent is unreliable (ignored unless both device os and device type are included or if the value submitted is not in the list of values shown here. <strong>Not typically included</strong>)
+            </p>
+            <p class="type-size">Allowed values:
+              <code>"android"
+              </code>,
+              <code>"bada"
+              </code>,
+              <code>"ios"
+              </code>,
+              <code>"linux"
+              </code>,
+              <code>"mac"
+              </code>,
+              <code>"tv"
+              </code>,
+              <code>"os_x"
+              </code>,
+              <code>"rim"
+              </code>,
+              <code>"sybian"
+              </code>,
+              <code>"windows"
+              </code>,
+              <code>"other"
+              </code>
+            </p>
           </td>
         </tr>
         <tr>
@@ -463,8 +563,22 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>String
           </td>
           <td>
-            <p>Override to specify the type of the device that originated the event in cases where the User Agent is unreliable (ignored unless both device os and device type are included or if the value submitted is not in the list of values shown here. <strong>Not typically included</strong>) </p>
-            <p class="type-size">Allowed values: <code>"direct" </code>, <code>"mobile" </code>, <code>"tablet" </code>, <code>"tv" </code>, <code>"desktop" </code>, <code>"other" </code> </p>
+            <p>Override to specify the type of the device that originated the event in cases where the User Agent is unreliable (ignored unless both device os and device type are included or if the value submitted is not in the list of values shown here. <strong>Not typically included</strong>)
+            </p>
+            <p class="type-size">Allowed values:
+              <code>"direct"
+              </code>,
+              <code>"mobile"
+              </code>,
+              <code>"tablet"
+              </code>,
+              <code>"tv"
+              </code>,
+              <code>"desktop"
+              </code>,
+              <code>"other"
+              </code>
+            </p>
           </td>
         </tr>
         <tr>
@@ -477,7 +591,28 @@ var session = parseInt(rand).toString() + '_' + now;
           <td>
             <p>the event type
             </p>
-            <p class="type-size">Allowed values: <code>"player_load" </code>, <code>"catalog_request" </code>, <code>"catalog_response" </code>, <code>"play_request" </code>, <code>"ad_mode_begin" </code>, <code>"ad_mode_complete" </code>, <code>"video_impression" </code>, <code>"video_view" </code>, <code>"video_engagement" </code>, <code>"error" </code> </p>
+            <p class="type-size">Allowed values:
+              <code>"player_load"
+              </code>,
+              <code>"catalog_request"
+              </code>,
+              <code>"catalog_response"
+              </code>,
+              <code>"play_request"
+              </code>,
+              <code>"ad_mode_begin"
+              </code>,
+              <code>"ad_mode_complete"
+              </code>,
+              <code>"video_impression"
+              </code>,
+              <code>"video_view"
+              </code>,
+              <code>"video_engagement"
+              </code>,
+              <code>"error"
+              </code>
+            </p>
           </td>
         </tr>
         <tr>
@@ -612,8 +747,7 @@ var session = parseInt(rand).toString() + '_' + now;
       <code>settings
       </code> object of the analytics functionality.
     </p>
-    <p>Of course, how a unique user ID is captured varies from application to application, but for an example this code assumes a login URL is captured that contains unique user data, such as <strong>http://exampledomain.com/users/912389123</strong>. This
-      unique URL is passed to the plugin.
+    <p>Of course, how a unique user ID is captured varies from application to application, but for an example this code assumes a login URL is captured that contains unique user data, such as <strong>http://exampledomain.com/users/912389123</strong>. This unique URL is passed to the plugin.
     </p>
     <p>The plugin's code below performs the following tasks:
     </p>
@@ -772,7 +906,7 @@ myPlayer.bcAnalytics.client.user(USER) = uniqueViewer;
             </code>
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">https://support.brightcove.com/en/video-cloud/search/live%20streaming%20wirecast
 </code>
 </pre>
@@ -784,7 +918,7 @@ myPlayer.bcAnalytics.client.user(USER) = uniqueViewer;
             </code>
           </td>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">https://support.brightcove.com/en/video-cloud/training-videos/live-streaming-wirecast
 </code>
 </pre>
@@ -1039,8 +1173,7 @@ scheme       hierarchical part
           <td>String
           </td>
           <td>
-            <p>The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time
-              between the
+            <p>The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the
               <code>play_request
               </code> and
               <code>video_view
@@ -1110,8 +1243,7 @@ scheme       hierarchical part
               <code>video_engagement
               </code> events in the format
               <code>StartSecond..EndSecond
-              </code> (the StartSecond and EndSecond values must be whole numbers [integers]) - range can be left out of an engagement event to show that during the period covered by the event, there was no viewing activity. (for example,
-              when there is only re-buffering activity)
+              </code> (the StartSecond and EndSecond values must be whole numbers [integers]) - range can be left out of an engagement event to show that during the period covered by the event, there was no viewing activity. (for example, when there is only re-buffering activity)
             </p>
           </td>
         </tr>
@@ -1289,8 +1421,7 @@ scheme       hierarchical part
     </table>
     <p>The
       <code>video_engagement
-      </code> event is a means of tracking video engagement while a video is playing back, and will likely be sent many times during playback. (The Flash/HTML5 player instrumentation sends this event every 10 seconds, if playback is not interrupted.)
-      <strong>At present, events describing ranges over 20 seconds are discarded by the Analytics system, so it is necessary to send these events more frequently.</strong>
+      </code> event is a means of tracking video engagement while a video is playing back, and will likely be sent many times during playback. (The Flash/HTML5 player instrumentation sends this event every 10 seconds, if playback is not interrupted.) <strong>At present, events describing ranges over 20 seconds are discarded by the Analytics system, so it is necessary to send these events more frequently.</strong>
     </p>
     <p>There are two forms that a
       <code>video_engagement
@@ -1308,7 +1439,7 @@ scheme       hierarchical part
       <tbody class="bcls-table__body">
         <tr>
           <td>
-<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
+            <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
 <code class="language-http">event=video_engagement&amp;video=123&amp;video_duration=75&amp;range=0..9
 </code>
 </pre>
@@ -1336,8 +1467,7 @@ scheme       hierarchical part
       <code>range
       </code> also contains information necessary to calculate additional engagement data, and is <strong>the preferred way</strong> to send
       <code>video_engagement
-      </code> event data to the Analytics system. In cases where the video's timeline is continually changing during playback or is otherwise unreliable (e.g. live video playback, but not initial duration instability that may happen when a VOD video
-      first loads),
+      </code> event data to the Analytics system. In cases where the video's timeline is continually changing during playback or is otherwise unreliable (e.g. live video playback, but not initial duration instability that may happen when a VOD video first loads),
       <code>video_seconds_viewed
       </code> may be the only data available, but in all other cases the
       <code>video_engagement
@@ -1461,8 +1591,7 @@ scheme       hierarchical part
     </p>
     <ul>
       <li><strong>load_time_ms</strong>: The time, in milliseconds, between initiating data load for the video and the video becoming playable.</li>
-      <li><strong>start_time_ms</strong>: The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured,
-        this measurement is the time between the 'play_request' and
+      <li><strong>start_time_ms</strong>: The time, in milliseconds, between initiation of playback and the first frame of the video being rendered. This can be different depending on the experience, for instance, if there are no pre-roll ads configured, this measurement is the time between the 'play_request' and
         <code>video_view
         </code> events. If there is a preroll ad, the time between
         <code>ad_mode_begin
@@ -1470,8 +1599,7 @@ scheme       hierarchical part
         <code>ad_mode_complete
         </code> should not be included.</li>
     </ul>
-    <p><strong>video_engagement</strong>: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during
-      the engagement period. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback.
+    <p><strong>video_engagement</strong>: Includes additional rendition selection, bitrate measurements, and buffering information. A subtle change to video engagement was also made in that it should be sent periodically even if no viewing occurred during the engagement period. This change is to enable tracking re-buffering delays and counts that cause users to wait for playback.
     </p>
     <ul>
       <li><strong>range</strong>: The range parameter is now optional, range can be left out of an engagement event to show that during the period covered by the event, there was no viewing activity. (for example, when there is only re-buffering activity)</li>
