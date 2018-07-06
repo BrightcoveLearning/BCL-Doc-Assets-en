@@ -134,14 +134,14 @@ var aapi_model = {
             name: 'from',
             required: false,
             description: 'The beginning of the date range for the request',
-            values: 'An ISO 8601 date (MM-DD-YYYY), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.',
+            values: 'An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.',
             default: '30 days prior to now'
         },
         to: {
             name: 'to',
             required: false,
             description: 'The end of the date range for the request',
-            values: 'An ISO 8601 date (MM-DD-YYYY), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.',
+            values: 'An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.',
             default: 'now'
         }
     },
