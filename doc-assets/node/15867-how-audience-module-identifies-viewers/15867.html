@@ -1,0 +1,124 @@
+<div class="BCL-concept">
+  <p>The Audience module tries to identify viewers using a variety of data sources:
+  </p>
+  <ul>
+    <li><a href="#cookie">Audience cookie</a></li>
+    <li><a href="#eloqua">Oracle Eloqua GUID</a></li>
+    <li><a href="#marketo">Marketo Munchkin cookie</a></li>
+    <li><a href="#sfurl">Salesforce ID URL parameter</a></li>
+    <li><a href="#sfid">Salesforce ID HTML attribute</a></li>
+    <li><a href="#hubspot">HubSpot UTK cookie</a></li>
+    <li><a href="#email">Email parameter</a></li>
+  </ul>
+  <p>The Audience module will abide by a user's browser settings regarding <a href="#dnt">Do Not Track</a>.
+  </p>
+  <p class="BCL-aside">Note: When using a custom integration, you are responsible for identifying the viewer. For information, see <a href="/node/16577">Creating Custom Integrations with the Audience Module</a>.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="cookie">Audience cookie
+  </h2>
+  <p>The Audience module itself will set a 3rd party cookie and use it to associate viewing data with the same user if Audience Tracking is enabled for their account and the player is using it. If a user ever fills out an Audience lead form, Audience will create a profile for that viewer and all their viewing data will be associated with that profile.
+  </p>
+  <p>The cookie that Audience will set is named <strong>_bc_uuid</strong>.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="eloqua">Oracle Eloqua GUID
+  </h2>
+  <p>Audience-enabled players with an Eloqua integration will invoke Eloqua’s APIs to obtain the visitor ID, frequently referred to as the Eloqua GUID. This ID is captured in the Audience module’s viewing data and is used to synchronize viewing data to Eloqua.
+  </p>
+  <p>Eloqua uses its own set of cookies and when a player is configured with an Eloqua integration, Audience uses client side APIs to ask Eloqua what the visitor ID (frequently referred to as an Eloqua GUID) is and then subsequently use that server-side to try and figure out who the user is.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="marketo">Marketo Munchkin cookie
+  </h2>
+  <p>Audience-enabled players with a Marketo integration will refer to the Munchkin cookie (_mkto_trk) which is created in the user's browser. This value is captured in the Audience module’s viewing data and is used to synchronize viewing data to Marketo.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="sfurl">Salesforce ID URL parameter
+  </h2>
+  <p>For Salesforce integrations, the plugin can attempt to identify the viewer by checking the URL for the parameter called <strong>bcsfid</strong>. This allows Salesforce users to send email campaigns with a landing page URL that is uniquely generated for tracking purposes by providing the lead’s Salesforce ID in the URL.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="sfid">Salesforce ID HTML attribute
+  </h2>
+  <p>For Salesforce integrations, if the plugin is unable to identify the viewer by checking for the <strong>bcsfid</strong> URL parameter, it will search for the <strong>data-bc-sfid</strong> attribute on the
+    <code>&lt;video&gt;
+    </code> element of the HTML embed publishing code for the video and use its value as the Salesforce ID of the lead if it is set.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="hubspot">HubSpot UTK cookie
+  </h2>
+  <p>For HubSpot integrations, the plugin injects HubSpot’s JavaScript tracking code which drops a <strong>hubspotutk</strong> cookie on the user’s browser. This cookie is used to keep track of a visitor's identity within HubSpot and associate Brightcove viewing data with a contact. If the user already has a <strong>hubspotutk</strong> cookie when the player loads, Audience will make an API request to HubSpot and ask if the cookie value corresponds to a known contact, and if so, Audience will associate viewing data with that user.
+  </p>
+</div>
+<div class="BCL-concept">
+  <h2 id="email">Email parameter
+  </h2>
+  <p>The Audience module can also be told who the user is via an email address. Audience will look for a URL parameter titled <strong>bcemail</strong>. This is useful with email campaigns with a landing page URL that’s been uniquely generated for tracking purposes. If you're sending out a batch email to a list, either from a marketing platform or from a third party email service like MailChimp, you would need to configure the email parameter in the sending platform's settings to dynamically update the link that people click on. Audience will then use this email parameter to look up the user server side and sync viewing data.
+  </p>
+  <div class="BCL-subsection">
+    <h3>URL example
+    </h3>
+    <code>http://go.brightcove.com/be-video-hero-cust?<strong>bcemail</strong>=msmith@brightcove.com
+    </code>
+  </div>
+  <p>If the Audience plugin does not find an email address via the <strong>bcemail</strong> URL parameter, it will then check the
+    <code>&lt;video&gt;
+    </code> element of the HTML embed publishing code. It will search for the <strong>data-bc-email</strong> attribute on the video element and use its value as the email address if it is set.
+  </p>
+  <div class="BCL-subsection">
+    <h3>Embed example
+    </h3>
+    <pre>
+&lt;video
+id="player"
+data-account="0000000001"
+data-player="default"
+data-video-id="0000000002"
+<strong>   data-bc-email</strong>="msmith@brightcove.com"
+class="video-js" controls&gt;
+&lt;/video&gt;
+</pre>
+  </div>
+</div>
+<div class="BCL-concept">
+  <h2 id="dnt">Do not track
+  </h2>
+  <p>The Audience module currently abides by a viewer’s browser setting regarding Do Not Track (DNT) and will not use or set its normal cookie should it see that Do Not Track is enabled. The player plugin can also be instructed to never track should a Video Cloud customer wish to turn it off for all their viewers or on a user by user basis. This is done by using the in-page embed code and setting the
+    <code>data-do-not-track
+    </code> to a value of 1.
+  </p>
+  <pre>
+&lt;video   data-video-id="9240259371001"
+data-account="3491906377"
+<strong>data-do-not-track="1"</strong>
+data-player="7dccc39d-0e2d-4b27-bea9-af44b2166148"
+data-embed="default"   class="video-js" controls&gt;&lt;/video&gt;
+&lt;script src="//players.brightcove.net/1486906377/7dccc39d-0e2d-4b27-bea9-af44b2166148_default/index.min.js"&gt;&lt;/script&gt;
+</pre>
+  <div class="BCL-subsection">
+    <h3>Oracle Eloqua
+    </h3>
+    <p>Eloqua has stated they do not process (basically ignore) do not track requests and will return an Eloqua GUID regardless. Currently, Audience isn’t handling this in any special way, i.e. not using the Eloqua JavaScript API when Audience sees DNT. Eloqua also has support for a strict mode which satisfies EU privacy requirements. When this is enabled for an Eloqua account, end users are not tracked unless they opt-in via a form. The cookies dropped in both cases are documented in the Oracle document <a href="https://community.oracle.com/community/topliners/do-it/blog/2013/08/14/what-cookies-get-dropped-when-you-browse-to-an-eloqua-tracked-page">What cookies get dropped when you browse to an Eloqua tracked page</a>.
+    </p>
+  </div>
+  <div class="BCL-subsection">
+    <h3>Marketo
+    </h3>
+    <p>Marketo supports DNT but leaves it up to the customer to turn it on/off for their particular account. For more information, see the Marketo document <a href="https://docs.marketo.com/pages/releaseview.action?pageId=6095047">Edit "Do Not Track" Browser Support Settings</a>.
+    </p>
+  </div>
+  <div class="BCL-subsection">
+    <h3>HubSpot
+    </h3>
+    <p>HubSpot respects DNT according <a href="https://knowledge.hubspot.com/getting-started-with-hubspot-v2/how-to-enable-a-privacy-policy-alert-if-you-are-doing-business-in-europe">this document</a>.
+    </p>
+  </div>
+</div>
+<!-- End of Drupal content -->
