@@ -1,8 +1,18 @@
 <article class="bcls-article">
 	<section id="top" class="bcls-section">
-			<aside class="bcls-aside bcls-aside--information"><a href="https://www.brightcove.com/en/blog/2017/03/digital-rights-management-drm-dynamic-delivery">Dynamic Delivery</a> is currently in Limited Availability. Contact your account manager if you are interested in converting your account to Dynamic Delivery.
-</aside>
 			<p>Ad Configurations define various aspects of SSAI playback, including ad call(s), beacons, and other configuration options. An account can have multiple configurations and currently configurations can not be shared across accounts.</p>
+			<aside class="bcls-aside bcls-aside--information">Notes:
+				<ul>
+					<li>To use SSAI, your Video Cloud account will need to be configured for <a href="/node/18476">Dynamic Delivery</a>. Contact your account manager if you are
+						interested in converting your account to Dynamic Delivery.</li>
+						<li>
+							SSAI works with Video-on-Demand (VOD) and supports Live playback.
+						</li>
+						<li>
+							For a list of limitations, see the <a href="/node/18623#Limitations">SSAI Overview</a> document.
+						</li>
+				</ul>
+			</aside>
 	</section>
 
 	<section class="bcls-section">
@@ -15,22 +25,22 @@
 
 		<p>The base URL for the SSAI API is:</p>
 
-		<pre class="line-numbers">
-		<code class="language-http">https://ssai.api.brightcove.com/v1</code></pre>
+<pre class="line-numbers">
+<code class="language-http">https://ssai.api.brightcove.com/v1</code></pre>
 
 		<h4>Account path</h4>
 
 		<p>In all cases, requests will be made for a specific Video Cloud Account. So, you will always add the term <code>accounts</code> followed by your account id to the base URL:</p>
 
-		<pre class="line-numbers">
-		<code class="language-http">https://ssai.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
+<pre class="line-numbers">
+<code class="language-http">https://ssai.api.brightcove.com/v1<strong>/accounts/</strong><span class="bcls-input">your account id</span></code></pre>
 
 		<h3>Authentication</h3>
 
 		<p>Authentication for requests requires an Authorization header:</p>
 
-		<pre class="line-numbers">
-		<code class="language-http">Authorization: Bearer {access_token}</code></pre>
+<pre class="line-numbers">
+<code class="language-http">Authorization: Bearer <span class="bcls-input">your access token</span></code></pre>
 
 		<p>The <code>access_token</code> is a temporary OAuth2 access token that must be obtained from the Brightcove OAuth service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
 
@@ -78,11 +88,11 @@
 		</tr>
 		<tr>
 			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/ACCOUNT_ID/ssai_configs</td>
+			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs</td>
 		</tr>
 		<tr>
 			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">OAUTH_TOKEN</span></td>
+			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
 		</tr>
 		<tr>
 			<td>Content-Type: application/json</td>
@@ -123,11 +133,11 @@
 		</tr>
 		<tr>
 			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/ACCOUNT_ID/ssai_configs</td>
+			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs</td>
 		</tr>
 		<tr>
 			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">OAUTH_TOKEN</span></td>
+			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
 		</tr>
 		<tr>
 			<td>Content-Type: application/json</td>
@@ -139,7 +149,7 @@
 &quot;name&quot;: &quot;VMAP Ad Server&quot;,
 &quot;vmap_response_namespace&quot;: &quot;uo&quot;,
 &quot;ad_config&quot;: {
-&quot;expected_ad_response&quot;: &quot;dfp_ad_rules&quot;,
+&quot;expected_ad_response&quot;: &quot;vast_3_0&quot;,
 &quot;disable_server_beacons&quot;: false,
 &quot;template_url&quot;: { &quot;template&quot;: &quot;https://8sgl4oo6of.execute-api.us-west-2.amazonaws.com/qa/ads/dfp-ad-rules-new?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot; }
 }
@@ -162,11 +172,11 @@
 		</tr>
 		<tr>
 			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/ACCOUNT_ID/ssai_configs/CONFIG_ID</td>
+			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs/<span class="bcls-input">your ad config id</span></td>
 		</tr>
 		<tr>
 			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">OAUTH_TOKEN</span></td>
+			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
 		</tr>
 		<tr>
 			<td>Content-Type: application/json</td>
@@ -176,23 +186,21 @@
 <p>
 	Sample response:
 </p>
-<pre class="line-numbers"><code class="language-json">[
-{
-	&quot;name&quot;: &quot;VMAP Ad Server&quot;,
-	&quot;vmap_response_namespace&quot;: &quot;uo&quot;,
-	&quot;config_id&quot;: &quot;2ecc6beb-d6a4-4deb-a78e-37ac27e0f883&quot;,
-	&quot;account_id&quot;: &quot;57838016001&quot;,
-	&quot;created_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
-	&quot;updated_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
-	&quot;ad_config&quot;: {
-			&quot;expected_ad_response&quot;: &quot;dfp_ad_rules&quot;,
-			&quot;disable_server_beacons&quot;: false,
-			&quot;template_url&quot;: {
-					&quot;template&quot;: &quot;https://8sgl4oo6of.execute-api.us-west-2.amazonaws.com/qa/ads/dfp-ad-rules-new?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot;
-			}
+<pre class="line-numbers"><code class="language-json">{
+&quot;name&quot;: &quot;VMAP Ad Server&quot;,
+&quot;vmap_response_namespace&quot;: &quot;uo&quot;,
+&quot;config_id&quot;: &quot;2ecc6beb-d6a4-4deb-a78e-37ac27e0f883&quot;,
+&quot;account_id&quot;: &quot;57838016001&quot;,
+&quot;created_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
+&quot;updated_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
+&quot;ad_config&quot;: {
+	&quot;expected_ad_response&quot;: &quot;dfp_ad_rules&quot;,
+	&quot;disable_server_beacons&quot;: false,
+	&quot;template_url&quot;: {
+			&quot;template&quot;: &quot;https://8sgl4oo6of.execute-api.us-west-2.amazonaws.com/qa/ads/dfp-ad-rules-new?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot;
 	}
 }
-]</code></pre>
+}</code></pre>
 
 <h3 id="Update_an_ad_configuration">Update an ad configuration</h3>
 <p>
@@ -207,11 +215,11 @@
 		</tr>
 		<tr>
 			<th>URL</th>
-			<td>https://ssai.api.brightcove.com/v1/accounts/ACCOUNT_ID/ssai_configs/CONFIG_ID</td>
+			<td>https://ssai.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/ssai_configs/<span class="bcls-input">your ad config id</span></td>
 		</tr>
 		<tr>
 			<th rowspan="2">Headers</th>
-			<td>Authorization: Bearer <span class="bcls-input">OAUTH_TOKEN</span></td>
+			<td>Authorization: Bearer <span class="bcls-input">your access token</span></td>
 		</tr>
 		<tr>
 			<td>Content-Type: application/json</td>
@@ -229,31 +237,27 @@
 <p>
 	Sample response:
 </p>
-<pre class="line-numbers"><code class="language-json">[
-{
-	&quot;name&quot;: &quot;VMAP Ad Server - updated&quot;,
-	&quot;vmap_response_namespace&quot;: &quot;uo&quot;,
-	&quot;config_id&quot;: &quot;2ecc6beb-d6a4-4deb-a78e-37ac27e0f883&quot;,
-	&quot;account_id&quot;: &quot;57838016001&quot;,
-	&quot;created_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
-	&quot;updated_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
-	&quot;ad_config&quot;: {
-			&quot;expected_ad_response&quot;: &quot;dfp_ad_rules&quot;,
-			&quot;disable_server_beacons&quot;: false,
-			&quot;template_url&quot;: {
-					&quot;template&quot;: &quot;https://8sgl4oo6of.execute-api.us-west-2.amazonaws.com/qa/ads/dfp-ad-rules-new?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot;
-			}
+<pre class="line-numbers"><code class="language-json">{
+&quot;name&quot;: &quot;VMAP Ad Server - updated&quot;,
+&quot;vmap_response_namespace&quot;: &quot;uo&quot;,
+&quot;config_id&quot;: &quot;2ecc6beb-d6a4-4deb-a78e-37ac27e0f883&quot;,
+&quot;account_id&quot;: &quot;57838016001&quot;,
+&quot;created_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
+&quot;updated_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
+&quot;ad_config&quot;: {
+	&quot;expected_ad_response&quot;: &quot;dfp_ad_rules&quot;,
+	&quot;disable_server_beacons&quot;: false,
+	&quot;template_url&quot;: {
+			&quot;template&quot;: &quot;https://8sgl4oo6of.execute-api.us-west-2.amazonaws.com/qa/ads/dfp-ad-rules-new?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot;
 	}
 }
-]</code></pre>
+}</code></pre>
 	 <br />
 </section>
 
 <section class="bcls-section">
 <h2 id="Configuration_field_details">Configuration field details</h2>
-<p>
-	This table defines the ad configuration fields used within the body section of a request.
-</p>
+<p>This table defines the ad configuration fields used within the body section of a request.</p>
 
 <table class="bcls-table">
 	<thead class="bcls-table__head">
@@ -281,9 +285,60 @@
 			<td>Human readable description</td>
 		</tr>
 		<tr>
+			<td>discontinuities.dash</td>
+			<td>[]String</td>
+			<td>
+				<p>
+					Controls which versions of dash to deliver Multi Period Dash manifests.
+				</p>
+				<p>
+						Set to <code>["*"]</code> to deliver multi-period dash for all versions
+				</p>
+				<p>
+					Empty list for never
+				</p>
+				<p>
+					Example: <code>["live-timeline"]</code> to deliver for live-timeline but not for hbbtv
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>discontinuities.hls</td>
+			<td>[]String</td>
+			<td>
+				<p>
+					Controls which versions of hls to deliver with discontinuities.
+				</p>
+				<p>
+					Set to <code>["*"]</code> to delivery with discontinuities in all versions of HLS
+				</p>
+				<p>
+					Empty list for never
+				</p>
+				<p>
+					Example: <code>["v4","v5"]</code> to deliver for v4 & v5 but not for v3
+				</p>
+			</td>
+		</tr>
+		<tr>
 			<td>ad_config.expected_ad_response</td>
 			<td>String</td>
-			<td>Which tech to use to parse the response. <br />Values: <code>dfp_ad_rules</code>, <code>dfp_vmap</code>, <code>smart_xml</code>, <code>vast_3_0</code></td>
+			<td>Which tech to use to parse the response. Values:
+				<ul>
+					<li>
+						<code>dfp_ad_rules</code>
+					</li>
+					<li>
+						<code>dfp_vmap</code>
+					</li>
+					<li>
+						<code>smart_xml</code>
+					</li>
+					<li>
+						<code>vast_3_0</code>
+					</li>
+				</ul>
+			</td>
 		</tr>
 		<tr>
 			<td>ad_config.disable_server_beacons</td>
@@ -300,6 +355,21 @@
 			<td>ad_config.template_url.template</td>
 			<td>String</td>
 			<td>Ad tag template. Available variables described in a later section.</td>
+		</tr>
+		<tr>
+			<td>ad_config.template_url.defaults</td>
+			<td>Object</td>
+			<td>
+				<p>
+					Map of String to String defining the default to use in the case where a url param is not provided.
+				</p>
+				<p>
+					Can be a literal <code>{ "url.foo": "SomeString" }</code>
+				</p>
+				<p>
+					Or reference another variable <code>{ "url.foo": "{{ metadata.title_id }}" }</code>
+				</p>
+			</td>
 		</tr>
 		<tr>
 			<td>beacon_templates</td>
@@ -331,7 +401,6 @@
 				<li><code>segment_start</code></li>
 				<li><code>segment_end</code></li>
 				<li><code>on_load</code></li>
-				<li><code>ad_request</code></li>
 			</ul>
 			</td>
 		</tr>
@@ -340,22 +409,22 @@
 			<td>String</td>
 			<td>Beacon URL template</td>
 		</tr>
-		<!-- <tr>
-			<td>ad_config</td>
-			<td>Object</td>
-			<td>Object whose properties define the ad configuration</td>
-		</tr> -->
+		<tr>
+			<td>extend_beacon_guard_ttl</td>
+			<td>Boolean</td>
+			<td>Sets the length of the Beacon Guard TTL (Time to live) to the length of the Content’s Session TTL. Otherwise, the default is 1 minute.</td>
+		</tr>
 	</tbody>
 </table>
 </section>
 
 <section class="bcls-section">
-<h2 id="Ad_Variables">Ad variables</h2>
+<h2 id="Ad_variables">Ad variables</h2>
 
 <p>Variables in the <strong>template url</strong> are identified by double curly braces (<code>{{ … }}</code>) with optional whitespace before and after the variable path. All variables are prefixed by one of three namespaces:</p>
 <ul>
 	<li>
-		<a href="#System_varables">system</a>
+		<a href="#System_variables">system</a>
 	</li>
 	<li>
 		<a href="#URL_variables">url</a>
@@ -365,7 +434,7 @@
 	</li>
 </ul>
 
-<h3 id="System_varables">System varables</h3>
+<h3 id="System_variables">System variables</h3>
 
 <p>System variables are provided by the SSAI system and can be information about the end user or helper variables to generate random values. The values must be URI-encoded before being inserted into the URL templates.</p>
 <p>
@@ -494,9 +563,48 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="Entrypoint_URL_parameters">Entrypoint URL parameters</h2>
+<p>
+	There are a handful of query parameters that can be added to the SSAI entry point URL (VMAP or manifest) in order to tweak some behaviors:
+</p>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th width="25%">Parameter</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>?rule=sd-only</td>
+			<td>Filters out any video rendition that has a height less than the threshold set in the Account Configuration</td>
+		</tr>
+		<tr>
+			<td>?rule=discos-enabled</td>
+			<td>Enable Playback with Discontinuities in HLS & MultiPeriods in Dash. Takes precedence over discontinuities setting in Playback Config</td>
+		</tr>
+		<tr>
+			<td>?rule=discos-disabled</td>
+			<td>Disable Playback with Discontinuities in HLS & MultiPeriods in Dash. Takes precedence over discontinuities setting in Playback Config</td>
+		</tr>
+
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configuration_notes">Configuration notes</h2>
+<ol>
+	<li>Preloading ads should not be done with SSAI. The reason for this is that if you preload the player will report an ad impression and probably the first quartile beacons before the video is played. This could lead to inaccurate ad analytics.
+		If you configure SSAI in Studio, this will automatically be done, but if you happen to setup SSAI manually you need to be aware of this issue.</li>
+	<li>If the web player is using SSAI, and one of your motivations for doing so is to work around ad blockers, you should use server-side beacons. Client-side beacons should not be used as they will be blocked.</li>
+</ol>
+</section>
+
+<section class="bcls-section">
 <h2 id="Client_side_macros">Client-side macros</h2>
 
-<p>Use the <code>page</code> prefix when you want to use client-side ad macros. These macros enable you to use variables in the VMAP and server URLs. For ad macro details, see the <a href="https://support.brightcove.com/node/18080#adMacros">Ad macros and the serverURL</a> section of the Advertising with the IMA3 Plugin document.</p>
+<p>Use the <code>page</code> prefix when you want to use client-side ad macros. These macros enable you to use variables in the VMAP and server URLs. For ad macro details, see the <a href="/node/18080#adMacros">Ad macros and the serverURL</a> section of the Advertising with the IMA3 Plugin document.</p>
 <!-- <p>
 	When you prefix an Ad variable with , then a client-side macro will be appended to the end of the VMAP and SRC fields in the catalog response, when SSAI is being used. Then, the Brightcove player will run those strings through the client-side macro replacement logic.
 </p> -->
