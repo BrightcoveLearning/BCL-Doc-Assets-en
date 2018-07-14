@@ -1,1273 +1,1197 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="Example">Example
-</h2>
-<p>Let's say you have a web page with a Brightcove player on it. Now, you want to let users share the video across social media services. With the social media plugin, you will see a social sharing icon in the title and description dock.
-</p>
-<aside class="bcls-aside bcls-aside--information">Note: If the player is configured to not display the title and description dock, the sharing icon will appear in the player controls area.
-</aside>
-<figure class="bcls-figure"><img class="bcls-image" alt="Social Media icon" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-icon.png" />
-</figure>
-<p>Clicking on this icon displays the social sharing screen, as shown here.
-</p>
-<figure class="bcls-figure"><img class="bcls-image" alt="Social Media Share Interface" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-selection.png" />
-</figure>
-<p>You will need to set a width and height for the player for two reasons:
-</p>
+<h2 id="Example">Example</h2>
+
+<p>Let's say you have a web page with a Brightcove player on it. Now, you want to let users share the video across social media services. With the social media plugin, you will see a social sharing icon in the title and description dock.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note: If the player is configured to not display the title and description dock, the sharing icon will appear in the player controls area.</aside>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Social Media icon" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-icon.png" /></figure>
+
+<p>Clicking on this icon displays the social sharing screen, as shown here.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Social Media Share Interface" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-selection.png" /></figure>
+
+<p>You will need to set a width and height for the player for two reasons:</p>
+
 <ol>
-<li>If no width or height are set there will be no values to pass to Twitter, which will cause the Twitter card not to validate.</li>
-<li>The width needs to be wide enough to accommodate the social plugin's interface as shown in the screenshot above. You can also have the interface automatically appear on video end using the
-  <code>displayAfterVideo
-  </code> property, documented below.</li>
+	<li>If no width or height are set there will be no values to pass to Twitter, which will cause the Twitter card not to validate.</li>
+	<li>The width needs to be wide enough to accommodate the social plugin's interface as shown in the screenshot above. You can also have the interface automatically appear on video end using the <code>displayAfterVideo </code> property, documented below.</li>
 </ol>
+
 <aside class="bcls-aside bcls-aside--information">
-<p>Note: In Studio, there is an option to add social sharing to your player and in many cases will be sufficient for your needs. This document covers all aspects of using the social media plugin. The following screenshot pictures Studio's UI.
-</p>
-<figure class="bcls-figure"><img class="bcls-image" alt="Social Media in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-studio.png" />
-</figure>
+<p>Note: In Studio, there is an option to add social sharing to your player and in many cases will be sufficient for your needs. This document covers all aspects of using the social media plugin. The following screenshot pictures Studio's UI.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Social Media in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-studio.png" /></figure>
 </aside>
-<p>Click <a href="http://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html">here</a> for a working sample of a web page that uses the plugin and includes the social media meta tags.
-</p>
+
+<p>Click <a href="http://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html">here</a> for a working sample of a web page that uses the plugin and includes the social media meta tags.</p>
 </section>
+
 <section class="bcls-section">
-<h2 id="Overview">Overview
-</h2>
-<p>This document walks you through the steps to enable social media sharing for an existing HTML page with your Brightcove player on it. This assumes that you have created a Brightcove player with the proper configuration information and have added the player to an HTML page.
-</p>
-<p>To add the social media plugin, follow these steps:
-</p>
+<h2 id="Overview">Overview</h2>
+
+<p>This document walks you through the steps to enable social media sharing for an existing HTML page with your Brightcove player on it. This assumes that you have created a Brightcove player with the proper configuration information and have added the player to an HTML page.</p>
+
+<p>To add the social media plugin, follow these steps:</p>
+
 <ol class="bcls-tasklist">
-<li>
-  <p><a href="#playersmodule">Implement using Players module</a>. This will update your Brightcove player to use the social media plugin.
-  </p>
-  <ul>
-    <li>You will need the URL to the HTML page with your Brightcove player.</li>
-    <li>Review the available <a href="#properties">properties</a> to customize the social media plugin.</li>
-  </ul>
-</li>
-<li>Add social <a href="#metatags">meta tags</a> to your player's HTML page.</li>
-<li><a href="#validate">Validate</a> the meta tags on your HTML page for FaceBook and Twitter.</li>
+	<li>
+	<p><a href="#playersmodule">Implement using Players module</a>. This will update your Brightcove player to use the social media plugin.</p>
+
+	<ul>
+		<li>You will need the URL to the HTML page with your Brightcove player.</li>
+		<li>Review the available <a href="#properties">properties</a> to customize the social media plugin.</li>
+	</ul>
+	</li>
+	<li>Add social <a href="#metatags">meta tags</a> to your player's HTML page.</li>
+	<li><a href="#validate">Validate</a> the meta tags on your HTML page for FaceBook and Twitter.</li>
 </ol>
-<p>In a browser, open the HTML page with your Brightcove player and use the social sharing icon in the player to share your video.
-</p>
-<p>You can also implement the social media plugin within your page code, but this is a more advanced solution. You may want to use this approach to include custom sharing URLs. For details, see the <a href="#implementcode">Customizing sharing URLs</a> section.
-</p>
+
+<p>In a browser, open the HTML page with your Brightcove player and use the social sharing icon in the player to share your video.</p>
+
+<p>You can also implement the social media plugin within your page code, but this is a more advanced solution. You may want to use this approach to include custom sharing URLs. For details, see the <a href="#implementcode">Customizing sharing URLs</a> section.</p>
+
 <aside class="bcls-aside bcls-aside--tip">
-<p>Other options for posting to social platforms include the following:
-</p>
+<p>Other options for posting to social platforms include the following:</p>
+
 <ul>
-  <li><a href="/node/16502">Publish the Brightcove Player in Facebook instant articles</a></li>
-  <li><a href="/node/18444">Post videos to your own feed using Brightcove Social</a></li>
+	<li><a href="/node/16502">Publish the Brightcove Player in Facebook instant articles</a></li>
+	<li><a href="/node/18444">Post videos to your own feed using Brightcove Social</a></li>
 </ul>
 </aside>
 </section>
+
 <section class="bcls-section">
-<h2 id="Configure_player">Configure player
-</h2>
-<p>There are two ways to include social sharing with your player:
-</p>
+<h2 id="Configure_player">Configure player</h2>
+
+<p>There are two ways to include social sharing with your player:</p>
+
 <ul>
-<li>In the Players module, <a href="/node/14058">configure properties in the <strong>Social Sharing</strong> section</a>.</li>
-<li>In the Players module, add the social sharing plugin to the <strong>Plugins</strong> section.</li>
+	<li>In the Players module, <a href="/node/14058">configure properties in the <strong>Social Sharing</strong> section</a>.</li>
+	<li>In the Players module, add the social sharing plugin to the <strong>Plugins</strong> section.</li>
 </ul>
-<p>To add the social sharing plugin, follow these steps:
-</p>
+
+<p>To add the social sharing plugin, follow these steps:</p>
+
 <ol class="bcls-tasklist">
-<li>Open the <strong>Players</strong> module and locate the player.</li>
-<li>Click the link for the player to open the player properties.</li>
-<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
-  <pre><code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.min.js</code></pre>
-</li>
-<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
-  <pre><code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.css</code></pre>
-</li>
-<li>For the <strong>Name</strong>, enter <strong>social</strong>.</li>
-<li>
-  <p>Enter the plugin options. The example below will display a social media button at the bottom of the player to share this video with several social media sites. The social sharing screen will automatically display on video end.
-  </p>
-  <p>For details about the plugin options, see the <a href="#properties">Properties</a> section.
-  </p>
-  <ul>
-    <li>Lines 3-4: Set the name and description for your video.</li>
-    <li>Line 5: Defines the URL for your custom web page with your video player and social sharing meta tags.</li>
-    <!--					<li>Line 6: Sets the social sharing screen to display when the video ends.</li>-->
-    <li>Lines 6-7: For Twitter, this allows a user to start viewing the video after a 5 second offset.</li>
-    <li>
-      <p>Lines 8-14: Enables social sharing for Facebook, Google, Twitter, Tumblr, Pinterest and LinkedIn.
-      </p>
-    </li>
-  </ul>
-  <pre class="line-numbers" data-start="2"><code class="language-json">{
-"title": "Tiger",
-"description": "Video of two tigers",
-"url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
-"deeplinking": true,
-"offset": "00:00:05",
-"services": {
-"facebook": true,
-"google": true,
-"twitter": true,
-"tumblr": true,
-"pinterest": true,
-"linkedin": true
-}
+	<li>Open the <strong>Players</strong> module and locate the player.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
+	<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
+	<pre>
+<code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.min.js</code></pre>
+	</li>
+	<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
+	<pre>
+<code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.css</code></pre>
+	</li>
+	<li>For the <strong>Name</strong>, enter <strong>social</strong>.</li>
+	<li>
+	<p>Enter the plugin options. The example below will display a social media button at the bottom of the player to share this video with several social media sites. The social sharing screen will automatically display on video end.</p>
+
+	<p>For details about the plugin options, see the <a href="#properties">Properties</a> section.</p>
+
+	<ul>
+		<li>Lines 3-4: Set the name and description for your video.</li>
+		<li>Line 5: Defines the URL for your custom web page with your video player and social sharing meta tags.</li>
+		<!--					<li>Line 6: Sets the social sharing screen to display when the video ends.</li>-->
+		<li>Lines 6-7: For Twitter, this allows a user to start viewing the video after a 5 second offset.</li>
+		<li>
+		<p>Lines 8-14: Enables social sharing for Facebook, Google, Twitter, Tumblr, Pinterest and LinkedIn.</p>
+		</li>
+	</ul>
+
+	<pre class="line-numbers" data-start="2">
+<code class="language-json">{
+  "title": "Tiger",
+  "description": "Video of two tigers",
+  "url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
+  "deeplinking": true,
+  "offset": "00:00:05",
+  "services": {
+    "facebook": true,
+    "google": true,
+    "twitter": true,
+    "tumblr": true,
+    "pinterest": true,
+    "linkedin": true
+  }
 }</code></pre>
-  <figure class="bcls-figure"><img class="bcls-image" alt="social media plugin" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-plugin.png" />
-  </figure>
-</li>
-<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+
+	<figure class="bcls-figure"><img class="bcls-image" alt="social media plugin" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-plugin.png" /></figure>
+	</li>
+	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
 </ol>
 </section>
+
 <section class="bcls-section">
-<h2 id="Properties">Properties
-</h2>
-<p>For plugins in general, the
-<code>options
-</code> object is used to pass data to the plugin to customize initialization. In this case, you can use the following properties in this object:
-</p>
-<h3>title
-</h3>
+<h2 id="Properties">Properties</h2>
+
+<p>For plugins in general, the <code>options </code> object is used to pass data to the plugin to customize initialization. In this case, you can use the following properties in this object:</p>
+
+<h3>title</h3>
+
 <ul>
-<li>Type: string</li>
-<li>This is a custom title that will appear when your video is shared.</li>
+	<li>Type: string</li>
+	<li>This is a custom title that will appear when your video is shared.</li>
 </ul>
-<h3>description
-</h3>
+
+<h3>description</h3>
+
 <ul>
-<li>Type: string</li>
-<li>This is a custom description that will be used by the social services which support it.</li>
+	<li>Type: string</li>
+	<li>This is a custom description that will be used by the social services which support it.</li>
 </ul>
-<h3>url
-</h3>
+
+<h3>url</h3>
+
 <ul>
-<li>Type: string</li>
-<li>This is the URL that points to your custom web page which has your video and the meta tags for sharing. Refer to the <a href="#metatags">meta tags</a> section for details on how to add the social media metadata to your player page.</li>
+	<li>Type: string</li>
+	<li>This is the URL that points to your custom web page which has your video and the meta tags for sharing. Refer to the <a href="#metatags">meta tags</a> section for details on how to add the social media metadata to your player page.</li>
 </ul>
-<h3 id="embedcode">embedCode
-</h3>
+
+<h3 id="embedcode">embedCode</h3>
+
 <ul>
-<li>Type: string</li>
-<li>This is the Brightcove player iframe embed code for sharing the video. This allows you to completely override the contents of the <strong>Embed Code</strong> field located in the sharing dialog.
-  <figure class="bcls-figure"><img class="bcls-image" alt="Social Media Embed Code" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-embedcode.png" />
-  </figure>
-</li>
-<li>You can get the value of this property by using the <a href="#getembedcode">getEmbedCode()</a> method.</li>
+	<li>Type: string</li>
+	<li>This is the Brightcove player iframe embed code for sharing the video. This allows you to completely override the contents of the <strong>Embed Code</strong> field located in the sharing dialog.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Social Media Embed Code" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-embedcode.png" /></figure>
+	</li>
+	<li>You can get the value of this property by using the <a href="#getembedcode">getEmbedCode()</a> method.</li>
 </ul>
-<h3>displayAfterVideo
-</h3>
+
+<h3>displayAfterVideo</h3>
+
 <ul>
-<li>Type: boolean</li>
-<li>Default:
-  <code>false
-  </code></li>
-<li>Causes the social screen to automatically show on an
-  <code>ended
-  </code> event</li>
+	<li>Type: boolean</li>
+	<li>Default: <code>false </code></li>
+	<li>Causes the social screen to automatically show on an <code>ended </code> event</li>
 </ul>
-<h3>deeplinking
-</h3>
+
+<h3>deeplinking</h3>
+
 <ul>
-<li>Type: boolean</li>
-<li>Default:
-  <code>false
-  </code></li>
-<li>
-  <p>This enables/disables deep linking for the shared video. This feature allows a user to start viewing a video from a specific offset. For more details, view the <a href="/node/18104">Deep Linking</a> document.
-  </p>
-  <aside class="bcls-aside bcls-aside--warning">Note: The deep linking feature currently only works with Twitter.
-  </aside>
-</li>
+	<li>Type: boolean</li>
+	<li>Default: <code>false </code></li>
+	<li>
+	<p>This enables/disables deep linking for the shared video. This feature allows a user to start viewing a video from a specific offset. For more details, view the <a href="/node/18104">Deep Linking</a> document.</p>
+
+	<aside class="bcls-aside bcls-aside--warning">Note: The deep linking feature currently only works with Twitter.</aside>
+	</li>
 </ul>
-<h3>offset
-</h3>
+
+<h3>offset</h3>
+
 <ul>
-<li>Type: string</li>
-<li>Format:
-  <code>00h00m00s
-  </code></li>
-<li>This is used with the
-  <code>deeplinking
-  </code> property and defines when to start playing the video. To offset 1 minute and 5 seconds, you would write:
-  <code>00h01m05s
-  </code></li>
+	<li>Type: string</li>
+	<li>Format: <code>00h00m00s </code></li>
+	<li>This is used with the <code>deeplinking </code> property and defines when to start playing the video. To offset 1 minute and 5 seconds, you would write: <code>00h01m05s </code></li>
 </ul>
-<h3>services
-</h3>
-<p>Include all service properties in this object. To enable or disable support for a service, set the property value to true or false instead of removing them.
-</p>
+
+<h3>services</h3>
+
+<p>Include all service properties in this object. To enable or disable support for a service, set the property value to true or false instead of removing them.</p>
+
 <ul>
-<li>
-  <code>facebook
-  </code>
-  <ul>
-    <li>Type: boolean</li>
-    <li>Default:
-      <code>true
-      </code></li>
-    <li>This enables the Facebook sharing icon.</li>
-  </ul>
-</li>
-<li>
-  <code>google
-  </code>
-  <ul>
-    <li>Type: boolean</li>
-    <li>Default:
-      <code>true
-      </code></li>
-    <li>This enables the Google+ sharing icon.</li>
-  </ul>
-</li>
-<li>
-  <code>twitter
-  </code>
-  <ul>
-    <li>Type: boolean</li>
-    <li>Default:
-      <code>true
-      </code></li>
-    <li>This enables the Twitter sharing icon.</li>
-  </ul>
-</li>
-<li>
-  <code>tumblr
-  </code>
-  <ul>
-    <li>Type: boolean</li>
-    <li>Default:
-      <code>true
-      </code></li>
-    <li>This enables the Tumblr sharing icon.</li>
-  </ul>
-</li>
-<li>
-  <code>pinterest
-  </code>
-  <ul>
-    <li>Type: boolean</li>
-    <li>Default:
-      <code>true
-      </code></li>
-    <li>This enables the Pinterest sharing icon.</li>
-  </ul>
-</li>
-<li>
-  <code>linkedin
-  </code>
-  <ul>
-    <li>Type: boolean</li>
-    <li>Default:
-      <code>true
-      </code></li>
-    <li>This enables the LinkedIn sharing icon.</li>
-  </ul>
-</li>
+	<li><code>facebook </code>
+
+	<ul>
+		<li>Type: boolean</li>
+		<li>Default: <code>true </code></li>
+		<li>This enables the Facebook sharing icon.</li>
+	</ul>
+	</li>
+	<li><code>google </code>
+	<ul>
+		<li>Type: boolean</li>
+		<li>Default: <code>true </code></li>
+		<li>This enables the Google+ sharing icon.</li>
+	</ul>
+	</li>
+	<li><code>twitter </code>
+	<ul>
+		<li>Type: boolean</li>
+		<li>Default: <code>true </code></li>
+		<li>This enables the Twitter sharing icon.</li>
+	</ul>
+	</li>
+	<li><code>tumblr </code>
+	<ul>
+		<li>Type: boolean</li>
+		<li>Default: <code>true </code></li>
+		<li>This enables the Tumblr sharing icon.</li>
+	</ul>
+	</li>
+	<li><code>pinterest </code>
+	<ul>
+		<li>Type: boolean</li>
+		<li>Default: <code>true </code></li>
+		<li>This enables the Pinterest sharing icon.</li>
+	</ul>
+	</li>
+	<li><code>linkedin </code>
+	<ul>
+		<li>Type: boolean</li>
+		<li>Default: <code>true </code></li>
+		<li>This enables the LinkedIn sharing icon.</li>
+	</ul>
+	</li>
 </ul>
-<h3>buttonParent
-</h3>
+
+<h3>buttonParent</h3>
+
 <ul>
-<li>Type: text</li>
-<li>Default:
-  <code>shelf
-  </code></li>
-<li>Determines where the sharing icon should be located. If set to <strong>shelf</strong>, the default, the sharing icon appears in the dock. If the value is set to <strong>controlBar</strong>, the sharing icon will appear in the controlbar.</li>
+	<li>Type: text</li>
+	<li>Default: <code>shelf </code></li>
+	<li>Determines where the sharing icon should be located. If set to <strong>shelf</strong>, the default, the sharing icon appears in the dock. If the value is set to <strong>controlBar</strong>, the sharing icon will appear in the controlbar.</li>
 </ul>
-<p>Example:
-</p>
-<pre class="line-numbers"><code class="language-json">{
-"services": {
-"linkedin": true,
-"pinterest": true,
-"tumblr": true,
-"twitter": true,
-"google": true,
-"facebook": true
-},
-"offset": "00:00:05",
-"deeplinking": true,
-"url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
-"description": "Video of two tigers",
-<span class="bcls-highlight">"buttonParent": "controlBar",</span>
-"title": "Tiger"
+
+<p>Example:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "services": {
+    "linkedin": true,
+    "pinterest": true,
+    "tumblr": true,
+    "twitter": true,
+    "google": true,
+    "facebook": true
+  },
+  "offset": "00:00:05",
+  "deeplinking": true,
+  "url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
+  "description": "Video of two tigers",
+  <span class="bcls-highlight">"buttonParent": "controlBar",</span>
+  "title": "Tiger"
 }</code></pre>
 </section>
+
 <section class="bcls-section">
-<h2 id="Getter_and_setter_configuration_methods">Getter and setter configuration methods
-</h2>
-<p>There are a number of methods available to both set and retrieve configuration options. All of the methods are associated with the <strong>SocialOverlay</strong> component, which extends the <strong>videojs.ModalDialog</strong> class. (Information on this class can be found in the <a href="/node/18074">Implementing the ModalDialog</a> document.)
-</p>
-<p>When the social plugin is initialized, an instance of the <strong>SocialOverlay</strong> component becomes available at
-<code>player.socialOverlay
-</code>. The general format for using the getter and setter methods is as follows:
-</p>
-<pre><code class="language-javascript">player.socialOverlay.methodName()</code></pre>
-<h3>setDirectLink(string)
-</h3>
+<h2 id="Getter_and_setter_configuration_methods">Getter and setter configuration methods</h2>
+
+<p>There are a number of methods available to both set and retrieve configuration options. All of the methods are associated with the <strong>SocialOverlay</strong> component, which extends the <strong>videojs.ModalDialog</strong> class. (Information on this class can be found in the <a href="/node/18074">Implementing the ModalDialog</a> document.)</p>
+
+<p>When the social plugin is initialized, an instance of the <strong>SocialOverlay</strong> component becomes available at <code>player.socialOverlay </code>. The general format for using the getter and setter methods is as follows:</p>
+
+<pre>
+<code class="language-javascript">player.socialOverlay.methodName()</code></pre>
+
+<h3>setDirectLink(string)</h3>
+
 <ul>
-<li>Usage:
-  <code>player.socialOverlay.setDirectLink(string)
-  </code></li>
-<li>Purpose: Updates the URL used by the social overlay. Setting the value to the empty string ('') causes the URL to be determined on demand.</li>
+	<li>Usage: <code>player.socialOverlay.setDirectLink(string) </code></li>
+	<li>Purpose: Updates the URL used by the social overlay. Setting the value to the empty string ('') causes the URL to be determined on demand.</li>
 </ul>
-<h3>getDirectLink()
-</h3>
+
+<h3>getDirectLink()</h3>
+
 <ul>
-<li>Usage:
-  <code>player.socialOverlay.getDirectLink()
-  </code></li>
-<li>Purpose: Returns the URL used by the social overlay.</li>
+	<li>Usage: <code>player.socialOverlay.getDirectLink() </code></li>
+	<li>Purpose: Returns the URL used by the social overlay.</li>
 </ul>
-<h3>setEmbedCode(string)
-</h3>
+
+<h3>setEmbedCode(string)</h3>
+
 <ul>
-<li>Usage:
-  <code>player.socialOverlay.setEmbedCode(string)
-  </code></li>
-<li>Purpose: Updates the embed code used by the social overlay.</li>
+	<li>Usage: <code>player.socialOverlay.setEmbedCode(string) </code></li>
+	<li>Purpose: Updates the embed code used by the social overlay.</li>
 </ul>
-<h3>getEmbedCode()
-</h3>
+
+<h3>getEmbedCode()</h3>
+
 <ul>
-<li>Usage:
-  <code>player.socialOverlay.getEmbedCode()
-  </code></li>
-<li>Purpose: Gets the embed code used by the social overlay.</li>
+	<li>Usage: <code>player.socialOverlay.getEmbedCode() </code></li>
+	<li>Purpose: Gets the embed code used by the social overlay.</li>
 </ul>
 </section>
+
 <section class="bcls-section">
-<h2 id="SocialButton">SocialButton
-</h2>
-<p>When the social plugin is initialized, an instance of the <strong>SocialButton</strong> component becomes available at
-<code>player.socialButton
-</code>. This component extends the <strong>videojs.Button</strong> class.
-</p>
+<h2 id="SocialButton">SocialButton</h2>
+
+<p>When the social plugin is initialized, an instance of the <strong>SocialButton</strong> component becomes available at <code>player.socialButton </code>. This component extends the <strong>videojs.Button</strong> class.</p>
 </section>
+
 <section class="bcls-section">
-<h2 id="Generate_meta_tags">Generate meta tags
-</h2>
-<p>After you update your Brightcove player to use the social sharing plugin in the previous section, you are ready to add social meta tags to your HTML page.
-</p>
-<p>These meta tags allow social sharing sites to embed your video players and thumbnails in the post. The form below calls the CMS API with your information and retrieves your video data. It then generates social meta tags with your specific data.
-</p>
-<p>To add social media meta tags to the HTML page with your Brightcove player, follow these steps:
-</p>
+<h2 id="Generate_meta_tags">Generate meta tags</h2>
+
+<p>After you update your Brightcove player to use the social sharing plugin in the previous section, you are ready to add social meta tags to your HTML page.</p>
+
+<p>These meta tags allow social sharing sites to embed your video players and thumbnails in the post. The form below calls the CMS API with your information and retrieves your video data. It then generates social meta tags with your specific data.</p>
+
+<p>To add social media meta tags to the HTML page with your Brightcove player, follow these steps:</p>
+
 <ol class="bcls-tasklist">
-<li>Enter your account, player and video information into the form below and select the <strong>Generate Social Tags</strong> button.</li>
+	<li>Enter your account, player and video information into the form below and select the <strong>Generate Social Tags</strong> button.</li>
 </ol>
-<h4>Data Input
-</h4>
+
+<h4>Data Input</h4>
+
 <aside class="bcls-aside bcls-aside--information">Notes:
 <ul>
-  <li>All fields are <strong>required</strong>. Enter your own values to get meta tags for your video and player.</li>
-  <li>This form produces code for a single video player only. Also, you should update your meta tags periodically, as URLs can change.</li>
-  <li>For details on how to get your Policy key, see the <a href="/node/18125">Policy Keys</a> document.</li>
+	<li>All fields are <strong>required</strong>. Enter your own values to get meta tags for your video and player.</li>
+	<li>This form produces code for a single video player only. Also, you should update your meta tags periodically, as URLs can change.</li>
+	<li>For details on how to get your Policy key, see the <a href="/node/18125">Policy Keys</a> document.</li>
 </ul>
 </aside>
+
 <div id="inputFields" class="input-fields">
-<fieldset>
-  <legend>Account Information
-  </legend>
-  <div id="accountInfo">
-    <table>
-      <tbody>
-        <tr>
-          <td>Service URL:
-          </td>
-          <td>https://edge.api.brightcove.com/playback/v1
-          </td>
-        </tr>
-        <tr>
-          <td><span class="video-cloud-only">Video Cloud</span><span class="player-only">Brightcove Player</span> Account (Publisher ID):
-          </td>
-          <td><!-- <input id="accountID" class="required papi-request" type="text" size="60" value="1486906377" required> --><input id="accountID" class="required papi-request" type="text" size="60" placeholder="your account id" required="" /> <!--Brightcove Learning Doc Samples--></td>
-        </tr>
-        <tr>
-          <td class="align-top no-wrap">Policy key:
-          </td>
-          <td>
-            <input id="policyKey" class="required papi-request" type="text" size="250" placeholder="your policy key" required="" />
-            <p>&nbsp;
-            </p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<fieldset><legend>Account Information </legend>
+
+<div id="accountInfo">
+<table>
+	<tbody>
+		<tr>
+			<td>Service URL:</td>
+			<td>https://edge.api.brightcove.com/playback/v1</td>
+		</tr>
+		<tr>
+			<td><span class="video-cloud-only">Video Cloud</span><span class="player-only">Brightcove Player</span> Account (Publisher ID):</td>
+			<td><!-- <input id="accountID" class="required papi-request" type="text" size="60" value="1486906377" required> --><input id="accountID" class="required papi-request" type="text" size="60" placeholder="your account id" required="" /> <!--Brightcove Learning Doc Samples--></td>
+		</tr>
+		<tr>
+			<td class="align-top no-wrap">Policy key:</td>
+			<td><input id="policyKey" class="required papi-request" type="text" size="250" placeholder="your policy key" required="" />
+			<p>&nbsp;</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
 </fieldset>
-<fieldset>
-  <legend>Player Information
-  </legend>
-  <div id="playerInfo">
-    <table>
-      <tbody>
-        <tr>
-          <td>URL for your player page:
-          </td>
-          <td><!-- <input id="pageURL" type="text" size="60" class="required papi-request" value="https://yourwebpage.com"  required /> --><input id="pageURL" type="text" size="60" class="required papi-request" placeholder="https://yourwebpage.com" required="" />
-          </td>
-        </tr>
-        <tr>
-          <td>Twitter @username of website:
-          </td>
-          <td><!-- <input id="pageTwitter" type="text" size="60" class="required papi-request" value="@username"  required /> --><input id="pageTwitter" type="text" size="60" class="required papi-request" placeholder="@username" required="" />
-          </td>
-        </tr>
-        <tr>
-          <td>Player ID (from Players Module):
-          </td>
-          <td><!-- <input id="playerID" class="required papi-request" size="60" value="default" required /> --><input id="playerID" class="required papi-request" size="60" placeholder="your player id" required="" />
-          </td>
-        </tr>
-        <tr>
-          <td>Player width:
-          </td>
-          <td>
-            <input id="playerWidth" class="required papi-request" type="text" size="60" value="640px" required="" />
-          </td>
-        </tr>
-        <tr>
-          <td>Player height:
-          </td>
-          <td>
-            <input id="playerHeight" class="required papi-request" type="text" size="60" value="360px" required="" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+<fieldset><legend>Player Information </legend>
+
+<div id="playerInfo">
+<table>
+	<tbody>
+		<tr>
+			<td>URL for your player page:</td>
+			<td><!-- <input id="pageURL" type="text" size="60" class="required papi-request" value="https://yourwebpage.com"  required /> --><input id="pageURL" type="text" size="60" class="required papi-request" placeholder="https://yourwebpage.com" required="" /></td>
+		</tr>
+		<tr>
+			<td>Twitter @username of website:</td>
+			<td><!-- <input id="pageTwitter" type="text" size="60" class="required papi-request" value="@username"  required /> --><input id="pageTwitter" type="text" size="60" class="required papi-request" placeholder="@username" required="" /></td>
+		</tr>
+		<tr>
+			<td>Player ID (from Players Module):</td>
+			<td><!-- <input id="playerID" class="required papi-request" size="60" value="default" required /> --><input id="playerID" class="required papi-request" size="60" placeholder="your player id" required="" /></td>
+		</tr>
+		<tr>
+			<td>Player width:</td>
+			<td><input id="playerWidth" class="required papi-request" type="text" size="60" value="640px" required="" /></td>
+		</tr>
+		<tr>
+			<td>Player height:</td>
+			<td><input id="playerHeight" class="required papi-request" type="text" size="60" value="360px" required="" /></td>
+		</tr>
+	</tbody>
+</table>
+</div>
 </fieldset>
-<fieldset>
-  <legend>Video Information
-  </legend>
-  <div id="videoInfo">
-    <table>
-      <tbody>
-        <tr>
-          <td>Video ID (from Media Module):
-          </td>
-          <td><!-- <input id="videoID" class="required papi-request" size="60" value="4779638563001" required /> --><input id="videoID" class="required papi-request" size="60" placeholder="your video id" required="" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p id="responseFrame">&nbsp;
-    </p>
-  </div>
-  <p><span id="generateButton" class="bcls-button">Generate Social Tags</span>
-  </p>
+
+<fieldset><legend>Video Information </legend>
+
+<div id="videoInfo">
+<table>
+	<tbody>
+		<tr>
+			<td>Video ID (from Media Module):</td>
+			<td><!-- <input id="videoID" class="required papi-request" size="60" value="4779638563001" required /> --><input id="videoID" class="required papi-request" size="60" placeholder="your video id" required="" /></td>
+		</tr>
+	</tbody>
+</table>
+
+<p id="responseFrame">&nbsp;</p>
+</div>
+
+<p><span id="generateButton" class="bcls-button">Generate Social Tags</span></p>
 </fieldset>
 </div>
 &nbsp;
+
 <ol class="bcls-tasklist">
-<li>Press the <strong>Select the code</strong> button. Then, copy and paste the selected code into the
-  <code>&lt;head&gt;
-  </code> section of your HTML player page.</li>
+	<li>Press the <strong>Select the code</strong> button. Then, copy and paste the selected code into the <code>&lt;head&gt; </code> section of your HTML player page.</li>
 </ol>
-<h4>The Generated Social Sharing Meta Tags
-</h4>
+
+<h4>The Generated Social Sharing Meta Tags</h4>
 <!-- <fieldset>
 <legend>Generated Results</legend>
 <div id="generatedResults"></div>
 </fieldset> -->
+
 <div id="publishingCodeWrapper">
-<fieldset>
-  <legend>Metadata Code
-  </legend>
-  <p><span class="bcls-button" id="selectCode">Select the code</span> and then copy and paste it into your page.
-  </p>
-  <p><textarea id="publishingCode" rows="15" cols="100"></textarea>
-  </p>
+<fieldset><legend>Metadata Code </legend>
+
+<p><span class="bcls-button" id="selectCode">Select the code</span> and then copy and paste it into your page.</p>
+
+<p><textarea id="publishingCode" rows="15" cols="100"></textarea></p>
 </fieldset>
 </div>
 &nbsp;
+
 <ol class="bcls-tasklist">
-<li>Save your changes. You are now ready to use the social media sharing interface with your player.</li>
+	<li>Save your changes. You are now ready to use the social media sharing interface with your player.</li>
 </ol>
-<aside class="bcls-aside bcls-aside--tip">You will want to provide a secure URL value for your HTML player page (
-<code>&lt;meta property="og:video:secure_url" content=""/&gt;
-</code>) for Facebook users that use secure browsing (HTTPS).
-</aside>
-<!-- script for the social meta tag generator form - calls playback api -->
-<script src="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social.js">
-</script>
-</section>
+
+<aside class="bcls-aside bcls-aside--tip">You will want to provide a secure URL value for your HTML player page ( <code>&lt;meta property="og:video:secure_url" content=""/&gt; </code>) for Facebook users that use secure browsing (HTTPS).</aside>
+<!-- script for the social meta tag generator form - calls playback api --> <script src="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social.js">
+    </script></section>
+
 <section class="bcls-section">
-<h2 id="Sharing_on_Facebook">Sharing on Facebook
-</h2>
-<p>At this time, only Facebook's native player will play videos in a Facebook wall. If you would like to share your videos and have them play in the Facebook wall, you can use Brightcove Social. For details, see the <a href="/node/16342">Getting Started with Brightcove Social</a> document.
-</p>
-<p>The Brightcove player will create a link in the wall which will open your video and player in a new browser tab or window. For most people, this behavior may be fine. To do this, Facebook lets you define the video using Open Graph (og) meta tags in your page HTML page. For details about how to use og tags for Facebook, see the <a href="//developers.facebook.com/docs/sharing/best-practices">Sharing Best Practices</a> document.
-</p>
+<h2 id="Sharing_on_Facebook">Sharing on Facebook</h2>
+
+<p>At this time, only Facebook's native player will play videos in a Facebook wall. If you would like to share your videos and have them play in the Facebook wall, you can use Brightcove Social. For details, see the <a href="/node/16342">Getting Started with Brightcove Social</a> document.</p>
+
+<p>The Brightcove player will create a link in the wall which will open your video and player in a new browser tab or window. For most people, this behavior may be fine. To do this, Facebook lets you define the video using Open Graph (og) meta tags in your page HTML page. For details about how to use og tags for Facebook, see the <a href="//developers.facebook.com/docs/sharing/best-practices">Sharing Best Practices</a> document.</p>
+
 <div class="video-cloud-only">
-<p>To share a link to your player and video, follow these steps:
-</p>
+<p>To share a link to your player and video, follow these steps:</p>
+
 <ol class="bcls-tasklist">
-  <li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
-  <li>Save your changes and publish your player.</li>
-  <li>Create an HTML page with your player and video.</li>
-  <li>Generate your <a href="#metatags">social meta tags</a> for your HTML page and update them as follows:
-    <ul>
-      <li>Lines 9-11: define your site name, the title of your video and type as video.</li>
-      <li>Line 12: points to the URL for your video with the Brightcove player.</li>
-      <li><p>
-        Line 13: points to a thumbnail image for your video.
-        </p>
-        <aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
-          <ul>
-            <li>
-              Host poster images on your own server and use those URLs in the appropriate meta tags.
-            </li>
-            <li>
-              Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.
-            </li>
-          </ul>
-          For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.
-        </aside>
-      </li>
-      <li>Lines 14-16: provide a description for your video, along with player dimensions.</li>
-    </ul>
-  </li>
+	<li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
+	<li>Save your changes and publish your player.</li>
+	<li>Create an HTML page with your player and video.</li>
+	<li>Generate your <a href="#metatags">social meta tags</a> for your HTML page and update them as follows:
+	<ul>
+		<li>Lines 9-11: define your site name, the title of your video and type as video.</li>
+		<li>Line 12: points to the URL for your video with the Brightcove player.</li>
+		<li>
+		<p>Line 13: points to a thumbnail image for your video.</p>
+
+		<aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
+		<ul>
+			<li>Host poster images on your own server and use those URLs in the appropriate meta tags.</li>
+			<li>Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.</li>
+		</ul>
+		For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.</aside>
+		</li>
+		<li>Lines 14-16: provide a description for your video, along with player dimensions.</li>
+	</ul>
+	</li>
 </ol>
-<pre class="line-numbers" data-start="2"><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;title&gt;Social Media Plugin&lt;/title&gt;
-<span class="bcls-highlight">&lt;!-- Open Graph Sharing Metadata --&gt;
-&lt;meta property="og:site_name" content="Brightcove"/&gt;
-&lt;meta property="og:title" content="Social Media Plugin"/&gt;
-&lt;meta property="og:type" content="video"/&gt;
-&lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html"/&gt;
-&lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png" /&gt;
-&lt;meta property="og:description" content="Tiger"/&gt;
-&lt;meta property="og:video:width" content="640"/&gt;
-&lt;meta property="og:video:height" content="360"/&gt;</span>
-&lt;!-- Twitter: card/meta-tags --&gt;
-&lt;meta name="twitter:card" content="player"/&gt;
-&lt;meta name="twitter:site" content="@username" /&gt;
-&lt;meta name="twitter:title" content="Tiger"/&gt;
-&lt;meta name="twitter:description" content="Tiger video"/&gt;
-&lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png"/&gt;
-&lt;meta name="twitter:player" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html"/&gt;
-&lt;meta name="twitter:player:width" content="640"/&gt;
-&lt;meta name="twitter:player:height" content="360"/&gt;
-&lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-twitter.html"/&gt;
-&lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;
-&lt;style&gt;
-/* player dimensions */
-iframe {
-  width: 640px;
-  height: 360px;
-}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;iframe src='//players.brightcove.net/1752604059001/86767278-c2c4-43fb-88fa-ff26c6b01837_default/index.html?videoId=4172255216001' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
-&lt;/body&gt;</code></pre>
+
+<pre class="line-numbers" data-start="2">
+<code class="language-html">&lt;!DOCTYPE html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+    &lt;title&gt;Social Media Plugin&lt;/title&gt;
+    <span class="bcls-highlight">&lt;!-- Open Graph Sharing Metadata --&gt;
+    &lt;meta property="og:site_name" content="Brightcove"/&gt;
+    &lt;meta property="og:title" content="Social Media Plugin"/&gt;
+    &lt;meta property="og:type" content="video"/&gt;
+    &lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html"/&gt;
+    &lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png" /&gt;
+    &lt;meta property="og:description" content="Tiger"/&gt;
+    &lt;meta property="og:video:width" content="640"/&gt;
+    &lt;meta property="og:video:height" content="360"/&gt;</span>
+    &lt;!-- Twitter: card/meta-tags --&gt;
+    &lt;meta name="twitter:card" content="player"/&gt;
+    &lt;meta name="twitter:site" content="@username" /&gt;
+    &lt;meta name="twitter:title" content="Tiger"/&gt;
+    &lt;meta name="twitter:description" content="Tiger video"/&gt;
+    &lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png"/&gt;
+    &lt;meta name="twitter:player" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html"/&gt;
+    &lt;meta name="twitter:player:width" content="640"/&gt;
+    &lt;meta name="twitter:player:height" content="360"/&gt;
+    &lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-twitter.html"/&gt;
+    &lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;
+    &lt;style&gt;
+      /* player dimensions */
+      iframe {
+        width: 640px;
+        height: 360px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;iframe src='//players.brightcove.net/1752604059001/86767278-c2c4-43fb-88fa-ff26c6b01837_default/index.html?videoId=4172255216001' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+  &lt;/body&gt;</code></pre>
 </div>
+
 <div class="player-only">
-<p>To do this, follow these steps:
-</p>
+<p>To do this, follow these steps:</p>
+
 <ol class="bcls-tasklist">
-  <li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
-  <li>Save your changes and publish your player.</li>
-  <li>Create an HTML page with your player and video.</li>
-  <li>Generate your <a href="#metatags">social meta tags</a> for your HTML page and update them as follows:
-    <ul>
-      <li>Lines 92-94: define your site name, the title of your video and type as video.</li>
-      <li>Line 95: points to the URL for your video.</li>
-      <li>
-        <p>
-          Line 96: points to a thumbnail image for your video.
-        </p>
-        <aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
-          <ul>
-            <li>
-              Host poster images on your own server and use those URLs in the appropriate meta tags.
-            </li>
-            <li>
-              Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.
-            </li>
-          </ul>
-          For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.
-        </aside>
-      </li>
-      <li>Lines 97-99: provide a description for your video, along with player dimensions.</li>
-    </ul>
-  </li>
+	<li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
+	<li>Save your changes and publish your player.</li>
+	<li>Create an HTML page with your player and video.</li>
+	<li>Generate your <a href="#metatags">social meta tags</a> for your HTML page and update them as follows:
+	<ul>
+		<li>Lines 92-94: define your site name, the title of your video and type as video.</li>
+		<li>Line 95: points to the URL for your video.</li>
+		<li>
+		<p>Line 96: points to a thumbnail image for your video.</p>
+
+		<aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
+		<ul>
+			<li>Host poster images on your own server and use those URLs in the appropriate meta tags.</li>
+			<li>Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.</li>
+		</ul>
+		For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.</aside>
+		</li>
+		<li>Lines 97-99: provide a description for your video, along with player dimensions.</li>
+	</ul>
+	</li>
 </ol>
-<pre class="line-numbers" data-start="85"><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;title&gt;Social Media Plugin - Share Smart Player&lt;/title&gt;
-<span class="bcls-highlight">&lt;!-- Open Graph Sharing Metadata --&gt;
-&lt;meta property="og:site_name" content="Brightcove"/&gt;
-&lt;meta property="og:title" content="Social Media Plugin"/&gt;
-&lt;meta property="og:type" content="video"/&gt;
-&lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html"/&gt;
-&lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png" /&gt;
-&lt;meta property="og:description" content="Modus 550"/&gt;
-&lt;meta property="og:video:width" content="640"/&gt;
-&lt;meta property="og:video:height" content="360"/&gt;</span>
-&lt;!-- Twitter: card/meta-tags --&gt;
-&lt;meta name="twitter:card" content="player"/&gt;
-&lt;meta name="twitter:site" content="@username" /&gt;
-&lt;meta name="twitter:title" content="Tiger"/&gt;
-&lt;meta name="twitter:description" content="Tiger video"/&gt;
-&lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png"/&gt;
-&lt;meta name="twitter:player" content="https://players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html"/&gt;
-&lt;meta name="twitter:player:width" content="640"/&gt;
-&lt;meta name="twitter:player:height" content="360"/&gt;
-&lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-custom.html"/&gt;
-&lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;iframe style='width: 640px;height: 360px;' src='//players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
-&lt;/body&gt;
+
+<pre class="line-numbers" data-start="85">
+<code class="language-html">&lt;!DOCTYPE html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+    &lt;title&gt;Social Media Plugin - Share Smart Player&lt;/title&gt;
+    <span class="bcls-highlight">&lt;!-- Open Graph Sharing Metadata --&gt;
+    &lt;meta property="og:site_name" content="Brightcove"/&gt;
+    &lt;meta property="og:title" content="Social Media Plugin"/&gt;
+    &lt;meta property="og:type" content="video"/&gt;
+    &lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html"/&gt;
+    &lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png" /&gt;
+    &lt;meta property="og:description" content="Modus 550"/&gt;
+    &lt;meta property="og:video:width" content="640"/&gt;
+    &lt;meta property="og:video:height" content="360"/&gt;</span>
+    &lt;!-- Twitter: card/meta-tags --&gt;
+    &lt;meta name="twitter:card" content="player"/&gt;
+    &lt;meta name="twitter:site" content="@username" /&gt;
+    &lt;meta name="twitter:title" content="Tiger"/&gt;
+    &lt;meta name="twitter:description" content="Tiger video"/&gt;
+    &lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger_poster.png"/&gt;
+    &lt;meta name="twitter:player" content="https://players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html"/&gt;
+    &lt;meta name="twitter:player:width" content="640"/&gt;
+    &lt;meta name="twitter:player:height" content="360"/&gt;
+    &lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-custom.html"/&gt;
+    &lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;iframe style='width: 640px;height: 360px;' src='//players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+  &lt;/body&gt;
 &lt;/html&gt;
 </code>
 </pre>
 </div>
+
 <ol class="bcls-tasklist">
-<li>Don't forget to check that you have valid meta tags, as described in the <a href="#validate">validate</a> section.</li>
+	<li>Don't forget to check that you have valid meta tags, as described in the <a href="#validate">validate</a> section.</li>
 </ol>
-<p>For more information about sharing to Facebook, see the following:
-</p>
+
+<p>For more information about sharing to Facebook, see the following:</p>
+
 <ul>
-<li><a href="/node/14058">Configuring the Social Properties for a Player</a></li>
+	<li><a href="/node/14058">Configuring the Social Properties for a Player</a></li>
 </ul>
 <!-- <aside class="bcls-aside bcls-aside--tip">Note: You do not need to use the <a href="#properties">embedCode</a> property when sharing a Smart Player to Facebook. All you need are the Open Graph (og) meta tags as described above.</aside> --></section>
+
 <section class="bcls-section">
-<h2 id="Sharing_on_Twitter">Sharing on Twitter
-</h2>
-<p>If you want to share your video on Twitter, you need to include the twitter meta tags.
-</p>
-<p>Currently, Twitter is the only social site that will allow you to use deep linking to start a video at a specified point in time. If you don't want to use this feature, simply leave the time parameter off the player URL in the example below.
-</p>
-<p>To use the deep linking feature, you must add a time parameter to the query string, as defined in the <a href="/node/18104">Deep Linking</a> document.
-</p>
+<h2 id="Sharing_on_Twitter">Sharing on Twitter</h2>
+
+<p>If you want to share your video on Twitter, you need to include the twitter meta tags.</p>
+
+<p>Currently, Twitter is the only social site that will allow you to use deep linking to start a video at a specified point in time. If you don't want to use this feature, simply leave the time parameter off the player URL in the example below.</p>
+
+<p>To use the deep linking feature, you must add a time parameter to the query string, as defined in the <a href="/node/18104">Deep Linking</a> document.</p>
+
 <div class="video-cloud-only">
-<p>Here is an example:
-</p>
+<p>Here is an example:</p>
+
 <ol class="bcls-tasklist">
-  <li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
-  <li>Save your changes and publish your player.</li>
-  <li>Once you have generated your <a href="#metatags">social meta tags</a>, update them as follows:
-    <ul>
-      <li>Lines 64-67: define the Twitter card type as
-        <code>player
-        </code>, your Twitter site, the title and description.</li>
-      <li>
-        <p>
-          Line 68: points to a thumbnail image for your video.
-        </p>
-        <aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
-          <ul>
-            <li>
-              Host poster images on your own server and use those URLs in the appropriate meta tags.
-            </li>
-            <li>
-              Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.
-            </li>
-          </ul>
-          For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.
-        </aside>
-      </li>
-      <li>Line 69: points to the URL for your Brightcove player. Notice that the query parameters define the
-        <code>videoId
-        </code>, and tells the player to automatically start playing at the 15 second point of the video. This is how you can deep link into a video with Twitter.</li>
-      <li>Lines 70-71: provide the player dimensions.</li>
-      <li>Line 72: points to the URL for your HTML page with your Brightcove player.</li>
-    </ul>
-  </li>
+	<li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
+	<li>Save your changes and publish your player.</li>
+	<li>Once you have generated your <a href="#metatags">social meta tags</a>, update them as follows:
+	<ul>
+		<li>Lines 64-67: define the Twitter card type as <code>player </code>, your Twitter site, the title and description.</li>
+		<li>
+		<p>Line 68: points to a thumbnail image for your video.</p>
+
+		<aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
+		<ul>
+			<li>Host poster images on your own server and use those URLs in the appropriate meta tags.</li>
+			<li>Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.</li>
+		</ul>
+		For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.</aside>
+		</li>
+		<li>Line 69: points to the URL for your Brightcove player. Notice that the query parameters define the <code>videoId </code>, and tells the player to automatically start playing at the 15 second point of the video. This is how you can deep link into a video with Twitter.</li>
+		<li>Lines 70-71: provide the player dimensions.</li>
+		<li>Line 72: points to the URL for your HTML page with your Brightcove player.</li>
+	</ul>
+	</li>
 </ol>
-<pre class="line-numbers" data-start="47"><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;title&gt;Social Media Plugin - Deep Linking with Twitter&lt;/title&gt;
-&lt;!-- Open Graph Sharing Metadata --&gt;
-&lt;meta property="og:site_name" content="Brightcove"/&gt;
-&lt;meta property="og:title" content="Social Media Plugin"/&gt;
-&lt;meta property="og:description" content="Great Blue Heron"/&gt;
-&lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-twitter.html"/&gt;
-&lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png"/&gt;
-&lt;meta property="og:type" content="video"/&gt;
-&lt;meta property="og:video:width" content="640"/&gt;
-&lt;meta property="og:video:height" content="360"/&gt;
-<span class="bcls-highlight">&lt;!-- Twitter: card/meta-tags --&gt;
-&lt;meta name="twitter:card" content="player"/&gt;
-&lt;meta name="twitter:site" content="@username" /&gt;
-&lt;meta name="twitter:title" content="Social Media Plugin"/&gt;
-&lt;meta name="twitter:description" content="Great Blue Heron"/&gt;
-&lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png"/&gt;
-&lt;meta name="twitter:player" content="https://players.brightcove.net/1752604059001/2c7eac7c-181c-41d1-aae8-4a5107c05ee2_default/index.html?videoId=4172255216001#t=00h00m15s&amp;autoplay=true"/&gt;
-&lt;meta name="twitter:player:width" content="640"/&gt;
-&lt;meta name="twitter:player:height" content="360"/&gt;
-&lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-twitter.html"/&gt;
-&lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;</span>
-&lt;/head&gt;
-&lt;body&gt;
-&lt;iframe style='width: 640px;height: 360px;' src='//players.brightcove.net/1752604059001/2c7eac7c-181c-41d1-aae8-4a5107c05ee2_default/index.html?videoId=4172255216001' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
-&lt;/body&gt;</code></pre>
+
+<pre class="line-numbers" data-start="47">
+<code class="language-html">&lt;!DOCTYPE html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+    &lt;title&gt;Social Media Plugin - Deep Linking with Twitter&lt;/title&gt;
+    &lt;!-- Open Graph Sharing Metadata --&gt;
+    &lt;meta property="og:site_name" content="Brightcove"/&gt;
+    &lt;meta property="og:title" content="Social Media Plugin"/&gt;
+    &lt;meta property="og:description" content="Great Blue Heron"/&gt;
+    &lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-twitter.html"/&gt;
+    &lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png"/&gt;
+    &lt;meta property="og:type" content="video"/&gt;
+    &lt;meta property="og:video:width" content="640"/&gt;
+    &lt;meta property="og:video:height" content="360"/&gt;
+    <span class="bcls-highlight">&lt;!-- Twitter: card/meta-tags --&gt;
+    &lt;meta name="twitter:card" content="player"/&gt;
+    &lt;meta name="twitter:site" content="@username" /&gt;
+    &lt;meta name="twitter:title" content="Social Media Plugin"/&gt;
+    &lt;meta name="twitter:description" content="Great Blue Heron"/&gt;
+    &lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png"/&gt;
+    &lt;meta name="twitter:player" content="https://players.brightcove.net/1752604059001/2c7eac7c-181c-41d1-aae8-4a5107c05ee2_default/index.html?videoId=4172255216001#t=00h00m15s&amp;autoplay=true"/&gt;
+    &lt;meta name="twitter:player:width" content="640"/&gt;
+    &lt;meta name="twitter:player:height" content="360"/&gt;
+    &lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-twitter.html"/&gt;
+    &lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;</span>
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;iframe style='width: 640px;height: 360px;' src='//players.brightcove.net/1752604059001/2c7eac7c-181c-41d1-aae8-4a5107c05ee2_default/index.html?videoId=4172255216001' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+  &lt;/body&gt;</code></pre>
 </div>
+
 <div class="player-only">
-<p>Here is an example:
-</p>
+<p>Here is an example:</p>
+
 <ol class="bcls-tasklist">
-  <li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
-  <li>Save your changes and publish your player.</li>
-  <li>Once you have generated your <a href="#metatags">social meta tags</a>, update them as follows:
-    <ul>
-      <li>Lines 139-142: define the Twitter card type as
-        <code>player
-        </code>, your Twitter site, the title and description.</li>
-      <li>
-        <p>
-          Line 143: points to a thumbnail image for your video.
-        </p>
-        <aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
-          <ul>
-            <li>
-              Host poster images on your own server and use those URLs in the appropriate meta tags.
-            </li>
-            <li>
-              Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.
-            </li>
-          </ul>
-          For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.
-        </aside>
-      </li>
-      <li>Line 144: points to the URL for your Brightcove player. Notice that the query parameters define the
-        <code>videoId
-        </code>, and tells the player to automatically start playing at the 15 second point of the video. This is how you can deep link into a video with Twitter.</li>
-      <li>Lines 145-146: provide the player dimensions.</li>
-      <li>Line 147: points to the URL for your HTML page with your Brightcove player.</li>
-    </ul>
-  </li>
+	<li>In the Players module, scroll down to the <strong>Social Sharing</strong> section, and select <strong>Yes</strong> to Allow Sharing.</li>
+	<li>Save your changes and publish your player.</li>
+	<li>Once you have generated your <a href="#metatags">social meta tags</a>, update them as follows:
+	<ul>
+		<li>Lines 139-142: define the Twitter card type as <code>player </code>, your Twitter site, the title and description.</li>
+		<li>
+		<p>Line 143: points to a thumbnail image for your video.</p>
+
+		<aside class="bcls-aside bcls-aside--information">Because media URLs expire, it is recommended that you do either:
+		<ul>
+			<li>Host poster images on your own server and use those URLs in the appropriate meta tags.</li>
+			<li>Implement server-side code to retrieve media URLs from the Playback API and update the appropriate meta tags on a daily basis.</li>
+		</ul>
+		For more information about using media URLs, see the <a href="/node/18570#using_media_urls">Best Practices: CMS and Playback APIs</a> document.</aside>
+		</li>
+		<li>Line 144: points to the URL for your Brightcove player. Notice that the query parameters define the <code>videoId </code>, and tells the player to automatically start playing at the 15 second point of the video. This is how you can deep link into a video with Twitter.</li>
+		<li>Lines 145-146: provide the player dimensions.</li>
+		<li>Line 147: points to the URL for your HTML page with your Brightcove player.</li>
+	</ul>
+	</li>
 </ol>
-<pre class="line-numbers" data-start="122"><code class="language-html">&lt;!DOCTYPE html&gt;
+
+<pre class="line-numbers" data-start="122">
+<code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;head&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;title&gt;Social Media Plugin - Deep Linking with Twitter&lt;/title&gt;
-&lt;!-- Open Graph Sharing Metadata --&gt;
-&lt;meta property="og:site_name" content="Brightcove"/&gt;
-&lt;meta property="og:title" content="Social Media Plugin"/&gt;
-&lt;meta property="og:description" content="Tiger video"/&gt;
-&lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-perform.html"/&gt;
-&lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger.jpg"/&gt;
-&lt;meta property="og:type" content="video"/&gt;
-&lt;meta property="og:video:width" content="640"/&gt;
-&lt;meta property="og:video:height" content="360"/&gt;
-<span class="bcls-highlight">&lt;!-- Twitter: card/meta-tags --&gt;
-&lt;meta name="twitter:card" content="player"/&gt;
-&lt;meta name="twitter:site" content="@username" /&gt;
-&lt;meta name="twitter:title" content="Social Media Plugin"/&gt;
-&lt;meta name="twitter:description" content="Tiger video"/&gt;
-&lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger.jpg"/&gt;
-&lt;meta name="twitter:player" content="https://players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html?t=00h00m15s&amp;autoplay=true"/&gt;
-&lt;meta name="twitter:player:width" content="640"/&gt;
-&lt;meta name="twitter:player:height" content="360"/&gt;
-&lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-perform.html"/&gt;
-&lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;</span>
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+  &lt;title&gt;Social Media Plugin - Deep Linking with Twitter&lt;/title&gt;
+  &lt;!-- Open Graph Sharing Metadata --&gt;
+  &lt;meta property="og:site_name" content="Brightcove"/&gt;
+  &lt;meta property="og:title" content="Social Media Plugin"/&gt;
+  &lt;meta property="og:description" content="Tiger video"/&gt;
+  &lt;meta property="og:url" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-perform.html"/&gt;
+  &lt;meta property="og:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger.jpg"/&gt;
+  &lt;meta property="og:type" content="video"/&gt;
+  &lt;meta property="og:video:width" content="640"/&gt;
+  &lt;meta property="og:video:height" content="360"/&gt;
+  <span class="bcls-highlight">&lt;!-- Twitter: card/meta-tags --&gt;
+  &lt;meta name="twitter:card" content="player"/&gt;
+  &lt;meta name="twitter:site" content="@username" /&gt;
+  &lt;meta name="twitter:title" content="Social Media Plugin"/&gt;
+  &lt;meta name="twitter:description" content="Tiger video"/&gt;
+  &lt;meta name="twitter:image" content="https://solutions.brightcove.com/bcls/assets/images/Tiger.jpg"/&gt;
+  &lt;meta name="twitter:player" content="https://players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html?t=00h00m15s&amp;autoplay=true"/&gt;
+  &lt;meta name="twitter:player:width" content="640"/&gt;
+  &lt;meta name="twitter:player:height" content="360"/&gt;
+  &lt;meta name="twitter:stream" content="https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media-perform.html"/&gt;
+  &lt;meta name="twitter:player:stream:content_type" content="video/mp4" /&gt;</span>
 &lt;/head&gt;
 &lt;body&gt;
-&lt;iframe style='width: 640px;height: 360px;' src='//players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
+  &lt;iframe style='width: 640px;height: 360px;' src='//players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
+
 <ol class="bcls-tasklist">
-<li>Don't forget to check that you have valid meta tags, as described in the <a href="#validate">validate</a> section.</li>
+	<li>Don't forget to check that you have valid meta tags, as described in the <a href="#validate">validate</a> section.</li>
 </ol>
-<aside class="bcls-aside bcls-aside--information">You do not need to use the <a href="#properties">embedCode</a> property when sharing a player to Twitter. All you need are the twitter meta tags as described above.
-</aside>
-<p>For more details about configuring your Twitter meta tags, see the following:
-</p>
+
+<aside class="bcls-aside bcls-aside--information">You do not need to use the <a href="#properties">embedCode</a> property when sharing a player to Twitter. All you need are the twitter meta tags as described above.</aside>
+
+<p>For more details about configuring your Twitter meta tags, see the following:</p>
+
 <ul>
-<li><a href="/node/15772">Sharing Videos to Twitter Player Cards</a></li>
-<li><a href="https://dev.twitter.com/cards/types/player">Twitter Developer Documentation</a></li>
-<li><a href="https://github.com/twitterdev/cards-player-samples/blob/master/player/page.html">Twitter card example on GitHub</a></li>
+	<li><a href="/node/15772">Sharing Videos to Twitter Player Cards</a></li>
+	<li><a href="https://dev.twitter.com/cards/types/player">Twitter Developer Documentation</a></li>
+	<li><a href="https://github.com/twitterdev/cards-player-samples/blob/master/player/page.html">Twitter card example on GitHub</a></li>
 </ul>
 </section>
+
 <section class="bcls-section">
-<h2 id="Validate">Validate
-</h2>
-<p>Once you have followed the steps to include the meta tags on your page you can validate the page for both Facebook and Twitter.
-</p>
-<p>For Facebook, go to the <a href="https://developers.facebook.com/tools/debug/">Facebook Debugger</a> and paste the URL to the page that contains the meta tags and click <strong>Debug</strong> to validate.
-</p>
-<p>For Twitter, go to the <a href="https://cards-dev.twitter.com/validator">Card Validator</a>, paste the URL to the page that contains the meta tags and click <strong>Preview card</strong> to validate. An added advantage to validating is that Twitter will then ask you to verify your website and you will go on the waiting list to be approved for Twitter Cards.
-</p>
-<p>If errors occur in either validation process, update the player configuration as needed.
-</p>
+<h2 id="Validate">Validate</h2>
+
+<p>Once you have followed the steps to include the meta tags on your page you can validate the page for both Facebook and Twitter.</p>
+
+<p>For Facebook, go to the <a href="https://developers.facebook.com/tools/debug/">Facebook Debugger</a> and paste the URL to the page that contains the meta tags and click <strong>Debug</strong> to validate.</p>
+
+<p>For Twitter, go to the <a href="https://cards-dev.twitter.com/validator">Card Validator</a>, paste the URL to the page that contains the meta tags and click <strong>Preview card</strong> to validate. An added advantage to validating is that Twitter will then ask you to verify your website and you will go on the waiting list to be approved for Twitter Cards.</p>
+
+<p>If errors occur in either validation process, update the player configuration as needed.</p>
 </section>
+
 <section class="bcls-section">
-<h2 id="Customizing_sharing_URLs">Customizing sharing URLs
-</h2>
-<p>A more advanced implementation for the social media plugin is to use the <strong>In-Page Embed Code</strong> from the Players module. This will allow you to pass configuration options from within your page code. One reason to do this, would be to provide custom
-<code>embedCode
-</code> values to share a different player than the one on your page.
-</p>
-<p>To implement the plugin using custom code, follow these steps:
-</p>
+<h2 id="Customizing_sharing_URLs">Customizing sharing URLs</h2>
+
+<p>A more advanced implementation for the social media plugin is to use the <strong>In-Page Embed Code</strong> from the Players module. This will allow you to pass configuration options from within your page code. One reason to do this, would be to provide custom <code>embedCode </code> values to share a different player than the one on your page.</p>
+
+<p>To implement the plugin using custom code, follow these steps:</p>
+
 <ol class="bcls-tasklist">
-<li>Open the <strong>Players</strong> module and locate the player.</li>
-<li>Click the link for the player to open the player properties.</li>
-<li>Locate the <strong>Social Sharing</strong> section and make sure that <strong>No</strong> is selected. Your player will no longer have a social sharing button, but that is what you want for now.
-  <figure class="bcls-figure"><img class="bcls-image" alt="Enabling Social Sharing Page" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-embed1.png" />
-  </figure>
-</li>
-<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
-  <pre><code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.min.js</code></pre>
-</li>
-<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
-  <pre><code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.css</code></pre>
-</li>
-<li>Unlike a standard plugin implementation, <strong>DO NOT</strong> add a value for the <strong>Name</strong> or <strong>Options</strong> fields in the <strong>Plugins</strong> section.</li>
+	<li>Open the <strong>Players</strong> module and locate the player.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>Social Sharing</strong> section and make sure that <strong>No</strong> is selected. Your player will no longer have a social sharing button, but that is what you want for now.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Enabling Social Sharing Page" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/social-media-plugin/social-media-embed1.png" /></figure>
+	</li>
+	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
+	<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
+	<pre>
+<code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.min.js</code></pre>
+	</li>
+	<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
+	<pre>
+<code class="language-html">//players.brightcove.net/videojs-social/3/videojs-social.css</code></pre>
+	</li>
+	<li>Unlike a standard plugin implementation, <strong>DO NOT</strong> add a value for the <strong>Name</strong> or <strong>Options</strong> fields in the <strong>Plugins</strong> section.</li>
 </ol>
-<p>Your player now includes all the code for the social media sharing functionality, but it won't automatically initialize the plugin and create the sharing button.
-</p>
+
+<p>Your player now includes all the code for the social media sharing functionality, but it won't automatically initialize the plugin and create the sharing button.</p>
+
 <ol class="bcls-tasklist">
-<li>
-  <p>From the Players module, copy the <strong>In-Page Embed Code</strong> into your HTML page. If you run your page in the browser, notice that the sharing button does not appear in the player. It will once the social plugin has been initialized.
-  </p>
-</li>
+	<li>
+	<p>From the Players module, copy the <strong>In-Page Embed Code</strong> into your HTML page. If you run your page in the browser, notice that the sharing button does not appear in the player. It will once the social plugin has been initialized.</p>
+	</li>
 </ol>
+
 <div class="video-cloud-only">
 <ol class="bcls-tasklist">
-  <li>To your HTML page code, add JavaScript code as follows:
-    <ul>
-      <li>Line 100: Gets a reference to your player.</li>
-      <li>Lines 102-117: Set the options for the social sharing plugin. For details, see the <a href="#properties">Properties</a> section.</li>
-      <li>Line 106: Sets the sharing URL to use a Smart Player. You can use this property to set the Sharing URL to any Brightcove player or Smart Player.</li>
-      <li>
-        <p>Line 119: Initializes the social plugin with the specific options.
-        </p>
-      </li>
-    </ul>
-  </li>
+	<li>To your HTML page code, add JavaScript code as follows:
+	<ul>
+		<li>Line 100: Gets a reference to your player.</li>
+		<li>Lines 102-117: Set the options for the social sharing plugin. For details, see the <a href="#properties">Properties</a> section.</li>
+		<li>Line 106: Sets the sharing URL to use a Smart Player. You can use this property to set the Sharing URL to any Brightcove player or Smart Player.</li>
+		<li>
+		<p>Line 119: Initializes the social plugin with the specific options.</p>
+		</li>
+	</ul>
+	</li>
 </ol>
-<pre class="line-numbers" data-start="73"><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;title&gt;Social Media Plugin&lt;/title&gt;
-&lt;style&gt;
-/* player dimensions */
-.video-js {
-width: 640px;
-height: 360px;
-}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;video id="myPlayer"
-data-account="1752604059001"
-data-player="a252c366-2867-4033-9f22-3caee828beef"
-data-embed="default"
-data-video-id="4093643993001"
-class="video-js" controls&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/1752604059001/a252c366-2867-4033-9f22-3caee828beef_default/index.min.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-var myPlayer = videojs('myPlayer');
-var options = {
-  "title": "Tiger",
-  "description": "Video of two tigers",
-  "url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
-  "embedCode": "&lt;iframe src='http://bcove.me/niqx01er'&gt;"
-  "deeplinking": true,
-  "offset": "00:00:05",
-  "services": {
-    "facebook": true,
-    "google": true,
-    "twitter": true,
-    "tumblr": true,
-    "pinterest": true,
-    "linkedin": true
-  }
-};
-myPlayer.social(options);
-&lt;/script&gt;
-&lt;/body&gt;
+
+<pre class="line-numbers" data-start="73">
+<code class="language-html">&lt;!DOCTYPE html&gt;
+  &lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+  &lt;title&gt;Social Media Plugin&lt;/title&gt;
+  &lt;style&gt;
+    /* player dimensions */
+      .video-js {
+      width: 640px;
+      height: 360px;
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;video id="myPlayer"
+      data-account="1752604059001"
+      data-player="a252c366-2867-4033-9f22-3caee828beef"
+      data-embed="default"
+      data-video-id="4093643993001"
+      class="video-js" controls&gt;&lt;/video&gt;
+    &lt;script src="//players.brightcove.net/1752604059001/a252c366-2867-4033-9f22-3caee828beef_default/index.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+      var myPlayer = videojs('myPlayer');
+      var options = {
+        "title": "Tiger",
+        "description": "Video of two tigers",
+        "url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
+        "embedCode": "&lt;iframe src='http://bcove.me/niqx01er'&gt;",
+        "deeplinking": true,
+        "offset": "00:00:05",
+        "services": {
+          "facebook": true,
+          "google": true,
+          "twitter": true,
+          "tumblr": true,
+          "pinterest": true,
+          "linkedin": true
+        }
+      };
+      myPlayer.social(options);
+    &lt;/script&gt;
+  &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
+
 <div class="player-only">
 <ol class="bcls-tasklist">
-  <li>To your HTML page code, add JavaScript code as follows:
-    <ul>
-      <li>Line 147: Gets a reference to your player.</li>
-      <li>Lines 149-164: Set the options for the social sharing plugin. For details, see the <a href="#properties">Properties</a> section.</li>
-      <li>Line 153: Sets the sharing URL to use a Smart Player. You can use this property to set the Sharing URL to any Brightcove player or Smart Player.</li>
-      <li>
-        <p>Line 166: Initializes the social plugin with the specific options.
-        </p>
-      </li>
-    </ul>
-  </li>
+	<li>To your HTML page code, add JavaScript code as follows:
+	<ul>
+		<li>Line 147: Gets a reference to your player.</li>
+		<li>Lines 149-164: Set the options for the social sharing plugin. For details, see the <a href="#properties">Properties</a> section.</li>
+		<li>Line 153: Sets the sharing URL to use a Smart Player. You can use this property to set the Sharing URL to any Brightcove player or Smart Player.</li>
+		<li>
+		<p>Line 166: Initializes the social plugin with the specific options.</p>
+		</li>
+	</ul>
+	</li>
 </ol>
-<pre class="line-numbers" data-start="129"><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;title&gt;Social Media Plugin&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;video id="myPlayer"
-style='width: 640px;height: 360px;'
-data-account="3676484087001"
-data-player="f28fbfc5-9153-4c51-ac67-ec6bcad8a28e"
-data-embed="default"
-class="video-js" controls&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.min.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-var myPlayer = videojs('myPlayer');
-var options = {
-  "title": "Tiger",
-  "description": "Video of two tigers",
-  "url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
-  "embedCode": "&lt;iframe src='http://bcove.me/niqx01er'&gt;"
-  "deeplinking": true,
-  "offset": "00:00:05",
-  "services": {
-    "facebook": true,
-    "google": true,
-    "twitter": true,
-    "tumblr": true,
-    "pinterest": true,
-    "linkedin": true
-  }
-};
-myPlayer.social(options);
-&lt;/script&gt;
-&lt;/body&gt;
+
+<pre class="line-numbers" data-start="129">
+<code class="language-html">&lt;!DOCTYPE html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+    &lt;title&gt;Social Media Plugin&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;video id="myPlayer"
+      style='width: 640px;height: 360px;'
+      data-account="3676484087001"
+      data-player="f28fbfc5-9153-4c51-ac67-ec6bcad8a28e"
+      data-embed="default"
+      class="video-js" controls&gt;&lt;/video&gt;
+    &lt;script src="//players.brightcove.net/3676484087001/f28fbfc5-9153-4c51-ac67-ec6bcad8a28e_default/index.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+      var myPlayer = videojs('myPlayer');
+      var options = {
+        "title": "Tiger",
+        "description": "Video of two tigers",
+        "url": "https://solutions.brightcove.com/bcls/brightcove-player/social-plugin/social-media.html",
+        "embedCode": "&lt;iframe src='http://bcove.me/niqx01er'&gt;",
+        "deeplinking": true,
+        "offset": "00:00:05",
+        "services": {
+          "facebook": true,
+          "google": true,
+          "twitter": true,
+          "tumblr": true,
+          "pinterest": true,
+          "linkedin": true
+        }
+      };
+      myPlayer.social(options);
+    &lt;/script&gt;
+  &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </div>
+
 <ol class="bcls-tasklist">
-<li>
-  <p>You should see the social sharing button in your player.
-  </p>
-</li>
-<li>You are now ready to add the social meta tags to your player page. See the <a href="#metatags">Meta tags</a> section to generate these tags.</li>
+	<li>
+	<p>You should see the social sharing button in your player.</p>
+	</li>
+	<li>You are now ready to add the social meta tags to your player page. See the <a href="#metatags">Meta tags</a> section to generate these tags.</li>
 </ol>
+
 <aside class="bcls-aside bcls-aside--information">
-<p>Since the social sharing button does not show up in your player until the social plugin is initialized, the social button will not show up when your player is directly embedded in Twitter. To have the sharing button show up, you can do either of the following:
-</p>
+<p>Since the social sharing button does not show up in your player until the social plugin is initialized, the social button will not show up when your player is directly embedded in Twitter. To have the sharing button show up, you can do either of the following:</p>
+
 <ul>
-  <li>Point your meta (og/twitter) tags to another player configured for embedded scenarios.</li>
-  <li>Include an additional script that initializes the social plugin without the options when it detects it is being embedded.</li>
+	<li>Point your meta (og/twitter) tags to another player configured for embedded scenarios.</li>
+	<li>Include an additional script that initializes the social plugin without the options when it detects it is being embedded.</li>
 </ul>
 </aside>
 </section>
+
 <section class="bcls-section">
-<h2 id="Custom_services">Custom services
-</h2>
-<p>The plugin has built in support for six popular social media entities, but you can also add others using custom services. To do this you configure a
-<code>options.customServices
-</code> object. This object is an array of custom service objects. A short example configuration is shown, then the details of the example provided.
-</p>
-<p>The following example would add three buttons. The first and second buttons for Xing and WhatsApp. The WhatsApp button will only appear on mobile. These two examples are using Font Awesome for the icon, which is convenient if the player is an in-page embed in a page already using the font, but any other styling could be used. The third is a Facebook share button using Facebook's feed API which allows a Facebook app id to be included for attribution. You would want to disable the regular Facebook button when using this.
-</p>
-<pre class="line-numbers"><code class="language-javascript">[{
-className: 'fa fa-xing',
-title: 'Xing',
-hrefTemplate: 'https://www.xing.com/spi/shares/new?url={{url}}',
-bgColor: '#026466'
+<h2 id="Custom_services">Custom services</h2>
+
+<p>The plugin has built in support for six popular social media entities, but you can also add others using custom services. To do this you configure a <code>options.customServices </code> object. This object is an array of custom service objects. A short example configuration is shown, then the details of the example provided.</p>
+
+<p>The following example would add three buttons. The first and second buttons for Xing and WhatsApp. The WhatsApp button will only appear on mobile. These two examples are using Font Awesome for the icon, which is convenient if the player is an in-page embed in a page already using the font, but any other styling could be used. The third is a Facebook share button using Facebook's feed API which allows a Facebook app id to be included for attribution. You would want to disable the regular Facebook button when using this.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">[{
+  className: 'fa fa-xing',
+  title: 'Xing',
+  hrefTemplate: 'https://www.xing.com/spi/shares/new?url={{url}}',
+  bgColor: '#026466'
 },
 {
-className: 'fa fa-whatsapp',
-title: 'WhatsApp',
-hrefTemplate: 'whatsapp://send?text={{title}}%20{{url}}',
-bgColor: '#25d366',
-mobileOnly: true
+  className: 'fa fa-whatsapp',
+  title: 'WhatsApp',
+  hrefTemplate: 'whatsapp://send?text={{title}}%20{{url}}',
+  bgColor: '#25d366',
+  mobileOnly: true
 },
 {
-classSuffix: 'facebook',
-title: 'Facebook',
-hrefTemplate: 'https://www.facebook.com/dialog/feed?app_id=123456789&amp;caption={{title}}&amp;display=page&amp;link={{url}}'
+  classSuffix: 'facebook',
+  title: 'Facebook',
+  hrefTemplate: 'https://www.facebook.com/dialog/feed?app_id=123456789&amp;caption={{title}}&amp;display=page&amp;link={{url}}'
 }]</code></pre>
-<h3>The following define the properties of a custom service object:
-</h3>
-<h4>customService.title
-</h4>
+
+<h3>The following define the properties of a custom service object:</h3>
+
+<h4>customService.title</h4>
+
 <ul>
-<li>Type: string</li>
-<li>The title of the sharing destination.</li>
+	<li>Type: string</li>
+	<li>The title of the sharing destination.</li>
 </ul>
-<h4>customService.className
-</h4>
+
+<h4>customService.className</h4>
+
 <ul>
-<li>Type: string</li>
-<li>A class or space-separated list of classes to add to the button.</li>
+	<li>Type: string</li>
+	<li>A class or space-separated list of classes to add to the button.</li>
 </ul>
-<h4>customService.classSuffix
-</h4>
+
+<h4>customService.classSuffix</h4>
+
 <ul>
-<li>Type: string</li>
-<li>The suffix is appended to
-  <code>vjs-icon-
-  </code> to generate the button's class. Only used if
-  <code>className
-  </code> is not specified. Only useful if replacing one of the standard destinations, since the Video.js font contains no additional social destination icons.</li>
+	<li>Type: string</li>
+	<li>The suffix is appended to <code>vjs-icon- </code> to generate the button's class. Only used if <code>className </code> is not specified. Only useful if replacing one of the standard destinations, since the Video.js font contains no additional social destination icons.</li>
 </ul>
-<h4>customService.hrefTemplate
-</h4>
+
+<h4>customService.hrefTemplate</h4>
+
 <ul>
-<li>Type: string</li>
-<li>A sting template to generate the sharing URL, which may contain the macros
-  <code>{{url}}
-  </code>,
-  <code>{{poster}}
-  </code>,
-  <code>{{title}}
-  </code> and
-  <code>{{description}}
-  </code>. May be used instead of
-  <code>customService.href
-  </code> where it is not possible to specify a function, e.g. providing the options in a JSON string to the Player Management API.</li>
+	<li>Type: string</li>
+	<li>A sting template to generate the sharing URL, which may contain the macros <code>{{url}} </code>, <code>{{poster}} </code>, <code>{{title}} </code> and <code>{{description}} </code>. May be used instead of <code>customService.href </code> where it is not possible to specify a function, e.g. providing the options in a JSON string to the Player Management API.</li>
 </ul>
-<h4>customService.href
-</h4>
+
+<h4>customService.href</h4>
+
 <ul>
-<li>Type: string</li>
-<li>A function to generate the sharing url. Must take an object and return a string. Unless specified this is generated from
-  <code>hrefTemplate
-  </code>.</li>
+	<li>Type: string</li>
+	<li>A function to generate the sharing url. Must take an object and return a string. Unless specified this is generated from <code>hrefTemplate </code>.</li>
 </ul>
-<h4>customService.bgColor
-</h4>
+
+<h4>customService.bgColor</h4>
+
 <ul>
-<li>Type: string</li>
-<li>An optional CSS color value which will be applied as the background color element style. Not required if the button is styled by CSS, but provided for convenience especially where the icon will be styled by an existing stylesheet.</li>
+	<li>Type: string</li>
+	<li>An optional CSS color value which will be applied as the background color element style. Not required if the button is styled by CSS, but provided for convenience especially where the icon will be styled by an existing stylesheet.</li>
 </ul>
-<h4>customService.mobileOnly
-</h4>
+
+<h4>customService.mobileOnly</h4>
+
 <ul>
-<li>Type: boolean</li>
-<li>Default: false</li>
-<li>If
-  <code>true
-  </code>, the button will only display on Android and iOS.</li>
+	<li>Type: boolean</li>
+	<li>Default: false</li>
+	<li>If <code>true </code>, the button will only display on Android and iOS.</li>
 </ul>
 </section>
+
 <section class="bcls-section">
-<h2 id="Known_issues">Known issues
-</h2>
-<h4>Keyboard navigation of buttons - Firefox for OS X
-</h4>
-<p>Firefox for OSX has default tabbing behavior to tab through text boxes and lists elements only. Since the Social Plugin's buttons are link elements, navigating through them with keyboard won't be possible unless you check the box <strong>All controls</strong> under <strong>System Preferences &gt; Keyboard &gt; Shortcuts</strong>.
-</p>
+<h2 id="Known_issues">Known issues</h2>
+
+<h4>Keyboard navigation of buttons - Firefox for OS X</h4>
+
+<p>Firefox for OSX has default tabbing behavior to tab through text boxes and lists elements only. Since the Social Plugin's buttons are link elements, navigating through them with keyboard won't be possible unless you check the box <strong>All controls</strong> under <strong>System Preferences &gt; Keyboard &gt; Shortcuts</strong>.</p>
 </section>
+
 <section class="bcls-section">
-<h2 id="Changelog">Changelog
-</h2>
-<h4>17 Apr 2018
-</h4>
-<p>v3.7.2
-</p>
+<h2 id="Changelog">Changelog</h2>
+
+<h4>17 Apr 2018</h4>
+
+<p>v3.7.2</p>
+
 <ul>
-<li>Increased the clickable area for <strong>Share</strong> and <strong>Close</strong> buttons on all devices</li>
-<li>Updated <strong>VJS</strong> version in use</li>
+	<li>Increased the clickable area for <strong>Share</strong> and <strong>Close</strong> buttons on all devices</li>
+	<li>Updated <strong>VJS</strong> version in use</li>
 </ul>
-<h4>12 Mar 2018
-</h4>
-<p>v3.7.0
-</p>
+
+<h4>12 Mar 2018</h4>
+
+<p>v3.7.0</p>
+
 <ul>
-<li>Added Finnish and Swedish translations</li>
-<li>Improved accessibility with outlines on share links</li>
-<li>Increased the clickable area for share and close button on mobile devices</li>
+	<li>Added Finnish and Swedish translations</li>
+	<li>Improved accessibility with outlines on share links</li>
+	<li>Increased the clickable area for share and close button on mobile devices</li>
 </ul>
-<h4>5 Dec 2017
-</h4>
-<p>v3.6.5
-</p>
+
+<h4>5 Dec 2017</h4>
+
+<p>v3.6.5</p>
+
 <ul>
-<li>Fixed an issue where the endscreen would incorrectly wait for a post-roll to complete when there was no post-roll</li>
-<li>&nbsp;</li>
+	<li>Fixed an issue where the endscreen would incorrectly wait for a post-roll to complete when there was no post-roll</li>
+	<li>&nbsp;</li>
 </ul>
-<h4>27 Nov 2017
-</h4>
-<p>v3.6.4
-</p>
+
+<h4>27 Nov 2017</h4>
+
+<p>v3.6.4</p>
+
 <ul>
-<li>Fixed an issue where social endscreen was not showing at end of non-repeating playlist</li>
+	<li>Fixed an issue where social endscreen was not showing at end of non-repeating playlist</li>
 </ul>
-<h4>15 Nov 2017
-</h4>
-<p>v3.6.3
-</p>
+
+<h4>15 Nov 2017</h4>
+
+<p>v3.6.3</p>
+
 <ul>
-<li>Fixed an issue where endscreens might not appear for some players without playlists</li>
+	<li>Fixed an issue where endscreens might not appear for some players without playlists</li>
 </ul>
-<h4>8 Nov 2017
-</h4>
-<p>v3.6.1
-</p>
+
+<h4>8 Nov 2017</h4>
+
+<p>v3.6.1</p>
+
 <ul>
-<li>Avoid possible issues with playlists with
-  <code>autoadvance
-  </code> of zero</li>
+	<li>Avoid possible issues with playlists with <code>autoadvance </code> of zero</li>
 </ul>
-<h4>5 Sep 2017
-</h4>
-<p>v3.6.0
-</p>
+
+<h4>5 Sep 2017</h4>
+
+<p>v3.6.0</p>
+
 <ul>
-<li>Added support for custom share buttons</li>
+	<li>Added support for custom share buttons</li>
 </ul>
-<h4>14 Aug 2017
-</h4>
-<p>v3.5.1
-</p>
+
+<h4>14 Aug 2017</h4>
+
+<p>v3.5.1</p>
+
 <ul>
-<li>Fixed button sizing with Video.js 6</li>
+	<li>Fixed button sizing with Video.js 6</li>
 </ul>
-<h4>4 Aug 2017
-</h4>
-<p>v3.5.0
-</p>
+
+<h4>4 Aug 2017</h4>
+
+<p>v3.5.0</p>
+
 <ul>
-<li>Added setters for
-  <code>Direct URL
-  </code> and
-  <code>Embed Code
-  </code></li>
+	<li>Added setters for <code>Direct URL </code> and <code>Embed Code </code></li>
 </ul>
-<h4>10 May 2017
-</h4>
-<p>v3.4.0
-</p>
+
+<h4>10 May 2017</h4>
+
+<p>v3.4.0</p>
+
 <ul>
-<li>Added
-  <code>playlistVideoId
-  </code> query string parameter to direct link, if necessary and possible</li>
+	<li>Added <code>playlistVideoId </code> query string parameter to direct link, if necessary and possible</li>
 </ul>
-<h4>10 Feb 2017
-</h4>
-<p>v3.2.0
-</p>
+
+<h4>10 Feb 2017</h4>
+
+<p>v3.2.0</p>
+
 <ul>
-<li>Added Video.js 5/6 cross-compatibility</li>
-<li>The overlay will now close if switching sources</li>
-<li>Buttons are now properly translated</li>
-<li>Additions and improvements to localizations of Arabic, German, Spanish, French, Japanese, Korean, and Turkish</li>
+	<li>Added Video.js 5/6 cross-compatibility</li>
+	<li>The overlay will now close if switching sources</li>
+	<li>Buttons are now properly translated</li>
+	<li>Additions and improvements to localizations of Arabic, German, Spanish, French, Japanese, Korean, and Turkish</li>
 </ul>
-<h4>19 Jan 2017
-</h4>
-<p>v3.1.1
-</p>
+
+<h4>19 Jan 2017</h4>
+
+<p>v3.1.1</p>
+
 <ul>
-<li>Social overlay now closes if new video is loaded</li>
-<li>Updated Tumblr share URL to use HTTPS</li>
+	<li>Social overlay now closes if new video is loaded</li>
+	<li>Updated Tumblr share URL to use HTTPS</li>
 </ul>
-<h4>14 Apr 2016
-</h4>
-<p>v3.1.0
-</p>
+
+<h4>14 Apr 2016</h4>
+
+<p>v3.1.0</p>
+
 <ul>
-<li>Support for Turkish language</li>
-<li>Support for devices with small screens</li>
+	<li>Support for Turkish language</li>
+	<li>Support for devices with small screens</li>
 </ul>
-<h4 id="toc_0">25 Mar 2016
-</h4>
-<p>v3.0.9
-</p>
+
+<h4 id="toc_0">25 Mar 2016</h4>
+
+<p>v3.0.9</p>
+
 <ul>
-<li>Added Arabic language files</li>
-<li>Fixed unclickable social sharing links</li>
-<li>Fix to ensure that social and button are hidden on small devices</li>
+	<li>Added Arabic language files</li>
+	<li>Fixed unclickable social sharing links</li>
+	<li>Fix to ensure that social and button are hidden on small devices</li>
 </ul>
-<h4 id="toc_1">7 Mar 2016
-</h4>
-<p>v3.0.8
-</p>
+
+<h4 id="toc_1">7 Mar 2016</h4>
+
+<p>v3.0.8</p>
+
 <ul>
-<li>Fixed an issue where it looked like the player was torn down when being restarted.</li>
-<li>Fixed sizing dependent on the base font size (now assuming SVT's 14px).</li>
-<li>Added
-  <code>"deploy"
-  </code> script to
-  <code>package.json
-  </code>.</li>
+	<li>Fixed an issue where it looked like the player was torn down when being restarted.</li>
+	<li>Fixed sizing dependent on the base font size (now assuming SVT's 14px).</li>
+	<li>Added <code>"deploy" </code> script to <code>package.json </code>.</li>
 </ul>
-<h4 id="toc_3">23 Nov 2015
-</h4>
-<p>v3.0.0
-</p>
+
+<h4 id="toc_3">23 Nov 2015</h4>
+
+<p>v3.0.0</p>
+
 <ul>
-<li>Refactor to use video.js
-  <code>ModalDialog
-  </code> and ES6.</li>
-<li>Deprecate
-  <code>show
-  </code> and
-  <code>hide
-  </code> methods.</li>
-<li>Remove
-  <code>update
-  </code> method.</li>
-<li>Overhaul HTML/CSS to be cleaner and more consistent.</li>
-<li>Fully update design for the new Brightcove Player.</li>
+	<li>Refactor to use video.js <code>ModalDialog </code> and ES6.</li>
+	<li>Deprecate <code>show </code> and <code>hide </code> methods.</li>
+	<li>Remove <code>update </code> method.</li>
+	<li>Overhaul HTML/CSS to be cleaner and more consistent.</li>
+	<li>Fully update design for the new Brightcove Player.</li>
 </ul>
-<h4 id="toc_4">29 Sep 2015
-</h4>
-<p>v2.0.0
-</p>
+
+<h4 id="toc_4">29 Sep 2015</h4>
+
+<p>v2.0.0</p>
+
 <ul>
-<li>Refactor and update for basic compatibility with video.js 5.0.</li>
+	<li>Refactor and update for basic compatibility with video.js 5.0.</li>
 </ul>
-<h4 id="toc_5">14 Jul 2015
-</h4>
-<p>v1.5.0
-</p>
+
+<h4 id="toc_5">14 Jul 2015</h4>
+
+<p>v1.5.0</p>
+
 <ul>
-<li>Refactor internals</li>
-<li>Expose
-  <code>getEmbedCode
-  </code>.</li>
-<li>Always have
-  <code>socialOverlay
-  </code> present.</li>
+	<li>Refactor internals</li>
+	<li>Expose <code>getEmbedCode </code>.</li>
+	<li>Always have <code>socialOverlay </code> present.</li>
 </ul>
-<h4 id="toc_6">17 Feb 2015
-</h4>
-<p>v1.4.0
-</p>
+
+<h4 id="toc_6">17 Feb 2015</h4>
+
+<p>v1.4.0</p>
+
 <ul>
-<li>Add embed code override option</li>
+	<li>Add embed code override option</li>
 </ul>
-<h4 id="toc_7">22 Jan 2015
-</h4>
-<p>v1.3.0
-</p>
+
+<h4 id="toc_7">22 Jan 2015</h4>
+
+<p>v1.3.0</p>
+
 <ul>
-<li>Add option to use the social dialog as an endscreen</li>
+	<li>Add option to use the social dialog as an endscreen</li>
 </ul>
-<h4 id="toc_8">31 Oct 2014
-</h4>
-<p>v1.2.0
-</p>
+
+<h4 id="toc_8">31 Oct 2014</h4>
+
+<p>v1.2.0</p>
+
 <ul>
-<li>Localization support</li>
+	<li>Localization support</li>
 </ul>
-<h4 id="toc_9">25 Jul 2014
-</h4>
-<p>v1.1.0
-</p>
+
+<h4 id="toc_9">25 Jul 2014</h4>
+
+<p>v1.1.0</p>
+
 <ul>
-<li>Make background of social plugin in IE8 be black</li>
-<li>IE8 fixes</li>
+	<li>Make background of social plugin in IE8 be black</li>
+	<li>IE8 fixes</li>
 </ul>
-<h4 id="toc_10">24 Jul 2014
-</h4>
-<p>v1.0.0
-</p>
+
+<h4 id="toc_10">24 Jul 2014</h4>
+
+<p>v1.0.0</p>
+
 <ul>
-<li>Initial release</li>
+	<li>Initial release</li>
 </ul>
 </section>
 </article>
