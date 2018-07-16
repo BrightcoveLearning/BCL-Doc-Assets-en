@@ -1,275 +1,204 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="Overview">Overview
-    </h2>
-    <p>Brightcove Live provides a robust service for creating live streaming events or 24/7 live streams. This guide outlines best practices for optimizing your live streams
-    </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Input_bandwidth">Input bandwidth
-    </h2>
-    <p>Providing a high-quality, stable input stream is the only way to ensure the best user experience for viewers. A good input stream provides the best video quality at the highest consistently available bandwidth from a location.
-    </p>
-    <ul>
-      <li>Minimum input bandwidth: 2.5 mbps</li>
-      <li>Maximum input bandwidth: 10 mbps</li>
-    </ul>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Certified_encoders">Supported encoders
-    </h2>
-    <p>See <a href="/node/9750">Supported Encoders for Live Events</a> for list of encoders known to work with Live. Note that other encoders may also work, but have not been tested.
-    </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Supported_CDNs">Supported CDNs
-    </h2>
-    <ul>
-      <li>Akamai</li>
-      <li>Amazon CloudFront</li>
-    </ul>
-    <aside class="bcls-aside bcls-aside--information">The CDNs above are officially supported, but other file-based CDNs should work.
-    </aside>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Concurrent_static_entry_point_jobs">Concurrent static entry point jobs
-    </h2>
-    <p>For <a href="/node/18443">Static Entry Point</a> (SEP) jobs <strong>only</strong>, there is a limit of 3 concurrent jobs per region for each account. There is no concurrent job limit for other live streaming jobs.
-    </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="retries">Retries
-    </h2>
-    <p>We recommend enabling retries for the RTMP connection from the encoder. A large number of retry attempts with a 5-second retry interval will mitigate any intermittent connectivity issues between the encoder and the entry point.
-    </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="job_settings">Job settings
-    </h2>
-    <p>Recommended job settings
-    </p>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Job Settings
-      </caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Field
-          </th>
-          <th>Recommended Value
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td>
-            <code>ad_audio_loudness_level
-            </code>
-          </td>
-          <td>
-            <code>-23
-            </code> (EBU R.128 standard)
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  <section class="bcls-section">
-    <h2 id="input_requirements">Input requirements
-    </h2>
-    <p>The following table shows requirements for the input live stream.
-    </p>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Input Requirements
-      </caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Item
-          </th>
-          <th>Requirement
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td>Protocol
-          </td>
-          <td>RTMP
-          </td>
-        </tr>
-        <tr>
-          <td>Video format
-          </td>
-          <td>h.264
-          </td>
-        </tr>
-        <tr>
-          <td>Audio format
-          </td>
-          <td>AAC
-          </td>
-        </tr>
-        <tr>
-          <td>Maximum audio sampling rate
-          </td>
-          <td>48000 Hz (Brightcove Support can increase this value on request)
-          </td>
-        </tr>
-        <tr>
-          <td>Resolution
-          </td>
-          <td>Up to 1080p
-          </td>
-        </tr>
-        <tr>
-          <td>Bitrate
-          </td>
-          <td>Must be at least as high as the highest output bitrate - maximum: 10mbps
-          </td>
-        </tr>
-        <tr>
-          <td>Framerate
-          </td>
-          <td>30 fps (Brightcove Support can increase this to 60 fps on request) (must be constant)
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  <section class="bcls-section">
-    <h2 id="slate_source_file_recommendations">Slate source file recommendations
-    </h2>
-    <ul>
-      <li><strong>Resolution</strong>: (best in your encoding ladder)</li>
-      <li><strong>FPS</strong>: (same as your source)</li>
-      <li><strong>Bitrate</strong>: (best in your encoding ladder or better)</li>
-      <li><strong>Audio</strong>: (same bitrate, channels, sampling frequency, and bits per sample as your best rendition, or same as your input)</li>
-    </ul>
-  </section>
-  <section class="bcls-section">
-    <h2 id="output_recommendations" class="bcls-section">Output recommendations
-    </h2>
-    <p>Below are recommended output settings, but note that for many encoders, the RTMP input is limited to 10 MBPS (video + audio) and a framerate of 30fps.
-    </p>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Output Recommendations
-      </caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Item
-          </th>
-          <th>Recommendation
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td>Video codec
-          </td>
-          <td>
-            <code>h264
-            </code>
-          </td>
-        </tr>
-        <tr>
-          <td>Audio codec
-          </td>
-          <td>
-            <code>aac
-            </code>
-          </td>
-        </tr>
-        <tr>
-          <td>Width
-          </td>
-          <td>omit to use source width
-          </td>
-        </tr>
-        <tr>
-          <td>Height
-          </td>
-          <td>omit to use source height
-          </td>
-        </tr>
-        <tr>
-          <td>Bitrate
-          </td>
-          <td>Match the input bitrate
-          </td>
-        </tr>
-        <tr>
-          <td>Framerate
-          </td>
-          <td>
-            <code>30
-            </code> fps
-          </td>
-        </tr>
-        <tr>
-          <td>Keyframe rate
-          </td>
-          <td>1/second
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  <section id="AWS_regions">AWS regions
-    <p>See the <a href="/node/17764#Support_aws_regions">Live API Overview</a>. </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="FAQ">FAQ
-    </h2>
-    <dl>
-      <dt class="bcls-question">How soon do you have to start streaming after creating a live job?
-      </dt>
-      <dd class="bcls-answer">In Brightcove Live, there are two conditions when the state transitions from
-        <code>waiting
-        </code> to
-        <code>finishing
-        </code>:
-        <ol>
-          <li>When
-            <code>max_waiting_time_ms
-            </code> (1800 seconds = 30 minutes) passes after the job creation.</li>
-          <li>When
-            <code>event_length
-            </code> passes after the job creation.</li>
-        </ol>
-        <p>If the
-          <code>event_length
-          </code> is greater than 30 minutes, the job will terminate in 30 minutes. If the
-          <code>event_length
-          </code> is less than 30 minutes, the job will terminate in
-          <code>event_length
-          </code>.
-        </p>
-        <p>For example, if the
-          <code>event_length
-          </code> is 60 minutes, then, the live job will terminate in 30 minutes. If the
-          <code>event_length
-          </code> is 15 minutes, then, the live job will terminate in 15 minutes
-        </p>
-        <p>The
-          <code>reconnect_time
-          </code> has no effect for waiting state.
-        </p>
-      </dd>
-      <dt class="bcls-question">How many jobs can I have in "waiting to connect" status?
-      </dt>
-      <dd class="bcls-answer">You are allowed to have up to 5 jobs in waiting status (waiting for the encoder to be connected). When you hit that limit, you will not be able to create additional jobs until an existing job is connected to an encoder or cancelled.
-      </dd>
-      <dt class="bcls-question">Can Brightcove Live push 1080p quality provided the input bandwidth is sufficient?
-      </dt>
-      <dd class="bcls-answer">Yes, 1080p input is enabled for all accounts.
-      </dd>
-      <dt class="bcls-question">Are frame rates greater than 30 FPS supported? What are Brightcove's recommendations on frame rate?
-      </dt>
-      <dd class="bcls-answer">Currently the framerate for input streams is limited to 30 FPS. If you are interested in using a higher frame rate, please contact Support.
-      </dd>
-      <dt class="bcls-question">Is DRM available?
-      </dt>
-      <dd class="bcls-answer">Not currently - it is on the product roadmap for a future release.
-      </dd>
-    </dl>
-  </section>
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>Brightcove Live provides a robust service for creating live streaming events or 24/7 live streams. This guide outlines best practices for optimizing your live streams</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Input_bandwidth">Input bandwidth</h2>
+
+<p>Providing a high-quality, stable input stream is the only way to ensure the best user experience for viewers. A good input stream provides the best video quality at the highest consistently available bandwidth from a location.</p>
+
+<ul>
+	<li>Minimum input bandwidth: 2.5 mbps</li>
+	<li>Maximum input bandwidth: 10 mbps</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Certified_encoders">Supported encoders</h2>
+
+<p>See <a href="/node/9750">Supported Encoders for Live Events</a> for list of encoders known to work with Live. Note that other encoders may also work, but have not been tested.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Supported_CDNs">Supported CDNs</h2>
+
+<ul>
+	<li>Akamai</li>
+	<li>Amazon CloudFront</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--information">The CDNs above are officially supported, but other file-based CDNs should work.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Concurrent_static_entry_point_jobs">Concurrent static entry point jobs</h2>
+
+<p>For <a href="/node/18443">Static Entry Point</a> (SEP) jobs <strong>only</strong>, there is a limit of 3 concurrent jobs per region for each account. There is no concurrent job limit for other live streaming jobs.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="retries">Retries</h2>
+
+<p>We recommend enabling retries for the RTMP connection from the encoder. A large number of retry attempts with a 5-second retry interval will mitigate any intermittent connectivity issues between the encoder and the entry point.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="job_settings">Job settings</h2>
+
+<p>Recommended job settings</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Job Settings</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Field</th>
+			<th>Recommended Value</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>ad_audio_loudness_level </code></td>
+			<td><code>-23 </code> (EBU R.128 standard)</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="input_requirements">Input requirements</h2>
+
+<p>The following table shows requirements for the input live stream.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Input Requirements</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Item</th>
+			<th>Requirement</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Protocol</td>
+			<td>RTMP</td>
+		</tr>
+		<tr>
+			<td>Video format</td>
+			<td>h.264</td>
+		</tr>
+		<tr>
+			<td>Audio format</td>
+			<td>AAC</td>
+		</tr>
+		<tr>
+			<td>Maximum audio sampling rate</td>
+			<td>48000 Hz (Brightcove Support can increase this value on request)</td>
+		</tr>
+		<tr>
+			<td>Resolution</td>
+			<td>Up to 1080p</td>
+		</tr>
+		<tr>
+			<td>Bitrate</td>
+			<td>Must be at least as high as the highest output bitrate - maximum: 10mbps</td>
+		</tr>
+		<tr>
+			<td>Framerate</td>
+			<td>30 fps (Brightcove Support can increase this to 60 fps on request) (must be constant)</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="slate_source_file_recommendations">Slate source file recommendations</h2>
+
+<ul>
+	<li><strong>Resolution</strong>: (best in your encoding ladder)</li>
+	<li><strong>FPS</strong>: (same as your source)</li>
+	<li><strong>Bitrate</strong>: (best in your encoding ladder or better)</li>
+	<li><strong>Audio</strong>: (same bitrate, channels, sampling frequency, and bits per sample as your best rendition, or same as your input)</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="output_recommendations" class="bcls-section">Output recommendations</h2>
+
+<p>Below are recommended output settings, but note that for many encoders, the RTMP input is limited to 10 MBPS (video + audio) and a framerate of 30fps.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Output Recommendations</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Item</th>
+			<th>Recommendation</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Video codec</td>
+			<td><code>h264 </code></td>
+		</tr>
+		<tr>
+			<td>Audio codec</td>
+			<td><code>aac </code></td>
+		</tr>
+		<tr>
+			<td>Width</td>
+			<td>omit to use source width</td>
+		</tr>
+		<tr>
+			<td>Height</td>
+			<td>omit to use source height</td>
+		</tr>
+		<tr>
+			<td>Bitrate</td>
+			<td>Match the input bitrate</td>
+		</tr>
+		<tr>
+			<td>Framerate</td>
+			<td><code>30 </code> fps</td>
+		</tr>
+		<tr>
+			<td>Keyframe rate</td>
+			<td>1/second</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section id="AWS_regions">AWS regions
+<p>See the <a href="/node/17764#Support_aws_regions">Live API Overview</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="FAQ">FAQ</h2>
+
+<dl>
+	<dt class="bcls-question">How soon do you have to start streaming after creating a live job?</dt>
+	<dd class="bcls-answer">In Brightcove Live, there are two conditions when the state transitions from <code>waiting </code> to <code>finishing </code>:
+	<ol>
+		<li>When <code>max_waiting_time_ms </code> (1800 seconds = 30 minutes) passes after the job creation.</li>
+		<li>When <code>event_length </code> passes after the job creation.</li>
+	</ol>
+
+	<p>If the <code>event_length </code> is greater than 30 minutes, the job will terminate in 30 minutes. If the <code>event_length </code> is less than 30 minutes, the job will terminate in <code>event_length </code>.</p>
+
+	<p>For example, if the <code>event_length </code> is 60 minutes, then, the live job will terminate in 30 minutes. If the <code>event_length </code> is 15 minutes, then, the live job will terminate in 15 minutes</p>
+
+	<p>The <code>reconnect_time </code> has no effect for waiting state.</p>
+	</dd>
+	<dt class="bcls-question">How many jobs can I have in "waiting to connect" status?</dt>
+	<dd class="bcls-answer">You are allowed to have up to 5 jobs in waiting status (waiting for the encoder to be connected). When you hit that limit, you will not be able to create additional jobs until an existing job is connected to an encoder or cancelled.</dd>
+	<dt class="bcls-question">Can Brightcove Live push 1080p quality provided the input bandwidth is sufficient?</dt>
+	<dd class="bcls-answer">Yes, 1080p input is enabled for all accounts.</dd>
+	<dt class="bcls-question">Are frame rates greater than 30 FPS supported? What are Brightcove's recommendations on frame rate?</dt>
+	<dd class="bcls-answer">Currently the framerate for input streams is limited to 30 FPS. If you are interested in using a higher frame rate, please contact Support.</dd>
+	<dt class="bcls-question">Is DRM available?</dt>
+	<dd class="bcls-answer">Not currently - it is on the product roadmap for a future release.</dd>
+</dl>
+</section>
 </article>
