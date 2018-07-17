@@ -40,7 +40,17 @@
             window.open(url, '_blank');
         });
         window.addEventListener("message",function(evt) {
-          var feedbackParams = evt.data;
+          var feedbackParams = evt.data,
+            surveyForm = document.getElementById('surveyForm');
+
+          for (var prop in feedbackParams) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', prop);
+            input.setAttribute('value', feedbackParams[prop]);
+            surveyForm.appendChild(input);
+          }
+
         });
     </script>
 </body>
