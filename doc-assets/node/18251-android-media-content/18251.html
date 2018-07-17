@@ -15,11 +15,12 @@
 <p>You can retrieve your video and playlist data from your Video Cloud library by using the Playback API. For details about the API, see the <a href="/node/17906">Playback API Overview</a> document.</p>
 
 <ol class="bcls-tasklist">
-	<li>Use the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
-	<li><p>
-		For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.
-	</p>
-		<aside class="bcls-aside bcls-aside--information">Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</aside>
+	<li>Use the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">com.brightcove.player.edge.Catalog</a> class methods to retrieve your videos and playlists from Brightcove's Playback API. Your requests can supply the video/playlist <code>ID</code> or <code>ReferenceID</code>. This service will make the URL requests and parse the returned data.</li>
+	<li>
+	<p>For this request, you will need a Policy Key. If you are not familiar with Policy Keys, see the <a href="/node/18003">Policy API Overview</a> document.</p>
+
+	<aside class="bcls-aside bcls-aside--information">Because the Native SDKs do not send an origin header, you cannot use a domain-restricted Policy Key. If you try this, you will get a <code>403 Forbidden</code> response when you attempt to fetch content from your Video Cloud library.</aside>
+
 	<p>Here is an example of how to retrieve a video using the <code>com.brightcove.player.edge.Catalog </code> class:</p>
 
 	<pre class="line-numbers">
@@ -37,37 +38,36 @@ import com.brightcove.player.view.BrightcovePlayer;
 * Native Player SDK for Android.
 */
 public class MainActivity extends BrightcovePlayer {
-private final String TAG = this.getClass().getSimpleName();
-@Override
+	private final String TAG = this.getClass().getSimpleName();
+	@Override
 
-protected void onCreate(Bundle savedInstanceState) {
-setContentView(R.layout.activity_main);
-brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
-super.onCreate(savedInstanceState);
+	protected void onCreate(Bundle savedInstanceState) {
+		setContentView(R.layout.activity_main);
+		brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+		super.onCreate(savedInstanceState);
 
-// Get the event emitter from the SDK and create a catalog request to fetch a video from the
-// Brightcove Edge service, given a video id, an account id and a policy key.
-EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
-Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
+		// Get the event emitter from the SDK and create a catalog request to fetch a video from the
+		// Brightcove Edge service, given a video id, an account id and a policy key.
+		EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
+		Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
 
-catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
-  // Add the video found to the queue with add().
-  // Start playback of the video with start().
-  @Override
-  public void onVideo(Video video) {
-    Log.v(TAG, "onVideo: video = " + video);
-    brightcoveVideoView.add(video);
-    brightcoveVideoView.start();
-  }
-});
-}
-}
-</code></pre>
+		catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
+		  // Add the video found to the queue with add().
+		  // Start playback of the video with start().
+		  @Override
+		  public void onVideo(Video video) {
+		    Log.v(TAG, "onVideo: video = " + video);
+		    brightcoveVideoView.add(video);
+		    brightcoveVideoView.start();
+		  }
+		});
+	}
+}</code></pre>
 	</li>
 </ol>
 
 <ol class="bcls-tasklist">
-	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/model/Video.html">Video object</a> provides methods to retrieve media information as shown below:
+	<li>The <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/model/Video.html">Video object</a> provides methods to retrieve media information as shown below:
 
 	<pre class="line-numbers">
 <code class="language-java">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
@@ -123,14 +123,13 @@ catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
 	<li><a href="/node/15476#geofilter">Video Cloud Studio's Media Module</a></li>
 </ul>
 
-<p>In your Android app, when you retrieve a video using Brightcove's edge <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">Catalog</a> object (Playback API) in a country which is geo-filtered for that video, you should see this message:</p>
+<p>In your Android app, when you retrieve a video using Brightcove's edge <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">Catalog</a> object (Playback API) in a country which is geo-filtered for that video, you should see this message:</p>
 
 <pre class="line-numbers">
 <code class="language-java">error { message: Access to this resource is forbidden by access policy.
 client_geo: us
 error_subcode: CLIENT_GEO
-error_code: ACCESS_DENIED }
-</code></pre>
+error_code: ACCESS_DENIED }</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -145,26 +144,25 @@ So, when loading your source file over HTTPS, the hostname of the stream must be
 <p>Here is an example of adding a video to your video view and starting playback:</p>
 
 <pre class="line-numbers">
-<code class="language-java">import com.brightcove.player.media.DeliveryType;
+<code class="language-java">import com.brightcove.player.model.DeliveryType;
 import com.brightcove.player.model.Video;
 import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
 import com.brightcove.player.view.BrightcovePlayer;
 import com.brightcove.player.analytics.Analytics;
 @Override
 protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
-BrightcoveVideoView brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_main);
+	BrightcoveVideoView brightcoveVideoView = (BrightcoveVideoView) findViewById(R.id.brightcove_video_view);
 
-Analytics analytics = brightcoveVideoView.getAnalytics();
-analytics.setAccount("123456789");
+	Analytics analytics = brightcoveVideoView.getAnalytics();
+	analytics.setAccount("123456789");
 
-MediaController controller = new MediaController(this);
-brightcoveVideoView.setMediaController(controller);
-brightcoveVideoView.add(Video.createVideo("http://solutions.brightcove.com/bcls/assets/videos/Bird_Titmouse.mp4", DeliveryType.MP4));
-brightcoveVideoView.start();
-}
-</code></pre>
+	MediaController controller = new MediaController(this);
+	brightcoveVideoView.setMediaController(controller);
+	brightcoveVideoView.add(Video.createVideo("http://solutions.brightcove.com/bcls/assets/videos/Bird_Titmouse.mp4", DeliveryType.MP4));
+	brightcoveVideoView.start();
+}</code></pre>
 </section>
 &nbsp;
 
