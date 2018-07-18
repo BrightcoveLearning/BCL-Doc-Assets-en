@@ -5,7 +5,7 @@ var BCLS_feedback = ( function (window, document) {
     feedbackParams = {},
     i,
     tmpArray = [],
-    br;
+    p;
 
 
   iframe.setAttribute('id', 'CSAT');
@@ -13,9 +13,9 @@ var BCLS_feedback = ( function (window, document) {
   iframe.setAttribute('style', 'padding-bottom:20px;border:none');
   surveyDiv.setAttribute('style', 'text-align:center');
   surveyDiv.appendChild(iframe);
-  br = document.createElement('br');
-  br.setAttribute('style', 'min-height:2em;');
-  document.body.appendChild(br);
+  p = document.createElement('p');
+  p.setAttribute('style', 'min-height:2em;');
+  document.body.appendChild(p);
   document.body.appendChild(surveyDiv);
   iframeEl = document.getElementById('CSAT');
   surveyWin = iframeEl.contentWindow;
