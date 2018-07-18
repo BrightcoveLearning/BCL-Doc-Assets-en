@@ -5,7 +5,7 @@ var BCLS_feedback = ( function (window, document) {
     feedbackParams = {},
     i,
     tmpArray = [],
-    contentBlock = document.querySelector('.col-sm-9');
+    contentBlock = document.querySelector('section>article.readme');
 
 console.log('contentBlock', contentBlock);
   iframe.setAttribute('id', 'CSAT');
