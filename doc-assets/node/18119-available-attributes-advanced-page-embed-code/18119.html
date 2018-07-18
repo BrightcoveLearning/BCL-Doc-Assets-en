@@ -1,6 +1,6 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="intro">Introduction</h2>
+<h2 id="Introduction">Introduction</h2>
 
 <div class="BCL-concept">
 <p>The <strong>Advanced (in-page) embed</strong>&nbsp;code permits you to have the player exist in the the HTML page directly, not in an iframe. This offers the benefits of ease of accessing the player and associated properties and events. By using the non-iframe player, you lose the ease of use of the player as a single, contained unit in social media applications and sharing.</p>
@@ -8,7 +8,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="usage">Usage</h2>
+<h2 id="Usage">Usage</h2>
 
 <aside class="bcls-aside bcls-aside--information player-only">Note: If you are a Brightcove Player customer, you will not use the <code>data-video-id</code> attribute to assign a video to your player. You would either assign the video in the <strong>Players</strong> module or using curl.</aside>
 
@@ -34,7 +34,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="attributes">Attributes</h2>
+<h2 id="Attributes">Attributes</h2>
 
 <p>Numerous attributes are available for the <code>&lt;video&gt;</code> tag to provide additional information about how a player should behave. The table below details available attributes.</p>
 
@@ -58,34 +58,16 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td>account_id</td>
-			<td>The Video Cloud account ID associated with this player.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>application_id</td>
-			<td>By default, this is interpreted from the applicationId query parameter for iframe players or the data-application-id attribute for in-page players. The application ID is used to differentiate multiple uses of a single player in metrics.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>autoadvance</td>
-			<td>This will set the <strong>autoadvance</strong> behavior of the playlist. Only applicable if a playlist is being used. See the <a href="/node/18099">Playlist API</a> document for more information.</td>
-			<td>Number</td>
-		</tr>
-		<tr>
 			<td>autoplay</td>
-			<td>Causes the video to start playing as soon as page is loaded (without any interaction from the user). Supported on APPLE iOS devices only if muted used concurrently.</td>
+			<td>Causes the video to start playing as soon as page is loaded (without any interaction from the user). Supported on APPLE iOS devices only if muted used concurrently.<br />
+			<br />
+			The <code>autoplay</code> attribute may not behave as you intend. It is possible that the player will issue a play command before the video is loaded, and when the video does finish loading it will not autoplay. For safety's sake, it is best to set <code>autoplay</code> as part of the player configuration. This can be done either in Studio's <strong>PLAYER &gt; PROPERTIES</strong> or via the <a href="/node/18262#autoplay">Player Management API</a>.</td>
 			<td>Boolean</td>
 		</tr>
 		<tr>
 			<td>class</td>
 			<td>Standard HTML attribute that will be assigned the <strong>video-js</strong> value by default.</td>
 			<td>String</td>
-		</tr>
-		<tr>
-			<td>compatibility</td>
-			<td>If explicitly true, the player will include videojs-4to5, which is a layer for backward compatibility to Brightcove Player 1.x.</td>
-			<td>Boolean</td>
 		</tr>
 		<tr>
 			<td>controls</td>
@@ -102,6 +84,11 @@
 		<tr>
 			<td>data-account</td>
 			<td>The account ID, sometimes also called the Publisher ID.</td>
+			<td>String</td>
+		</tr>
+		<tr>
+			<td>data-ad-config-id</td>
+			<td>A Dynamic Delivery SSAI ad configuration ID.</td>
 			<td>String</td>
 		</tr>
 		<tr>
@@ -129,6 +116,11 @@
 			<td>Sets the initial video to be played in the video, which must be in the designated playlist.</td>
 			<td>String</td>
 		</tr>
+		<tr>
+			<td>data-start-time</td>
+			<td>Sets the time offset from which a video will start playing. See the <a href="/node/18104">Deep Linking</a> document for details.</td>
+			<td>String</td>
+		</tr>
 		<tr class="video-cloud-only">
 			<td>data-video-id</td>
 			<td>Sets the ID or reference ID of the video in the player.</td>
@@ -136,7 +128,7 @@
 		</tr>
 		<tr>
 			<td>height</td>
-			<td>Sets the display height of the video.</td>
+			<td>Sets the display height of the video, measured in pixels <strong>ONLY</strong>. For further details using percentages for the height see the <a href="/node/18134#Using_percentages">Sizing the Player</a> document.</td>
 			<td>Number</td>
 		</tr>
 		<tr>
@@ -166,7 +158,7 @@
 		</tr>
 		<tr>
 			<td>width</td>
-			<td>Sets the display width of the video</td>
+			<td>Sets the display width of the video, measured in pixels <strong>ONLY</strong>. For further details using percentages for the width see the <a href="/node/18134#Using_percentages">Sizing the Player</a> document.</td>
 			<td>Number</td>
 		</tr>
 	</tbody>
@@ -177,6 +169,9 @@
 <h2 id="preload_details">preload details</h2>
 
 <aside class="bcls-aside bcls-aside--warning">Note: currently the value for preload set in the <a href="/node/14052#preload">Studio Player Settings</a> will always override the value set in the <code>video</code> tag attributes, so you must set this in Studio.</aside>
+
+<aside class="bcls-aside bcls-aside--information">Note: The preload settings are actually just suggestions in the HTML5 spec and as a result there can be different behavior on different browsers. Setting the value to <strong>Yes</strong> could potentially have significant impact on bandwidth consumption.
+</aside>
 
 <p>The preload attribute informs the browser whether or not the video data should begin downloading as soon as the video tag is loaded. The options are <strong>auto</strong>, <strong>metadata</strong>, and <strong>none</strong>. For HLS playback technology the settings mean slightly different things and noted below.</p>
 
@@ -194,7 +189,7 @@
 	<li>
 	<p><strong>none</strong>: Don't preload any of the video data. This will wait until the user clicks play to begin downloading. Note that on iOS there may be segment downloading even with this setting. See the <a href="/node/18106">Brightcove Player and iOS</a> document for more information.</p>
 
-	<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>none</strong> means player will no longer load anything, including the m3u8 manifest, until the user presses play.</aside>
+	<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>none</strong> means the player will only download the m3u8 manifest so that the video duration can be calculated.</aside>
 	</li>
 </ul>
 
@@ -202,5 +197,8 @@
 <code class="language-html">&lt;video preload ...&gt;
 or
 { "preload": "auto" }</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">Note: Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.</aside>
+
 </section>
 </article>
