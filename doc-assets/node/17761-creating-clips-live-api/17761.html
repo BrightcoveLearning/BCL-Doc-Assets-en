@@ -1,114 +1,81 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="Overview">Overview
-    </h2>
-    <p>Definitions for clips are created using the
-      <code>/vods
-      </code> endpoint.
-    </p>
-    <p>Clips can be created in several ways:
-    </p>
-    <ul>
-      <li>With
-        <code>stream_start_timecode
-        </code> and/or
-        <code>stream_end_timecode
-        </code> defined in SMPTE timecodes for the live stream event</li>
-      <li>With
-        <code>start_time
-        </code> and/or
-        <code>end_time
-        </code> defined relative to the start time (
-        <code>stream_start_time
-        </code>) of the whole live stream event</li>
-      <li>With
-        <code>start_time
-        </code> and/or
-        <code>end_time
-        </code> defined in Epoch (Unix) time (in seconds)</li>
-      <li>With duration and either a
-        <code>start_time
-        </code> or
-        <code>end_time
-        </code></li>
-      <li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li>
-      <li>The clipping API <strong>cannot</strong> be used with <strong>encrypted</strong> jobs.</li>
-    </ul>
-    <h3>Notes
-    </h3>
-    <ol>
-      <li>If you specify
-        <code>duration
-        </code> without a start or end time, the resulting clip will be as follows:
-        <ul>
-          <li>If the job is active and still live: (request time - duration) to (request time)</li>
-          <li>If the job is finished: (
-            <code>finished_at
-            </code> - duration) to (
-            <code>finished_at
-            </code>)</li>
-        </ul>
-      </li>
-      <li>If you specify both
-        <code>start_time
-        </code> AND
-        <code>end_time
-        </code>:
-        <ul>
-          <li>If the job is active and still live: as long as the Epoch time window falls entirely within
-            <code>created_at
-            </code> and the request time, the clip will be made</li>
-          <li>If the job is finished: as long as the Epoch time window falls entirely within
-            <code>created_at
-            </code> and
-            <code>finished_at
-            </code>, the clip will be made</li>
-        </ul>
-      </li>
-      <li>Clips can be created up to 24 hours after an event. For <a href="/node/18443">SEP</a>, they can be created up until the next activation or 24 hours (whichever is shorter).</li>
-      <li>The clipping API will not add any content outside of what is present in the stream. If you specify 350 on a 300 seconds long livestream, the output will be 300 seconds long.</li>
-      <li>You do not have to use a DVR-enabled live stream for clipping to work, because the live stream is stored as it is broadcast and is available immediately and for 24 hours after the event is over.</li>
-      <li>Brightcove Live clipping will only produce a clip that is the same resolution as the highest resolution output. It will not match the source input resolution (unless that is the same as the highest resolution output).</li>
-    </ol>
-    <p>Clips can also be sent to multiple destinations:
-    </p>
-    <ul>
-      <li>A <span class="”notranslate”">Video Cloud</span> account</li>
-      <li>An FTP server</li>
-      <li>An S3 bucket</li>
-    </ul>
-    <p>Note: clips <strong>can be created while the live stream is running</strong>. To do this, you will need to define the start and end times of the clip in Epoch time or relative to <strong>start</strong> time of the live stream.
-    </p>
-  </section>
-  <!-- <section class="bcls-section">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>Definitions for clips are created using the <code>/vods </code> endpoint.</p>
+
+<p>Clips can be created in several ways:</p>
+
+<ul>
+	<li>With <code>stream_start_timecode </code> and/or <code>stream_end_timecode </code> defined in SMPTE timecodes for the live stream event</li>
+	<li>With <code>start_time </code> and/or <code>end_time </code> defined relative to the start time ( <code>stream_start_time </code>) of the whole live stream event</li>
+	<li>With <code>start_time </code> and/or <code>end_time </code> defined in Epoch (Unix) time (in seconds)</li>
+	<li>With duration and either a <code>start_time </code> or <code>end_time </code></li>
+	<li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li>
+	<li>The clipping API <strong>cannot</strong> be used with <strong>encrypted</strong> jobs.</li>
+</ul>
+
+<h3>Notes</h3>
+
+<ol>
+	<li>If you specify <code>duration </code> without a start or end time, the resulting clip will be as follows:
+
+	<ul>
+		<li>If the job is active and still live: (request time - duration) to (request time)</li>
+		<li>If the job is finished: ( <code>finished_at </code> - duration) to ( <code>finished_at </code>)</li>
+	</ul>
+	</li>
+	<li>If you specify both <code>start_time </code> AND <code>end_time </code>:
+	<ul>
+		<li>If the job is active and still live: as long as the Epoch time window falls entirely within <code>created_at </code> and the request time, the clip will be made</li>
+		<li>If the job is finished: as long as the Epoch time window falls entirely within <code>created_at </code> and <code>finished_at </code>, the clip will be made</li>
+	</ul>
+	</li>
+	<li>Clips can be created up to 24 hours after an event. For <a href="/node/18443">SEP</a>, they can be created up until the next activation or 24 hours (whichever is shorter).</li>
+	<li>The clipping API will not add any content outside of what is present in the stream. If you specify 350 on a 300 seconds long livestream, the output will be 300 seconds long.</li>
+	<li>You do not have to use a DVR-enabled live stream for clipping to work, because the live stream is stored as it is broadcast and is available immediately and for 24 hours after the event is over.</li>
+	<li>Brightcove Live clipping will only produce a clip that is the same resolution as the highest resolution output. It will not match the source input resolution (unless that is the same as the highest resolution output).</li>
+</ol>
+
+<p>Clips can also be sent to multiple destinations:</p>
+
+<ul>
+	<li>A <span class="”notranslate”">Video Cloud</span> account</li>
+	<li>An FTP server</li>
+	<li>An S3 bucket</li>
+</ul>
+
+<p>Note: clips <strong>can be created while the live stream is running</strong>. To do this, you will need to define the start and end times of the clip in Epoch time or relative to <strong>start</strong> time of the live stream.</p>
+</section>
+<!-- <section class="bcls-section">
 <h2 id="state_diagram">State diagram</h2>
 <p>The following state diagram will help you understand how the system works.</p>
 <figure class="bcls-figure"><img class="bcls-image" alt="State Diagram" src="//learning-services-media.brightcove.com/doc-assets/node/17761-creating-clips-live-api/live architecture-state-vod-jobs.png" />
 <figcaption class="bcls-caption--image">State Diagram</figcaption>
 </figure>
 </section> -->
-  <section class="bcls-section">
-    <h2 id="Endpoint">Endpoint
-    </h2>
-    <p>Clips are created by sending a
-      <code>POST
-      </code> request to:
-    </p>
-    <pre class="line-numbers">
+
+<section class="bcls-section">
+<h2 id="Endpoint">Endpoint</h2>
+
+<p>Clips are created by sending a <code>POST </code> request to:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://api.bcovlive.io/v1/vods
 </code>
 </pre>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Request_body_video_cloud">Request body - <span class="”notranslate”">Video Cloud</span>
-    </h2>
-    <aside class="bcls-aside bcls-aside--tip">Note: we strongly recommend <strong>not</strong> specifying ingest profile that should be used for transcoding the clip, and instead use the account default profile. This will reduce the chance of errors in creating the clip in <span class="”notranslate”">Video Cloud</span>
-    </aside>
-    <h3>Example 1: start/end times relative to stream start
-    </h3>
-    <p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:
-    </p>
-    <pre class="line-numbers">
+</section>
+
+<section class="bcls-section">
+<h2 id="Request_body_video_cloud">Request body - <span class="”notranslate”">Video Cloud</span></h2>
+
+<aside class="bcls-aside bcls-aside--tip">Note: we strongly recommend <strong>not</strong> specifying ingest profile that should be used for transcoding the clip, and instead use the account default profile. This will reduce the chance of errors in creating the clip in <span class="”notranslate”">Video Cloud</span></aside>
+
+<h3>Example 1: start/end times relative to stream start</h3>
+
+<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
 "outputs":[
@@ -131,13 +98,14 @@
 }
 </code>
 </pre>
-    <p>In this example, we are creating a clip of one-minute duration and sending it to <span class="”notranslate”">Video Cloud</span> . We're giving the clip a name and a couple of tags, not specifying the <a href="/node/18045">ingest profile</a> for retranscoding, so that the account default will be used, and instructing <span class="”notranslate”">Video Cloud</span> to capture thumbnail and poster images from the clip during transcoding.
-    </p>
-    <h3>Example 2: start/end times in Epoch time
-    </h3>
-    <p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:
-    </p>
-    <pre class="line-numbers">
+
+<p>In this example, we are creating a clip of one-minute duration and sending it to <span class="”notranslate”">Video Cloud</span> . We're giving the clip a name and a couple of tags, not specifying the <a href="/node/18045">ingest profile</a> for retranscoding, so that the account default will be used, and instructing <span class="”notranslate”">Video Cloud</span> to capture thumbnail and poster images from the clip during transcoding.</p>
+
+<h3>Example 2: start/end times in Epoch time</h3>
+
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
 "outputs":[
@@ -160,13 +128,14 @@
 }
 </code>
 </pre>
-    <p>In this example, we are creating a clip of one-minute duration at a specific Epoch time (in this case 22 Jan 2018 at 08:24:54 GMT).
-    </p>
-    <h3>Example 3: duration with start time relative to stream start
-    </h3>
-    <p>The request body includes the duration and stream_start_time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:
-    </p>
-    <pre class="line-numbers">
+
+<p>In this example, we are creating a clip of one-minute duration at a specific Epoch time (in this case 22 Jan 2018 at 08:24:54 GMT).</p>
+
+<h3>Example 3: duration with start time relative to stream start</h3>
+
+<p>The request body includes the duration and stream_start_time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
 "outputs":[
@@ -189,13 +158,14 @@
 }
 </code>
 </pre>
-    <p>In this example, we are creating a clip of one-minute duration starting 5 minutes after the start of the live stream.
-    </p>
-    <h3>Example 4: duration with no start or end time
-    </h3>
-    <p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:
-    </p>
-    <pre class="line-numbers">
+
+<p>In this example, we are creating a clip of one-minute duration starting 5 minutes after the start of the live stream.</p>
+
+<h3>Example 4: duration with no start or end time</h3>
+
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
 "outputs":[
@@ -218,17 +188,14 @@
 }
 </code>
 </pre>
-    <p>In this example, we are creating a clip of one-minute duration. Since we are not specifying a start or end time, the clip will be taken from the last 60 seconds of the live stream.
-    </p>
-    <h3>Example 5: using
-      <code>stream_start_timecode
-      </code> and
-      <code>stream_end_time_code
-      </code>
-    </h3>
-    <p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:
-    </p>
-    <pre class="line-numbers">
+
+<p>In this example, we are creating a clip of one-minute duration. Since we are not specifying a start or end time, the clip will be taken from the last 60 seconds of the live stream.</p>
+
+<h3>Example 5: using <code>stream_start_timecode </code> and <code>stream_end_time_code </code></h3>
+
+<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="”notranslate”">Video Cloud</span> account:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
 "outputs":[
@@ -252,33 +219,24 @@
 }
 </code>
 </pre>
-    <p>In this example, we are creating a clip of one-minute duration from a specific part of the live stream based on timecodes.
-    </p>
-    <h3>General information about sending clips to <span class="”notranslate”">Video Cloud</span>
-    </h3>
-    <p>To see what fields can be included in the
-      <code>video
-      </code> and
-      <code>ingest
-      </code> objects, see the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html">Dynamic Ingest API Reference</a>.
-    </p>
-    <aside class="bcls-aside bcls-aside--warning">Do <strong>not</strong> include the
-      <code>master
-      </code> field in the
-      <code>ingest
-      </code> object, as that information will be provided by the Live API.
-    </aside>
-    <p>The
-      <code>VC_CREDENTIALS
-      </code> here is a reference to a set of client credentials for the Dynamic Ingest system, which are set up in your Live account by the Live team.
-    </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Request_body_s3">Request body - S3
-    </h2>
-    <p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to an S3 bucket:
-    </p>
-    <pre class="line-numbers">
+
+<p>In this example, we are creating a clip of one-minute duration from a specific part of the live stream based on timecodes.</p>
+
+<h3>General information about sending clips to <span class="”notranslate”">Video Cloud</span></h3>
+
+<p>To see what fields can be included in the <code>video </code> and <code>ingest </code> objects, see the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html">Dynamic Ingest API Reference</a>.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Do <strong>not</strong> include the <code>master </code> field in the <code>ingest </code> object, as that information will be provided by the Live API.</aside>
+
+<p>The <code>VC_CREDENTIALS </code> here is a reference to a set of client credentials for the Dynamic Ingest system, which are set up in your Live account by the Live team.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Request_body_s3">Request body - S3</h2>
+
+<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to an S3 bucket:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "live_job_id":"{{job_id}}",
 "outputs":[
@@ -293,169 +251,126 @@
 }
 </code>
 </pre>
-    <p>In this example, we are creating a clip of 30 second duration and sending it to an S3 bucket. We provide the bucket URL including the file name for clip, and a string that is the name of saved S3 bucket credentials - the credentials can be set up for your account by Brightcove Support.
-    </p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Request_body_fields">Request body fields
-    </h2>
-    <p>Here is a full table of the request body fields.
-    </p>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Request Body Fields
-      </caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th style="width: 30%">Field
-          </th>
-          <th style="width: 10%">Type
-          </th>
-          <th style="width: 70%">Description
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td class="code">live_job_id
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>The id of Live Stream job to create the VOD clip from.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">outputs
-          </td>
-          <td>Object[]
-          </td>
-          <td>
-            <p>Array of VOD outputs
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;label
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>Label for the output
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;duration
-          </td>
-          <td>Number
-          </td>
-          <td>
-            <p>Duration of the clip in seconds
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;stream_start_time
-          </td>
-          <td>Number
-          </td>
-          <td>
-            <p>Start time in seconds for the clip relative to the start time of the live stream
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;stream_end_time
-          </td>
-          <td>Number
-          </td>
-          <td>
-            <p>End time in seconds for the clip relative to the start time of the live stream
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;start_time
-          </td>
-          <td>Number
-          </td>
-          <td>
-            <p>Start time for the clip in Epoch (Unix) time (seconds)
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;end_time
-          </td>
-          <td>Number
-          </td>
-          <td>
-            <p>End time for the clip in Epoch (Unix) time (seconds)
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;url
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>URL for the clip
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;credentials
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>The name of the credentials configured in your account for this address
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;videocloud
-          </td>
-          <td>Object
-          </td>
-          <td>
-            <p>An object containing inputs for <span class="”notranslate”">Video Cloud</span> ingestion
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;&nbsp;&nbsp;video
-          </td>
-          <td>Object
-          </td>
-          <td>
-            <p>An object containing inputs for <span class="”notranslate”">Video Cloud</span> video object creation - see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API Reference for creating a video</a>
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;&nbsp;&nbsp;ingest
-          </td>
-          <td>Object
-          </td>
-          <td>
-            <p>An object containing inputs for <span class="”notranslate”">Video Cloud</span> video ingestion - see the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest Reference</a> - do <strong>not</strong> include the
-              <code>master
-              </code> field, as that information will be provided by the Live API
-            </p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  <section class="bcls-section">
-    <h2 id="API_response">API response
-    </h2>
-    <p>The response to a create clip request includes an id for the job and the label you set in the request body, as well as the live job id:
-    </p>
-    <pre class="line-numbers">
+
+<p>In this example, we are creating a clip of 30 second duration and sending it to an S3 bucket. We provide the bucket URL including the file name for clip, and a string that is the name of saved S3 bucket credentials - the credentials can be set up for your account by Brightcove Support.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Request_body_fields">Request body fields</h2>
+
+<p>Here is a full table of the request body fields.</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Request Body Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th style="width: 30%">Field</th>
+			<th style="width: 10%">Type</th>
+			<th style="width: 70%">Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td class="code">live_job_id</td>
+			<td>String</td>
+			<td>
+			<p>The id of Live Stream job to create the VOD clip from.</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">outputs</td>
+			<td>Object[]</td>
+			<td>
+			<p>Array of VOD outputs</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;label</td>
+			<td>String</td>
+			<td>
+			<p>Label for the output</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;duration</td>
+			<td>Number</td>
+			<td>
+			<p>Duration of the clip in seconds</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;stream_start_time</td>
+			<td>Number</td>
+			<td>
+			<p>Start time in seconds for the clip relative to the start time of the live stream</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;stream_end_time</td>
+			<td>Number</td>
+			<td>
+			<p>End time in seconds for the clip relative to the start time of the live stream</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;start_time</td>
+			<td>Number</td>
+			<td>
+			<p>Start time for the clip in Epoch (Unix) time (seconds)</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;end_time</td>
+			<td>Number</td>
+			<td>
+			<p>End time for the clip in Epoch (Unix) time (seconds)</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;url</td>
+			<td>String</td>
+			<td>
+			<p>URL for the clip</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;credentials</td>
+			<td>String</td>
+			<td>
+			<p>The name of the credentials configured in your account for this address</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;videocloud</td>
+			<td>Object</td>
+			<td>
+			<p>An object containing inputs for <span class="”notranslate”">Video Cloud</span> ingestion</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;&nbsp;&nbsp;video</td>
+			<td>Object</td>
+			<td>
+			<p>An object containing inputs for <span class="”notranslate”">Video Cloud</span> video object creation - see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API Reference for creating a video</a></p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;&nbsp;&nbsp;ingest</td>
+			<td>Object</td>
+			<td>
+			<p>An object containing inputs for <span class="”notranslate”">Video Cloud</span> video ingestion - see the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest Reference</a> - do <strong>not</strong> include the <code>master </code> field, as that information will be provided by the Live API</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="API_response">API response</h2>
+
+<p>The response to a create clip request includes an id for the job and the label you set in the request body, as well as the live job id:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "vod_jobs": [
 {
@@ -467,63 +382,48 @@
 }
 </code>
 </pre>
-    <h3>Response fields
-    </h3>
-    <table class="bcls-table">
-      <caption class="bcls-caption--table">Response Body Fields
-      </caption>
-      <thead class="bcls-table__head">
-        <tr>
-          <th style="width: 30%">Field
-          </th>
-          <th style="width: 10%">Type
-          </th>
-          <th style="width: 70%">Description
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td class="code">vod_jobs
-          </td>
-          <td>Object
-          </td>
-          <td>
-            <p>The clip response object
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;jvod_id
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>The clip job id
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">&nbsp;&nbsp;label
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>The clip label (from the input)
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="code">live_job_id
-          </td>
-          <td>String
-          </td>
-          <td>
-            <p>The clip label (from the input)
-            </p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+
+<h3>Response fields</h3>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Response Body Fields</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th style="width: 30%">Field</th>
+			<th style="width: 10%">Type</th>
+			<th style="width: 70%">Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td class="code">vod_jobs</td>
+			<td>Object</td>
+			<td>
+			<p>The clip response object</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;jvod_id</td>
+			<td>String</td>
+			<td>
+			<p>The clip job id</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">&nbsp;&nbsp;label</td>
+			<td>String</td>
+			<td>
+			<p>The clip label (from the input)</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="code">live_job_id</td>
+			<td>String</td>
+			<td>
+			<p>The clip label (from the input)</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 </article>
