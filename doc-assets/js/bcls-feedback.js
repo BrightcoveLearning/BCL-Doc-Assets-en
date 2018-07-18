@@ -15,6 +15,7 @@ var BCLS_feedback = ( function (window, document) {
   surveyDiv.appendChild(iframe);
   p = document.createElement('p');
   p.setAttribute('style', 'min-height:2em;');
+  p.setAttribute('class', 'clearfix');
   document.body.appendChild(p);
   document.body.appendChild(surveyDiv);
   iframeEl = document.getElementById('CSAT');
