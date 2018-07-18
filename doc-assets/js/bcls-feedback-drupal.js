@@ -5,7 +5,7 @@ var BCLS_feedback = ( function (window, document) {
     feedbackParams = {},
     i,
     tmpArray = [],
-    contentBlock = document.querySelector('node node--type-support-doc node--view-mode-full bcdocs-four-rows clearfix');
+    contentBlock = document.querySelector('.col-sm-9');
 
 
   iframe.setAttribute('id', 'CSAT');
