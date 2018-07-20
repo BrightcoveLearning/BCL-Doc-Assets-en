@@ -37,6 +37,15 @@ console.log('contentBlock', contentBlock);
   feedbackParams.title = document.querySelector('h1>span').textContent;
   feedbackParams.product = taxonomyItems[0].querySelector('.field--item').textContent;
   feedbackParams.role = taxonomyItems[1].querySelector('.field--item').textContent;
+  feedbackParams.task = thirdRowItems[0].textContent;
+  feedbackParams.topic = thirdRowItems[1].textContent;
+  if (feedbackParams.role === 'API Developer') {
+    feedbackParams.api = thirdRowItems[2].textContent;
+    feedbackParams.sdk = '';
+  } else if (feedbackParams.role === 'Device SDK Developer') {
+    feedbackParams.sdk = thirdRowItems[2].textContent;
+    feedbackParams.api = '';
+  }
 
   iframeEl.addEventListener('load', function() {
     console.log('feedbackParams', feedbackParams);
