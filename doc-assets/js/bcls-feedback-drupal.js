@@ -8,7 +8,7 @@ var BCLS_feedback = ( function (window, document) {
     contentBlock = document.querySelector('.col-sm-9'),
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
     thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags'),
-    thirdRowItems = document.querySelector('.field--item');
+    thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
 
 console.log('contentBlock', contentBlock);
   iframe.setAttribute('id', 'CSAT');
