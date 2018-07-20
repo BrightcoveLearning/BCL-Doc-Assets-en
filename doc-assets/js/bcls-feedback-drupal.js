@@ -5,7 +5,10 @@ var BCLS_feedback = ( function (window, document) {
     feedbackParams = {},
     i,
     tmpArray = [],
-    contentBlock = document.querySelector('.col-sm-9');
+    contentBlock = document.querySelector('.col-sm-9'),
+    taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
+    thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags'),
+    thirdRowItems = document.querySelector('.field--item');
 
 console.log('contentBlock', contentBlock);
   iframe.setAttribute('id', 'CSAT');
@@ -31,6 +34,9 @@ console.log('contentBlock', contentBlock);
   if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
     feedbackParams.bc_account = 'unknown';
   }
+  feedbackParams.title = document.querySelector('h1>span').textContent;
+  feedbackParams.product = taxonomyItems[0].querySelector('.field--item').textContent;
+  feedbackParams.role = taxonomyItems[1].querySelector('.field--item').textContent;
 
   iframeEl.addEventListener('load', function() {
     console.log('feedbackParams', feedbackParams);
