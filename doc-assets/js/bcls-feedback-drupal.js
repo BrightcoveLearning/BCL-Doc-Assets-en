@@ -41,7 +41,7 @@ console.log('contentBlock', contentBlock);
   for (i = 0; i < thirdRowItems.length; i++) {
     tags.push(thirdRowItems[i].textContent);
   }
-  feedbackParams.tags = tags.join(','),
+  feedbackParams.tags = tags.join(',');
 
   iframeEl.addEventListener('load', function() {
     console.log('feedbackParams', feedbackParams);
