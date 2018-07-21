@@ -5,6 +5,7 @@ var BCLS_feedback = ( function (window, document) {
     feedbackParams = {},
     i,
     tmpArray = [],
+    tags = [],
     contentBlock = document.querySelector('.col-sm-9'),
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
     thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags'),
@@ -37,14 +38,7 @@ console.log('contentBlock', contentBlock);
   feedbackParams.title = document.querySelector('h1>span').textContent;
   feedbackParams.product = taxonomyItems[0].querySelector('.field--item').textContent;
   feedbackParams.role = taxonomyItems[1].querySelector('.field--item').textContent;
-  feedbackParams.task = thirdRowItems[0].textContent;
-  feedbackParams.topic = thirdRowItems[1].textContent;
-  if (feedbackParams.role === 'API Developer') {
-    feedbackParams.api = thirdRowItems[2].textContent;
-    feedbackParams.sdk = '';
-  } else if (feedbackParams.role === 'Device SDK Developer') {
-    feedbackParams.sdk = thirdRowItems[2].textContent;
-    feedbackParams.api = '';
+
   }
 
   iframeEl.addEventListener('load', function() {
