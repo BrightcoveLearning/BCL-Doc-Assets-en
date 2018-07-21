@@ -36,6 +36,19 @@ var BCLS_feedback = ( function (window, document) {
   if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
     feedbackParams.bc_account = 'unknown';
   }
+  feedbackParams.title = document.querySelector('h1').textContent;
+  if (feedbackParams.title.indexOf('Zencoder') > 0) {
+    feedbackParams.product = 'Zencoder';
+  } else if (feedbackParams.title.indexOf('Live API') > 0) {
+    feedbackParams.product = 'Live';
+  } else if (feedbackParams.title.indexOf('Once') > 0) {
+    feedbackParams.product = 'Once';
+  } else {
+    feedbackParams.product = 'Video Cloud';
+  }
+  feedbackParams.role = 'API Developer';
+  feedbackParams.tags = 'API Reference';
+
 
   iframeEl.addEventListener('load', function() {
     console.log('feedbackParams', feedbackParams);
