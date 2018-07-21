@@ -52,24 +52,21 @@
  			var url = 'https://survey.clicktools.com/go?iv=3qpn5irdz4kie'
 			 	+ '&q1=' + document.referrer
 				+ '&q2=' + useful
-				+ '&q7=' + bc_email
-				+ '&q8=' + bc_account
-				+ '&q9=' + title
-				+ '&q10=' + product
- 				+ '&q11=' + role
- 				+ '&q12=' + tags;
+				+ '&q7=' + docParams.bc_email
+				+ '&q8=' + docParams.bc_account
+				+ '&q9=' + docParams.title
+				+ '&q10=' +docParams.product
+ 				+ '&q11=' + docParams.role
+ 				+ '&q12=' + docParams.tags;
 			window.open(url, '_blank');
 		});
 		window.addEventListener('message', function (evt) {
 			var feedbackParams = evt.data,
-				surveyForm = document.getElementById('surveyForm');
+      prop;
 
-      docParams.bc_email    = feedbackParams.bc_email;
-      docParams.bc_account  = feedbackParams.bc_account;
-      docParams.title       = feedbackParams.title;
-      docParams.product     = feedbackParams.product;
-      docParams.role        = feedbackParams.role;
-      docParams.tags        = feedbackParams.tags;
+      for (prop in feedbackParams) {
+        docParams[prop] = feedbackParams[prop];
+      }
 
     });
     </script>
