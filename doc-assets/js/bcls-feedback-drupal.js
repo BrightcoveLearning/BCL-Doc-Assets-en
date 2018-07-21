@@ -38,8 +38,10 @@ console.log('contentBlock', contentBlock);
   feedbackParams.title = document.querySelector('h1>span').textContent;
   feedbackParams.product = taxonomyItems[0].querySelector('.field--item').textContent;
   feedbackParams.role = taxonomyItems[1].querySelector('.field--item').textContent;
-
+  for (i = 0; i < thirdRowItems.length; i++) {
+    tags.push(thirdRowItems[i].textContent);
   }
+  feedbackParams.tags = tags.join(','),
 
   iframeEl.addEventListener('load', function() {
     console.log('feedbackParams', feedbackParams);
