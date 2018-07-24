@@ -1,22 +1,18 @@
 var BCLSnotranlate = ( function (window, document) {
-  var classesToFix = ['bcls-highlight', 'bcls-input'],
-    preBlocks = document.getElementsByTagName('pre'),
+  var codeBlocks = document.getElementsByTagName('code'),
+    codeSpans = document.querySelectorAll('pre>span'),
     i,
     iMax,
     j,
     jMax;
 
-  iMax = preBlocks.length;
+  iMax = codeBlocks.length;
   for (i = 0; i < iMax; i++) {
-    preBlocks[i].className += ' notranslate';
+    codeBlocks[i].className += ' notranslate';
   }
 
-  iMax = classesToFix.length;
+  iMax = codeSpans.length;
   for (i = 0; i < iMax; i++) {
-    var elements = document.getElementsByClassName(classesToFix[i]);
-    jMax = elements.length;
-    for (j = 0; j < jMax; j++) {
-      elements[j].className += ' notranslate';
-    }
+    codeSpans[i].className += ' notranslate';
   }
 })(window, document);
