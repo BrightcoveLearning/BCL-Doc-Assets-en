@@ -9,7 +9,13 @@ var BCLS_feedback = ( function (window, document) {
     contentBlock  = document.querySelector('.main-container'),
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
     thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags'),
-    thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
+    thirdRowItems,
+    productItem = taxonomyItems[0].querySelector('.field--item'),
+    roleItem = taxonomyItems[1].querySelector('.field--item');
+
+    if (thirdRowGroup) {
+      thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
+    }
 
 console.log('contentBlock', contentBlock);
   iframe.setAttribute('id', 'CSAT');
@@ -35,9 +41,11 @@ console.log('contentBlock', contentBlock);
   if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
     feedbackParams.bc_account = 'unknown';
   }
-  feedbackParams.title = document.querySelector('h1>span').textContent;
-  feedbackParams.product = taxonomyItems[0].querySelector('.field--item').textContent;
-  feedbackParams.role = taxonomyItems[1].querySelector('.field--item').textContent;
+  feedbackParams.title = document.querySelector('title').textContent;
+
+  feedbackParams.product = (productItem) ? productItem.textContent : 'unknown';
+  feedbackParams.role = (roleItem) ? roleItem.textContent : 'unknown';
+if (third)
   for (i = 0; i < thirdRowItems.length; i++) {
     tags.push(thirdRowItems[i].textContent);
   }
