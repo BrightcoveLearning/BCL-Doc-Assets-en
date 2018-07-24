@@ -16,7 +16,7 @@ var BCLSnotranlate = ( function (window, document) {
     var elements = document.getElementsByClassName(classesToFix[i]);
     jMax = elements.length;
     for (j = 0; j < jMax; j++) {
-      elements[i].className += ' notranslate';
+      elements[j].className += ' notranslate';
     }
   }
 })(window, document);
