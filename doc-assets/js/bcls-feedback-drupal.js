@@ -6,7 +6,7 @@ var BCLS_feedback = ( function (window, document) {
     i,
     tmpArray = [],
     tags = [],
-    contentBlock = document.querySelector('.col-sm-9'),
+    contentBlock  = document.querySelector('.main-container'),
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
     thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags'),
     thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
