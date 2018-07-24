@@ -10,11 +10,14 @@ var BCLS_feedback = ( function (window, document) {
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
     thirdRowGroup,
     thirdRowItems,
-    productItem = taxonomyItems[0].querySelector('.field--item'),
-    roleItem = taxonomyItems[1].querySelector('.field--item');
+    productItem,
+    roleItem;
 
     if (taxonomyItems) {
       thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags');
+      productItem = taxonomyItems[0].querySelector('.field--item');
+      roleItem = taxonomyItems[1].querySelector('.field--item');
+
       if (thirdRowGroup) {
         thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
       }
