@@ -6,6 +6,6 @@ var BCLSnotranlate = ( function (window, document) {
 
   iMax = preBlocks.length;
   for (i = 0; i < iMax; i++) {
-    preBlocks[i].className += 
+    preBlocks[i].className += ' notranslate';
   }
 })(window, document);
