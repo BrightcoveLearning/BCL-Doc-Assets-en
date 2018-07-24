@@ -45,11 +45,14 @@ console.log('contentBlock', contentBlock);
 
   feedbackParams.product = (productItem) ? productItem.textContent : 'unknown';
   feedbackParams.role = (roleItem) ? roleItem.textContent : 'unknown';
-if (third)
+if (thirdRowItems) {
   for (i = 0; i < thirdRowItems.length; i++) {
     tags.push(thirdRowItems[i].textContent);
   }
   feedbackParams.tags = tags.join(',');
+} else {
+  feedbackParams.tags = 'none';
+}
 
   iframeEl.addEventListener('load', function() {
     console.log('feedbackParams', feedbackParams);
