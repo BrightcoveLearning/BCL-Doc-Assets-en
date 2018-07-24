@@ -8,7 +8,7 @@ var BCLS_feedback = ( function (window, document) {
     tags = [],
     contentBlock  = document.querySelector('.main-container'),
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
-    thirdRowGroup,,
+    thirdRowGroup,
     thirdRowItems,
     productItem = taxonomyItems[0].querySelector('.field--item'),
     roleItem = taxonomyItems[1].querySelector('.field--item');
