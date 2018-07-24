@@ -8,13 +8,16 @@ var BCLS_feedback = ( function (window, document) {
     tags = [],
     contentBlock  = document.querySelector('.main-container'),
     taxonomyItems = document.getElementsByClassName('field__items taxonomy__tags'),
-    thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags'),
+    thirdRowGroup,,
     thirdRowItems,
     productItem = taxonomyItems[0].querySelector('.field--item'),
     roleItem = taxonomyItems[1].querySelector('.field--item');
 
-    if (thirdRowGroup) {
-      thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
+    if (taxonomyItems) {
+      thirdRowGroup = document.querySelector('.group-third-row.taxonomy__tags');
+      if (thirdRowGroup) {
+        thirdRowItems = thirdRowGroup.querySelectorAll('.field--item');
+      }
     }
 
 console.log('contentBlock', contentBlock);
