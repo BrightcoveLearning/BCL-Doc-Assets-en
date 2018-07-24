@@ -1,27 +1,27 @@
 <article class="bcls-artice">
-  <section class="bcls-section">
-    <h2 id="overview">Overview
-    </h2>
-    <p>With ad failover turned on, when Brightcove Player detects an ad blocker present in the browser the player will automatically request an SSAI stream. Otherwise, it will use IMA ads.
-    </p>
-    <h3>Caveats
-    </h3>
-    <ul>
-      <li>Ad blocker detection is very reliable, but not 100%.</li>
-      <li>Customers using this feature must be using Dynamic Delivery.</li>
-      <li>Only IMA and SSAI plugins are supported (no FreeWheel or OnceUX).</li>
-    </ul>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Configure_the_player">Configure the player
-    </h2>
-    <p>For ad failover to function you must have the player configured correctly. The following three configuration changes need to be done:
-    </p>
-    <ol class="bcls-tasklist">
-      <li>The player configuration must have
-        <code>"ad_failover": true
-        </code> at the top level. This is done using a <strong>curl</strong> statement. The following would add the desired configuration to an existing player:
-        <pre class="line-numbers">
+<section class="bcls-section">
+<h2 id="overview">Overview</h2>
+
+<p>With ad failover turned on, when Brightcove Player detects an ad blocker present in the browser the player will automatically request an SSAI stream. Otherwise, it will use IMA ads.</p>
+
+<h3>Caveats</h3>
+
+<ul>
+	<li>Ad blocker detection is very reliable, but not 100%.</li>
+	<li>Customers using this feature must be using Dynamic Delivery.</li>
+	<li>Only IMA and SSAI plugins are supported (no FreeWheel or OnceUX).</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configure_the_player">Configure the player</h2>
+
+<p>For ad failover to function you must have the player configured correctly. The following three configuration changes need to be done:</p>
+
+<ol class="bcls-tasklist">
+	<li>The player configuration must have <code>"ad_failover": true </code> at the top level. This is done using a <strong>curl</strong> statement. The following would add the desired configuration to an existing player:
+
+	<pre class="line-numbers">
 <code class="language-bash">// Configure ad failover
 curl \
 --header "Content-Type: application/json" \
@@ -33,13 +33,11 @@ curl \
 https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration
 </code>
 </pre>
-        <p>If you are unfamiliar with curl, see the <a href="/node/18268">Quick Start: Player Management</a> document to get started.
-        </p>
-      </li>
-      <li>Both the IMA and SSAI plugins must be configured for the player. This is normally an invalid configuration, and the player would log a warning to the console, but having the
-        <code>"ad_failover": true
-        </code> configuration makes it valid. Both of these plugins can be added in Studio, or via a curl statement. A valid example player configuration is show here:
-        <pre class="line-numbers">
+
+	<p>If you are unfamiliar with curl, see the <a href="/node/18268">Quick Start: Player Management</a> document to get started.</p>
+	</li>
+	<li>Both the IMA and SSAI plugins must be configured for the player. This is normally an invalid configuration, and the player would log a warning to the console, but having the <code>"ad_failover": true </code> configuration makes it valid. Both of these plugins can be added in Studio, or via a curl statement. A valid example player configuration is show here:
+	<pre class="line-numbers">
 <code class="language-json">{
 "account_id": "1507807800001",
 <span class="bcls-highlight">"ad_failover": true</span>,
@@ -88,15 +86,13 @@ https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 }
 </code>
 </pre>
-      </li>
-      <li>
-        <p>There must be an ad configuration ID (<code>ad_config_id</code>) available via the configuration or defined at runtime. Although technically not required, not having one means no ads in an SSAI stream would be available, which defeats the purpose of ad failover.
-        </p>
-        <p>To supply an ad configuration ID at runtime using the Advanced (in-page embed) player implementation, you supply the ID as an attribute in the
-          <code>&lt;video&gt;
-          </code> tag:
-        </p>
-<pre class="line-numbers">
+	</li>
+	<li>
+	<p>There must be an ad configuration ID (<code>ad_config_id</code>) available via the configuration or defined at runtime. Although technically not required, not having one means no ads in an SSAI stream would be available, which defeats the purpose of ad failover.</p>
+
+	<p>To supply an ad configuration ID at runtime using the Advanced (in-page embed) player implementation, you supply the ID as an attribute in the <code>&lt;video&gt; </code> tag:</p>
+
+	<pre class="line-numbers">
 <code class="language-html">&lt;video
 data-account="123"
 data-player="abc"
@@ -108,13 +104,14 @@ controls&gt;
 &lt;script src="https://.../index.min.js"&gt;&lt;/script&gt;
 </code>
 </pre>
-        <p>If you are using an Standard (iframe) player implementation you would supply the ad configuration ID as follows:
-        </p>
-<pre class="line-numbers">
+
+	<p>If you are using an Standard (iframe) player implementation you would supply the ad configuration ID as follows:</p>
+
+	<pre class="line-numbers">
 <code class="language-html">&lt;iframe src="https://.../index.html<span class="bcls-highlight">?adConfigId=xyz-456</span>" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
 </code>
 </pre>
-      </li>
-    </ol>
-  </section>
+	</li>
+</ol>
+</section>
 </article>
