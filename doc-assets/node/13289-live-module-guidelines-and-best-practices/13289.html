@@ -1,0 +1,234 @@
+<p class="BCL-aside">Note: Live streaming support is available only for Video Cloud Pro and Enterprise publishers.</p>
+
+<p>If you are looking to quickly get started broadcasting a live event, check out the <a href="/node/10820">Quick Start: Using the Live Module to Broadcast a Live Event</a> topic. For a list of all the options available from Brightcove for delivering live streaming video, see <a href="/node/11397">Delivering Live Streams</a>.</p>
+
+<div class="BCL-concept">
+<h2 id="encoders">Certified encoders</h2>
+
+<p>For a list of supported encoders, see <a href="/node/9750">Supported Encoders for Live Events</a>. Other hardware and software based encoding tools may work with the Live module, but their use is not supported. If you have a question about a specific tool, please contact <a href="https://support.brightcove.com/en/contact/create">Brightcove Support</a> for more information.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="inputstream">Input stream guidelines</h2>
+
+<p>Providing a high-quality, stable input stream is the only way to ensure the best user experience for viewers. A good input stream provides the best video quality at the highest consistently available bandwidth from a location.</p>
+
+<h3>Input restrictions</h3>
+
+<p>In order to ensure the highest quality, most consistent streaming experience, Zencoder limits input stream settings to:</p>
+
+<ul>
+	<li>Maximum 1920x1080</li>
+	<li>Maximum 30 fps</li>
+	<li>Less than 10 Mbps</li>
+</ul>
+
+<p>Streams falling outside of the restrictions above will be automatically rejected. There is no charge for a rejected stream, unless the stream settings were changed during a disconnect.</p>
+
+<h3>Testing bandwidth</h3>
+
+<p>The first step towards arriving at the appropriate settings for the input stream is to determine the available bandwidth on site. There are a few tools that can help:</p>
+
+<ul>
+	<li>SpeedOf.Me (<a href="https://speedof.me">http://speedof.me</a>) - Determining the total bandwidth available for HTTP connections is a good first step. However, since the input feed will be streamed to the Live module over RTMP instead of HTTP, the actual bandwidth available for RTMP connections will be significantly less.</li>
+	<li>Xsplit RTMP Speedtest (<a href="https://www.xsplit.com/download">http://www.xsplit.com/download</a>) - Xsplit is a free to download encoding tool with built in bandwidth measurement. Windows support only.</li>
+</ul>
+
+<h3>Input Stream Recommendations</h3>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Available<br />
+			Bandwidth<br />
+			(Kbps)</th>
+			<th>Resolution</th>
+			<th>Video<br />
+			Bitrate<br />
+			(Kbps)</th>
+			<th>Audio<br />
+			Bitrate<br />
+			(Kbps)</th>
+			<th>Encoder Settings</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>3000 - 10000</td>
+			<td>1920x1080</td>
+			<td>2500 - 5000</td>
+			<td>128</td>
+			<td>Profile: 4.1<br />
+			Level: High<br />
+			24-30 fps<br />
+			Keyframe rate: 60</td>
+		</tr>
+		<tr>
+			<td>2000 - 3500</td>
+			<td>1280x720</td>
+			<td>1500 - 3000</td>
+			<td>128</td>
+			<td>Profile: 3.1<br />
+			Level: High<br />
+			24-30 fps<br />
+			Keyframe rate: 60</td>
+		</tr>
+		<tr>
+			<td>1500 - 2500</td>
+			<td>1024x576</td>
+			<td>1000 - 2000</td>
+			<td>96</td>
+			<td>Profile: 3.1<br />
+			Level: Main<br />
+			24-30 fps<br />
+			Keyframe rate: 60</td>
+		</tr>
+		<tr>
+			<td>1000 - 2000</td>
+			<td>854x480</td>
+			<td>750 - 1500</td>
+			<td>96</td>
+			<td>Profile: 3.1<br />
+			Level: Main<br />
+			24-30 fps<br />
+			Keyframe rate: 60</td>
+		</tr>
+		<tr>
+			<td>750 - 1500</td>
+			<td>640x360</td>
+			<td>500 - 1000</td>
+			<td>64</td>
+			<td>Profile: 3.0<br />
+			Level: Main<br />
+			24-30 fps<br />
+			Keyframe rate: 60</td>
+		</tr>
+	</tbody>
+</table>
+&nbsp;
+
+<p class="BCL-aside">Note: For the best user experience, match your output renditions to the quality of your encoder stream.</p>
+
+<h3>Determining encoder capabilities</h3>
+
+<p>Understanding the capabilities of the software and hardware used to encode the live stream and send it to the Live module is also important. There may be plenty of bitrate to send a high-quality, 1080p input stream, but the hardware also needs to be able to encode in faster-than-realtime speeds. Some encoding tools display information about the total CPU usage and bandwidth being used. For example, Telestream Wirecast will display the output statistics at the top of the page. This information is useful when determining the most stable, highest quality stream that is possible on given hardware.</p>
+<img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node13289-wirecast.png" />
+<p>Things to watch in Wirecast:</p>
+
+<ul>
+	<li>CPU should be less than 80%</li>
+	<li>Datarate should be near the target bitrate</li>
+	<li>FPS should be at the rate of the input stream settings</li>
+</ul>
+</div>
+
+<div class="BCL-concept">
+<h2 id="prepare">Preparing for an event</h2>
+
+<p>Before using the Live module for a production event, testing the entire end-to-end chain is critical to ensure success. There are two main areas to test:</p>
+
+<ul>
+	<li>the video production workflow</li>
+	<li>the tools being used to connect to the Live module</li>
+</ul>
+
+<p>For every new location, or any time hardware or software configurations change, a new round of testing should be performed.</p>
+
+<h3>Production</h3>
+
+<p>The live feed being generated and sent into encoding hardware or software can be as simple as a webcam and as complex as a multi-camera, edited live broadcast. In either case, the incoming video feed must be consistent throughout the event. Ensure that switching between camera angles or systems results in the same resolution and number of audio channels.</p>
+
+<h3>Connection to the Live module</h3>
+
+<p>The connection to the Live module should be tested on the same network, using the same input live feed, being sent through the same encoding software as will be used for the production event. The goal is to mimic the production event as closely as possible.</p>
+
+<h3>The Day of the Event</h3>
+
+<p>A number of factors inherent to live delivery of feeds to CDNs means that it can take between 1.5 to 10 minutes for a live stream to be published and ready for viewing. You should plan on starting the live stream at least 10 minutes earlier than the scheduled broadcast. Starting 30 minutes early will provide some extra time to coordinate and solve any issues.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="issues">Issues during live streaming</h2>
+
+<p>The work of testing a live stream, finding the ideal settings for the input stream, and preparing the venue for the event will greatly reduce the chance of errors occurring. However, it is important to always be prepared to handle any issues that may arise.</p>
+
+<h3>Disconnects</h3>
+
+<p>Network outages, encoder malfunctions, or power outages can all contribute to the Live module connection being lost. When a connection is lost, the Live module disconnects the live stream, and the player will pause on the last frame received. During the creation of a new event, the <strong>Advanced Settings</strong> section can be configured to control how event disconnects are handled:</p>
+
+<ul>
+	<li>Reconnect Time - time in minutes to wait for a stream to reconnect</li>
+	<li>Event Length - time in hours that Brightcove reserves streaming and encoding servers for the event</li>
+</ul>
+
+<p class="BCL-aside">Note: If you set an Event Length, you will be billed for the entire Event Length time unless you end the event by clicking the <strong>Stop Streaming</strong> button in the Live module interface.</p>
+<img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node13289-create-event.png" />
+<p>The Live module will accept any number of disconnects and reconnects during this reconnect time without needing to start a new stream. Once a stream has been reconnected, playback will resume from the most recent frame. If the event ends without the stream being reconnected, the player will return a warning that the stream was not found.</p>
+
+<p class="BCL-aside">Note: When disconnecting and reconnecting, the stream settings must stay the same. Any changes to the number of audio channels, resolutions, or codec settings will result in unpredictable behavior.</p>
+
+<h3>Latency</h3>
+
+<p>Streaming latency, or the time difference between the events a viewer is watching and the actual live event, is introduced in three places:</p>
+
+<ul>
+	<li>the on-site encoder</li>
+	<li>cloud transcoding</li>
+	<li>CDN delivery</li>
+</ul>
+
+<p>The on-site encoder and the Live module’s cloud transcoding system introduce a total of 1.5 to 5 seconds of latency. Depending on the CDN, there may be another 15-90 seconds of latency introduced. In general, latencies between 15-90 seconds are considered normal for live feeds and are necessary for the Live module to be able to serve millions of concurrent viewers watching live events.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="trouble">Troubleshooting live stream issues</h2>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th width="163">Problem</th>
+			<th width="531">Resolution</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Playback freezes, audio continues</td>
+			<td>Check the input feed to the encoder, and check that the encoder is still properly connected and encoding video. If there was a disconnect, ensure that the stream settings are identical before reconnecting.</td>
+		</tr>
+		<tr>
+			<td>Stream appears frozen in the player</td>
+			<td>The Live module has most likely stopped receiving data from the input encoder. Confirm that the input stream is active, connected, and sending data faster than real time.</td>
+		</tr>
+		<tr>
+			<td>Choppy playback</td>
+			<td>Ensure there is more than enough bandwidth to support the bitrate of the input stream. Choppy playback is usually an indication that there is something wrong on the production side or there is insufficient bandwidth.</td>
+		</tr>
+		<tr>
+			<td>Blank Screen</td>
+			<td>Confirm that there is enough bandwidth. In the case of a disconnect, be sure that no settings have changed before reconnecting.</td>
+		</tr>
+		<tr>
+			<td>Longer than expected latency</td>
+			<td>Check the available bandwidth and ensure that data is being sent to the Live module in real time. It may take up to 10 minutes for a stream to be published. During this time, the stream is cached and the latency will be the longest. After being published, latency will continue to decrease until stabilizing between 30-90 seconds.</td>
+		</tr>
+	</tbody>
+</table>
+&nbsp;
+
+<div class="BCL-subsection">
+<h3>For further help</h3>
+
+<p>If you need further help getting your live event to work, you can <a href="https://support.brightcove.com/en/contact/create">contact us</a>. To make sure you get the fastest response possible, below is a list of what Brightcove Support will need to solve the problem.</p>
+
+<ul>
+	<li>The specific symptoms the stream is having. For example, does it not play at all or does it stutter or freeze?</li>
+	<li>Whether this stream worked correctly in the past</li>
+	<li>The entry point URL you are using in your encoder</li>
+	<li>The encoding software and hardware are you using</li>
+	<li>The URL to the player to which you have published the live event</li>
+	<li>The video ID of your live asset in Video Cloud Studio</li>
+	<li>The results of a trace-route from your encoder to the publishing point host</li>
+</ul>
+</div>
+</div>
+<!-- End of Drupal content -->
