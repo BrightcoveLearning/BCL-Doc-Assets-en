@@ -8,7 +8,7 @@ var BCLS_style_fixes = ( function (window, document) {
 
   if (header_block) {
     header_block.setAttribute('style', 'color:white;background-color:RGB(45, 59, 108);padding-top:10px;padding-botton:5px;margin-bottom:30px;');
-    header_text.setAttribute('style', 'color:white;');
+    header_text.setAttribute('style', 'color:white;line-height:1;');
   }
   if (side_nav_block) {
     side_nav_block.setAttribute('style', 'background-color:transparent;')
