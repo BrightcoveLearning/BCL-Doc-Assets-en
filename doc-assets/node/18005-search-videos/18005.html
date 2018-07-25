@@ -5,7 +5,7 @@
 <p>In this topic, you will learn how to do the following:</p>
 
 <ul>
-	<li>Create and limit a basic search using the <code>q </code> parameter</li>
+	<li>Create and limit a basic search using the <code class="notranslate">q </code> parameter</li>
 	<li>Search using required and excluded terms</li>
 	<li>Use a quoted search to match exact terms and multiple words</li>
 	<li>Search on custom fields</li>
@@ -42,7 +42,7 @@
 <ul>
 	<li>Search requests with the Playback API require a Policy Key that is <a href="/node/18003">search-enabled</a>.</li>
 	<li>There is a <a href="https://docs.brightcove.com/playback-api/v1/doc/index.html##api-videoGroup-Get_Videos">limit</a> on the maximum number of videos returned from a search.</li>
-	<li>Search results will only return videos that are playable (videos with <code>state:inactive </code> will be ignored).</li>
+	<li>Search results will only return videos that are playable (videos with <code class="notranslate">state:inactive </code> will be ignored).</li>
 	<li>Searches enforce playback policy restrictions, such as omitting geo-restricted videos from the results.</li>
 	<li>Caching of results provide higher request rates and quicker responses, and there is no rate limiting.</li>
 </ul>
@@ -55,7 +55,7 @@
 
 <p>For search queries that return a large number of results, the sorting of the results is based on a complex relevance algorithm.</p>
 
-<p>For example, let's say you search on the terms <code>coastal,city </code> and there are 120 videos in your account that have those terms somewhere in the video metadata ( <code>name </code>, <code>description </code>, <code>tags </code>, and so forth) and that also match the sorting criteria for the results (for example, they all have the same <code>schedule_starts_at </code> date/time). How high in the results a video appears is determined by the frequency that one or both terms appear in the metadata, with greater weight given to the term that appears most frequently in your video library as a whole.</p>
+<p>For example, let's say you search on the terms <code class="notranslate">coastal,city </code> and there are 120 videos in your account that have those terms somewhere in the video metadata ( <code class="notranslate">name </code>, <code class="notranslate">description </code>, <code class="notranslate">tags </code>, and so forth) and that also match the sorting criteria for the results (for example, they all have the same <code class="notranslate">schedule_starts_at </code> date/time). How high in the results a video appears is determined by the frequency that one or both terms appear in the metadata, with greater weight given to the term that appears most frequently in your video library as a whole.</p>
 </section>
 
 <section class="bcls-section">
@@ -64,27 +64,27 @@
 <p>The CMS API generally handles special characters in search strings, with a couple of exceptions:</p>
 
 <ul>
-	<li>Spaces are not allowed, and can be replaced either with <code>+ </code> signs or <code>%20 </code>
+	<li>Spaces are not allowed, and can be replaced either with <code class="notranslate">+ </code> signs or <code class="notranslate">%20 </code>
 
 	<p>For example, to search for "my favorite video" in the name:</p>
 
-	<p><code>q=name:my+favorite+video </code></p>
+	<p><code class="notranslate">q=name:my+favorite+video </code></p>
 
 	<p>or</p>
 
-	<p><code>q=name:my%20favorite%20video </code></p>
+	<p><code class="notranslate">q=name:my%20favorite%20video </code></p>
 
 	<aside class="bcls-aside bcls-aside--information">Note that this does not produce results that include only video that have the phrase "my favorite video" in the name; rather it will search for videos that have "my" and/or "favorite" and/or "video". To search for videos based on a multi-word string, see the note that follows this list.</aside>
 	</li>
-	<li>Since <code>+ </code> signs are interpreted as word separators, to search for a literal <code>+ </code> sign or to use the <code>+ </code> to indicate that the returned videos <strong>must</strong> include a term, you must encode the <code>+ </code> as <code>%2B </code>:
-	<p><code>q=name:two%2Btwo </code></p>
+	<li>Since <code class="notranslate">+ </code> signs are interpreted as word separators, to search for a literal <code class="notranslate">+ </code> sign or to use the <code class="notranslate">+ </code> to indicate that the returned videos <strong>must</strong> include a term, you must encode the <code class="notranslate">+ </code> as <code class="notranslate">%2B </code>:
+	<p><code class="notranslate">q=name:two%2Btwo </code></p>
 
-	<p><code>q=%2Bname:heron </code></p>
+	<p><code class="notranslate">q=%2Bname:heron </code></p>
 	</li>
-	<li>Some agents may not handle literal quotation marks correctly, so it is safer to encode <code>"foo" </code> as <code>%22foo%22 </code></li>
+	<li>Some agents may not handle literal quotation marks correctly, so it is safer to encode <code class="notranslate">"foo" </code> as <code class="notranslate">%22foo%22 </code></li>
 </ul>
 
-<aside class="bcls-aside bcls-aside--information">For multi-word tags or strings, enclose the tag/string in URI-encoded quotation marks ( <code>%22 </code>), and URI-encode the spaces (%20):
+<aside class="bcls-aside bcls-aside--information">For multi-word tags or strings, enclose the tag/string in URI-encoded quotation marks ( <code class="notranslate">%22 </code>), and URI-encode the spaces (%20):
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Multi-Word Tag Example</caption>
@@ -96,8 +96,8 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><code>q=tags:"multi word tag" </code></td>
-			<td><code>q=tags:%22multi%20word%20tag%22 </code></td>
+			<td><code class="notranslate">q=tags:"multi word tag" </code></td>
+			<td><code class="notranslate">q=tags:%22multi%20word%20tag%22 </code></td>
 		</tr>
 	</tbody>
 </table>
@@ -111,22 +111,22 @@
 <section class="bcls-section">
 <h2 id="Stemming">Stemming</h2>
 
-<p>Stemming is supported, but <strong>not</strong> partial word searches. For example, <code>q=name:ban </code> should return videos with the names "Parking Ban Announced" or "Parking to be Banned" or "City Banning Parking" but not "Bank Holiday" or "Bandit Captured".</p>
+<p>Stemming is supported, but <strong>not</strong> partial word searches. For example, <code class="notranslate">q=name:ban </code> should return videos with the names "Parking Ban Announced" or "Parking to be Banned" or "City Banning Parking" but not "Bank Holiday" or "Bandit Captured".</p>
 </section>
 
 <h2 id="otherParams">Combined with other params</h2>
 
-<p>Search can be combined with other parameters such a <code>sort </code>, <code>limit </code> and <code>offset </code>. All URL parameters are separated by <code>&amp; </code>, and the order does not matter.</p>
+<p>Search can be combined with other parameters such a <code class="notranslate">sort </code>, <code class="notranslate">limit </code> and <code class="notranslate">offset </code>. All URL parameters are separated by <code class="notranslate">&amp; </code>, and the order does not matter.</p>
 
 <h3>Examples</h3>
 
 <pre class="line-numbers">
-<code class="language-http">.../videos?q=name:foo%2Btags:bar&amp;sort=updated_at
+<code class="language-http notranslate">.../videos?q=name:foo%2Btags:bar&amp;sort=updated_at
 </code>
 </pre>
 
 <pre class="line-numbers">
-<code class="language-http">.../videos?&amp;sort=updated_at&amp;q=name:foo%2Btags:bar&amp;limit=10
+<code class="language-http notranslate">.../videos?&amp;sort=updated_at&amp;q=name:foo%2Btags:bar&amp;limit=10
 </code>
 </pre>
 
@@ -136,7 +136,7 @@
 <p>If you want to limit your search to a specific set of videos, you can do so by including the ids as part of the search:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=id:123456789+id:987654321+id:48376387+tags:foo
+<code class="language-http notranslate">q=id:123456789+id:987654321+id:48376387+tags:foo
 </code>
 </pre>
 </section>
@@ -152,10 +152,10 @@
 <section class="bcls-section">
 <h2 id="Basic_search">Basic search</h2>
 
-<p>To perform a search of terms in your media library, use the <code>q </code> parameter.</p>
+<p>To perform a search of terms in your media library, use the <code class="notranslate">q </code> parameter.</p>
 
 <pre class="line-numbers">
-<code class="language-http">q={search terms}
+<code class="language-http notranslate">q={search terms}
 </code>
 </pre>
 
@@ -163,27 +163,27 @@
 
 <p>Search supports <em>stemming</em>. Stemming is the mapping of a word to the word root and others words that stem from the same root. For example, a search on "run" should match videos that have "running" or "ran" in the specified field(s). It would <strong>not</strong> match "rune" because "rune" does not have "run" as its root.</p>
 
-<p>When you provide no qualifier for a search term, such as <code>q=bird </code>, the request will search for that value in the following fields:</p>
+<p>When you provide no qualifier for a search term, such as <code class="notranslate">q=bird </code>, the request will search for that value in the following fields:</p>
 
 <ul>
-	<li><code>id <sup> <strong> <a href="#note1-1">[1-1]</a> </strong> </sup> </code></li>
-	<li><code>name </code></li>
-	<li><code>description </code></li>
-	<li><code>long_description </code></li>
-	<li><code>tags </code></li>
-	<li><code>reference_id </code></li>
-	<li><code>custom_fields </code> (searches all custom fields)</li>
-	<li><code>custom_field_name </code> (searches a specific named custom field)</li>
+	<li><code class="notranslate">id <sup> <strong> <a href="#note1-1">[1-1]</a> </strong> </sup> </code></li>
+	<li><code class="notranslate">name </code></li>
+	<li><code class="notranslate">description </code></li>
+	<li><code class="notranslate">long_description </code></li>
+	<li><code class="notranslate">tags </code></li>
+	<li><code class="notranslate">reference_id </code></li>
+	<li><code class="notranslate">custom_fields </code> (searches all custom fields)</li>
+	<li><code class="notranslate">custom_field_name </code> (searches a specific named custom field)</li>
 </ul>
 
 <p><strong>Notes</strong></p>
 
-<div class="bcls-footnote" id="note1-1"><sup><strong>[1-1]</strong> </sup> Note: searching by id is included for consistency, but a search on <code>q=id:12345 </code> will return exactly the same results as the request <code>https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/12345 </code></div>
+<div class="bcls-footnote" id="note1-1"><sup><strong>[1-1]</strong> </sup> Note: searching by id is included for consistency, but a search on <code class="notranslate">q=id:12345 </code> will return exactly the same results as the request <code class="notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/12345 </code></div>
 
 <p>Example: This request returns videos which have a value of <strong>bird</strong> in at least one of the fields listed above.</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=bird
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=bird
 </code>
 </pre>
 
@@ -191,12 +191,12 @@
 
 <h3>Limit search to a specific property</h3>
 
-<p>When you provide a qualifier for a search term, such as <code>q=name:bird </code>, the request will search the video <code>name </code> field for a value of <strong>bird</strong>.</p>
+<p>When you provide a qualifier for a search term, such as <code class="notranslate">q=name:bird </code>, the request will search the video <code class="notranslate">name </code> field for a value of <strong>bird</strong>.</p>
 
-<p>Example: This request returns videos which have a value of <strong>wildlife</strong> in the <code>name </code> field.</p>
+<p>Example: This request returns videos which have a value of <strong>wildlife</strong> in the <code class="notranslate">name </code> field.</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=name:wildlife
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=name:wildlife
 </code>
 </pre>
 
@@ -265,8 +265,8 @@
 <h3>Notes</h3>
 
 <ul>
-	<li id="note2-1"><sup><strong>[2-1]</strong> </sup> It is <strong>not</strong> possible to search for videos that have a custom field that has no value or a value of <code>null </code>, because unless the field has been given a value, it is not included in the video metadata at all.</li>
-	<li id="note2-2"><sup><strong>[2-2]</strong> </sup> when you create a new video, the <code>complete </code> property is automatically set to <code>false </code>. As soon as one rendition exists for the video, the <code>complete </code> property will be automatically set to <code>true </code>.</li>
+	<li id="note2-1"><sup><strong>[2-1]</strong> </sup> It is <strong>not</strong> possible to search for videos that have a custom field that has no value or a value of <code class="notranslate">null </code>, because unless the field has been given a value, it is not included in the video metadata at all.</li>
+	<li id="note2-2"><sup><strong>[2-2]</strong> </sup> when you create a new video, the <code class="notranslate">complete </code> property is automatically set to <code class="notranslate">false </code>. As soon as one rendition exists for the video, the <code class="notranslate">complete </code> property will be automatically set to <code class="notranslate">true </code>.</li>
 	<li id="note2-3"><sup><strong>[2-3]</strong> </sup> The following limitations apply to searching for DELETED videos:
 	<ul>
 		<li>Search for deleted videos is <strong>only</strong> available using the CMS API; the Playback API will <strong>not</strong> return deleted videos</li>
@@ -281,7 +281,7 @@
 <section class="bcls-section">
 <h2 id="requiredexcludedterms">Required/excluded terms</h2>
 
-<p>You can mark a search term as required (returned videos MUST match) or excluded (returned videos must NOT match). This is controlled with a URI-encoded <code>+ (%2B) </code> or <code>- (%2D) </code> sign immediately preceding the term.</p>
+<p>You can mark a search term as required (returned videos MUST match) or excluded (returned videos must NOT match). This is controlled with a URI-encoded <code class="notranslate">+ (%2B)</code> or <code class="notranslate">- (%2D)</code> sign immediately preceding the term.</p>
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Required/Excluded Terms</caption>
@@ -294,32 +294,32 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td>+foo</td>
-			<td>%2Bfoo</td>
-			<td>videos MUST include the term 'foo' in the name, description, long_description, tags, reference_id or custom fields</td>
+			<td><code>+foo</code></td>
+			<td><code>%2Bfoo</code></td>
+			<td>videos MUST include the term <code>foo</code> in the <code>name</code>, <code>description</code>, <code>long_description</code>, <code>tags</code>, <code>reference_id</code> or <code>custom_fields</code></td>
 		</tr>
 		<tr>
-			<td>+custom_fields:foo</td>
-			<td>%2Bcustom_fields:foo</td>
-			<td>video MUST include the value 'foo' for some custom field</td>
+			<td><code>+custom_fields:foo</code></td>
+			<td><code>%2Bcustom_fields:foo</code></td>
+			<td>video MUST include the value <code>foo</code> for some custom field</td>
 		</tr>
 		<tr>
-			<td>-foo</td>
-			<td>%2Dfoo</td>
-			<td>videos must NOT include the term 'foo' in the name, description, long_description, tags, reference_id or custom fields</td>
+			<td><code>-foo</code></td>
+			<td><code>%2Dfoo</code></td>
+			<td>videos must NOT include the term <code>foo</code> in the name, <code>description</code>, <code>long_description</code>, <code>tags</code>, <code>reference_id</code> or <code>custom_fields</code></td>
 		</tr>
 		<tr>
-			<td>-name:foo</td>
-			<td>%2Dname:foo</td>
-			<td>videos must NOT include the term 'foo' in the name</td>
+			<td><code>-name:foo</code></td>
+			<td><code>%2Dname:foo<</code>/td>
+			<td>videos must NOT include the term <code>foo</code> in the <code>name</code></td>
 		</tr>
 	</tbody>
 </table>
 
-<p>Example: This request returns videos which DO NOT have a value of <strong>sea</strong> in the <code>tags </code> field.</p>
+<p>Example: This request returns videos which DO NOT have a value of <code>sea</code> in the <code class="notranslate">tags</code> field.</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=%2Dtags:sea
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=%2Dtags:sea
 </code>
 </pre>
 
@@ -332,7 +332,7 @@
 <p>By default, a search will match similar words with your search terms. If you want an exact match, or match multiple words, just wrap the term in quotes:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q="foo"
+<code class="language-http notranslate">q="foo"
 q="foo bar"
 </code>
 </pre>
@@ -340,36 +340,36 @@ q="foo bar"
 <p>This also works when searching against a specific field:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q="foo"
+<code class="language-http notranslate">q="foo"
 q=name:"foo bar"
 </code>
 </pre>
 
 <ul>
 	<li>Exact match
-	<p>Example: This request returns videos which matches exactly a value of <strong>sea</strong> in the <code>tags </code> field.</p>
+	<p>Example: This request returns videos which matches exactly a value of <code>sea</code> in the <code class="notranslate">tags </code> field.</p>
 
-	<pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea"
+<pre class="line-numbers">
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea"
 </code>
 </pre>
 	</li>
 	<li>Multiple words
-	<p>Example: Notice that this request returns videos which have either a value of <strong>sea</strong> or <strong>mammal</strong> in the <code>tags </code> field.</p>
+	<p>Example: Notice that this request returns videos which have either a value of <code>sea</code> or <code>mammal</code> in the <code class="notranslate">tags </code> field.</p>
 
-	<pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:sea,mammal
+<pre class="line-numbers">
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:sea,mammal
 </code>
 </pre>
 
-	<p>But, this request returns only those videos which have a value of <strong>sea,mammal</strong> in the <code>tags </code> field.</p>
+	<p>But, this request returns only those videos which have a value of <code class="notranslate">sea,mammal</code> in the <code class="notranslate">tags </code> field.</p>
 
-	<pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea,mammal"
+<pre class="line-numbers">
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea,mammal"
 </code>
 </pre>
 
-	<aside class="bcls-aside bcls-aside--warning">Tags are a special case where you can search for multiple tags as a comma-delimited list - that is not true for other fields like name, description, etc. For other kinds of multiple terms, combine terms with <code>+ </code> sign, like this: <code>q=tags:"bird"+name:"owl" </code>.</aside>
+	<aside class="bcls-aside bcls-aside--warning">Tags are a special case where you can search for multiple tags as a comma-delimited list - that is not true for other fields like name, description, etc. For other kinds of multiple terms, combine terms with <code class="notranslate">+ </code> sign, like this: <code class="notranslate">q=tags:"bird"+name:"owl" </code>.</aside>
 	</li>
 </ul>
 </section>
@@ -380,17 +380,17 @@ q=name:"foo bar"
 <p>You may search on any custom field that you have defined for your videos.</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=my_field:foo
+<code class="language-http notranslate">q=my_field:foo
 q=my_field:"foo"
 </code>
 </pre>
 
 <p class="BCL-aside">Note: Custom fields are treated as strings.</p>
 
-<p>Example: This request returns videos which have a value of <strong>animal</strong> in the <code>subject </code> custom field.</p>
+<p>Example: This request returns videos which have a value of <strong>animal</strong> in the <code class="notranslate">subject </code> custom field.</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=subject:animal
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=subject:animal
 </code>
 </pre>
 </section>
@@ -400,10 +400,10 @@ q=my_field:"foo"
 
 <p>If you are searching on a date field, you can specify a specific date or a range of dates.</p>
 
-<p>This will search for all videos with an <code>updated_at </code> value between Aug 1, 2012 and October 8, 2012. Here we are specifying each date in UTC format.</p>
+<p>This will search for all videos with an <code class="notranslate">updated_at </code> value between Aug 1, 2012 and October 8, 2012. Here we are specifying each date in UTC format.</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=updated_at:2012-08-01T00:00:00Z..2012-10-08T00:00:00Z
+<code class="language-http notranslate">q=updated_at:2012-08-01T00:00:00Z..2012-10-08T00:00:00Z
 </code>
 </pre>
 
@@ -437,9 +437,9 @@ q=my_field:"foo"
 
 <h3 id="relativeDates">Relative dates</h3>
 
-<p>For relative dates we support a direction ( <code>+ </code> or <code>- </code>) followed by a number, followed by a duration. Relative dates are alway measured from the current time. Legal durations are: minutes, hours, days.</p>
+<p>For relative dates we support a direction ( <code class="notranslate">+ </code> or <code class="notranslate">- </code>) followed by a number, followed by a duration. Relative dates are alway measured from the current time. Legal durations are: minutes, hours, days.</p>
 
-<aside class="bcls-aside bcls-aside--warning">The <code>+ </code> and <code>- </code> signs must be URI-encoded as <code>%2B </code> and <code>%2D </code> respectively.</aside>
+<aside class="bcls-aside bcls-aside--warning">The <code class="notranslate">+ </code> and <code class="notranslate">- </code> signs must be URI-encoded as <code class="notranslate">%2B </code> and <code class="notranslate">%2D </code> respectively.</aside>
 
 <p>Examples:</p>
 
@@ -493,20 +493,20 @@ q=my_field:"foo"
 <p>Example: Search for all videos modified in the last 2 days</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=updated_at:%2D2days..
+<code class="language-http notranslate">q=updated_at:%2D2days..
 </code>
 </pre>
 
 <p>Example: Search for all videos modified after August 11, 2013:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=updated_at:2013-08-11T00:00:00Z..
+<code class="language-http notranslate">q=updated_at:2013-08-11T00:00:00Z..
 </code>
 </pre>
 
-<h3><code>NOW </code> operator for schedule dates</h3>
+<h3><code class="notranslate">NOW </code> operator for schedule dates</h3>
 
-<p>For <code>schedule.starts_at </code> and <code>schedule.ends_at </code> <strong>only</strong>, you can use <code>NOW </code> as a date value. This is a convenience operator that allows you to set up a dynamic query based on the current date-time. One of its key advantages is that it will include results for videos that have no explicit schedule set. A couple of examples:</p>
+<p>For <code class="notranslate">schedule.starts_at </code> and <code class="notranslate">schedule.ends_at </code> <strong>only</strong>, you can use <code class="notranslate">NOW </code> as a date value. This is a convenience operator that allows you to set up a dynamic query based on the current date-time. One of its key advantages is that it will include results for videos that have no explicit schedule set. A couple of examples:</p>
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Schedule Data Examples</caption>
@@ -553,7 +553,7 @@ q=my_field:"foo"
 <p>You can perform or filter searches by the state of the video using the parameter:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=state:ACTIVE( | INACTIVE | PENDING | DELETED)<sup><strong><a href="#note3">[3]</a></strong></sup>
+<code class="language-http notranslate">q=state:ACTIVE( | INACTIVE | PENDING | DELETED)<sup><strong><a href="#note3">[3]</a></strong></sup>
 </code>
 </pre>
 
@@ -570,10 +570,10 @@ q=my_field:"foo"
 <p>Clips are videos created from sections of other videos. Clips can be generated by <a href="/node/16672">Brightcove Social</a>, and other means will be available in the future. There are some special search terms you can use to find generated clips in an account:</p>
 
 <ul>
-	<li><code>q=%2Bis_clip:true </code> - returns only clips</li>
-	<li><code>q=%2Dis_clip:true </code> - returns only non-clips</li>
-	<li><code>q=%2Bis_clip:false </code> - returns only non-clips (functionally identical to the previous item)</li>
-	<li><code>q=%2Bclip_source_video_id: <span class="bcls-input">video_id</span> </code> - returns clips generated from the specified video</li>
+	<li><code class="notranslate">q=%2Bis_clip:true </code> - returns only clips</li>
+	<li><code class="notranslate">q=%2Dis_clip:true </code> - returns only non-clips</li>
+	<li><code class="notranslate">q=%2Bis_clip:false </code> - returns only non-clips (functionally identical to the previous item)</li>
+	<li><code class="notranslate">q=%2Bclip_source_video_id: <span class="bcls-input">video_id</span> </code> - returns clips generated from the specified video</li>
 </ul>
 </section>
 
@@ -582,10 +582,10 @@ q=my_field:"foo"
 
 <p>You can combine criteria for complex searches.</p>
 
-<p>Example: This request searches for videos with a <code>name </code> value of <strong>gossip</strong>, which were updated between August 1, 2010 and October 8, 2010. It then sorts the response data by <code>updated_at </code> date in decending order.</p>
+<p>Example: This request searches for videos with a <code class="notranslate">name </code> value of <strong>gossip</strong>, which were updated between August 1, 2010 and October 8, 2010. It then sorts the response data by <code class="notranslate">updated_at </code> date in decending order.</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=%2Bname:gossip%20+%2Bupdated_at:2010-08-01T00:00:00Z..2010-10-08T00:00:00Z&amp;sort=-updated_at
+<code class="language-http notranslate">q=%2Bname:gossip%20+%2Bupdated_at:2010-08-01T00:00:00Z..2010-10-08T00:00:00Z&amp;sort=-updated_at
 </code>
 </pre>
 
@@ -598,25 +598,25 @@ q=my_field:"foo"
 <p>For example, if you search on:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=name:foo+tags:bar
+<code class="language-http notranslate">q=name:foo+tags:bar
 (URI-encoded: q=name:foo%2Btags:bar)
 </code>
 </pre>
 
-<p>the response will contain videos that have the tag 'bar' and may also have 'foo' in the name. If you want to return only those videos that have 'foo' in the name AND the tag 'bar', you must search on:</p>
+<p>the response will contain videos that have the tag 'bar' and may also have <code>foo</code> in the name. If you want to return only those videos that have <code>foo</code> in the name AND the tag 'bar', you must search on:</p>
 
 <pre class="line-numbers">
-<code class="language-http">(unencoded) q=<strong>+</strong>name:foo <strong>+</strong>tags:bar
+<code class="language-http notranslate">(unencoded) q=<strong>+</strong>name:foo <strong>+</strong>tags:bar
 (URI-encoded) q=<strong>%2B</strong>name:foo+<strong>%2B</strong>tags:bar
 </code>
 </pre>
 
-<aside class="bcls-aside bcls-aside--information">Notice the two versions of the <code>+ </code> sign used in this sample. The literal <code>+ </code> sign is interpreted by the CMS API as a replacement for a space - you could also use <code>%20 </code> for that purpose. The URI-encoded plus sign ( <code>%2B </code> is interpreted as an indicator for a required match on the term - the returned videos must have "foo" in the name and the tag "bar").</aside>
+<aside class="bcls-aside bcls-aside--information">Notice the two versions of the <code class="notranslate">+ </code> sign used in this sample. The literal <code class="notranslate">+ </code> sign is interpreted by the CMS API as a replacement for a space - you could also use <code class="notranslate">%20 </code> for that purpose. The URI-encoded plus sign ( <code class="notranslate">%2B </code> is interpreted as an indicator for a required match on the term - the returned videos must have "foo" in the name and the tag "bar").</aside>
 
-<p>Similarly, if you want to return only videos that have 'foo' in the name, but do <strong>not</strong> have the tag 'bar', you would search on:</p>
+<p>Similarly, if you want to return only videos that have <code>foo</code> in the name, but do <strong>not</strong> have the tag 'bar', you would search on:</p>
 
 <pre class="line-numbers">
-<code class="language-http">(unencoded) q=<strong>+</strong>name:foo<strong> -</strong>tags:bar
+<code class="language-http notranslate">(unencoded) q=<strong>+</strong>name:foo<strong> -</strong>tags:bar
 (encoded) q=<strong>%2B</strong>name:foo+<strong>%2D</strong>tags:bar
 </code>
 </pre>
@@ -634,23 +634,23 @@ q=my_field:"foo"
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><code>q=foo,bar </code></td>
-			<td><code>q=foo,bar </code></td>
+			<td><code class="notranslate">q=foo,bar </code></td>
+			<td><code class="notranslate">q=foo,bar </code></td>
 			<td>returned items have "foo" OR "bar"</td>
 		</tr>
 		<tr>
-			<td><code>q=foo bar </code></td>
-			<td><code>q=foo%20+bar </code></td>
+			<td><code class="notranslate">q=foo bar </code></td>
+			<td><code class="notranslate">q=foo%20+bar </code></td>
 			<td>returned items have "foo" OR "bar" (identical to the search above)</td>
 		</tr>
 		<tr>
-			<td><code>q=foo +bar </code></td>
-			<td><code>q=foo%20+%2Bbar </code></td>
+			<td><code class="notranslate">q=foo +bar </code></td>
+			<td><code class="notranslate">q=foo%20+%2Bbar </code></td>
 			<td>returned items must have "bar", may have "foo"</td>
 		</tr>
 		<tr>
-			<td><code>q=+foo bar </code></td>
-			<td>q <code>=%2Bfoo%20+bar </code></td>
+			<td><code class="notranslate">q=+foo bar </code></td>
+			<td>q <code class="notranslate">=%2Bfoo%20+bar </code></td>
 			<td>returned items must have "foo", may have "bar"</td>
 		</tr>
 		<tr>
@@ -659,31 +659,31 @@ q=my_field:"foo"
 			<td>returned item must have "foo" AND "bar"</td>
 		</tr>
 		<tr>
-			<td><code>q=-foo +bar </code></td>
-			<td><code>q=%2Dfoo%20+%2Bbar </code></td>
+			<td><code class="notranslate">q=-foo +bar </code></td>
+			<td><code class="notranslate">q=%2Dfoo%20+%2Bbar </code></td>
 			<td>returned item must have "bar" AND not have "foo"</td>
 		</tr>
 		<tr>
 			<th colspan="3">Multiple tag searches</th>
 		</tr>
 		<tr>
-			<td><code>q=tags:bee,bop </code></td>
-			<td><code>q=tags:bee,bop </code></td>
+			<td><code class="notranslate">q=tags:bee,bop </code></td>
+			<td><code class="notranslate">q=tags:bee,bop </code></td>
 			<td>returns videos with tag "bee" OR "bop"</td>
 		</tr>
 		<tr>
-			<td><code>q=tags:bee+tags:bop </code></td>
-			<td><code>q=tags:bee+tags:bop </code></td>
+			<td><code class="notranslate">q=tags:bee+tags:bop </code></td>
+			<td><code class="notranslate">q=tags:bee+tags:bop </code></td>
 			<td>returns videos with tag "bee" OR "bop"</td>
 		</tr>
 		<tr>
-			<td><code>q=+tags:bee+tags:bop </code></td>
-			<td><code>q=%2Btags:bee+tags:bop </code></td>
+			<td><code class="notranslate">q=+tags:bee+tags:bop </code></td>
+			<td><code class="notranslate">q=%2Btags:bee+tags:bop </code></td>
 			<td>all videos returned will have tag "bee"; they may have tag "bop" as well</td>
 		</tr>
 		<tr>
-			<td><code>q=+tags:bee++tags:bop </code></td>
-			<td><code>q=%2Btags:bee+%2Btags:bop </code></td>
+			<td><code class="notranslate">q=+tags:bee++tags:bop </code></td>
+			<td><code class="notranslate">q=%2Btags:bee+%2Btags:bop </code></td>
 			<td>all videos returned will have tag "bee" AND tag "bop"</td>
 		</tr>
 	</tbody>
