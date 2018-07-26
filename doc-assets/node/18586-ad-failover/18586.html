@@ -14,6 +14,23 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="Player_sample">Player sample</h2>
+<p>
+Here is a sample player configured with ad failover and IMA3 ads.
+</p>
+<ul>
+<li>
+	If you run this sample in a browser without an ad blocker, you should see a dfp inline skippable ad by Google. This is the IMA3 preroll ad.
+</li>
+<li>
+	If you run this sample in a browser with an ad blocker, you should see a Brightcove guide to digital marketing ad. This is the Server-Side ad (SSAI) as defined in our ad configuration.
+</li>
+</ul>
+<p data-height="475" data-theme-id="dark" data-slug-hash="QBMJmP" data-default-tab="result" data-user="rcrooks1969" data-pen-title="SSAI Ad Failover with hook" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/QBMJmP/">SSAI Ad Failover with hook</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+</section>
+
+<section class="bcls-section">
 <h2 id="Configure_the_player">Configure the player</h2>
 
 <p>For ad failover to function you must have the player configured correctly. The following three configuration changes need to be done:</p>
@@ -111,6 +128,7 @@ controls&gt;
 <p>
 	When using ad failover, you need to wait for player initialization to determine if ad block has been detected. The following code uses a setup hook to wait for the player to be ready before calling the IMA3 plugin with the ad URL. For details about using hooks, see  <a href="https://docs.videojs.com/tutorial-hooks.html">Video.js hooks documentation</a>.
 </p>
+<aside class="bcls-aside bcls-aside--information">Because ad failover uses asynchronous processing to determine the existence of an ad blocker, you need to wait for player intialization to complete before accessing the player in JavaScript. For example, calling the IMA3 plugin.</aside>
 <pre class="line-numbers"><code class="language-javascript notranslate">var myPlayer,
 serverUrl='https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/single_ad_samples&amp;ciu_szs=300x250&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vast&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&amp;correlator=';
 
@@ -122,49 +140,8 @@ if (myPlayer.usingPlugin('ima3')){
 }
 })
 });</code></pre>
-<p>
-	If your ad configuration points to a VMAP with a preroll ad, then you should see the following results:
-</p>
-<ul>
-	<li>
-		Without a browser ad blocker, the IMA3 ad should play before the video content begins.
-	</li>
-	<li>
-		With a browser ad blocker, the Server-Side ad (SSAI) should play before the video content begins.
-	</li>
-</ul>
 </li>
-<!-- <li>
-<p>
-	Your configured player should be similar to this sample.
-</p>
-<video-js id="myPlayerID"
-data-account="1752604059001"
-data-video-id="5802784116001"
-data-player="rkFgBjV4m"
-data-embed="default"
-data-ad-config-id="d6190656-2095-4ff3-8afe-1a0b60d67ed2"
-data-application-id
-width="640"
-height="360"
-class="video-js"
-controls></video-js>
-<script src="//players.brightcove.net/1752604059001/rkFgBjV4m_default/index.js"></script>
-
-<script>
-	var myPlayer,
-			serverUrl='https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=';
-
-	videojs.hook('setup', function(myPlayerID){
-			myPlayer = myPlayerID;
-			myPlayer.ready(function() {
-			if (myPlayer.usingPlugin('ima3')){
-					myPlayer.ima3.settings.serverUrl = serverUrl;
-			}
-		})
-	});
-</script>
-</li> -->
 </ol>
 </section>
+
 </article>
