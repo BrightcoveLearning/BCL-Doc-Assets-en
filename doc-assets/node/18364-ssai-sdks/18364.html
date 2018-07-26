@@ -7,16 +7,11 @@
 <p>SSAI works with both DRM and non-DRM content.</p>
 
 <aside class="bcls-aside bcls-aside--information">Notes:
-	<ul>
-		<li>To use SSAI, your Video Cloud account will need to be configured for <a href="/node/18476">Dynamic Delivery</a>. Contact your account manager if you are
-			interested in converting your account to Dynamic Delivery.</li>
-			<li>
-				SSAI works with Video-on-Demand (VOD) and supports Live playback.
-			</li>
-			<li>
-				For a list of limitations, see the <a href="/node/18623#Limitations">SSAI Overview</a> document.
-			</li>
-	</ul>
+<ul>
+	<li>To use SSAI, your Video Cloud account will need to be configured for <a href="/node/18476">Dynamic Delivery</a>. Contact your account manager if you are interested in converting your account to Dynamic Delivery.</li>
+	<li>SSAI works with Video-on-Demand (VOD) and supports Live playback.</li>
+	<li>For a list of limitations, see the <a href="/node/18623#Limitations">SSAI Overview</a> document.</li>
+</ul>
 </aside>
 
 <figure class="bcls-figure"><img class="bcls-image--no-border" alt="Server-side ad" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/ssai/ssai-sdk.png" />
@@ -52,63 +47,61 @@
 
 <p>Follow these steps within your app to get your ad configuration and play your video:</p>
 
-	<ol class="bcls-tasklist__restart">
-		<li>Include the Once UX plugin in your app, as shown in the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicOnceUxSampleApp">Basic Once UX Player</a> sample. This will be the starting point for your app. Notice that the plugin uses a companion ad container.</li>
-		<li>
-		In Android Studio, open your <strong>MainActivity.java</strong> file.
-	</li>
-	<li>
-		Comment out or delete the following code:
-<pre class="line-numbers"><code class="language-java">private String onceUxAdDataUrl = &quot;http://once.unicornmedia.com/now/ads/vmap/od/auto/c501c3ee-7f1c-4020-aa6d-0b1ef0bbd4a9/202ef8bb-0d9d-4f6f-bd18-f45aa3010fe6/8a146f45-9fac-462e-a111-de60ec96198b/content.once&quot;;
+<ol class="bcls-tasklist__restart">
+	<li>Include the Once UX plugin in your app, as shown in the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicOnceUxSampleApp">Basic Once UX Player</a> sample. This will be the starting point for your app. Notice that the plugin uses a companion ad container.</li>
+	<li>In Android Studio, open your <strong>MainActivity.java</strong> file.</li>
+	<li>Comment out or delete the following code:
+	<pre class="line-numbers">
+<code class="language-java">private String onceUxAdDataUrl = "http://once.unicornmedia.com/now/ads/vmap/od/auto/c501c3ee-7f1c-4020-aa6d-0b1ef0bbd4a9/202ef8bb-0d9d-4f6f-bd18-f45aa3010fe6/8a146f45-9fac-462e-a111-de60ec96198b/content.once";
 ...
 plugin.processVideo(onceUxAdDataUrl);</code></pre>
 	</li>
+	<li>Define constants for your account id, policy key, video id, and your ad configuration id.
+	<pre class="line-numbers">
+<code class="language-java">private String accountId = "<span class="bcls-input">your account id</span>";
+private String policyKey = "<span class="bcls-input">your policy key</span>";
+private String videoId = "<span class="bcls-input">your video id</span>";
+private String adConfigId = "<span class="bcls-input">your ad configuration id</span>";</code></pre>
 
-		<li>Define constants for your account id, policy key, video id, and your ad configuration id.
-<pre class="line-numbers">
-<code class="language-java">private String accountId = &quot;<span class="bcls-input">your account id</span>&quot;;
-private String policyKey = &quot;<span class="bcls-input">your policy key</span>&quot;;
-private String videoId = &quot;<span class="bcls-input">your video id</span>&quot;;
-private String adConfigId = &quot;<span class="bcls-input">your ad configuration id</span>&quot;;</code></pre>
-
-		<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="/node/18125">Policy Keys</a> document.</aside>
-		</li>
-		<li>In the <code>onCreate</code> method, set the query parameter value to your ad configuration id.
-<pre class="line-numbers">
+	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="/node/18125">Policy Keys</a> document.</aside>
+	</li>
+	<li>In the <code>onCreate</code> method, set the query parameter value to your ad configuration id.
+	<pre class="line-numbers">
 <code class="language-java">Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
 parameters.put("ad_config_id", adConfigId);
 </code></pre>
-		</li>
-		<li>Create an instance of the catalog service, which provides asynchronous methods for retrieving data from the Playback API..
-<pre class="line-numbers">
+	</li>
+	<li>Create an instance of the catalog service, which provides asynchronous methods for retrieving data from the Playback API.
+	<pre class="line-numbers">
 <code class="language-java">Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
 </code></pre>
-		</li>
-		<li>Call the catalog service to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
-<pre class="line-numbers">
+	</li>
+	<li>Call the catalog service to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
+	<pre class="line-numbers">
 <code class="language-java">catalog.findVideoByID(videoId, null, parameters, new VideoListener() {
-@Override
-public void onVideo(Video video) {
-try {
-// The OnceUX plugin will look for a VMAP URL in the video object properties.
-// If valid, it will play the video.
-plugin.processVideo(video);
-} catch (NoSourceFoundException e) {
-// If NoSourceFoundException is thrown it means a suitable VMAP URL was not found.
-// You can try to play it on a regular view,
-brightcoveVideoView.add(video);
-}
-}
+  @Override
+  public void onVideo(Video video) {
+    try {
+      // The OnceUX plugin will look for a VMAP URL in the video object properties.
+      // If valid, it will play the video.
+      plugin.processVideo(video);
+    } catch (NoSourceFoundException e) {
+      // If NoSourceFoundException is thrown it means a suitable VMAP URL was not found.
+      // You can try to play it on a regular view,
+      brightcoveVideoView.add(video);
+    }
+  }
 });</code></pre>
-		</li>
-	</ol>
+	</li>
+</ol>
 
-	<h3 id="Android_MainActivity_file" class="bcls-expander-head">Android MainActivity file</h3>
-	<div class="bcls-expander-content">
-		<p>
-			Your <strong>MainActivity.java</strong> file should look similar to this:
-		</p>
-<pre class="line-numbers"><code class="language-java">package com.brightcove.player.samples.onceux.basic;
+<h3 id="Android_MainActivity_file" class="bcls-expander-head">Android MainActivity file</h3>
+
+<div class="bcls-expander-content">
+<p>Your <strong>MainActivity.java</strong> file should look similar to this:</p>
+
+<pre class="line-numbers">
+<code class="language-java">package com.brightcove.player.samples.onceux.basic;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -131,115 +124,107 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-* This app illustrates how to use the Once UX plugin to ensure that:
-*
-* - player controls are hidden during ad playback,
-*
-* - tracking beacons are fired from the client side,
-*
-* - videos are clickable during ad playback and visit the appropriate website,
-*
-* - the companion banner is shown on page switched appropriately as new ads are played
-*/
+ * This app illustrates how to use the Once UX plugin to ensure that:
+ *
+ * - player controls are hidden during ad playback,
+ *
+ * - tracking beacons are fired from the client side,
+ *
+ * - videos are clickable during ad playback and visit the appropriate website,
+ *
+ * - the companion banner is shown on page switched appropriately as new ads are played
+ */
 public class MainActivity extends BrightcovePlayer {
 
-// Private class constants
+    // Private class constants
 
-private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
-private String accountId = &quot;<span class="bcls-input">your account Id</span>&quot;;
-private String policyKey = &quot;<span class="bcls-input">your policy key</span>&quot;;
-private String videoId = &quot;<span class="bcls-input">your video Id</span>&quot;;
-private String adConfigId = &quot;<span class="bcls-input">your ad configuration Id</span>&quot;;
+    private String accountId = "<span class="bcls-input">your account Id</span>";
+    private String policyKey = "<span class="bcls-input">your policy key</span>";
+    private String videoId = "<span class="bcls-input">your video Id</span>";
+    private String adConfigId = "<span class="bcls-input">your ad configuration Id</span>";
 
-// Private instance variables
+    // Private instance variables
 
-private OnceUxComponent plugin;
-public OnceUxComponent getOnceUxPlugin() {
-	return plugin;
-}
+    private OnceUxComponent plugin;
+    public OnceUxComponent getOnceUxPlugin() {
+        return plugin;
+    }
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-	// When extending the BrightcovePlayer, we must assign brightcoveVideoView before
-	// entering the superclass.  This allows for some stock video player lifecycle
-	// management.
-	setContentView(R.layout.onceux_activity_main);
-	brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
-	brightcoveVideoView.getAnalytics().setAccount(&quot;1752604059001&quot;);
-	super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // When extending the BrightcovePlayer, we must assign brightcoveVideoView before
+        // entering the superclass.  This allows for some stock video player lifecycle
+        // management.
+        setContentView(R.layout.onceux_activity_main);
+        brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+        brightcoveVideoView.getAnalytics().setAccount("1752604059001");
+        super.onCreate(savedInstanceState);
 
-	// Setup the event handlers for the OnceUX plugin, set the companion ad container,
-	// register the VMAP data URL inside the plugin and start the video.  The plugin will
-	// detect that the video has been started and pause it until the ad data is ready or an
-	// error condition is detected.  On either event the plugin will continue playing the
-	// video.
-	registerEventHandlers();
-	plugin = new OnceUxComponent(this, brightcoveVideoView);
-	View view = findViewById(R.id.ad_frame);
-	if (view != null &amp;&amp; view instanceof ViewGroup) {
-			plugin.addCompanionContainer((ViewGroup) view);
-	}
+        // Setup the event handlers for the OnceUX plugin, set the companion ad container,
+        // register the VMAP data URL inside the plugin and start the video.  The plugin will
+        // detect that the video has been started and pause it until the ad data is ready or an
+        // error condition is detected.  On either event the plugin will continue playing the
+        // video.
+        registerEventHandlers();
+        plugin = new OnceUxComponent(this, brightcoveVideoView);
+        View view = findViewById(R.id.ad_frame);
+        if (view != null &amp;&amp; view instanceof ViewGroup) {
+            plugin.addCompanionContainer((ViewGroup) view);
+        }
 
-	Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
-	parameters.put(&quot;ad_config_id&quot;, adConfigId);
+        Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
+        parameters.put("ad_config_id", adConfigId);
 
-	Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
+        Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
 
-	catalog.findVideoByID(videoId, null, parameters, new VideoListener() {
-			@Override
-			public void onVideo(Video video) {
-					try {
-							// The OnceUX plugin will look for a VMAP URL in the video object properties.
-							// If valid, it will play the video.
-							plugin.processVideo(video);
-					} catch (NoSourceFoundException e) {
-							// If NoSourceFoundException is thrown it means a suitable VMAP URL was not found.
-							// You can try to play it on a regular view,
-							brightcoveVideoView.add(video);
-					}
-			}
-	});
-}
+        catalog.findVideoByID(videoId, null, parameters, new VideoListener() {
+            @Override
+            public void onVideo(Video video) {
+                try {
+                    // The OnceUX plugin will look for a VMAP URL in the video object properties.
+                    // If valid, it will play the video.
+                    plugin.processVideo(video);
+                } catch (NoSourceFoundException e) {
+                    // If NoSourceFoundException is thrown it means a suitable VMAP URL was not found.
+                    // You can try to play it on a regular view,
+                    brightcoveVideoView.add(video);
+                }
+            }
+        });
+   }
 
-// Private instance methods
+    // Private instance methods
 
-/**
-* Procedural abstraction used to setup event handlers for the OnceUX plugin.
-*/
-private void registerEventHandlers() {
-	// Handle the case where the ad data URL has not been supplied to the plugin.
-	EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
-	eventEmitter.on(OnceUxEventType.NO_AD_DATA_URL, new EventListener() {
-			@Override
-			public void processEvent(Event event) {
-					// Log the event and display a warning message (later)
-					Log.e(TAG, event.getType());
-					// TODO: throw up a stock Android warning widget.
-			}
-	});
-}
+    /**
+     * Procedural abstraction used to setup event handlers for the OnceUX plugin.
+     */
+    private void registerEventHandlers() {
+        // Handle the case where the ad data URL has not been supplied to the plugin.
+        EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
+        eventEmitter.on(OnceUxEventType.NO_AD_DATA_URL, new EventListener() {
+            @Override
+            public void processEvent(Event event) {
+                // Log the event and display a warning message (later)
+                Log.e(TAG, event.getType());
+                // TODO: throw up a stock Android warning widget.
+            }
+        });
+    }
 }</code></pre>
-	</div>
-	<br />
+</div>
+&nbsp;
 
+<aside class="bcls-aside bcls-aside--tip">
+<p>Events associated with Server-side ad insertion include the following:</p>
 
-
-				<aside class="bcls-aside bcls-aside--tip">
-					<p>
-						Events associated with Server-side ad insertion include the following:
-					</p>
-					<ul>
-						<li>
-							<a href="https://docs.brightcove.com/android-sdk/javadoc/index.html?com/brightcove/onceux/event/package-summary.html">Lifecycle events that are specific to Once UX</a>
-						</li>
-						<li>
-							<a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html">Lifecycle events associated with ads</a>
-						</li>
-					</ul>
-				</aside>
-
-		</section>
+<ul>
+	<li><a href="https://docs.brightcove.com/android-sdk/javadoc/index.html?com/brightcove/onceux/event/package-summary.html">Lifecycle events that are specific to Once UX</a></li>
+	<li><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html">Lifecycle events associated with ads</a></li>
+</ul>
+</aside>
+</section>
 
 <section class="bcls-section">
 <h2 id="iOS_implementation">iOS implementation</h2>
@@ -248,12 +233,10 @@ private void registerEventHandlers() {
 
 <ol class="bcls-tasklist__restart">
 	<li>Include the Once UX plugin in your app, as shown in the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/OUX">Basic Once UX Player</a> sample. This will be the starting point for your app. Notice that the storyboard contains the definitions for the <code>videoContainerView</code> and the <code>companionSlotContainerView</code>.</li>
-	<li>
-		In Xcode, open your <strong>ViewController.m</strong> file.
-	</li>
-	<li>
-		Comment out or delete the following code:
-<pre class="line-numbers"><code class="language-objectivec">static NSString *kViewControllerVideoURLString = @&quot;http://onceux.unicornmedia.com/now/ads/vmap/od/auto/c6589dd5-8f31-4ae3-8a5f-a54ca3d7c973/632f6399-9e87-4ce2-a7c0-39209be2b5d0/bee45a63-71ea-4a20-800f-b67091867eeb/content.once&quot;;
+	<li>In Xcode, open your <strong>ViewController.m</strong> file.</li>
+	<li>Comment out or delete the following code:
+	<pre class="line-numbers">
+<code class="language-objectivec">static NSString *kViewControllerVideoURLString = @"http://onceux.unicornmedia.com/now/ads/vmap/od/auto/c6589dd5-8f31-4ae3-8a5f-a54ca3d7c973/632f6399-9e87-4ce2-a7c0-39209be2b5d0/bee45a63-71ea-4a20-800f-b67091867eeb/content.once";
 ...
 // Create video
 BCOVVideo *video = [BCOVVideo videoWithURL:[NSURL URLWithString:kViewControllerVideoURLString]];
@@ -261,17 +244,18 @@ BCOVVideo *video = [BCOVVideo videoWithURL:[NSURL URLWithString:kViewControllerV
 </code></pre>
 	</li>
 	<li>Define constants for your account id, policy key, video id, and your ad configuration id.
-<pre class="line-numbers"><code class="language-objectivec">static NSString *accountId = @&quot;<span class="bcls-input">your account id</span>&quot;;
-static NSString *policyKey = @&quot;<span class="bcls-input">your policy key</span>&quot;;
-static NSString *videoId = @&quot;<span class="bcls-input">your video id</span>&quot;;
-static NSString *adConfigId = @&quot;<span class="bcls-input">your ad configuration id</span>&quot;;
+	<pre class="line-numbers">
+<code class="language-objectivec">static NSString *accountId = @"<span class="bcls-input">your account id</span>";
+static NSString *policyKey = @"<span class="bcls-input">your policy key</span>";
+static NSString *videoId = @"<span class="bcls-input">your video id</span>";
+static NSString *adConfigId = @"<span class="bcls-input">your ad configuration id</span>";
 </code></pre>
 
 	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="/node/18125">Policy Keys</a> document.</aside>
 	</li>
-	<li>
-		Define the <code>BCOVPlaybackService</code> class, which provides asynchronous methods for retrieving data from the Playback API.
-<pre class="line-numbers"><code class="language-objectivec">@interface ViewController () &lt;BCOVPlaybackControllerDelegate&gt;
+	<li>Define the <code>BCOVPlaybackService</code> class, which provides asynchronous methods for retrieving data from the Playback API.
+	<pre class="line-numbers">
+<code class="language-objectivec">@interface ViewController () &lt;BCOVPlaybackControllerDelegate&gt;
 @property (nonatomic, strong) id&lt;BCOVPlaybackController&gt; controller;
 <span class="bcls-highlight">@property (nonatomic, strong) BCOVPlaybackService *playbackService;</span>
 @property (nonatomic) BCOVPUIPlayerView *playerView;
@@ -281,58 +265,59 @@ static NSString *adConfigId = @&quot;<span class="bcls-input">your ad configurat
 @end</code></pre>
 	</li>
 	<li>In the <code>viewDidLoad</code> method, set the query parameter value to your ad configuration id.
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="language-objectivec">NSDictionary *queryParameters = @{
-@&quot;ad_config_id&quot; : adConfigId
+  @"ad_config_id" : adConfigId
 };
 </code></pre>
 	</li>
 	<li>Create an instance of the <code>BCOVPlaybackService</code>.
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="language-objectivec">self.playbackService = [[BCOVPlaybackService alloc]
-initWithAccountId:accountId
-policyKey:policyKey];</code></pre>
+  initWithAccountId:accountId
+  policyKey:policyKey];</code></pre>
 	</li>
 	<li>Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="language-objectivec">[self.playbackService findVideoWithVideoID:videoId parameters:queryParameters completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
-{
-if (error == nil)
-{
-// play it.
-[self.controller setVideos: @[ video ]];
-}
-else
-{
-NSLog (@&quot;Error! Playback Service says: %@&quot;,
-			 error.localizedDescription);
-}
-}
+  {
+    if (error == nil)
+    {
+      // play it.
+      [self.controller setVideos: @[ video ]];
+    }
+    else
+    {
+      NSLog (@"Error! Playback Service says: %@",
+             error.localizedDescription);
+    }
+  }
 }];</code></pre>
 	</li>
 </ol>
 
 <h3 id="iOS_ViewController_using_Objective-C" class="bcls-expander-head">iOS ViewController using Objective-C</h3>
+
 <div class="bcls-expander-content">
-<p>
-Your <strong>ViewController.m</strong> file should look similar to this:
-</p>
-<pre class="line-numbers"><code class="language-objectivec">//
+<p>Your <strong>ViewController.m</strong> file should look similar to this:</p>
+
+<pre class="line-numbers">
+<code class="language-objectivec">//
 //  ViewController.m
 //  SSAI with Video Id
 //
-//  Copyright &copy; 2018 Brightcove. All rights reserved.
+//  Copyright © 2018 Brightcove. All rights reserved.
 //
 
-#import &quot;ViewController.h&quot;
+#import "ViewController.h"
 
 @import BrightcovePlayerSDK;
 @import BrightcoveOUX;
 
-NSString *accountId = @&quot;<span class="bcls-input">your account Id</span>&quot;;
-NSString *policyKey = @&quot;<span class="bcls-input">your policy key</span>&quot;;
-NSString *videoId = @&quot;<span class="bcls-input">your video Id</span>&quot;;
-NSString *adConfigId = @&quot;<span class="bcls-input">your ad configuration Id</span>&quot;;
+NSString *accountId = @"<span class="bcls-input">your account Id</span>";
+NSString *policyKey = @"<span class="bcls-input">your policy key</span>";
+NSString *videoId = @"<span class="bcls-input">your video Id</span>";
+NSString *adConfigId = @"<span class="bcls-input">your ad configuration Id</span>";
 
 @interface ViewController () &lt;BCOVPlaybackControllerDelegate&gt;
 @property (nonatomic, strong) id&lt;BCOVPlaybackController&gt; playbackController;
@@ -346,103 +331,104 @@ NSString *adConfigId = @&quot;<span class="bcls-input">your ad configuration Id<
 @implementation ViewController
 
 - (void)viewDidLoad {
-[super viewDidLoad];
-// Do any additional setup after loading the view, typically from a nib.
-BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
+  [super viewDidLoad];
+  // Do any additional setup after loading the view, typically from a nib.
+  BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
 
-// Create a companion slot.
-BCOVOUXCompanionSlot *companionSlot = [[BCOVOUXCompanionSlot alloc] initWithView:self.companionSlotContainerView width:500 height:61];
+  // Create a companion slot.
+  BCOVOUXCompanionSlot *companionSlot = [[BCOVOUXCompanionSlot alloc] initWithView:self.companionSlotContainerView width:500 height:61];
 
-// In order to display an ad progress banner on the top of the view, we create this display container.  This object is also responsible for populating the companion slots.
-BCOVOUXAdComponentDisplayContainer *adComponentDisplayContainer = [[BCOVOUXAdComponentDisplayContainer alloc]   initWithCompanionSlots:@[companionSlot]];
+  // In order to display an ad progress banner on the top of the view, we create this display container.  This object is also responsible for populating the companion slots.
+  BCOVOUXAdComponentDisplayContainer *adComponentDisplayContainer = [[BCOVOUXAdComponentDisplayContainer alloc]   initWithCompanionSlots:@[companionSlot]];
 
-self.playbackController = [manager createOUXPlaybackControllerWithViewStrategy:nil];
+  self.playbackController = [manager createOUXPlaybackControllerWithViewStrategy:nil];
 
-// In order for the ad display container to receive ad information, we add it as a session consumer.
-[self.playbackController addSessionConsumer:adComponentDisplayContainer];
+  // In order for the ad display container to receive ad information, we add it as a session consumer.
+  [self.playbackController addSessionConsumer:adComponentDisplayContainer];
 
-self.playbackController.delegate = self;
-self.playbackController.autoPlay = YES;
+  self.playbackController.delegate = self;
+  self.playbackController.autoPlay = YES;
 
-BCOVPUIBasicControlView *controlView = [BCOVPUIBasicControlView basicControlViewWithVODLayout];
-// Set playback controller later.
-self.playerView = [[BCOVPUIPlayerView alloc] initWithPlaybackController:nil options:nil controlsView:controlView];
-self.playerView.frame = self.videoContainerView.bounds;
-self.playerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-[self.videoContainerView addSubview:self.playerView];
+  BCOVPUIBasicControlView *controlView = [BCOVPUIBasicControlView basicControlViewWithVODLayout];
+  // Set playback controller later.
+  self.playerView = [[BCOVPUIPlayerView alloc] initWithPlaybackController:nil options:nil controlsView:controlView];
+  self.playerView.frame = self.videoContainerView.bounds;
+  self.playerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  [self.videoContainerView addSubview:self.playerView];
 
-self.playerView.playbackController = self.playbackController;
+  self.playerView.playbackController = self.playbackController;
 
-NSDictionary *queryParameters = @{
-													@&quot;ad_config_id&quot; : adConfigId
-													};
+  NSDictionary *queryParameters = @{
+                                @"ad_config_id" : adConfigId
+                                };
 
-self.playbackService = [[BCOVPlaybackService alloc]
-								initWithAccountId:accountId
-								policyKey:policyKey];
+  self.playbackService = [[BCOVPlaybackService alloc]
+                      initWithAccountId:accountId
+                      policyKey:policyKey];
 
-[self.playbackService findVideoWithVideoID:videoId parameters:queryParameters completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
-{
-	if (error == nil)
-	{
-			// play it.
-			[self.playbackController setVideos: @[ video ]];
-	}
-	else
-	{
-			NSLog (@&quot;Error! Playback Service says: %@&quot;,
-						 error.localizedDescription);
-	}
-}
-}];
+  [self.playbackService findVideoWithVideoID:videoId parameters:queryParameters completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+    {
+        if (error == nil)
+        {
+            // play it.
+            [self.playbackController setVideos: @[ video ]];
+        }
+        else
+        {
+            NSLog (@"Error! Playback Service says: %@",
+                   error.localizedDescription);
+        }
+    }
+  }];
 }
 
 #pragma mark BCOVPlaybackControllerBasicDelegate
 
 - (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
 {
-NSLog(@&quot;ViewController Debug - Advanced to new session.&quot;);
+  NSLog(@"ViewController Debug - Advanced to new session.");
 }
 
 #pragma mark BCOVPlaybackControllerAdsDelegate
 
 - (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didEnterAdSequence:(BCOVAdSequence *)adSequence
 {
-NSLog(@&quot;ViewController Debug - Entering ad sequence&quot;);
+  NSLog(@"ViewController Debug - Entering ad sequence");
 }
 
 - (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didExitAdSequence:(BCOVAdSequence *)adSequence
 {
-NSLog(@&quot;ViewController Debug - Exiting ad sequence&quot;);
+  NSLog(@"ViewController Debug - Exiting ad sequence");
 }
 
 - (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didEnterAd:(BCOVAd *)ad
 {
-NSLog(@&quot;ViewController Debug - Entering ad&quot;);
+  NSLog(@"ViewController Debug - Entering ad");
 }
 
 - (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didExitAd:(BCOVAd *)ad
 {
-NSLog(@&quot;ViewController Debug - Exiting ad&quot;);
+  NSLog(@"ViewController Debug - Exiting ad");
 }
 
 - (void)didReceiveMemoryWarning {
-[super didReceiveMemoryWarning];
-// Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 @end</code></pre>
 </div>
 
 <h3 id="iOS_ViewController_using_Swift" class="bcls-expander-head">iOS ViewController using Swift</h3>
+
 <div class="bcls-expander-content">
-<p>
-Your <strong>ViewController.swift</strong> file should look similar to this:
-</p>
-<pre class="line-numbers"><code class="language-objectivec">//
+<p>Your <strong>ViewController.swift</strong> file should look similar to this:</p>
+
+<pre class="line-numbers">
+<code class="language-objectivec">//
 //  ViewController.swift
 //  SSAI with Video Id
 //
-//  Copyright &copy; 2018 Brightcove. All rights reserved.
+//  Copyright © 2018 Brightcove. All rights reserved.
 //
 
 import UIKit
@@ -450,97 +436,91 @@ import BrightcovePlayerSDK
 import BrightcoveOUX
 
 // ** Customize these values with your own account information **
-let kAccountId = &quot;<span class="bcls-input">your account id</span>&quot;;
-let kPolicyKey = &quot;<span class="bcls-input">your policy key</span>&quot;;
-let kVideoId = &quot;<span class="bcls-input">your video id</span>&quot;;
-let kAdConfigId = &quot;<span class="bcls-input">your ad configuration id</span>&quot;;
+let kAccountId = "<span class="bcls-input">your account id</span>";
+let kPolicyKey = "<span class="bcls-input">your policy key</span>";
+let kVideoId = "<span class="bcls-input">your video id</span>";
+let kAdConfigId = "<span class="bcls-input">your ad configuration id</span>";
 
 class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
-let sharedSDKManager = BCOVPlayerSDKManager.shared()
-let playbackService = BCOVPlaybackService(accountId: kAccountId, policyKey: kPolicyKey)
-var playbackController :BCOVPlaybackController
-@IBOutlet weak var videoContainerView: UIView!
-@IBOutlet weak var companionSlotContainerView: UIView!
+    let sharedSDKManager = BCOVPlayerSDKManager.shared()
+    let playbackService = BCOVPlaybackService(accountId: kAccountId, policyKey: kPolicyKey)
+    var playbackController :BCOVPlaybackController
+    @IBOutlet weak var videoContainerView: UIView!
+    @IBOutlet weak var companionSlotContainerView: UIView!
 
-required init?(coder aDecoder: NSCoder) {
-	playbackController = (sharedSDKManager?.createOUXPlaybackController(viewStrategy: nil))!
+    required init?(coder aDecoder: NSCoder) {
+        playbackController = (sharedSDKManager?.createOUXPlaybackController(viewStrategy: nil))!
 
-	super.init(coder: aDecoder)
+        super.init(coder: aDecoder)
 
-	playbackController.delegate = self
-	playbackController.isAutoAdvance = true
-	playbackController.isAutoPlay = true
-}
+        playbackController.delegate = self
+        playbackController.isAutoAdvance = true
+        playbackController.isAutoPlay = true
+    }
 
-override func viewDidLoad() {
-	super.viewDidLoad()
-	// Do any additional setup after loading the view, typically from a nib.
-	// Set up our player view. Create with a standard VOD layout.
-	let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        // Set up our player view. Create with a standard VOD layout.
+        let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
 
-	// Create a companion slot.
-	let companionSlot = BCOVOUXCompanionSlot(view: self.companionSlotContainerView, width: 500, height: 61)
+        // Create a companion slot.
+        let companionSlot = BCOVOUXCompanionSlot(view: self.companionSlotContainerView, width: 500, height: 61)
 
-	// In order to display an ad progress banner on the top of the view, we create this display container.  This object is also responsible for populating the companion slots.
-	let adComponentDisplayContainer = BCOVOUXAdComponentDisplayContainer(companionSlots: [companionSlot])
+        // In order to display an ad progress banner on the top of the view, we create this display container.  This object is also responsible for populating the companion slots.
+        let adComponentDisplayContainer = BCOVOUXAdComponentDisplayContainer(companionSlots: [companionSlot])
 
-	// In order for the ad display container to receive ad information, we add it as a session consumer.
-	playbackController.add(adComponentDisplayContainer)
+        // In order for the ad display container to receive ad information, we add it as a session consumer.
+        playbackController.add(adComponentDisplayContainer)
 
-	// Install in the container view and match its size.
-	playerView?.frame = self.videoContainerView.bounds
-	playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-	self.videoContainerView.addSubview(playerView!)
+        // Install in the container view and match its size.
+        playerView?.frame = self.videoContainerView.bounds
+        playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        self.videoContainerView.addSubview(playerView!)
 
-	// Associate the playerView with the playback controller.
-	playerView?.playbackController = playbackController
+        // Associate the playerView with the playback controller.
+        playerView?.playbackController = playbackController
 
-	requestContentFromPlaybackService()
-}
+        requestContentFromPlaybackService()
+    }
 
-func requestContentFromPlaybackService() {
-	let queryParameters = [&quot;ad_config_id&quot;: kAdConfigId]
+    func requestContentFromPlaybackService() {
+        let queryParameters = ["ad_config_id": kAdConfigId]
 
-	playbackService?.findVideo(withVideoID: kVideoId, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+        playbackService?.findVideo(withVideoID: kVideoId, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-			if let v = video {
-					self.playbackController.setVideos([v] as NSArray)
-			} else {
-					print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-			}
-	}
-}
+            if let v = video {
+                self.playbackController.setVideos([v] as NSArray)
+            } else {
+                print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+            }
+        }
+    }
 
-func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
-	print(&quot;Advanced to new session&quot;)
-}
+    func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
+        print("Advanced to new session")
+    }
 
-func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didProgressTo progress: TimeInterval) {
-	print(&quot;Progress: \(progress) seconds&quot;)
-}
+    func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didProgressTo progress: TimeInterval) {
+        print("Progress: \(progress) seconds")
+    }
 
-override func didReceiveMemoryWarning() {
-	super.didReceiveMemoryWarning()
-	// Dispose of any resources that can be recreated.
-}
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
 }</code></pre>
 </div>
-<br />
+&nbsp;
 
-		<aside class="bcls-aside bcls-aside--tip">
-			<p>
-				Events associated with Server-side ad insertion include the following:
-			</p>
-			<ul>
-				<li>
-					<a href="https://github.com/brightcove/brightcove-player-sdk-ios-oux/blob/master/ios/dynamic/BrightcoveOUX.framework/Headers/BCOVOUXConstants.h">Lifecycle events that are specific to Once UX</a>
-				</li>
-				<li>
-					<a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVAdvertising.h">Lifecycle events associated with ads</a>
-				</li>
-			</ul>
-		</aside>
+<aside class="bcls-aside bcls-aside--tip">
+<p>Events associated with Server-side ad insertion include the following:</p>
 
+<ul>
+	<li><a href="https://github.com/brightcove/brightcove-player-sdk-ios-oux/blob/master/ios/dynamic/BrightcoveOUX.framework/Headers/BCOVOUXConstants.h">Lifecycle events that are specific to Once UX</a></li>
+	<li><a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVAdvertising.h">Lifecycle events associated with ads</a></li>
+</ul>
+</aside>
 </section>
 
 <section class="bcls-section">
@@ -549,88 +529,83 @@ override func didReceiveMemoryWarning() {
 <p>Follow these steps within your app to get your ad configuration and play your video:</p>
 
 <ol class="bcls-tasklist__restart">
-	<li>
-		Start with the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/AppleTV/swift/AppleTV">Basic AppleTV</a> sample written in Swift.
-	</li>
+	<li>Start with the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/AppleTV/swift/AppleTV">Basic AppleTV</a> sample written in Swift.</li>
 	<li>Review the Once UX plugin code, as shown in the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/OUX/BasicOUXtvOSPlayer/objc">Basic Once UX Player for tvOS</a> sample. Even though this sample is written in Objective-C, it will give you an idea of how to use the Once UX plugin. We will not include the companion ad view.</li>
-	<li>
-		In your <strong>Podfile</strong>, update to use the Brightcove Once UX plugin. This also includes the core SDK.
-		<pre><code class="language-swift">source 'https://github.com/brightcove/BrightcoveSpecs.git'
+	<li>In your <strong>Podfile</strong>, update to use the Brightcove Once UX plugin. This also includes the core SDK.
+	<pre>
+<code class="language-swift">source 'https://github.com/brightcove/BrightcoveSpecs.git'
 
 platform :tvos, '11.0'
 
 use_frameworks!
 
 target 'SSAI POC' do
-pod 'Brightcove-Player-OnceUX/dynamic'
+  pod 'Brightcove-Player-OnceUX/dynamic'
 end</code></pre>
 	</li>
-	<li>
-		Rebuild your project with the <code>pod install</code> command.
-	</li>
-	<li>
-		In Xcode, open your <strong>ViewController.m</strong> file.
-	</li>
+	<li>Rebuild your project with the <code>pod install</code> command.</li>
+	<li>In Xcode, open your <strong>ViewController.m</strong> file.</li>
 	<!-- <li>
-		Comment out or delete the following code:
+          Comment out or delete the following code:
 <pre class="line-numbers"><code class="language-objectivec">static NSString *kViewControllerVideoURLString = @&quot;http://onceux.unicornmedia.com/now/ads/vmap/od/auto/c6589dd5-8f31-4ae3-8a5f-a54ca3d7c973/632f6399-9e87-4ce2-a7c0-39209be2b5d0/bee45a63-71ea-4a20-800f-b67091867eeb/content.once&quot;;
 ...
 // Create video
 BCOVVideo *video = [BCOVVideo videoWithURL:[NSURL URLWithString:kViewControllerVideoURLString]];
 [self.controller setVideos:@[video]];
 </code></pre>
-	</li> -->
-	<li>
-		Include the Brightcove Once UX plugin.
-		<pre><code class="language-swift">import BrightcoveOUX</code></pre>
+        </li> -->
+	<li>Include the Brightcove Once UX plugin.
+	<pre>
+<code class="language-swift">import BrightcoveOUX</code></pre>
 	</li>
 	<li>Define constants for your account id, policy key, video id, and your ad configuration id.
-<pre class="line-numbers"><code class="language-swift">static NSString *accountId = @&quot;<span class="bcls-input">your account id</span>&quot;;
-static NSString *policyKey = @&quot;<span class="bcls-input">your policy key</span>&quot;;
-static NSString *videoId = @&quot;<span class="bcls-input">your video id</span>&quot;;
-static NSString *adConfigId = @&quot;<span class="bcls-input">your ad configuration id</span>&quot;;
+	<pre class="line-numbers">
+<code class="language-swift">static NSString *accountId = @"<span class="bcls-input">your account id</span>";
+static NSString *policyKey = @"<span class="bcls-input">your policy key</span>";
+static NSString *videoId = @"<span class="bcls-input">your video id</span>";
+static NSString *adConfigId = @"<span class="bcls-input">your ad configuration id</span>";
 </code></pre>
 
 	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="/node/18125">Policy Keys</a> document.</aside>
 	</li>
 	<li>Create an instance of the <code>BCOVPlaybackService</code>.
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="language-swift">let playbackService = BCOVPlaybackService(accountId: kAccountId, policyKey: kPolicyKey)</code></pre>
 	</li>
-	<li>
-		Create the Once UX playback controller.
-		<pre><code class="language-swift">let playbackController: BCOVPlaybackController = BCOVPlayerSDKManager.shared().createOUXPlaybackController()</code></pre>
+	<li>Create the Once UX playback controller.
+	<pre>
+<code class="language-swift">let playbackController: BCOVPlaybackController = BCOVPlayerSDKManager.shared().createOUXPlaybackController()</code></pre>
 	</li>
 	<li>In the <code>requestContentFromPlaybackService()</code> method, set the query parameter value to your ad configuration id.
-<pre>
+	<pre>
 <code class="language-swift">let queryParameters = ["ad_config_id": kAdConfigId]</code>
 </pre>
 	</li>
-
 	<li>Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="language-swift">playbackService?.findVideo(withVideoID: kVideoId, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-if let v = video {
-	//  since &quot;isAutoPlay&quot; is true, setVideos will begin playing the content
-	self.playbackController.setVideos([v] as NSArray)
-} else {
-	print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-}
+    if let v = video {
+        //  since "isAutoPlay" is true, setVideos will begin playing the content
+        self.playbackController.setVideos([v] as NSArray)
+    } else {
+        print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+    }
 }</code></pre>
 	</li>
 </ol>
 
 <h3 id="tvOS_ViewController_using_Swift" class="bcls-expander-head">tvOS ViewController using Swift</h3>
+
 <div class="bcls-expander-content">
-<p>
-Your <strong>ViewController.swift</strong> file should look similar to this:
-</p>
-<pre class="line-numbers"><code class="language-swift">//
+<p>Your <strong>ViewController.swift</strong> file should look similar to this:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">//
 //  ViewController.swift
 //  SSAI POC = tvOS + Swift + SSAI + VOD
 //
-//  Copyright &copy; 2018 Brightcove. All rights reserved.
+//  Copyright © 2018 Brightcove. All rights reserved.
 //
 
 import UIKit
@@ -638,118 +613,119 @@ import BrightcovePlayerSDK
 import BrightcoveOUX
 
 // ** Customize these values with your own account information **
-let kAccountId = &quot;<span class="bcls-input">your account id</span>&quot;;
-let kPolicyKey = &quot;<span class="bcls-input">your policy key</span>&quot;;
-let kVideoId = &quot;<span class="bcls-input">your video id</span>&quot;;
-let kAdConfigId = &quot;<span class="bcls-input">your ad configuration id</span>&quot;;
+let kAccountId = "<span class="bcls-input">your account id</span>";
+let kPolicyKey = "<span class="bcls-input">your policy key</span>";
+let kVideoId = "<span class="bcls-input">your video id</span>";
+let kAdConfigId = "<span class="bcls-input">your ad configuration id</span>";
 
 class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
-@IBOutlet weak var videoContainerView: UIView!
+    @IBOutlet weak var videoContainerView: UIView!
 
-var playerView: BCOVTVPlayerView?
+    var playerView: BCOVTVPlayerView?
 
-let playbackService = BCOVPlaybackService(accountId: kAccountId, policyKey: kPolicyKey)
+    let playbackService = BCOVPlaybackService(accountId: kAccountId, policyKey: kPolicyKey)
 
-let playbackController: BCOVPlaybackController = BCOVPlayerSDKManager.shared().createOUXPlaybackController()
+    let playbackController: BCOVPlaybackController = BCOVPlayerSDKManager.shared().createOUXPlaybackController()
 
-required init?(coder aDecoder: NSCoder)
-{
-	super.init(coder: aDecoder)
-}
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+    }
 
-override func viewDidLoad() {
-	super.viewDidLoad()
-	// Do any additional setup after loading the view, typically from a nib.
-	createTVPlayerView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        createTVPlayerView()
 
-	// Create and configure the playback controller
-	playbackController.delegate = self
-	playbackController.isAutoAdvance = true
-	playbackController.isAutoPlay = true
+        // Create and configure the playback controller
+        playbackController.delegate = self
+        playbackController.isAutoAdvance = true
+        playbackController.isAutoPlay = true
 
-	// Link the playback controller to the Player View
-	playerView?.playbackController = playbackController
+        // Link the playback controller to the Player View
+        playerView?.playbackController = playbackController
 
-	requestContentFromPlaybackService()
-}
+        requestContentFromPlaybackService()
+    }
 
-func createTVPlayerView() {
+    func createTVPlayerView() {
 
-	// Make sure storyboard bindings are set up
-	self.loadViewIfNeeded()
-	if (videoContainerView == nil)
-	{
-			print(&quot;videoContainerView not bound to storyboard&quot;)
-			return
-	}
+        // Make sure storyboard bindings are set up
+        self.loadViewIfNeeded()
+        if (videoContainerView == nil)
+        {
+            print("videoContainerView not bound to storyboard")
+            return
+        }
 
-	// Set ourself as the presenting view controller
-	// so that tab bar panels can present other view controllers
-	let options = BCOVTVPlayerViewOptions()
-	options.presentingViewController = self
+        // Set ourself as the presenting view controller
+        // so that tab bar panels can present other view controllers
+        let options = BCOVTVPlayerViewOptions()
+        options.presentingViewController = self
 
-	// Create and add to the video container view
-	playerView = BCOVTVPlayerView(options: options)
-	if (playerView != nil) {
-			playerView!.frame = self.videoContainerView.bounds
-			self.videoContainerView.addSubview(playerView!)
-	}
-}
+        // Create and add to the video container view
+        playerView = BCOVTVPlayerView(options: options)
+        if (playerView != nil) {
+            playerView!.frame = self.videoContainerView.bounds
+            self.videoContainerView.addSubview(playerView!)
+        }
+    }
 
-func requestContentFromPlaybackService() {
-	let queryParameters = [&quot;ad_config_id&quot;: kAdConfigId]
+    func requestContentFromPlaybackService() {
+        let queryParameters = ["ad_config_id": kAdConfigId]
 
-	playbackService?.findVideo(withVideoID: kVideoId, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+        playbackService?.findVideo(withVideoID: kVideoId, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-			if let v = video {
-					//  since &quot;isAutoPlay&quot; is true, setVideos will begin playing the content
-					self.playbackController.setVideos([v] as NSArray)
-			} else {
-					print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-			}
-	}
-}
+            if let v = video {
+                //  since "isAutoPlay" is true, setVideos will begin playing the content
+                self.playbackController.setVideos([v] as NSArray)
+            } else {
+                print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+            }
+        }
+    }
 
-// MARK: Playback controller delegate methods
+    // MARK: Playback controller delegate methods
 
-func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
-	NSLog(&quot;ViewController Debug - Advanced to new session.&quot;)
-}
+    func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
+        NSLog("ViewController Debug - Advanced to new session.")
+    }
 
-func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didReceive lifecycleEvent: BCOVPlaybackSessionLifecycleEvent!) {
-	NSLog(&quot;Event: %@&quot;, lifecycleEvent.eventType)
-}
+    func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didReceive lifecycleEvent: BCOVPlaybackSessionLifecycleEvent!) {
+        NSLog("Event: %@", lifecycleEvent.eventType)
+    }
 
-// MARK: UIFocusEnvironment overrides
+    // MARK: UIFocusEnvironment overrides
 
-// Focus Environment override for tvOS 9
-override var preferredFocusedView: UIView? {
-	return playerView
-}
+    // Focus Environment override for tvOS 9
+    override var preferredFocusedView: UIView? {
+        return playerView
+    }
 
-// Focus Environment override for tvOS 10+
-override var preferredFocusEnvironments: [UIFocusEnvironment] {
-	return (playerView != nil ? [ playerView! ] : [])
-}
+    // Focus Environment override for tvOS 10+
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        return (playerView != nil ? [ playerView! ] : [])
+    }
 
-override func didReceiveMemoryWarning() {
-	super.didReceiveMemoryWarning()
-	// Dispose of any resources that can be recreated.
-}
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
 
 }</code></pre>
 </div>
 
 <h3 id="tvOS_ViewController_using_Swift" class="bcls-expander-head">tvOS ViewController using Swift + FairPlay</h3>
+
 <div class="bcls-expander-content">
-<p>
-Your <strong>ViewController.swift</strong> file should look similar to this:
-</p>
-<pre class="line-numbers"><code class="language-swift">//
+<p>Your <strong>ViewController.swift</strong> file should look similar to this:</p>
+
+<pre class="line-numbers">
+<code class="language-swift">//
 //  ViewController.swift
 //  AppleTV = tvOS + Swift + SSAI + VOD + FairPlay
 //
-//  Copyright &copy; 2018 Brightcove. All rights reserved.
+//  Copyright © 2018 Brightcove. All rights reserved.
 //
 
 // This sample app shows how to set up and use the TV Player UI on tvOS.
@@ -757,189 +733,180 @@ Your <strong>ViewController.swift</strong> file should look similar to this:
 import BrightcovePlayerSDK
 import BrightcoveOUX
 
-let kViewControllerAccountID = &quot;<span class="bcls-input">your account id</span>&quot;
-let kViewControllerPlaybackServicePolicyKey = &quot;<span class="bcls-input">your policy key</span>&quot;
-let kViewControllerVideoID = &quot;<span class="bcls-input">your video id</span>&quot;
-let kAdConfigId = &quot;<span class="bcls-input">your ad configuration id</span>&quot;
+let kViewControllerAccountID = "<span class="bcls-input">your account id</span>"
+let kViewControllerPlaybackServicePolicyKey = "<span class="bcls-input">your policy key</span>"
+let kViewControllerVideoID = "<span class="bcls-input">your video id</span>"
+let kAdConfigId = "<span class="bcls-input">your ad configuration id</span>"
 
 class ViewController: UIViewController, BCOVPlaybackControllerDelegate
 {
-@IBOutlet var videoContainerView: UIView!
+  @IBOutlet var videoContainerView: UIView!
 
-var playerView: BCOVTVPlayerView?
-var fairPlayAuthProxy: BCOVFPSBrightcoveAuthProxy?
-var playbackController:BCOVPlaybackController?
+  var playerView: BCOVTVPlayerView?
+  var fairPlayAuthProxy: BCOVFPSBrightcoveAuthProxy?
+  var playbackController:BCOVPlaybackController?
 
-let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)
+  let playbackService = BCOVPlaybackService(accountId: kViewControllerAccountID, policyKey: kViewControllerPlaybackServicePolicyKey)
 
-required init?(coder aDecoder: NSCoder)
-{
-super.init(coder: aDecoder)
-}
+  required init?(coder aDecoder: NSCoder)
+  {
+    super.init(coder: aDecoder)
+  }
 
-override func viewDidLoad()
-{
-super.viewDidLoad()
+  override func viewDidLoad()
+  {
+    super.viewDidLoad()
 
-let sdkManager = BCOVPlayerSDKManager.sharedManager()
-self.fairPlayAuthProxy = BCOVFPSBrightcoveAuthProxy(publisherId: nil,
-																									applicationId: nil)
+    let sdkManager = BCOVPlayerSDKManager.sharedManager()
+    self.fairPlayAuthProxy = BCOVFPSBrightcoveAuthProxy(publisherId: nil,
+                                                        applicationId: nil)
 
-// Create chain of session providers
-let basicSessionProvider = sdkManager?.createBasicSessionProvider(with:nil)
+    // Create chain of session providers
+    let basicSessionProvider = sdkManager?.createBasicSessionProvider(with:nil)
 
-let fairplaySessionProvider = sdkManager?.createFairPlaySessionProvider(withApplicationCertificate:nil,
-																			authorizationProxy:self.fairPlayAuthProxy!,
-																			upstreamSessionProvider:basicSessionProvider)
+    let fairplaySessionProvider = sdkManager?.createFairPlaySessionProvider(withApplicationCertificate:nil,
+                                            authorizationProxy:self.fairPlayAuthProxy!,
+                                            upstreamSessionProvider:basicSessionProvider)
 
-let ouxSessionProvider = sdkManager?.createOUXSessionProvider(withUpstreamSessionProvider: fairplaySessionProvider)
+    let ouxSessionProvider = sdkManager?.createOUXSessionProvider(withUpstreamSessionProvider: fairplaySessionProvider)
 
-// Create the playback controller
+    // Create the playback controller
 
-let playbackController = sdkManager?.createPlaybackController(with:ouxSessionProvider, viewStrategy:nil)
+    let playbackController = sdkManager?.createPlaybackController(with:ouxSessionProvider, viewStrategy:nil)
 
-playbackController?.isAutoAdvance = false
-playbackController?.isAutoPlay = true
-playbackController?.delegate = self
+    playbackController?.isAutoAdvance = false
+    playbackController?.isAutoPlay = true
+    playbackController?.delegate = self
 
-if playbackController?.view != nil {
-playbackController?.view.frame = self.videoContainerView.bounds
-playbackController?.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-self.videoContainerView.addSubview((playbackController!.view)!)
-}
+    if playbackController?.view != nil {
+      playbackController?.view.frame = self.videoContainerView.bounds
+      playbackController?.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+      self.videoContainerView.addSubview((playbackController!.view)!)
+    }
 
-self.playbackController = playbackController
+    self.playbackController = playbackController
 
-createTVPlayerView()
+    createTVPlayerView()
 
-// Link the playback controller to the Player View
-playerView?.playbackController = playbackController
+    // Link the playback controller to the Player View
+    playerView?.playbackController = playbackController
 
-requestContentFromPlaybackService()
-}
+    requestContentFromPlaybackService()
+  }
 
-func createTVPlayerView() {
+  func createTVPlayerView() {
 
-// Make sure storyboard bindings are set up
-self.loadViewIfNeeded()
-if (videoContainerView == nil)
-{
-print(&quot;videoContainerView not bound to storyboard&quot;)
-return
-}
+    // Make sure storyboard bindings are set up
+    self.loadViewIfNeeded()
+    if (videoContainerView == nil)
+    {
+      print("videoContainerView not bound to storyboard")
+      return
+    }
 
-// Set ourself as the presenting view controller
-// so that tab bar panels can present other view controllers
-let options = BCOVTVPlayerViewOptions()
-options.presentingViewController = self
+    // Set ourself as the presenting view controller
+    // so that tab bar panels can present other view controllers
+    let options = BCOVTVPlayerViewOptions()
+    options.presentingViewController = self
 
-// Create and add to the video container view
-playerView = BCOVTVPlayerView(options: options)
-if (playerView != nil) {
-playerView!.frame = self.videoContainerView.bounds
-self.videoContainerView.addSubview(playerView!)
-}
-}
+    // Create and add to the video container view
+    playerView = BCOVTVPlayerView(options: options)
+    if (playerView != nil) {
+      playerView!.frame = self.videoContainerView.bounds
+      self.videoContainerView.addSubview(playerView!)
+    }
+  }
 
-func requestContentFromPlaybackService() {
-let queryParameters = [&quot;ad_config_id&quot;: kAdConfigId]
+  func requestContentFromPlaybackService() {
+    let queryParameters = ["ad_config_id": kAdConfigId]
 
-playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+    playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: queryParameters) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-if let v = video {
-	//  since &quot;isAutoPlay&quot; is true, setVideos will begin playing the content
-	self.playbackController?.setVideos([v] as NSArray)
-} else {
-	print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-}
-}
-}
+      if let v = video {
+        //  since "isAutoPlay" is true, setVideos will begin playing the content
+        self.playbackController?.setVideos([v] as NSArray)
+      } else {
+        print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+      }
+    }
+  }
 
-// MARK: Playback controller delegate methods
+  // MARK: Playback controller delegate methods
 
-func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
-NSLog(&quot;ViewController Debug - Advanced to new session.&quot;)
-}
+  func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
+    NSLog("ViewController Debug - Advanced to new session.")
+  }
 
-func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didReceive lifecycleEvent: BCOVPlaybackSessionLifecycleEvent!) {
-NSLog(&quot;Event: %@&quot;, lifecycleEvent.eventType)
-}
+  func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didReceive lifecycleEvent: BCOVPlaybackSessionLifecycleEvent!) {
+    NSLog("Event: %@", lifecycleEvent.eventType)
+  }
 
-// MARK: UIFocusEnvironment overrides
+  // MARK: UIFocusEnvironment overrides
 
-// Focus Environment override for tvOS 9
-override var preferredFocusedView: UIView? {
-return playerView
-}
+  // Focus Environment override for tvOS 9
+  override var preferredFocusedView: UIView? {
+    return playerView
+  }
 
-// Focus Environment override for tvOS 10+
-override var preferredFocusEnvironments: [UIFocusEnvironment] {
-return (playerView != nil ? [ playerView! ] : [])
-}
+  // Focus Environment override for tvOS 10+
+  override var preferredFocusEnvironments: [UIFocusEnvironment] {
+    return (playerView != nil ? [ playerView! ] : [])
+  }
 }</code></pre>
 </div>
-<br />
+&nbsp;
 
-		<aside class="bcls-aside bcls-aside--tip">
-			<p>
-				Events associated with Server-side ad insertion include the following:
-			</p>
-			<ul>
-				<li>
-					<a href="https://github.com/brightcove/brightcove-player-sdk-ios-oux/blob/master/ios/dynamic/BrightcoveOUX.framework/Headers/BCOVOUXConstants.h">Lifecycle events that are specific to Once UX</a>
-				</li>
-				<li>
-					<a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVAdvertising.h">Lifecycle events associated with ads</a>
-				</li>
-			</ul>
-		</aside>
+<aside class="bcls-aside bcls-aside--tip">
+<p>Events associated with Server-side ad insertion include the following:</p>
 
+<ul>
+	<li><a href="https://github.com/brightcove/brightcove-player-sdk-ios-oux/blob/master/ios/dynamic/BrightcoveOUX.framework/Headers/BCOVOUXConstants.h">Lifecycle events that are specific to Once UX</a></li>
+	<li><a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/ios/dynamic/BrightcovePlayerSDK.framework/Headers/BCOVAdvertising.h">Lifecycle events associated with ads</a></li>
+</ul>
+</aside>
 </section>
 
-		<section class="bcls-section">
-		<h2 id="Play_a_video_with_ads">Playing a video with ads</h2>
-			<p>
-			Any video that you retrieve from Video Cloud that has been ingested with Dynamic Delivery, will include the ads specified in the VMAP file in your ad configuration.
-			</p>
-			<aside class="bcls-aside bcls-aside--information">Currently, Server-side ad insertion will not respect the Advertising property (Free or Ad Supported) set in Video Cloud's Media module.</aside>
-		</section>
+<section class="bcls-section">
+<h2 id="Play_a_video_with_ads">Playing a video with ads</h2>
 
-		<!-- <section class="bcls-section">
-		<h2 id="Append_query_parameters">Append query parameters</h2>
-			<p>
-			The Native player SDKs do not support any client-side macro replacement. If you want to manually append query string parameters, you can follow these steps:
-			</p>
-			<ol class="bcls-tasklist__restart">
-				<li>Call the Brightcove catalog (Playback API) with an ad configuration id to return a video object.</li>
-				<li>
-					From the returned video object, select and extract the appropriate manifest or VMAP URL.
-				</li>
-				<li>
-					Append query parameters to either the manifest or VMAP URL.
-				</li>
-				<li>
-					Process the video with the Once UX plugin.
-					<ul>
-						<li>
-							For Android, use the following method:
-							<pre><code class="language-java">plugin.processVideo(videoUrlString);</code></pre>
-						</li>
-						<li>
-							For iOS/tvOS, do the following:
-							<ul>
-								<li>
-									Create a <code>BCOVSource</code> object using the <code>videoUrlString</code>
-								</li>
-								<li>
-									Create the <code>BCOVVideo</code> and <code>initWithSource:mySource</code>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</li>
+<p>Any video that you retrieve from Video Cloud that has been ingested with Dynamic Delivery, will include the ads specified in the VMAP file in your ad configuration.</p>
 
-			</ol>
+<aside class="bcls-aside bcls-aside--information">Currently, Server-side ad insertion will not respect the Advertising property (Free or Ad Supported) set in Video Cloud's Media module.</aside>
+</section>
+<!-- <section class="bcls-section">
+          <h2 id="Append_query_parameters">Append query parameters</h2>
+            <p>
+            The Native player SDKs do not support any client-side macro replacement. If you want to manually append query string parameters, you can follow these steps:
+            </p>
+            <ol class="bcls-tasklist__restart">
+            	<li>Call the Brightcove catalog (Playback API) with an ad configuration id to return a video object.</li>
+              <li>
+                From the returned video object, select and extract the appropriate manifest or VMAP URL.
+              </li>
+              <li>
+                Append query parameters to either the manifest or VMAP URL.
+              </li>
+              <li>
+                Process the video with the Once UX plugin.
+                <ul>
+                  <li>
+                    For Android, use the following method:
+                    <pre><code class="language-java">plugin.processVideo(videoUrlString);</code></pre>
+                  </li>
+                  <li>
+                    For iOS/tvOS, do the following:
+                    <ul>
+                      <li>
+                        Create a <code>BCOVSource</code> object using the <code>videoUrlString</code>
+                      </li>
+                      <li>
+                        Create the <code>BCOVVideo</code> and <code>initWithSource:mySource</code>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
 
-		</section> -->
-		<br />
-</article>
+            </ol>
+
+          </section> --></article>
