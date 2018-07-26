@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Customer Documentation Survey</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 	<style type="text/css" media="screen">
 		body { font-family: sans-serif; font-size: 0.8em; }
@@ -37,7 +37,22 @@
 		// q2 is how useful
 		// q7 is the BC_EMAIL from the token
 		// q8 is the BC_ACCOUNT from the token
-		var docParams = {};
+		var docParams = {},
+      radioStars = document.getElementsByName('star');
+
+      /**
+  * get value of a selected radio buttom
+  * @param {htmlElementCollection} rgroup the collection of radio buttom elements
+  */
+  function getRadioValue(rgroup) {
+      var i = 0,
+      iMax = rgroup.length;
+      for (i; i < iMax; i++) {
+          if (rgroup[i].checked) {
+              return rgroup[i].value;
+          }
+      }
+  }
 
     // defaults
     docParams.bc_email = '';
@@ -48,7 +63,7 @@
     docParams.tags = '';
 
     document.getElementById('surveyForm').addEventListener('change', function() {
-			var useful = ($('input[name=star]:checked', '#surveyForm').val()),
+			var useful = getRadioValue(radioStars),
  			url = 'https://survey.clicktools.com/go?iv=3qpn5irdz4kie'
 			 	+ '&q1=' + document.referrer
 				+ '&q2=' + useful
