@@ -1,34 +1,22 @@
 <article class="bcls-article">
-    <section class="bcls-section">
-        <h2 id="Introduction">Introduction</h2>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
-        <p>The Brightcove Live system sends notifications of various events. You can set up listeners for notifications to trigger
-            further actions. The listener(s) can be written in any server-side language you use, and they would look for
-            incoming POST requests, parse the JSON request body, and then take whatever action you want. Below we will see
-            how you can request notifications.</p>
-    </section>
+<p>The Brightcove Live system sends notifications of various events. You can set up listeners for notifications to trigger further actions. The listener(s) can be written in any server-side language you use, and they would look for incoming POST requests, parse the JSON request body, and then take whatever action you want. Below we will see how you can request notifications.</p>
+</section>
 
-    <section class="bcls-section">
-        <h2 id="Requesting_notifications">Requesting notifications</h2>
+<section class="bcls-section">
+<h2 id="Requesting_notifications">Requesting notifications</h2>
 
-        <p>You can request notifications by including one or more
-            <code>notifications</code> fields in the outputs your
-            <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request.</p>
+<p>You can request notifications by including one or more <code>notifications</code> fields in the outputs your <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> request.</p>
 
-        <p>The value of
-            <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url:
-            "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post",
-            "credentials": "reference_to_your_credentials"}". A notification will be sent to the destination you specify
-            when the output changes its state. If you apply this parameter to a VOD output the notifications will only be
-            related to that VOD job, not to the live job.</p>
+<p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: "http://httpbin.org/post", or you can use an object with following options: "{"url": "http://httpbin.org/post", "credentials": "reference_to_your_credentials"}". A notification will be sent to the destination you specify when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
 
-        <aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type (
-            <code>first_segment_uploaded</code>,
-            <code>state_change</code>, etc) is allowed.</aside>
+<aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type ( <code>first_segment_uploaded</code>, <code>state_change</code>, etc) is allowed.</aside>
 
-        <p>Here is an example</p>
+<p>Here is an example</p>
 
-        <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-json">{
     "live_stream": true,
     "region": "us-west-2",
@@ -73,203 +61,143 @@
         ]</span>
     }]
 }</code></pre>
-    </section>
+</section>
 
-    <section class="bcls-section">
-        <h2 id="Events">Events</h2>
+<section class="bcls-section">
+<h2 id="Events">Events</h2>
 
-        <p>Below are the events you can listen for.</p>
+<p>Below are the events you can listen for.</p>
 
-        <ul>
-            <li>
-                <code>state_changed</code>
-            </li>
-            <li>
-                <code>first_segment_uploaded</code>
-            </li>
-            <li>
-                <code>output_finished</code>
-            </li>
-        </ul>
+<ul>
+	<li><code>state_changed</code></li>
+	<li><code>first_segment_uploaded</code></li>
+	<li><code>output_finished</code></li>
+</ul>
 
-        <p>The
-            <code>state_changed</code> will notify on the following states described in the table below</p>
+<p>The <code>state_changed</code> will notify on the following states described in the table below</p>
 
-        <table class="bcls-table">
-            <caption class="bcls-caption--table">Live Job States</caption>
-            <thead class="bcls-table__head">
-                <tr>
-                    <th>State</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody class="bcls-table__body">
-                <tr>
-                    <td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">General States (reported in notifications as
-                        <code>state</code>)</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>standby</code>
-                    </td>
-                    <td>(Only applicable to Static Entry Point [SEP] jobs.) The job is allocated and ready for activation.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>waiting</code>
-                    </td>
-                    <td>The job has been assigned to a streaming worker and ready for the encoder to connect.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>processing</code>
-                    </td>
-                    <td>The encoder is connected and the job is available for playback.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>disconnected</code>
-                    </td>
-                    <td>The encoder has disconnected and the streaming worker is waiting for a reconnection.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>cancelling</code>
-                    </td>
-                    <td>The job has been cancelled and the worker is stopping the job and will NOT process any pending VOD outputs.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>finishing</code>
-                    </td>
-                    <td>The encoder has been disconnected for more than
-                        <code>reconnect_time</code>, and streaming worker is stopping the jobs and creating any associated VOD
-                        outputs.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>cancelled</code>
-                    </td>
-                    <td>The job has completed successfully.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>finished</code>
-                    </td>
-                    <td>The job has been cancelled successfully.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>failed</code>
-                    </td>
-                    <td>The job has stopped as a result of a system error.</td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">SSAI States (reported in notifications as
-                        <code>ssai_state</code>)</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>none</code>
-                    </td>
-                    <td>The job is not an SSAI job.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>waiting_input</code>
-                    </td>
-                    <td>The streaming worker is waiting for the encoder to connect and provide the stream input information.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>start_transcoding</code>
-                    </td>
-                    <td>The encoder has connected and the SSAI slate has been queued for transcoding based on the stream input
-                        data and outputs data.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>transcoding</code>
-                    </td>
-                    <td>The slate is being transcoded.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>error</code>
-                    </td>
-                    <td>The slate could not be downloaded or transcoded.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>ready</code>
-                    </td>
-                    <td>The slate has been generated and the job is ready for SSAI playback.</td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">SEP States (reported in notifications as
-                        <code>sep_state</code>)</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>none</code>
-                    </td>
-                    <td>The job is not an SEP job.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>ready</code>
-                    </td>
-                    <td>The entry point has been activated and ready for the encoder to connect.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>pending_activation</code>
-                    </td>
-                    <td>The entry point has been queued for streaming worker assignment.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>activation_in_progress</code>
-                    </td>
-                    <td>The entry point is updating to route connections to the streaming worker.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>pending_deactivation</code>
-                    </td>
-                    <td>The entry point has been queued for cleanup from the streaming worker.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>deactivation_in_progress</code>
-                    </td>
-                    <td>The entry point is disconnecting from the streaming worker.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>cancelled</code>
-                    </td>
-                    <td>The entry point has been cancelled.</td>
-                </tr>
-                <tr>
-                    <td>
-                        <code>finished</code>
-                    </td>
-                    <td>The entry point has completed successfully.</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Live Job States</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>State</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">General States (reported in notifications as <code>state</code>)</td>
+		</tr>
+		<tr>
+			<td><code>standby</code></td>
+			<td>(Only applicable to Static Entry Point [SEP] jobs.) The job is allocated and ready for activation.</td>
+		</tr>
+		<tr>
+			<td><code>waiting</code></td>
+			<td>The job has been assigned to a streaming worker and ready for the encoder to connect.</td>
+		</tr>
+		<tr>
+			<td><code>processing</code></td>
+			<td>The encoder is connected and the job is available for playback.</td>
+		</tr>
+		<tr>
+			<td><code>disconnected</code></td>
+			<td>The encoder has disconnected and the streaming worker is waiting for a reconnection.</td>
+		</tr>
+		<tr>
+			<td><code>cancelling</code></td>
+			<td>The job has been cancelled and the worker is stopping the job and will NOT process any pending VOD outputs.</td>
+		</tr>
+		<tr>
+			<td><code>finishing</code></td>
+			<td>The encoder has been disconnected for more than <code>reconnect_time</code>, and streaming worker is stopping the jobs and creating any associated VOD outputs.</td>
+		</tr>
+		<tr>
+			<td><code>cancelled</code></td>
+			<td>The job has completed successfully.</td>
+		</tr>
+		<tr>
+			<td><code>finished</code></td>
+			<td>The job has been cancelled successfully.</td>
+		</tr>
+		<tr>
+			<td><code>failed</code></td>
+			<td>The job has stopped as a result of a system error.</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">SSAI States (reported in notifications as <code>ssai_state</code>)</td>
+		</tr>
+		<tr>
+			<td><code>none</code></td>
+			<td>The job is not an SSAI job.</td>
+		</tr>
+		<tr>
+			<td><code>waiting_input</code></td>
+			<td>The streaming worker is waiting for the encoder to connect and provide the stream input information.</td>
+		</tr>
+		<tr>
+			<td><code>start_transcoding</code></td>
+			<td>The encoder has connected and the SSAI slate has been queued for transcoding based on the stream input data and outputs data.</td>
+		</tr>
+		<tr>
+			<td><code>transcoding</code></td>
+			<td>The slate is being transcoded.</td>
+		</tr>
+		<tr>
+			<td><code>error</code></td>
+			<td>The slate could not be downloaded or transcoded.</td>
+		</tr>
+		<tr>
+			<td><code>ready</code></td>
+			<td>The slate has been generated and the job is ready for SSAI playback.</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="background-color:RGB(172, 202, 204);text-align: center;font-weight:bold;">SEP States (reported in notifications as <code>sep_state</code>)</td>
+		</tr>
+		<tr>
+			<td><code>none</code></td>
+			<td>The job is not an SEP job.</td>
+		</tr>
+		<tr>
+			<td><code>ready</code></td>
+			<td>The entry point has been activated and ready for the encoder to connect.</td>
+		</tr>
+		<tr>
+			<td><code>pending_activation</code></td>
+			<td>The entry point has been queued for streaming worker assignment.</td>
+		</tr>
+		<tr>
+			<td><code>activation_in_progress</code></td>
+			<td>The entry point is updating to route connections to the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code>pending_deactivation</code></td>
+			<td>The entry point has been queued for cleanup from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code>deactivation_in_progress</code></td>
+			<td>The entry point is disconnecting from the streaming worker.</td>
+		</tr>
+		<tr>
+			<td><code>cancelled</code></td>
+			<td>The entry point has been cancelled.</td>
+		</tr>
+		<tr>
+			<td><code>finished</code></td>
+			<td>The entry point has completed successfully.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-    <section class="bcls-section">
-        <h2 id="sample_notification">Sample notifications</h2>
+<section class="bcls-section">
+<h2 id="sample_notification">Sample notifications</h2>
 
-        <h3>Live stream notification</h3>
+<h3>Live stream notification</h3>
 
-        <p>Here is a sample notification for a
-            <code>state_changed</code> event for a live job:</p>
+<p>Here is a sample notification for a <code>state_changed</code> event for a live job:</p>
 
-        <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-json">{
     "outputs": [
         {
@@ -459,14 +387,11 @@
 }
 </code></pre>
 
-        <h3>Clipping to S3 sample</h3>
+<h3>Clipping to S3 sample</h3>
 
-        <p>Below is a sample
-            <code>state_changed</code> event for creating a clip and sending it to an S3 bucket. Note that it includes the S3 address
-            of the clip as
-            <code>jvod_url</code>.</p>
+<p>Below is a sample <code>state_changed</code> event for creating a clip and sending it to an S3 bucket. Note that it includes the S3 address of the clip as <code>jvod_url</code>.</p>
 
-        <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-json">{
     "jvod_id": "b750cce9e21a4cc894c4507208495b0c",
     <span class="bcls-highlight">"jvod_url": "s3:\/\/learning-services-media.brightcove.com\/test_dur60.mp4",</span>
@@ -487,18 +412,16 @@
     "event": "state_changed",
     "jvod_state": "processing"
 }</code></pre>
-    </section>
+</section>
 
-    <section class="bcls-section">
-        <h2 id="handling_notifications">Handling notifications</h2>
+<section class="bcls-section">
+<h2 id="handling_notifications">Handling notifications</h2>
 
-        <p>To receive notifications, you simply need an app that can receive HTTP/HTTPS
-            <code>POST</code> requests. The app can then parse the JSON notications and do whatever you want based on their contents.</p>
+<p>To receive notifications, you simply need an app that can receive HTTP/HTTPS <code>POST</code> requests. The app can then parse the JSON notications and do whatever you want based on their contents.</p>
 
-        <p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write
-            them to a text file.</p>
+<p>As a simple example, here is a PHP app we use in Brightcove Learning Services to receive notifications and write them to a text file.</p>
 
-        <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-php"><!--?php
   // POST won't work for JSON data
   $problem = "No errors";
@@ -529,5 +452,5 @@
   // line below is displayed when you browse the app directly
   echo "Live callback app is running";
 </code></pre>
-    </section>
+</section>
 </article>
