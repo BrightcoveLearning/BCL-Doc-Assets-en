@@ -7,10 +7,27 @@
 <h3>Caveats</h3>
 
 <ul>
-	<li>Ad blocker detection is very reliable, but not 100%.</li>
-	<li>Customers using this feature must be using Dynamic Delivery.</li>
-	<li>Only IMA and SSAI plugins are supported (no FreeWheel or OnceUX).</li>
+<li>Ad blocker detection is very reliable, but not 100%.</li>
+<li>Customers using this feature must be using Dynamic Delivery.</li>
+<li>Only IMA and SSAI plugins are supported (no FreeWheel or OnceUX).</li>
 </ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Player_sample">Player sample</h2>
+<p>
+Here is a sample player configured with ad failover and IMA3 ads.
+</p>
+<ul>
+<li>
+	If you run this sample in a browser without an ad blocker, you should see a dfp inline skippable ad by Google. This is the IMA3 preroll ad.
+</li>
+<li>
+	If you run this sample in a browser with an ad blocker, you should see a Brightcove guide to digital marketing ad. This is the Server-Side ad (SSAI) as defined in our ad configuration.
+</li>
+</ul>
+<p data-height="475" data-theme-id="dark" data-slug-hash="QBMJmP" data-default-tab="result" data-user="rcrooks1969" data-pen-title="SSAI Ad Failover with hook" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/QBMJmP/">SSAI Ad Failover with hook</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 </section>
 
 <section class="bcls-section">
@@ -19,10 +36,12 @@
 <p>For ad failover to function you must have the player configured correctly. The following three configuration changes need to be done:</p>
 
 <ol class="bcls-tasklist">
-	<li>The player configuration must have <code class="notranslate">"ad_failover": true </code> at the top level. This is done using a <strong>curl</strong> statement. The following would add the desired configuration to an existing player:
+<li>
+<p>
+	The player configuration must have <code class="notranslate">"ad_failover": true </code> at the top level. This is done using a <strong>curl</strong> statement. The following would add the desired configuration to an existing player:
+</p>
 
-<pre class="line-numbers">
-<code class="language-bash notranslate">// Configure ad failover
+<pre class="line-numbers"><code class="language-bash notranslate">// Configure ad failover
 curl \
 --header "Content-Type: application/json" \
 --user $EMAIL \
@@ -30,15 +49,16 @@ curl \
 --data '{
 "ad_failover": true
 }' \
-https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration
-</code>
-</pre>
+https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 
-	<p>If you are unfamiliar with curl, see the <a href="/node/18268">Quick Start: Player Management</a> document to get started.</p>
-	</li>
-	<li>Both the IMA and SSAI plugins must be configured for the player. This is normally an invalid configuration, and the player would log a warning to the console, but having the <code class="notranslate">"ad_failover": true </code> configuration makes it valid. Both of these plugins can be added in Studio, or via a curl statement. A valid example player configuration is show here:
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+<p>If you are unfamiliar with curl, see the <a href="/node/18268">Quick Start: Player Management</a> document to get started.</p>
+</li>
+<li>
+<p>
+	Both the IMA and SSAI plugins must be configured for the player. This is normally an invalid configuration, and the player would log a warning to the console, but having the <code class="notranslate">"ad_failover": true </code> configuration makes it valid. Both of these plugins can be added in Studio, or via a curl statement. A valid example player configuration is show here:
+</p>
+<aside class="bcls-aside bcls-aside--warning">Currently, SSAI ad failover works only with v2 of the IMA3 plugin. Implementation with IMA3 plugin v3 is coming soon.</aside>
+<pre class="line-numbers"><code class="language-json notranslate">{
 "account_id": "1507807800001",
 <span class="bcls-highlight notranslate">"ad_failover": true</span>,
 "compatibility": true,
@@ -83,17 +103,14 @@ https://players.api.brightcove.com/v1/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 "policy_key": "BCpkADawqM1U6pz...67I3",
 "video": null
 }
-}
-</code>
-</pre>
-	</li>
-	<li>
-	<p>There must be an ad configuration ID (<code class="notranslate">ad_config_id</code>) available via the configuration or defined at runtime. Although technically not required, not having one means no ads in an SSAI stream would be available, which defeats the purpose of ad failover.</p>
+}</code></pre>
+</li>
+<li>
+<p>There must be an ad configuration ID (<code class="notranslate">ad_config_id</code>) available via the configuration or defined at runtime. Although technically not required, not having one means no ads in an SSAI stream would be available, which defeats the purpose of ad failover.</p>
 
-	<p>To supply an ad configuration ID at runtime using the Advanced (in-page embed) player implementation, you supply the ID as an attribute in the <code class="notranslate">&lt;video&gt; </code> tag:</p>
+<p>To supply an ad configuration ID at runtime using the Advanced (in-page embed) player implementation, you supply the ID as an attribute in the <code class="notranslate">&lt;video&gt; </code> tag:</p>
 
-<pre class="line-numbers">
-<code class="language-html notranslate">&lt;video
+<pre class="line-numbers"><code class="language-html notranslate">&lt;video
 data-account="123"
 data-player="abc"
 data-embed="default"
@@ -101,17 +118,30 @@ data-embed="default"
 class="video-js"
 controls&gt;
 &lt;/video&gt;
-&lt;script src="https://.../index.min.js"&gt;&lt;/script&gt;
-</code>
-</pre>
+&lt;script src="https://.../index.min.js"&gt;&lt;/script&gt;</code></pre>
 
-	<p>If you are using an Standard (iframe) player implementation you would supply the ad configuration ID as follows:</p>
+<p>If you are using an Standard (iframe) player implementation you would supply the ad configuration ID as follows:</p>
 
-<pre class="line-numbers">
-<code class="language-html notranslate">&lt;iframe src="https://.../index.html<span class="bcls-highlight notranslate">?adConfigId=xyz-456</span>" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;
-</code>
-</pre>
-	</li>
+<pre class="line-numbers"><code class="language-html notranslate">&lt;iframe src="https://.../index.html<span class="bcls-highlight notranslate">?adConfigId=xyz-456</span>" allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;</code></pre>
+</li>
+<li>
+<p>
+	When using ad failover, you need to wait for player initialization to determine if ad block has been detected. The following code uses a setup hook to wait for the player to be ready before calling the IMA3 plugin with the ad URL. For details about using hooks, see  <a href="https://docs.videojs.com/tutorial-hooks.html">Video.js hooks documentation</a>.
+</p>
+<aside class="bcls-aside bcls-aside--information">Because ad failover uses asynchronous processing to determine the existence of an ad blocker, you need to wait for player intialization to complete before accessing the player in JavaScript. For example, calling the IMA3 plugin.</aside>
+<pre class="line-numbers"><code class="language-javascript notranslate">var myPlayer,
+serverUrl='https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/single_ad_samples&amp;ciu_szs=300x250&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vast&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&amp;correlator=';
+
+videojs.hook('setup', function(myPlayerID){
+myPlayer = myPlayerID;
+myPlayer.ready(function() {
+if (myPlayer.usingPlugin('ima3')){
+	myPlayer.ima3.settings.serverUrl = serverUrl;
+}
+})
+});</code></pre>
+</li>
 </ol>
 </section>
+
 </article>
