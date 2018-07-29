@@ -675,46 +675,46 @@
 <ol class="bcls-tasklist">
 	<li>Just above the closing <code class="notranslate">head</code> tag, insert the following link statement which points to the location of the CSS for the overlay plugin.
 
-	<pre class="line-numbers">
-            <code class="notranlate language-javascript">
-              &lt;link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'&gt;
-            &lt;/head&gt;</code></pre>
+<pre class="line-numbers">
+<code class="notranlate language-javascript">
+  &lt;link href="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.css" rel='stylesheet'&gt;
+&lt;/head&gt;</code></pre>
 	</li>
 	<li>Just above the script block you added earlier, add the following <code class="notranslate">script</code> tag that is the actual JavaScript code that implements the overlay plugin functionality.
-	<pre class="line-numbers">
-            <code class="notranlate language-javascript"><span class="bcls-highlight">  &lt;script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"&gt;&lt;/script&gt;</span>
+<pre class="line-numbers">
+<code class="notranlate language-javascript"><span class="bcls-highlight">  &lt;script src="//players.brightcove.net/videojs-overlay/lib/videojs-overlay.js"&gt;&lt;/script&gt;</span>
 
-              &lt;script type="text/javascript"&gt;
-                videojs("myPlayerID").on('loadedmetadata', function() {</code></pre>
+  &lt;script type="text/javascript"&gt;
+    videojs("myPlayerID").on('loadedmetadata', function() {</code></pre>
 	</li>
 	<li>Just after where the <code class="notranslate">play()</code> method is used, call the player's <code class="notranslate">overlay()</code> method, and add braces as a parameter to prepare for passing a JSON configuration object.
-	<pre class="line-numbers">
-            <code class="notranlate language-javascript">      myPlayer.overlay({
-                  });</code></pre>
+<pre class="line-numbers">
+<code class="notranlate language-javascript">myPlayer.overlay({
+      });</code></pre>
 	</li>
 	<li>Multiple overlay objects can be passed as an array to the plugin to display different content at various times and in various locations. In this case, just one overlay object will be passed to display some text, and have it appear only when the video is playing. When the video is paused the overlay will not be displayed. To implement this, add the following overlay object as a configuration parameter.
-	<pre class="line-numbers">
-            <code class="notranlate language-javascript">        overlays: [{
-                      content: 'This event-triggered overlay message appears when the video is playing',
-                      start: 'play',
-                      end: 'pause'
-                    }]</code></pre>
+<pre class="line-numbers">
+<code class="notranlate language-javascript">overlays: [{
+  content: 'This event-triggered overlay message appears when the video is playing',
+  start: 'play',
+  end: 'pause'
+}]</code></pre>
 	</li>
 	<li>Confirm your script block appears as follows, and that the overlay plugin has been called and configured correctly.
-	<pre class="line-numbers">
-            <code class="notranslate language-html">  &lt;script type="text/javascript"&gt;
-                videojs("myPlayerID").on('loadedmetadata', function() {
-                  var myPlayer = this;
-                  myPlayer.play();
-                  myPlayer.overlay({
-                    overlays: [{
-                      content: 'This event-triggered overlay message appears when the video is playing',
-                      start: 'play',
-                      end: 'pause'
-                    }]
-                  });
-                });
-              &lt;/script&gt;</code></pre>
+<pre class="line-numbers">
+<code class="notranslate language-html">  &lt;script type="text/javascript"&gt;
+    videojs("myPlayerID").on('loadedmetadata', function() {
+      var myPlayer = this;
+      myPlayer.play();
+      myPlayer.overlay({
+        overlays: [{
+          content: 'This event-triggered overlay message appears when the video is playing',
+          start: 'play',
+          end: 'pause'
+        }]
+      });
+    });
+  &lt;/script&gt;</code></pre>
 	</li>
 	<li>Save your changes and refresh your page in the browser to see the video automatically start playing. You will see the overlay appear when the video starts. Pause the video to see the overlay removed.
 	<aside class="bcls-aside bcls-aside--information">Note: The implementation of the Overlay Plugin show here will only be used with the player on the specific HTML page. You can add a plugin to be part of a player no matter where or how many times the player is used without having to copy and paste code repeatedly. See the <a href="/node/18081">Quick Start to Plugin Development</a> to see a developer oriented approach to the implementation, or the <a href="/node/14053">Configuring Player Plugins</a> document to see how to implement the plugin in the player using Studio.</aside>
