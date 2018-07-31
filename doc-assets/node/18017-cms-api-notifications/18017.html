@@ -1,31 +1,24 @@
 <article class="bcls-article">
-  <div class="bcls-section" id="cmsAPI">
-    <h2>Overview
-    </h2>
-    <p>You can receive notifications when
-      <code>video_change
-      </code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span class="”notranslate”">HTTP</span>
-      <code>POST
-      </code> requests.
-    </p>
-    <h3>Setup
-    </h3>
-    <p>You can specify up to 10 endpoints to receive notifications by making a
-      <code>POST
-      </code> request to
-      <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions
-      </code> and including JSON in the request body like this:
-    </p>
-    <pre class="line-numbers">
+<div class="bcls-section" id="cmsAPI">
+<h2>Overview</h2>
+
+<p>You can receive notifications when <code>video_change </code> events occur in your video library. Notifications will be sent to the URL you specify, which should point to an application capable of handling <span class="”notranslate”">HTTP</span> <code>POST </code> requests.</p>
+
+<h3>Setup</h3>
+
+<p>You can specify up to 10 endpoints to receive notifications by making a <code>POST </code> request to <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions </code> and including JSON in the request body like this:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
 "events":["video-change"]
 }
 </code>
 </pre>
-    <p>Notifications are sent in JSON format. Here's an example:
-    </p>
-    <pre class="line-numbers">
+
+<p>Notifications are sent in JSON format. Here's an example:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{"timestamp":1423840514446,
 "account_id":"775205503001",
 "event":"video-change",
@@ -33,151 +26,100 @@
 "version":26}
 </code>
 </pre>
-    <aside class="bcls-aside bcls-aside--information">There is currently no other way to subscribe to notifications except through the API.
-    </aside>
-    <h3>Notification fields
-    </h3>
-    <table class="bcls-table">
-      <thead class="bcls-table__head">
-        <tr>
-          <th>Item
-          </th>
-          <th>Description
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bcls-table__body">
-        <tr>
-          <td>
-            <code>timestamp
-            </code>
-          </td>
-          <td>time when the event occurred in <span class="”notranslate”">Epoch</span> milliseconds
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <code>account_id
-            </code>
-          </td>
-          <td>the <span class="”notranslate”">Video Cloud</span> account id
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <code>event
-            </code>
-          </td>
-          <td>the type of event - currently this will always be
-            <code>video-change
-            </code>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <code>video
-            </code>
-          </td>
-          <td>the video ID
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <code>version
-            </code>
-          </td>
-          <td>the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p>Requests to create a subscription will receive an <span class="”notranslate”">HTTP</span> 422 error response for the following conditions:
-    </p>
-    <ul>
-      <li>The
-        <code>endpoint
-        </code> or
-        <code>events
-        </code> field is missing from the request body</li>
-      <li>The
-        <code>events
-        </code> field value is not a list (array)</li>
-      <li>The subscription defined already exists</li>
-      <li>You already have 10 subscriptions to this event</li>
-    </ul>
-    <h3>Notification failures
-    </h3>
-    <p>The notification system treats any
-      <code>4xx
-      </code> or
-      <code>5xx
-      </code> return from the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.
-    </p>
-    <aside class="bcls-aside bcls-aside--information">
-      <code>video_change
-      </code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.
-    </aside>
-    <h3>Firewalls
-    </h3>
-    <p>In case your organization has a strict policy regarding sources of incoming traffic through your firewall, we allow all AWS East region IPs. This is subject to change, so all AWS IPs should be whitelisted. See <a href="http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html</a> for more information.
-    </p>
-    <h3>Endpoint for notification subscriptions
-    </h3>
-    <pre class="line-numbers">
+
+<aside class="bcls-aside bcls-aside--information">There is currently no other way to subscribe to notifications except through the API.</aside>
+
+<h3>Notification fields</h3>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Item</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>timestamp </code></td>
+			<td>time when the event occurred in <span class="”notranslate”">Epoch</span> milliseconds</td>
+		</tr>
+		<tr>
+			<td><code>account_id </code></td>
+			<td>the <span class="”notranslate”">Video Cloud</span> account id</td>
+		</tr>
+		<tr>
+			<td><code>event </code></td>
+			<td>the type of event - currently this will always be <code>video-change </code></td>
+		</tr>
+		<tr>
+			<td><code>video </code></td>
+			<td>the video ID</td>
+		</tr>
+		<tr>
+			<td><code>version </code></td>
+			<td>the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Requests to create a subscription will receive an <span class="”notranslate”">HTTP</span> 422 error response for the following conditions:</p>
+
+<ul>
+	<li>The <code>endpoint </code> or <code>events </code> field is missing from the request body</li>
+	<li>The <code>events </code> field value is not a list (array)</li>
+	<li>The subscription defined already exists</li>
+	<li>You already have 10 subscriptions to this event</li>
+</ul>
+
+<h3>Notification failures</h3>
+
+<p>The notification system treats any <code>4xx </code> or <code>5xx </code> return from the customer server as a retry-able failure. Failing callbacks will be retried up to 20 times, with an exponentially increasing delay between subsequent callbacks. The first few retries will happen within minutes of the initial callback attempt. If the callback continues failing, and we get all the way out to the 20th retry, the retry delay will be a few days.</p>
+
+<aside class="bcls-aside bcls-aside--information"><code>video_change </code> events are triggered by automated system processes as well as user actions, so these events will not always corresponds to changes you made to video properties in Studio or via the APIs.</aside>
+
+<h3>Firewalls</h3>
+
+<p>In case your organization has a strict policy regarding sources of incoming traffic through your firewall, we allow all AWS East region IPs. This is subject to change, so all AWS IPs should be whitelisted. See <a href="http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html</a> for more information.</p>
+
+<h3>Endpoint for notification subscriptions</h3>
+
+<pre class="line-numbers">
 <code class="language-http">/accounts/{account_id}/subscriptions
 </code>
 </pre>
-    <h3 id="createSubscription">Create a new subscription
-    </h3>
-    <p>To create a new subscription, submit a
-      <code>POST
-      </code> request with a request body including the endpoint that you want notifications delivered to and
-      <code>video-change
-      </code> as the single item in an
-      <code>events
-      </code> array:
-    </p>
-    <pre class="line-numbers">
+
+<h3 id="createSubscription">Create a new subscription</h3>
+
+<p>To create a new subscription, submit a <code>POST </code> request with a request body including the endpoint that you want notifications delivered to and <code>video-change </code> as the single item in an <code>events </code> array:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{ "endpoint": "http://solutions.brightcove.com:9002", "events": [ "video-change" ] }
 </code>
 </pre>
-    <h3 id="getSubscriptions">Get a list of your subscriptions
-    </h3>
-    <p>To get a list of all your subscriptions, send a
-      <code>GET
-      </code> request to the subscriptions endpoint.
-    </p>
-    <h3 id="getSubscription">Get or Delete a single subscription
-    </h3>
-    <p>Use the following endpoint to get or delete a single subscription:
-    </p>
-    <h4>Endpoint
-    </h4>
-    <pre class="line-numbers">
+
+<h3 id="getSubscriptions">Get a list of your subscriptions</h3>
+
+<p>To get a list of all your subscriptions, send a <code>GET </code> request to the subscriptions endpoint.</p>
+
+<h3 id="getSubscription">Get or Delete a single subscription</h3>
+
+<p>Use the following endpoint to get or delete a single subscription:</p>
+
+<h4>Endpoint</h4>
+
+<pre class="line-numbers">
 <code class="language-http">/accounts/{account_id}/subscriptions/{subscription_id}
 </code>
 </pre>
-    <p>A
-      <code>GET
-      </code> request will retrieve the subscription. A
-      <code>DELETE
-      </code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.
-    </p>
-  </div>
-  <section id="What_triggers" class="bcls-section">
-    <h2>What triggers notifications?
-    </h2>
-    <p>
-      <code>video-change
-      </code> events are triggered by any change in the video metadata. This includes any change to the video made in Studio or through a <span class="notranslate">CMS API</span> write method. There are also system events that will trigger
-      <code>video-change
-      </code> events.
-    </p>
-    <p>What will <strong>not</strong> trigger a
-      <code>video-change
-      </code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no
-      <code>video-change
-      </code> event will occur, and no notification will be sent.
-    </p>
-  </section>
+
+<p>A <code>GET </code> request will retrieve the subscription. A <code>DELETE </code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
+</div>
+
+<section id="What_triggers" class="bcls-section">
+<h2>What triggers notifications?</h2>
+
+<p><code>video-change </code> events are triggered by any change in the video metadata. This includes any change to the video made in Studio or through a <span class="notranslate">CMS API</span> write method. There are also system events that will trigger <code>video-change </code> events.</p>
+
+<p>What will <strong>not</strong> trigger a <code>video-change </code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no <code>video-change </code> event will occur, and no notification will be sent.</p>
+</section>
 </article>
