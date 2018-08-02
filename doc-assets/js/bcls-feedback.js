@@ -36,7 +36,8 @@ var BCLS_feedback = ( function (window, document) {
   if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
     feedbackParams.bc_account = 'unknown';
   }
-  feedbackParams.title = document.querySelector('h1').textContent;
+
+  feedbackParams.title = document.querySelector('title').textContent;
   if (feedbackParams.title.indexOf('Zencoder') > 0) {
     feedbackParams.product = 'Zencoder';
   } else if (feedbackParams.title.indexOf('Live API') > 0) {
