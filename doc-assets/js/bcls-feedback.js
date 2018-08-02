@@ -40,7 +40,7 @@ var BCLS_feedback = ( function (window, document) {
   feedbackParams.title = document.querySelector('title').textContent;
   if (feedbackParams.title.indexOf('Zencoder') > 0) {
     feedbackParams.product = 'Zencoder';
-  } else if (feedbackParams.title.indexOf('Live API') > 0) {
+  } else if (feedbackParams.title.indexOf('Live') > 0) {
     feedbackParams.product = 'Live';
   } else if (feedbackParams.title.indexOf('Once') > 0) {
     feedbackParams.product = 'Once';
