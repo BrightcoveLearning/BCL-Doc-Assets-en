@@ -165,6 +165,10 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         }
     }
 
+    function buildComparisonTable() {
+      
+    }
+
     function buildSummaryTable() {
         var newSectionNode = document.createElement("section"),
             sectionHeadingNode = document.createElement("h2"),
