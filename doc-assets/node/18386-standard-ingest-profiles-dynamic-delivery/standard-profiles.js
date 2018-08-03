@@ -166,7 +166,9 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
     }
 
     function buildComparisonTable() {
-      
+      var comparisonSection = createEl('section', {class:'bcls-section'}),
+        comparisonTable = createEl('table', {class:'bcls-table'}),
+        comparisonTableHead = createEl()
     }
 
     function buildSummaryTable() {
