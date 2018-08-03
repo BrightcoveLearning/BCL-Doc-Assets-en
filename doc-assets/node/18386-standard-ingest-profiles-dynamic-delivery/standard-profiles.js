@@ -169,7 +169,7 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
     }
 
     function buildComparisonTable() {
-      var profiles = data.BCLSprofilesDynamic,
+      var profiles = data.BCLSprofilesStatic,
         comparisonTableHead = document.getElementById('comparisonTableHead'),
         comparisonTableBody = document.getElementById('comparisonTableBody'),
         noImg = '//learning-services-media.brightcove.com/doc-assets/general/images/x16.png',
@@ -186,10 +186,13 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
         bodyFrag = document.createDocumentFragment(),
         headFrag = document.createDocumentFragment();
       tr = document.createElement('tr');
+      th = document.createElement('th');
+      th.textContent = 'Renditions';
+      tr.appendChild(th);
       // build table headers
       iMax = profiles.length;
       for (i = 0; i < iMax; i++) {
-        th = document.createEl('th', {class: 'notranslate'});
+        th = createEl('th', {class: 'notranslate'});
         a = createEl('a', {'href', '#' + profiles[i].name});
         a.textContent = profiles[i].name;
         tr.appendChild(th);
@@ -198,11 +201,81 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
       headFrag.appendChild(tr);
 
       // build table body
+      // audio renditions
       iMax = audioRenditions.length;
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
-        td = document.createElement('td')
+        td = createEl('td', {class: 'notranslate'});
+        td.textContent = audioRenditions[i].id;
+        tr.appendChild(td);
+        jMax = profiles.length;
+        for (j = 0; j < jMax; j++) {
+          td = createEl('td'));
+          img = document.createElement('img');
+          if (isItemInArray(profiles[j], audioRenditions[i].id)) {
+            img.setAttribute('src', yesImg);
+            img.setAttribute('alt', 'yes');
+          } else {
+            img.setAttribute('src', noImg);
+            img.setAttribute('alt', 'no');
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+        }
+        bodyFrag.appendChild(tr);
       }
+
+      // dynamic video Renditions
+      iMax = videoRenditions.length;
+      for (i = 0; i < iMax; i++) {
+        tr = document.createElement('tr');
+        td = createEl('td', {class: 'notranslate'});
+        td.textContent = videoRenditions[i].id;
+        tr.appendChild(td);
+        jMax = profiles.length;
+        for (j = 0; j < jMax; j++) {
+          td = createEl('td'));
+          img = document.createElement('img');
+          if (isItemInArray(profiles[j], videoRenditions[i].id)) {
+            img.setAttribute('src', yesImg);
+            img.setAttribute('alt', 'yes');
+          } else {
+            img.setAttribute('src', noImg);
+            img.setAttribute('alt', 'no');
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+        }
+        bodyFrag.appendChild(tr);
+      }
+
+      // progressive video Renditions
+      iMax = progressiveRenditions.length;
+      for (i = 0; i < iMax; i++) {
+        tr = document.createElement('tr');
+        td = createEl('td', {class: 'notranslate'});
+        td.textContent = progressiveRenditions[i].id;
+        tr.appendChild(td);
+        jMax = profiles.length;
+        for (j = 0; j < jMax; j++) {
+          td = createEl('td'));
+          img = document.createElement('img');
+          if (isItemInArray(profiles[j], progressiveRenditions[i].id)) {
+            img.setAttribute('src', yesImg);
+            img.setAttribute('alt', 'yes');
+          } else {
+            img.setAttribute('src', noImg);
+            img.setAttribute('alt', 'no');
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+        }
+        bodyFrag.appendChild(tr);
+      }
+
+      // add to doc
+      comparisonTableHead.appendChild(headFrag);
+      comparisonTableBody.appendChild(bodyFrag);
     }
 
     function buildSummaryTable() {
