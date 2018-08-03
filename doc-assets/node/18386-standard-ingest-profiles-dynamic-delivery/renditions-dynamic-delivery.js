@@ -115,6 +115,10 @@ console.log('dataSet', dataSet);
         // build the table bodies
         buildTable(audioRenditions, audioFields, audioTableBody);
         buildTable(videoRenditions, videoFields, videoTableBody);
-        buildTable(progressiveData.renditions, progressiveFields, progressiveTableBody);
-
+        buildTable(progressiveRenditions, progressiveFields, progressiveTableBody);
+        return {
+          videoRenditions: videoRenditions,
+          audioRenditions: audioRenditions,
+          progressiveRenditions: progressiveRenditions
+        }
       })(window, document);
