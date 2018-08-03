@@ -872,6 +872,7 @@ console.log('item', item);
                                   }
                               }
                           }
+                          buildComparisonTable();
                           buildSummaryTable();
                           buildDetailTables();
 
@@ -887,6 +888,7 @@ console.log('item', item);
                         bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
                         // just use cached data and build the tables
                         data = bclsProfiles_cached;
+                        buildComparisonTable();
                         buildSummaryTable();
                         buildDetailTables();
 
