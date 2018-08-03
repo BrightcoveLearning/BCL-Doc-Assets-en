@@ -178,18 +178,27 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
         th,
         td,
         img,
+        a,
         i,
         iMax,
         j,
         jMax,
         bodyFrag = document.createDocumentFragment(),
         headFrag = document.createDocumentFragment();
-      tr = createEl('tr');
-      headFrag.appendChild(tr);
+      tr = document.createElement('tr');
+      // build table headers
       iMax = profiles.length;
       for (i = 0; i < iMax; i++) {
-        
+        th = document.createElement('th');
+        a = createEl('a', {'href', '#' + profiles[i].name});
+        a.textContent = profiles[i].name;
+        tr.appendChild(th);
+        th.appendChild(a);
       }
+      headFrag.appendChild(tr);
+
+      // build table body
+      // 
     }
 
     function buildSummaryTable() {
