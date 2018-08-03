@@ -198,7 +198,7 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
       headFrag.appendChild(tr);
 
       // build table body
-      // 
+      
     }
 
     function buildSummaryTable() {
