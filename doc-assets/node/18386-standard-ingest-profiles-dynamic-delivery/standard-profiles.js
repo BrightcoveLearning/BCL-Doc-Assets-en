@@ -189,7 +189,7 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
       // build table headers
       iMax = profiles.length;
       for (i = 0; i < iMax; i++) {
-        th = document.createElement('th');
+        th = document.createEl('th', {class: 'notranslate'});
         a = createEl('a', {'href', '#' + profiles[i].name});
         a.textContent = profiles[i].name;
         tr.appendChild(th);
@@ -198,7 +198,11 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
       headFrag.appendChild(tr);
 
       // build table body
-      
+      iMax = audioRenditions.length;
+      for (i = 0; i < iMax; i++) {
+        tr = document.createElement('tr');
+        td = document.createElement('td')
+      }
     }
 
     function buildSummaryTable() {
