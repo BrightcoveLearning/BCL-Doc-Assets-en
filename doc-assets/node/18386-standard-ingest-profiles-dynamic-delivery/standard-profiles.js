@@ -169,9 +169,27 @@ var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions,
     }
 
     function buildComparisonTable() {
-      var comparisonSection = createEl('section', {class:'bcls-section'}),
-        comparisonTable = createEl('table', {class:'bcls-table'}),
-        comparisonTableHead = createEl()
+      var profiles = data.BCLSprofilesDynamic,
+        comparisonTableHead = document.getElementById('comparisonTableHead'),
+        comparisonTableBody = document.getElementById('comparisonTableBody'),
+        noImg = '//learning-services-media.brightcove.com/doc-assets/general/images/x16.png',
+        yesImg = '//learning-services-media.brightcove.com/doc-assets/general/images/check16.png',
+        tr,
+        th,
+        td,
+        img,
+        i,
+        iMax,
+        j,
+        jMax,
+        bodyFrag = document.createDocumentFragment(),
+        headFrag = document.createDocumentFragment();
+      tr = createEl('tr');
+      headFrag.appendChild(tr);
+      iMax = profiles.length;
+      for (i = 0; i < iMax; i++) {
+        
+      }
     }
 
     function buildSummaryTable() {
