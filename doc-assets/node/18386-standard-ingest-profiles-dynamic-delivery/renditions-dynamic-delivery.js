@@ -21,34 +21,6 @@ var BCLSrenditions = (function(window, document) {
         rendition;
 
       /**
-       * sort an array of objects based on an object property
-       * @param {array} targetArray - array to be sorted
-       * @param {string|number} objProperty - object property to sort on
-       * @return sorted array
-       */
-      function sortArray(targetArray, objProperty) {
-        targetArray.sort(function(a, b) {
-          var propA, propB;
-          if (typeof(targetArray[0][objProperty]) === 'string') {
-            propA = a[objProperty].toLowerCase();
-            propB = b[objProperty].toLowerCase();
-          } else {
-            propA = a[objProperty];
-            propB = b[objProperty];
-          }
-          // sort ascending; reverse propA and propB to sort descending
-          if (propA < propB) {
-            return -1;
-          } else if (propA > propB) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
-        return targetArray;
-      }
-
-      /**
        * Builds a table body
        * @param {Array} dataSet array of rendition settings
        * @param {Array} fields array of fields for the rendition
@@ -89,29 +61,6 @@ console.log('dataSet', dataSet);
         el.appendChild(frag);
       }
 
-      // separate out audio and video renditions
-      iMax = renditionData.renditions.length;
-      for (i = 0; i < iMax; i++) {
-        if (renditionData.renditions[i].kind === 'video') {
-          videoRenditions.push(renditionData.renditions[i]);
-        } else {
-          audioRenditions.push(renditionData.renditions[i]);
-        }
-      }
-
-      // sort the data sets by height and then bitrate
-      videoRenditions.sort(function(a, b) {
-        x = a.encoding_settings.height - b.encoding_settings.height;
-        return x === 0 ? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
-      });
-      progressiveData.renditions.sort(function(a, b) {
-        x = a.encoding_settings.height - b.encoding_settings.height;
-        return x === 0 ? a.encoding_settings.video_bitrate - b.encoding_settings.video_bitrate : x;
-      });
-        // console.log('videoRenditions', videoRenditions);
-        console.log('progressiveData', progressiveData.renditions);
-        // console.log('progressiveFields', progressiveFields);
-        // console.log('progressiveTableBody', progressiveTableBody);
         // build the table bodies
         buildTable(audioRenditions, audioFields, audioTableBody);
         buildTable(videoRenditions, videoFields, videoTableBody);
