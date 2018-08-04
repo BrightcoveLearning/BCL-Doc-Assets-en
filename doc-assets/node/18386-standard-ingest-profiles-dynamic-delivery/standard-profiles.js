@@ -192,8 +192,10 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       // build table headers
       iMax = profiles.length;
       for (i = 0; i < iMax; i++) {
-        th = createEl('th', {'class': 'notranslate'});
-        a = createEl('a', {'href', '#' + profiles[i].name});
+        th = document.createElement('th');
+        th.setAttribute('class', 'notranslate')
+        a = document.createElement('a');
+        a.setAttribute('href', '#' + profiles[i].name)
         a.textContent = profiles[i].name;
         tr.appendChild(th);
         th.appendChild(a);
@@ -205,7 +207,8 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       iMax = audioRenditions.length;
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
-        td = createEl('td', {'class': 'notranslate'});
+        td = document.createElement('td');
+        td.setAttribute('class': 'notranslate')
         td.textContent = audioRenditions[i].id;
         tr.appendChild(td);
         jMax = profiles.length;
@@ -229,7 +232,8 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       iMax = videoRenditions.length;
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
-        td = createEl('td', {'class': 'notranslate'});
+        td = document.createElement('td');
+        td.setAttribute('class': 'notranslate')
         td.textContent = videoRenditions[i].id;
         tr.appendChild(td);
         jMax = profiles.length;
@@ -253,7 +257,8 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       iMax = progressiveRenditions.length;
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
-        td = createEl('td', {class: 'notranslate'});
+        td = document.createElement('td');
+        td.setAttribute('class': 'notranslate')
         td.textContent = progressiveRenditions[i].id;
         tr.appendChild(td);
         jMax = profiles.length;
