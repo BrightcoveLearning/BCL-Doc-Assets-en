@@ -215,7 +215,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         for (j = 0; j < jMax; j++) {
           td = document.createElement('td');
           img = document.createElement('img');
-          if (isItemInArray(profiles[j], audioRenditions[i].id)) {
+          if (isItemInArray(profiles[j].dynamic_origin.renditions, audioRenditions[i].id)) {
             img.setAttribute('src', yesImg);
             img.setAttribute('alt', 'yes');
           } else {
@@ -240,7 +240,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         for (j = 0; j < jMax; j++) {
           td = document.createElement('td');
           img = document.createElement('img');
-          if (isItemInArray(profiles[j], videoRenditions[i].id)) {
+          if (isItemInArray(profiles[j].dynamic_origin.renditions, videoRenditions[i].id)) {
             img.setAttribute('src', yesImg);
             img.setAttribute('alt', 'yes');
           } else {
@@ -265,7 +265,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         for (j = 0; j < jMax; j++) {
           td = document.createElement('td');
           img = document.createElement('img');
-          if (isItemInArray(profiles[j], progressiveRenditions[i].id)) {
+          if (isItemInArray(profiles[j].dynamic_origin.renditions, progressiveRenditions[i].id)) {
             img.setAttribute('src', yesImg);
             img.setAttribute('alt', 'yes');
           } else {
