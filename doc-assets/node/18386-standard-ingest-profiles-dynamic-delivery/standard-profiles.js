@@ -1,11 +1,15 @@
-var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
+var codeBlocks;
+var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions, BCLSrenditions.audioRenditions, BCLSrenditions.progressiveRenditions, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
         data = bclsProfiles_cached,
         headersArray,
         prop,
-        navLabel = [];
+        navLabel = [],
+        videoRenditions = BCLSrenditions.videoRenditions,
+        audioRenditions = BCLSrenditions.audioRenditions,
+        progressiveRenditions = BCLSrenditions.progressiveRenditions;
     /**
      * determines whether specified item is in an array
      *
@@ -165,7 +169,113 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
     }
 
     function buildComparisonTable() {
+      var profiles = data.BCLSprofilesStatic,
+        comparisonTableHead = document.getElementById('comparisonTableHead'),
+        comparisonTableBody = document.getElementById('comparisonTableBody'),
+        noImg = '//learning-services-media.brightcove.com/doc-assets/general/images/x16.png',
+        yesImg = '//learning-services-media.brightcove.com/doc-assets/general/images/check16.png',
+        tr,
+        th,
+        td,
+        img,
+        a,
+        i,
+        iMax,
+        j,
+        jMax,
+        bodyFrag = document.createDocumentFragment(),
+        headFrag = document.createDocumentFragment();
+      tr = document.createElement('tr');
+      th = document.createElement('th');
+      th.textContent = 'Renditions';
+      tr.appendChild(th);
+      // build table headers
+      iMax = profiles.length;
+      for (i = 0; i < iMax; i++) {
+        th = createEl('th', {class: 'notranslate'});
+        a = createEl('a', {'href', '#' + profiles[i].name});
+        a.textContent = profiles[i].name;
+        tr.appendChild(th);
+        th.appendChild(a);
+      }
+      headFrag.appendChild(tr);
 
+      // build table body
+      // audio renditions
+      iMax = audioRenditions.length;
+      for (i = 0; i < iMax; i++) {
+        tr = document.createElement('tr');
+        td = createEl('td', {class: 'notranslate'});
+        td.textContent = audioRenditions[i].id;
+        tr.appendChild(td);
+        jMax = profiles.length;
+        for (j = 0; j < jMax; j++) {
+          td = createEl('td'));
+          img = document.createElement('img');
+          if (isItemInArray(profiles[j], audioRenditions[i].id)) {
+            img.setAttribute('src', yesImg);
+            img.setAttribute('alt', 'yes');
+          } else {
+            img.setAttribute('src', noImg);
+            img.setAttribute('alt', 'no');
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+        }
+        bodyFrag.appendChild(tr);
+      }
+
+      // dynamic video Renditions
+      iMax = videoRenditions.length;
+      for (i = 0; i < iMax; i++) {
+        tr = document.createElement('tr');
+        td = createEl('td', {class: 'notranslate'});
+        td.textContent = videoRenditions[i].id;
+        tr.appendChild(td);
+        jMax = profiles.length;
+        for (j = 0; j < jMax; j++) {
+          td = createEl('td'));
+          img = document.createElement('img');
+          if (isItemInArray(profiles[j], videoRenditions[i].id)) {
+            img.setAttribute('src', yesImg);
+            img.setAttribute('alt', 'yes');
+          } else {
+            img.setAttribute('src', noImg);
+            img.setAttribute('alt', 'no');
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+        }
+        bodyFrag.appendChild(tr);
+      }
+
+      // progressive video Renditions
+      iMax = progressiveRenditions.length;
+      for (i = 0; i < iMax; i++) {
+        tr = document.createElement('tr');
+        td = createEl('td', {class: 'notranslate'});
+        td.textContent = progressiveRenditions[i].id;
+        tr.appendChild(td);
+        jMax = profiles.length;
+        for (j = 0; j < jMax; j++) {
+          td = createEl('td'));
+          img = document.createElement('img');
+          if (isItemInArray(profiles[j], progressiveRenditions[i].id)) {
+            img.setAttribute('src', yesImg);
+            img.setAttribute('alt', 'yes');
+          } else {
+            img.setAttribute('src', noImg);
+            img.setAttribute('alt', 'no');
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+        }
+        bodyFrag.appendChild(tr);
+      }
+
+      // add to doc
+      comparisonTableHead.appendChild(headFrag);
+      comparisonTableBody.appendChild(bodyFrag);
     }
 
     function buildSummaryTable() {
@@ -762,6 +872,7 @@ console.log('item', item);
                                   }
                               }
                           }
+                          buildComparisonTable();
                           buildSummaryTable();
                           buildDetailTables();
 
@@ -777,6 +888,7 @@ console.log('item', item);
                         bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
                         // just use cached data and build the tables
                         data = bclsProfiles_cached;
+                        buildComparisonTable();
                         buildSummaryTable();
                         buildDetailTables();
 
