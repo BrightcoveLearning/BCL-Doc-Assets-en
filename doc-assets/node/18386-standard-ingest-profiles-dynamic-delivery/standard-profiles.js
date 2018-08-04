@@ -1,4 +1,4 @@
-var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions, BCLSrenditions.audioRenditions, BCLSrenditions.progressiveRenditions, bclsProfiles_cached) {
+var BCLSprofiles = ( function (window, document, videoRenditions, audioRenditions, progressiveRenditions, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
         requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
