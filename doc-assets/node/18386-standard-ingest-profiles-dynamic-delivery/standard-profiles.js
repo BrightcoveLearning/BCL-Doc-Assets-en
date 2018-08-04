@@ -213,7 +213,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         tr.appendChild(td);
         jMax = profiles.length;
         for (j = 0; j < jMax; j++) {
-          td = createEl('td'));
+          td = document.createElement('td');
           img = document.createElement('img');
           if (isItemInArray(profiles[j], audioRenditions[i].id)) {
             img.setAttribute('src', yesImg);
@@ -238,7 +238,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         tr.appendChild(td);
         jMax = profiles.length;
         for (j = 0; j < jMax; j++) {
-          td = createEl('td'));
+          td = document.createElement('td');
           img = document.createElement('img');
           if (isItemInArray(profiles[j], videoRenditions[i].id)) {
             img.setAttribute('src', yesImg);
@@ -263,7 +263,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         tr.appendChild(td);
         jMax = profiles.length;
         for (j = 0; j < jMax; j++) {
-          td = createEl('td'));
+          td = document.createElement('td');
           img = document.createElement('img');
           if (isItemInArray(profiles[j], progressiveRenditions[i].id)) {
             img.setAttribute('src', yesImg);
