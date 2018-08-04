@@ -208,7 +208,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
         td = document.createElement('td');
-        td.setAttribute('class': 'notranslate')
+        td.setAttribute('class', 'notranslate');
         td.textContent = audioRenditions[i].id;
         tr.appendChild(td);
         jMax = profiles.length;
@@ -233,7 +233,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
         td = document.createElement('td');
-        td.setAttribute('class': 'notranslate')
+        td.setAttribute('class', 'notranslate');
         td.textContent = videoRenditions[i].id;
         tr.appendChild(td);
         jMax = profiles.length;
@@ -258,7 +258,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       for (i = 0; i < iMax; i++) {
         tr = document.createElement('tr');
         td = document.createElement('td');
-        td.setAttribute('class': 'notranslate')
+        td.setAttribute('class', 'notranslate');
         td.textContent = progressiveRenditions[i].id;
         tr.appendChild(td);
         jMax = profiles.length;
