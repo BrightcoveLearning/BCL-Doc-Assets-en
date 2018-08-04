@@ -192,7 +192,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
       // build table headers
       iMax = profiles.length;
       for (i = 0; i < iMax; i++) {
-        th = createEl('th', {'class': 'notranslate'});
+        th = createEl('th', {'class', 'notranslate'});
         a = createEl('a', {'href', '#' + profiles[i].name});
         a.textContent = profiles[i].name;
         tr.appendChild(th);
