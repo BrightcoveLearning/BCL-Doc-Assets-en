@@ -1,4 +1,3 @@
-var codeBlocks;
 var BCLSprofiles = ( function (window, document, BCLSrenditions.videoRenditions, BCLSrenditions.audioRenditions, BCLSrenditions.progressiveRenditions, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
