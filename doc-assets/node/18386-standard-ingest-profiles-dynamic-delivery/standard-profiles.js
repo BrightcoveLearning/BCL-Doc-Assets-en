@@ -216,7 +216,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
           td = document.createElement('td');
           img = document.createElement('img');
 console.log('profile'), profiles[j];
-          if (isItemInArray(profiles[j].dynamic_origin.renditions, audioRenditions[i].id)) {
+          if (isItemInArray(profiles[i].dynamic_origin.renditions, audioRenditions[i].id)) {
             img.setAttribute('src', yesImg);
             img.setAttribute('alt', 'yes');
             td.appendChild(img);
@@ -243,7 +243,7 @@ console.log('profile'), profiles[j];
         for (j = 0; j < jMax; j++) {
           td = document.createElement('td');
           img = document.createElement('img');
-          if (isItemInArray(profiles[j].dynamic_origin.renditions, videoRenditions[i].id)) {
+          if (isItemInArray(profiles[i].dynamic_origin.renditions, videoRenditions[i].id)) {
             img.setAttribute('src', yesImg);
             img.setAttribute('alt', 'yes');
             td.appendChild(img);
@@ -270,7 +270,7 @@ console.log('profile'), profiles[j];
         for (j = 0; j < jMax; j++) {
           td = document.createElement('td');
           img = document.createElement('img');
-          if (isItemInArray(profiles[j].dynamic_origin.renditions, progressiveRenditions[i].id)) {
+          if (isItemInArray(profiles[i].dynamic_origin.renditions, progressiveRenditions[i].id)) {
             img.setAttribute('src', yesImg);
             img.setAttribute('alt', 'yes');
             td.appendChild(img);
