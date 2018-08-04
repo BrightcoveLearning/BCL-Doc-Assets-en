@@ -1,4 +1,3 @@
-var codeBlocks;
 var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
         proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
@@ -166,7 +165,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
     }
 
     function buildComparisonTable() {
-      
+
     }
 
     function buildSummaryTable() {
