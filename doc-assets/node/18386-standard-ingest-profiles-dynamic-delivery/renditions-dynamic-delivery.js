@@ -27,7 +27,6 @@ var BCLSrenditions = (function(window, document) {
        * @param {HTMLElement} table body element to add the rows to
        */
       function buildTable(dataSet, fields, el) {
-console.log('dataSet', dataSet);
         var frag = new DocumentFragment(),
           tr,
           td,
