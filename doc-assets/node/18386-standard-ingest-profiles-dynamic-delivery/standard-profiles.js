@@ -93,18 +93,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         return out;
     }
     /**
-     * Logging function - safe for IE
-     * @param  {string} context description of the data
-     * @param  {*} message the data to be logged by the console
-     * @return {}
-     */
-    function bclslog(context, message) {
-        if (window.console && console.log) {
-            console.log(context, message);
-        }
-        return;
-    }
-    /**
      * create an element
      * @param  {string} type - the element type
      * @param  {object} attributes - attributes to add to the element
@@ -631,8 +619,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             }
             // dedupe the headers
             headersArray = dedupe(headersArray);
-            // bclslog("deduped headers array", headersArray);
-            // write the th elements to the string
             // create the table headers
             lMax = headersArray.length;
             tr = createEl("tr");
@@ -674,7 +660,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             }
         }
         mainSection.appendChild(fragment);
-        // bclslog("content built");
             // dynamic profiles
             iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
@@ -884,12 +869,10 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             tmpArr,
             item,
             getResponse = function () {
-                // bclslog("getting data");
                 try {
                     if (httpRequest.readyState === 4) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         // try {
-                        //   bclslog('response', httpRequest.responseText);
                           tmpArr = JSON.parse(httpRequest.responseText);
                           iMax = tmpArr.length;
                           data.BCLSprofilesStatic = [];
@@ -909,15 +892,8 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                           buildDetailTables();
 
 
-                        // } catch (e) {
-                        //   bclslog('invalid json', e);
-                        //   // just use cached data and build the tables
-                        //     data = bclsProfiles_cached;
-                        //     buildSummaryTable();
-                        //     buildDetailTables();
-                        // }
                       } else {
-                        bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
+                        console.log("There was a problem with the request. Request returned: ", httpRequest.status);
                         // just use cached data and build the tables
                         data = bclsProfiles_cached;
                         buildComparisonTable();
@@ -928,7 +904,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                     }
                   }
                   catch(e) {
-                    bclslog('Caught Exception: ', e);
+                    console.log('Caught Exception: ', e);
                   }
             };
         // set response handler
