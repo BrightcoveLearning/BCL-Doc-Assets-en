@@ -548,8 +548,13 @@ console.log('item', item);
             // static profiles
             iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
+            var renditionsArray = [],
+            renditionListHead,
+            renditionListItem;
             headersArray = [];
             profile = data.BCLSprofilesStatic[i];
+            renditionsArray = profile.dynamic_origin.renditions;
+            renditionsArray.sort();
             // remove id's and other stuff from data
             delete profile.id;
             delete profile.version;
@@ -564,10 +569,17 @@ console.log('item', item);
             profile.account_id = null;
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
-            sectionSubHeading = createEl("p");
-            renditionList = createEl('p', {'style':'font-weight:600;'});
-            text = document.createTextNode('Renditions included: ' + profile.dynamic_origin.renditions.join(', '));
+            sectionSubHeading = document.createElement("p");
+            renditionListHead = document.createElement('h5');
+            renditionList = createEl('ul', {'style':'font-weight:600;'});
+            renditionListHead.textContent = 'Renditions included:';
             renditionList.appendChild(text);
+            iMax = renditionsArray.length;
+            for (i = 0; i < iMax; i++) {
+              renditionListItem = document.createElement('li');
+              renditionListItem.textContent = renditionsArray[i].id;
+              renditionList.appendChild(renditionListItem);
+            }
             renditionListNote = createEl('p');
             renditionListNoteA = createEl('a', {href: '#Renditions'});
             text = document.createTextNode('Rendition Details for Dynamic Delivery');
@@ -585,6 +597,7 @@ console.log('item', item);
             profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
+            section.appendChild(renditionListHead);
             section.appendChild(renditionList);
             section.appendChild(renditionListNote);
             section.appendChild(sectionTableHeading);
