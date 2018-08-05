@@ -728,6 +728,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
+            section.appendChild(renditionListHead);
             section.appendChild(renditionList);
             section.appendChild(renditionListNote);
             section.appendChild(sectionTableHeading);
