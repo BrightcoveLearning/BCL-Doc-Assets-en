@@ -151,7 +151,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         // set initial visibilities
         for (i = 0; i < iMax; i++) {
             index = i;
-            // bclslog("index", index);
             if (index > 0) {
                 $this = h2s[i];
                 navObj = {};
@@ -160,7 +159,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                 navLabel.push(navObj);
             }
         }
-        // bclslog('navLabel', navLabel);
         // only create the nav widget if there is more than one item
         if (navLabel.length > 1) {
             // create in-page nav menu
@@ -508,7 +506,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
 
     }
     function buildDetailTables() {
-        // bclslog("building data tables");
+        // build the details of each rendition as a section
         var section,
             fragment = document.createDocumentFragment(),
             sectionHeading,
