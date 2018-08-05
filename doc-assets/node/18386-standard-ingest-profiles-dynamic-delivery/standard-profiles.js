@@ -576,7 +576,7 @@ console.log('renditionsArray', renditionsArray);
             iMax = renditionsArray.length;
             for (i = 0; i < iMax; i++) {
               renditionListItem = document.createElement('li');
-              renditionListItem.textContent = renditionsArray[i].id;
+              renditionListItem.textContent = renditionsArray[i];
               renditionList.appendChild(renditionListItem);
             }
             renditionListNote = createEl('p');
