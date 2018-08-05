@@ -93,6 +93,18 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         return out;
     }
     /**
+     * Logging function - safe for IE
+     * @param  {string} context description of the data
+     * @param  {*} message the data to be logged by the console
+     * @return {}
+     */
+    function bclslog(context, message) {
+        if (window.console && console.log) {
+            console.log(context, message);
+        }
+        return;
+    }
+    /**
      * create an element
      * @param  {string} type - the element type
      * @param  {object} attributes - attributes to add to the element
@@ -139,6 +151,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         // set initial visibilities
         for (i = 0; i < iMax; i++) {
             index = i;
+            // bclslog("index", index);
             if (index > 0) {
                 $this = h2s[i];
                 navObj = {};
@@ -147,6 +160,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                 navLabel.push(navObj);
             }
         }
+        // bclslog('navLabel', navLabel);
         // only create the nav widget if there is more than one item
         if (navLabel.length > 1) {
             // create in-page nav menu
@@ -320,6 +334,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
 
             for (j = 0; j < jMax; j++) {
                 // count up renditions of each kind
+// console.log('item.dynamic_origin.renditions[j]', item.dynamic_origin.renditions[j]);
                 if (!isAudio(item.dynamic_origin.renditions[j])) {
                     item.videoRenditions++;
                 } else {
@@ -493,6 +508,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
 
     }
     function buildDetailTables() {
+        // bclslog("building data tables");
         var section,
             fragment = document.createDocumentFragment(),
             sectionHeading,
@@ -531,7 +547,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             // static profiles
             iMax = data.BCLSprofilesStatic.length;
         for (i = 0; i < iMax; i++) {
-          console.log('i', i);
             var renditionsArray = [],
             renditionListHead,
             renditionListItem;
@@ -618,6 +633,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             }
             // dedupe the headers
             headersArray = dedupe(headersArray);
+            // bclslog("deduped headers array", headersArray);
             // write the th elements to the string
             // create the table headers
             lMax = headersArray.length;
@@ -660,13 +676,11 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             }
         }
         mainSection.appendChild(fragment);
+        // bclslog("content built");
             // dynamic profiles
             iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
-          var renditionsArray = [];
             profile = data.BCLSprofilesDynamic[i];
-            renditionsArray = profile.dynamic_origin.renditions;
-            renditionsArray.sort();
             headersArray = [];
             // remove id's and other stuff from data
             delete profile.id;
@@ -682,15 +696,9 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
-            renditionListHead = document.createElement('h5');
-            renditionList = createEl('ul', {'style':'font-weight:600;'});
-            renditionListHead.textContent = 'Audio and MP4 Renditions included:';
-            iMax = renditionsArray.length;
-            for (i = 0; i < iMax; i++) {
-              renditionListItem = document.createElement('li');
-              renditionListItem.textContent = renditionsArray[i];
-              renditionList.appendChild(renditionListItem);
-            }
+            renditionList = createEl('p');
+            text = document.createTextNode('Audio renditions included: ' + profile.dynamic_origin.renditions.join(', '));
+            renditionList.appendChild(text);
             renditionListNote = createEl('p');
             renditionListNoteA = createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
             text = document.createTextNode('Audio Rendition Details for Context Aware Encoding');
@@ -709,7 +717,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             profileCode = createEl("textarea", {class: 'bcls-code', style: 'height:20em;'});
             section.appendChild(sectionHeading);
             section.appendChild(sectionSubHeading);
-            section.appendChild(renditionListHead);
             section.appendChild(renditionList);
             section.appendChild(renditionListNote);
             section.appendChild(sectionTableHeading);
@@ -838,8 +845,8 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                     tr.appendChild(td);
                 }
             }
-            // fragment.appendChild(section);
         }
+        fragment.appendChild(section);
         mainSection.appendChild(fragment);
         // get reference to codeBlocks
         setCodeBlocks();
@@ -867,10 +874,12 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             tmpArr,
             item,
             getResponse = function () {
+                // bclslog("getting data");
                 try {
                     if (httpRequest.readyState === 4) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                         // try {
+                        //   bclslog('response', httpRequest.responseText);
                           tmpArr = JSON.parse(httpRequest.responseText);
                           iMax = tmpArr.length;
                           data.BCLSprofilesStatic = [];
@@ -885,22 +894,21 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                                   }
                               }
                           }
-                          console.log('data', data);
                           buildComparisonTable();
                           buildSummaryTable();
                           buildDetailTables();
 
 
                         // } catch (e) {
-                        // just use cached data and build the tables
+                        //   bclslog('invalid json', e);
+                        //   // just use cached data and build the tables
                         //     data = bclsProfiles_cached;
                         //     buildSummaryTable();
                         //     buildDetailTables();
                         // }
                       } else {
-                        console.log("There was a problem with the request. Request returned: ", httpRequest.status);
+                        bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
                         // just use cached data and build the tables
-                        console.log('using cached data');
                         data = bclsProfiles_cached;
                         buildComparisonTable();
                         buildSummaryTable();
@@ -910,7 +918,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                     }
                   }
                   catch(e) {
-                    console.log('Caught Exception: ', e);
+                    bclslog('Caught Exception: ', e);
                   }
             };
         // set response handler
