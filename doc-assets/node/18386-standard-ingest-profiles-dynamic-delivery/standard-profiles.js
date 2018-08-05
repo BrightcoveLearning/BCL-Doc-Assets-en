@@ -663,7 +663,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             // dynamic profiles
             iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
-          console.log('i', i);
           var renditionsArray = [];
             profile = data.BCLSprofilesDynamic[i];
             renditionsArray = profile.dynamic_origin.renditions;
@@ -839,8 +838,8 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
                     tr.appendChild(td);
                 }
             }
+            // fragment.appendChild(section);
         }
-        fragment.appendChild(section);
         mainSection.appendChild(fragment);
         // get reference to codeBlocks
         setCodeBlocks();
