@@ -573,7 +573,6 @@ console.log('item', item);
             renditionListHead = document.createElement('h5');
             renditionList = createEl('ul', {'style':'font-weight:600;'});
             renditionListHead.textContent = 'Renditions included:';
-            renditionList.appendChild(text);
             iMax = renditionsArray.length;
             for (i = 0; i < iMax; i++) {
               renditionListItem = document.createElement('li');
