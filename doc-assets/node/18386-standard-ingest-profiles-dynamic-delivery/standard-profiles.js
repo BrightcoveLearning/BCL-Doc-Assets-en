@@ -697,7 +697,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
             renditionList = createEl('p');
-            text = document.createTextNode('Audio renditions included: ' + profile.dynamic_origin.renditions.join(', '));
+            text = document.createTextNode('Audio and MP4 renditions included: ' + profile.dynamic_origin.renditions.join(', '));
             renditionList.appendChild(text);
             renditionListNote = createEl('p');
             renditionListNoteA = createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
