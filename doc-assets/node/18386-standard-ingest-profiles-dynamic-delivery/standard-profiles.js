@@ -451,7 +451,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
             item = data.BCLSprofilesDynamic[i];
-console.log('item', item);
             tr = document.createElement('tr');
             profiletbodyNodeCAE.appendChild(tr);
             td = document.createElement('td');
