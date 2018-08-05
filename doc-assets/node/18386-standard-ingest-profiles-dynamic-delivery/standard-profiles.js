@@ -622,7 +622,7 @@ console.log('renditionsArray', renditionsArray);
             sectionSubHeading.appendChild(link);
             text = document.createTextNode("Table of image rendition properties");
             sectionTableHeading.appendChild(text);
-            // now do the reditions
+            // now do the renditions
             // headersArray.push('renditions');
             jMax = profile.dynamic_origin.images.length;
             // get all properties and build the table headers
