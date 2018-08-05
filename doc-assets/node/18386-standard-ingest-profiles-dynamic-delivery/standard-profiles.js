@@ -555,6 +555,7 @@ console.log('item', item);
             profile = data.BCLSprofilesStatic[i];
             renditionsArray = profile.dynamic_origin.renditions;
             renditionsArray.sort();
+console.log('renditionsArray', renditionsArray);
             // remove id's and other stuff from data
             delete profile.id;
             delete profile.version;
