@@ -310,6 +310,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
         iMax = data.BCLSprofilesStatic.length;
         // massage data
         for (i = 0; i < iMax; i++) {
+console.log('i', i);
             item = data.BCLSprofilesStatic[i];
             item.videoRenditions = 0;
             item.audioRenditions = 0;
@@ -320,7 +321,6 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
 
             for (j = 0; j < jMax; j++) {
                 // count up renditions of each kind
-// console.log('item.dynamic_origin.renditions[j]', item.dynamic_origin.renditions[j]);
                 if (!isAudio(item.dynamic_origin.renditions[j])) {
                     item.videoRenditions++;
                 } else {
