@@ -534,7 +534,7 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             link,
             profilePre,
             profileCode,
-            i, j, jMax, iMax,
+            i, j, k, jMax, iMax, kMax,
             headings,
             profile,
             rendition,
@@ -572,10 +572,10 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             renditionListHead = document.createElement('h5');
             renditionList = createEl('ul', {'style':'font-weight:600;'});
             renditionListHead.textContent = 'Renditions included:';
-            iMax = renditionsArray.length;
-            for (i = 0; i < iMax; i++) {
+            kMax = renditionsArray.length;
+            for (k = 0; k < kMax; k++) {
               renditionListItem = document.createElement('li');
-              renditionListItem.textContent = renditionsArray[i];
+              renditionListItem.textContent = renditionsArray[k];
               renditionList.appendChild(renditionListItem);
             }
             renditionListNote = createEl('p');
@@ -680,7 +680,12 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             // dynamic profiles
             iMax = data.BCLSprofilesDynamic.length;
         for (i = 0; i < iMax; i++) {
+          var renditionsArray = [],
+            renditionListHead,
+            renditionListItem;
             profile = data.BCLSprofilesDynamic[i];
+            renditionsArray = profile.dynamic_origin.renditions;
+            renditionsArray.sort();
             headersArray = [];
             // remove id's and other stuff from data
             delete profile.id;
@@ -696,9 +701,15 @@ var BCLSprofiles = ( function (window, document, bclsProfiles_cached) {
             section = createEl("section", {class: "bcls-section"});
             sectionHeading = createEl("h2", {id: removeSpaces(profile.name)});
             sectionSubHeading = createEl("p");
-            renditionList = createEl('p');
-            text = document.createTextNode('Audio and MP4 renditions included: ' + profile.dynamic_origin.renditions.join(', '));
-            renditionList.appendChild(text);
+            renditionListHead = document.createElement('h5');
+            renditionList = createEl('ul', {'style':'font-weight:600;'});
+            renditionListHead.textContent = 'Audio and MP4 renditions included:';
+            kMax = renditionsArray.length;
+            for (k = 0; k < kMax; k++) {
+              renditionListItem = document.createElement('li');
+              renditionListItem.textContent = renditionsArray[k];
+              renditionList.appendChild(renditionListItem);
+            }
             renditionListNote = createEl('p');
             renditionListNoteA = createEl('a', {href: 'https://support.brightcove.com/overview-dynamic-ingest-api-dynamic-delivery#ingestProfile'});
             text = document.createTextNode('Audio Rendition Details for Context Aware Encoding');
