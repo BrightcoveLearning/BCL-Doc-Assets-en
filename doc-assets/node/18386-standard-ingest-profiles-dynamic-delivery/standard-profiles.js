@@ -458,6 +458,28 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
     return false;
   }
 
+  /**
+   * find index of an object in array of objects
+   * based on some property value
+   *
+   * @param {array} targetArray array to search
+   * @param {string} objProperty object property to search
+   * @param {string} value of the property to search for
+   * @return {integer} index of first instance if found, otherwise returns -1
+  */
+  function findObjectInArray(targetArray, objProperty, value) {
+      var i, totalItems = targetArray.length, objFound = false;
+      for (i = 0; i < totalItems; i++) {
+          if (targetArray[i][objProperty] === value) {
+              objFound = true;
+              return i;
+          }
+      }
+      if (objFound === false) {
+          return -1;
+      }
+  }
+
   /*
    * determines whether this profile is static
    * @param {Object} item the profile item
@@ -1355,6 +1377,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
       tmpArr,
       tmpArr2 = [],
       item,
+      idx,
       getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
@@ -1375,10 +1398,14 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
                 }
               }
               // reorder the static profile lis
-              iMax = data.BCLSprofilesStatic.length;
+              iMax = dd_profile_order.length;
               for (i = 0; i < iMax; i++) {
-                if (data.BCLSprofilesStatic[i].id === dd_profile_order[i])
+                idx = findObjectInArray(data.BCLSprofilesStatic, 'id', dd_profile_order[i]);
+                if (idx > -1) {
+                  tmpArr2.push(data.BCLSprofilesStatic[idx]);
+                }
               }
+              data.BCLSprofilesStatic = tmpArr2;
               buildComparisonTable();
               buildSummaryTable();
               buildDetailTables();
