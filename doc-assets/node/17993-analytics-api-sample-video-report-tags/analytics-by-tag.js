@@ -24,6 +24,8 @@ var BCLS = (function(window, document, Pikaday) {
     tags = 'bird,budapest',
     $request = document.getElementById('request'),
     $submitButton = document.getElementById('submitButton'),
+    csv = document.getElementById('csv'),
+    csvFormat = false,
     $selectData = document.getElementById('selectData'),
     $requestInputs = document.getElementsByClassName('aapi-request'),
     $responseFrame = document.getElementById('responseFrame'),
@@ -52,6 +54,18 @@ var BCLS = (function(window, document, Pikaday) {
     }
   }
 
+  /**
+   * determines if checkbox is checked
+   * @param  {htmlElement}  e the checkbox to check
+   * @return {Boolean}  true if box is checked
+   */
+  function isChecked(e) {
+    if (e.checked) {
+      return true;
+    }
+    return false;
+  }
+
   // construct the request
   function buildRequest() {
     var account_id = (isDefined($accountID.value)) ? $accountID.value : accountID;
@@ -78,6 +92,11 @@ var BCLS = (function(window, document, Pikaday) {
 
     // add limit and fields
     options.url += '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.tags';
+    // check format
+    if (isChecked(csv)) {
+      options.url += '&format=csv';
+      csvFormat = true;
+    }
     // add ref id filter
     options.url += '&where=video.q==tags:' + removeSpaces(tags);
     $request.textContent = options.url;
@@ -105,6 +124,7 @@ var BCLS = (function(window, document, Pikaday) {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
+              console.log('response');
               // some API requests return '{null}' for empty responses - breaks JSON.parse
               if (response === '{null}') {
                 response = null;
@@ -170,8 +190,13 @@ var BCLS = (function(window, document, Pikaday) {
   // send request
   $submitButton.addEventListener('click', function() {
     makeRequest(options, function(response) {
-      response = JSON.parse(response);
+      if (!csvFormat) {
+       response = JSON.parse(response);
       responseFrame.textContent = JSON.stringify(response, null, '  ');
+      } else {
+        responseFrame.textContent = response;
+      }
+
     });
   });
   // select all the data
