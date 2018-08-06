@@ -6,6 +6,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
     headersArray,
     prop,
     navLabel = [],
+    dd_profile_order = ['multi-platform-standard-static', 'multi-platform-extended-static-with-mp4', 'multi-platform-extended-static', 'multi-platform-standard-static-with-mp4']
     videoRenditions = [{
       "id": "default/video450",
       "version": 5,
@@ -1352,6 +1353,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
       i,
       iMax,
       tmpArr,
+      tmpArr2 = [],
       item,
       getResponse = function() {
         try {
@@ -1371,6 +1373,11 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
                     data.BCLSprofilesDynamic.push(item);
                   }
                 }
+              }
+              // reorder the static profile lis
+              iMax = data.BCLSprofilesStatic.length;
+              for (i = 0; i < iMax; i++) {
+                if (data.BCLSprofilesStatic[i].id === dd_profile_order[i])
               }
               buildComparisonTable();
               buildSummaryTable();
