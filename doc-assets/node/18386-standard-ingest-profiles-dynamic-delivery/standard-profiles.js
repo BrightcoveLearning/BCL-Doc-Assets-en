@@ -1400,7 +1400,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
               // reorder the static profile lis
               iMax = dd_profile_order.length;
               for (i = 0; i < iMax; i++) {
-                idx = findObjectInArray(data.BCLSprofilesStatic, 'id', dd_profile_order[i]);
+                idx = findObjectInArray(data.BCLSprofilesStatic, 'name', dd_profile_order[i]);
                 if (idx > -1) {
                   tmpArr2.push(data.BCLSprofilesStatic[idx]);
                 }
