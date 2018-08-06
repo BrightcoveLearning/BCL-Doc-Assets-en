@@ -6,7 +6,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
     headersArray,
     prop,
     navLabel = [],
-    dd_profile_order = ['multi-platform-standard-static', 'multi-platform-extended-static-with-mp4', 'multi-platform-extended-static', 'multi-platform-standard-static-with-mp4']
+    dd_profile_order = ['multi-platform-standard-static', 'multi-platform-standard-static-with-mp4', 'multi-platform-extended-static'], 'multi-platform-extended-static-with-mp4'
     videoRenditions = [{
       "id": "default/video450",
       "version": 5,
