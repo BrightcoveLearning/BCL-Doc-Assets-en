@@ -681,6 +681,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
       jMax = profiles.length;
       for (j = 0; j < jMax; j++) {
         td = document.createElement('td');
+        td.setAttribute('style', 'text-align:center');
         img = document.createElement('img');
         if (isItemInArray(profiles[j].dynamic_origin.renditions, videoRenditions[i].id)) {
           img.setAttribute('src', yesImg);
