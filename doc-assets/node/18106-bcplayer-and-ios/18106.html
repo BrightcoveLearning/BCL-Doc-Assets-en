@@ -2,9 +2,9 @@
 <section class="bcls-section">
 <h2 id="Stop_unwanted_segment_download">Stop unwanted segment download</h2>
 
-<p>It is possible that iOS may download unwanted segments causing excessive bandwidth usage. In the situation where <code>autoplay</code> is enabled, segments will be downloaded even if <code>preload</code> is set to <code>none</code>. The only way to prevent this is to not use the <code>autoplay</code> attribute.</p>
+<p>It is possible that iOS may download unwanted segments causing excessive bandwidth usage. In the situation where <code class="notranslate">autoplay</code> is enabled, segments will be downloaded even if <code class="notranslate">preload</code> is set to <code class="notranslate">none</code>. The only way to prevent this is to not use the <code class="notranslate">autoplay</code> attribute.</p>
 
-<aside class="bcls-aside bcls-aside--warning">Note: There has been some misunderstanding that setting the <code>preload</code> attribute to <code>none</code> will prevent downloading of segments. This is NOT true.</aside>
+<aside class="bcls-aside bcls-aside--warning">Note: There has been some misunderstanding that setting the <code class="notranslate">preload</code> attribute to <code class="notranslate">none</code> will prevent downloading of segments. This is NOT true.</aside>
 </section>
 
 <section class="bcls-section">
@@ -13,33 +13,33 @@
 <p>Given that the concern of possible unwanted segments being downloaded is not an issue, you can autoplay a video. For this to occur you must do the the following:</p>
 
 <ul>
-	<li>Add the <code>autoplay</code> attribute. For the iframe embed code, set this attribute to <code>true</code>.</li>
-	<li>Add the <code>playsinline</code> attribute. For the iframe embed code, set this attribute to <code>true</code>.</li>
-	<li>Add the <code>muted</code> attribute. For the iframe embed code, set this attribute to <code>true</code>. Alternatively, you can use a video with no sound track.</li>
+	<li>Add the <code class="notranslate">autoplay</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>.</li>
+	<li>Add the <code class="notranslate">playsinline</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>.</li>
+	<li>Add the <code class="notranslate">muted</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>. Alternatively, you can use a video with no sound track.</li>
 </ul>
-<p>
-	In-page embed code implementation:
-</p>
+
+<p>In-page embed code implementation:</p>
+
 <pre class="line-numbers" data-start="1">
-<code class="language-html">&lt;video data-video-id=&quot;5045678908001&quot;
-	data-account=&quot;1752604059001&quot;
-	data-player=&quot;default&quot;
-	data-embed=&quot;default&quot;
+<code class="notranslate language-html">&lt;video data-video-id="5045678908001"
+	data-account="1752604059001"
+	data-player="default"
+	data-embed="default"
 	data-application-id
-	class=&quot;video-js&quot;
+	class="video-js"
 	<span class="bcls-highlight">autoplay playsinline muted</span>
 	controls&gt;&lt;/video&gt;
-&lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;</code></pre>
-	<p>
-		iframe embed code implementation:
-	</p>
-	<pre class="line-numbers" data-start="1">
-<code class="language-html">&lt;iframe src=&quot;//players.brightcove.net/1752604059001/default_default/index.html?
-  videoId=5045678908001<span class="bcls-highlight">&amp;autoplay=true&amp;muted=true&amp;playsinline=true</span>&quot;
+&lt;script src="//players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+
+<p>iframe embed code implementation:</p>
+
+<pre class="line-numbers" data-start="1">
+<code class="notranslate language-html">&lt;iframe src="//players.brightcove.net/1752604059001/default_default/index.html?
+  videoId=5811862231001<span class="bcls-highlight">&amp;autoplay=true&amp;muted=true&amp;playsinline=true</span>"
 	allowfullscreen
 	webkitallowfullscreen
-	autoplay playsinline muted
 	mozallowfullscreen&gt;&lt;/iframe&gt;</code></pre>
+
 </section>
 
 <section class="bcls-section">
@@ -48,13 +48,25 @@
 <p>To play a video non-fullscreen, you must perform the following step:</p>
 
 <ul>
-	<li>Set the <code>playsinline</code> attribute to <code>true</code>.</li>
+	<li>Set the <code class="notranslate">playsinline</code> attribute to <code class="notranslate">true</code>.</li>
 </ul>
 </section>
 
 <section class="bcls-section">
 <h2 id="Playing_a_video_fullscreen">Playing a video fullscreen</h2>
 
-<p>When a user switches from inline playback to fullscreen mode, the iOS native player is used instead of the Brightcove player. This is expected behavior. It allows the player to take advantage of the entire device screen.</p>
+<p>When a user switches from inline playback to fullscreen mode, the iOS native player is used instead of the Brightcove player. This is expected behavior. It allows the player to take advantage of the entire device screen. Obviously, with the Brightcove Player controls removed, some functionality could potentially be lost. If you wish NOT to allow fullscreen, but only for iOS devices, you could use the following code:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-html">&lt;script&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this,
+		<span class="bcls-highlight">fullScreenElement = document.getElementsByClassName("vjs-fullscreen-control")[0];
+	if (videojs.browser.IS_IOS ) {
+		fullScreenElement.parentNode.removeChild(fullScreenElement);
+	}</span>
+  });
+&lt;/script&gt;</code></pre>
+
 </section>
 </article>
