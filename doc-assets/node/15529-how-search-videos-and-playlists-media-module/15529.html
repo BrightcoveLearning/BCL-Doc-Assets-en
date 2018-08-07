@@ -15,182 +15,181 @@
 <p>Pressing the <strong>f</strong> key in any of the modules will open the Fast Finder. The Fast Finder can be used to quickly locate videos, players or other modules and then access them using the keyboard.</p>
 </section>
 
-<p class="bcls-section">&nbsp;</p>
+<section class="bcls-section">
+  <h2 id="videosearch">Video search</h2>
 
-<h2 id="videosearch">Video search</h2>
+  <h3>Terminology</h3>
 
-<h3>Terminology</h3>
+  <p>In this section, the term <strong>exact</strong> means that the search string is enclosed in quotation marks. For example:</p>
 
-<p>In this section, the term <strong>exact</strong> means that the search string is enclosed in quotation marks. For example:</p>
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Exact Search</th>
+        <th>Non-Exact Search</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td>"great blue"</td>
+        <td>great blue</td>
+      </tr>
+      <tr>
+        <td><code>name</code>:"great blue"</td>
+        <td><code>name</code>:great blue</td>
+      </tr>
+    </tbody>
+  </table>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Exact Search</th>
-			<th>Non-Exact Search</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>"great blue"</td>
-			<td>great blue</td>
-		</tr>
-		<tr>
-			<td><code>name</code>:"great blue"</td>
-			<td><code>name</code>:great blue</td>
-		</tr>
-	</tbody>
-</table>
+  <p>Note that "exact" means that all terms inside the quotation marks must be matched, but they may not match exactly. For example, a search on <code>"running water"</code> could return a video that has the phrase <code>water runs downhill</code> in the title or description.</p>
 
-<p>Note that "exact" means that all terms inside the quotation marks must be matched, but they may not match exactly. For example, a search on <code>"running water"</code> could return a video that has the phrase <code>water runs downhill</code> in the title or description.</p>
+  <p>To search the videos in your account, enter a search term in the <strong>Search...</strong> field. By default, the search will be performed on videos.</p>
 
-<p>To search the videos in your account, enter a search term in the <strong>Search...</strong> field. By default, the search will be performed on videos.</p>
+  <div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15529-search-options.png" /></div>
 
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15529-search-options.png" /></div>
+  <p>It is also possible to search <a href="#playlistsearch">playlists</a> or enter <a href="#advsearch">advanced search terms</a>.</p>
 
-<p>It is also possible to search <a href="#playlistsearch">playlists</a> or enter <a href="#advsearch">advanced search terms</a>.</p>
+  <p>The following video fields will be searched:</p>
 
-<p>The following video fields will be searched:</p>
+  <ul>
+    <li>Video id</li>
+    <li>Name</li>
+    <li>Short description</li>
+    <li>Long description</li>
+    <li>Tags</li>
+    <li>Reference id</li>
+    <li>Custom fields</li>
+  </ul>
 
-<ul>
-	<li>Video id</li>
-	<li>Name</li>
-	<li>Short description</li>
-	<li>Long description</li>
-	<li>Tags</li>
-	<li>Reference id</li>
-	<li>Custom fields</li>
-</ul>
+  <p>Query support for video fields differ. Some fields support partial-word searches and <a href="#stemming">stemming searches</a>, and some do not.</p>
 
-<p>Query support for video fields differ. Some fields support partial-word searches and <a href="#stemming">stemming searches</a>, and some do not.</p>
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Search field&nbsp;</th>
+        <th>Supports</th>
+        <th><strong>Does Not Support</strong></th>
+        <th>Examples</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td>Name and descriptions</td>
+        <td><strong>exact</strong> matches for one or more whole words; <a href="#stemming">stemming</a> support</td>
+        <td>no partial-word support</td>
+        <td>
+          <ul>
+            <li><code class="notranslate">name:"great blue"</code> will match <code>"Great Blue Heron"</code></li>
+            <li><code>name:"great blu"</code> will <strong>not</strong> match <code>"Great Blue Heron"</code></li>
+            <li><code>name:great blu</code> will match <code>"Great Blue Heron"</code></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>Video ID</td>
+        <td>exact matches only</td>
+        <td>no partial-word or <a href="#stemming">stemming</a> support</td>
+        <td><strong>5591838791001</strong> will match video with id 5591838791001 <strong>5591838791</strong> will <strong>not</strong> match that video</td>
+      </tr>
+      <tr>
+        <td>Tags</td>
+        <td>matches only for whole words</td>
+        <td>no partial-word or <a href="#stemming">stemming</a> support</td>
+        <td><code>tags:publ</code> will <strong>not</strong> match videos with tag <code>"public"</code></td>
+      </tr>
+      <tr>
+        <td>Reference ID</td>
+        <td>partial string matches that start with the Ref ID (first 3 chars.) and whole string matches</td>
+        <td>no partial-strings that do not start with the Ref ID</td>
+        <td>
+          <ul>
+            <li><code>reference_id:myv</code> matches video with reference id "myvid1"</li>
+            <li><code>reference_id:"myv"</code> does <strong>not</strong> match video with reference id <code>"myvid1"</code></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>Date fields</td>
+        <td>&nbsp;</td>
+        <td>not searchable using the text box, searchable using advanced search</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Individual text custom fields</td>
+        <td>matches for one or more whole words and <a href="#stemming">stemming</a> support; for <strong>exact</strong> search strings, whole word matches only</td>
+        <td>no partial-word support</td>
+        <td>
+          <ul>
+            <li><code>custom_fields:place</code> will match video with a custom field value of <code>"places"</code></li>
+            <li><code>custom_fields:plac</code> will <strong>not</strong> match video with a custom field value of <code>"places"</code></li>
+            <li><code>custom_fields:"place"</code> will <strong>not</strong> match video with a custom field value of <code>"places"</code></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>Individual list custom fields</td>
+        <td>matches for one or more whole words and <a href="#stemming">stemming</a> support; <strong>exact</strong> search stings, whole word matches only</td>
+        <td>no partial-word support</td>
+        <td>
+          <ul>
+            <li><code>topic:place</code> will match video with a topic list-type custom field value of "places"</li>
+            <li><code>topic:plac</code> will <strong>not</strong> match video with a topic list-type custom field value of <code>"places"</code></li>
+            <li><code>topic:"place"</code> will <strong>not</strong> match video with a topic list-type custom field value of <code>"places"</code></li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Search field&nbsp;</th>
-			<th>Supports</th>
-			<th><strong>Does Not Support</strong></th>
-			<th>Examples</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Name and descriptions</td>
-			<td><strong>exact</strong> matches for one or more whole words; <a href="#stemming">stemming</a> support</td>
-			<td>no partial-word support</td>
-			<td>
-			<ul>
-				<li><code class="notranslate">name:"great blue"</code> will match <code>"Great Blue Heron"</code></li>
-				<li><code>name:"great blu"</code> will <strong>not</strong> match <code>"Great Blue Heron"</code></li>
-				<li><code>name:great blu</code> will match <code>"Great Blue Heron"</code></li>
-			</ul>
-			</td>
-		</tr>
-		<tr>
-			<td>Video ID</td>
-			<td>exact matches only</td>
-			<td>no partial-word or <a href="#stemming">stemming</a> support</td>
-			<td><strong>5591838791001</strong> will match video with id 5591838791001 <strong>5591838791</strong> will <strong>not</strong> match that video</td>
-		</tr>
-		<tr>
-			<td>Tags</td>
-			<td>matches only for whole words</td>
-			<td>no partial-word or <a href="#stemming">stemming</a> support</td>
-			<td><code>tags:publ</code> will <strong>not</strong> match videos with tag <code>"public"</code></td>
-		</tr>
-		<tr>
-			<td>Reference ID</td>
-			<td>partial string matches that start with the Ref ID (first 3 chars.) and whole string matches</td>
-			<td>no partial-strings that do not start with the Ref ID</td>
-			<td>
-			<ul>
-				<li><code>reference_id:myv</code> matches video with reference id "myvid1"</li>
-				<li><code>reference_id:"myv"</code> does <strong>not</strong> match video with reference id <code>"myvid1"</code></li>
-			</ul>
-			</td>
-		</tr>
-		<tr>
-			<td>Date fields</td>
-			<td>&nbsp;</td>
-			<td>not searchable using the text box, searchable using advanced search</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>Individual text custom fields</td>
-			<td>matches for one or more whole words and <a href="#stemming">stemming</a> support; for <strong>exact</strong> search strings, whole word matches only</td>
-			<td>no partial-word support</td>
-			<td>
-			<ul>
-				<li><code>custom_fields:place</code> will match video with a custom field value of <code>"places"</code></li>
-				<li><code>custom_fields:plac</code> will <strong>not</strong> match video with a custom field value of <code>"places"</code></li>
-				<li><code>custom_fields:"place"</code> will <strong>not</strong> match video with a custom field value of <code>"places"</code></li>
-			</ul>
-			</td>
-		</tr>
-		<tr>
-			<td>Individual list custom fields</td>
-			<td>matches for one or more whole words and <a href="#stemming">stemming</a> support; <strong>exact</strong> search stings, whole word matches only</td>
-			<td>no partial-word support</td>
-			<td>
-			<ul>
-				<li><code>topic:place</code> will match video with a topic list-type custom field value of "places"</li>
-				<li><code>topic:plac</code> will <strong>not</strong> match video with a topic list-type custom field value of <code>"places"</code></li>
-				<li><code>topic:"place"</code> will <strong>not</strong> match video with a topic list-type custom field value of <code>"places"</code></li>
-			</ul>
-			</td>
-		</tr>
-	</tbody>
-</table>
 
-<p>&nbsp;</p>
+  <div class="BCL-subsection">
+    <h3 id="stemming">What is stemming?</h3>
 
-<div class="BCL-subsection">
-<h3 id="stemming">What is stemming?</h3>
+    <p>Video fields that support stemming return words that have the stem of the search word in common. In addition, stemming supports entering whole words only, not partial words:</p>
 
-<p>Video fields that support stemming return words that have the stem of the search word in common. In addition, stemming supports entering whole words only, not partial words:</p>
+    <ul>
+      <li>Example 1: Searching on <code>running</code> will return results containing: <code>running</code>, <code>run</code>, <code>runs</code></li>
+      <li>Example 2: Searching on <code>vid</code> will not return results containing: <code>video</code></li>
+    </ul>
+  </div>
 
-<ul>
-	<li>Example 1: Searching on <code>running</code> will return results containing: <code>running</code>, <code>run</code>, <code>runs</code></li>
-	<li>Example 2: Searching on <code>vid</code> will not return results containing: <code>video</code></li>
-</ul>
-</div>
+  <div class="BCL-subsection">
+    <h3>General rules</h3>
 
-<div class="BCL-subsection">
-<h3>General rules</h3>
+    <ul>
+      <li>For an exact match, enclose strings in quotes</li>
+      <li>By default, Video Cloud assumes an OR logical operator between words</li>
+      <li>Search is case-insensitive</li>
+    </ul>
+  </div>
 
-<ul>
-	<li>For an exact match, enclose strings in quotes</li>
-	<li>By default, Video Cloud assumes an OR logical operator between words</li>
-	<li>Search is case-insensitive</li>
-</ul>
-</div>
+  <div class="BCL-subsection">
+    <h3>Examples</h3>
 
-<div class="BCL-subsection">
-<h3>Examples</h3>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th width="236">Search Term</th>
-			<th width="388">Returns</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>financial planning</code></td>
-			<td>all videos that contain <code>financial</code> OR <code>planning</code></td>
-		</tr>
-		<tr>
-			<td><code>"financial planning"</code></td>
-			<td>all videos that contain <code>financial</code> AND <code>planning</code>. Note that the quotation marks ensure that matching videos will have all the terms, but possible not the exact terms - for example, the search terms here might also return videos with <code>finance</code> and <code>plan</code> in the title or description</td>
-		</tr>
-		<tr>
-			<td>walk</td>
-			<td>all videos that contain <strong>walk</strong>, <strong>walks</strong>, or <strong>walking</strong></td>
-		</tr>
-	</tbody>
-</table>
-</div>
+    <table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th width="236">Search Term</th>
+          <th width="388">Returns</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td><code>financial planning</code></td>
+          <td>all videos that contain <code>financial</code> OR <code>planning</code></td>
+        </tr>
+        <tr>
+          <td><code>"financial planning"</code></td>
+          <td>all videos that contain <code>financial</code> AND <code>planning</code>. Note that the quotation marks ensure that matching videos will have all the terms, but possible not the exact terms - for example, the search terms here might also return videos with <code>finance</code> and <code>plan</code> in the title or description</td>
+        </tr>
+        <tr>
+          <td>walk</td>
+          <td>all videos that contain <strong>walk</strong>, <strong>walks</strong>, or <strong>walking</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
 <section class="bcls-section">
 <h2 id="playlistsearch">Playlist search</h2>
