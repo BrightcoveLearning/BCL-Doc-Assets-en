@@ -63,7 +63,36 @@
           <li>If the value is <code>false</code> or the <code>playlist</code> does not exist, do the next step.</li>
         </ol>
       </li>
-      <li>Iterate through the <code>plugins</code> list (if present) and look for a <code>registry_id</code></li>
+      <li>Iterate through the <code>plugins</code> list (if present) and look for a <code>registry_id</code> field equal to <code>@brightcove/videojs-bc-playlist-ui</code>; if that is present, it is a playlist player; if not, it is not. Here is a sample of what is return in the players list:
+<pre class="line-numbers"><code class="language-json notranslate">"items": [
+   {
+      {
+      "account_id": "4031511818001",
+      "branches": {
+        "master": { "configuration": {
+          "playlist": true, "plugins": [
+              {
+                "options": {
+                  "account_id": "4031511818001",
+                  "branches": {
+                    "master": { "configuration": {
+                      "id": "NkVhrXzug",
+                      <span class="bcls-highlight">"playlist": true,</span>
+                      "plugins": [], <span class="bcls-highlight">// this is a v1 playlist player</span>
+                ...
+        {
+          "account_id": "4031511818001",
+          "branches": {
+            "master": { "configuration": {
+            "playlist": true, "plugins": [
+            
+        }
+        // this is a v2 playlist player
+                    "playOnSelect": true
+                    "registry_id": "@brightcove/videojs-bc-playlist-ui",
+                    "version": "2.x" }
+],</code></pre>
+      </li>
     </ol>
   </section>
 </article>
