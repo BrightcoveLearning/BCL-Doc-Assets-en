@@ -116,15 +116,46 @@
     <h3>iFrame video player embed</h3>
     <h4>Parameters for responsive sizing (with max size)</h4>
 <pre><code class="notranslate">%MAXWIDTH% = Width . ‘px’
-  %MINWIDTH% = 0px
-  %WIDTH% = 100% %HEIGHT% = 100%
-  %PADDINGTOP%
-    if (Aspect Ratio == “16:9”) {
-      %PADDINGTOP% = 56%
-    } elseif (Aspect Ratio == “4:3”) {
-      %PADDINGTOP% = 75%
-    } elseif {
-    %PADDINGTOP% = (Height / Width * 100) . “%”
-    }</code></pre>
+%MINWIDTH% = 0px
+%WIDTH% = 100% %HEIGHT% = 100%
+%PADDINGTOP%
+  if (Aspect Ratio == “16:9”) {
+    %PADDINGTOP% = 56%
+  } elseif (Aspect Ratio == “4:3”) {
+    %PADDINGTOP% = 75%
+  } elseif {
+  %PADDINGTOP% = (Height / Width * 100) . “%”
+  }</code></pre>
+    <h4>Parameters for fixed sizing</h4>
+<pre><code class="notranslate">%MINWIDTH% = Width . ‘px’
+%WIDTH% = Width . ‘px’
+%HEIGHT% = Height . ‘px’
+%PADDINGTOP%
+  if (Aspect Ratio == “16:9”) {
+    %PADDINGTOP% = 56%
+  } elseif (Aspect Ratio == “4:3”) {
+    %PADDINGTOP% = 75%
+  } elseif {
+  %PADDINGTOP% = (Height / Width * 100) . “%”
+  }</code></pre>
+  <h4>Brightcove embed code</h4>
+<pre><code class="notranslate">&lt;div style="display: block; position: relative; min-width: %MINWIDTH%; max-width: %MAXWIDTH%;"&gt;
+  &lt;div style="padding-top: %PADDINGTOP%;"&gt;
+    &lt;iframe src="//players.brightcove.net/%ACCOUNTID%/%PLAYERID%_default/index.html?videoId=%VIDEOID%
+      &usage=cms:%CMS%:%CMSVERSION%:%CONNECTORVERSION%:iframe
+      &%AUTOPLAY%
+      &%MUTED%"
+      allowfullscreen=””
+      webkitallowfullscreen=””
+      mozallowfullscreen=””
+      style= width: %WIDTH%; height: %HEIGHT%; position: absolute; top: 0; bottom: 0; right: 0; left: 0;"&gt;
+    &lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div</code></pre>
+    <h4>Example implementation</h4>
+    <figure class="bcls-figure">
+      <img class="bcls-image" src="/Users/rcrooks/git/BCL-Doc-Assets/doc-assets/node/18644-embedding-brightcove-players-cms/18644-sample-iframe-implementation.png" alt="Sample Implementation">
+      <figcaption class="bcls-caption--image">Sample Implementation</figcaption>
+    </figure>
   </section>
 </article>
