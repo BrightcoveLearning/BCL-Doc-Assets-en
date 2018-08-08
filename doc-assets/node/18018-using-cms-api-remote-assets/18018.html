@@ -10,7 +10,7 @@
 
 <aside class="bcls-aside bcls-aside--information">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.
 
-<p><code>video </code> permissions include permissions for corresponding <code>asset </code> operations - i.e. <code>/video/all </code> gives you permissions for all asset operations, <code>/video/read </code> gives you permissions for asset read operations, etc.</p>
+<p><code class="notranslate">video </code> permissions include permissions for corresponding <code class="notranslate">asset </code> operations - i.e. <code class="notranslate">/video/all </code> gives you permissions for all asset operations, <code class="notranslate">/video/read </code> gives you permissions for asset read operations, etc.</p>
 </aside>
 </section>
 
@@ -29,7 +29,7 @@
 <p>For all requests to the asset endpoints, you can specify the video you are operating on by <strong>id</strong> or <strong>reference_id</strong>:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/...
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/...
 or
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{reference_id}</strong>/assets/...
 </code>
@@ -43,14 +43,14 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
 <p>Before you can add remote assets, you must create a video object in your Video Cloud media library, using POST request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos
 </code>
 </pre>
 
 <p>In the request body, include a JSON object that minimally contains the video name, but may contain additional metadata:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "name": "My Remote Video",
 "description": "A short description of the video",
 "tags": ["remote", "fall_campaign"],
@@ -68,14 +68,14 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
 <p>Next, add one or more full-length remote video renditions by making a POST request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/renditions
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/renditions
 </code>
 </pre>
 
 <p>The JSON in the request body must contain minimally the remote url, but may contain other metadata for the rendion:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "video_duration": 31487,
 "name": "RA - Great Blue Heron",
 "remote_url": "//learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4",
@@ -99,8 +99,8 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
 
 	<p>For details of the add rendition operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Rendition">API Reference</a>.</p>
 	</li>
-	<li>Renditions for remote assets must have the <code>video_codec </code> and <code>video_container </code> fields to work properly.</li>
-	<li>MP4 renditions <strong>must</strong> have the <code>"progressive_download": true </code> field set to work properly in the Brightcove player</li>
+	<li>Renditions for remote assets must have the <code class="notranslate">video_codec </code> and <code class="notranslate">video_container </code> fields to work properly.</li>
+	<li>MP4 renditions <strong>must</strong> have the <code class="notranslate">"progressive_download": true </code> field set to work properly in the Brightcove player</li>
 	<li>Mixed assets are not allowed - you cannot add a remote rendition to an ingested video</li>
 	<li>If your CDN or other remote repository supports both HTTP and HTTPS delivery, then specify the URL for remote assets with a <strong>protocol-neutral URL</strong> as shown in the example above (i.e. use "//my.domain/path/..." instead of "http://my.domain/path/...")</li>
 </ol>
@@ -114,7 +114,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
 <p>In addition to adding full length renditions, you can also add manifests for segmented renditions such as HLS, HDS, and ISM, by making a POST request to the endpoint for the manifest type:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hds_manifest
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ism_manifest
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ismc_manifest
@@ -125,7 +125,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 <p>In the request body JSON, provide the remote url and a name (optional):</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "remote_url": "http://learning-services-media.brightcove.com/avideo/hls/chickadee/chickadee.m3u8",
 "name": "chickadee_hls"
 }
@@ -151,7 +151,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 <p>You can add a remote poster and thumbnail to your video by making POST requests to these endpoints:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/poster
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/poster
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail
 </code>
 </pre>
@@ -159,7 +159,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 <p>In the request body JSON, you must include the remote url for the image, and you can add a name if you like:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "remote_url": "http://learning-services-media.brightcove.com/images/great-blue-heron-poster.png"
 }
 </code>
@@ -191,14 +191,14 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 <p>Add DFXP captions to your video by making a POST request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/caption
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/caption
 </code>
 </pre>
 
 <p>In the request body JSON, include the remote URL for the DFXP file and a name (optional):</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "remote_url": "http://learning-services-media.brightcove.com/captions/Video-Cloud-Analytics-Performance-Report.DFXP.xml",
 "name": "EN DFXP Captions"
 }
@@ -212,14 +212,14 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 <p>You can replace a remote asset video with an ingested one by making a request to the Dynamic Ingest API:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests
+<code class="language-http notranslate">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 </code>
 </pre>
 
 <p>The simplest request body would look like this:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "master": {
 "url": "http://host/master.mp4"
 }
@@ -238,7 +238,7 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 <p>In addition to adding remote assets for a video, there are also operations for retrieving, updating, and deleting the asset information. These operations use the endpoints described above, but with GET, PATCH, or DELETE requests. For update and delete requests, you must add the asset id (which is included in the response to POST and GET requests) to request URL:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/<strong>/{asset_type}/{asset_id}</strong>
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/<strong>/{asset_type}/{asset_id}</strong>
 </code>
 </pre>
 
