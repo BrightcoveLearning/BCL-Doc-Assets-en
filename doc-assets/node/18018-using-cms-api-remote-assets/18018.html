@@ -1,60 +1,55 @@
 <article class="bcls-article">
-  <section class="bcls-section" id="Overview">
-    <h2>Overview
-    </h2>
-    <p>Remote assets are mainly added through the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets">Assets Operations</a>, with a couple of exceptions noted below. Note that the GET operations for assets can be used for both ingested and remote assets.
-    </p>
-  </section>
-  <section class="bcls-section" id="authorization">
-    <h2>Authorization
-    </h2>
-    <aside class="bcls-aside bcls-aside--information">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.
-      <p>
-        <code>video
-        </code> permissions include permissions for corresponding
-        <code>asset
-        </code> operations - i.e.
-        <code>/video/all
-        </code> gives you permissions for all asset operations,
-        <code>/video/read
-        </code> gives you permissions for asset read operations, etc.
-      </p>
-    </aside>
-  </section>
-  <section class="bcls-section" id="workflow">
-    <h2>Workflow
-    </h2>
-    <p>Here are steps for setting up a remote asset:
-    </p>
-    <figure class="bcls-figure"><img class="bcls-image" alt="Remote Assets Workflow" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/remote-assets/remote-assets-workflow.png" />
-      <figcaption class="bcls-caption--image">Remote Assets Workflow
-      </figcaption>
-    </figure>
-    <p>In the following sections, we'll look at each of these steps.
-    </p>
-    <aside class="bcls-aside bcls-aside--tip">
-      <p>For all requests to the asset endpoints, you can specify the video you are operating on by <strong>id</strong> or <strong>reference_id</strong>:
-      </p>
-      <pre class="line-numbers">
+<section class="bcls-section" id="Overview">
+<h2>Overview</h2>
+
+<p>Remote assets are mainly added through the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets">Assets Operations</a>, with a couple of exceptions noted below. Note that the GET operations for assets can be used for both ingested and remote assets.</p>
+</section>
+
+<section class="bcls-section" id="authorization">
+<h2>Authorization</h2>
+
+<aside class="bcls-aside bcls-aside--information">Requests to the CMS API require an authorization header which contain your access tokens. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.
+
+<p><code>video </code> permissions include permissions for corresponding <code>asset </code> operations - i.e. <code>/video/all </code> gives you permissions for all asset operations, <code>/video/read </code> gives you permissions for asset read operations, etc.</p>
+</aside>
+</section>
+
+<section class="bcls-section" id="workflow">
+<h2>Workflow</h2>
+
+<p>Here are steps for setting up a remote asset:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Remote Assets Workflow" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/remote-assets/remote-assets-workflow.png" />
+<figcaption class="bcls-caption--image">Remote Assets Workflow</figcaption>
+</figure>
+
+<p>In the following sections, we'll look at each of these steps.</p>
+
+<aside class="bcls-aside bcls-aside--tip">
+<p>For all requests to the asset endpoints, you can specify the video you are operating on by <strong>id</strong> or <strong>reference_id</strong>:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/...
 or
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{reference_id}</strong>/assets/...
 </code>
 </pre>
-    </aside>
-  </section>
-  <section class="bcls-section" id="creatVideo">
-    <h2>Create the video
-    </h2>
-    <p>Before you can add remote assets, you must create a video object in your Video Cloud media library, using POST request to:
-    </p>
-    <pre class="line-numbers">
+</aside>
+</section>
+
+<section class="bcls-section" id="creatVideo">
+<h2>Create the video</h2>
+
+<p>Before you can add remote assets, you must create a video object in your Video Cloud media library, using POST request to:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos
 </code>
 </pre>
-    <p>In the request body, include a JSON object that minimally contains the video name, but may contain additional metadata:
-    </p>
-    <pre class="line-numbers">
+
+<p>In the request body, include a JSON object that minimally contains the video name, but may contain additional metadata:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "name": "My Remote Video",
 "description": "A short description of the video",
@@ -63,21 +58,23 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
 }
 </code>
 </pre>
-    <p>For details of the create video operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Video-Create_Video">API Reference</a>.
-    </p>
-  </section>
-  <section class="bcls-section" id="addRenditions">
-    <h2>Add Renditions
-    </h2>
-    <p>Next, add one or more full-length remote video renditions by making a POST request to:
-    </p>
-    <pre class="line-numbers">
+
+<p>For details of the create video operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Video-Create_Video">API Reference</a>.</p>
+</section>
+
+<section class="bcls-section" id="addRenditions">
+<h2>Add Renditions</h2>
+
+<p>Next, add one or more full-length remote video renditions by making a POST request to:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/renditions
 </code>
 </pre>
-    <p>The JSON in the request body must contain minimally the remote url, but may contain other metadata for the rendion:
-    </p>
-    <pre class="line-numbers">
+
+<p>The JSON in the request body must contain minimally the remote url, but may contain other metadata for the rendion:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "video_duration": 31487,
 "name": "RA - Great Blue Heron",
@@ -92,36 +89,31 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/<strong>ref:{refe
 }
 </code>
 </pre>
-    <h3>Notes
-    </h3>
-    <ol>
-      <li>Use this endpoint only for adding full length video renditions (typically an .mp4 or .mov file) - for adding segmented streams like HLS or DASH, use the manifest endpoints described in the next section.</li>
-      <li>
-        <p>Video Cloud does not inspect the remote video files, so providing additional metadata will enable Video Cloud to display this information in Studio (or in the Brightcove player, if you configure the player to display the metadata).
-        </p>
-        <p>For details of the add rendition operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Rendition">API Reference</a>.
-        </p>
-      </li>
-      <li>Renditions for remote assets must have the
-        <code>video_codec
-        </code> and
-        <code>video_container
-        </code> fields to work properly.</li>
-      <li>MP4 renditions <strong>must</strong> have the
-        <code>"progressive_download": true
-        </code> field set to work properly in the Brightcove player</li>
-      <li>Mixed assets are not allowed - you cannot add a remote rendition to an ingested video</li>
-      <li>If your CDN or other remote repository supports both HTTP and HTTPS delivery, then specify the URL for remote assets with a <strong>protocol-neutral URL</strong> as shown in the example above (i.e. use "//my.domain/path/..." instead of "http://my.domain/path/...")</li>
-    </ol>
-  </section>
-  <section class="bcls-section" id="addManifests">
-    <h2>Add manifests
-    </h2>
-    <p>Note that to add remote segmented types such as DASH and HLS renditions, you only need to create the video and then add the manifests - you do <strong>not</strong> need to "add renditions" as explained in the previous section.
-    </p>
-    <p>In addition to adding full length renditions, you can also add manifests for segmented renditions such as HLS, HDS, and ISM, by making a POST request to the endpoint for the manifest type:
-    </p>
-    <pre class="line-numbers">
+
+<h3>Notes</h3>
+
+<ol>
+	<li>Use this endpoint only for adding full length video renditions (typically an .mp4 or .mov file) - for adding segmented streams like HLS or DASH, use the manifest endpoints described in the next section.</li>
+	<li>
+	<p>Video Cloud does not inspect the remote video files, so providing additional metadata will enable Video Cloud to display this information in Studio (or in the Brightcove player, if you configure the player to display the metadata).</p>
+
+	<p>For details of the add rendition operation, see the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Rendition">API Reference</a>.</p>
+	</li>
+	<li>Renditions for remote assets must have the <code>video_codec </code> and <code>video_container </code> fields to work properly.</li>
+	<li>MP4 renditions <strong>must</strong> have the <code>"progressive_download": true </code> field set to work properly in the Brightcove player</li>
+	<li>Mixed assets are not allowed - you cannot add a remote rendition to an ingested video</li>
+	<li>If your CDN or other remote repository supports both HTTP and HTTPS delivery, then specify the URL for remote assets with a <strong>protocol-neutral URL</strong> as shown in the example above (i.e. use "//my.domain/path/..." instead of "http://my.domain/path/...")</li>
+</ol>
+</section>
+
+<section class="bcls-section" id="addManifests">
+<h2>Add manifests</h2>
+
+<p>Note that to add remote segmented types such as DASH and HLS renditions, you only need to create the video and then add the manifests - you do <strong>not</strong> need to "add renditions" as explained in the previous section.</p>
+
+<p>In addition to adding full length renditions, you can also add manifests for segmented renditions such as HLS, HDS, and ISM, by making a POST request to the endpoint for the manifest type:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hls_manifest
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/hds_manifest
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/ism_manifest
@@ -129,95 +121,104 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/dash_manifest
 </code>
 </pre>
-    <p>In the request body JSON, provide the remote url and a name (optional):
-    </p>
-    <pre class="line-numbers">
+
+<p>In the request body JSON, provide the remote url and a name (optional):</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "remote_url": "http://learning-services-media.brightcove.com/avideo/hls/chickadee/chickadee.m3u8",
 "name": "chickadee_hls"
 }
 </code>
 </pre>
-    <aside class="bcls-aside bcls-aside--information">You can add one HLS and HDS manifest. You can add two each of DASH and ISM manifests - one will be used by the legacy Media API, the other by the CMS API. For the segmented type to be playable, you must install the appropriate plugin for the Brightcove player, and additional browser plugins may be required for some browsers.
-    </aside>
-    <p>For details of using the add manifest operations, consult the relevant section of the API Reference:
-    </p>
-    <ul>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_HLS_Manifest">Add HLS Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_HDS_Manifest">Add HDS Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_ISM_Manifest">Add ISM Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_ISMC_Manifest">Add ISMC Manifest</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_DASH_Manifest">Add DASH Manifest</a></li>
-    </ul>
-  </section>
-  <section class="bcls-section" id="addImages">
-    <h2>Add poster/thumbnail
-    </h2>
-    <p>You can add a remote poster and thumbnail to your video by making POST requests to these endpoints:
-    </p>
-    <pre class="line-numbers">
+
+<aside class="bcls-aside bcls-aside--information">You can add one HLS and HDS manifest. You can add two each of DASH and ISM manifests - one will be used by the legacy Media API, the other by the CMS API. For the segmented type to be playable, you must install the appropriate plugin for the Brightcove player, and additional browser plugins may be required for some browsers.</aside>
+
+<p>For details of using the add manifest operations, consult the relevant section of the API Reference:</p>
+
+<ul>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_HLS_Manifest">Add HLS Manifest</a></li>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_HDS_Manifest">Add HDS Manifest</a></li>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_ISM_Manifest">Add ISM Manifest</a></li>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_ISMC_Manifest">Add ISMC Manifest</a></li>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_DASH_Manifest">Add DASH Manifest</a></li>
+</ul>
+</section>
+
+<section class="bcls-section" id="addImages">
+<h2>Add poster/thumbnail</h2>
+
+<p>You can add a remote poster and thumbnail to your video by making POST requests to these endpoints:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/poster
 https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/thumbnail
 </code>
 </pre>
-    <p>In the request body JSON, you must include the remote url for the image, and you can add a name if you like:
-    </p>
-    <pre class="line-numbers">
+
+<p>In the request body JSON, you must include the remote url for the image, and you can add a name if you like:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "remote_url": "http://learning-services-media.brightcove.com/images/great-blue-heron-poster.png"
 }
 </code>
 </pre>
-    <p>For details of the operations, see the API Reference:
-    </p>
-    <ul>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Poster">Add Poster</a></li>
-      <li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Thumbnail">Add Thumbnail</a></li>
-    </ul>
-  </section>
-  <section class="bcls-section" id="addTextTracks">
-    <h2>Add text tracks
-    </h2>
-    <p>Text tracks can be used to add captions, chapters, and other time-based metadata to your video.
-    </p>
-    <p><strong>Unlike renditions and images, text tracks are treated the same for remote asset videos as for videos ingested into the Video Cloud system.</strong> To actually add the text tracks to a video, you must use the Media module in Studio or the CMS API <a href="#api-Video-Update_Video">Update Video operation</a>.
-    </p>
-    <aside class="bcls-aside bcls-aside--information">Text tracks (WebVTT files) are supported in the Brightcove Player. To add captions for the old Smart Player, see <a href="#addCaptions">Add Captions</a>.
-    </aside>
-  </section>
-  <section class="bcls-section" id="addCaptions">
-    <h2>Add captions
-    </h2>
-    <aside class="bcls-aside bcls-aside--tip">Captions are DFXP files used by the old Smart Player to add captions to videos. If you will be deploying your remote asset video only in the Brightcove Player, you can skip this step.
-    </aside>
-    <p>Add DFXP captions to your video by making a POST request to:
-    </p>
-    <pre class="line-numbers">
+
+<p>For details of the operations, see the API Reference:</p>
+
+<ul>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Poster">Add Poster</a></li>
+	<li><a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Assets-Add_Thumbnail">Add Thumbnail</a></li>
+</ul>
+</section>
+
+<section class="bcls-section" id="addTextTracks">
+<h2>Add text tracks</h2>
+
+<p>Text tracks can be used to add captions, chapters, and other time-based metadata to your video.</p>
+
+<p><strong>Unlike renditions and images, text tracks are treated the same for remote asset videos as for videos ingested into the Video Cloud system.</strong> To actually add the text tracks to a video, you must use the Media module in Studio or the CMS API <a href="#api-Video-Update_Video">Update Video operation</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information">Text tracks (WebVTT files) are supported in the Brightcove Player. To add captions for the old Smart Player, see <a href="#addCaptions">Add Captions</a>.</aside>
+</section>
+
+<section class="bcls-section" id="addCaptions">
+<h2>Add captions</h2>
+
+<aside class="bcls-aside bcls-aside--tip">Captions are DFXP files used by the old Smart Player to add captions to videos. If you will be deploying your remote asset video only in the Brightcove Player, you can skip this step.</aside>
+
+<p>Add DFXP captions to your video by making a POST request to:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/caption
 </code>
 </pre>
-    <p>In the request body JSON, include the remote URL for the DFXP file and a name (optional):
-    </p>
-    <pre class="line-numbers">
+
+<p>In the request body JSON, include the remote URL for the DFXP file and a name (optional):</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "remote_url": "http://learning-services-media.brightcove.com/captions/Video-Cloud-Analytics-Performance-Report.DFXP.xml",
 "name": "EN DFXP Captions"
 }
 </code>
 </pre>
-  </section>
-  <section id="Replace_remote_with_VOD" class="bcls-section">
-    <h2>Replace remote with ingested
-    </h2>
-    <p>You can replace a remote asset video with an ingested one by making a request to the Dynamic Ingest API:
-    </p>
-    <pre class="line-numbers">
+</section>
+
+<section id="Replace_remote_with_VOD" class="bcls-section">
+<h2>Replace remote with ingested</h2>
+
+<p>You can replace a remote asset video with an ingested one by making a request to the Dynamic Ingest API:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests
 </code>
 </pre>
-    <p>The simplest request body would look like this:
-    </p>
-    <pre class="line-numbers">
+
+<p>The simplest request body would look like this:</p>
+
+<pre class="line-numbers">
 <code class="language-json">{
 "master": {
 "url": "http://host/master.mp4"
@@ -225,21 +226,22 @@ https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets
 }
 </code>
 </pre>
-    <p>See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest">Dynamic Ingest API Reference</a> for additional options and information.
-    </p>
-    <p>One of the common uses of remote asset videos is to create a placeholder video for use in a live streaming event. Once the event is complete, you may wish to replace the "live" video with a video-on-demand recording of the event that appears in the same player you used for the live stream. You can do this by using the method described above, though it can also be used to turn any remote asset video into one that is ingested into Video Cloud.
-    </p>
-  </section>
-  <section class="bcls-section" id="modifyAssets">
-    <h2>Modify assets
-    </h2>
-    <p>In addition to adding remote assets for a video, there are also operations for retrieving, updating, and deleting the asset information. These operations use the endpoints described above, but with GET, PATCH, or DELETE requests. For update and delete requests, you must add the asset id (which is included in the response to POST and GET requests) to request URL:
-    </p>
-    <pre class="line-numbers">
+
+<p>See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest">Dynamic Ingest API Reference</a> for additional options and information.</p>
+
+<p>One of the common uses of remote asset videos is to create a placeholder video for use in a live streaming event. Once the event is complete, you may wish to replace the "live" video with a video-on-demand recording of the event that appears in the same player you used for the live stream. You can do this by using the method described above, though it can also be used to turn any remote asset video into one that is ingested into Video Cloud.</p>
+</section>
+
+<section class="bcls-section" id="modifyAssets">
+<h2>Modify assets</h2>
+
+<p>In addition to adding remote assets for a video, there are also operations for retrieving, updating, and deleting the asset information. These operations use the endpoints described above, but with GET, PATCH, or DELETE requests. For update and delete requests, you must add the asset id (which is included in the response to POST and GET requests) to request URL:</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/assets/<strong>/{asset_type}/{asset_id}</strong>
 </code>
 </pre>
-    <p>See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#/Media_Assets">API Reference</a> for details of the get, update, and delete operations.
-    </p>
-  </section>
+
+<p>See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#/Media_Assets">API Reference</a> for details of the get, update, and delete operations.</p>
+</section>
 </article>
