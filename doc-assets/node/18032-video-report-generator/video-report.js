@@ -396,7 +396,6 @@ var BCLS = (function(window, document) {
                               response = null;
                           }
                           // return the response
-                          console.log('response', response);
                           callback(response);
                       } else {
                           logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
