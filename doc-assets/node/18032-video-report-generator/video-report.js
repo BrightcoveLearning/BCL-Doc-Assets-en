@@ -445,6 +445,8 @@ var BCLS = (function(window, document) {
 
   // button event handlers
   makeReport.addEventListener('click', function() {
+    // in case of re-run, cleal the results
+    csvData.textContent = '';
     // get the inputs
     client_id = client_id_element.value;
     client_secret = client_secret_element.value;
