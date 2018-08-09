@@ -258,11 +258,11 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           // set total videos
-          videoCount = parsedData.count;
+          video_count = parsedData.count;
           if (totalVideos === "All") {
-            totalVideos = videoCount;
+            totalVideos = video_count;
           } else {
-            totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
+            totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
           }
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
@@ -299,11 +299,15 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
+          if (isDefined(response)){
             responseDecoded = JSON.parse(response);
             if (isDefined(responseDecoded) && !isDefined(responseDecoded.length)) {
-            videosArray[callNumber].totalSize += responseDecoded.size;
-            createRequest('getVideoRenditions');
-          } else {
+              videosArray[callNumber].totalSize += responseDecoded.size;
+              createRequest('getVideoRenditions');
+            } else {
+              createRequest('getVideoRenditions');
+            }
+          }e lse {
             createRequest('getVideoRenditions');
           }
         })
@@ -388,7 +392,7 @@ var BCLS = (function(window, document) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           response = httpRequest.responseText;
                           // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          if (response === '{null}') {
+                          if (response === '') {
                               response = null;
                           }
                           // return the response
