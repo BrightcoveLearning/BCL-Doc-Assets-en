@@ -51,22 +51,22 @@
   <h2 id="in_page_experience_embed_dialog">In-page Experience embed dialog</h2>
   <p>There should be a dialog allowing the user to control the formatting of the In-page Experience on the web page. This dialog should allow the user to set the fields listed below:</p>
   <ol>
-    <li><code>Embed Type:</code> The user should be able to choose between iFrame and Javascript embed code. The default should be Javascript.</li>
+    <li><strong>Embed Type:</strong> The user should be able to choose between iFrame and Javascript embed code. The default should be Javascript.</li>
     <li>
-      <code>Sizing:</code> The user should be able to select between Responsive or Fixed sizing.<sup><strong><a href="#note1-1">[1-1]</a></strong></sup>
+      <strong>Sizing:</strong> The user should be able to select between Responsive or Fixed sizing.<sup><strong><a href="#note1-1">[1-1]</a></strong></sup>
       <ol type="a">
         <li>If iFrame, the default should be Fixed and Responsive should disabled.</li>
         <li>If Javascript, the default should be Responsive.</li>
       </ol>
     </li>
     <li>
-      <code>Width, Height:</code> The user should be able to enter Width and Height.<sup><strong><a href="#note1-1">[1-1]</a></strong></sup>
+      <strong>Width, Height:</strong> The user should be able to enter Width and Height.<sup><strong><a href="#note1-1">[1-1]</a></strong></sup>
       <ol type="a">
         <li>If iFrame, the default should be Fixed and Responsive should disabled.</li>
         <li>If Responsive, the Width and Height should be disabled.</li>
       </ol>
     </li>
-    <li><code>Override Experience Videos:</code> The user should be able to override the default videos in an Experience with a list of videos or with a playlist. If the user selects to overrides the Experience videos, allow the user to choose videos or a playlist per the “Overriding Experience Videos” section below.</li>
+    <li><strong>Override Experience Videos:</strong> The user should be able to override the default videos in an Experience with a list of videos or with a playlist. If the user selects to overrides the Experience videos, allow the user to choose videos or a playlist per the “Overriding Experience Videos” section below.</li>
   </ol>
   <p>The dialog should have the following additional behavior:</p>
   <ol>
@@ -82,5 +82,46 @@
 <section class="bcls-section">
   <h2 id="Overriding_Experience_videos">Overriding Experience videos</h2>
   <p>If the user chooses to override the Experience videos, the dialog should allow the user to set the fields listed below:</p>
+  <ol>
+    <li><strong>Search Filter:</strong> The user should be able to enter a search string to filter the list of displayed videos or playlists. If using Brightcove search API, the search string should be URI encoded.</li>
+    <li><strong>Folder:</strong> The user should be able to select a Folder name from the Brightcove account to filter the list of displayed videos. The Brightcove API does not provide a built-in filter for folders so the client code will need to retrieve all videos and then filter by folder. (Does not apply to playlists)</li>
+    <li><strong>Limit:</strong> The user should be able to limit the number of videos returned, primarily to improve performance of the search. When using Brightcove search, the maximum limit that can be specified is 100. To return more than 100 videos, a paging mechanism must be implemented. Also, if the user has selected a Folder to filter, the client needs to request all videos in the account using the paging mechanism and then locally filter that list by Folder and return the number of videos specified by the user limit. (Does not apply to playlists)</li>
+    <li>
+      <strong>Sort By:</strong> The user should be able to select a sort field.
+      <ol type="a">
+        <li>For videos, the user should be able to choose the video name, updated date, creation date, start date, and total plays. The default should be the updated date.</li>
+        <li>For playlists, user chooses either the name and modified date. The default should be modified date.</li>
+      </ol>
+    </li>
+    <li><strong>Sort Order:</strong> The user should be able to select ascending or descending sort order. The default should be descending.</li>
+  </ol>
+  <p>The dialog should have the following behavior:</p>
+  <ol>
+    <li>Display a list of videos or playlists based on the user selection above. Allow the user to select multiple videos or one playlist.</li>
+    <li>
+      When displaying a list of videos:
+      <ol type="a">
+        <li>Only Active videos should be listed.</li>
+        <li>The thumbnail image, video name, and ID should be shown.</li>
+        <li>One or more videos can be selected.</li>
+      </ol>
+    </li>
+    <li>
+      When displaying a list of playlists:
+      <ol type="a">
+        <li>If the playlist is a manual playlist, display the playlist name, ID, and the number of videos in the playlist.</li>
+        <li>If the playlist is a smart playlist, display the playlist name, ID and --- in place of the number of videos.</li>
+        <li>Only one playlist can be selected.</li>
+      </ol>
+    </li>
+    <li>Display a clickable link that will open the video or playlist player in a new browser tab.</li>
+  </ol>
+  <section class="bcls-subsection">
+  <h3 id="Example_video_override_dialog_implementation">Example video override dialog implementation</h3>
+  <figure class="bcls-figure">
+  <img class="bcls-image" src="//learning-services-media.brightcove.com/doc-assets/node/18645-embedding-brightcove-page-experiences-cms/18645-sample-video-override-dialog.png" alt="Sample Video Override Dialog">
+  <figcaption class="bcls-caption--image">Sample Video Override Dialog</figcaption>
+</figure>
+</section>
 </section>
 </article>
