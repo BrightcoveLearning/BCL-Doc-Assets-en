@@ -81,10 +81,12 @@
 &lt;body&gt;
   &lt;iframe src='//players.brightcove.net/1752604059001/0711ceb1-07cf-430c-bd6f-951937e2c488_default/index.html'
     allowfullscreen webkitallowfullscreen mozallowfullscreen
-<span class="bcls-highlight">    width=640px height=360px&gt;&lt;/iframe&gt;</span>
+<span class="bcls-highlight">    width="640" height="360"&gt;&lt;/iframe&gt;</span>
 
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+
+<aside class="bcls-aside bcls-aside--tip">When using the the <code>width</code> and/or <code>height</code> attributes inline with either the iframe or in-page embed player implementations the units are pixels. You can include the <code>px</code> after the number, but technically that not proper HTML syntax. See the <a href="#Using_percentages">Using percentages</a> section later in this document for the way to use percentage values.</aside>
 
 <h3>Use CSS with the <code>iframe</code> element</h3>
 
@@ -177,7 +179,7 @@
     data-player="860a1ffd-4be3-4df6-9d46-c0621534108b"
     data-embed="default"
     class="video-js" controls
-<span class="bcls-highlight">    width="640px" height="360px"&gt;&lt;/video&gt;</span>
+<span class="bcls-highlight">    width="640" height="360"&gt;&lt;/video&gt;</span>
 
   &lt;script src="//players.brightcove.net/1752604059001/860a1ffd-4be3-4df6-9d46-c0621534108b_default/index.min.js"&gt;&lt;/script&gt;
 
@@ -253,6 +255,53 @@
 </section>
 
 <section class="bcls-section">
+<h2 id="Using_percentages">Using percentages</h2>
+
+<p>When using the <code>height</code> and/or <code>width</code> attributes on Brightcove Player's <code>iframe</code> or <code>video</code> tags, those attributes are measured in pixels <strong>only</strong>. In fact, you do not enter any units at all for the <code>height</code> and <code>width</code> attributes (you can enter the <code>px</code>, but technically it is invalid HTML):</p>
+
+<pre class="line-numbers">
+<code class="language-html">width="480"</code></pre>
+
+<p>You can use percentages, and this can be accomplished using CSS in two different ways:</p>
+
+<ul>
+	<li>Using a <code>style</code> attribute in the <code>video</code> tag.
+
+	<pre class="line-numbers">
+<code class="language-html">&lt;video data-video-id="5622718636001"
+  data-account="1507807800001"
+  data-player="default"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  <span class="bcls-highlight">style="width: 100%;height: 100%"</span>&gt;&lt;/video&gt;
+&lt;script src="//players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+	</li>
+	<li>Using a <code>style</code> tag.
+	<pre class="line-numbers">
+<code class="language-html">...
+<span class="bcls-highlight">&lt;style&gt;
+    .video-js {
+      height: 100%;
+      width: 100%;
+    }
+&lt;/style&gt;</span>
+...
+&lt;video data-account="1752604059001"
+  data-player="H1xW7NWcz"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls&gt;&lt;/video&gt;
+&lt;script src="//players.brightcove.net/1752604059001/H1xW7NWcz_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+	</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--tip">If you are using percentages alone, and the player is not in a container that has a height set, it is possible you are not seeing the player because the height is zero. Be sure the parent container of the player has a height set.</aside>
+</section>
+
+<section class="bcls-section">
 <h2 id="fullscreen">Fullscreen display</h2>
 
 <p>In newer browsers that support the fullscreen API, it's necessary to apply in-page CSS rules to ensure the player is scaled to 100% when switching to fullscreen. Otherwise, the player will appear at the original size within the fullscreen display.</p>
@@ -261,31 +310,31 @@
 
 <pre class="line-numbers">
 <code class="language-css">/***************************
- * Fullscreen display      *
- ***************************/
+* Fullscreen display      *
+***************************/
 body.vjs-full-window {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-  }
-  .video-js.vjs-fullscreen {
-    position: fixed;
-    overflow: hidden;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 100% !important;
-    height: 100% !important;
-  }
-  .video-js:-webkit-full-screen {
-    width: 100% !important;
-    height: 100% !important;
-  }
-  .video-js.vjs-fullscreen.vjs-user-inactive {
-    cursor: none;
-  }</code></pre>
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+.video-js.vjs-fullscreen {
+  position: fixed;
+  overflow: hidden;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+.video-js:-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+.video-js.vjs-fullscreen.vjs-user-inactive {
+  cursor: none;
+}</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -300,15 +349,19 @@ body.vjs-full-window {
 	<li>Player configuration settings</li>
 </ul>
 </section>
+
 <section class="bcls-section">
-    <h2 id="Size_in_the_Player_API">Size in the Player API</h2>
-    <p>There are 4 player methods in the Player API that return sizes in pixels, but it is important to understand the difference between them.</p>
-    <ul>
-        <li><code>.height()</code> - returns the height set in the <code>height</code> attribute of the <code>video</code> tag (if that attribute is not set, <code>height()</code> will return 0)</li>
-        <li><code>.width()</code> - returns the width set in the <code>width</code> attribute of the <code>video</code> tag (if that attribute is not set, <code>width()</code> will return 0)</li>
-        <li><code>.currentHeight()</code> - returns the current height of the player, however it was set</li>
-        <li><code>.currentWidth()</code> - returns the current width of the player, however it was set</li>
-    </ul>
-    <p>In most cases, <code>currentHeight()</code> and <code>currentWidth()</code> are the methods you want to use.</p>
+<h2 id="Size_in_the_Player_API">Size in the Player API</h2>
+
+<p>There are 4 player methods in the Player API that return sizes in pixels, but it is important to understand the difference between them.</p>
+
+<ul>
+	<li><code>.height()</code> - returns the height set in the <code>height</code> attribute of the <code>video</code> tag (if that attribute is not set, <code>height()</code> will return 0)</li>
+	<li><code>.width()</code> - returns the width set in the <code>width</code> attribute of the <code>video</code> tag (if that attribute is not set, <code>width()</code> will return 0)</li>
+	<li><code>.currentHeight()</code> - returns the current height of the player, however it was set</li>
+	<li><code>.currentWidth()</code> - returns the current width of the player, however it was set</li>
+</ul>
+
+<p>In most cases, <code>currentHeight()</code> and <code>currentWidth()</code> are the methods you want to use.</p>
 </section>
 </article>
