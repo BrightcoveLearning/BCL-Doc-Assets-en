@@ -31,7 +31,7 @@ var BCLS_style_fixes = ( function (window, document) {
     var i = 0,
       iMax = menu_items.length;
       for (i; i < iMax; i++) {
-        menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:1rem;');
+        menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:1rem;clear:both;');
       }
   }
 })(window, document);
