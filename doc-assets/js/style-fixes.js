@@ -4,7 +4,7 @@ var BCLS_style_fixes = ( function (window, document) {
     side_nav_block = document.getElementById('block-inpagenavigationblock'),
     related_content_block = document.getElementById('block-views-block-related-content-block-1'),
     search_block = document.querySelector('.paragraph--type--search-block'),
-    chevrons = document.querySelector('.icon__chevron--down');
+    chevrons = document.querySelectorAll('.icon__chevron--down');
 
   if (header_block) {
     header_block.setAttribute('style', 'color:white;background-color:RGB(45, 59, 108);padding-top:10px;padding-botton:5px;margin-bottom:30px;');
