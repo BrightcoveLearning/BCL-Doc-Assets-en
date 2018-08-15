@@ -14,18 +14,15 @@ var BCLS = (function(window, document) {
         policyKey_default = 'BCpkADawqM3_9ax216PJYuUTLApMLkLJ3apjFlTRKHHS4q0DE33J0XsiDWmc6SfKwrwRAhejCZpTbwljz4-OlUwyqKi64L25Dwy4yhY1eSZ9ZduI-dO0mjSNVcR9C8nz0jtkimOOtzQgswCr',
         playlist_id_default = '5492280057001',
         // vars for MRSS generation
-        mrssStr = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
+        mrssStr = '<rss version="2.0"  xmlns:media="http://search.yahoo.com/mrss/">',
         sChannel = '<channel>',
         eChannel = '</channel>',
         sTitle = '<title>',
         eTitle = '</title>',
         sDescription = '<description>',
         eDescription = '</description>',
-        sItem = '<item xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
+        sItem = '<item>',
         eItem = '</item>',
-        defaultEndDate = '2020-10-15T00:00+01:00',
-        eItemStart = '<dcterms:valid xmlns:dcterms="http://purl.org/dc/terms/">end=',
-        eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
         sLink = '<link>',
         eLink = '</link>',
         sPubDate = '<pubDate>',
@@ -216,12 +213,6 @@ var BCLS = (function(window, document) {
                     }
                 }
                 mrssStr += eMediaContent;
-                if (isDefined(video.schedule) && video.schedule.ends_at) {
-                    eItem = eItemStart + video.schedule.ends_at + eItemEnd;
-                } else {
-                    eItem = eItemStart + defaultEndDate + eItemEnd;
-                }
-                console.log('eItem', eItem);
                 mrssStr += eItem;
             }
         }
