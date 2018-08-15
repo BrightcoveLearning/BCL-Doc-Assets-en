@@ -65,6 +65,7 @@ var BCLS = (function(window, document) {
 
     showMRSS.addEventListener('click', function() {
          mrssOutput = true;
+         console.log('show mrss');
         // get media data if we haven't already
         if (!isDefined(videoData)) {
             // check inputs to see if we use those or default values
