@@ -178,8 +178,10 @@ var BCLS = (function(window, document) {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
         if (videoData.length > 0) {
             iMax = videoData.length;
+            console.log('imax', iMax);
             for (i = 0; i < iMax; i += 1) {
                 video = videoData[i];
+                console.log('video', video);
                 // video may not have a valid source
                 if (isDefined(video.source) && isDefined(video.source.src)) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
