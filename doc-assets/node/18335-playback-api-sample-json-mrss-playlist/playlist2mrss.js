@@ -65,7 +65,7 @@ var BCLS = (function(window, document) {
 
     showMRSS.addEventListener('click', function() {
          mrssOutput = true;
-         console.log('show mrss');
+         console.log('videoData', videoData);
         // get media data if we haven't already
         if (!isDefined(videoData)) {
             // check inputs to see if we use those or default values
@@ -95,7 +95,7 @@ var BCLS = (function(window, document) {
               videoData[i].source = source;
           } else {
               // video has no sources
-              videoData[callNumber].source = null;
+              videoData[i].source = null;
           }
       }
       // remove videos with no sources
