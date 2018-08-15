@@ -64,10 +64,6 @@ var BCLS = (function(window, document) {
     });
 
     showMRSS.addEventListener('click', function() {
-        var iMax,
-            i,
-            sources;
-
          mrssOutput = true;
         // get media data if we haven't already
         if (!isDefined(videoData)) {
