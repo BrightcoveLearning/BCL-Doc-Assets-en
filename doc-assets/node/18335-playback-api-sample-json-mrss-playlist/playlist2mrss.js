@@ -181,7 +181,7 @@ var BCLS = (function(window, document) {
      * add video items to the MRSS feed
      */
     function addItems() {
-        var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
+        var i, iMax, video, pubdate, videoURL, thumbnailURL, doThumbnail = true;
         if (videoData.length > 0) {
           mrssStr += sChannel;
           mrssStr += '<title>' + feedname + '</title>';
