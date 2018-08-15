@@ -56,11 +56,14 @@ var BCLS = (function(window, document) {
                 policyKey = policyKey_default;
                 playlist_id = playlist_id_default;
             }
-            getMediaData();
+            getMediaData(function(videoData) {
+              feed.textContent = JSON.stringify(videoData, null, '  ');
+            });
+        } else {
+          // JSON data to the textarea
+          feed.textContent = JSON.stringify(videoData, null, '  ');
         }
 
-        // JSON data to the textarea
-        feed.textContent = JSON.stringify(videoData, null, '  ');
     });
 
     showMRSS.addEventListener('click', function() {
@@ -78,9 +81,12 @@ var BCLS = (function(window, document) {
                 policyKey = policyKey_default;
                 playlist_id = playlist_id_default;
             }
-            getMediaData();
+            getMediaData(function(videoData) {
+              processMRSS();
+            });
+        } else {
+          processMRSS();
         }
-        processMRSS();
 
     });
 
