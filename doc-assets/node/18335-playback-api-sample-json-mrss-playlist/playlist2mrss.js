@@ -56,7 +56,7 @@ var BCLS = (function(window, document) {
                 policyKey = policyKey_default;
                 playlist_id = playlist_id_default;
             }
-            getMediaData(function(videoData) {
+            getMediaData(function() {
               feed.textContent = JSON.stringify(videoData, null, '  ');
             });
         } else {
@@ -81,7 +81,7 @@ var BCLS = (function(window, document) {
                 policyKey = policyKey_default;
                 playlist_id = playlist_id_default;
             }
-            getMediaData(function(videoData) {
+            getMediaData(function() {
               processMRSS();
             });
         } else {
@@ -243,7 +243,7 @@ var BCLS = (function(window, document) {
     /**
      * makes the request to the Playback API
      */
-    function getMediaData() {
+    function getMediaData(callback) {
         var httpRequest = new XMLHttpRequest(),
             responseData,
             parsedData,
@@ -258,9 +258,9 @@ var BCLS = (function(window, document) {
                         videoData = parsedData.videos;
                         feedname = parsedData.name;
                         if (mrssOutput) {
-                          processMRSS();
+                          callback();
                         } else {
-                          feed.textContent = JSON.stringify(videoData, null, '  ');
+                          callback();
                         }
                     } else {
                         alert('There was a problem with the request. Request returned ' + httpRequest.status);
