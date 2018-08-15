@@ -10,6 +10,7 @@ var BCLS = (function(window, document) {
         account_id,
         policyKey,
         playlist_id,
+        feedname,
         // the next three lines are the ones that need to be changed
         account_id_default = '1752604059001',
         policyKey_default = 'BCpkADawqM3_9ax216PJYuUTLApMLkLJ3apjFlTRKHHS4q0DE33J0XsiDWmc6SfKwrwRAhejCZpTbwljz4-OlUwyqKi64L25Dwy4yhY1eSZ9ZduI-dO0mjSNVcR9C8nz0jtkimOOtzQgswCr',
@@ -183,6 +184,7 @@ var BCLS = (function(window, document) {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
         if (videoData.length > 0) {
           mrssStr += sChannel;
+          mrssStr += '<title>' + feedname + '</title>';
             iMax = videoData.length;
             for (i = 0; i < iMax; i += 1) {
                 video = videoData[i];
@@ -219,8 +221,8 @@ var BCLS = (function(window, document) {
                         mrssStr += eMediaThumbnail;
                     }
                 }
-                mrssStr += eMediaContent;
                 mrssStr += eItem;
+                mrssStr += eMediaContent;
             }
             mrssStr += eChannel + '</rss>';
             feed.textContent = vkbeautify.xml(mrssStr);
@@ -247,6 +249,7 @@ var BCLS = (function(window, document) {
                         responseData = httpRequest.responseText;
                         parsedData = JSON.parse(responseData);
                         videoData = parsedData.videos;
+                        feedname = parsedData.name;
                         if (mrssOutput) {
                           processMRSS();
                         } else {
