@@ -182,8 +182,8 @@ var BCLS = (function(window, document) {
     function addItems() {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
         if (videoData.length > 0) {
+          mrssStr += sChannel;
             iMax = videoData.length;
-            console.log('imax', iMax);
             for (i = 0; i < iMax; i += 1) {
                 video = videoData[i];
                 console.log('video', video);
@@ -203,7 +203,6 @@ var BCLS = (function(window, document) {
                 }
 
                 pubdate = new Date(video.created_at).toGMTString();
-                mrssStr += sChannel;
                 mrssStr += sItem;
                 mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
