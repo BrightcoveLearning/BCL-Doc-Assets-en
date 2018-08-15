@@ -25,7 +25,6 @@ var BCLS_feedback = ( function (window, document) {
       }
     }
 
-console.log('contentBlock', contentBlock);
   iframe.setAttribute('id', 'CSAT');
   iframe.setAttribute('src', 'https://learning-services-media.brightcove.com/doc-assets/general/surveylink.html');
   iframe.setAttribute('style', 'padding-bottom:20px;border:none');
