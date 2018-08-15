@@ -1,6 +1,7 @@
 var BCLS = (function(window, document) {
     var showJSON = document.getElementById('showJSON'),
         showMRSS = document.getElementById('showMRSS'),
+        mrssOutput = false,
         feed = document.getElementById('feed'),
         account_id_input = document.getElementById('account_id_input'),
         videoData,
@@ -76,31 +77,38 @@ var BCLS = (function(window, document) {
                 playlist_id = playlist_id_default;
             }
             getMediaData();
+            mrssOutput = true;
+            processMRSS();
         }
 
-        iMax = videoData.length;
-        for (i = 0; i < iMax; i++) {
-            sources = videoData[i].sources;
-            if (sources.length > 0) {
-                // get the best MP4 rendition
-                var source = processSources(sources);
-                videoData[i].source = source;
-            } else {
-                // video has no sources
-                videoData[callNumber].source = null;
-            }
-        }
-        // remove videos with no sources
-        i = videoData.length;
-        while (i > 0) {
-            i--;
-            if (!isDefined(videoData[i].source)) {
-                videoData.splice(i, 1);
-            }
-        }
-        // generate and display the MRSS data
-        addItems();
     });
+
+    function processMRSS() {
+      var i, iMax, sources;
+      iMax = videoData.length;
+      for (i = 0; i < iMax; i++) {
+          sources = videoData[i].sources;
+          if (sources.length > 0) {
+              // get the best MP4 rendition
+              var source = processSources(sources);
+              videoData[i].source = source;
+          } else {
+              // video has no sources
+              videoData[callNumber].source = null;
+          }
+      }
+      // remove videos with no sources
+      i = videoData.length;
+      while (i > 0) {
+          i--;
+          if (!isDefined(videoData[i].source)) {
+              videoData.splice(i, 1);
+          }
+      }
+      // generate and display the MRSS data
+      addItems();
+
+    }
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -240,7 +248,11 @@ var BCLS = (function(window, document) {
                         responseData = httpRequest.responseText;
                         parsedData = JSON.parse(responseData);
                         videoData = parsedData.videos;
-                        feed.textContent = JSON.stringify(videoData, null, '  ');
+                        if (mrssOutput) {
+                          processMRSS();
+                        } else {
+                          feed.textContent = JSON.stringify(videoData, null, '  ');
+                        }
                     } else {
                         alert('There was a problem with the request. Request returned ' + httpRequest.status);
                     }
