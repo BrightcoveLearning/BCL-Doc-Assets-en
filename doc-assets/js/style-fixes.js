@@ -6,6 +6,7 @@ var BCLS_style_fixes = ( function (window, document) {
     search_block = document.querySelector('.paragraph--type--search-block'),
     chevrons = document.querySelectorAll('.icon__chevron--down'),
     menu_items = document.querySelectorAll('.dropdown-menu>li.expanded');
+    menu_headers = document.querySelectorAll('#block-mainnavigation>ul>li>a');
 
   if (header_block) {
     header_block.setAttribute('style', 'color:white;background-color:RGB(45, 59, 108);padding-top:10px;padding-botton:5px;margin-bottom:30px;');
@@ -25,6 +26,13 @@ var BCLS_style_fixes = ( function (window, document) {
       iMax = chevrons.length;
       for (i; i < iMax; i++) {
         chevrons[i].setAttribute('style', 'width:1rem;');
+      }
+  }
+  if (menu_headers) {
+    var i = 0,
+      iMax = menu_items.length;
+      for (i; i < iMax; i++) {
+        menu_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108)');
       }
   }
   if (menu_items) {
