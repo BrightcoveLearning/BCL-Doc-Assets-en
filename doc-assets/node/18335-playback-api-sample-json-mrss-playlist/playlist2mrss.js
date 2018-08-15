@@ -223,9 +223,9 @@ var BCLS = (function(window, document) {
                 mrssStr += eMediaContent;
                 mrssStr += eItem;
             }
+            mrssStr += eChannel + '</rss>';
+            feed.textContent = vkbeautify.xml(mrssStr);
         }
-        mrssStr += eChannel + '</rss>';
-        feed.textContent = vkbeautify.xml(mrssStr);
     }
 
     feed.addEventListener('click', function() {
