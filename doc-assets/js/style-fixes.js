@@ -30,7 +30,7 @@ var BCLS_style_fixes = ( function (window, document) {
   }
   if (menu_headers) {
     var i = 0,
-      iMax = menu_items.length;
+      iMax = menu_headers.length;
       for (i; i < iMax; i++) {
         menu_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108)');
       }
