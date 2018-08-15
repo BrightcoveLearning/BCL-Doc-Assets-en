@@ -42,6 +42,8 @@ var BCLS = (function(window, document) {
 
     // event listeners for the buttons
     showJSON.addEventListener('click', function() {
+
+        mrssOutput = false;
         // get media data if we haven't already
         if (!isDefined(videoData)) {
             // check inputs to see if we use those or default values
@@ -65,6 +67,8 @@ var BCLS = (function(window, document) {
         var iMax,
             i,
             sources;
+            
+         mrssOutput = true;
         // get media data if we haven't already
         if (!isDefined(videoData)) {
             // check inputs to see if we use those or default values
@@ -78,7 +82,6 @@ var BCLS = (function(window, document) {
                 playlist_id = playlist_id_default;
             }
             getMediaData();
-            mrssOutput = true;
             processMRSS();
         }
 
