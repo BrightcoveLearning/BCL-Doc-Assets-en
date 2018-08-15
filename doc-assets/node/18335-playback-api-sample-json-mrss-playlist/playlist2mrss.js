@@ -198,6 +198,7 @@ var BCLS = (function(window, document) {
                 }
 
                 pubdate = new Date(video.created_at).toGMTString();
+                mrssStr += sChannel;
                 mrssStr += sItem;
                 mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
