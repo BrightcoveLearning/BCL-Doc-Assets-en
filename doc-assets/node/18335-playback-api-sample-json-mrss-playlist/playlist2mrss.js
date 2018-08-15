@@ -221,6 +221,7 @@ var BCLS = (function(window, document) {
                         mrssStr += eMediaThumbnail;
                     }
                 }
+                console.log('closing item');
                 mrssStr += eItem;
                 mrssStr += eMediaContent;
             }
