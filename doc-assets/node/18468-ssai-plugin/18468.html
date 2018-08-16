@@ -128,17 +128,55 @@
 <p>Next, you will associate either your ad configuration to your Brightcove player. You can do this one of three ways:</p>
 
 <ul>
+  <li><a href="#Standard_embed_code">Standard embed code</a></li>
+  <li><a href="#Advanced_embed_code">Advanced embed code</a></li>
 	<li><a href="#Using_the_catalog">Using the catalog</a></li>
 	<li><a href="#Updating_your_player_configuration">Updating your player configuration</a></li>
 	<li><a href="#Using_the_src_method">Using the src method</a></li>
 </ul>
 
-<h4 id="Using_the_catalog">Using the catalog</h4>
+<h4 id="Standard_embed_code">Standard (iframe) embed code</h4>
 
-<p>One way to associate ads is to use the <a href="/node/18108">player catalog</a> to pass your ad configuration id to the server. When using the <code>catalog</code> with SSAI, append your ad configuration id to the <code>getVideo()</code> call to the Playback API as follows:</p>
+<p>With the Standard embed code, include the <code>adConfigId</code> query string parameter with the value of your ad config id:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">var adConfigId = "<span class="bcls-input">your ad config id</span>";
+<code class="language-javascript">&lt;iframe src=&quot;//players.brightcove.net/1752604059001/default_default/
+index.html?videoId=5625751316001&amp;<span class="bcls-highlight">adConfigId</span>=<span class="bcls-input">your ad config id</span>&quot;
+	allowfullscreen
+	webkitallowfullscreen
+	mozallowfullscreen
+	width=&quot;640&quot;
+	height=&quot;360&quot;&gt;&lt;/iframe&gt;</code></pre>
+
+  <h4 id="Advanced_embed_code">Advanced embed code</h4>
+
+  <p>With the Advanced embed code, include the <code>data-ad-config-id</code> attribute with the value of your ad config id:</p>
+
+  <pre class="line-numbers">
+  <code class="language-javascript">&lt;video data-video-id=&quot;5625751316001&quot;
+    data-account=&quot;1752604059001&quot;
+    data-player=&quot;default&quot;
+    data-embed=&quot;default&quot;
+    data-application-id
+    <span class="bcls-highlight">data-ad-config-id</span>=&quot;<span class="bcls-input">your ad config id</span>&quot;
+    class=&quot;video-js&quot;
+    controls
+    width=&quot;640&quot;
+    height=&quot;360&quot;&gt;&lt;/video&gt;
+  &lt;script src=&quot;//players.brightcove.net/1752604059001/default_default/index.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<h4 id="Using_the_catalog">Using the catalog</h4>
+<p>You can use the <code>player catalog</code> to associate ads with your video. The catalog works by making two requests:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>Request video data from the player catalog. This will include a VMAP URL.</li>
+	<li>The player source is set with the VMAP URL, triggering a request for a VMAP document from Dynamic Delivery. The player source is set again with a valid VMAP XML document.</li>
+</ol>
+
+<p>When using the <code>catalog</code> with SSAI, append your ad configuration id to the <code>getVideo()</code> call to the Playback API as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript"><span class="bcls-highlight">var adConfigId</span> = "<span class="bcls-input">your ad config id</span>";
 var myPlayer = videojs('myPlayerId');
 // If you added the SSAI plugin using the Players module, then the initialization
 // step is performed automatically. Uncomment the next line if you
@@ -151,18 +189,11 @@ myPlayer.catalog.getVideo("<span class="bcls-input">your video id</span>", funct
 	} else {
 		myPlayer.catalog.load(video);
 	}
-}, adConfigId);</code></pre>
-
-<p>The <code>player catalog</code> works by making two requests:</p>
-
-<ol class="bcls-tasklist__restart">
-	<li>Request video data from the player catalog. This will include a VMAP URL.</li>
-	<li>The player source is set with the VMAP URL, triggering a request for a VMAP document from Dynamic Delivery. The player source is set again with a valid VMAP XML document.</li>
-</ol>
+}, <span class="bcls-highlight">adConfigId</span>);</code></pre>
 
 <h4 id="Updating_your_player_configuration">Updating your player configuration</h4>
 
-<p>Another way to associate ads is to include your ad config id in your Brightcove player configuration. To do this, you can use the <a href="/18378">Player Management API</a> as follows:</p>
+<p>Another way to associate ads is to include your ad config id in your Brightcove player configuration. To do this, you can use the <a href="node/18378">Player Management API</a> as follows:</p>
 
 <ol class="bcls-tasklist__restart">
 	<li>
@@ -443,6 +474,24 @@ myPlayer.src({
 
 <section class="bcls-section">
 <h2 id="Changelog">Changelog</h2>
+
+<h4>30 Jul 2018</h4>
+
+<p>v1.2.4</p>
+
+<ul>
+	<li>Fix: Handle <code>ended</code> as a special timeline case</li>
+	<li>Added an NVMRC</li>
+</ul>
+
+<h4>5 July 2018</h4>
+
+<p>v1.2.3</p>
+
+<ul>
+	<li>Bug fix: Ignore captions provided by VMAP</li>
+	<li>Test: Use vhs instead of videojs-contrib-hls</li>
+</ul>
 
 <h4>23 Mar 2018</h4>
 
