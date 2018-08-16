@@ -12,8 +12,6 @@
 
 <p>The value of <code>notifications</code> is an array of notification destination objects. You can use a simple string with a url: <code>"http://httpbin.org/post"</code>, or you can use an object with following options: <code>{"url": "http://httpbin.org/post", "credentials": "reference_to_your_credentials"}</code>. A notification will be sent to the destination you specify when the output changes its state. If you apply this parameter to a VOD output the notifications will only be related to that VOD job, not to the live job.</p>
 
-
-
 <aside class="bcls-aside bcls-aside--warning">Please note. Only one notification url per event type ( <code>first_segment_uploaded</code>, <code>state_change</code>, etc) is allowed.</aside>
 
 <p>Here is an example</p>
@@ -26,7 +24,7 @@
     <span class="bcls-highlight">"notifications": [
       {"url": "http://httpbin.org/post/URLA",
        "credentials": "reference_to_your_credentials",
-       "event": "first_segment_uploaded"}",
+       "event": "first_segment_uploaded"}"},
       {"url": "http://httpbin.org/post/URLB",
       "credentials": "reference_to_your_credentials",
       "event": "state_changed"}"
@@ -63,6 +61,12 @@
         ]</span>
     }]
 }</code></pre>
+
+<h3>Retry strategy</h3>
+<p>In the event of a failed request to send a notification, the default retry strategy is to retry 50 times with an exponential delay between attempts.</p>
+<pre><code class="notranslate">max_retry_times = 50
+delay_delta_s = 5
+next_retry = now_s + retry_count * delay_delta_s</code></pre>
 </section>
 
 <section class="bcls-section">
