@@ -123,6 +123,13 @@ var aapi_model = {
             values: 'varies according to the dimension you are reporting on',
             default: 'video_view'
         },
+        format: {
+            name: 'format',
+            required: false,
+            description: 'Format to return results in',
+            values: 'json | csv | xlxs',
+            default: 'json'
+        },
         reconciled: {
             name: 'reconciled',
             required: false,
