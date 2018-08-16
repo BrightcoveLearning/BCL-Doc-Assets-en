@@ -10,7 +10,7 @@ var BCLS = (function(window, document) {
     custom_profile_display = document.getElementById('custom_profile_display'),
     videoDataDisplay = document.getElementById('videoData'),
     // Dynamic Ingest API stuff
-    profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
+    profilesArray = ['multi-platform-standard-static', 'multi-platform-standard-static-with-mp4', 'multi-platform-extended-static', 'multi-platform-extended-static-with-mp4', 'multi-platform-standard-dynamic-with-mp4', 'multi-platform-standard-dynamic', 'low-bandwidth-dynamic-with-mp4', 'low-bandwidth-dynamic', 'multi-platform-extended-dynamic-with-mp4', 'multi-platform-extended-dynamic'],
     di_url = 'https://ingest.api.brightcove.com/v1/accounts/',
     di_url_display = document.getElementById('di_url'),
     di_submit_display = document.getElementById('di_Submit'),
