@@ -41,6 +41,7 @@ var BCLS = (function(window, document) {
     var options = {},
       reqBody = {};
       custom_profile_display_value = custom_profile_display.value;
+      di_url_display.value = di_url + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
     // get the ingest profile
     if (isDefined(custom_profile_display_value)) {
       ingest_profile = custom_profile_display_value;
@@ -151,7 +152,7 @@ var BCLS = (function(window, document) {
     account_id = isDefined(account_id_display.value) ? account_id_display.value : defaults.account_id;
     client_id = isDefined(client_id_display.value) ? client_id_display.value : null;
     client_secret = isDefined(client_secret_display.value) ? client_secret_display.value : null;
-    di_url_display.value = di_url + account_id + '/videos/' + videoData[videoNumber].id + '/ingest-requests';
+
     // set DI API options for first video
     setDIOptions();
   });
