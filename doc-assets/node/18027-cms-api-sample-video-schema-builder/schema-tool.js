@@ -8,7 +8,7 @@ var BCLS = (function (window, document) {
         playerID = document.getElementById('playerID'),
         playerWidth = document.getElementById('playerWidth'),
         playerHeight = document.getElementById('playerHeight'),
-        videoID = document.getElementById('videoID'),
+        videoId = document.getElementById('videoId'),
         video_id,
         generateMicrodata = document.getElementById('generateMicrodata'),
         generateJSON_ld = document.getElementById('generateJSON_ld'),
@@ -122,16 +122,16 @@ var BCLS = (function (window, document) {
         videoData.duration = secondsToTime(videoData.duration / 1000);
         microData = '<!-- Start Schema Code --> \n <div id="content"> \n <div itemscope itemtype="http://schema.org/VideoObject"> \n <meta itemprop="name" content="';
         microData += videoData.name + '"> \n <meta itemprop="description" content="';
-        microData += videoData.description + '"> \n <meta itemprop="videoID" content="';
+        microData += videoData.description + '"> \n <meta itemprop="videoId" content="';
         microData += videoData.id + '"> \n <meta itemprop="duration" content="';
         microData += videoData.duration + '"> \n <link itemprop="thumbnail" href="';
         microData += videoData.images.thumbnail.src + '"> \n <link itemprop="embedURL" href="http://players.brightcove.net/';
         microData += videoData.account_id + '/';
-        microData += videoData.playerID + '_default/index.html?videoID=';
+        microData += videoData.playerID + '_default/index.html?videoId=';
         microData += videoData.id + '"> \n <meta itemprop="width" content="';
         microData += videoData.playerWidth + '"> \n <meta itemprop="height" content="';
         microData += videoData.playerHeight + '"> \n <!-- End Schema Code --> \n <!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
-        microData += videoData.accountID + '/default_default/index.html?videoID=';
+        microData += videoData.accountID + '/default_default/index.html?videoId=';
         microData += videoData.id + '" style="width:';
         microData += videoData.playerWidth + ';height:';
         microData += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe>  \n <!-- End Player Code --> \n <\/div> \n <\/div>';
@@ -140,7 +140,7 @@ var BCLS = (function (window, document) {
         json_ld += JSON.stringify(object_ld) + ' \n';
         json_ld += '\</script\> \n <!-- End Schema Code --> \n';
         json_ld += '<!-- Start Player Code --> \n <iframe src="//players.brightcove.net/';
-        json_ld += videoData.accountID + '/default_default/index.html?videoID=';
+        json_ld += videoData.accountID + '/default_default/index.html?videoId=';
         json_ld += videoData.id + '" style="width:';
         json_ld += videoData.playerWidth + ';height:';
         json_ld += videoData.playerHeight + '" allowfullscreen webkitallowfullscreen mozallowfullscreen><\/iframe> \n <!-- End Player Code --> \n ';
@@ -163,7 +163,7 @@ var BCLS = (function (window, document) {
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
         account_id = (isDefined(accountID.value)) ? accountID.value : defaults.account_id;
-        video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
+        video_id = (isDefined(videoId.value)) ? videoId.value : defaults.videoId;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.proxyURL = proxyURL;
         options.requestType = "GET";
@@ -185,7 +185,7 @@ var BCLS = (function (window, document) {
         options.client_id = (isDefined(clientID.value)) ? clientID.value : defaults.client_id;
         options.client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : defaults.client_secret;
         account_id = (isDefined(accountID.value)) ? accountID.value : defaults.account_id;
-        video_id = (isDefined(videoID.value)) ? videoID.value : defaults.videoID;
+        video_id = (isDefined(videoId.value)) ? videoId.value : defaults.videoId;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id;
         options.proxyURL = proxyURL;
         options.requestType = "GET";
@@ -208,7 +208,7 @@ var BCLS = (function (window, document) {
     function init() {
         defaults.account_id = '1752604059001';
         defaults.playerID = 'default';
-        defaults.videoID = '5625780785001';
+        defaults.videoId = '5625780785001';
         defaults.playerWidth = '480';
         defaults.playerHeight = '270';
         // proxy has credentials for the default account, so no need to send them
