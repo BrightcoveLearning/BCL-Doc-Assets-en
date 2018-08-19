@@ -10,7 +10,6 @@ var BCLS = (function(window, document) {
     ingest_profile,
     custom_profile_display = document.getElementById('custom_profile_display'),
     cms_url_display = document.getElementById('cms_url'),
-    cmsURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php',
     videoDataDisplay = document.getElementById('videoData'),
     // Dynamic Ingest API stuff
     profilesArray = ['multi-platform-extended-static', 'multi-platform-standard-static'],
@@ -56,7 +55,7 @@ var BCLS = (function(window, document) {
     options.requestType = 'POST';
     options.url = cms_url_display.value;
     // now submit the request
-    submitRequest(options, cmsURL, 'cms');
+    submitRequest(options, diURL, 'cms');
   }
   // set options for the Dynamic Ingest API request
   function setDIOptions() {
@@ -139,7 +138,6 @@ var BCLS = (function(window, document) {
         }
       };
     // set up request data
-    requestData = 'client_id=' + options.client_id + '&client_secret=' + options.client_secret + '&url=' + encodeURIComponent(options.url) + '&requestBody=' + encodeURIComponent(options.requestBody) + '&requestType=' + options.requestType;
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
@@ -147,7 +145,7 @@ var BCLS = (function(window, document) {
     // set headers
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     // open and send request
-    httpRequest.send(requestData);
+    httpRequest.send(JSON.stringify(options));
   }
   di_submit_display.addEventListener('click', function() {
     var i, now = new Date().valueOf();
