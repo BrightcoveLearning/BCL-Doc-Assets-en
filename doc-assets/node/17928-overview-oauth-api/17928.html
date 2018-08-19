@@ -39,7 +39,7 @@
 <p>The base URL for the OAuth API is:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://oauth.brightcove.com/v4
+<code class="language-http notranslate">https://oauth.brightcove.com/v4
 </code>
 </pre>
 </section>
@@ -69,25 +69,25 @@
 	<p>Add logic to your server-side app to make requests to the OAuth API for access tokens. Implementation will depend on the language of your app (and you are encouraged to use an existing <a href="#Client_samples_and_libraries">OAuth2 library</a> for your language if possible), but the call you will make will be a POST request to:</p>
 
 	<pre class="line-numbers">
-<code class="language-http">https://oauth.brightcove.com/v4/access_token
+<code class="language-http notranslate">https://oauth.brightcove.com/v4/access_token
 </code>
 </pre>
 
-	<p>The <code>client_id </code> and <code>client_secret </code> are passed as the <code>username:password </code> in a basic Authorization header:</p>
+	<p>The <code class="notranslate">client_id </code> and <code class="notranslate">client_secret </code> are passed as the <code class="notranslate">username:password </code> in a basic Authorization header:</p>
 
 	<pre class="line-numbers">
-<code>Authorization: Basic {client_id}:{client_secret}
+<code class="notranslate">Authorization: Basic {client_id}:{client_secret}
 </code>
 </pre>
 
-	<p>The entire <code>{client_id}:{client_secret} </code> string must be Base64 encoded (in Node.js, for example, you can use the <code>Buffer.toString("base64") </code> method). CURL does the BASE64 encoding automatically, so you can just pass the credentials as <code>user {client_id}:{client_secret} </code>. You also need to include a <code>Content-Type: application/x-www-form-urlencoded </code> header.</p>
+	<p>The entire <code class="notranslate">{client_id}:{client_secret} </code> string must be Base64 encoded (in Node.js, for example, you can use the <code class="notranslate">Buffer.toString("base64") </code> method). CURL does the BASE64 encoding automatically, so you can just pass the credentials as <code class="notranslate">user {client_id}:{client_secret} </code>. You also need to include a <code class="notranslate">Content-Type: application/x-www-form-urlencoded </code> header.</p>
 
-	<p>The request body will contain the key/value pair <code>grant_type=client_credentials </code>.</p>
+	<p>The request body will contain the key/value pair <code class="notranslate">grant_type=client_credentials </code>.</p>
 
-	<p>Below is a very basic Node.js app that will get an <code>access_token </code> given a valid <code>client_id </code> and <code>client_secret </code>.</p>
+	<p>Below is a very basic Node.js app that will get an <code class="notranslate">access_token </code> given a valid <code class="notranslate">client_id </code> and <code class="notranslate">client_secret </code>.</p>
 
 	<pre class="line-numbers">
-<code class="language-javascript">/*
+<code class="language-javascript notranslate">/*
 * Simple node app to get an access_token for a Brightcove API
 * You will need to substitute valid client_id and client_secret values
 * for {your_client_id} and {your_client_secret}
@@ -118,7 +118,7 @@ console.log('Error: ', error);
 	<p>The response body will look like the following:</p>
 
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "access_token": "ACikM-7Mu04V5s7YBlKgTiPu4ZO3AsTBlWt-73l5kXRN4IeRuIVlJHZkq_lFQdZBYfzT9B_nHNgcmNFdalxSiNdqOBaaV7wQCCnRCua_efHNCg9d_yLbezcjxr3AGcBKy9a8_t-uTMTA46T24LKMOBGBNJFkyATSZI4JuxU71VIyGF9hDisbKHmKC5G5HdQ0nJgyCD1w1zkKrB1CpFb5iiBuA_XOzehF-Xf5DBYnSkDhzzByuFwTv9dU9d7W6V2OuiKiTzCzY3st01qJTk6-an6GcAOD4N5pdN8prvvMDQhz_HunJIamvVGqBz7o3Ltw8CFFJMXKQdeOF8LX31BDnOvMBEz-xvuWErurvrA0r6x5eZH8SuZqeri4ryZAsaitHiJjz9gp533o",
 "token_type": "Bearer",
 "expires_in": 300
@@ -126,13 +126,13 @@ console.log('Error: ', error);
 </code>
 </pre>
 
-	<p>You will need to capture the <code>access_token </code>. Unless your calls will be intermittent, in which case you will request a new <code>access_token </code> for every API call, you will also want to capture the <code>expires_in </code> value so that you can use it for later requests to check whether your token is still valid - if not, you will need to request a new one. The <code>expires_in </code> value is in seconds.</p>
+	<p>You will need to capture the <code class="notranslate">access_token </code>. Unless your calls will be intermittent, in which case you will request a new <code class="notranslate">access_token </code> for every API call, you will also want to capture the <code class="notranslate">expires_in </code> value so that you can use it for later requests to check whether your token is still valid - if not, you will need to request a new one. The <code class="notranslate">expires_in </code> value is in seconds.</p>
 	</li>
 	<li>
-	<p>Once you have the <code>access_token </code>, you can call the Brightcove API, including the token in the <code>Authorization </code> header in the form:</p>
+	<p>Once you have the <code class="notranslate">access_token </code>, you can call the Brightcove API, including the token in the <code class="notranslate">Authorization </code> header in the form:</p>
 
 	<pre class="line-numbers">
-<code class="language-http">Authorization: Bearer {access_token}
+<code class="language-http notranslate">Authorization: Bearer {access_token}
 </code>
 </pre>
 	</li>
@@ -150,23 +150,23 @@ console.log('Error: ', error);
 <figcaption class="bcls-caption--image">Client credential workflow for multi-organization app</figcaption>
 </figure>
 
-<p>The only difference in implementing this scenario rather than the first one is that the user must get a client id and secret for your app from the OAuth UI and provide these to you via a form. You will then pass these to your app to submit with the request for an <code>access_token </code>. Aside from that, everything will be the same.</p>
+<p>The only difference in implementing this scenario rather than the first one is that the user must get a client id and secret for your app from the OAuth UI and provide these to you via a form. You will then pass these to your app to submit with the request for an <code class="notranslate">access_token </code>. Aside from that, everything will be the same.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="Get_Client_Credentials">Get Client Credentials</h2>
 
-<p>The easiest way to get client credentials (the <code>client_id </code> and <code>client_secret </code>) is to use the <a href="/node/14056">OAuth UI</a>. If you prefer to get them directly from the OAuth Service however, you can do so by making a POST request to <code class="language-http">https://oauth.brightcove.com/v4/client_credentials </code>, passing the following headers:</p>
+<p>The easiest way to get client credentials (the <code class="notranslate">client_id </code> and <code class="notranslate">client_secret </code>) is to use the <a href="/node/14056">OAuth UI</a>. If you prefer to get them directly from the OAuth Service however, you can do so by making a POST request to <code class="language-http notranslate">https://oauth.brightcove.com/v4/client_credentials </code>, passing the following headers:</p>
 
 <ul>
-	<li><code>Content-Type: application/json </code></li>
-	<li><code>Authorization: BC_TOKEN <em>your BC_TOKEN</em> </code></li>
+	<li><code class="notranslate">Content-Type: application/json </code></li>
+	<li><code class="notranslate">Authorization: BC_TOKEN <em>your BC_TOKEN</em> </code></li>
 </ul>
 
 <p>You also need to send a JSON object as the payload:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
 "type": "credential",
 "maximum_scope": [
 {
@@ -200,7 +200,7 @@ console.log('Error: ', error);
 <section class="bcls-section">
 <h2 id="Operations">Operations</h2>
 
-<p>The only thing that will vary here is the <code>operations </code> value, which will depend on which API you want access to, and whether you want access to read, write, or both operations. See <a href="/node/17922">API Operations for Client Credentials Requests</a> for a list of all operations currently supported.</p>
+<p>The only thing that will vary here is the <code class="notranslate">operations </code> value, which will depend on which API you want access to, and whether you want access to read, write, or both operations. See <a href="/node/17922">API Operations for Client Credentials Requests</a> for a list of all operations currently supported.</p>
 
 <p>For detailed guides to getting client credentials using curl or Postman, see:</p>
 
