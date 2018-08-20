@@ -37,12 +37,12 @@
 	<dt>Request URL</dt>
 	<dd>
 	<pre class="line-numbers">
-<code class="language-http">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests</code></pre>
+<code class="language-http notranslate">https://ingest.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest-requests</code></pre>
 	</dd>
 	<dt>Authentication</dt>
-	<dd>Authentication requires an access token passed as a <code>Bearer</code> token in an <code>Authorization</code> header:
+	<dd>Authentication requires an access token passed as a <code class="notranslate">Bearer</code> token in an <code class="notranslate">Authorization</code> header:
 	<pre class="line-numbers">
-<code class="language-bash">Authorization: Bearer {access_token}</code></pre>
+<code class="language-bash notranslate">Authorization: Bearer {access_token}</code></pre>
 
 	<p>To get access tokens, you will need <strong>client credentials</strong> (see below). For the process of obtaining an access token, see <a href="/node/17925">Get Access Tokens</a>.</p>
 	</dd>
@@ -57,7 +57,7 @@
 <h2 id="gettingCredentials" class="bcls-expander-head">Getting Credentials</h2>
 
 <div class="bcls-expander-content">
-<p>To get a <code>client_id</code> and <code>client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
+<p>To get a <code class="notranslate">client_id</code> and <code class="notranslate">client_secret</code>, you will need to go to the OAuth UI and register this app:</p>
 
 <ul>
 	<li><a href="/node/14056">Managing API Authentication Credentials</a></li>
@@ -79,7 +79,7 @@
 <p>If you are getting credentials directly from the API, these are the permissions you need:</p>
 
 <pre class="line-numbers">
-<code class="language-json">[
+<code class="language-json notranslate">[
   "video-cloud/video/all",
   "video-cloud/ingest-profiles/profile/read",
   "video-cloud/ingest-profiles/account/read",
@@ -114,25 +114,25 @@
 
 <p>There are some metadata fields attached to audio tracks - some of these are set when you ingest the tracks, while others are created by Video Cloud. Some of these fields are read-only, and others can be updated by you. The metadata fields will be detailed below in the context of the relevant API requests, but two particular ones require some explanation here, as they are crucial in determining how the Brightcove Player will handle the multiple audio tracks.</p>
 
-<h3><code>language</code></h3>
+<h3><code class="notranslate">language</code></h3>
 
-<p>The <code>language</code> field, set for each track during ingestion, specifies the language for the track. This is important if the track is a dub of spoken words in the video. The value of this field will be a two-letter code like <code>en</code> or <code>hi</code>. For a full list of language codes, see the <code>Subtag</code> values in <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a>.</p>
+<p>The <code class="notranslate">language</code> field, set for each track during ingestion, specifies the language for the track. This is important if the track is a dub of spoken words in the video. The value of this field will be a two-letter code like <code class="notranslate">en</code> or <code class="notranslate">hi</code>. For a full list of language codes, see the <code class="notranslate">Subtag</code> values in <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a>.</p>
 
-<h3><code>variant</code></h3>
+<h3><code class="notranslate">variant</code></h3>
 
-<p>The <code>variant</code> field describes the kind of audio track. The possible values, with standard meanings are:</p>
+<p>The <code class="notranslate">variant</code> field describes the kind of audio track. The possible values, with standard meanings are:</p>
 
 <ul>
-	<li><code>main</code> - the main track, usually the one muxed into the video file</li>
-	<li><code>alternate</code> - an alternate audio track</li>
-	<li><code>commentary</code> - an audio track that provides commentary on the video track</li>
-	<li><code>dub</code> - a track&nbsp;containing a dubbed version of spoken words in a different language</li>
-	<li><code>descriptive</code> - track is descriptive of the video content in some way</li>
+	<li><code class="notranslate">main</code> - the main track, usually the one muxed into the video file</li>
+	<li><code class="notranslate">alternate</code> - an alternate audio track</li>
+	<li><code class="notranslate">commentary</code> - an audio track that provides commentary on the video track</li>
+	<li><code class="notranslate">dub</code> - a track&nbsp;containing a dubbed version of spoken words in a different language</li>
+	<li><code class="notranslate">descriptive</code> - track is descriptive of the video content in some way</li>
 </ul>
 
 <h3>Account defaults</h3>
 
-<p>You can set account defaults for <code>language</code> and <code>variant</code> to determine what audio track will be treated as the default by the Brightcove Player (the default can also be overridden by updating the track metadata, as we will see in a section below). To set the defaults for your account, <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
+<p>You can set account defaults for <code class="notranslate">language</code> and <code class="notranslate">variant</code> to determine what audio track will be treated as the default by the Brightcove Player (the default can also be overridden by updating the track metadata, as we will see in a section below). To set the defaults for your account, <a href="https://help.brightcove.com/en/contact">Contact Brightcove Support</a>.</p>
 </section>
 
 <section class="bcls-section">
@@ -142,33 +142,33 @@
 
 <h3>New video with multiple audio tracks</h3>
 
-<h4>Create the video object (CMS API)</h4>
+<h4>Create the video object (<span class="notranslate">CMS API</span>)</h4>
 
 <ol class="blcs-tasklist">
-	<li>You can add several items of video metadata when you create the video object, but here we will just add the minimum: a <code>name</code> for the video:
+	<li>You can add several items of video metadata when you create the video object, but here we will just add the minimum: a <code class="notranslate">name</code> for the video:
 
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "name": "<span class="bcls-input">YOUR_VIDEO_NAME</span>"
 }</code></pre>
 	</li>
-	<li>Submit the JSON above (with the placeholder text replaced by your video name) as the request body for <code>POST</code> request to <code>https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">YOUR_ACCOUNT_ID</span>/videos</code></li>
-	<li>You will get a lot of video metadata back in the response, but the important piece here is the <code>id</code> (the video id), which you need for the next step.</li>
+	<li>Submit the JSON above (with the placeholder text replaced by your video name) as the request body for <code class="notranslate">POST</code> request to <code class="notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">YOUR_ACCOUNT_ID</span>/videos</code></li>
+	<li>You will get a lot of video metadata back in the response, but the important piece here is the <code class="notranslate">id</code> (the video id), which you need for the next step.</li>
 </ol>
 
 <h4>Ingest the video and audio tracks</h4>
 
-<p>Next we will ingest the video and audio tracks (we could add other assets like images and text tracks, but we will keep it simple here). The one thing you may find a little confusing is that <code>audio_tracks</code> appears twice in the JSON for the request body:</p>
+<p>Next we will ingest the video and audio tracks (we could add other assets like images and text tracks, but we will keep it simple here). The one thing you may find a little confusing is that <code class="notranslate">audio_tracks</code> appears twice in the JSON for the request body:</p>
 
 <ul>
-	<li>An <code>audio_tracks</code> object within the <code>master</code> object contains metadata for the audio track included in the video file (if any - this is also referred to as the muxed in audio) - this will include metadata only, without a URL for the audio file, since the audio track is already included in the video file</li>
-	<li>A top-level <code>audio_tracks</code> object describing the additional audio tracks you are ingesting - these will include a URL for audio file, as well as other metadata</li>
+	<li>An <code class="notranslate">audio_tracks</code> object within the <code class="notranslate">master</code> object contains metadata for the audio track included in the video file (if any - this is also referred to as the muxed in audio) - this will include metadata only, without a URL for the audio file, since the audio track is already included in the video file</li>
+	<li>A top-level <code class="notranslate">audio_tracks</code> object describing the additional audio tracks you are ingesting - these will include a URL for audio file, as well as other metadata</li>
 </ul>
 
 <ol class="bcls-tasklist">
 	<li>The JSON data to be sent in the request body is as follows:
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
   "master": {
       "url": "<span class="bcls-input">https://learning-services-media.brightcove.com/videos/Great_Blue_Heron.mp4</span>",
       "audio_tracks": [
@@ -200,17 +200,17 @@
     ]
 }</code></pre>
 	</li>
-	<li>Send the JSON above, substituting your own URLs for the placeholders, and adjusting the <code>language</code> and <code>variant</code> values, in a <code>POST</code> request to <code>https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/<span class="bcls-input">ID/ingest-requests</span></code> (the <code>ID</code> here is the video id returned from request to create the video object)</li>
+	<li>Send the JSON above, substituting your own URLs for the placeholders, and adjusting the <code class="notranslate">language</code> and <code class="notranslate">variant</code> values, in a <code class="notranslate">POST</code> request to <code class="notranslate">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-input">ACCOUNT_ID</span>/videos/<span class="bcls-input">ID/ingest-requests</span></code> (the <code class="notranslate">ID</code> here is the video id returned from request to create the video object)</li>
 </ol>
 
 <h3 id="Add_audio_tracks_to_an_existing_video">Add audio tracks to an existing video</h3>
 
-<p>To add additional audio tracks to an existing video, the procedure is the same, except that you do not need to make the request to the CMS API to create the video, because it already exists. And in the request to the Dynamic Ingest API, you will not need to include the URL for the video file or the <code>audio_tracks</code> under <code>master</code> providing the metadata for the muxed in audio. You do, however, want to include the metadata for the muxed in audio track in the existing video. So the JSON for the ingest request will look like this:</p>
+<p>To add additional audio tracks to an existing video, the procedure is the same, except that you do not need to make the request to the <span class="notranslate">CMS API</span> to create the video, because it already exists. And in the request to the Dynamic Ingest API, you will not need to include the URL for the video file or the <code class="notranslate">audio_tracks</code> under <code class="notranslate">master</code> providing the metadata for the muxed in audio. You do, however, want to include the metadata for the muxed in audio track in the existing video. So the JSON for the ingest request will look like this:</p>
 
-<aside class="bcls-aside bcls-aside--warning">Note that <code>merge_with_existing</code> currently must be set to <code>false</code>. This will cause new audio tracks to overwrite any existing ones. Merging audio tracks will be added later.</aside>
+<aside class="bcls-aside bcls-aside--warning">Note that <code class="notranslate">merge_with_existing</code> currently must be set to <code class="notranslate">false</code>. This will cause new audio tracks to overwrite any existing ones. Merging audio tracks will be added later.</aside>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
   "audio_tracks": {
       "merge_with_existing": false,
       "masters": [
@@ -246,49 +246,49 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td>master.audio_tracks</td>
+			<td><code class="notranslate">master.audio_tracks</code></td>
 			<td>Object[]</td>
 			<td>Metadata for the muxed in audio</td>
 		</tr>
 		<tr>
-			<td>master.audio_tracks.language</td>
+			<td><code class="notranslate">master.audio_tracks.language</code></td>
 			<td>String</td>
 			<td>Language code for the muxed in audio from the subtags in <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a></td>
 		</tr>
 		<tr>
-			<td>master.audio_tracks.variant</td>
+			<td><code class="notranslate">master.audio_tracks.variant</code></td>
 			<td>String</td>
-			<td>The kind of audio track: <code>main</code>|<code>alternate</code>|<code>dub</code>|<code>commentary</code>|<code>descriptive</code> (<code>main</code> would generally be used for the muxed in audio)</td>
+			<td>The kind of audio track: <code class="notranslate">main</code>|<code class="notranslate">alternate</code>|<code class="notranslate">dub</code>|<code class="notranslate">commentary</code>|<code class="notranslate">descriptive</code> (<code class="notranslate">main</code> would generally be used for the muxed in audio)</td>
 		</tr>
 		<tr>
-			<td>audio_tracks</td>
+			<td><code class="notranslate">audio_tracks</code></td>
 			<td>Object</td>
 			<td>Information for the additional audio tracks</td>
 		</tr>
 		<tr>
-			<td>audio_tracks.merge_with_existing</td>
+			<td><code class="notranslate">audio_tracks.merge_with_existing</code></td>
 			<td>Boolean</td>
 			<td>Whether these tracks should be merged into existing ones or replace them</td>
 		</tr>
 		<tr>
-			<td>audio_tracks.masters</td>
+			<td><code class="notranslate">audio_tracks.masters</code></td>
 			<td>Object[]</td>
 			<td>Information for the individual audio tracks</td>
 		</tr>
 		<tr>
-			<td>audio_tracks.masters.url</td>
+			<td><code class="notranslate">audio_tracks.masters.url</code></td>
 			<td>String</td>
 			<td>Url for the audio track file</td>
 		</tr>
 		<tr>
-			<td>audio_tracks.masters.language</td>
+			<td><code class="notranslate">audio_tracks.masters.language</code></td>
 			<td>String</td>
 			<td>Language code for the audio track from the subtags in <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a></td>
 		</tr>
 		<tr>
-			<td>audio_tracks.masters.variant</td>
+			<td><code class="notranslate">audio_tracks.masters.variant</code></td>
 			<td>String</td>
-			<td>The kind of audio track: <code>main</code>|<code>alternate</code>|<code>dub</code>|<code>commentary</code>|<code>descriptive</code> (<code>main</code> would generally be used for the muxed in audio)</td>
+			<td>The kind of audio track: <code class="notranslate">main</code>|<code class="notranslate">alternate</code>|<code class="notranslate">dub</code>|<code class="notranslate">commentary</code>|<code class="notranslate">descriptive</code> (<code class="notranslate">main</code> would generally be used for the muxed in audio)</td>
 		</tr>
 	</tbody>
 </table>
@@ -300,7 +300,7 @@
 <p>If you specify one or more <strong>callback</strong> URLs (as in the sample JSON for the ingest request above), Video Cloud will send a notification for each of the audio tracks you ingest. Notifications will look like this:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
   "entity": "default/audio128",
   "entityType": "DYNAMIC_RENDITION",
   "version": "1",
@@ -314,25 +314,25 @@
   "variant" : "alternate"
 }</code></pre>
 
-<p>To identify notifications for audio tracks, look for the <code>language</code> and <code>variant</code> fields in the notification. The <code>"action": "CREATE"</code> and <code>"status": "SUCCESS"</code> fields indicate that the track was successfully ingested.</p>
+<p>To identify notifications for audio tracks, look for the <code class="notranslate">language</code> and <code class="notranslate">variant</code> fields in the notification. The <code class="notranslate">"action": "CREATE"</code> and <code class="notranslate">"status": "SUCCESS"</code> fields indicate that the track was successfully ingested.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="Managing_audio_tracks">Managing audio tracks</h2>
 
-<p>Once you have ingested the audio tracks, you can manage them via the CMS API.</p>
+<p>Once you have ingested the audio tracks, you can manage them via the <span class="notranslate">CMS API</span>.</p>
 
 <h3>Get all audio track metadata for a video</h3>
 
-<p>To retrieve the metadata for all audio tracks associated with a video, make a <code>GET</code> request to:</p>
+<p>To retrieve the metadata for all audio tracks associated with a video, make a <code class="notranslate">GET</code> request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks</code></pre>
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks</code></pre>
 
 <p>The response will be an array of objects containing metadata for each audio track. See the table of response fields below for details.</p>
 
 <pre class="line-numbers">
-<code class="language-json">[
+<code class="language-json notranslate">[
   {
     "id": "en_alternate",
     "language": "en",
@@ -376,24 +376,24 @@
 
 <h3>Get metadata for one audio track</h3>
 
-<p>To retrieve the metadata for one audio track associated with a video, make a <code>GET</code> request to:</p>
+<p>To retrieve the metadata for one audio track associated with a video, make a <code class="notranslate">GET</code> request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks/<span class="bcls-input">audio_track_id</span></code></pre>
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks/<span class="bcls-input">audio_track_id</span></code></pre>
 
 <p>The response will be an object containing metadata for each audio track. See the table of response fields below for details.</p>
 
 <h3>Updating audio track metadata</h3>
 
-<p>You can update any writable metadata field for an audio track by making a <code>PATCH</code> request to:</p>
+<p>You can update any writable metadata field for an audio track by making a <code class="notranslate">PATCH</code> request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks/<span class="bcls-input">audio_track_id</span></code></pre>
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks/<span class="bcls-input">audio_track_id</span></code></pre>
 
 <p>In the request body, include the field(s) you want to modify - for example:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "language": "es",
     "is_default": true
 }</code></pre>
@@ -403,7 +403,7 @@
 <p>To delete an audio track, send a DELETE request to:</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks/<span class="bcls-input">audio_track_id</span></code></pre>
+<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video id</span>/audio_tracks/<span class="bcls-input">audio_track_id</span></code></pre>
 
 <p>Note that the success response code may be 202 (Accepted) rather than 204 (No content) because the deletion process is asynchronous and may not be completed immediately.</p>
 
@@ -419,37 +419,37 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td>id</td>
+			<td><code class="notranslate">id</code></td>
 			<td>String</td>
 			<td>yes</td>
 			<td>Id for the track, formed as <strong>language_variant</strong> - note that the id may change if these values are changed</td>
 		</tr>
 		<tr>
-			<td>language</td>
+			<td><code class="notranslate">language</code></td>
 			<td>String</td>
 			<td>No</td>
 			<td>Language code for the audio track from the subtags in <a href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a></td>
 		</tr>
 		<tr>
-			<td>variant</td>
+			<td><code class="notranslate">variant</code></td>
 			<td>String</td>
 			<td>No</td>
-			<td>The kind of audio track: <code>main</code>|<code>alternate</code>|<code>dub</code>|<code>commentary</code>|<code>descriptive</code> (<code>main</code> would generally be used for the muxed in audio)</td>
+			<td>The kind of audio track: <code class="notranslate">main</code>|<code class="notranslate">alternate</code>|<code class="notranslate">dub</code>|<code class="notranslate">commentary</code>|<code class="notranslate">descriptive</code> (<code class="notranslate">main</code> would generally be used for the muxed in audio)</td>
 		</tr>
 		<tr>
-			<td>duration</td>
+			<td><code class="notranslate">duration</code></td>
 			<td>Number</td>
 			<td>Yes</td>
 			<td>The length of the track in milliseconds</td>
 		</tr>
 		<tr>
-			<td>encoding_rates</td>
+			<td><code class="notranslate">encoding_rates</code></td>
 			<td>Number[]</td>
 			<td>Yes</td>
 			<td>A list of available encodings of this track, in bps</td>
 		</tr>
 		<tr>
-			<td>is_default</td>
+			<td><code class="notranslate">is_default</code></td>
 			<td>Boolean</td>
 			<td>No</td>
 			<td>If true, this will be used the default track for playback (overriding any account-level default)</td>
@@ -477,16 +477,16 @@
 	<dd>
 	<ul>
 		<li>Video Cloud will <strong>not</strong> store audio masters</li>
-		<li>If you retranscode the video from the video master, the additional audio tracks will be lost, and must be re-added using the <a href="#Add_audio_tracks_to_an_existing_video">Add audio tracks to an existing video</a> method described above; set <code>audio_tracks.merge_with_existing</code> to <code>false</code></li>
+		<li>If you retranscode the video from the video master, the additional audio tracks will be lost, and must be re-added using the <a href="#Add_audio_tracks_to_an_existing_video">Add audio tracks to an existing video</a> method described above; set <code class="notranslate">audio_tracks.merge_with_existing</code> to <code class="notranslate">false</code></li>
 	</ul>
 	</dd>
 	<dt>Audio-only files must be used</dt>
 	<dd>Audio tracks must be audio-only files without video tracks</dd>
-	<dt>HLSv3, HLS with audio and video in the same segment</dt>
+	<dt><code class="notranslate">HLSv3</code>, <code class="notranslate">HLS</code> with audio and video in the same segment</dt>
 	<dd>
 	<ul>
-		<li>The playback API will not return HLSv3 manifests</li>
-		<li>All HLS manifests will include de-muxed video/audio</li>
+		<li>The playback API will not return <code class="notranslate">HLSv3</code> manifests</li>
+		<li>All <code class="notranslate">HLS</code> manifests will include de-muxed video/audio</li>
 	</ul>
 	</dd>
 	<dt>Smooth Streaming</dt>
@@ -503,14 +503,14 @@
 	<dt>Ordering of audio tracks beyond the one "default" track</dt>
 	<dd>
 	<ul>
-		<li>You can pick a default audio track with CMS API per title by setting the <code>is_default</code> field to <code>true</code></li>
+		<li>You can pick a default audio track with <span class="notranslate">CMS API</span> per title by setting the <code class="notranslate">is_default</code> field to <code class="notranslate">true</code></li>
 		<li>There is also an account default, which can be set by Support</li>
 		<li>This will only affect the "default" track in HLS manifests</li>
 		<li>No other ordering is possible</li>
 	</ul>
 	</dd>
 	<dt>Ingesting more than one audio track from a single source</dt>
-	<dd>We support <strong>one audio track from the source supplied in ".master"</strong>, and one for each source under ".audio_tracks.masters".</dd>
+	<dd>We support <strong>one audio track from the source supplied in "<code class="notranslate">.master</code>"</strong>, and one for each source under "<code class="notranslate">.audio_tracks.masters</code>".</dd>
 	<dt>DRM protection on videos that include only audio</dt>
 	<dd>As soon as a video track is added, DRM protection will be enabled.</dd>
 	<dt>End-user friendly labels</dt>
@@ -523,8 +523,8 @@
 		<li>If the audio and video are different durations, the player will may stop whenever the shorter one runs out.</li>
 	</ul>
 	</dd>
-	<dt>Video "duration"</dt>
-	<dd>The video <code>duration</code> reported by the catalog/Playback API may be incorrect if the audio tracks have different durations.</dd>
+	<dt>Video "<code class="notranslate">duration</code>"</dt>
+	<dd>The video <code class="notranslate">duration</code> reported by the catalog/Playback API may be incorrect if the audio tracks have different durations.</dd>
 </dl>
 </section>
 </article>
