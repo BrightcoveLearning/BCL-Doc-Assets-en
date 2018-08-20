@@ -77,17 +77,18 @@
 
 <ul>
 	<li><a href="#Display_content">Display content</a></li>
+	<li><a href="#Check_download_size">Check download size</a></li>
 	<li><a href="#Show_download_status">Show download status</a></li>
 	<li><a href="#Manage_the_download_queue">Manage the download queue</a></li>
 	<li><a href="#Show_local_storage_space">Show local storage space</a></li>
 	<li><a href="#Pause_resume_cancel_download">Pause/resume/cancel download</a></li>
 </ul>
 
-<h3 class="BCL_conceptTitle" id="Display_content">Display content</h3>
+<h3 id="Display_content">Display content</h3>
 
 <p>Display a list of content available for streaming or download.</p>
 
-<p>When you set a video's <code>offline_enabled</code> property to <strong>true</strong>, the Native SDKs will mark this video as downloadable.</p>
+<p>When you set a video's <code class="notranslate">offline_enabled</code> property to <strong>true</strong>, the Native SDKs will mark this video as downloadable.</p>
 
 <h4 id="Using_the_CodePen" class="bcls-expander-head">Prepare videos</h4>
 
@@ -114,7 +115,7 @@
 	<p>Here is an example using curl:</p>
 
 	<pre class="line-numbers" data-start="1">
-<code class="language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
+<code class="notranslate language-json">curl --header "Authorization: Bearer $oauth_token" --request PATCH --data '
 {"offline_enabled" : true}
 ' https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">your account id</span>/videos/<span class="bcls-input">your video id</span>
 </code></pre>
@@ -126,11 +127,39 @@
 <figcaption class="bcls-caption--image">Display content</figcaption>
 </figure>
 
-<p>
-	When working with clear content, see the <a href="#Best_practices">Best practices</a> section for tips on how to display your content.
-</p>
+<p>When working with clear content, see the <a href="#Best_practices">Best practices</a> section for tips on how to display your content.</p>
 
-<h3 class="BCL_conceptTitle" id="Show_download_status">Show download status</h3>
+<h3 id="Check_download_size">Check download size</h3>
+
+<p>Before a download is requested, you should make sure there is enough space in device storage for the download. To get an estimate of the total size of the video download, follow these steps:</p>
+
+<ul>
+	<li>For iOS, review the information in the <strong>Check Download Size</strong> section of the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md#check-download-size">iOS App Developer's Guide to Offline Playback</a>.</li>
+	<li>
+	<p>For Android, you can get an estimate in the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.DownloadEventListener.html#onDownloadStarted-com.brightcove.player.model.Video-long-java.util.Map-"> OnDownloadStarted</a> callback from the <code class="notranslate">DownloadEventListener</code>. Here is an example of how to set the event listener:</p>
+
+	<pre>
+<code class="notranslate language-java">MediaDownloadable.DownloadEventListener downloadEventListener = new MediaDownloadable.DownloadEventListener() {
+//Your implementation.
+}
+OfflineCatalog catalog = new OfflineCatalog(context, eventEmitter, accountId, policyKey);
+catalog.addDownloadEventListener(downloadEventListener);</code></pre>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3 id="Show_local_storage_space">Show local storage space</h3>
+
+<p>Inform the user when there is not enough local storage to complete downloading the current item and any items in the queue.</p>
+
+<p>The SDKs provide the estimated size and progress so that you can determine if there is sufficient space for downloads.</p>
+<!-- <figure class="bcls-figure">
+<img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-space.png" alt="Local storage space">
+<figcaption class="bcls-caption--image">Local storage space</figcaption>
+</figure> -->
+
+<h3 id="Show_download_status">Show download status</h3>
 
 <p>Display the current download along with its status.</p>
 
@@ -141,11 +170,11 @@
 
 <aside class="bcls-aside bcls-aside--tip">For Android devices, download status is also shown in the Notification Area. The notification title is set to the video title. The notification is removed if the download is paused or cancelled. For details, see the <a href="/node/18246#Offline_playback_with_DRM">Code Snippets using the Native SDK for Android</a> document.</aside>
 
-<h3 class="BCL_conceptTitle" id="Manage_the_download_queue">Manage the download queue</h3>
+<h3 id="Manage_the_download_queue">Manage the download queue</h3>
 
 <p>Create and manage the download queue.</p>
 
-<p>The Native SDKs will allow mutliple videos to be queued for downloads. For example, a user can download multiple episodes of a season and the Native SDKs will manage the process by providing download status for each asset.</p>
+<p>The Native SDKs will allow multiple videos to be queued for downloads. For example, a user can download multiple episodes of a season and the Native SDKs will manage the process by providing download status for each asset.</p>
 
 <aside class="bcls-aside bcls-aside--information">If your app is targeting iOS 11.0 - 11.2, we don't recommend concurrent downloads because pause and resume behavior is unreliable with multiple simultaneous downloads. The problem has been fixed with iOS 11.3.</aside>
 <!-- <figure class="bcls-figure">
@@ -153,17 +182,7 @@
 <figcaption class="bcls-caption--image">Download queue</figcaption>
 </figure> -->
 
-<h3 class="BCL_conceptTitle" id="Show_local_storage_space">Show local storage space</h3>
-
-<p>Inform the user when there is not enough local storage to complete downloading the current item and any items in the queue.</p>
-
-<p>The SDKs provide the estimated size and progress so that you can determine if there is sufficient space for downloads.</p>
-<!-- <figure class="bcls-figure">
-<img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/guides/odrm/download-space.png" alt="Local storage space">
-<figcaption class="bcls-caption--image">Local storage space</figcaption>
-</figure> -->
-
-<h3 class="BCL_conceptTitle" id="Pause_resume_cancel_download">Pause/resume/cancel download</h3>
+<h3 id="Pause_resume_cancel_download">Pause/resume/cancel download</h3>
 
 <p>Allow the user to pause, resume or cancel content download.</p>
 
@@ -187,7 +206,7 @@
 	<li><a href="#Delete_local_content">Delete local content</a></li>
 </ul>
 
-<h3 class="BCL_conceptTitle" id="Show_downloaded_content">Show downloaded content</h3>
+<h3 id="Show_downloaded_content">Show downloaded content</h3>
 
 <p>Show all of the downloaded episodes for each show/season.</p>
 
@@ -215,7 +234,7 @@
 
 <aside class="bcls-aside bcls-aside--tip">You will be able to see the time remaining for a rental license.</aside>
 
-<h3 class="BCL_conceptTitle" id="Delete_local_content">Delete local content</h3>
+<h3 id="Delete_local_content">Delete local content</h3>
 
 <p>Allow users to delete content from local storage.</p>
 
@@ -271,20 +290,16 @@
 <p>The following notes apply to the offline playback feature supported by the Native SDKs:</p>
 
 <h3>All</h3>
-<p>
-	Currently, HLSe content is not supported with offline playback using the Brightcove Native SDK for Android, iOS or tvOS.
-</p>
+
+<p>Currently, HLSe content is not supported with offline playback using the Brightcove Native SDK for Android, iOS or tvOS.</p>
 
 <h3>Android</h3>
-<p>
-	When the app is deleted, all downloaded content is removed. This is true as long as the default storage location is not overridden.
-</p>
+
+<p>When the app is deleted, all downloaded content is removed. This is true as long as the default storage location is not overridden.</p>
 
 <h3>iOS</h3>
-<p>
-	As a security feature, you cannot stream an offline HLS video to an AirPlay device for playback. This is confirmed by Apple to be an <code>AVFoundation</code> limitation.
-</p>
 
+<p>As a security feature, you cannot stream an offline HLS video to an AirPlay device for playback. This is confirmed by Apple to be an <code class="notranslate">AVFoundation</code> limitation.</p>
 </section>
 
 <section class="bcls-section">
@@ -299,7 +314,7 @@
 <p class="bcls-answer"><strong>Android</strong>: Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the Android OS release notes.<br />
 <br />
 <strong>iOS</strong>: License expiration is enforced by FairPlay. iOS handles all checking for clock changes, etc. An app has the option of checking the license expiration to alert the user that the license has expired. This may be preferable to simply playing back an expired video and then receiving a playback error.</p>
-<!-- <p class="bcls-answer">Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/release-notes.txt">Native SDK for Android release notes</a>.</p> -->
+<!-- <p class="bcls-answer">Absolute expiration determines the date and time until which a license is valid. This is enforced by Widevine and the Android DRM layer. Theoretically, the DRM layer in Android must prevent the user from bypassing the expiration period. Any issues that we may have found is described in the <a href="https://docs.brightcove.com/android-sdk/release-notes.txt">Native SDK for Android release notes</a>.</p> -->
 
 <p class="bcls-question">Will the license and offline videos continue loading while the app is in the background?</p>
 
@@ -335,15 +350,13 @@ Downloading of the main video content can happen while the app is in the backgro
 
 <p>The pause and cancel buttons should be displayed when video download has started.</p>
 
-<p><strong>Android:</strong> You should display the pause and cancel buttons as part of calling the <code>onDownloadStarted</code> callback in the <code>DownloadEventListener</code>. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">Offline Playback sample app</a>.</p>
+<p><strong>Android:</strong> You should display the pause and cancel buttons as part of calling the <code class="notranslate">onDownloadStarted</code> callback in the <code class="notranslate">DownloadEventListener</code>. For details, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">Offline Playback sample app</a>.</p>
 
 <p><strong>iOS:</strong> For details about how to create an app for Offline Playback, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md">iOS App Developer's Guide</a>.</p>
 
 <h3>Displaying clear content</h3>
-<p>
-	If your account is not DRM-enabled or you are working with clear content, the Brightcove Native SDKs will not perform a server-side license request. Therefore, clear content is not considered available for rental or purchase. In most cases, it is recommended that you hide the <strong>rent</strong> and <strong>buy</strong> buttons for clear content.
-	</p>
 
+<p>If your account is not DRM-enabled or you are working with clear content, the Brightcove Native SDKs will not perform a server-side license request. Therefore, clear content is not considered available for rental or purchase. In most cases, for clear content, it is recommended that you hide the <strong>rent</strong> and <strong>buy</strong> buttons and display a single <strong>download</strong> button instead.</p>
 </section>
 
 <section class="bcls-section">
