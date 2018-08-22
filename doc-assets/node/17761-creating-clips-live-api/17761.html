@@ -10,7 +10,7 @@
 			<li>With <code class="notranslate">start_time</code> and/or <code class="notranslate">end_time</code> defined relative to the start time ( <code class="notranslate">stream_start_time</code>) of the whole live stream event</li>
 			<li>With <code class="notranslate">start_time</code> and/or <code class="notranslate">end_time</code> defined in Epoch (Unix) time (in seconds)</li>
 			<li>With duration and either a <code class="notranslate">start_time</code> or <code class="notranslate">end_time</code> </li>
-			<li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li> <li>The clipping API <strong>cannot</strong> be used with <strong>encrypted</strong> jobs.</li> 
+			<li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li> <li>The clipping API <strong>cannot</strong> be used with <strong>encrypted</strong> jobs.</li>
 		</ul>
 
 		<h3>Notes</h3>
@@ -22,7 +22,7 @@
 					<li>If the job is active and still live: (request time - duration) to (request time)</li>
 					<li>If the job is finished: ( <code class="notranslate">finished_at</code> - duration) to ( <code class="notranslate">finished_at</code>)</li> </ul>
 			</li>
-			<li>If you specify both <code class="notranslate">start_time</code> AND <code class="notranslate">end_time</code>: 
+			<li>If you specify both <code class="notranslate">start_time</code> AND <code class="notranslate">end_time</code>:
 				<ul>
 					<li>If the job is active and still live: as long as the Epoch time window falls entirely within
 						<code class="notranslate">created_at</code> and the request time, the clip will be made</li>
@@ -326,7 +326,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">label</code>
+						<code class="notranslate">outputs.label</code>
 					</td>
 					<td>String</td>
 					<td>
@@ -335,7 +335,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">duration</code>
+						<code class="notranslate">outputs.duration</code>
 					</td>
 					<td>Number</td>
 					<td>
@@ -354,7 +354,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">stream_start_time</code>
+						<code class="notranslate">outputs.stream_start_time</code>
 					</td>
 					<td>Number</td>
 					<td>
@@ -367,7 +367,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">stream_end_time</code>
+						<code class="notranslate">outputs.stream_end_time</code>
 					</td>
 					<td>Number</td>
 					<td>
@@ -380,7 +380,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">start_time</code>
+						<code class="notranslate">outputs.start_time</code>
 					</td>
 					<td>Number</td>
 					<td>
@@ -393,7 +393,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">end_time</code>
+						<code class="notranslate">outputs.end_time</code>
 					</td>
 					<td>Number</td>
 					<td>
@@ -406,7 +406,7 @@
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;
-						<code class="notranslate">stream_start_timecode</code>
+						<code class="notranslate">outputs.stream_start_timecode</code>
 					</td>
 					<td>Number</td>
 					<td>
@@ -418,35 +418,30 @@
 					</td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;
-						<code class="notranslate">stream_end_timecode</code>
+					<td>
+						<code class="notranslate">outputs.stream_end_timecode</code>
 					</td>
 					<td>Number</td>
 					<td>
 						<p>End time for the clip in an SMPTE-formatted (HH:MM:SS:FF) timecode from the end of the stream,
-							<code class="notranslate">stream_end_timecode</code> must be used with
+							<code class="notranslate">outputs.stream_end_timecode</code> must be used with
 							<strong>either</strong>
 							<code class="notranslate">stream_start_timecode</code> or
 							<code class="notranslate">duration</code>.</p>
 					</td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;
-						<code class="notranslate">url</code>
+					<td>
+						<code class="notranslate">outputs.url</code>
 					</td>
 					<td>String</td>
 					<td>
-						<p>Destination URL for the clip, note that the output
-							<strong>must</strong> contain
-							<strong>either</strong> this
-							<code class="notranslate">url</code> field
-							<strong>or</strong> a
-							<code class="notranslate">videocloud</code> object defining the video properties and ingest options for Video Cloud.</p>
+						<p>Destination URL for the clip, note that the output <strong>must</strong> contain <strong>either</strong> this <code class="notranslate">url</code> field <strong>or</strong> a <code class="notranslate">videocloud</code> object defining the video properties and ingest options for Video Cloud.</p>
 					</td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;
-						<code class="notranslate">credentials</code>
+					<td>
+						<code class="notranslate">outputs.credentials</code>
 					</td>
 					<td>String</td>
 					<td>
@@ -454,8 +449,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;
-						<code class="notranslate">videocloud</code>
+					<td>
+						<code class="notranslate">outputs.videocloud</code>
 					</td>
 					<td>Object</td>
 					<td>
@@ -464,8 +459,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code class="notranslate">video</code>
+					<td>
+						<code class="notranslate">outputs.videocloud.video</code>
 					</td>
 					<td>Object</td>
 					<td>
@@ -476,8 +471,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;
-						<code class="notranslate">ingest</code>
+					<td>
+						<code class="notranslate">outputs.videocloud.ingest</code>
 					</td>
 					<td>Object</td>
 					<td>
