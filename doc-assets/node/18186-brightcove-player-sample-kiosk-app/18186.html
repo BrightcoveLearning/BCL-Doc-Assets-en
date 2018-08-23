@@ -33,7 +33,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+<h2 id="Development_sequence" class="bcls-expander-head">Development sequence</h2>
 
 <div class="bcls-expander-content">
 <p>Here is the recommended development sequence:</p>
@@ -82,7 +82,7 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:play">play()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#play">play()</a></td>
 		</tr>
 		<tr>
 			<td><a href="/node/18108#getVideo">catalog.getVideo()</a></td>
@@ -91,7 +91,7 @@
 			<td><a href="/node/18108#load">catalog.load()</a></td>
 		</tr>
 		<tr>
-			<td><a href="https://brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.on">on()</a></td>
 		</tr>
 	</tbody>
 </table>
@@ -100,7 +100,7 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+<h2 id="Get_credentials" class="bcls-expander-head">Get credentials</h2>
 
 <div class="bcls-expander-content">
 <p>To use the CMS API you will need proper credentials.</p>
@@ -114,7 +114,7 @@
 <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
 
 <pre class="line-numbers">
-<code class="language-json">"operations": [
+<code class="notranslate language-json">"operations": [
   "video-cloud/video/all",
   "video-cloud/playlist/all",
   "video-cloud/sharing-relationships/all",
@@ -164,16 +164,16 @@
 	<li>Prepare to make the call to the CMS API that returns the count of total videos in the account.</li>
 	<li>Make the actual request using the CMS API for the count. This step will use a callback function, which means the callback function is passed as a parameter to another, second, function. The callback function is then called inside the second function's logic. In this case the callback function simply extracts the count property from an object returned by the CMS API.</li>
 	<li>Determine the number of calls needed to the CMS API to retrieve all the videos. This code follows the best practice of asking for 25 videos per call. This is done by dividing the count of all the videos by 25.</li>
-	<li>Create a <code>do-while</code> loop that iterates for the required number of calls determined in the previous step. This loop must be in the callback function of the request for the video count.</li>
+	<li>Create a <code class="notranslate">do-while</code> loop that iterates for the required number of calls determined in the previous step. This loop must be in the callback function of the request for the video count.</li>
 	<li>In the loop, prepare to make the call to the CMS API that will return 25 videos from the account.</li>
 	<li>Still in the loop, make the actual request using the CMS API for the video data. This step will use a callback function, which means the callback function is passed as a parameter to another, second, function. The callback function is then called inside the second function's logic. In this case the callback function will perform these tasks:
 	<ul>
 		<li>Extract data to build an array of video IDs for the returned video information.</li>
-		<li>The array of video IDs is then passed as a parameter to another function which retrieves the complete video object for for each ID. The returned objects are stored in an array of all video objects. A callback function is used in this step also.</li>
+		<li>The array of video IDs is then passed as a parameter to another function which retrieves the complete video object for each ID. The returned objects are stored in an array of all video objects. A callback function is used in this step also.</li>
 		<li>Check when all videos are returned (when the number of returned videos matches the previously returned count). When the condition is met, call a function that plays the first video in the array (zeroth element).</li>
 	</ul>
 	</li>
-	<li>Setup an event listener to listen for the <code>ended</code> event. When each video ends play the next video, or if it is the last video in the array, play the first video.</li>
+	<li>Setup an event listener to listen for the <code class="notranslate">ended</code> event. When each video ends play the next video, or if it is the last video in the array, play the first video.</li>
 </ol>
 <!-- UPDATE task 1 -->
 
@@ -182,9 +182,9 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Setup for video count CMS API request ###</code></pre>
+<code class="notranslate language-javascript">// ### Setup for video count CMS API request ###</code></pre>
 
-<p>The first call to the <code>getCMSAPIData()</code> is for the total count of videos. Note the in the callback function there is another call to the function inside of the <code>do-while</code> loop.</p>
+<p>The first call to the <code class="notranslate">getCMSAPIData()</code> is for the total count of videos. Note the in the callback function there is another call to the function inside of the <code class="notranslate">do-while</code> loop.</p>
 <!-- UPDATE task 2 -->
 
 <h3>Play next video on end of a video playing</h3>
@@ -192,9 +192,9 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Get next video ###</code></pre>
+<code class="notranslate language-javascript">// ### Get next video ###</code></pre>
 
-<p>Uses the <code>on('ended',...)</code> logic to play the next video in the list. Note the <code>currentlyPlayingIndex</code> tracks the videos playing.</p>
+<p>Uses the <code class="notranslate">on('ended',...)</code> logic to play the next video in the list. Note the <code class="notranslate">currentlyPlayingIndex</code> tracks the videos playing.</p>
 <!-- UPDATE task 3 -->
 
 <h3>Retrieve data with the CMS API</h3>
@@ -202,7 +202,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Standard functionality for CSM API call ###</code></pre>
+<code class="notranslate language-javascript">// ### Standard functionality for CSM API call ###</code></pre>
 
 <p>This is standard code discussed in the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</p>
 <!-- UPDATE task 3 -->
@@ -212,7 +212,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Extract video IDs ###</code></pre>
+<code class="notranslate language-javascript">// ### Extract video IDs ###</code></pre>
 
 <p>This series of functions takes the returned video information, extracts the IDs, then uses the CMS API to retrieve video objects needed for the player to actually playback the video content.</p>
 </section>
@@ -227,23 +227,23 @@
 <section class="bcls-section">
 <h2 id="Plugin_code">Plugin code</h2>
 
-<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code class="notranslate">ready()</code> method with the code that defines a plugin.</p>
 
 <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs('myPlayerID').ready(function(){
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+<code class="notranslate language-javascript">videojs('myPlayerID').ready(function(){
+  var myPlayer = this;
+  ...
+});</code></pre>
 
 <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+<code class="notranslate language-javascript">videojs.registerPlugin('pluginName', function(options) {
+  var myPlayer = this;
+  ...
+});</code></pre>
 <!-- UPDATE path to plugin's JavaScript -->
 
 <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18186-kiosk-app/blob/master/plugin/kiosk-app.js">kiosk-app.js</a>.</p>
