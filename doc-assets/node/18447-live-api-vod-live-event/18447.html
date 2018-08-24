@@ -3,7 +3,7 @@
         <h2 id="Introduction">Introduction</h2>
 
         <p>For shorter live streaming events, you may want to make a recording of the event available as a video-on-demand (VOD)
-            in your Video Cloud account after the event has completed. You can easily do this by adding some configuration
+            in your <span class="notranslate">Video Cloud</span> account after the event has completed. You can easily do this by adding some configuration
             for the VOD when you
             <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">create your live job</a>.</p>
 
@@ -17,10 +17,54 @@
     <section class="bcls-section">
         <h2 id="Implementation">Implementation</h2>
 
-        <h3>Send to Video Cloud</h3>
+        <h3>Send to <span class="notranslate">Video Cloud</span></h3>
 
-        <p>To have a VOD version of the event saved to your Video Cloud account, include a version of the highlight
-            <strong>output</strong> below.</p>
+        <p>Note that there are two ways that <code class="notranslate">videocloud</code> objects are used when you create a new live job:</p>
+        <ol>
+          <li>
+            Including <code class="notranslate">videocloud</code> in the job-level fields will create a video in the <span class="notranslate">Video Cloud</span> account which will take the live stream as a remote asset:
+<pre class="line-numbers"><code class="language-json notranslate">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 20,
+    "live_sliding_window_duration": 30,
+    <span class="bcls-highlight">"videocloud": {
+  		"video": {
+  			"name": "test_live_stream"
+  		}
+  	}</span>...</code></pre>
+            <p>In this case, there is no <code class="notranslate">ingest</code> object inside the <code class="notranslate">videocloud</code> object, because nothing will be ingested.</p>
+          </li>
+          <li>
+            <p>Including the <code class="notranslate">videocloud</code> object in the properties of an <code class="notranslate">outputs</code> clip or full VOD object will create a <span class="notranslate">Video Cloud</span> video for the clip - the clip is ingested into <span class="notranslate">Video Cloud</span> and becomes part of the VOD library:</p>
+<pre class="line-numbers"><code class="language-json notranslate">{
+    "live_stream": true,
+    "region": "us-west-2",
+    "reconnect_time": 20,
+    "live_sliding_window_duration": 30,
+	"videocloud": {
+		"video": {
+			"name": "test_live_stream"
+		}
+	},
+  "outputs": [
+      <span class="bcls-highlight">{ "videocloud": {
+          "video": {
+              "name": "video name",
+          },
+          "ingest": {
+              "profile": "<span class="bcls-input">valid-ingest-profile-name</span>"
+          }
+      },
+      "credentials": "<span class="bcls-input">USER_VIDEOCLOUD_CREDENTIAL_LABEL</span>"
+      } </span>
+  ]
+}</code></pre>
+</code></pre>
+          </li>
+        </ol>
+
+        <p>To have a VOD version of the event saved to your <span class="notranslate">Video Cloud</span> account, include a version of the highlight<strong>output</strong> below.</p>
 
         <pre class="line-numbers">
 <code class="language-json">{
