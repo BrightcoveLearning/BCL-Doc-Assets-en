@@ -7,15 +7,12 @@
 <h2 id="Overview">Overview</h2>
 
 <p>The Native Player SDK provides player controls similar to the Brightcove Web Player to provide a consistent user experience across platforms. You can use the out-of-the-box Brightcove player controls, or customize them with your own colors, styles and buttons.</p>
-<aside class="bcls-aside bcls-aside--tip">Notes:
-  <p>
-    To learn more about these features, see the <a href="/node/15321">Brightcove Native Player Controls</a> document.
-  </p>
-  <p>
-    For a complete list of property values in the Native SDK for Android, see the <a href="#Browse_SDK_property_values">Browse SDK property values</a> section of this document.
-  </p>
-</aside>
 
+<aside class="bcls-aside bcls-aside--tip">Notes:
+<p>To learn more about these features, see the <a href="/node/15321">Brightcove Native Player Controls</a> document.</p>
+
+<p>For a complete list of property values in the Native SDK for Android, see the <a href="#Browse_SDK_property_values">Browse SDK property values</a> section of this document.</p>
+</aside>
 </section>
 
 <section class="bcls-section">
@@ -40,9 +37,9 @@
 <pre class="line-numbers">
 <code class="language-java">@Override
 protected void onCreate(Bundle savedInstanceState) {
-    setContentView(R.layout.activity_main);
-    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
-    super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+super.onCreate(savedInstanceState);
 }</code></pre>
 
 <p>Your player controls should look like this:</p>
@@ -60,23 +57,27 @@ protected void onCreate(Bundle savedInstanceState) {
 <h3>Change control colors</h3>
 
 <p>Easily customizable, you can change the Brightcove player control colors to match your company branding material.</p>
-
-<p>Use the same code in your <strong>MainActivity.java</strong> file as above, and include the following code in your <strong>src/main/res/values/colors.xml</strong> file:</p>
+<ol class="bcls-tasklist__restart">
+<li>
+Use the same code in your <strong>MainActivity.java</strong> file as above.
+</li>
+<li>
+In your <strong>src/main/res/values/colors.xml</strong> or <strong>res/values/strings.xml</strong> file, include the following code:
+</li>
+</ol>
 
 <pre class="line-numbers">
 <code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;resources&gt;
 
-    &lt;!-- Define the new colors. --&gt;
-    &lt;color name="bc_orange"&gt;#F3951D&lt;/color&gt;
-    &lt;color name="magenta_semi_trans"&gt;#4DFF00FF&lt;/color&gt;
+&lt;!-- Define the new colors. --&gt;
+&lt;color name="bc_orange"&gt;#F3951D&lt;/color&gt;
+&lt;color name="magenta_semi_trans"&gt;#4DFF00FF&lt;/color&gt;
 
-    &lt;!-- This file will be found at ...res/values/colors.xml --&gt;
-
-    &lt;!-- Change the progress colors to magenta/black/blue, all transparent. --&gt;
-    &lt;color name="bmc_seekbar_played"&gt;@color/magenta_semi_trans&lt;/color&gt;
-    &lt;color name="bmc_seekbar_buffered"&gt;@color/black_semi_trans&lt;/color&gt;
-    &lt;color name="bmc_seekbar_track"&gt;@color/bc_orange&lt;/color&gt;
+&lt;!-- Change the progress colors to magenta/black/orange, all transparent. --&gt;
+&lt;color name="bmc_seekbar_played"&gt;@color/magenta_semi_trans&lt;/color&gt;
+&lt;color name="bmc_seekbar_buffered"&gt;@color/black_semi_trans&lt;/color&gt;
+&lt;color name="bmc_seekbar_track"&gt;@color/bc_orange&lt;/color&gt;
 
 &lt;/resources&gt;</code></pre>
 
@@ -90,17 +91,21 @@ protected void onCreate(Bundle savedInstanceState) {
 <h3>Change icons and buttons in the player controls</h3>
 
 <p>To further customize the Brightcove player controls, you can swap out icons and add your own buttons to match your company styles.</p>
-
-<p>Use the same code in your <strong>MainActivity.java</strong> file as above, and include the following code in your <strong>src/main/res/values/strings.xml</strong> file:</p>
+<ol class="bcls-tasklist__restart">
+<li>
+Use the same code in your <strong>MainActivity.java</strong> file as above.
+</li>
+<li>
+In your <strong>src/main/res/values/strings.xml</strong> file, include the following code:
+</li>
+</ol>
 
 <pre class="line-numbers">
 <code class="language-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;resources&gt;
-    &lt;string name="app_name"&gt;Step Backward Rewind Sample App&lt;/string&gt;
-
-    &lt;!-- Use the Font Awesome fa-stepbackward icon for the rewind
-         button face. --&gt;
-    &lt;string name="rewind"&gt;&amp;#xf048;&lt;/string&gt;
+&lt;!-- Use the Font Awesome fa-stepbackward icon for the rewind
+   button face. --&gt;
+&lt;string name="brightcove_controls_rewind"&gt;&amp;#xf048;&lt;/string&gt;
 &lt;/resources&gt;</code></pre>
 
 <p>Your player controls should look like this:</p>
@@ -119,38 +124,38 @@ protected void onCreate(Bundle savedInstanceState) {
 <p>There are three ways to show and hide the player controls during video playback:</p>
 
 <ol>
-	<li>
-	<p>The user can tap on the device screen to toggle the player controls between showing and hiding the controls.</p>
-	</li>
-	<li>
-	<p>You can use the <code>BrightcoveMediaController</code> class. Here is one example of how to show player controls for a defined playhead position range.</p>
+<li>
+<p>The user can tap on the device screen to toggle the player controls between showing and hiding the controls.</p>
+</li>
+<li>
+<p>You can use the <code>BrightcoveMediaController</code> class. Here is one example of how to show player controls for a defined playhead position range.</p>
 
-	<pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-java">brightcoveVideoView.getEventEmitter().on(EventType.PROGRESS, new EventListener() {
-    @Override
-    public void processEvent(Event event) {
-        int playheadPosition = brightcoveVideoView.getCurrentPosition();
-        if(playheadPosition &gt; 24000 &amp;&amp; playheadPosition &lt; 29000) {
-            <span class="bcls-highlight">BrightcoveMediaController controller = brightcoveVideoView.getBrightcoveMediaController();
-            controller.show();</span>
-        }
-    }
+@Override
+public void processEvent(Event event) {
+  int playheadPosition = brightcoveVideoView.getCurrentPosition();
+  if(playheadPosition &gt; 24000 &amp;&amp; playheadPosition &lt; 29000) {
+      <span class="bcls-highlight">BrightcoveMediaController controller = brightcoveVideoView.getBrightcoveMediaController();
+      controller.show();</span>
+  }
+}
 });</code></pre>
 
-	<aside class="bcls-aside bcls-aside--warning">You will get a null pointer exception if you try to call the <code>getBrightcoveMediaController()</code> method before the video is loaded. You can also listen for the <code>DID_SET_VIDEO</code> event before calling this method.<br />
-	<br />
-	Be aware that the player controls will automatically hide 3 seconds after you show them, unless you override this default behavior.</aside>
-	</li>
-	<li>
-	<p>You can use events as follows:</p>
+<aside class="bcls-aside bcls-aside--warning">You will get a null pointer exception if you try to call the <code>getBrightcoveMediaController()</code> method before the video is loaded. You can also listen for the <code>DID_SET_VIDEO</code> event before calling this method.<br />
+<br />
+Be aware that the player controls will automatically hide 3 seconds after you show them, unless you override this default behavior.</aside>
+</li>
+<li>
+<p>You can use events as follows:</p>
 
-	<pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-java">import static com.brightcove.player.mediacontroller.ShowHideController.SHOW_MEDIA_CONTROLS;
 import static com.brightcove.player.mediacontroller.ShowHideController.HIDE_MEDIA_CONTROLS;
 ...
 eventEmitter.emit(HIDE_MEDIA_CONTROLS);
 eventEmitter.emit(SHOW_MEDIA_CONTROLS);</code></pre>
-	</li>
+</li>
 </ol>
 </section>
 
@@ -163,11 +168,11 @@ eventEmitter.emit(SHOW_MEDIA_CONTROLS);</code></pre>
 <code class="language-java">@
 Override
 public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-   View rootView = inflater.inflate(R.layout.fragment_player, container, false);
-   brightcoveVideoView = (BrightcoveExoPlayerVideoView) rootView.findViewById(R.id.brightcove_video_view);
-   super.onCreateView(inflater, container, savedInstanceState); // Need to be called after brightcoveVideoView is set.
-   <span class="bcls-highlight">brightcoveVideoView.setMediaController((MediaController) null); // Need to be called after onCreateView.</span>
-   return rootView;
+View rootView = inflater.inflate(R.layout.fragment_player, container, false);
+brightcoveVideoView = (BrightcoveExoPlayerVideoView) rootView.findViewById(R.id.brightcove_video_view);
+super.onCreateView(inflater, container, savedInstanceState); // Need to be called after brightcoveVideoView is set.
+<span class="bcls-highlight">brightcoveVideoView.setMediaController((MediaController) null); // Need to be called after onCreateView.</span>
+return rootView;
 }</code></pre>
 
 <p>This example uses the <code>BrightcovePlayerFragment</code>.</p>
@@ -190,27 +195,24 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle sa
 <pre class="line-numbers">
 <code class="language-java">brightcoveVideoView.getEventEmitter().emit(EventType.EXIT_FULL_SCREEN);</code></pre>
 
-<p>For a complete list of event types, see the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/index.html">Player SDK for Android Reference</a>, and navigate to the <strong>EventType</strong> class document.</p>
+<p>For a complete list of event types, see the <a href="https://docs.brightcove.com/android-sdk/javadoc/index.html">Player SDK for Android Reference</a>, and navigate to the <strong>EventType</strong> class document.</p>
 
-<p>Alternatively, you can use the <code>fullScreen()</code> and <code>normalScreen()</code> methods. You can find these methods in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/index.html">Player SDK for Android Reference</a>, and navigating to the <strong>BrightcovePlayer</strong> class document.</p>
+<p>Alternatively, you can use the <code>fullScreen()</code> and <code>normalScreen()</code> methods. You can find these methods in the <a href="https://docs.brightcove.com/android-sdk/javadoc/index.html">Player SDK for Android Reference</a>, and navigating to the <strong>BrightcovePlayer</strong> class document.</p>
 </section>
 
 <section class="bcls-section">
-	<h2 id="Browse_SDK_property_values">Browse SDK property values</h2>
-  <p>
-    For a complete list of values, including arrays, colors, dimensions, ids, integer, strings and styles, do the following:
-  </p>
-    <ul>
-      <li>
-        Locate the <strong>android-native-player-public-x.x.x.zip</strong> file and uncompress it.
-      </li>
-      <li>
-        In the <strong>sdk</strong> folder, open the <strong>android-sdk-x.x.x.aar</strong> file. Note: One way to do this is to change the extension from <strong>aar</strong> to <strong>zip</strong> and uncompress it.
-      </li>
-      <li>
-        Open the <strong>res/values/values.xml</strong> file. Here you will find a list of values that you can reference in your applications.
-      </li>
-    </ul>
-    <br />
+<h2 id="Browse_SDK_property_values">Browse SDK property values</h2>
+
+<p>For a complete list of values, including arrays, colors, dimensions, ids, integer, strings and styles, do the following:</p>
+<ol class="bcls-tasklist__restart">
+<li>Locate the <strong>android-native-player-public-x.x.x.zip</strong> file and uncompress it.</li>
+<li>
+<p>
+In the <strong>sdk</strong> folder, open the <strong>android-sdk-x.x.x.aar</strong> file.
+</p>
+<aside class="bcls-aside bcls-aside--tip">One way to open an <strong>aar</strong> file is to change the extension from <strong>aar</strong> to <strong>zip</strong> and uncompress it.</aside></li>
+<li>Open the <strong>res/values/values.xml</strong> file. Here you will find a list of values that you can reference in your applications.</li>
+</ol>
+
 </section>
 </article>
