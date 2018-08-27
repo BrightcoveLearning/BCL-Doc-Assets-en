@@ -1,4 +1,4 @@
-var BCLS_style_fixes = ( function (window, document, Prism) {
+var BCLS_style_fixes = ( function (window, document) {
   var header_block = document.querySelector('.full-width-headline'),
     header_text = document.getElementById('block-brightcoveheadlineblock'),
     side_nav_block = document.getElementById('block-inpagenavigationblock'),
@@ -10,12 +10,12 @@ var BCLS_style_fixes = ( function (window, document, Prism) {
     precode = document.querySelectorAll('pre>code');
 
     // prism fix for chrome
-    if (precode.length > 0) {
-      var i = 0, iMax = precode.length;
-      for (i; i < iMax; i++) {
-        Prism.highlightElement(precode[i]);
-      }
-    }
+    // if (precode.length > 0) {
+    //   var i = 0, iMax = precode.length;
+    //   for (i; i < iMax; i++) {
+    //     Prism.highlightElement(precode[i]);
+    //   }
+    // }
 
 
   if (header_block) {
@@ -52,4 +52,4 @@ var BCLS_style_fixes = ( function (window, document, Prism) {
         menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:0;clear:both;display:block;');
       }
   }
-})(window, document, Prism);
+})(window, document);
