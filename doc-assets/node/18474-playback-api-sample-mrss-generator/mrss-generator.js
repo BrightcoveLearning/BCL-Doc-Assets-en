@@ -147,7 +147,7 @@ var BCLS = ( function (window, document) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
-                // video may not have a valid source
+                // video may not have a valid source; if not, don't include it
                 console.log('video', video);
                 if (video.hasOwnProperty('source') && isDefined(video.source)) {
                   if (video.source.hasOwnProperty('src')) {
