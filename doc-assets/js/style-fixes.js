@@ -1,4 +1,4 @@
-var BCLS_style_fixes = ( function (window, document, prism) {
+var BCLS_style_fixes = ( function (window, document, Prism) {
   var header_block = document.querySelector('.full-width-headline'),
     header_text = document.getElementById('block-brightcoveheadlineblock'),
     side_nav_block = document.getElementById('block-inpagenavigationblock'),
@@ -52,4 +52,4 @@ var BCLS_style_fixes = ( function (window, document, prism) {
         menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:0;clear:both;display:block;');
       }
   }
-})(window, document, prism);
+})(window, document, Prism);
