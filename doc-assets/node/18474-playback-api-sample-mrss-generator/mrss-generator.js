@@ -138,6 +138,7 @@ var BCLS = ( function (window, document) {
         // sort sources by encoding rate
         sortArray(sources, 'encoding_rate');
         // return the first item (highest bitrate)
+        console.log('source', sources[0]);
         return sources[0];
     }
 
@@ -210,6 +211,7 @@ var BCLS = ( function (window, document) {
                         parsedData;
                     parsedData = JSON.parse(response);
                     videosArray = parsedData.videos;
+                    console.log('videosArray', videosArray);
                     // for each video, get the best source and set that as source
                     iMax = videosArray.length;
                     for (i = 0; i < iMax; i++) {
