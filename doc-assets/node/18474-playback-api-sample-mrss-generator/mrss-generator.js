@@ -149,14 +149,19 @@ var BCLS = ( function (window, document) {
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
                 // video may not have a valid source
-                if (video.hasOwnProperty('source') && video.source.hasOwnProperty('src')) {
+                if (video.hasOwnProperty('source')) {
+                  if (video.source.hasOwnProperty('src')) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
+                  }
+                }
                 } else {
                     videoURL = "";
                 }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
-                if (video.hasOwnProperty('images') && video.images.hasOwnProperty('thumbnail')) {
+                if (video.hasOwnProperty('images')) {
+                  if (video.images.hasOwnProperty('thumbnail')) {
                     thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
+                  }
                 } else if (video.hasOwnProperty('thumbnail')) {
                     thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
                 } else {
