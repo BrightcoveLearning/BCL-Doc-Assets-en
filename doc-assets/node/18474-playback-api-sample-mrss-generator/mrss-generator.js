@@ -149,15 +149,15 @@ var BCLS = ( function (window, document) {
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
                 // video may not have a valid source
-                if (isDefined(video.source) && isDefined(video.source.src)) {
+                if (video.hasOwnProperty('source') && video.source.hasOwnProperty('src')) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
                 } else {
                     videoURL = "";
                 }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
-                if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
+                if (video.hasOwnProperty('images') && video.images.hasOwnProperty('thumbnail')) {
                     thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
-                } else if (isDefined(video.thumbnail)) {
+                } else if (video.hasOwnProperty('thumbnail')) {
                     thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
                 } else {
                     doThumbnail = false;
@@ -177,14 +177,14 @@ var BCLS = ( function (window, document) {
                 mrssStr += sMediaDescription + video.description + eMediaDescription;
                 if (doThumbnail) {
                     mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
-                    if (isDefined(video.images)) {
+                    if (video.hasOwnProperty('images')) {
                         mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
                     } else {
                         mrssStr += eMediaThumbnail;
                     }
                 }
                 mrssStr += eMediaContent;
-                if (isDefined(video.schedule) && video.schedule.ends_at) {
+                if (video.hasOwnProperty('schedule') && video.schedule.ends_at) {
                     eItem = eItemStart + video.schedule.ends_at + eItemEnd;
                 } else {
                     eItem = eItemStart + defaultEndDate + eItemEnd;
