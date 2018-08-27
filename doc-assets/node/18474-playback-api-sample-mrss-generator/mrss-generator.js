@@ -149,7 +149,7 @@ var BCLS = ( function (window, document) {
                 video = videosArray[i];
                 // video may not have a valid source
                 console.log('video', video);
-                if (video.hasOwnProperty('source')) {
+                if (video.hasOwnProperty('source') && isDefined(video.source)) {
                   if (video.source.hasOwnProperty('src')) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
                   }
