@@ -153,9 +153,6 @@ var BCLS = ( function (window, document) {
                   if (video.source.hasOwnProperty('src')) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
                   }
-                } else {
-                    videoURL = "";
-                }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
                 if (video.hasOwnProperty('images')) {
                   if (video.images.hasOwnProperty('thumbnail')) {
@@ -188,12 +185,15 @@ var BCLS = ( function (window, document) {
                     }
                 }
                 mrssStr += eMediaContent;
-                if (video.hasOwnProperty('schedule') && video.schedule.hasOwnProperty('ends_at')) {
-                    eItem = eItemStart + video.schedule.ends_at + eItemEnd;
+                if (video.hasOwnProperty('schedule')) {
+                  if (video.schedule.hasOwnProperty('ends_at')) {
+                      eItem = eItemStart + video.schedule.ends_at + eItemEnd;
+                  }
                 } else {
                     eItem = eItemStart + defaultEndDate + eItemEnd;
                 }
                 mrssStr += eItem;
+              }
             }
         }
         mrssStr += eChannel + '</rss>';
