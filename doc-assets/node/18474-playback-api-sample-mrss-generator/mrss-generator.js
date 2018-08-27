@@ -167,7 +167,11 @@ var BCLS = ( function (window, document) {
                 mrssStr += sItem;
                 mrssStr += sLink + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
-                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
+                mrssStr += sMediaContent + ' url="' + videoURL;
+                if (video.source.hasOwnProperty('size')) {
+                  mrssStr += fileSize="' + video.source.size;
+                }
+                mrssStr += type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
                 mrssStr += sMediaDescription + video.description + eMediaDescription;
