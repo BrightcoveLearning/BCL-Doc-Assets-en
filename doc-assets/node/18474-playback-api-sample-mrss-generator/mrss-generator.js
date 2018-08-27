@@ -153,7 +153,6 @@ var BCLS = ( function (window, document) {
                   if (video.source.hasOwnProperty('src')) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
                   }
-                }
                 } else {
                     videoURL = "";
                 }
