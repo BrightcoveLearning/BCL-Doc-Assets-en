@@ -97,16 +97,16 @@ var BCLS = (function(window, document) {
   }
 
   function processSources(sources) {
-    var i = sources.length;
-    // remove non-MP4 sources
-    while (i > 0) {
-      i--;
-      if (sources[i].container !== 'MP4') {
-        sources.splice(i, 1);
-      } else if (sources[i].hasOwnProperty('stream_name')) {
-        sources.splice(i, 1);
-      }
-    }
+    // var i = sources.length;
+    // // remove non-MP4 sources
+    // while (i > 0) {
+    //   i--;
+    //   if (sources[i].container !== 'MP4') {
+    //     sources.splice(i, 1);
+    //   } else if (sources[i].hasOwnProperty('stream_name')) {
+    //     sources.splice(i, 1);
+    //   }
+    // }
     // sort sources by encoding rate
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
