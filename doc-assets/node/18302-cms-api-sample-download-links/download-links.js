@@ -159,7 +159,7 @@ var BCLS = (function(window, document) {
         video = videosArray[i];
         // video may not have a valid source
         if (isDefined(video.source) && isDefined(video.source.src)) {
-          videoURL = video.source.src);
+          videoURL = video.source.src;
         } else {
           videoURL = "";
         }
