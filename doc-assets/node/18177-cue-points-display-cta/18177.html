@@ -85,25 +85,25 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td><a href="//brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#addClass">addClass()</a></td>
-			<td><a href="//brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#event:loadstart">loadstart</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#addClass">addClass()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:loadstart">loadstart</a></td>
 			<td><a href="/node/18085">mediainfo.cue_points</a></td>
 			<td><a href="/node/18075">Overlay Plugin</a></td>
 		</tr>
 		<tr>
-			<td><a href="//brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.on">on()</a></td>
 			<td>&nbsp;</td>
-			<td><a href="//brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/TextTrack.html#activeCues">activeCues</a></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><a href="//brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#textTracks">textTracks()</a></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/TextTrack.html#activeCues">activeCues</a></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td><a href="//brightcovelearning.github.io/Brightcove-API-References/brightcove-player/current-release/Player.html#removeClass">removeClass()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#textTracks">textTracks()</a></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#removeClass">removeClass()</a></td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
@@ -122,7 +122,15 @@
 
 <h3>Player configuration</h3>
 
-<p>You need to add and configure the Overlay Plugin in <strong>Studio &gt; Players &gt; Plugins</strong>. Add the paths to the JavaScript and CSS, then add the configuration information as follows:</p>
+<p>You need to add and configure the Overlay Plugin in <strong>Studio &gt; Players &gt; Plugins</strong>. Add the paths to the JavaScript and CSS:</p>
+
+<pre class="line-numbers">
+<code class="language-html">//players.brightcove.net/videojs-overlay/2/videojs-overlay.min.js</code></pre>
+
+<pre class="line-numbers">
+<code class="language-html">//players.brightcove.net/videojs-overlay/2/videojs-overlay.css</code></pre>
+
+<p>Then add the configuration information as follows:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="create a cue point in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/cue-points/cue-points-cta/overlay-plugin-studio.png" /></figure>
 
@@ -161,7 +169,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Listen for cue change then pass data to be displayed ###</code></pre>
+      <code class="language-javascript">// ### Listen for cue change then pass data to be displayed ###</code></pre>
 
 <p>After extracting the cue point information from the <code>mediainfo</code> object, you use JavaScript's <code>oncuechange</code> event handler to listen for cue point starts. You then extract the cue point information for the current cue point and call the <code>displayCTA()</code> method. The information about the cue points passed to the custom function appears as follows:</p>
 
@@ -175,7 +183,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Extract data pieces from cue point meta data and display overlay ###</code></pre>
+      <code class="language-javascript">// ### Extract data pieces from cue point meta data and display overlay ###</code></pre>
 
 <p>The first step uses JavaScript's <code>split()</code> method to break the metadata info three pieces and each piece is assigned to a variable. After building the dynamic anchor tag, JavaScript's <code>setTimeout()</code> value is used to set how long before another method is called. The overlay data is then injected and the overlay displayed.</p>
 <!-- UPDATE task 3 -->
@@ -185,7 +193,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Clear timeout and remove overlay ###</code></pre>
+      <code class="language-javascript">// ### Clear timeout and remove overlay ###</code></pre>
 
 <p>This method is called when the time set in the <code>setTimeout()</code> method expires. Here the timeout is cleared using JavaScript's <code>clearTimeout()</code> method. Also, the overlay is hidden.</p>
 <!-- UPDATE task 3 -->
@@ -195,7 +203,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Helper function to extract cue point info ###</code></pre>
+      <code class="language-javascript">// ### Helper function to extract cue point info ###</code></pre>
 
 <p>This is a helper function used to extract desired cue point information.</p>
 </section>
@@ -215,18 +223,18 @@
 <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs('myPlayerID').ready(function(){
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+                        <code class="language-javascript">videojs('myPlayerID').ready(function(){
+                          var myPlayer = this;
+                          ...
+                        });</code></pre>
 
 <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+                        <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+                          var myPlayer = this;
+                          ...
+                        });</code></pre>
 <!-- UPDATE path to plugin's JavaScript -->
 
 <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18177-cue-points-display-cta/blob/master/plugin/cue-point-cta.js">cue-point-cta.js</a>.</p>
