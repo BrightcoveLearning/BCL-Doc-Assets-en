@@ -504,7 +504,12 @@ duration: 12.0}}
 <p>Include a request body specifying the duration of the break in seconds and, optionally, a timecode in SMPTE format (<code class="notranslate">HH:MM:SS:FF</code>) to specify when a set of any variables (key/value pairs) that should be passed to the adServer.</p>
 
 <p>Note that the duration of the cue point being inserted needs to
-be <strong>at least twice the length of the segments</strong> in the job</p>
+be <strong>at least twice the length of the segments</strong> in the job. For example, if inserting a 10 second cue point in a job with <code class="notranslate">"segment_seconds"=4</code>, it will work fine. However, inserting the same cue point in a job with "segment_seconds"=6 will result in the error
+below:</p>
+
+<pre class="line-numbers"><code class="language-json notranslate">"error": "The parameter duration should be greater than
+  or equal to (2 * target duration) of the job"
+</code></pre>
 
 <h3>Sample request body</h3>
 
