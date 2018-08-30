@@ -45,10 +45,10 @@ var BCLS_feedback = ( function (window, document) {
   }
   console.log('cookiesArray', cookiesArray);
   console.log('feedbackParams', feedbackParams);
-  if (!feedbackParams.hasOwnProperty('BC_EMAIL')) {
+  if (!feedbackParams.hasOwnProperty('bc_email')) {
     feedbackParams.bc_email = 'unknown';
   }
-  if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
+  if (!feedbackParams.hasOwnProperty('bc_account')) {
     feedbackParams.bc_account = 'unknown';
   }
   feedbackParams.title = document.querySelector('title').textContent;
