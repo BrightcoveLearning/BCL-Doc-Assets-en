@@ -30,10 +30,10 @@ var BCLS_feedback = ( function (window, document) {
       feedbackParams.bc_account = tmpArray[1];
     }
   }
-  if (!feedbackParams.hasOwnProperty('BC_EMAIL')) {
+  if (!feedbackParams.hasOwnProperty('bc_email')) {
     feedbackParams.bc_email = 'unknown';
   }
-  if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
+  if (!feedbackParams.hasOwnProperty('bc_account')) {
     feedbackParams.bc_account = 'unknown';
   }
 
