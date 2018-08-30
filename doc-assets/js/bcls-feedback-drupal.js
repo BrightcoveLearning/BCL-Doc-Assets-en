@@ -43,8 +43,6 @@ var BCLS_feedback = ( function (window, document) {
       feedbackParams.bc_account = tmpArray[1];
     }
   }
-  console.log('cookiesArray', cookiesArray);
-  console.log('feedbackParams', feedbackParams);
   if (!feedbackParams.hasOwnProperty('bc_email')) {
     feedbackParams.bc_email = 'unknown';
   }
