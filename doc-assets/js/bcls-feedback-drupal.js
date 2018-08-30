@@ -36,6 +36,7 @@ var BCLS_feedback = ( function (window, document) {
 
   for (i = 0; i < cookiesArray.length; i++) {
     tmpArray = cookiesArray[i].split("=");
+    console.log('tmpArray', tmpArray);
     if (tmpArray[0].indexOf('BC_EMAIL') > -1) {
       feedbackParams.bc_email = tmpArray[1];
     } else if (tmpArray[0].indexOf('BC_ACCOUNT') > -1) {
