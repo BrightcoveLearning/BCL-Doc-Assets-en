@@ -25,10 +25,10 @@ console.log('contentBlock', contentBlock);
       feedbackParams.bc_account = tmpArray[1];
     }
   }
-  if (!feedbackParams.hasOwnProperty('BC_EMAIL')) {
+  if (!feedbackParams.hasOwnProperty('bc_email')) {
     feedbackParams.bc_email = 'unknown';
   }
-  if (!feedbackParams.hasOwnProperty('BC_ACCOUNT')) {
+  if (!feedbackParams.hasOwnProperty('bc_account')) {
     feedbackParams.bc_account = 'unknown';
   }
   feedbackParams.title = document.getElementById('index-api-docs-title').textContent;
