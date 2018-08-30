@@ -102,7 +102,7 @@ var BCLS = (function(window, document) {
     while (i > 0) {
       i--;
       if (sources[i].hasOwnProperty('container')) {
-        if (sources[i].container !== 'MP4' && sources[i].container !== 'flv') {
+        if (sources[i].container !== 'MP4' && sources[i].container !== 'FLV') {
           sources.splice(i, 1);
         } else if (sources[i].hasOwnProperty('stream_name')) {
           sources.splice(i, 1);
