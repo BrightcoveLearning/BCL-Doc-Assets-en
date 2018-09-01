@@ -68,7 +68,9 @@ var BCLS = (function() {
     options.requestType = 'POST';
     body['key-data'] = {};
     body['key-data']['account-id'] = accountId;
-    body['key-data'].apis = ["search"];
+    if (search_enabled.checked) {
+      body['key-data'].apis = ["search"];
+    }
     options.requestBody = JSON.stringify(body);
     if (isDefined(clientId) && isDefined(clientSecret)) {
       options.client_id = clientId;
