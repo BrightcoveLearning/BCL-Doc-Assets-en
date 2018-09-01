@@ -2,6 +2,7 @@ var BCLS = (function() {
     var account_id = document.getElementById('account_id'),
         client_id = document.getElementById('client_id'),
         client_secret = document.getElementById('client_secret'),
+search_enabled = document.getElementById('search_enabled'),
         accountId,
         clientId,
         clientSecret,
