@@ -38,7 +38,7 @@
 <p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get the proper permissions:</p>
 
 <pre class="line-numbers">
-    <code class="language-json">"operations": [
+    <code class="language-json notranslate">"operations": [
     "video-cloud/videos/read",
     "video-cloud/videos/create",
     "video-cloud/videos/update"]</code></pre>
@@ -56,7 +56,7 @@
 <p>First we will create the live job.</p>
 
 <ol class="bcls-tasklist">
-	<li>For this step, you will submit a <code>POST </code> request to:
+	<li>For this step, you will submit a <code class="notranslate">POST </code> request to:
 
 	<pre class="line-numbers">
 <code class="language-http">https://api.bcovlive.io/v1/jobs
@@ -66,7 +66,7 @@
 	<p>Use the following as the request body:</p>
 
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "live_stream": true,
     "region": "us-west-2",
     "reconnect_time": 1800,
@@ -109,10 +109,10 @@
 </code>
 </pre>
 
-	<aside class="bcls-aside bcls-aside--information">Note that by default, the live stream will be created with a CloudFront hostname. If you have a named Akamai account and want to use a custom hostname, you will need to add this via the <code>add_cdns</code> object - the JSON will look something like this:
+	<aside class="bcls-aside bcls-aside--information">Note that by default, the live stream will be created with a CloudFront hostname. If you have a named Akamai account and want to use a custom hostname, you will need to add this via the <code class="notranslate">add_cdns</code> object - the JSON will look something like this:
 
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "live_stream": true,
     "region":"us-west-2",
     "reconnect_time": 1800,
@@ -157,7 +157,7 @@
 	</li>
 	<li>The response from the API should look similar to this:
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "id": "15981d93877e490185e6ebc9af2c79a3",
     "outputs": [
         {
@@ -239,7 +239,7 @@
 		<li>playback_url (line 54)</li>
 	</ul>
 
-	<aside class="bcls-aside bcls-aside--information">Note that you can also use the <code>playback_url_dvr</code> if you want DVR capability; the <code>playback_url_vod</code> is for internal use only.</aside>
+	<aside class="bcls-aside bcls-aside--information">Note that you can also use the <code class="notranslate">playback_url_dvr</code> if you want DVR capability; the <code class="notranslate">playback_url_vod</code> is for internal use only.</aside>
 
 	<aside class="bcls-aside bcls-aside--information">Note that DVR capability will only work if the player supports it. See <a href="/node/18089">Live DVRUX Plugin</a> for the Brightcove Player plugin required.</aside>
 
@@ -264,24 +264,24 @@
 
 <ol class="bcls-tasklist">
 	<li>
-	<p>First, you will need to create a new video by making a <code>POST</code> request to:</p>
+	<p>First, you will need to create a new video by making a <code class="notranslate">POST</code> request to:</p>
 
 	<pre>
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos</code></pre>
 	</li>
 	<li>
-	<p>The request body can include several pieces of metadata (see <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#/Videos/CreateVideo">the API reference</a> for details), but the only thing required is a <code>name</code>:</p>
+	<p>The request body can include several pieces of metadata (see <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#/Videos/CreateVideo">the API reference</a> for details), but the only thing required is a <code class="notranslate">name</code>:</p>
 
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "name": "<span class="bcls-input">some name for your live stream</span>"
 }</code></pre>
 	</li>
 	<li>
-	<p>The response will contain all the video metadata, but the important field is the <code>id</code>, which you will need to add the remote asset.</p>
+	<p>The response will contain all the video metadata, but the important field is the <code class="notranslate">id</code>, which you will need to add the remote asset.</p>
 	</li>
 	<li>
-	<p>To add the HLS stream, you will make another <code>POST</code> request to:</p>
+	<p>To add the HLS stream, you will make another <code class="notranslate">POST</code> request to:</p>
 
 	<pre>
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span>/assets/hls_manifest</code></pre>
@@ -290,7 +290,7 @@
 	<p>This time, the request body will be:</p>
 
 	<pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "remote_url": "<span class="bcls-input">playback_url for your live stream</span>"
 }</code></pre>
 	</li>
@@ -339,7 +339,7 @@
 <h3 id="curlCreateLiveJob">cURL for creating a live job</h3>
 
 <pre class="line-numbers">
-<code class="language-bash">## Create Job - Simple
+<code class="language-bash notranslate">## Create Job - Simple
 curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 -H "X-API-KEY: <span class="bcls-input">YOUR_API_KEY_HERE</span>" \
 -H "Content-Type: application/json" \
@@ -384,7 +384,7 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 "live_stream": true
 }'</code></pre>
 
-<p>Copy this code into a text editor, and replace <code>YOUR_API_KEY_HERE </code> with your own api key. Then copy and paste the code at a command line and run it.</p>
+<p>Copy this code into a text editor, and replace <code class="notranslate">YOUR_API_KEY_HERE </code> with your own api key. Then copy and paste the code at a command line and run it.</p>
 </section>
 
 <section class="bcls-section">
@@ -400,12 +400,12 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 	<figcaption class="bcls-caption--image">Add Remote Video Menu Item</figcaption>
 	</figure>
 	</li>
-	<li>In the <strong>Add Remote Video</strong> dialog, add a video name and copy and paste the value for the <code>playback_url</code> from the Live API response into the URL field. Then click <strong>Add Rendition</strong>, and <strong>Save</strong>:
+	<li>In the <strong>Add Remote Video</strong> dialog, add a video name and copy and paste the value for the <code class="notranslate">playback_url</code> from the Live API response into the URL field. Then click <strong>Add Rendition</strong>, and <strong>Save</strong>:
 	<figure class="bcls-figure"><img class="bcls-image" alt="Add Rendition Dialog" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/live-api/getting-started/quick-start/remote-video-dialog.png" />
 	<figcaption class="bcls-caption--image">Add Rendition Dialog</figcaption>
 	</figure>
 
-	<aside class="bcls-aside bcls-aside--information">Note: if you want to stream over HTTPS for a secure stream, simply change <code>http</code> in the playback_url to <code>https</code>.</aside>
+	<aside class="bcls-aside bcls-aside--information">Note: if you want to stream over HTTPS for a secure stream, simply change <code class="notranslate">http</code> in the playback_url to <code class="notranslate">https</code>.</aside>
 	</li>
 </ol>
 </section>
@@ -451,8 +451,8 @@ curl -X "POST" "https://api.bcovlive.io/v1/jobs" \
 <p>You are now ready to create a live streaming session. You need to add the following to your encoder configuration:</p>
 
 <ul>
-	<li><code>stream_url</code>: add the <code>stream_url</code> from your job (the <code>rtmp</code> address)</li>
-	<li><code>stream_name</code>: the stream name must be <code>alive</code></li>
+	<li><code class="notranslate">stream_url</code>: add the <code class="notranslate">stream_url</code> from your job (the <code class="notranslate">rtmp</code> address)</li>
+	<li><code class="notranslate">stream_name</code>: the stream name must be <code class="notranslate">alive</code></li>
 </ul>
 
 <p>Once you start the live stream, you should see it show up in the Brightcove player you created in the earlier steps.</p>
