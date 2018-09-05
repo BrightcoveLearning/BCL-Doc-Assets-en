@@ -1,856 +1,426 @@
-<article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Overview">Overview</h2>
+Overview
 
-<p>Clips are segments from a live stream. They can be sent to an S3 bucket, an FTP site, or a <span class="notranslate">Video Cloud</span> account. The clip is created as an MP4 video, and that is what is sent to the destination in all cases. In the case of <span class="notranslate">Video Cloud</span>, the MP4 will be transcoded by the ingest system, and what kinds of renditions are created for the video will depend on the ingest profile used.</p>
+Clips are segments from a live stream. They can be sent to an S3 bucket, an FTP site, or a Video Cloud account. The clip is created as an MP4 video, and that is what is sent to the destination in all cases. In the case of Video Cloud, the MP4 will be transcoded by the ingest system, and what kinds of renditions are created for the video will depend on the ingest profile used.
 
-<p>Definitions for clips are created using the <code class="notranslate">/vods</code> endpoint.</p>
+Definitions for clips are created using the /vods endpoint.
 
-<p>Clips can be created in several ways:</p>
+Clips can be created in several ways:
 
-<ul>
-	<li>With <code class="notranslate">stream_start_timecode</code> and/or <code class="notranslate">stream_end_timecode</code> defined in SMPTE timecodes for the live stream event</li>
-	<li>With <code class="notranslate">start_time</code> and/or <code class="notranslate">end_time</code> defined relative to the start time ( <code class="notranslate">stream_start_time</code>) of the whole live stream event</li>
-	<li>With <code class="notranslate">start_time</code> and/or <code class="notranslate">end_time</code> defined in Epoch (Unix) time (in seconds)</li>
-	<li>With duration and either a <code class="notranslate">start_time</code> or <code class="notranslate">end_time</code></li>
-	<li>With duration and no start or end time, in which case the clip is taken from the end of the stream</li>
-	<li>The VOD API <strong>cannot</strong> be used with <strong>encrypted</strong> jobs.</li>
-  <li>Clips of live streams using <a href="/node/17763">SSAI</a> will not include ads.</li>
-</ul>
+With stream_start_timecode and/or stream_end_timecode defined in SMPTE timecodes for the live stream event
+With start_time and/or end_time defined relative to the start time ( stream_start_time) of the whole live stream event
+With start_time and/or end_time defined in Epoch (Unix) time (in seconds)
+With duration and either a start_time or end_time
+With duration and no start or end time, in which case the clip is taken from the end of the stream
+The VOD API cannot be used with encrypted jobs.
+Clips of live streams using SSAI will not include ads.
+Notes
 
-<h3>Notes</h3>
+If you specify duration without a start or end time, the resulting clip will be as follows:
+If the job is active and still live: (request time - duration) to (request time)
+If the job is finished: ( finished_at - duration) to ( finished_at)
+If you specify both start_time AND end_time:
+If the job is active and still live: as long as the Epoch time window falls entirely within created_at and the request time, the clip will be made
+If the job is finished: as long as the Epoch time window falls entirely within created_at and finished_at, the clip will be made
+Clips can be created up to 24 hours after an event. For SEP, they can be created up until the next activation or 24 hours (whichever is shorter).
+The VOD API will not add any content outside of what is present in the stream. If you specify 350 on a 300 seconds long live stream, the output will be 300 seconds long.
+You do not have to use a DVR-enabled live stream for clipping to work, because the live stream is stored as it is broadcast and is available immediately and for 24 hours after the event is over.
+Brightcove Live clipping will only produce a clip that is the same resolution as the highest resolution output. It will not match the source input resolution (unless that is the same as the highest resolution output).
+Start and end times for the clip will not match what is specified exactly in most cases - times will be adjusted to the nearest segment break.
+Clips can also be sent to multiple destinations:
 
-<ol>
-	<li>If you specify <code class="notranslate">duration</code> without a start or end time, the resulting clip will be as follows:
+A Video Cloud account
+An FTP server
+An S3 bucket
+When you specify a clip output either in the live job creation, or using the /vod endpoint, the output must contain either a url destination or a videocloud object to detail the creation of the video and ingestion of the clip in Video Cloud.
 
-	<ul>
-		<li>If the job is active and still live: (request time - duration) to (request time)</li>
-		<li>If the job is finished: ( <code class="notranslate">finished_at</code> - duration) to ( <code class="notranslate">finished_at</code>)</li>
-	</ul>
-	</li>
-	<li>If you specify both <code class="notranslate">start_time</code> AND <code class="notranslate">end_time</code>:
-	<ul>
-		<li>If the job is active and still live: as long as the Epoch time window falls entirely within <code class="notranslate">created_at</code> and the request time, the clip will be made</li>
-		<li>If the job is finished: as long as the Epoch time window falls entirely within <code class="notranslate">created_at</code> and <code class="notranslate">finished_at</code>, the clip will be made</li>
-	</ul>
-	</li>
-	<li>Clips can be created up to 24 hours after an event. For <a class="notranslate" href="/node/18443">SEP</a>, they can be created up until the next activation or 24 hours (whichever is shorter).</li>
-	<li>The VOD API will not add any content outside of what is present in the stream. If you specify 350 on a 300 seconds long live stream, the output will be 300 seconds long.</li>
-	<li>You do not have to use a DVR-enabled live stream for clipping to work, because the live stream is stored as it is broadcast and is available immediately and for 24 hours after the event is over.</li>
-	<li>Brightcove Live clipping will only produce a clip that is the same resolution as the highest resolution output. It will not match the source input resolution (unless that is the same as the highest resolution output).</li>
-	<li>Start and end times for the clip will not match what is specified exactly in most cases - times will be adjusted to the nearest segment break.</li>
-</ol>
+Note: clips can be created while the live stream is running. To do this, you will need to define the start and end times of the clip in Epoch time or relative to start time of the live stream.
 
-<p>Clips can also be sent to multiple destinations:</p>
+Endpoint
 
-<ul>
-	<li>A <span class="”notranslate”"><span class="notranslate">Video Cloud</span></span> account</li>
-	<li>An FTP server</li>
-	<li>An S3 bucket</li>
-</ul>
+Clips are created by sending a POST request to:
 
-<p>When you specify a clip output either in the live job creation, or using the /vod endpoint, the output <strong>must</strong> contain <strong>either</strong> a <code class="notranslate">url</code> destination <strong>or</strong> a <code class="notranslate">videocloud</code> object to detail the creation of the video and ingestion of the clip in <span class="notranslate">Video Cloud</span>.</p>
+https://api.bcovlive.io/v1/vods
 
-<p>Note: clips <strong>can be created while the live stream is running</strong>. To do this, you will need to define the start and end times of the clip in Epoch time or relative to <strong>start</strong> time of the live stream.</p>
-</section>
+Request body - Video Cloud
 
-<section class="bcls-section">
-<h2 id="Endpoint">Endpoint</h2>
+Note: we strongly recommend not specifying ingest profile that should be used for transcoding the clip, and instead use the account default profile. This will reduce the chance of errors in creating the clip in Video Cloud
+Example 1: start/end times relative to stream start
 
-<p>Clips are created by sending a <code class="notranslate">POST</code> request to:</p>
+The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:
 
-<pre class="line-numbers">
-<code class="language-http">https://api.bcovlive.io/v1/vods
-</code>
-</pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Request_body_video_cloud">Request body - <span class="”notranslate”"><span class="notranslate">Video Cloud</span></span></h2>
-
-<aside class="bcls-aside bcls-aside--tip">Note: we strongly recommend <strong>not</strong> specifying ingest profile that should be used for transcoding the clip, and instead use the account default profile. This will reduce the chance of errors in creating the clip in <span class="”notranslate”"><span class="notranslate">Video Cloud</span></span></aside>
-
-<h3>Example 1: start/end times relative to stream start</h3>
-
-<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="notranslate">Video Cloud</span> account:</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
-	"outputs":[
-		{
-			"label": "60 secs by stream from min 2 to min 3",
-			"stream_start_time": 120,
-			"stream_end_time": 180,
-			"credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
-			"videocloud": {
-				"video": {
-				"name": "One Minute Clip",
-				"tags": ["live", "clip"]
-  			},
-  				"ingest": {
-  					"capture-images": true
-				}
-			}
-		}
-	]
+{
+  "live_job_id":"PUT-LIVE-JOB-ID-HERE",
+  "outputs":[
+    {
+      "label": "60 secs by stream from min 2 to min 3",
+      "stream_start_time": 120,
+      "stream_end_time": 180,
+      "credentials": "VC_CREDENTIALS",
+      "videocloud": {
+        "video": {
+        "name": "One Minute Clip",
+        "tags": ["live", "clip"]
+        },
+          "ingest": {
+            "capture-images": true
+        }
+      }
+    }
+  ]
 }
-</code>
-</pre>
 
-<p>In this example, we are creating a clip of one-minute duration and sending it to <span class="notranslate">Video Cloud</span> . We're giving the clip a name and a couple of tags, not specifying the <a class="notranslate" href="/node/18045">ingest profile</a> for retranscoding, so that the account default will be used, and instructing <span class="notranslate">Video Cloud</span> to capture thumbnail and poster images from the clip during transcoding.</p>
+In this example, we are creating a clip of one-minute duration and sending it to Video Cloud . We're giving the clip a name and a couple of tags, not specifying the ingest profile for retranscoding, so that the account default will be used, and instructing Video Cloud to capture thumbnail and poster images from the clip during transcoding.
 
-<h3>Example 2: start/end times in Epoch time</h3>
+Example 2: start/end times in Epoch time
 
-<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="notranslate">Video Cloud</span> account:</p>
+The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
-		"outputs":[
-			{
-				"label": "60 secs - epoch time",
-				"start_time": 1516652694,
-				"end_time": 1516652754,
-				"credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
-				"videocloud": {
-					"video": {
-					"name": "One Minute Clip",
-					"tags": ["live", "clip"]
-					},
-						"ingest": {
-						"capture-images": true
-				}
-			}
-		}
-	]
+{
+  "live_job_id":"PUT-LIVE-JOB-ID-HERE",
+    "outputs":[
+      {
+        "label": "60 secs - epoch time",
+        "start_time": 1516652694,
+        "end_time": 1516652754,
+        "credentials": "VC_CREDENTIALS",
+        "videocloud": {
+          "video": {
+          "name": "One Minute Clip",
+          "tags": ["live", "clip"]
+          },
+            "ingest": {
+            "capture-images": true
+        }
+      }
+    }
+  ]
 }
-</code>
-</pre>
 
-<p>In this example, we are creating a clip of one-minute duration at a specific Epoch time (in this case 22 Jan 2018 at 08:24:54 GMT).</p>
+In this example, we are creating a clip of one-minute duration at a specific Epoch time (in this case 22 Jan 2018 at 08:24:54 GMT).
 
-<h3>Example 3: duration with start time relative to stream start</h3>
+Example 3: duration with start time relative to stream start
 
-<p>The request body includes the duration and stream_start_time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="notranslate">Video Cloud</span> account:</p>
+The request body includes the duration and stream_start_time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
-	"outputs":[
-		{
-			"label": "60 secs from start time",
-			"stream_start_time": 300,
-			"duration": 60,
-			"credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
-			"videocloud": {
-				"video": {
-				"name": "One Minute Clip",
-				"tags": ["live", "clip"]
-  			},
-  			"ingest": {
-  			"capture-images": true
-  			}
-			}
-		}
-	]
+{
+  "live_job_id":"PUT-LIVE-JOB-ID-HERE",
+  "outputs":[
+    {
+      "label": "60 secs from start time",
+      "stream_start_time": 300,
+      "duration": 60,
+      "credentials": "VC_CREDENTIALS",
+      "videocloud": {
+        "video": {
+        "name": "One Minute Clip",
+        "tags": ["live", "clip"]
+        },
+        "ingest": {
+        "capture-images": true
+        }
+      }
+    }
+  ]
 }
-</code>
-</pre>
 
-<p>In this example, we are creating a clip of one-minute duration starting 5 minutes after the start of the live stream.</p>
+In this example, we are creating a clip of one-minute duration starting 5 minutes after the start of the live stream.
 
-<h3>Example 4: duration with no start or end time</h3>
+Example 4: duration with no start or end time
 
-<p>The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a <span class="notranslate">Video Cloud</span> account:</p>
+The request body includes start and end times in Epoch time, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to a Video Cloud account:
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
-	"outputs":[
-		{
-			"label": "60 secs - duration",
-			"duration": 60,
-			"credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
-			"videocloud": {
-				"video": {
-				"name": "One Minute Clip",
-				"tags": ["live", "clip"]
-				},
-				"ingest": {
-					"capture-images": true
-				}
-  		},
-  		"notifications": ["<span class="bcls-input">http://myserver.com/api/notification_listener?type=jvod</span>"]
-		}
-	]
+{
+  "live_job_id":"PUT-LIVE-JOB-ID-HERE",
+  "outputs":[
+    {
+      "label": "60 secs - duration",
+      "duration": 60,
+      "credentials": "VC_CREDENTIALS",
+      "videocloud": {
+        "video": {
+        "name": "One Minute Clip",
+        "tags": ["live", "clip"]
+        },
+        "ingest": {
+          "capture-images": true
+        }
+      },
+      "notifications": ["http://myserver.com/api/notification_listener?type=jvod"]
+    }
+  ]
 }
-</code>
-</pre>
 
-<p>In this example, we are creating a clip of one-minute duration. Since we are not specifying a start or end time, the clip will be taken from the last 60 seconds of the live stream.</p>
+In this example, we are creating a clip of one-minute duration. Since we are not specifying a start or end time, the clip will be taken from the last 60 seconds of the live stream.
 
-<h3>Example 5: using <code class="notranslate">stream_start_timecode</code> and <code class="notranslate">stream_end_timecode</code></h3>
+Example 5: using stream_start_timecode and stream_end_timecode
 
-<p>The request body includes start and end times in HH:MM:FF timecodes, and details about where to send the clip. Here is a sample request body that creates a clip of the 50 minutes of a stream and sends it to a <span class="notranslate">Video Cloud</span> account:</p>
+The request body includes start and end times in HH:MM:FF timecodes, and details about where to send the clip. Here is a sample request body that creates a clip of the 50 minutes of a stream and sends it to a Video Cloud account:
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
-	"outputs":[
-		{
-			"label": "Clipping using Timecode from-01:10:18:15 to-01:11:08:15",
-			"stream_start_timecode": "01:10:18:15",
-			"stream_end_timecode": "01:11:08:15",
-			"credentials": "<span class="bcls-input">VC_CREDENTIALS</span>",
-			"videocloud": {
-				"video": {
-					"name": "Fifty Minute Clip",
-					"tags": ["live", "clip"]
-				},
-				"ingest": {
-				"capture-images": true
-				}
-			}
-		},
-    "notifications": ["<span class="bcls-input">http://myserver.com/api/notification_listener?type=jvod</span>"]
-	]
+{
+  "live_job_id":"PUT-LIVE-JOB-ID-HERE",
+  "outputs":[
+    {
+      "label": "Clipping using Timecode from-01:10:18:15 to-01:11:08:15",
+      "stream_start_timecode": "01:10:18:15",
+      "stream_end_timecode": "01:11:08:15",
+      "credentials": "VC_CREDENTIALS",
+      "videocloud": {
+        "video": {
+          "name": "Fifty Minute Clip",
+          "tags": ["live", "clip"]
+        },
+        "ingest": {
+        "capture-images": true
+        }
+      }
+    },
+    "notifications": ["http://myserver.com/api/notification_listener?type=jvod"]
+  ]
 }
-</code>
-</pre>
 
-<h3>General information about sending clips to <span class="notranslate">Video Cloud</span></h3>
+General information about sending clips to Video Cloud
 
-<p>To see what fields can be included in the <code class="notranslate">video</code> and <code class="notranslate">ingest</code> objects, see the <a class="notranslate" href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html"><span class="notranslate">Dynamic Ingest API</span> Reference</a>.</p>
+To see what fields can be included in the video and ingest objects, see the Dynamic Ingest API Reference.
 
-<aside class="bcls-aside bcls-aside--warning">Do <strong>not</strong> include the <code class="notranslate">master</code> field in the <code class="notranslate">ingest</code> object, as that information will be provided by the Live API.</aside>
+Do not include the master field in the ingest object, as that information will be provided by the Live API.
+The VC_CREDENTIALS here is a reference to a set of client credentials for the Dynamic Ingest system, which are set up in your Live account by the Live team.
 
-<p>The <code class="notranslate">VC_CREDENTIALS</code> here is a reference to a set of client credentials for the Dynamic Ingest system, which are set up in your Live account by the Live team.</p>
-</section>
+Request body - S3
 
-<section class="bcls-section">
-<h2 id="Request_body_s3">Request body - S3</h2>
+The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to an S3 bucket:
 
-<p>The request body includes start and end times, and details about where to send the clip. Here is a sample request body that creates a clip of the third minute of a stream and sends it to an S3 bucket:</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"live_job_id":"{{job_id}}",
-	"outputs":[
-		{
-			"label": "last_30",
-			"duration": 30,
-			"url": "s3://<span class="bcls-input">YOUR_BUCKET_NAME</span>/<span class="bcls-input">file_name.mp4</span>",
-			"credentials": "<span class="bcls-input">s3-credentials</span>",
-			"notifications": ["<span class="bcls-input">http://myserver.com/api/notification_listener?type=jvod</span>"]
-		}
-	],
+{
+  "live_job_id":"{{job_id}}",
+  "outputs":[
+    {
+      "label": "last_30",
+      "duration": 30,
+      "url": "s3://YOUR_BUCKET_NAME/file_name.mp4",
+      "credentials": "s3-credentials",
+      "notifications": ["http://myserver.com/api/notification_listener?type=jvod"]
+    }
+  ],
 }
-</code>
-</pre>
 
-<p>In this example, we are creating a clip of 30 second duration and sending it to an S3 bucket. We provide the bucket URL including the file name for clip, and a string that is the name of saved S3 bucket credentials - the credentials can be set up for your account by Brightcove Support.</p>
-</section>
+In this example, we are creating a clip of 30 second duration and sending it to an S3 bucket. We provide the bucket URL including the file name for clip, and a string that is the name of saved S3 bucket credentials - the credentials can be set up for your account by Brightcove Support.
 
-<section class="bcls-section">
-<h2 id="Request_body_fields">Request body fields</h2>
+Request body fields
 
-<p>Here is a full table of the request body fields.</p>
+Here is a full table of the request body fields.
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Request Body Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">live_job_id</code></td>
-			<td>String</td>
-			<td>
-			<p>The id of Live Stream job to create the VOD clip from.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs</code></td>
-			<td>Object[]</td>
-			<td>
-			<p>Array of VOD outputs</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.label</code></td>
-			<td>String</td>
-			<td>
-			<p>Label for the output</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.duration</code></td>
-			<td>Number</td>
-			<td>
-			<p>Duration of the clip in seconds. The <code class="notranslate">duration</code> can be used alone to define a clip that will be made of the final <code class="notranslate">{duration}</code> seconds of the stream. <code class="notranslate">duration</code> can also be use with any <strong>one of</strong> <code class="notranslate">stream_start_time</code>, <code class="notranslate">stream_end_time</code>, <code class="notranslate">start_time</code>, <code class="notranslate">end_time</code>, <code class="notranslate">stream_end_timecode</code>, or <code class="notranslate">stream_start_timecode</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.stream_start_time</code></td>
-			<td>Number</td>
-			<td>
-			<p>Start time in seconds for the clip relative to the start time of the live stream, <code class="notranslate">stream_start_time</code> must be used with <strong>either</strong> <code class="notranslate">stream_end_time</code> or <code class="notranslate">duration</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.stream_end_time</code></td>
-			<td>Number</td>
-			<td>
-			<p>End time in seconds for the clip relative to the start time of the live stream, <code class="notranslate">stream_end_time</code> must be used with <strong>either</strong> <code class="notranslate">stream_start_time</code> or <code class="notranslate">duration</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.start_time</code></td>
-			<td>Number</td>
-			<td>
-			<p>Start time for the clip in Epoch (Unix) time (seconds), <code class="notranslate">start_time</code> must be used with <strong>either</strong> <code class="notranslate">end_time</code> or <code class="notranslate">duration</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.end_time</code></td>
-			<td>Number</td>
-			<td>
-			<p>End time for the clip in Epoch (Unix) time (seconds), <code class="notranslate">end_time</code> must be used with <strong>either</strong> <code class="notranslate">start_time</code> or <code class="notranslate">duration</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.stream_start_timecode</code></td>
-			<td>Number</td>
-			<td>
-			<p>Start time for the clip in an SMPTE-formatted (HH:MM:SS:FF) timecode from the start of the stream, <code class="notranslate">stream_start_timecode</code> must be used with <strong>either</strong> <code class="notranslate">stream_end_timecode</code> or <code class="notranslate">duration</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.stream_end_timecode</code></td>
-			<td>Number</td>
-			<td>
-			<p>End time for the clip in an SMPTE-formatted (HH:MM:SS:FF) timecode from the end of the stream, <code class="notranslate">outputs.stream_end_timecode</code> must be used with <strong>either</strong> <code class="notranslate">stream_start_timecode</code> or <code class="notranslate">duration</code>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.url</code></td>
-			<td>String</td>
-			<td>
-			<p>Destination URL for the clip, note that the output <strong>must</strong> contain <strong>either</strong> this <code class="notranslate">url</code> field <strong>or</strong> a <code class="notranslate">videocloud</code> object defining the video properties and ingest options for <span class="notranslate">Video Cloud</span>.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.credentials</code></td>
-			<td>String</td>
-			<td>
-			<p>The name of the credentials configured in your account for this address</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">outputs.videocloud</code></td>
-			<td>Object</td>
-			<td>
-			<p>An object containing inputs for <span class="”notranslate”"><span class="notranslate">Video Cloud</span></span> ingestion</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate"><a href="#video_fields">outputs.videocloud.video</a></code></td>
-			<td>Object</td>
-			<td>
-			<p>An object containing inputs for <span class="”notranslate”"><span class="notranslate">Video Cloud</span></span> video object creation - see the <a class="notranslate" href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Create_Video">CMS API Reference for creating a video</a></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate"><a href="#dynamic_ingest_fields">outputs.videocloud.ingest</a></code></td>
-			<td>Object</td>
-			<td>
-			<p>An object containing inputs for <span class="”notranslate”"><span class="notranslate">Video Cloud</span></span> video ingestion - see the <a class="notranslate" href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">Dynamic Ingest Reference</a> - do <strong>not</strong> include the <code class="notranslate">master</code> field, as that information will be provided by the Live API. If no ingest profile is specified, the account default profile will be used.</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
+Request Body Fields
+Field	Type	Description
+live_job_id	String
+The id of Live Stream job to create the VOD clip from.
 
-<h3 id="video_fields">Video fields for <span class="notranslate">Video Cloud</span> ingestion</h3>
+outputs	Object[]
+Array of VOD outputs
 
-<p>See the <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/CreateVideo">CMS API Reference</a> for more details.</p>
+outputs.label	String
+Label for the output
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Video Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">ad_keys</code></td>
-			<td>String</td>
-			<td>String representing the ad key/value pairs assigned to the video. Key/value pairs are formatted as key=value and are separated by ampersands. For example: <code class="notranslate">"adKeys": "category=sports&amp;live=true"</code></td>
-		</tr>
-		<tr>
-			<td><a href="#cuepoint"><code class="notranslate">cue_points</code> </a></td>
-			<td>Array of Maps</td>
-			<td>array of cue point maps</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">custom_fields</code></td>
-			<td>Map of field-value pairs (Strings)</td>
-			<td>Custom <code class="notranslate">fieldname:value</code> sets for the video - note that custom field that do <strong>not</strong> have a value for this video are not included in this map; custom field values have a maximum length of 1024 single-byte characters</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">description</code></td>
-			<td>String; takes the place of the old shortDescription</td>
-			<td>Short description of the video (maximum length: 248 single-byte characters)</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">economics</code></td>
-			<td>String, must be one of valid enum values</td>
-			<td>either "AD_SUPPORTED" (default) or "FREE"</td>
-		</tr>
-		<tr>
-			<td><a href="#geo"><code class="notranslate">geo</code></a></td>
-			<td>Map of property-value pairs</td>
-			<td>Geo-restriction properties for the video</td>
-		</tr>
-		<tr>
-			<td><a href="#link"><code class="notranslate">link</code> </a></td>
-			<td>Map of property-value pairs</td>
-			<td>Map of related link properties</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">long_description</code></td>
-			<td>String</td>
-			<td>Long description (up to 5000 characters)</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">name</code></td>
-			<td>String</td>
-			<td>The name of the video (maximum length: 248 single-byte characters) <strong>required</strong></td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">offline_enabled</code></td>
-			<td>Boolean</td>
-			<td>Whether the video is enabled for offline playback</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">projection</code></td>
-			<td>String</td>
-			<td>The mapping projection for 360° videos, e.g. "equirectangular"</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">reference_id</code></td>
-			<td>String</td>
-			<td>A user-specified id that <strong>uniquely identifies the video</strong>, limited to 150 characters. A referenceId can be used as a foreign-key to identify this video in another system. The reference id should not contain spaces, commas, or special characters.</td>
-		</tr>
-		<tr>
-			<td><a href="#schedule"><code class="notranslate">schedule</code></a></td>
-			<td>Map of property-value pairs</td>
-			<td>Map of start and end date-times for the video availability</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">state</code></td>
-			<td>String</td>
-			<td>ACTIVE, INACTIVE</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">tags</code></td>
-			<td>Array of tags (Strings)</td>
-			<td>Array of tags assigned to the video</td>
-		</tr>
-		<tr>
-			<td><a href="#text_tracks"><code class="notranslate">text_tracks</code> </a></td>
-			<td>Array of HTML5-style text tracks</td>
-			<td>Array of text tracks (WebVTT files) assigned to the video</td>
-		</tr>
-	</tbody>
-</table>
+outputs.duration	Number
+Duration of the clip in seconds. The duration can be used alone to define a clip that will be made of the final {duration} seconds of the stream. duration can also be use with any one of stream_start_time, stream_end_time, start_time, end_time, stream_end_timecode, or stream_start_timecode.
 
-<h4 id="cuepoint">Video cuepoint fields</h4>
+outputs.stream_start_time	Number
+Start time in seconds for the clip relative to the start time of the live stream, stream_start_time must be used with either stream_end_time or duration.
 
-<p>The table below shows fields for <code class="notranslate">video.cuepoints</code>.</p>
+outputs.stream_end_time	Number
+End time in seconds for the clip relative to the start time of the live stream, stream_end_time must be used with either stream_start_time or duration.
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Cuepoint Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">id</code></td>
-			<td>String</td>
-			<td>System id for the cue point</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">force_stop</code></td>
-			<td><em>Boolean</em></td>
-			<td>Whether the video should be stopped at the cue point</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">metadata</code></td>
-			<td><em>String; code point only</em></td>
-			<td>A metadata string associated with the cue point</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">name</code></td>
-			<td><em>String</em></td>
-			<td>The cue point name</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">time</code></td>
-			<td><em>Float</em></td>
-			<td>Time of the cue point in seconds measured from the start of the video</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">type</code></td>
-			<td><em>String</em></td>
-			<td>The cue point type ( <code class="notranslate">AD</code> or <code class="notranslate">DATA</code>)</td>
-		</tr>
-	</tbody>
-</table>
+outputs.start_time	Number
+Start time for the clip in Epoch (Unix) time (seconds), start_time must be used with either end_time or duration.
 
-<h4 id="geo">Video geo fields</h4>
+outputs.end_time	Number
+End time for the clip in Epoch (Unix) time (seconds), end_time must be used with either start_time or duration.
 
-<p>The table below shows the <code class="notranslate">video.geo</code> object fields.</p>
+outputs.stream_start_timecode	Number
+Start time for the clip in an SMPTE-formatted (HH:MM:SS:FF) timecode from the start of the stream, stream_start_timecode must be used with either stream_end_timecode or duration.
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Geo-Filtering Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">countries</code></td>
-			<td>Array of country code Strings</td>
-			<td>Array of ISO 3166 list of 2- or 4-letter codes (https://www.iso.org/obp/ui/) for countries in which the video is allowed or not allowed to play</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">exclude_countries</code></td>
-			<td>Boolean</td>
-			<td>If true, country array is treated as a list of countries excluded from viewing</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">restricted</code></td>
-			<td>Boolean</td>
-			<td>Whether geo-filtering is enabled for this video</td>
-		</tr>
-	</tbody>
-</table>
+outputs.stream_end_timecode	Number
+End time for the clip in an SMPTE-formatted (HH:MM:SS:FF) timecode from the end of the stream, outputs.stream_end_timecode must be used with either stream_start_timecode or duration.
 
-<h4 id="link">Video link fields</h4>
+outputs.url	String
+Destination URL for the clip, note that the output must contain either this url field or a videocloud object defining the video properties and ingest options for Video Cloud.
 
-<p>The table below shows the <code class="notranslate">video.link</code> object fields.</p>
+outputs.credentials	String
+The name of the credentials configured in your account for this address
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Link Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">url</code></td>
-			<td>String</td>
-			<td>Related link URL</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text</code></td>
-			<td>String</td>
-			<td>Related link text</td>
-		</tr>
-	</tbody>
-</table>
+outputs.videocloud	Object
+An object containing inputs for Video Cloud ingestion
 
-<h4 id="schedule">Video schedule fields</h4>
+outputs.videocloud.video	Object
+An object containing inputs for Video Cloud video object creation - see the CMS API Reference for creating a video
 
-<p>The table below shows the fields for the <code class="notranslate">video.schedule</code> object</p>
+outputs.videocloud.ingest	Object
+An object containing inputs for Video Cloud video ingestion - see the Dynamic Ingest Reference - do not include the master field, as that information will be provided by the Live API. If no ingest profile is specified, the account default profile will be used.
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">video.schedule Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">ends_at</code></td>
-			<td>String in ISO-8601 date format</td>
-			<td>Date-time when the video becomes unavailable for viewing</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">starts_at</code></td>
-			<td>String in ISO-8601 date format</td>
-			<td>Date-time when the video becomes available for viewing</td>
-		</tr>
-	</tbody>
-</table>
+Video fields for Video Cloud ingestion
 
-<h3 id="dynamic_ingest_fields"><span class="notranslate">Video Cloud</span> Ingest fields</h3>
+See the CMS API Reference for more details.
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table"><span class="notranslate">Video Cloud</span> Ingest Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-		</tr>
-		<tr>
-			<td><code class="notranslate">audio_tracks</code> <em>optional</em> <strong>Dynamic Delivery only</strong></td>
-			<td>Object[]</td>
-			<td>
-			<p>array of audio track objects - see <a href="/node/17937">Implementing Multiple Audio Tracks Using the APIs</a> for more information.</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">audio_tracks.merge_with_existing</code> <em>optional</em></td>
-			<td>Boolean</td>
-			<td>
-			<p>whether to replace existing audio tracks or add the new ones (currently only <code class="notranslate">false</code> is supported) <strong>Dynamic Delivery only</strong></p>
+Video Fields
+Field	Type	Description
+ad_keys	String	String representing the ad key/value pairs assigned to the video. Key/value pairs are formatted as key=value and are separated by ampersands. For example: "adKeys": "category=sports&live=true"
+cue_points	Array of Maps	array of cue point maps
+custom_fields	Map of field-value pairs (Strings)	Custom fieldname:value sets for the video - note that custom field that do not have a value for this video are not included in this map; custom field values have a maximum length of 1024 single-byte characters
+description	String; takes the place of the old shortDescription	Short description of the video (maximum length: 248 single-byte characters)
+economics	String, must be one of valid enum values	either "AD_SUPPORTED" (default) or "FREE"
+geo	Map of property-value pairs	Geo-restriction properties for the video
+link	Map of property-value pairs	Map of related link properties
+long_description	String	Long description (up to 5000 characters)
+name	String	The name of the video (maximum length: 248 single-byte characters) required
+offline_enabled	Boolean	Whether the video is enabled for offline playback
+projection	String	The mapping projection for 360° videos, e.g. "equirectangular"
+reference_id	String	A user-specified id that uniquely identifies the video, limited to 150 characters. A referenceId can be used as a foreign-key to identify this video in another system. The reference id should not contain spaces, commas, or special characters.
+schedule	Map of property-value pairs	Map of start and end date-times for the video availability
+state	String	ACTIVE, INACTIVE
+tags	Array of tags (Strings)	Array of tags assigned to the video
+text_tracks	Array of HTML5-style text tracks	Array of text tracks (WebVTT files) assigned to the video
+Video cuepoint fields
 
-			<p class="default-value">Default value: <code class="notranslate">false</code></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">audio_tracks.masters</code> <em>optional</em></td>
-			<td>Object[]</td>
-			<td>
-			<p>array of audio track objects <strong>Dynamic Delivery only</strong></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">audio_tracks.masters.url</code> <em>optional</em></td>
-			<td>String</td>
-			<td>
-			<p>URL for the audio file <strong>Dynamic Delivery only</strong></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">audio_tracks.masters.language</code> <em>optional</em></td>
-			<td>String</td>
-			<td>
-			<p>Language code for the audio track from the subtags in <a href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a> (default can be set for the account by contacting Brightcove Support) <strong>Dynamic Delivery only</strong></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">audio_tracks.masters.variant</code> <em>optional</em></td>
-			<td>String</td>
-			<td>
-			<p>the type of audio track (default can be set for the account by contacting Brightcove Support) <strong>Dynamic Delivery only</strong></p>
+The table below shows fields for video.cuepoints.
 
-			<p class="type-size">Allowed values: <code class="notranslate">"main"</code>, <code class="notranslate">"alternate"</code>, <code class="notranslate">"commentary"</code>, <code class="notranslate">"dub"</code>, <code class="notranslate">"descriptive"</code></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">profile</code> <em>optional</em></td>
-			<td>String</td>
-			<td>
-			<p>ingest profile to use for transcoding; if absent, the default profile will be used</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text_tracks</code> <em>optional</em></td>
-			<td>Object[]</td>
-			<td>
-			<p>array of <code class="notranslate">text_tracks</code> objects - see <a href="/node/17938">Ingesting WebVTT Files (Text Tracks)</a></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text_tracks.url</code></td>
-			<td>Url</td>
-			<td>
-			<p>URL for a WebVTT file</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text_tracks.srclang</code></td>
-			<td>String</td>
-			<td>
-			<p>ISO 639 2-letter (alpha-2) language code for the text tracks</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text_tracks.kind</code> <em>optional</em></td>
-			<td>String</td>
-			<td>
-			<p>how the vtt file is meant to be used</p>
+Cuepoint Fields
+Field	Type	Description
+id	String	System id for the cue point
+force_stop	Boolean	Whether the video should be stopped at the cue point
+metadata	String; code point only	A metadata string associated with the cue point
+name	String	The cue point name
+time	Float	Time of the cue point in seconds measured from the start of the video
+type	String	The cue point type ( AD or DATA)
+Video geo fields
 
-			<p class="default-value">Default value: <code class="notranslate">captions</code></p>
+The table below shows the video.geo object fields.
 
-			<p class="type-size">Allowed values: <code class="notranslate">"captions"</code>, <code class="notranslate">"subtitles"</code>, <code class="notranslate">"chapters"</code>, <code class="notranslate">"metadata"</code></p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text_tracks.label</code> <em>optional</em></td>
-			<td>String</td>
-			<td>
-			<p>user-readable title</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">text_tracks.default</code> <em>optional</em></td>
-			<td>Boolean</td>
-			<td>
-			<p>sets the default language for captions/subtitles</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">capture-images</code> <em>optional</em></td>
-			<td>Boolean</td>
-			<td>
-			<p>whether poster and thumbnail should be captured during transcoding; defaults to <code class="notranslate">true</code> if the profile has image renditions, <code class="notranslate">false</code> if it does not - see <a href="/node/17940">Images and the Dynamic Ingest API</a> for more information</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">poster</code> <em>optional</em></td>
-			<td>Object</td>
-			<td>
-			<p>the video poster to be ingested - see <a href="/node/17940">Images and the Dynamic Ingest API</a> for more information</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">poster.url</code></td>
-			<td>Url</td>
-			<td>
-			<p>URL for the video poster image</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">poster.height</code> <em>optional</em></td>
-			<td>Integer</td>
-			<td>
-			<p>pixel height of the image</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">poster.width</code> <em>optional</em></td>
-			<td>Integer</td>
-			<td>
-			<p>pixel width of the image</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">thumbnail</code> <em>optional</em></td>
-			<td>Object</td>
-			<td>
-			<p>the video thumbnail to be ingested - see <a href="/node/17940">Images and the Dynamic Ingest API</a> for more information</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">thumbnail.url</code></td>
-			<td>Url</td>
-			<td>
-			<p>URL for the video thumbnail image</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">thumbnail.height</code> <em>optional</em></td>
-			<td>Integer</td>
-			<td>
-			<p>pixel height of the image</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">thumbnail.width</code> <em>optional</em></td>
-			<td>Integer</td>
-			<td>
-			<p>pixel width of the image</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">callbacks</code> <em>optional</em></td>
-			<td>String[]</td>
-			<td>Array of URLs that <a href="/node/17939">notifications</a> should be sent to
-			<p>&nbsp;</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
-</section>
+Geo-Filtering Fields
+Field	Type	Description
+countries	Array of country code Strings	Array of ISO 3166 list of 2- or 4-letter codes (https://www.iso.org/obp/ui/) for countries in which the video is allowed or not allowed to play
+exclude_countries	Boolean	If true, country array is treated as a list of countries excluded from viewing
+restricted	Boolean	Whether geo-filtering is enabled for this video
+Video link fields
 
-<section class="bcls-section">
-<h2 id="API_response">API response</h2>
+The table below shows the video.link object fields.
 
-<p>The response to a create clip request includes an id for the job and the label you set in the request body, as well as the live job id:</p>
+Link Fields
+Field	Type	Description
+url	String	Related link URL
+text	String	Related link text
+Video schedule fields
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-	"vod_jobs": [
-		{
-			"jvod_id": "9582606c50d84be5ad4bc104f2aa3360",
-			"label": "last 60 secs of live job"
-		}
-	],
-	"live_job_id": "88ba5d87b61a4ef3a6dddabd0c38d319"
+The table below shows the fields for the video.schedule object
+
+video.schedule Fields
+Field	Type	Description
+ends_at	String in ISO-8601 date format	Date-time when the video becomes unavailable for viewing
+starts_at	String in ISO-8601 date format	Date-time when the video becomes available for viewing
+Video Cloud Ingest fields
+
+Video Cloud Ingest Fields
+Field	Type	Description
+audio_tracks optional Dynamic Delivery only	Object[]
+array of audio track objects - see Implementing Multiple Audio Tracks Using the APIs for more information.
+
+audio_tracks.merge_with_existing optional	Boolean
+whether to replace existing audio tracks or add the new ones (currently only false is supported) Dynamic Delivery only
+
+Default value: false
+
+audio_tracks.masters optional	Object[]
+array of audio track objects Dynamic Delivery only
+
+audio_tracks.masters.url optional	String
+URL for the audio file Dynamic Delivery only
+
+audio_tracks.masters.language optional	String
+Language code for the audio track from the subtags in https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry (default can be set for the account by contacting Brightcove Support) Dynamic Delivery only
+
+audio_tracks.masters.variant optional	String
+the type of audio track (default can be set for the account by contacting Brightcove Support) Dynamic Delivery only
+
+Allowed values: "main", "alternate", "commentary", "dub", "descriptive"
+
+profile optional	String
+ingest profile to use for transcoding; if absent, the default profile will be used
+
+text_tracks optional	Object[]
+array of text_tracks objects - see Ingesting WebVTT Files (Text Tracks)
+
+text_tracks.url	Url
+URL for a WebVTT file
+
+text_tracks.srclang	String
+ISO 639 2-letter (alpha-2) language code for the text tracks
+
+text_tracks.kind optional	String
+how the vtt file is meant to be used
+
+Default value: captions
+
+Allowed values: "captions", "subtitles", "chapters", "metadata"
+
+text_tracks.label optional	String
+user-readable title
+
+text_tracks.default optional	Boolean
+sets the default language for captions/subtitles
+
+capture-images optional	Boolean
+whether poster and thumbnail should be captured during transcoding; defaults to true if the profile has image renditions, false if it does not - see Images and the Dynamic Ingest API for more information
+
+poster optional	Object
+the video poster to be ingested - see Images and the Dynamic Ingest API for more information
+
+poster.url	Url
+URL for the video poster image
+
+poster.height optional	Integer
+pixel height of the image
+
+poster.width optional	Integer
+pixel width of the image
+
+thumbnail optional	Object
+the video thumbnail to be ingested - see Images and the Dynamic Ingest API for more information
+
+thumbnail.url	Url
+URL for the video thumbnail image
+
+thumbnail.height optional	Integer
+pixel height of the image
+
+thumbnail.width optional	Integer
+pixel width of the image
+
+callbacks optional	String[]	Array of URLs that notifications should be sent to
+
+
+API response
+
+The response to a create clip request includes an id for the job and the label you set in the request body, as well as the live job id:
+
+{
+  "vod_jobs": [
+    {
+      "jvod_id": "9582606c50d84be5ad4bc104f2aa3360",
+      "label": "last 60 secs of live job"
+    }
+  ],
+  "live_job_id": "88ba5d87b61a4ef3a6dddabd0c38d319"
 }
-</code>
-</pre>
 
-<h3>Response fields</h3>
+Response fields
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Response Body Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th style="width: 30%">Field</th>
-			<th style="width: 10%">Type</th>
-			<th style="width: 70%">Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">vod_jobs</code></td>
-			<td>Object</td>
-			<td>
-			<p>The clip response object</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">jvod_id</code></td>
-			<td>String</td>
-			<td>
-			<p>The clip job id</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">label</code></td>
-			<td>String</td>
-			<td>
-			<p>The clip label (from the input)</p>
-			</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">live_job_id</code></td>
-			<td>String</td>
-			<td>
-			<p>The live job id (from the input)</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-</article>
+Response Body Fields
+Field	Type	Description
+vod_jobs	Object
+The clip response object
+
+jvod_id	String
+The clip job id
+
+label	String
+The clip label (from the input)
+
+live_job_id	String
+The live job id (from the input)
