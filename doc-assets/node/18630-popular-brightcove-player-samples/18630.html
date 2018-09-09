@@ -148,6 +148,7 @@ var BCLS_player_samples = ( function (window, document) {
     samples = document.getElementsByClassName('samples-section'),
     sample_groups = {},
     group_names = [
+      'popular',
       'advertising',
       'audio',
       'call_to_action',
@@ -165,12 +166,31 @@ var BCLS_player_samples = ( function (window, document) {
       'middleware'
     ];
 
-  function toTitleCase(str) {
+  /**
+   * converts string to title case (all words)
+   * @param {string} str string to convert
+   * @returns {string} converted string
+   */
+  function to_title_case(str) {
     str = str.toLowerCase().split(' ');
     for (var i = 0; i < str.length; i++) {
       str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
     }
     return str.join(' ');
+  }
+
+  /**
+   * gets value of a URL param on current page URL if exists
+   * @param {string} name the param you want the value of
+   * @return {string} result value of param if exists or ""
+   */
+  function getURLparam(name) {
+      var regex,
+          results;
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+      results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 
   function create_sample_groups() {
@@ -204,7 +224,7 @@ var BCLS_player_samples = ( function (window, document) {
         btn.setAttribute('class', 'group-button');
         btn.setAttribute('id', group_names[i]);
         txt = group_names[i].replace(/_/g, ' ');
-        txt = toTitleCase(txt);
+        txt = to_title_case(txt);
         btn.textContent = txt;
         frag.appendChild(btn);
       }
@@ -217,13 +237,15 @@ var BCLS_player_samples = ( function (window, document) {
         });
       }
 
+      /**
+       * sets the group of samples to be displaye
+       */
       function set_group(group) {
         while (samples_wrapper.firstChild) {
             samples_wrapper.removeChild(myNode.firstChild);
         }
         samples_wrapper.appendChild(sample_groups[group]);
       }
-
   }
 })(window, document);
 
