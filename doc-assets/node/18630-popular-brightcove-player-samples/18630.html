@@ -281,10 +281,19 @@
        * sets the group of samples to be displaye
        */
       function set_group(group) {
+        var i,
+          iMax,
+          frag = document.createDocumentFragment(),
+          group_nodes;
         while (samples_wrapper.firstChild) {
           samples_wrapper.removeChild(samples_wrapper.firstChild);
         }
-        samples_wrapper.appendChild(sample_groups[group]);
+        group_nodes = sample_groups[group];
+        iMax = group_nodes.length;
+        for (i = 0; i < iMax; i++) {
+          frag.appendChild(group_nodes[i]);
+        }
+        samples_wrapper.appendChild(frag);
         highlight_selected_button(group);
       }
 
