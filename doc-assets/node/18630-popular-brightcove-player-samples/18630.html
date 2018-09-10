@@ -12,11 +12,21 @@
   }
 
   .group-button {
-    background-color: #fff;
+    background-color: RGB(255, 255, 255);
     border-top: none;
-    border-left: .2rem #eee solid;
-    border-right: .2rem #eee solid;
-    border-bottom: .2rem #eee solid;
+    border-left: .2rem RGB(238, 238, 238) solid;
+    border-right: .2rem RGB(238, 238, 238) solid;
+    border-bottom: .2rem RGB(238, 238, 238) solid;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .selected-button {
+    background-color: RGB(238, 238, 238);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: .4rem RGB(118, 174, 181) solid;
     padding: 1rem;
     margin-bottom: 1rem;
   }
@@ -49,7 +59,7 @@
     /* -webkit-box-sizing: border-box;
     box-sizing: border-box; */
     border: 1px solid #efefef;
-    color: #515151;
+    color: RGB(81, 81, 81);
     -webkit-box-shadow: 0px 2px 5px 0 #ccc;
     box-shadow: 0px 2px 5px 0 #ccc;
     -webkit-transition: -webkit-box-shadow 0.3s ease-out;
@@ -62,7 +72,7 @@
 
   .samples-section a:hover div {
     text-decoration: none !important;
-    box-shadow: 0px 5px 15px 0 #ccc;
+    box-shadow: 0px 5px 15px 0 RGB(204, 204, 204);
     -webkit-transition: -webkit-box-shadow 0.3s ease-in;
     transition: -webkit-box-shadow 0.3s ease-in;
     transition: box-shadow 0.3s ease-in;
@@ -92,8 +102,8 @@
 <section class="buttons-wrapper" id="buttons_wrapper">
 </section>
 
-<section class="samples-wrapper player_styling" id="samples_wrapper">
-  <section class="samples-section">
+<section class="samples-wrapper" id="samples_wrapper">
+  <section class="samples-section player_styling">
     <a style="text-decoration:none" href="/node/18608">
         <div class="samples-div">
           <img alt="Vertical Volume" src="//learning-services-media.brightcove.com/doc-assets/node/18630-popular-brightcove-player-samples/vertical-volume.png" />
@@ -157,28 +167,29 @@
 
 <script>
   var BCLS_player_samples = (function(window, document) {
-    samples_wrapper = document.getElementById('samples_wrapper'),
-      buttons_wrapper = document.getElementById('buttons_wrapper'),
-      samples = document.getElementsByClassName('samples-section'),
-      sample_groups = {},
-      group_names = [
-        'popular',
-        'advertising',
-        'audio',
-        'call_to_action',
-        'communicate_with_iframe',
-        'player_ui',
-        'error_handling',
-        'player_styling',
-        'playlists_and_groups',
-        'position_player',
-        'restrict_viewing',
-        'analytics_api',
-        'cms_api',
-        'playback_api',
-        'catalog',
-        'middleware'
-      ];
+    var samples_wrapper = document.getElementById('samples_wrapper'),
+    buttons_wrapper = document.getElementById('buttons_wrapper'),
+    samples = document.querySelectorAll('section.samples-section'),
+    sample_groups = {},
+    buttons,
+    group_names = [
+      'popular',
+      'advertising',
+      'audio',
+      'call_to_action',
+      'communicate_with_iframe',
+      'player_ui',
+      'error_handling',
+      'player_styling',
+      'playlists_and_groups',
+      'position_player',
+      'restrict_viewing',
+      'analytics_api',
+      'cms_api',
+      'playback_api',
+      'catalog',
+      'middleware'
+    ];
 
     /**
      * converts string to title case (all words)
@@ -204,31 +215,39 @@
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
       results = regex.exec(location.search);
-      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
-    function has_class( elem, class_name ) {
-      console.log('elem', elem);
-      console.log('class', class_name);
-     return (" " + elem.className + " " ).indexOf( " " + class_name + " " ) > -1;
-}
+    /**
+     * determines whether an element has a specified class
+     * @param {element} elem the html element
+     * @param {string} class_name the class
+     * @return {boolean}
+     */
+    function has_class(elem, class_name) {
+      return (elem.classList.contains(class_name));
+    }
+
+    function highlight_selected_button(group) {
+      var i, iMax;
+        iMax = buttons.length;
+        for (i = 0; i < iMax; i++) {
+          buttons[i].setAttribute('class', 'group-button');
+        }
+        for (i = 0; i < iMax; i++) {
+          if (buttons[i].id === group) {
+            buttons[i].setAttribute('class', 'selected-button');
+          }
+        }
+    }
 
     function create_sample_groups() {
       var iMax,
-        jMax,
-        i,
-        j;
+        i;
       iMax = group_names.length;
-      jMax = samples.length
       for (i = 0; i < iMax; i++) {
-        sample_groups[group_names[i]] = document.createDocumentFragment();
-        for (j = 0; j < jMax; j++) {
-          if (has_class(samples[j], group_names[i])) {
-            sample_groups[group_names[i]].appendChild(samples[j]);
-          }
-        }
+        sample_groups[group_names[i]] = document.querySelectorAll('.' + group_names[i]);
       }
-      console.log('sample_groups', sample_groups);
     }
 
     function inject_buttons() {
@@ -236,8 +255,7 @@
         txt,
         i,
         iMax,
-        frag = document.createDocumentFragment(),
-        buttons;
+        frag = document.createDocumentFragment();
       iMax = group_names.length;
       for (i = 0; i < iMax; i++) {
         btn = document.createElement('button');
@@ -249,7 +267,7 @@
         frag.appendChild(btn);
       }
       buttons_wrapper.appendChild(frag);
-      buttons = document.getElementsByClassName('group-button');
+      buttons = document.querySelectorAll('.group-button');
       iMax = buttons.length;
       for (i = 0; i < iMax; i++) {
         buttons[i].addEventListener('click', function() {
@@ -262,16 +280,31 @@
        * sets the group of samples to be displaye
        */
       function set_group(group) {
+        var i,
+          iMax,
+          frag = document.createDocumentFragment(),
+          group_nodes;
         while (samples_wrapper.firstChild) {
           samples_wrapper.removeChild(samples_wrapper.firstChild);
         }
-        samples_wrapper.appendChild(sample_groups[group]);
+        group_nodes = sample_groups[group];
+        iMax = group_nodes.length;
+        for (i = 0; i < iMax; i++) {
+          frag.appendChild(group_nodes[i]);
+        }
+        samples_wrapper.appendChild(frag);
+        highlight_selected_button(group);
       }
 
     function init() {
-      create_sample_groups();
+      var param = get_url_param('group');
       inject_buttons();
-      set_group('popular');
+      create_sample_groups();
+      if (param === null) {
+        set_group('popular');
+      } else {
+        set_group(param);
+      }
     }
 
     init();

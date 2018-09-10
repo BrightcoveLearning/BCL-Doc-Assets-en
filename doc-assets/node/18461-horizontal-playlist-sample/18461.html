@@ -1,0 +1,240 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>You will see the horizontal playlist below the player. If you resize your browser, you will see the player and playlist both resize.</p>
+<!-- UPDATE codepen here -->
+
+<p data-height="592" data-theme-id="dark" data-slug-hash="boWZzY" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="18461-horizontal-responsive-playlist" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/boWZzY/">18461-horizontal-responsive-playlist</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18461-horizontal-responsive-playlist">source code</a>.</p>
+<aside class="bcls-aside bcls-aside--tip">
+	<p>
+		A horizontal playlist can also be implemented without code. For details, see the following:
+	</p>
+	<ul>
+		<li>
+			<a href="/node/14051">Styling Players in the Players Module</a>
+		</li>
+		<li>
+			<a href="/node/18055">Implementing Playlists</a>
+		</li>
+	</ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+
+<div class="bcls-expander-content">
+<p>Here is the recommended development sequence:</p>
+
+<ol>
+	<li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+	<li>Use Studio to add the plugin and CSS to your player</li>
+	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+</ol>
+
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+<h3>iframe or In-Page embed</h3>
+
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+
+<ul>
+	<li>No collisions with existing JavaScript and/or CSS</li>
+	<li>Automatically responsive</li>
+	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+</ul>
+
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+
+<ul>
+	<li>Code in the containing page needs to listen for and act on player events</li>
+	<li>The player uses styles from the containing page</li>
+	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+</ul>
+
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+</div>
+<!-- id="expanderContent" --></section>
+
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>API Methods</th>
+			<th>API Events</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#play">play()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:loadstart">loadstart</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:loadedmetadata">loadedmetadata</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.one">one()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:play">play</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#el">el()</a></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#width">width()</a></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://support.brightcove.com/guide-playlist-api#currentitem">playlist.currentItem()</a></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://support.brightcove.com/guide-playlist-api#playlist">playlist()</a></td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">Note: The JavaScript framework jQuery is used in this code sample.</aside>
+<!-- <aside class="bcls-aside bcls-aside--tip">This code sample uses one of the Brightcove REST APIs. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside> --></section>
+<!-- UPDATE player and HTML configuration -->
+
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>The player uses the standard HTML enhancements to add responsive behavior.</p>
+
+<h3>Other HTML</h3>
+
+<p>The JavaScript framework jQuery is loaded using a <code>script</code> tag.</p>
+</section>
+<!-- UPDATE application flow -->
+
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+	<li>Create a DOM element to hold the playlist.</li>
+	<li>Create the playlist array data structure, and array of playlist items, and functions that perform the following:
+	<ul>
+		<li>Clear the highlight of the selected/playing video thumbnail.</li>
+		<li>Add the highlight of the selected/playing video thumbnail.</li>
+		<li>Add click events to the left and right playlist arrows, as well as the on the video thumbnails.</li>
+	</ul>
+	</li>
+	<li>Create the playlist items, and add those items to the playlist.</li>
+</ul>
+<!-- UPDATE task 1 -->
+
+<h3>Create an HTML <code>&lt;div&gt;</code> element to hold the playlist</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Create div for playlist ###</code></pre>
+
+<p>You use JavaScript's <code>createElement()</code> method to create the <code>&lt;div&gt;</code> element, named <code>playlistWrapper</code>.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Manually create playlist</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Manually create playlist  ###</code></pre>
+
+<p>Start off by copying the playlist's array data structure into a new variable called <code>playlistIData</code>. Later you loop over this data structure to build the individual list items.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Loop over playlist data to create items and add to playlist</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Create playlist items and add to playlist ###</code></pre>
+
+<p>You dynamically create another <code>&lt;div&gt;</code> which holds an individual playlist item. The playlist item is populated and styled, then added to the <code>playlistWrapper</code>.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>A number of items are styled, including:</p>
+
+<ul>
+	<li>Playlist wrapper</li>
+	<li>Playlist items</li>
+	<li>Item title</li>
+	<li>Left and right arrows</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Plugin_code">Plugin code</h2>
+
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+
+<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
+
+<pre class="line-numbers">
+                  <code class="language-javascript">videojs('myPlayerID').ready(function(){
+                    var myPlayer = this;
+                    ...
+                  });</code></pre>
+
+<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
+
+<pre class="line-numbers">
+                  <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+                    var myPlayer = this;
+                    ...
+                  });</code></pre>
+<!-- UPDATE path to plugin's JavaScript -->
+
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18461-horizontal-responsive-playlist/blob/master/plugin/responsive-horizontal-playlist.js">responsive-horizontal-playlist.js</a>.</p>
+
+<h3>Using the plugin with a player</h3>
+
+<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
+
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
+</section>
+</article>
