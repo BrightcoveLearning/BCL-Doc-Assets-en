@@ -161,6 +161,7 @@
       buttons_wrapper = document.getElementById('buttons_wrapper'),
       samples = document.querySelectorAll('section.samples-section'),
       sample_groups = {},
+      buttons,
       group_names = [
         'popular',
         'advertising',
@@ -207,11 +208,28 @@
       return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
+    /**
+     * determines whether an element has a specified class
+     * @param {element} elem the html element
+     * @param {string} class_name the class
+     * @return {boolean}
+     */
     function has_class(elem, class_name) {
-      console.log('elem', elem);
-      console.log('class', class_name);
-     return (" " + elem.className + " " ).indexOf( " " + class_name + " " ) > -1;
-}
+      return (elem.classList.contains(class_name));
+    }
+
+    function highlight_selected_button(group) {
+      var i, iMax;
+        iMax = buttons.length;
+        for (i = 0; i < iMax; i++) {
+          buttons[i].removeAttribute('style');
+        }
+        for (i = 0; i < iMax; i++) {
+          if (buttons[i].id === group) {
+            buttons[i].setAttribute('style', 'background-color:#eee,border-bottom:.3rem RGB(118, 174, 181) solid');
+          }
+        }
+    }
 
     function create_sample_groups() {
       var iMax,
@@ -240,8 +258,7 @@
         txt,
         i,
         iMax,
-        frag = document.createDocumentFragment(),
-        buttons;
+        frag = document.createDocumentFragment();
       iMax = group_names.length;
       for (i = 0; i < iMax; i++) {
         btn = document.createElement('button');
@@ -270,6 +287,7 @@
           samples_wrapper.removeChild(samples_wrapper.firstChild);
         }
         samples_wrapper.appendChild(sample_groups[group]);
+        highlight_selected_button(group);
       }
 
     function init() {
