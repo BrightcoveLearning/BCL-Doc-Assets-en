@@ -50,7 +50,7 @@ var BCLS_feedback = ( function (window, document) {
     feedbackParams.bc_account = 'unknown';
   }
   feedbackParams.title = document.querySelector('title').textContent;
-  feedbackParams.nodeId = document.querySelector('link[rel="shortlink"]').href.split("/").pop();
+  feedbackParams.q13 = document.querySelector('link[rel="shortlink"]').href.split("/").pop();
   feedbackParams.product = (productItem) ? productItem.textContent : 'unknown';
   feedbackParams.role = (roleItem) ? roleItem.textContent : 'unknown';
 if (thirdRowItems) {
