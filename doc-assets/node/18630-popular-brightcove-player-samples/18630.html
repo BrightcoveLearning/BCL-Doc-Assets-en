@@ -215,7 +215,7 @@
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
       results = regex.exec(location.search);
-      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
     /**
@@ -298,9 +298,14 @@
       }
 
     function init() {
+      var param = get_url_param('group');
       inject_buttons();
       create_sample_groups();
-      set_group('popular');
+      if (param === null) {
+        set_group('popular');
+      } else {
+        set_group(param);
+      }
     }
 
     init();
