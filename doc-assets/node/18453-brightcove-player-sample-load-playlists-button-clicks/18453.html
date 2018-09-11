@@ -1,0 +1,160 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>When you click on the buttons above the player, different playlists will load into the player.</p>
+<!-- UPDATE codepen here -->
+
+<p data-height="355" data-theme-id="dark" data-slug-hash="qPNOoo" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="18453-load-playlists-button-clicks" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/qPNOoo/">18453-load-playlists-button-clicks</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18453-load-playlists-button-clicks">source code</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+  <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+  <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+  <li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+  <ol>
+    <li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+    <li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+    <li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+  </ol>
+  </li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+
+<div class="bcls-expander-content">
+<p>Here is the recommended development sequence:</p>
+
+<ol>
+  <li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+  <li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+  <li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+  <li>Use Studio to add the plugin and CSS to your player</li>
+  <li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+</ol>
+
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+<h3>iframe or In-Page embed</h3>
+
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+
+<ul>
+  <li>No collisions with existing JavaScript and/or CSS</li>
+  <li>Automatically responsive</li>
+  <li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+</ul>
+
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+
+<ul>
+  <li>Code in the containing page needs to listen for and act on player events</li>
+  <li>The player uses styles from the containing page</li>
+  <li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+</ul>
+
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+</div>
+<!-- id="expanderContent" --></section>
+
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
+
+<table class="bcls-table">
+  <thead class="bcls-table__head">
+    <tr>
+      <th>API Methods</th>
+    </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#play">play()</a></td>
+    </tr>
+    <tr>
+      <td><a href="/node/18108#getPlaylist">catalog.getPlaylist()</a></td>
+    </tr>
+    <tr>
+      <td><a href="/node/18108#load">catalog.load()</a></td>
+    </tr>
+    <tr>
+      <td><a href="/node/18099#first">playlist.first()</a></td>
+    </tr>
+  </tbody>
+</table>
+<!-- <aside class="bcls-aside bcls-aside--tip">This code sample uses one of the Brightcove REST APIs. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside> --></section>
+<!-- UPDATE player and HTML configuration -->
+
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+<h3>Other HTML</h3>
+
+<p>Of course, the three buttons are added to the page. Also, the <code>&lt;ol&gt;</code> that determines the position of the playlist is also added.</p>
+</section>
+<!-- UPDATE application flow -->
+
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+  <li>Listen for the click events from the buttons.</li>
+  <li>When a button is clicked, use the <strong>Video Cloud catalog</strong> to retrieve the playlist and load it into the player.</li>
+  <li>Use the Playlist API to to play the first video in the playlist.</li>
+</ul>
+<!-- UPDATE task 1 -->
+
+<h3>Add buttons with click events to call the <code>loadPlaylist()</code> function</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">&lt;!-- +++ Add buttons for playlist selection +++ --&gt;</code></pre>
+
+<p>In the <code>onclick</code> event handler the playlist to play is hard coded.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Load the playlist and play the first video</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Retrieve and load playlist ###</code></pre>
+
+<p>The catalog's <code>getPlaylist()</code> and <code>load()</code> methods retrieve the playlist and place it in the player. Lastly, the Playlist API's <code>first()</code> method then plays the video.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>The CSS sizes and positions the player and playlist.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Plugin_code">Plugin code</h2>
+
+<p>Although this sample could be written to use JavaScript's <code>postMessage</code> method to pass the button clicked event to a plugin, the much more common use case is to just use the in-page embed player, so no plugin code is used.</p>
+</section>
+</article>
