@@ -1,0 +1,89 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Instantiate_Brightcove_Player">Instantiate Brightcove Player</h2>
+
+<p>The following code details implementing Brightcove Player when utilizing RequireJS. Three key points:</p>
+
+<ol>
+  <li>The code insures that the player gets initialized before the callback gets called.</li>
+  <li>The use of the <code>on()</code> and <code>play()</code> methods (lines 36-38) are only for demonstration purposes, and not required for the use of the player. Those three lines of code only indicate where you could begin using Brightcove Player's API.</li>
+  <li>The highlighted code pertains to Brightcove Player.</li>
+</ol>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Untitled Document&lt;/title&gt;
+  &lt;style&gt;
+    .video-js {
+      height: 344px;
+      width: 610px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  <span class="bcls-highlight">&lt;video id="myPlayerID"</span>
+    data-video-id="4690057979001"
+    data-account="1507807800001"
+    data-player="4kccAUq6e"
+    data-embed="default"
+    class="video-js"
+    controls&gt;&lt;/video&gt;
+
+  &lt;script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    require.config({
+      'paths': {
+        <span class="bcls-highlight">'bc': '//players.brightcove.net/1507807800001/4kccAUq6e_default/index.min'</span>
+      },
+      waitSeconds: 30
+    });
+
+    <span class="bcls-highlight">require(['bc'], function() {
+      var myPlayer = videojs.getPlayers().myPlayerID;
+      myPlayer.on('loadstart', function(){
+        myPlayer.play();
+      })
+    });</span>
+  &lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_an_anonymous_module">Using an anonymous module</h2>
+
+<p>As you have seen in the code shown above, when using RequireJS with the Brightcove Player v6.x a module named <code>bc</code> is created. The approach recommended by RequireJS is to provide an anonymous AMD module, which makes including multiple Brightcove Players significantly easier. You can make the module anonymous by default. Brightcove highly recommends you make a player configuration change to opt-in to this default, and at the same time the change will remove the console warning from your player. Setting the player configuration <code>"require_js_anonymous": true</code> is the required change. The curl statement to make this update appears as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request PATCH \
+  --data '{
+    <span class="bcls-highlight">"require_js_anonymous": true</span>
+  }' \
+  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+
+<p>If you wish to remove the console warning, but without opting-in to anonymous RequireJS modules, use the <code>"require_js_anonymous": false</code> configuration update, as shown here:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request PATCH \
+  --data '{
+    <span class="bcls-highlight">"require_js_anonymous": false</span>
+  }' \
+  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+
+<p>See the <a href="/node/18268">Quick Start: Player Management</a> document for more information on using curl to alter your player's configuration.</p>
+</section>
+</article>
