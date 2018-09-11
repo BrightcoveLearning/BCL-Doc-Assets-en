@@ -2,42 +2,42 @@
 <html>
 <head>
   <title>Customer Documentation Survey</title>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-	<style type="text/css" media="screen">
-		body { font-family: sans-serif; font-size: 0.8em; }
-		#surveyForm {  width: 270px;  display: inline-block; text-align: center; }
-		input.star { display: none; }
-		label.star { float: right; padding: 10px; font-size: 36px; color: #a6a6a6; transition: all .2s; }
-		input.star:checked ~ label.star:before { content: '\f005'; color: #dd712e; transition: all .25s; }
-		input.star-1:checked ~ label.star:before { color: #dd712e; }
-		label.star:hover { color: #62b0b7; }
-		label.star:before { content: '\f005'; font-family: FontAwesome; }
-		label.star:hover .tooltip { display: block; }
-		.tooltip { display: none; font-size: 14px; font-weight: bold; color: #63b0b7; background-color: #fff; opacity: 0.8; border: 1px solid #ccc; border-radius: 5px; padding: 5px; position: absolute; z-index: 1000; }
-	</style>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <style type="text/css" media="screen">
+    body { font-family: sans-serif; font-size: 0.8em; }
+    #surveyForm {  width: 270px;  display: inline-block; text-align: center; }
+    input.star { display: none; }
+    label.star { float: right; padding: 10px; font-size: 36px; color: #a6a6a6; transition: all .2s; }
+    input.star:checked ~ label.star:before { content: '\f005'; color: #dd712e; transition: all .25s; }
+    input.star-1:checked ~ label.star:before { color: #dd712e; }
+    label.star:hover { color: #62b0b7; }
+    label.star:before { content: '\f005'; font-family: FontAwesome; }
+    label.star:hover .tooltip { display: block; }
+    .tooltip { display: none; font-size: 14px; font-weight: bold; color: #63b0b7; background-color: #fff; opacity: 0.8; border: 1px solid #ccc; border-radius: 5px; padding: 5px; position: absolute; z-index: 1000; }
+  </style>
 </head>
 <body>
-	<form id="surveyForm">
-		<p><strong>How helpful was this topic?</strong></p>
-		<input class="star star-5" id="star-5" type="radio" name="star" value="5" />
-	    <label class="star star-5" for="star-5"><span class="tooltip">Very Helpful</span></label>
-	    <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
-	    <label class="star star-4" for="star-4"></label>
-	    <input class="star star-3" id="star-3" type="radio" name="star" value="3" />
-	    <label class="star star-3" for="star-3"></label>
-	    <input class="star star-2" id="star-2" type="radio" name="star" value="2" />
-	    <label class="star star-2" for="star-2"></label>
-	    <input class="star star-1" id="star-1" type="radio" name="star" value="1" />
-	    <label class="star star-1" for="star-1"><span class="tooltip">Not Helpful</span></label>
-	</form>
+  <form id="surveyForm">
+    <p><strong>How helpful was this topic?</strong></p>
+    <input class="star star-5" id="star-5" type="radio" name="star" value="5" />
+      <label class="star star-5" for="star-5"><span class="tooltip">Very Helpful</span></label>
+      <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
+      <label class="star star-4" for="star-4"></label>
+      <input class="star star-3" id="star-3" type="radio" name="star" value="3" />
+      <label class="star star-3" for="star-3"></label>
+      <input class="star star-2" id="star-2" type="radio" name="star" value="2" />
+      <label class="star star-2" for="star-2"></label>
+      <input class="star star-1" id="star-1" type="radio" name="star" value="1" />
+      <label class="star star-1" for="star-1"><span class="tooltip">Not Helpful</span></label>
+  </form>
 
     <script>
     // q1 is url
-		// q2 is how useful
-		// q7 is the BC_EMAIL from the token
-		// q8 is the BC_ACCOUNT from the token
-		var docParams = {},
+    // q2 is how useful
+    // q7 is the BC_EMAIL from the token
+    // q8 is the BC_ACCOUNT from the token
+    var docParams = {},
       radioStars = document.getElementsByName('star');
 
       /**
@@ -63,21 +63,22 @@
     docParams.tags = '';
 
     document.getElementById('surveyForm').addEventListener('change', function() {
-			var useful = getRadioValue(radioStars),
- 			url = 'https://survey.clicktools.com/go?iv=3qpn5irdz4kie'
-			 	+ '&q1=' + document.referrer
-				+ '&q2=' + useful
-				+ '&q7=' + docParams.bc_email
-				+ '&q8=' + docParams.bc_account
-				+ '&q9=' + docParams.title
-				+ '&q10=' + docParams.product
- 				+ '&q11=' + docParams.role
- 				+ '&q12=' + docParams.tags;
+      var useful = getRadioValue(radioStars),
+       url = 'https://survey.clicktools.com/go?iv=3qpn5irdz4kie'
+         + '&q1=' + document.referrer
+        + '&q2=' + useful
+        + '&q7=' + docParams.bc_email
+        + '&q8=' + docParams.bc_account
+        + '&q9=' + docParams.title
+        + '&q10=' + docParams.product
+         + '&q11=' + docParams.role
+         + '&q12=' + docParams.tags;
+        + '&q13=' + docParams.q13;
       console.log('url', url);
-			window.open(url, '_blank');
-		});
-		window.addEventListener('message', function (evt) {
-			var feedbackParams = evt.data,
+      window.open(url, '_blank');
+    });
+    window.addEventListener('message', function (evt) {
+      var feedbackParams = evt.data,
       prop;
 
       for (prop in feedbackParams) {
