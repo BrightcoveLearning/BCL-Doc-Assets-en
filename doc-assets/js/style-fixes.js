@@ -11,7 +11,7 @@ var BCLS_style_fixes = ( function (window, document) {
     bod = document.querySelector('body');
 
   if (bod) {
-    bod.setAttribute('style'. bod.getAttribute('style') + ' margin-bottom: 30px;');
+    bod.setAttribute('style', bod.getAttribute('style') + ' margin-bottom: 30px;');
   }
 
   if (header_block) {
