@@ -7,7 +7,12 @@ var BCLS_style_fixes = ( function (window, document) {
     chevrons = document.querySelectorAll('.icon__chevron--down'),
     menu_items = document.querySelectorAll('.dropdown-menu>li.expanded'),
     menu_headers = document.querySelectorAll('#block-mainnavigation>ul>li>a'),
-    code = document.getElementsByTagName('code');
+    code = document.getElementsByTagName('code'),
+    bod = document.querySelector('body');
+
+  if (bod) {
+    bod.setAttribute('style'. bod.getAttribute('style') + ' margin-bottom: 30px;');
+  }
 
   if (header_block) {
     header_block.setAttribute('style', 'color:white;background-color:RGB(45, 59, 108);padding-top:10px;padding-botton:5px;margin-bottom:30px;');
