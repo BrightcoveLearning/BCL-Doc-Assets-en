@@ -27,8 +27,8 @@ var BCLS_feedback = ( function (window, document) {
 
   iframe.setAttribute('id', 'CSAT');
   iframe.setAttribute('src', 'https://learning-services-media.brightcove.com/doc-assets/general/surveylink.html');
-  iframe.setAttribute('style', 'border:none; position:fixed; bottom: 5px;right: 20px');
-  surveyDiv.setAttribute('style', 'text-align:right; position:relative;');
+  iframe.setAttribute('style', 'border:none; position:fixed; bottom: 0;left: 20px');
+  surveyDiv.setAttribute('style', 'text-align:left; position:relative;');
   surveyDiv.appendChild(iframe);
   contentBlock.appendChild(surveyDiv);
   iframeEl = document.getElementById('CSAT');
