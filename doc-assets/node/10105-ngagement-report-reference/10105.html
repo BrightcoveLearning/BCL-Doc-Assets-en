@@ -1,0 +1,112 @@
+<div class="training-video-player-ipx" data-experience="5a73630f7afd7a00101bc1b5" data-video-ids="2349078817001">&nbsp;</div>
+<script src="https://players.brightcove.net/20318290001/experience_5a73630f7afd7a00101bc1b5/live.js"></script>
+
+<div class="BCL-concept">
+<p>To view the Engagement report, open the Analytics module and select <span style="BCL_command">Engagement</span> from the left side navigation. The report will display a graph showing total video engagement for the time period selected. The report switcher below the chart can be used to quickly switch to another report.</p>
+
+<div><img class="bcls-image--no-border" alt="Compare previous period" src="https://img.brightcove.com/node10105-report-switcher.png" /></div>
+
+<p>The dropdown list to the right of the report switcher can be used to select a report dimension. The following dimensions are available with the Engagement Report:</p>
+
+<ul>
+	<li><a href="#video">Video</a></li>
+	<li><a href="#player">Player</a></li>
+	<li><a href="#day">Day</a></li>
+</ul>
+
+<p>The body of the page will display a list of videos sorted by engagement score. The bottom of the report has controls which let you select how many rows should be displayed and for navigating to other pages.</p>
+</div>
+
+<div class="BCL_concept">
+<h2 id="engagement">Calculating Video Engagement</h2>
+
+<p>Engagement is a measure of views, <strong>not</strong> viewers. In reporting the engagement data, we divide the video into 100 equal parts and count the views in each 100th. There is no distinction between one viewer watching a 100th part 5 times, and five viewers watching it 1 time.</p>
+
+<p>The measurements are rounded in the Analytics UI for presentation. The numbers are a result of counting views by individuals and then normalizing those counts along a percentage of a video's timeline. The export API returns the result of this count. Since these are counted values, there is no simple way to estimate the significance of the value to a specific number of digits.</p>
+
+<p>It is possible for the engagement score to be greater than 100. Scrubbing and re-watching a video doesn't trigger new video_view events, but it does track video_engagement. For example, say we have a video in a single video player on a page somewhere. The following events show how the video engagement could vary widely:</p>
+
+<ol class="bcls-tasklist">
+	<li>No watches yet. Engagement Score: 0.</li>
+	<li>A viewer loads the page and watches the video all the way through. Engagement Score: 100 (100 percent viewed / 1 view).</li>
+	<li>The same viewer scrubs back and watches it all the way through again (browser was not reloaded). Engagement Score: 200 (200 percent viewed / 1 view).</li>
+	<li>Another viewer loads the page and watches the entire video. Engagement Score: 150 (300 percent viewed / 2 views).</li>
+</ol>
+
+<p>For more details on how we calculate video engagement, watch the training video <a href="/node/11573">Calculating Video Engagement</a>.</p>
+</div>
+
+<div class="BCL_concept">
+<h2 id="details" class="BCL_conceptTitle">Engagement Report Details</h2>
+
+<p>The first column that appears in the body of the report will vary based upon the report dimension that is selected (video name, player name, or day). All reports will display the following data:</p>
+
+<ul>
+	<li><strong>Engagement Score</strong> - a calculation based on the views recorded for each 100th of the video</li>
+	<li><strong>Views at 1%</strong> - how many views were recorded at the 1% point of the video</li>
+	<li><strong>Views at 25%</strong> - how many views were recorded at the 25% point of the video</li>
+	<li><strong>Views at 50%</strong> - how many views were recorded at the 50% point of the video</li>
+	<li><strong>Views at 75%</strong> - how many views were recorded at the 75% point of the video</li>
+	<li><strong>Views at 100%</strong> - how many views were recorded at the 100% point of the video</li>
+</ul>
+
+<p>In all cases, views at x% means that this segment of the video was played back in the player.</p>
+
+<p>Note that the <strong>Views at x%</strong> is not the same as a <strong>Video View</strong> in the Performance Report. A video view is counted when a video first starts playing back. The views at 1% is recorded when the first percent is watched. The difference here is that if the first percent is watched multiple times (if the video is set to auto-replay, for instance), the count increases, whereas a video view is counted when the video first starts playing back but is not counted on a replay (unless the user reloads the page or watches another video in the playlist, etc).</p>
+
+<p class="BCL-aside">Note: For a complete list of all analytics terms and definitions, see the <a href="/node/14203">Analytics Glossary</a>.</p>
+
+<p class="BCL-aside">Note: Simultaneous report requests within the same account will execute in series. If the reports have large date ranges and many fields are selected, there may be a delay before all the results are returned. A good alternative is to schedule large reports.</p>
+</div>
+
+<div class="BCL_concept">
+<h2 id="export">Exporting Report Data</h2>
+
+<p>Report data can be downloaded as both comma separated values and Excel formats. Note that the export feature saves the data directly from an Analytics API call. The exported data is not manipulated the way the UI data is, and currently contains all of the underlying data in the report, not just the subset of fields the UI shows. Some of the differences between what is shown in the UI vs. the exported data:</p>
+
+<ul>
+	<li>Different units (minutes vs seconds)</li>
+	<li>Rounding of numbers</li>
+	<li>The data export contains both the performance and engagement metrics regardless of where you are in the UI</li>
+</ul>
+
+<p>Having all of the data in the original format from the API allows you to manipulation the data in ways other than what is provided in the UI.</p>
+
+<div><img class="bcls-image--no-border" alt="export" src="https://img.brightcove.com/node10105-export.png" /></div>
+
+<p>Note that the reports support print-friendly style sheets so printing a report or saving to PDF will generate a printer-friendly page.</p>
+</div>
+
+<div class="BCL_concept">
+<h2 id="video" class="BCL_conceptTitle">Viewing Video Dimension Analytics</h2>
+
+<p>When the <strong>Video</strong> dimension is selected, a graph will display the overall video engagement for the time period selected. The body of the report lists the video name, video ID, duration and the engagement details for each video.</p>
+
+<div><img class="bcls-image--no-border" alt="Account Engagement  Report" src="https://img.brightcove.com/node10105-engagement-report.png" /></div>
+
+<p>Clicking the link for any of the videos will display the video engagement for that video.</p>
+
+<div><img class="bcls-image--no-border" alt="Video Engagement  Report" src="https://img.brightcove.com/node10105-video-engagement.png" /></div>
+
+<p>The preview player is synchronized with the engagement graph and provides to ability to see in the video where any engagement spikes or drop-offs occur. By clicking on any point in the engagement graph, the player will play the corresponding point in the video.</p>
+
+<div><img class="bcls-image--no-border" alt="Video Engagement in Player" src="https://img.brightcove.com/node10105-engagement-in-player.png" /></div>
+</div>
+
+<div class="BCL_concept">
+<h2 id="player" class="BCL_conceptTitle">Viewing Player Dimension Analytics</h2>
+
+<p>When the <strong>Player</strong> dimension is selected, a graph will display the overall video engagement for the time period selected. The body of the report lists the engagement details for each player.</p>
+
+<div><img class="bcls-image--no-border" alt="Engagement by Player" src="https://img.brightcove.com/node10105-player-engagement.png" /></div>
+
+<p>Clicking the link for any of the players will display the video engagement for that player.</p>
+</div>
+
+<div class="BCL_concept">
+<h2 id="day" class="BCL_conceptTitle">Viewing Day Dimension Analytics</h2>
+
+<p>When the <strong>Day</strong> dimension is selected, a graph will display the video engagement for the time period selected. The body of the report lists the engagement details for each day. In the body of the report, you can use the drop down list to view the video engagement by Video or Player.</p>
+
+<div><img class="bcls-image--no-border" alt="Engagement by Day" src="https://img.brightcove.com/node10105-day-engagement.png" /></div>
+</div>
