@@ -36,7 +36,6 @@ var BCLS_feedback = ( function (window, document) {
 
   for (i = 0; i < cookiesArray.length; i++) {
     tmpArray = cookiesArray[i].split("=");
-    console.log('tmpArray[0]', tmpArray[0]);
     if (tmpArray[0].indexOf('BC_EMAIL') > -1) {
       feedbackParams.bc_email = tmpArray[1];
     } else if (tmpArray[0].indexOf('BC_ACCOUNT') > -1) {
@@ -63,7 +62,7 @@ if (thirdRowItems) {
 }
 
   iframeEl.addEventListener('load', function() {
-    console.log('feedbackParams', feedbackParams);
+    // console.log('feedbackParams', feedbackParams);
     // send message to surveyForm window
     surveyWin.postMessage(feedbackParams, 'https://learning-services-media.brightcove.com');
   });
