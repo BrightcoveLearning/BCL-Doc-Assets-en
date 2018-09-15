@@ -588,13 +588,7 @@
 </section>
 
 <script>
-  var BCLS_player_samples = (function(window, document) {
-    var samples_wrapper = document.getElementById('samples_wrapper'),
-      buttons_wrapper = document.getElementById('buttons_wrapper'),
-      samples = samples_wrapper.querySelectorAll('section.samples-section'),
-      sample_groups = {},
-      buttons,
-      group_names = [
+  var group_names = [
         'popular',
         'all',
         'advertising',
@@ -604,6 +598,16 @@
         'player_styling',
         'playlists_and_groups'
       ];
+
+</script>
+
+<script>
+  var BCLS_player_samples = (function(window, document, group_names) {
+    var samples_wrapper = document.getElementById('samples_wrapper'),
+      buttons_wrapper = document.getElementById('buttons_wrapper'),
+      samples = samples_wrapper.querySelectorAll('section.samples-section'),
+      sample_groups = {},
+      buttons;
 
     /**
      * converts string to title case (all words)
@@ -718,13 +722,15 @@
     }
 
     function init() {
-      var param = get_url_param('group');
-      inject_buttons();
-      create_sample_groups();
-      if (param === null) {
-        set_group('popular');
-      } else {
-        set_group(param);
+      if (group_names) {
+        var param = get_url_param('group');
+        inject_buttons();
+        create_sample_groups();
+        if (param === null) {
+          set_group('popular');
+        } else {
+          set_group(param);
+        }
       }
     }
 
