@@ -29,7 +29,7 @@ var BCLS = ( function (window, document) {
 
     // set credentials
     // assumes input fields with ids: account_id, client_id, and client_secret
-    if (document.getElementById('client_id').value.length > 0 && document.getElementById('client_secret').value.length > 0)
+    if (client_id_input.value.length > 0 && document.getElementById('client_secret').value.length > 0)
     options.client_id     = document.getElementById('client_id').value;
     options.client_secret = document.getElementById('client_secret').value;
     options.proxyURL      = proxyURL;
