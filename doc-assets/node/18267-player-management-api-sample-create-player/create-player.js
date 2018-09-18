@@ -67,11 +67,17 @@ var BCLS = ( function (window, document) {
           options.requestType = 'POST';
           requestBody.name = player_name_input.value;
           requestBody.configuration = {};
-          requestBody.configuration.media = {};
-          requestBody.configuration.media.sources = [];
-          requestBody.configuration.media.sources[0] = {};
-          requestBody.configuration.media.sources[0].src = media_url_input.value;
-          requestBody.configuration.media.sources[0].type = getSelectedValue(media_type_input);
+          if (media_url_input.value.indexOf('//') > -1) {
+            requestBody.configuration.media = {};
+            requestBody.configuration.media.sources = [];
+            requestBody.configuration.media.sources[0] = {};
+            requestBody.configuration.media.sources[0].src = media_url_input.value;
+            requestBody.configuration.media.sources[0].type = getSelectedValue(media_type_input);
+          } else {
+            // assume video id
+            requestBody.configuration.video_cloud = {};
+            requestBody.configuration.video_cloud.video = media_url_input.value;
+          }
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
