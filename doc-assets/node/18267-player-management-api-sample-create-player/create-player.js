@@ -12,7 +12,8 @@ var BCLS = ( function (window, document) {
     media_url_input = document.getElementById('media_url_input'),
     media_type_input = document.getElementById('media_type_input'),
     create_response = document.getElementById('create_response'),
-    publish_response = document.getElementById('publish_response'), player_embedded = document.getElementById('player_embedded');
+    publish_response = document.getElementById('publish_response'),
+    player_embedded = document.getElementById('player_embedded');
 
   /**
    * get selected value for single select element
@@ -65,7 +66,6 @@ var BCLS = ( function (window, document) {
               responseDecoded = JSON.parse(response);
               player_id = responseDecoded.id;
               create_response.textContent = JSON.stringify(responseDecoded, null, 2);
-              // do what you want here
           });
           break;
         case 'publishPlayer':
@@ -77,7 +77,9 @@ var BCLS = ( function (window, document) {
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
-              // do more stuff
+              publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
+              // inject the player
+              player_embedded.insertAdjacentHTML('afterbegin', responseDecoded.embed_code)
           });
           break;
 
