@@ -6,12 +6,30 @@ var BCLS = ( function (window, document) {
     player_name = '',
     media_url = '',
     media_type = '',
+    player_id,
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secrect_input - document.getElementById('client_secrect_input'),
     player_name_input = document.getElementById('player_name_input'),
     create_response = document.getElementById('create_response'),
     publish_response = document.getElementById('publish_response'), player_embedded = document.getElementById('player_embedded');
+
+  /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value,
+          txt = selected.textContent,
+          idx = e.selectedIndex;
+      return {
+          value: val,
+          text: txt,
+          index: idx
+      };
+  }
 
   /**
    * createRequest sets up requests, send them to makeRequest(), and handles responses
