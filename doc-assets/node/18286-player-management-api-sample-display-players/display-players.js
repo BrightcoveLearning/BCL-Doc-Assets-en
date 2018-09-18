@@ -8,17 +8,17 @@ var BCLS = ( function (window, document) {
     html_output = document.getElementById('html_output'),
     player_embedded = document.getElementById('player_embedded'),
     get_players = document.getElementById('get_players'),
-    show_player_details = document.getElementById('show_player_details');
-
+    show_more_players = document.getElementById('show_more_players'),
+    playerCount = 0,
+    nextPlayerStart = 0;
     // event handlers
     get_players.addEventListener('click', function() {
       createRequest('getPlayers');
     });
 
-    show_player_details.addEventListener('click', function() {
+    show_more_players.addEventListener('click', function() {
       // inject the player - clear the div first to allow repeated clicks
-      player_embedded.innerHTML = '';
-      player_embedded.insertAdjacentHTML('afterbegin', player_code);
+      showNextPlayerList();
     });
 
   /**
