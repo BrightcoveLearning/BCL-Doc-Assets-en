@@ -15,6 +15,8 @@ var BCLS = ( function (window, document) {
     publish_response = document.getElementById('publish_response'),
     player_embedded = document.getElementById('player_embedded');
 
+    player_name_input.value = 'Test Player ' + new Date().toIsoString();
+
   /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
@@ -55,7 +57,7 @@ var BCLS = ( function (window, document) {
           endpoint            = '/' + options.account_id + '/players';
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
-          requestBody.name = 'Test Player ' + new Date().toIsoString();
+          requestBody.name = player_name_input.value;
           requestBody.media = {};
           requestBody.media.sources = [];
           requestBody.media.sources[0] = {};
