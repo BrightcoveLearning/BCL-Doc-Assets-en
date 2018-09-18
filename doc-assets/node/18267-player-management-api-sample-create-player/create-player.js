@@ -91,11 +91,10 @@ var BCLS = ( function (window, document) {
         case 'publishPlayer':
           endpoint            = '/' + options.account_id + '/players/' + player_id + '';
           options.url         = baseURL + endpoint;
-          options.requestType = 'POST';;
-          requestBody.name    = 'My New Video';
-          // add more properties
+          options.requestType = 'POST';
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
+            console.log(response);
               responseDecoded = JSON.parse(response);
               publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
               // inject the player
