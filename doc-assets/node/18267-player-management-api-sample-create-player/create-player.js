@@ -66,11 +66,12 @@ var BCLS = ( function (window, document) {
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
           requestBody.name = player_name_input.value;
-          requestBody.media = {};
-          requestBody.media.sources = [];
-          requestBody.media.sources[0] = {};
-          requestBody.media.sources[0].src = media_url_input.value;
-          requestBody.media.sources[0].type = getSelectedValue(media_type_input);
+          requestBody.configuration = {};
+          requestBody.configuration.media = {};
+          requestBody.configuration.media.sources = [];
+          requestBody.configuration.media.sources[0] = {};
+          requestBody.configuration.media.sources[0].src = media_url_input.value;
+          requestBody.configuration.media.sources[0].type = getSelectedValue(media_type_input);
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
