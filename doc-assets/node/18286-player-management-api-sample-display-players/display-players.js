@@ -8,19 +8,14 @@ var BCLS = ( function (window, document) {
     html_output = document.getElementById('html_output'),
     player_embedded = document.getElementById('player_embedded'),
     get_players = document.getElementById('get_players'),
-    show_players = document.getElementById('show_players'),
-    player_code,
-    now = new Date();
-
-    // initial value for player name (make unique)
-    player_name_input.value = 'Test Player ' + now.toISOString();
+    show_player_details = document.getElementById('show_player_details');
 
     // event handlers
-    create_player.addEventListener('click', function() {
-      createRequest('createPlayer');
+    get_players.addEventListener('click', function() {
+      createRequest('getPlayers');
     });
 
-    preview_player.addEventListener('click', function() {
+    show_player_details.addEventListener('click', function() {
       // inject the player - clear the div first to allow repeated clicks
       player_embedded.innerHTML = '';
       player_embedded.insertAdjacentHTML('afterbegin', player_code);
