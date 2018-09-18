@@ -13,10 +13,11 @@ var BCLS = ( function (window, document) {
     media_type_input = document.getElementById('media_type_input'),
     create_response = document.getElementById('create_response'),
     publish_response = document.getElementById('publish_response'),
-    player_embedded = document.getElementById('player_embedded');
+    player_embedded = document.getElementById('player_embedded'),
+    now = new Date();
 
-    player_name_input.value = 'Test Player ' + new Date().toIsoString();
-
+    player_name_input.value = 'Test Player ' + now.toIsoString();
+console.log(player_name_input.value);
   /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
