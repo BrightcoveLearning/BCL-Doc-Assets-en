@@ -39,7 +39,14 @@ var BCLS = ( function (window, document) {
   }
 
   function showNextPlayerList() {
-
+    var radio,
+      label,
+      br;
+    // clear player list div
+    player_list.innerHTML = '';
+    for (i = nextPlayerStart; i < 3; i++) {
+      
+    }
   }
 
 
