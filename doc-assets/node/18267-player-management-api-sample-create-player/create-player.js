@@ -92,7 +92,6 @@ var BCLS = ( function (window, document) {
           endpoint            = '/' + options.account_id + '/players/' + player_id + '';
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
-          options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
             console.log(response);
               responseDecoded = JSON.parse(response);
