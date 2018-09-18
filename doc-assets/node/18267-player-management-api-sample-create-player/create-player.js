@@ -16,7 +16,7 @@ var BCLS = ( function (window, document) {
     player_embedded = document.getElementById('player_embedded'),
     now = new Date();
 
-    player_name_input.value = 'Test Player ' + now.toIsoString();
+    player_name_input.value = 'Test Player ' + now.toISOString();
 console.log(player_name_input.value);
   /**
    * get selected value for single select element
