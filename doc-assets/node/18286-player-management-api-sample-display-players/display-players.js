@@ -9,7 +9,9 @@ var BCLS = ( function (window, document) {
     player_embedded = document.getElementById('player_embedded'),
     get_players = document.getElementById('get_players'),
     show_more_players = document.getElementById('show_more_players'),
-    radioGroup = document.getElementsByName('playerList');
+    radioGroup = document.getElementsByName('playerList'),
+    player_list = document.getElementById('player_list'),
+    player_details = document.getElementById('player_details'),
     playerCount = 0,
     nextPlayerStart = 0;
     // event handlers
@@ -35,6 +37,12 @@ var BCLS = ( function (window, document) {
         }
     }
   }
+
+  function showNextPlayerList() {
+
+  }
+
+
   /**
    * createRequest sets up requests, send them to makeRequest(), and handles responses
    * @param  {string} type the request type
