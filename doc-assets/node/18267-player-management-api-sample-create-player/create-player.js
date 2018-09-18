@@ -15,6 +15,7 @@ var BCLS = ( function (window, document) {
     publish_response = document.getElementById('publish_response'),
     player_embedded = document.getElementById('player_embedded'),
     create_player = document.getElementById('create_player'),
+    preview_player = document.getElementById('preview_player'),
     now = new Date();
 
     // initial value for player name (make unique)
@@ -23,7 +24,12 @@ var BCLS = ( function (window, document) {
     // event handlers
     create_player.addEventListener('click', function() {
       createRequest('createPlayer');
-    })
+    });
+
+    preview_player.addEventListener('click', function() {
+      // inject the player
+      player_embedded.insertAdjacentHTML('afterbegin', responseDecoded.embed_code)
+    });
 
   /**
    * get selected value for single select element
@@ -96,8 +102,6 @@ var BCLS = ( function (window, document) {
             console.log(response);
               responseDecoded = JSON.parse(response);
               publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
-              // inject the player
-              player_embedded.insertAdjacentHTML('afterbegin', responseDecoded.embed_code)
           });
           break;
 
