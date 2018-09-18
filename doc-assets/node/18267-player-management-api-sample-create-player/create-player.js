@@ -89,7 +89,7 @@ var BCLS = ( function (window, document) {
           });
           break;
         case 'publishPlayer':
-          endpoint            = '/' + options.account_id + '/players/' + player_id + '';
+          endpoint            = '/' + options.account_id + '/players/' + player_id + '/publish';
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
           makeRequest(options, function(response) {
