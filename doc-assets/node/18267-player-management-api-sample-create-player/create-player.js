@@ -1,11 +1,11 @@
 var BCLS = ( function (window, document) {
-  var account_id = "",
-    account_password = "",
-    account_username = "",
-    player_name = "",
-    media_url = "",
-    media_type = "",
-    callPurpose = "",
+  // account id calue is the default
+  var account_id = '57838016001',
+    account_password = '',
+    account_username = '',
+    player_name = '',
+    media_url = '',
+    media_type = '',
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secrect_input - document.getElementById('client_secrect_input'),
