@@ -13,7 +13,8 @@ var BCLS = ( function (window, document) {
     player_list = document.getElementById('player_list'),
     player_details = document.getElementById('player_details'),
     playerCount = 0,
-    nextPlayerStart = 0;
+    nextPlayerStart = 0,
+    players;
     // event handlers
     get_players.addEventListener('click', function() {
       createRequest('getPlayers');
@@ -41,11 +42,17 @@ var BCLS = ( function (window, document) {
   function showNextPlayerList() {
     var radio,
       label,
-      br;
+      br,
+      frag = document.createDocumentFragment();
     // clear player list div
     player_list.innerHTML = '';
     for (i = nextPlayerStart; i < 3; i++) {
-      
+      radio = document.createElement('input');
+      radio.setAttribute('type', 'radio');
+      radio.setAttribute('name', 'playerList');
+      radio.setAttribute('value', players[i].id);
+      radio.setAttribute('id', players[i].id);
+      label = document.createElement('label')
     }
   }
 
