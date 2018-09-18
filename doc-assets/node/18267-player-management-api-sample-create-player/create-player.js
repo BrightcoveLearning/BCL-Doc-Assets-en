@@ -4,13 +4,13 @@ var BCLS = ( function (window, document) {
     account_password = '',
     account_username = '',
     player_name = '',
-    media_url = '',
-    media_type = '',
     player_id,
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secrect_input - document.getElementById('client_secrect_input'),
     player_name_input = document.getElementById('player_name_input'),
+    media_url_input = document.getElementById('media_url_input'),
+    media_type_input = document.getElementById('media_type_input'),
     create_response = document.getElementById('create_response'),
     publish_response = document.getElementById('publish_response'), player_embedded = document.getElementById('player_embedded');
 
@@ -61,6 +61,10 @@ var BCLS = ( function (window, document) {
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
           requestBody.name = 'Test Player ' + new Date().toIsoString();
+          requestBody.media = {};
+          requestBody.media.sources = [];
+          requestBody.media.sources[0] = {};
+          requestBody.media.sources[0].src =
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
