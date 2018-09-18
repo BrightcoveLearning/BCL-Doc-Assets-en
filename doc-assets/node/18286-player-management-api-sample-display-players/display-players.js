@@ -52,8 +52,16 @@ var BCLS = ( function (window, document) {
       radio.setAttribute('name', 'playerList');
       radio.setAttribute('value', players[i].id);
       radio.setAttribute('id', players[i].id);
-      label = document.createElement('label')
+      label = document.createElement('label');
+      label.setAttribute('for', players[i].id);
+      label.textContent = ' ' + players[i].name;
+      br = document.createElement('br');
+      frag.appendChild(radio);
+      frag.appendChild(label);
+      frag.appendChild(br);
     }
+    player_list.appendChild(frag);
+    nextPlayerStart = nextPlayerStart + 3;
   }
 
 
