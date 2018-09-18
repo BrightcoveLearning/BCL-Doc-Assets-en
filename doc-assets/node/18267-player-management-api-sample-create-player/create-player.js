@@ -14,10 +14,17 @@ var BCLS = ( function (window, document) {
     create_response = document.getElementById('create_response'),
     publish_response = document.getElementById('publish_response'),
     player_embedded = document.getElementById('player_embedded'),
+    create_player = document.getElementById('create_player'),
     now = new Date();
 
+    // initial value for player name (make unique)
     player_name_input.value = 'Test Player ' + now.toISOString();
-console.log(player_name_input.value);
+
+    // event handlers
+    create_player.addEventListener('click', function() {
+      createRequest('createPlayer');
+    })
+
   /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
