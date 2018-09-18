@@ -28,7 +28,7 @@ var BCLS = ( function (window, document) {
     });
 
     preview_player.addEventListener('click', function() {
-      // inject the player
+      // inject the player - clear the div first to allow repeated clicks
       player_embedded.innerHTML = '';
       player_embedded.insertAdjacentHTML('afterbegin', player_code);
     });
@@ -51,15 +51,11 @@ var BCLS = ( function (window, document) {
   function createRequest(type) {
     var options   = {},
       requestBody = {},
-      // next line for BrightcoveLearning proxy (use if you are making write requests)
-      // for read requests only, use https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php
       proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
       baseURL = 'https://players.api.brightcove.com/v1/accounts/',
       endpoint,
       responseDecoded;
 
-    // set credentials
-    // assumes input fields with ids: account_id, client_id, and client_secret
     if (client_id_input.value.length > 0 && client_secrect_input.value.length > 0) {
       options.client_id     = client_id_input.value;
       options.client_secret = client_secrect_input.value;
@@ -101,10 +97,9 @@ var BCLS = ( function (window, document) {
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
           makeRequest(options, function(response) {
-            console.log(response);
-              responseDecoded = JSON.parse(response);
-              player_code = responseDecoded.embed_code;
-              publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
+            responseDecoded = JSON.parse(response);
+            player_code = responseDecoded.embed_code;
+            publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
           });
           break;
 
