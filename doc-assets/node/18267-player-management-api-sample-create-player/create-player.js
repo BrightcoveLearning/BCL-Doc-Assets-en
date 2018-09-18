@@ -29,6 +29,7 @@ var BCLS = ( function (window, document) {
 
     preview_player.addEventListener('click', function() {
       // inject the player
+      player_embedded.innerHTML = '';
       player_embedded.insertAdjacentHTML('afterbegin', player_code);
     });
 
