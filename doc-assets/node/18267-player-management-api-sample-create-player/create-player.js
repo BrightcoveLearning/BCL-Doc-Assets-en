@@ -7,7 +7,7 @@ var BCLS = ( function (window, document) {
     player_id,
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
-    client_secrect_input - document.getElementById('client_secrect_input'),
+    client_secrect_input = document.getElementById('client_secrect_input'),
     player_name_input = document.getElementById('player_name_input'),
     media_url_input = document.getElementById('media_url_input'),
     media_type_input = document.getElementById('media_type_input'),
