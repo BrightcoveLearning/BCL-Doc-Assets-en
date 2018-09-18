@@ -39,7 +39,7 @@ var BCLS = ( function (window, document) {
         case 'createPlayer':
           endpoint            = '/' + options.account_id + '/counts/videos';
           options.url         = baseURL + endpoint;
-          options.requestType = 'GET';
+          options.requestType = 'POST';
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
               // do what you want here
