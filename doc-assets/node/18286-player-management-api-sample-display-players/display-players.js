@@ -64,6 +64,18 @@ var BCLS = ( function (window, document) {
     }
     player_list.appendChild(frag);
     nextPlayerStart = nextPlayerStart + 3;
+    iMax = radioGroup.length;
+    for (i = 0; i < iMax; i++) {
+      radioGroup[1].addEventListener('change', function() {
+        var player = getRadioValue(radioGroup);
+        showPlayerDetails(player);
+      });
+    }
+  }
+
+  function showPlayerDetails(player) {
+    var frag = document.createDocumentFragment(),
+    
   }
 
 
