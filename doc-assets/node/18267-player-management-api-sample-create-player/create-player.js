@@ -37,9 +37,10 @@ var BCLS = ( function (window, document) {
 
     switch (type) {
         case 'createPlayer':
-          endpoint            = '/' + options.account_id + '/counts/videos';
+          endpoint            = '/' + options.account_id + '/players';
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
+          requestBody.name = 'Test Player ' + new Date().toIsoString();
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
               // do what you want here
