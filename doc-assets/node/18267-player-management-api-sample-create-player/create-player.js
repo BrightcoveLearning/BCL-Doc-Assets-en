@@ -45,7 +45,7 @@ var BCLS = ( function (window, document) {
       requestBody = {},
       // next line for BrightcoveLearning proxy (use if you are making write requests)
       // for read requests only, use https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php'
+      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
       baseURL = 'https://players.api.brightcove.com/v1/accounts/',
       endpoint,
       responseDecoded;
