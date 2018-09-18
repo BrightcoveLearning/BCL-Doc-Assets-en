@@ -64,12 +64,13 @@ var BCLS = ( function (window, document) {
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
+              player_id = responseDecoded.id;
               create_response.textContent = JSON.stringify(responseDecoded, null, 2);
               // do what you want here
           });
           break;
         case 'publishPlayer':
-          endpoint            = '/' + options.account_id + '/counts/videos';
+          endpoint            = '/' + options.account_id + '/players/' + player_id + '';
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';;
           requestBody.name    = 'My New Video';
