@@ -9,6 +9,7 @@ var BCLS = ( function (window, document) {
     player_embedded = document.getElementById('player_embedded'),
     get_players = document.getElementById('get_players'),
     show_more_players = document.getElementById('show_more_players'),
+    radioGroup = document.getElementsByName('playerList');
     playerCount = 0,
     nextPlayerStart = 0;
     // event handlers
