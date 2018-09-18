@@ -16,6 +16,7 @@ var BCLS = ( function (window, document) {
     player_embedded = document.getElementById('player_embedded'),
     create_player = document.getElementById('create_player'),
     preview_player = document.getElementById('preview_player'),
+    player_code,
     now = new Date();
 
     // initial value for player name (make unique)
@@ -28,7 +29,7 @@ var BCLS = ( function (window, document) {
 
     preview_player.addEventListener('click', function() {
       // inject the player
-      player_embedded.insertAdjacentHTML('afterbegin', responseDecoded.embed_code)
+      player_embedded.insertAdjacentHTML('afterbegin', player_code);
     });
 
   /**
@@ -101,6 +102,7 @@ var BCLS = ( function (window, document) {
           makeRequest(options, function(response) {
             console.log(response);
               responseDecoded = JSON.parse(response);
+              player_code = responseDecoded.embed_code;
               publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
           });
           break;
