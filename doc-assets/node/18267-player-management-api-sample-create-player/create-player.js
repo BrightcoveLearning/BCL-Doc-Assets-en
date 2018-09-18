@@ -33,7 +33,7 @@ var BCLS = ( function (window, document) {
       options.client_id     = client_id_input.value;
       options.client_secret = client_secrect_input.value;
     }
-    options.proxyURL      = proxyURL;
+    options.proxyURL = proxyURL;
 
     switch (type) {
         case 'createPlayer':
