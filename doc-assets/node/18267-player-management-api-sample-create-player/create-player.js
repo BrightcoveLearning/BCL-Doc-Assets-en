@@ -17,18 +17,12 @@ var BCLS = ( function (window, document) {
   /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
-   * @return {Object} object containing the `value`, text, and selected `index`
+   * @return {String} the selected value
    */
   function getSelectedValue(e) {
       var selected = e.options[e.selectedIndex],
           val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
+      return val;
   }
 
   /**
@@ -64,7 +58,8 @@ var BCLS = ( function (window, document) {
           requestBody.media = {};
           requestBody.media.sources = [];
           requestBody.media.sources[0] = {};
-          requestBody.media.sources[0].src =
+          requestBody.media.sources[0].src = media_url_input.value;
+          requestBody.media.sources[0].type = getSelectedValue(media_type_input);
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
