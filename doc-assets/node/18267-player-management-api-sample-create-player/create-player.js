@@ -83,6 +83,9 @@ var BCLS = ( function (window, document) {
               responseDecoded = JSON.parse(response);
               player_id = responseDecoded.id;
               create_response.textContent = JSON.stringify(responseDecoded, null, 2);
+              if (player_id) {
+                createRequest('publishPlayer');
+              }
           });
           break;
         case 'publishPlayer':
