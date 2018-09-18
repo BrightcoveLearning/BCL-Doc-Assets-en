@@ -43,7 +43,9 @@ var BCLS = ( function (window, document) {
     var radio,
       label,
       br,
-      frag = document.createDocumentFragment();
+      frag = document.createDocumentFragment(),
+      i,
+      iMax;
     // clear player list div
     player_list.innerHTML = '';
     for (i = nextPlayerStart; i < 3; i++) {
