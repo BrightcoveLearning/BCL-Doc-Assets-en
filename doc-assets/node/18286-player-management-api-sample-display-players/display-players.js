@@ -22,16 +22,18 @@ var BCLS = ( function (window, document) {
     });
 
   /**
-   * get selected value for single select element
-   * @param {htmlElement} e the select element
-   * @return {String} the selected value
+   * get value of a selected radio buttom
+   * @param {htmlElementCollection} rgroup the collection of radio buttom elements
    */
-  function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value;
-      return val;
+  function getRadioValue(rgroup) {
+    var i = 0,
+    iMax = rgroup.length;
+    for (i; i < iMax; i++) {
+        if (rgroup[i].checked) {
+            return rgroup[i].value;
+        }
+    }
   }
-
   /**
    * createRequest sets up requests, send them to makeRequest(), and handles responses
    * @param  {string} type the request type
