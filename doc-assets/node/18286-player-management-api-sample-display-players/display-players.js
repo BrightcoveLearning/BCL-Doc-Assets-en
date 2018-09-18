@@ -1,21 +1,14 @@
 var BCLS = ( function (window, document) {
   // account id calue is the default
-  var account_id = '57838016001',
-    account_password = '',
-    account_username = '',
-    player_name = '',
-    player_id,
+  var account_id = '1752604059001',
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secrect_input = document.getElementById('client_secrect_input'),
-    player_name_input = document.getElementById('player_name_input'),
-    media_url_input = document.getElementById('media_url_input'),
-    media_type_input = document.getElementById('media_type_input'),
-    create_response = document.getElementById('create_response'),
-    publish_response = document.getElementById('publish_response'),
+    api_response = document.getElementById('api_response'),
+    html_output = document.getElementById('html_output'),
     player_embedded = document.getElementById('player_embedded'),
-    create_player = document.getElementById('create_player'),
-    preview_player = document.getElementById('preview_player'),
+    get_players = document.getElementById('get_players'),
+    show_players = document.getElementById('show_players'),
     player_code,
     now = new Date();
 
