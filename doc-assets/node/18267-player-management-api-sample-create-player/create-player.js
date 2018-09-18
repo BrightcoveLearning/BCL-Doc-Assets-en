@@ -41,8 +41,10 @@ var BCLS = ( function (window, document) {
           options.url         = baseURL + endpoint;
           options.requestType = 'POST';
           requestBody.name = 'Test Player ' + new Date().toIsoString();
+          options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
+              create_response.textContent = JSON.stringify(responseDecoded, null, 2);
               // do what you want here
           });
           break;
