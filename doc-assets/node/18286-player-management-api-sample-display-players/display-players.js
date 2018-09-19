@@ -78,10 +78,10 @@ var BCLS = ( function (window, document) {
       if ((playerCount - nextPlayerStart) < 3) {
         iMax = playerCount - nextPlayerStart;
       } else {
-        iMax = 3;
+        iMax = nextPlayerStart + 3;
       }
     } else {
-      iMax = 3;
+      iMax = nextPlayerStart + 3;
     }
     for (i = nextPlayerStart; i < iMax; i++) {
       radio = document.createElement('input');
