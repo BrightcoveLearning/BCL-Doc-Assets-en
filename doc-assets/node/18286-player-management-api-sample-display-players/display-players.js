@@ -116,7 +116,7 @@ var BCLS = ( function (window, document) {
   function createRequest(type) {
     var options   = {},
       requestBody = {},
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
       baseURL = 'https://players.api.brightcove.com/v1/accounts/',
       endpoint,
       responseDecoded;
