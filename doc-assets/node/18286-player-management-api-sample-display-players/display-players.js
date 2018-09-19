@@ -88,6 +88,7 @@ var BCLS = ( function (window, document) {
     }
     player_list.appendChild(frag);
     nextPlayerStart = nextPlayerStart + 3;
+    console.log(radioGroup);
     iMax = radioGroup.length;
     for (i = 0; i < iMax; i++) {
       radioGroup[1].addEventListener('change', function() {
