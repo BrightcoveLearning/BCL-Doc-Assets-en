@@ -1,5 +1,5 @@
 var BCLS = ( function (window, document) {
-  // account id calue is the default
+  // account id value is the default Brightcove Learning account
   var account_id = '1752604059001',
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
@@ -108,8 +108,6 @@ var BCLS = ( function (window, document) {
     for (i = 0; i < iMax; i++) {
       radioGroup[i].addEventListener('change', function() {
         var playerId = getRadioValue(radioGroup);
-        console.log('this', this);
-        console.log('playerId', playerId);
         showPlayerDetails(playerId);
       });
     }
@@ -121,14 +119,17 @@ var BCLS = ( function (window, document) {
    */
   function showPlayerDetails(playerId) {
     var frag = document.createDocumentFragment(),
+      // find the player object in the array
       index = findObjectInArray(players, 'id', playerId),
       player = players[index],
       p = document.createElement('p'),
       iFrame = document.createElement('iframe');
     p.textContent = 'Name: ' + player.name;
+    // in case the player URL is http, change to https so browser security won't block the request
     iFrame.setAttribute('src', player.url.replace('http:', 'https:'));
     frag.appendChild(p);
     frag.appendChild(iFrame);
+    // clear the current player details before adding new ones
     player_details.innerHTML = '';
     player_details.appendChild(frag);
   }
