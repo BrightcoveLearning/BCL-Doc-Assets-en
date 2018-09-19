@@ -114,6 +114,7 @@ var BCLS = ( function (window, document) {
     iFrame.setAttribute('src', player.url);
     frag.appendChild(p);
     frag.appendChild(iFrame);
+    player_details.innerHTML = '';
     player_details.appendChild(frag);
   }
 
