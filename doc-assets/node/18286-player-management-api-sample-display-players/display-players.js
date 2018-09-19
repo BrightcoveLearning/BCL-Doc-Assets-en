@@ -157,21 +157,10 @@ var BCLS = ( function (window, document) {
           options.requestBody = JSON.stringify(requestBody);
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
-              player_id = responseDecoded.id;
+              players = responseDecoded.items;
+              playerCount = responseDecoded.item_count;
               create_response.textContent = JSON.stringify(responseDecoded, null, 2);
-              if (player_id) {
-                createRequest('publishPlayer');
-              }
-          });
-          break;
-        case 'publishPlayer':
-          endpoint            = '/' + options.account_id + '/players/' + player_id + '/publish';
-          options.url         = baseURL + endpoint;
-          options.requestType = 'POST';
-          makeRequest(options, function(response) {
-            responseDecoded = JSON.parse(response);
-            player_code = responseDecoded.embed_code;
-            publish_response.textContent = JSON.stringify(responseDecoded, null, 2);
+              showNextPlayerList();
           });
           break;
 
