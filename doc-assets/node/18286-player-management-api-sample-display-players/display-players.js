@@ -72,7 +72,16 @@ var BCLS = ( function (window, document) {
       iMax;
     // clear player list div
     player_list.innerHTML = '';
-    for (i = nextPlayerStart; i < 3; i++) {
+    if (playerCount > 0) {
+      if ((playerCount - nextPlayerStart) < 3) {
+        iMax = playerCount - nextPlayerStart;
+      } else {
+        iMax = 3;
+      }
+    } else {
+      iMax = 3;
+    }
+    for (i = nextPlayerStart; i < iMax; i++) {
       radio = document.createElement('input');
       radio.setAttribute('type', 'radio');
       radio.setAttribute('name', 'playerList');
