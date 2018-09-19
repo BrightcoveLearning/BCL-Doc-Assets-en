@@ -20,7 +20,7 @@ var BCLS = ( function (window, document) {
     });
 
     show_more_players.addEventListener('click', function() {
-      // inject the player - clear the div first to allow repeated clicks
+      // show players in groups of 3 (the number can be whatever you like)
       showNextPlayerList();
     });
 
@@ -146,7 +146,8 @@ var BCLS = ( function (window, document) {
       baseURL = 'https://players.api.brightcove.com/v1/accounts/',
       endpoint,
       responseDecoded;
-
+    // the proxy alreay has credentials for the default Brightcove Learning account
+    // so no need to send them
     if (client_id_input.value.length > 0 && client_secrect_input.value.length > 0) {
       options.client_id     = client_id_input.value;
       options.client_secret = client_secrect_input.value;
@@ -162,9 +163,15 @@ var BCLS = ( function (window, document) {
           options.requestType = 'GET';
           makeRequest(options, function(response) {
               responseDecoded = JSON.parse(response);
+              // save the players array
               players = responseDecoded.items;
+              // save the total player count
               playerCount = responseDecoded.item_count;
               api_response.textContent = JSON.stringify(responseDecoded, null, 2);
+              // show the first 3 players - note that the API request
+              // returns them in ascending order by date created,
+              // so if you wanted to show the newest players first
+              // you would start with the last item instead of the first
               showNextPlayerList();
           });
           break;
@@ -199,12 +206,9 @@ var BCLS = ( function (window, document) {
        getResponse = function() {
          try {
            if (httpRequest.readyState === 4) {
+             // any response status code in the 200 range indicates success
              if (httpRequest.status >= 200 && httpRequest.status < 300) {
                response = httpRequest.responseText;
-               // some API requests return '{null}' for empty responses - breaks JSON.parse
-               if (response === '{null}') {
-                 response = null;
-               }
                // return the response
                callback(response);
              } else {
