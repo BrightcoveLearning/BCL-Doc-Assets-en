@@ -120,7 +120,7 @@ var BCLS = ( function (window, document) {
       p = document.createElement('p'),
       iFrame = document.createElement('iframe');
     p.textContent = 'Name: ' + player.name;
-    iFrame.setAttribute('src', player.url);
+    iFrame.setAttribute('src', player.url.replace('http:', 'https:'));
     frag.appendChild(p);
     frag.appendChild(iFrame);
     player_details.innerHTML = '';
