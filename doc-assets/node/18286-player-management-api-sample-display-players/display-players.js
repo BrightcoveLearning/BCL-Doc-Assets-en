@@ -39,6 +39,28 @@ var BCLS = ( function (window, document) {
     }
   }
 
+  /**
+   * find index of an object in array of objects
+   * based on some property value
+   *
+   * @param {array} targetArray array to search
+   * @param {string} objProperty object property to search
+   * @param {string} value of the property to search for
+   * @return {integer} index of first instance if found, otherwise returns -1
+  */
+  function findObjectInArray(targetArray, objProperty, value) {
+      var i, totalItems = targetArray.length, objFound = false;
+      for (i = 0; i < totalItems; i++) {
+          if (targetArray[i][objProperty] === value) {
+              objFound = true;
+              return i;
+          }
+      }
+      if (objFound === false) {
+          return -1;
+      }
+  }
+
   function showNextPlayerList() {
     var radio,
       label,
@@ -67,15 +89,17 @@ var BCLS = ( function (window, document) {
     iMax = radioGroup.length;
     for (i = 0; i < iMax; i++) {
       radioGroup[1].addEventListener('change', function() {
-        var player = getRadioValue(radioGroup);
+        var playerId = getRadioValue(radioGroup);
         showPlayerDetails(player);
       });
     }
   }
 
-  function showPlayerDetails(player) {
+  function showPlayerDetails(playerId) {
     var frag = document.createDocumentFragment(),
-    
+      index = findObjectInArray(players, 'id', playerId),
+      player = players[index];
+
   }
 
 
