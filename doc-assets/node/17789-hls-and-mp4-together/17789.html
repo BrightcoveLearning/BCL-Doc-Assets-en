@@ -7,6 +7,8 @@
 <p>For this, you'll create a single job with two main sets of outputs (plus the playlists). The first set of outputs will be normal H.264/AAC MP4 files with a few special settings to allow them to work as source files for HLS outputs. The second set of outputs will use those MP4 files as "source" inputs, transmuxing their content to HLS outputs. Since these are dependent outputs, they will wait until their corresponding source finishes before being scheduled to process.</p>
 
 <p>The key part of the process is using <a href="/node/17852#source">source</a>, a new option in V2 of the Zencoder API. Source tells an output to use the file created by another output on the job for processing, instead of the input file. In this situation, Zencoder will create H.264 files based on the input file at requested bitrates. As each of those outputs finishes, a segmented version will then be created from the output.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note: There is no a way to ensure the playback is smooth if you <strong>combine transmux and transcode outputs into one playlist</strong>. It is best practice that the renditions need to be encoded in the same manner.</aside>
 </section>
 
 <section class="bcls-section">
