@@ -93,6 +93,8 @@ var BCLS = ( function (window, document) {
     for (i = 0; i < iMax; i++) {
       radioGroup[i].addEventListener('change', function() {
         var playerId = getRadioValue(radioGroup);
+        console.log('this', this);
+        console.log('playerId', playerId);
         showPlayerDetails(player);
       });
     }
