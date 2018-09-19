@@ -70,6 +70,8 @@ var BCLS = ( function (window, document) {
       frag = document.createDocumentFragment(),
       i,
       iMax;
+      console.log('nextPlayerStart', nextPlayerStart);
+      console.log('playerCount', playerCount);
     // clear player list div
     player_list.innerHTML = '';
     if (playerCount > 0) {
