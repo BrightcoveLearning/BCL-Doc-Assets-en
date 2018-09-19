@@ -98,8 +98,14 @@ var BCLS = ( function (window, document) {
   function showPlayerDetails(playerId) {
     var frag = document.createDocumentFragment(),
       index = findObjectInArray(players, 'id', playerId),
-      player = players[index];
-
+      player = players[index],
+      p = document.createElement('p'),
+      iFrame = document.createElement('iframe');
+    p.textContent = 'Name: ' + player.name;
+    iFrame.setAttribute('src', player.url);
+    frag.appendChild(p);
+    frag.appendChild(iFrame);
+    player_details.appendChild(frag);
   }
 
 
@@ -124,10 +130,10 @@ var BCLS = ( function (window, document) {
     options.proxyURL = proxyURL;
 
     switch (type) {
-        case 'createPlayer':
+        case 'getPlayers':
           endpoint            = '/' + options.account_id + '/players';
           options.url         = baseURL + endpoint;
-          options.requestType = 'POST';
+          options.requestType = 'GET';
           requestBody.name = player_name_input.value;
           requestBody.configuration = {};
           if (media_url_input.value.indexOf('//') > -1) {
