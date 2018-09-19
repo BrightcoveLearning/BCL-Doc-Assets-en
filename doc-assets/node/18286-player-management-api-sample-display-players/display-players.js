@@ -61,6 +61,9 @@ var BCLS = ( function (window, document) {
       }
   }
 
+  /**
+   * inject a list of 3 players into the page as a radio button group
+   */
   function showNextPlayerList() {
     var radio,
       label,
@@ -95,6 +98,10 @@ var BCLS = ( function (window, document) {
     }
   }
 
+  /**
+   * show some details of a player
+   * @param {String} playerId the player id
+   */
   function showPlayerDetails(playerId) {
     var frag = document.createDocumentFragment(),
       index = findObjectInArray(players, 'id', playerId),
