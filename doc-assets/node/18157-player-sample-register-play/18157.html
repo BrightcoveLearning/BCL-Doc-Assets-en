@@ -1,23 +1,60 @@
 <article class="bcls-article">
-<section id="developmentsequence" class="bcls-section">
-<h2 class="bcls-expander-head">Development sequence</h2>
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>This example displays an overlay and hides the player controls and play button before the user can view the video playing and prompts the user to login/register. When the user chooses to register or login through the form in the overlay, the overlay is hidden and the video plays. Test the functionality by <strong>clicking the buttons in the form</strong>.</p>
+
+<p>(Note that the sample doesn't actually do any field validation or authentication, so clicking either <strong>Register</strong> or <strong>Login</strong> and then the password <strong>Submit</strong> button that appears will cause the video to play.)</p>
+<!-- UPDATE codepen here -->
+
+<p data-height="434" data-theme-id="dark" data-slug-hash="ppypyb" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="18157-register-play" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/ppypyb/">18157-register-play</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18157-register-play">source code</a>.</p>
+
+<aside class="bcls-aside bcls-aside--tip">In the CSS for this player sample an <code>@import</code> is used to import the CSS for the Display Overlay Plugin. This is only done to address a behavior of the CodePen. In the CodePen the CSS in the tab is loaded before a link to CSS in the HTML tab. In this case, this caused the custom CSS to be overridden by the default plugin CSS, hence the need to use <code>@import</code> to be sure the custom CSS is loaded after the plugin's CSS. If you view the code in the GitHub repo, you will see the more standard approach of the HTML <code>link</code> tag, followed by the custom CSS in a <code>style</code> tag.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+	<ol>
+		<li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+		<li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+		<li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+	</ol>
+	</li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
 
 <div class="bcls-expander-content">
 <p>Here is the recommended development sequence:</p>
 
 <ol>
-	<li>Use the embed_in_page player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+	<li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
 	<li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
 	<li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
 	<li>Use Studio to add the plugin and CSS to your player</li>
-	<li>Replace the embed_in_page player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+	<li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
 </ol>
 
-<p>For details about these steps, review the <a href="/node/18081">Quick Start to Plugin Development</a> guide.</p>
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
 
-<h3>iframe or embed_in_page</h3>
+<h3>iframe or In-Page embed</h3>
 
-<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or embed_in_page implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
 
 <ul>
 	<li>No collisions with existing JavaScript and/or CSS</li>
@@ -25,7 +62,7 @@
 	<li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
 </ul>
 
-<p>Although integrating the embed_in_page player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
 
 <ul>
 	<li>Code in the containing page needs to listen for and act on player events</li>
@@ -33,505 +70,171 @@
 	<li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
 </ul>
 
-<p>Even if your final implementation does not use the iframe code, you can still use the embed_in_page code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
 </div>
 <!-- id="expanderContent" --></section>
 
-<section id="selectimplementation" class="bcls-section">
-<h2>Select implementation</h2>
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
 
-<p>In this example, you will test with the embed_in_page code and then move the styles and scripts into separate files to test locally. Then, you will add your JavaScript and CSS to the player as a plugin, after which you can publish the player using either the iframe or in-page embed code.</p>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>API Methods</th>
+			<th>API Events</th>
+			<th>Brightcove Player Plugins</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#play">play()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:timeupdate">timeupdate</a></td>
+			<td><a href="/node/18075">Display Overlay Plugin</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#pause">pause()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:loadedmetadata">loadedmetadata</a></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.on">on()</a></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.off">off()</a></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#addClass">addClass()</a></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#removeClass">removeClass()</a></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><a href="https:https://docs.brightcove.com/brightcove-player/current-release/Player.html#currentTime">currentTime()</a></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+<!-- <aside class="bcls-aside bcls-aside--tip">This code sample uses one of the Brightcove REST APIs. To understand working with this API it is vital you read and understand the <a href="/node/18132">Learning Guide: Using the REST APIs</a> document.</aside> --></section>
+<!-- UPDATE player and HTML configuration -->
+
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>No special configuration is required for the Brightcove Player you create for this sample.</p>
+
+<h3>Other HTML</h3>
+
+<p>Appropriate tags are used to link to the CSS and JavaScript for the Display Overlay Plugin.</p>
 </section>
+<!-- UPDATE application flow -->
 
-<div id="resources" class="bcls-section">
-<h2>API/Plugin resources used</h2>
-
-<p>The following sections detail resources used from various APIs/plugins.</p>
-
-<h3>Brightcove player API methods</h3>
-
-<ul>
-	<li><code>play()</code></li>
-	<li><code>pause()</code></li>
-	<li><code>addClass()</code></li>
-	<li><code>removeClass()</code></li>
-	<li><code>one()</code></li>
-	<li><code>off()</code></li>
-</ul>
-
-<h3>Brightcove player API events</h3>
-
-<ul>
-	<li><code>timeupdate</code></li>
-</ul>
-
-<h3>Plugins used</h3>
-
-<ul>
-	<li><a href="https://github.com/brightcove/videojs-overlay">videojs-overlay</a> : For details, refer to the <a href="/node/18075">Display Overlay Plugin</a> document.</li>
-</ul>
-</div>
-
-<section id="player" class="bcls-section">
-<h2>The player</h2>
-
-<p>This example displays an overlay and hides the player controls and play button. When the user chooses to register or login through the form in the overlay, the overlay is hidden and the video plays. Test the functionality by <strong>clicking the buttons in the form</strong>.</p>
-
-<p>(Note that the sample doesn't actually do any field validation or authentication, so clicking either <strong>Register</strong> or <strong>Login</strong> and then the password <strong>Submit</strong> button that appears will cause the video to play.)</p>
-<iframe src="//players.brightcove.net/1752604059001/HyYJD2jHZ_default/index.html?videoId=5510487311001"
-allowfullscreen
-webkitallowfullscreen
-mozallowfullscreen
-width="640"
-height="360"></iframe></section>
-
-<section id="code" class="bcls-section">
-<h2>How it works</h2>
-
-<p>The following sections explain the player, JavaScript and CSS code used in the example.</p>
-
-<h3>Logic</h3>
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
 
 <p>Before we dive into the code, let's look at the logic of the app:</p>
 
-<figure class="bcls-figure"><img class="bcls-image" alt="Logic Diagram" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/register-to-play/register-to-play.png" />
-<figcaption class="bcls-caption--image">Logic Diagram</figcaption>
-</figure>
+<figure class="bcls-figure"><img class="bcls-image" alt="logic-diagram" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/register-to-play/register-to-play.png" /></figure>
 
-<aside class="bcls-aside bcls-aside--information">The example here does not implement the communication between the plugin and the backend services for registration and authentication. <span class="video-cloud-only">To get an idea of how to do that, you could look at some of our samples that access Brightcove APIs from a client (see the <a href="/node/18034">Overview: CMS API</a> for example).</span> If the backend services require authentication, you should route the requests through a proxy, so that you do not expose credentials on the client side.</aside>
+<aside class="bcls-aside bcls-aside--information">Note: The example here does not implement the communication between the plugin and the backend services for registration and authentication. <span class="video-cloud-only">To get an idea of how to do that, you could look at some of our samples that access Brightcove APIs from a client (see the <a href="/node/18034">Overview: CMS API</a> for example).</span> If the backend services require authentication, you should route the requests through a proxy, so that you do not expose credentials on the client side.</aside>
 
-<p class="BCL-aside">Note:</p>
+<p>The basic logic behind this application is:</p>
 
-<h3>Create the player</h3>
+<ul>
+	<li>Configure the overlay.</li>
+	<li>Programmatically play the video to display the form.</li>
+	<li>Process the form.</li>
+	<li>Start the video when the form filled out.</li>
+</ul>
+<!-- UPDATE task 1 -->
 
-<p>To create a player and assign a video to it, follow these steps:</p>
+<h3>Configure the Overlay</h3>
 
-<ol class="bcls-tasklist">
-	<li>In the <strong>Players</strong> module, create a new player or use an existing one.</li>
-	<li>
-	<p>For this example, you will need to add the Overlay plugin to the player:</p>
+<p>Find the code which is labeled:</p>
 
-	<aside class="bcls-aside bcls-aside--information">For more information about the Overlay plugin, see the <a href="/node/18075">Display Overlay Plugin</a> document.</aside>
+<pre>
+      <code class="language-javascript">// ### Configure the Overlay ###</code></pre>
 
-	<ol type="a">
-		<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-		<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
-		<pre>
- //players.brightcove.net/videojs-overlay/1/videojs-overlay.min.js</pre>
-		</li>
-		<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
-		<pre>
- //players.brightcove.net/videojs-overlay/1/videojs-overlay.css</pre>
-		</li>
-		<li>For the <strong>Name</strong>, enter <strong>overlay</strong>.</li>
-		<li>No options are required for the overlay plugin.</li>
-	</ol>
-	</li>
-	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-	<li><span class="video-cloud-only">In the <strong>Media</strong> module, select a video and publish it with this player.</span><span class="player-only">Assign video content to the player and publish it.</span></li>
-	<li>Copy the In-Page embed code and paste it into a new HTML file. Give the file any name you like, but it must reside on the same local or remote domain as the registration form.</li>
-	<li>Add an id attribute to the video tag: <code>id="myPlayerId"</code></li>
-</ol>
+<p>The overlay is configured to display when the video starts playing (causing the form to be displayed). The form is built in a long string as used by the overlay as <code>overlayConent</code>.</p>
+<!-- UPDATE task 2 -->
 
-<aside class="bcls-aside bcls-aside--information">For details on how to get this embed code, see the <a href="/node/18209">Quick Start to Brightcove Player</a> document.</aside>
+<h3>Programmatically play the video to display the form</h3>
 
-<p>The embed code should look like this:</p>
+<p>Find the code which is labeled:</p>
 
-<pre class="line-numbers">
-<code class="language-html">&lt;video id="myPlayerId"
-  data-account="3676484086001"
-  data-player="eb8ff618-5699-4d7e-880b-b06c97bfa773"
-  data-embed="default"
-  class="video-js" controls&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/3676484086001/eb8ff618-5699-4d7e-880b-b06c97bfa773_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+<pre>
+      <code class="language-javascript">// ### Play video to trigger form display ###</code></pre>
 
-<h3>The HTML code for the player page.</h3>
+<p>When the <code>loadedmetadata</code> event is dispatched you know it is safe to play the video, so the player's <code>play()</code> method is called.</p>
+<!-- UPDATE task 3 -->
 
-<p>No extra HTML code is needed for this example.</p>
+<h3>Process the form</h3>
 
-<h3>The JavaScript code for the player page</h3>
+<p>Find the code which is labeled:</p>
 
-<ol class="bcls-tasklist">
-	<li>Add the JavaScript shown below to your player page code.</li>
-</ol>
+<pre>
+      <code class="language-javascript">// ### Process the form ###</code></pre>
 
-<pre class="line-numbers">
-<code class="language-javascript">videojs("myPlayerId").ready(function() {
-    var myPlayer = this,
-        // for handling the registration form
-        // user info
-        firstName,
-        lastName,
-        emailAddress,
-        registered = false,
-        // html for the registration form
-        overlayContent = '&lt;div id="regForm" class="registration-form"&gt;&lt;h1 class="registration-form"&gt;To view the video, please register or login.&lt;/h1&gt;&lt;p class="registration-form"&gt;First name: &lt;input id="fname" type="text" size="30"&gt;&lt;/p&gt;&lt;p&gt;Last name: &lt;input id="lname" type="text" size="30"&gt;&lt;/p&gt;&lt;p class="registration-form"&gt;Email: &lt;input id="email" type="text" size="35"&gt;&lt;/p&gt;&lt;p class="registration-form"&gt;&lt;button id="reg" class="registration-form"&gt;Register&lt;/button&gt;&lt;button id="login" class="registration-form"&gt;Login&lt;/button&gt;&lt;button id="noThanks" class="registration-form"&gt;No thanks&lt;/button&gt;&lt;/p&gt;&lt;/div&gt;&lt;div id="regPass" class="registration-form" style="display:none;"&gt;&lt;p class="registration-form"&gt;Choose a password: &lt;input type="password" id="regPassword"&gt;&lt;/p&gt;&lt;p class="registration-form"&gt;&lt;button id="submitRegPassword" class="registration-form"&gt;Submit&lt;/button&gt;&lt;/p&gt;&lt;/div&gt;&lt;div id="loginPass" class="registration-form" style="display:none;"&gt;&lt;p class="registration-form"&gt;Enter your password: &lt;input type="password" id="loginPassword"&gt;&lt;/p&gt;&lt;p&gt;&lt;button id="submitLoginPassword" class="registration-form"&gt;Submit&lt;/button&gt;&lt;/p&gt;&lt;/div&gt;&lt;div id="noThanksMessage" style="display:none;"&gt;&lt;p class="registration-form"&gt;&lt;strong&gt;Thanks for dropping by anyway!&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;';
+<p>Standard HTML and JavaScript is used to process the form.</p>
+<!-- UPDATE task 3 -->
 
+<h3>Play video when form filled out</h3>
 
-        // add the overlay content
-        myPlayer.overlay({
-            content: overlayContent,
-            overlays: [
-                {
-                    align: 'top',
-                    content: overlayContent,
-                    start: 'play'
-                }
-            ]
-        });
+<p>Find the code which is labeled:</p>
 
-        // get element references
-        var fname = document.getElementById('fname'),
-        lname = document.getElementById('lname'),
-        email = document.getElementById('email'),
-        reg = document.getElementById('reg'),
-        login = document.getElementById('login'),
-        noThanks = document.getElementById('noThanks'),
-        noThanksMessage = document.getElementById('noThanksMessage'),
-        regForm = document.getElementById('regForm').
-        regPass = document.getElementById('regPass'),
-        regPassword = document.getElementById('regPassword'),
-        submitRegPassword = document.getElementById('submitRegPassword'),
-        loginPass = document.getElementById('loginPass'),
-        loginPassword = document.getElementById('loginPassword'),
-        submitLoginPassword = document.getElementById('submitLoginPassword');
+<pre>
+      <code class="language-javascript">// ### Plays video when form filled out ###</code></pre>
 
-    // listen for one timeupdate event
-    myPlayer.one('timeupdate', function() {
-        myPlayer.pause();
-    });
+<p>When the form is filled out, the overlay form is hidden, the controls are displayed and the video is starts playing again.</p>
+</section>
+<!-- UPDATE CSS description -->
 
-    /**
-     * hides the overlay, unhides the controls, and plays the video
-     * this function is called from the registration form in the iframe
-     * and that is why it is defined in the global scope
-     */
-    playVideo = function () {
-        // hide the overlay, show the controls, play
-        myPlayer.addClass('hide-overlay');
-        myPlayer.removeClass('hide-controls');
-        myPlayer.play();
-    };
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
 
-    // initially hide the controls
-    myPlayer.addClass('hide-controls');
-
-    // everything below is for handling the registration form
-
-    // decline event listener
-    noThanks.addEventListener('click', function() {
-        // show the goodbye message
-        noThanksMessage.setAttribute('style', 'display:block;');
-    });
-
-    // register event listener
-    reg.addEventListener('click', function() {
-        // here you would want to validate the field values
-        //
-        // show the create password form
-        regPass.setAttribute('style', 'display:block;');
-    });
-
-    // login event listener
-    login.addEventListener('click', function() {
-        // here you would want to validate the field values
-        //
-        // show the create password form
-        loginPass.setAttribute('style', 'display:block;');
-    });
-
-    // registration password event listener
-    submitRegPassword.addEventListener('click', function() {
-        // here you would want to validate the field values
-        firstName = fname.value;
-        lastName = lname.value;
-        emailAddress = email.value;
-        password = regPassword.value;
-
-        /* here you would submit the information to your
-         * backend registration system and
-         * handle the response
-         * here we are skipping that and will
-         * just set registered to true
-         */
-
-        registered = true;
-
-        // invoke the function on the parent page to play the video
-        if (registered) {
-            playVideo();
-        }
-    });
-
-    // login password event listener
-    submitLoginPassword.addEventListener('click', function() {
-        // here you would want to validate the field values
-        firstName = fname.value;
-        lastName = lname.value;
-        emailAddress = email.value;
-        password = loginPassword.value;
-
-        // here you would submit the information to your
-        // backend authentication system
-
-        // if authentication succeeded,
-        // invoke the function on the parent page to play the video
-        parent.playVideo();
-    });
-
-});</code></pre>
-
-<h3>The stylesheet for the player page</h3>
-
-<p>This example uses CSS styles for the Brightcove player and the Overlay plugin.</p>
-
-<ol class="bcls-tasklist">
-	<li>Add the CSS shown below to your player page code. (Inside a &lt;style&gt; tag or as a linked CSS file)</li>
-</ol>
-
-<pre class="line-numbers">
-<code class="language-css">/* override default styles for overlay */
-.videojs .vjs-overlay,
-.vjs-overlay.vjs-overlay-top {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    min-height: 100%;
-    margin: auto;
-    left: 0;
-    top: 0;
-    background: none;
-}
-
-/* hide the overlay */
-.hide-overlay .vjs-overlay {
-    display: none;
-}
-/* hide controls */
-.hide-controls.video-js .vjs-control-bar, .hide-controls .vjs-big-play-button {
-    display: none;
-}
-
-/* set player size */
-.video-js {
-    width: 640px;
-    height: 360px;
-}
-
-/* for the registration form */
-/* form layout */
-.registration-form {
-    font-family: sans-serif;
-    font-size: .9em;
-    color: #333;
-}
-/* form header */
-h1.registration-form {
-    font-size: 1.1em;
-}
-/* buttons */
-button.registration-form {
-    font-size: .8em;
-    padding: .4em;
-    background-color: #234154;
-    color: #fff;
-    margin: .4em;
-}
-/* divs */
-div.registration-form {
-    background-color: #f5f5f5;
-    opacity: .8;
-    padding: .5em;
-}
-
- /* inputs */
- div.registration-form input {
-     width: 33%;
-     display: inline;
- }
-
-/* paragraphs */
-p.registration-form {
-    font-weight: bold;
-    margin: 0;
-}
-</code></pre>
-
-<h3>Test the page</h3>
-
-<p>Once you save the player and registration form pages and have them running on the same local or remote domain, you can test by browsing to the player page. Note that you need to browse it on a web server, not as a local file. (i.e. http://localhost/path/player.html, <strong>not</strong> file:///somepath/player.html.) The player should behave just as the sample above does.</p>
+<p>The extensive CSS controls the display of the form and size of the player.</p>
 </section>
 
-<section id="plugin" class="bcls-section">
-<h2>Use a plugin</h2>
+<section class="bcls-section">
+<h2 id="Plugin_code">Plugin code</h2>
 
-<p>It is a best practice to use a plugin so that you can easily add this functionality to multiple players.</p>
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
 
-<h3>Create the JavaScript file</h3>
+<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
-<p>Move the plugin's JavaScript code to a file located on your machine for easy testing.</p>
+<pre class="line-numbers">
+<code class="language-javascript">videojs('myPlayerID').ready(function(){
+  var myPlayer = this;
+  ...
+);</code></pre>
 
-<ol class="bcls-tasklist">
-	<li>Create a new file for your plugin JavaScript code. In this case, name it <code>register-to-play.js</code>.</li>
-	<li>Cut and paste the JavaScript code from your main HTML file into this new file.</li>
-	<li>Wrap your JavaScript code using the <code>videojs.plugin()</code> function. The first argument, <code>registerToPlay</code>, is the plugin name.</li>
-	<li>The complete plugin JavaScript code should look like this:
-	<pre class="line-numbers">
-<code class="language-javascript">videojs.plugin('registerToPlay', function(options) {
-  var myPlayer = this,
-      // for handling the registration form
-      // user info
-      firstName,
-      lastName,
-      emailAddress,
-      registered = false,
-      // html for the registration form
-      overlayContent = '&lt;div id="regForm" class="registration-form"&gt;&lt;h1 class="registration-form"&gt;To view the video, please register or login.&lt;/h1&gt;&lt;p class="registration-form"&gt;First name: &lt;input id="fname" type="text" size="30"&gt;&lt;/p&gt;&lt;p&gt;Last name: &lt;input id="lname" type="text" size="30"&gt;&lt;/p&gt;&lt;p class="registration-form"&gt;Email: &lt;input id="email" type="text" size="35"&gt;&lt;/p&gt;&lt;p class="registration-form"&gt;&lt;button id="reg" class="registration-form"&gt;Register&lt;/button&gt;&lt;button id="login" class="registration-form"&gt;Login&lt;/button&gt;&lt;button id="noThanks" class="registration-form"&gt;No thanks&lt;/button&gt;&lt;/p&gt;&lt;/div&gt;&lt;div id="regPass" class="registration-form" style="display:none;"&gt;&lt;p class="registration-form"&gt;Choose a password: &lt;input type="password" id="regPassword"&gt;&lt;/p&gt;&lt;p class="registration-form"&gt;&lt;button id="submitRegPassword" class="registration-form"&gt;Submit&lt;/button&gt;&lt;/p&gt;&lt;/div&gt;&lt;div id="loginPass" class="registration-form" style="display:none;"&gt;&lt;p class="registration-form"&gt;Enter your password: &lt;input type="password" id="loginPassword"&gt;&lt;/p&gt;&lt;p&gt;&lt;button id="submitLoginPassword" class="registration-form"&gt;Submit&lt;/button&gt;&lt;/p&gt;&lt;/div&gt;&lt;div id="noThanksMessage" style="display:none;"&gt;&lt;p class="registration-form"&gt;&lt;strong&gt;Thanks for dropping by anyway!&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;';
+<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
-
-      // add the overlay content
-      myPlayer.overlay({
-          content: overlayContent,
-          overlays: [
-              {
-                  align: 'top',
-                  content: overlayContent,
-                  start: 'play'
-              }
-          ]
-      });
-
-      // get element references
-      var fname = document.getElementById('fname'),
-      lname = document.getElementById('lname'),
-      email = document.getElementById('email'),
-      reg = document.getElementById('reg'),
-      login = document.getElementById('login'),
-      noThanks = document.getElementById('noThanks'),
-      noThanksMessage = document.getElementById('noThanksMessage'),
-      regForm = document.getElementById('regForm').
-      regPass = document.getElementById('regPass'),
-      regPassword = document.getElementById('regPassword'),
-      submitRegPassword = document.getElementById('submitRegPassword'),
-      loginPass = document.getElementById('loginPass'),
-      loginPassword = document.getElementById('loginPassword'),
-      submitLoginPassword = document.getElementById('submitLoginPassword');
-
-  // listen for one timeupdate event
-  myPlayer.one('timeupdate', function() {
-      myPlayer.pause();
-  });
-
-  /**
-   * hides the overlay, unhides the controls, and plays the video
-   * this function is called from the registration form in the iframe
-   * and that is why it is defined in the global scope
-   */
-  playVideo = function () {
-      // hide the overlay, show the controls, play
-      myPlayer.addClass('hide-overlay');
-      myPlayer.removeClass('hide-controls');
-      myPlayer.play();
-  };
-
-  // initially hide the controls
-  myPlayer.addClass('hide-controls');
-
-  // everything below is for handling the registration form
-
-  // decline event listener
-  noThanks.addEventListener('click', function() {
-      // show the goodbye message
-      noThanksMessage.setAttribute('style', 'display:block;');
-  });
-
-  // register event listener
-  reg.addEventListener('click', function() {
-      // here you would want to validate the field values
-      //
-      // show the create password form
-      regPass.setAttribute('style', 'display:block;');
-  });
-
-  // login event listener
-  login.addEventListener('click', function() {
-      // here you would want to validate the field values
-      //
-      // show the create password form
-      loginPass.setAttribute('style', 'display:block;');
-  });
-
-  // registration password event listener
-  submitRegPassword.addEventListener('click', function() {
-      // here you would want to validate the field values
-      firstName = fname.value;
-      lastName = lname.value;
-      emailAddress = email.value;
-      password = regPassword.value;
-
-      /* here you would submit the information to your
-       * backend registration system and
-       * handle the response
-       * here we are skipping that and will
-       * just set registered to true
-       */
-
-      registered = true;
-
-      // invoke the function on the parent page to play the video
-      if (registered) {
-          playVideo();
-      }
-  });
-
-  // login password event listener
-  submitLoginPassword.addEventListener('click', function() {
-      // here you would want to validate the field values
-      firstName = fname.value;
-      lastName = lname.value;
-      emailAddress = email.value;
-      password = loginPassword.value;
-
-      // here you would submit the information to your
-      // backend authentication system
-
-      // if authentication succeeded,
-      // invoke the function on the parent page to play the video
-      parent.playVideo();
-  });
-
+<pre class="line-numbers">
+<code class="language-javascript">videojs.registerPlugin('pluginName', function(options)    var myPlayer = this;
+   ...
 });</code></pre>
-	</li>
-	<li>This file must be saved on an Internet-accessible URL so that the player can find it! If you don't have a public-facing server to put it on, a public Dropbox link will work.</li>
-</ol>
+<!-- UPDATE path to plugin's JavaScript -->
 
-<h3>Create the CSS file</h3>
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18157-register-play/blob/master/plugin/register-to-play.js">register-to-play.js</a>.</p>
 
-<p>Next, move styles to a CSS file.</p>
+<h3>Using the plugin with a player</h3>
 
-<ol class="bcls-tasklist">
-	<li>Create a new file for your CSS styles. In this case, name it <code>register-to-play.css</code>.</li>
-	<li>Copy and paste the styles from your player page into the new css file.</li>
-	<li>This file must be saved on an Internet-accessible URL so that the player can find it! If you don't have a public-facing server to put it on, a public Dropbox link will work.</li>
-</ol>
+<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
 
-<p>You can now remove both the styles and the script from your player page, as the functionality will be provided by the plugin. Next, we'll add the plugin to the player in the same way that added the overlay plugin earlier.</p>
-
-<h3>Implement using Players module</h3>
-
-<p>To implement your plugin using the Players module, follow these steps:</p>
-
-<ol class="bcls-tasklist">
-	<li>Open the <strong>Players</strong> module and locate the player.</li>
-	<li>Click the link for the player to open the player properties.</li>
-	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-	<li>For the <strong>JavaScript URL</strong>, enter the URL for the file you created in step 1.</li>
-	<li>For the <strong>CSS URL</strong>, enter the URL for the file you created in step 2.</li>
-	<li>For the <strong>Name</strong>, enter your plugin name. In this example, we are using <strong>registerToPlay</strong>. You don't need to enter any options, so you can leave that blank or enter <code>{}</code></li>
-	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-</ol>
-
-<p>Browse the player page and you should see the player with the register to play overlay functioning correctly.</p>
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
 </section>
 </article>
