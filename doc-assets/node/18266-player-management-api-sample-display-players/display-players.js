@@ -70,10 +70,9 @@ var BCLS = ( function (window, document) {
       frag = document.createDocumentFragment(),
       i,
       iMax;
-      console.log('nextPlayerStart', nextPlayerStart);
-      console.log('playerCount', playerCount);
     // clear player list div
     player_list.innerHTML = '';
+    // make sure count doesn't exceed number of players
     if (playerCount > 0) {
       if ((playerCount - nextPlayerStart) < 3) {
         iMax = playerCount - nextPlayerStart;
@@ -84,6 +83,7 @@ var BCLS = ( function (window, document) {
       iMax = nextPlayerStart + 3;
     }
     for (i = nextPlayerStart; i < iMax; i++) {
+      // create the elements, add to doc fragment
       radio = document.createElement('input');
       radio.setAttribute('type', 'radio');
       radio.setAttribute('name', 'playerList');
@@ -97,10 +97,14 @@ var BCLS = ( function (window, document) {
       frag.appendChild(label);
       frag.appendChild(br);
     }
+    // inject fragment
     player_list.appendChild(frag);
+    // set the next starting count
     nextPlayerStart = nextPlayerStart + 3;
-    console.log(radioGroup);
+    // note that because getElementsByName gets a dynamic collection,
+    // the new elements are automatically added to it
     iMax = radioGroup.length;
+    // set event listeners on the new set of radio buttons
     for (i = 0; i < iMax; i++) {
       radioGroup[i].addEventListener('change', function() {
         var playerId = getRadioValue(radioGroup);
