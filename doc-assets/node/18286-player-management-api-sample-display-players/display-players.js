@@ -95,7 +95,7 @@ var BCLS = ( function (window, document) {
         var playerId = getRadioValue(radioGroup);
         console.log('this', this);
         console.log('playerId', playerId);
-        showPlayerDetails(player);
+        showPlayerDetails(playerId);
       });
     }
   }
