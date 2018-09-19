@@ -764,6 +764,16 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 </section>
 
 <section class="bcls-section">
+<h2 id="loop">loop</h2>
+
+<p><code>loop</code> information:</p>
+
+<ul>
+	<li>Causes the video to start over as soon as it ends.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
 <h2 id="media">media</h2>
 
 <p>The <code>media</code> property has child properties as shown in the following table.</p>
@@ -960,7 +970,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 <section class="bcls-section">
 <h2 id="playlists">Playlists</h2>
 
-<p>There are now two different playlist implementations, detailed in the <a href="/node/18055">Using Playlists</a> document. The default is version 2. Information for configuring both versions is detailed here.</p>
+<p>There are now two different playlist implementations, detailed in the <a href="/node/18055">Using Playlists</a> document. The default is version 3. Information for configuring both versions is detailed here.</p>
 
 <p>Both configurations will show how to set the following:</p>
 
@@ -969,9 +979,9 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 	<li><code>playOnSelect</code>: Assigned <code>true</code> so when clicking an item from the playlist menu will cause the video to play when loaded, even if the previous video in the player was paused.</li>
 </ul>
 
-<h3>Playlist version 2 (Default)</h3>
+<h3>Playlist version 3 (Default)</h3>
 
-<p>To configure playlists using the version 2 plugin, you use the Plugin Registry. Here is a curl statement to configure the use of the Playlist version 2 plugin:</p>
+<p>To configure playlists using the version 3 plugin, you use the Plugin Registry. Here is a curl statement to configure the use of the Playlist version 3 plugin:</p>
 
 <pre class="line-numbers">
 <code class="language-bash">curl \
@@ -987,7 +997,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
         "plugins": [
           {
             "registry_id": "@brightcove/videojs-bc-playlist-ui",
-            "version": "2.x"
+            "version": "3.x"
           }
         ]
       }
@@ -1012,7 +1022,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
         "plugins": [
           {
             "registry_id": "@brightcove/videojs-bc-playlist-ui",
-            "version": "2.x",
+            "version": "3.x",
             <span class="bcls-highlight">"options": {
               "playOnSelect": true
             }</span>
@@ -1325,6 +1335,18 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 	<li>Data type: Array</li>
 	<li>Default: ['html5','flash']</li>
 </ul>
+
+<p>You can use the following curl statement to change the <code>techOrder</code> from the default of <code>['html5','flash']</code> to <code>['flash','html5']</code>:</p>
+
+<pre class="line-numbers">
+<code class="language-bash notranslate">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request PATCH \
+  --data '{
+      "techOrder": "['flash','html']"
+     }' \
+  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 </section>
 
 <section class="bcls-section video-cloud-only">
