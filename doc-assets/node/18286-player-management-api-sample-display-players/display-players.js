@@ -5,7 +5,6 @@ var BCLS = ( function (window, document) {
     client_id_input = document.getElementById('client_id_input'),
     client_secrect_input = document.getElementById('client_secrect_input'),
     api_response = document.getElementById('api_response'),
-    html_output = document.getElementById('html_output'),
     player_embedded = document.getElementById('player_embedded'),
     get_players = document.getElementById('get_players'),
     show_more_players = document.getElementById('show_more_players'),
@@ -145,7 +144,7 @@ var BCLS = ( function (window, document) {
               responseDecoded = JSON.parse(response);
               players = responseDecoded.items;
               playerCount = responseDecoded.item_count;
-              create_response.textContent = JSON.stringify(responseDecoded, null, 2);
+              api_response.textContent = JSON.stringify(responseDecoded, null, 2);
               showNextPlayerList();
           });
           break;
