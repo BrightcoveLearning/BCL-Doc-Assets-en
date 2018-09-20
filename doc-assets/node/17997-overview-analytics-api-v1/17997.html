@@ -40,7 +40,7 @@
 <p>The base URL for the Analytics API is:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">https://analytics.api.brightcove.com/v1</code></pre>
+<code class="language-http notranslate">https://analytics.api.brightcove.com/v1</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -50,14 +50,14 @@
 
 <p>The Analytics API uses the Brightcove <a href="/node/17928">OAuth Service</a> to authenticate calls.</p>
 
-<p>You will first need to obtain client credentials (a <code>client_id</code> and <code>client_secret</code>). This is a one-time operation that can be performed using the <a href="/node/14056">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/node/17924">CURL</a> or <a href="/node/17923">Postman</a>.</p>
+<p>You will first need to obtain client credentials (a <code class="notranslate">client_id</code> and <code class="notranslate">client_secret</code>). This is a one-time operation that can be performed using the <a href="/node/14056">OAuth Credentials UI</a>. You can get client credentials directly from the Brightcove OAuth Service using <a href="/node/17924">CURL</a> or <a href="/node/17923">Postman</a>.</p>
 
-<p>You will also need an <code>access_token</code>, which is obtained using the <code>client_id</code> and <code>client_secret</code> and passed in an Authorization header with your API request:</p>
+<p>You will also need an <code class="notranslate">access_token</code>, which is obtained using the <code class="notranslate">client_id</code> and <code class="notranslate">client_secret</code> and passed in an Authorization header with your API request:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">Authorization: Bearer <em>{access_token}</em></code></pre>
+<code class="language-http notranslate">Authorization: Bearer <em>{access_token}</em></code></pre>
 
-<p>The <code>access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/node/17925">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
+<p>The <code class="notranslate">access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/node/17925">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
 
 <h3>Accept-Encoding: gzip (optional)</h3>
 
@@ -73,7 +73,7 @@
 <figcaption class="bcls-caption--image">Cach Control Headers</figcaption>
 </figure>
 
-<p>The <code>Cache-Control</code> tells you the maximum time the results will be cached for in seconds (in the example above, 24 seconds). The <code>Last-Modified</code> and <code>Expires</code> headers tell you when the current cache was created and when it will expire.</p>
+<p>The <code class="notranslate">Cache-Control</code> tells you the maximum time the results will be cached for in seconds (in the example above, 24 seconds). The <code class="notranslate">Last-Modified</code> and <code class="notranslate">Expires</code> headers tell you when the current cache was created and when it will expire.</p>
 
 <p>In most cases this is probably not an issue, but if the freshness of analytics data is of critical importance, you should know that the longer a query runs, the longer it will be cached, and reports that fetch realtime (unreconciled hourly) data only will not be cached as long as those that fetch reconciled data (only, or in addition to realtime data). Find a <a href="/node/10743#26">full explanation of realtime and reconciled data</a> if you like; the short version is that the Analytics API relies on two data buckets:</p>
 
@@ -87,7 +87,7 @@
 <p>To minimize caching:</p>
 
 <ul>
-	<li>Use the <a href="#reconciled"> <code class="language-http">reconciled=false</code> </a> parameter to limit results to realtime data</li>
+	<li>Use the <a href="#reconciled"> <code class="language-http notranslate">reconciled=false</code> </a> parameter to limit results to realtime data</li>
 	<li>Use a small <a href="#dateRanges">date range</a>, and be sure that the entire range falls within the past 32 days</li>
 </ul>
 </section>
@@ -136,7 +136,7 @@
 	<dt>Data (also called a Report)</dt>
 	<dd>A report on one or more <a href="#metrics">dimensions</a>. The endpoint for a report request is:
 	<pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">https://analytics.api.brightcove.com/v1/data?accounts={account_id(s)}&amp;dimensions={dimensions}</code></pre>
+<code class="language-http notranslate">https://analytics.api.brightcove.com/v1/data?accounts={account_id(s)}&amp;dimensions={dimensions}</code></pre>
 	</dd>
 	<dt>Engagement report</dt>
 	<dd>Detailed engagement data that is available for periods within the past 32 days. See <a href="#engagement">the engagement section</a> for more details.</dd>
@@ -150,10 +150,10 @@
 <section class="bcls-section">
 <h2 id="accounts">Accounts</h2>
 
-<p>The Video Cloud account(s) that you want a report for are specified using the <code>accounts</code> parameter. For example:</p>
+<p>The Video Cloud account(s) that you want a report for are specified using the <code class="notranslate">accounts</code> parameter. For example:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">https://analytics.api.brightcove.com/v1/data?accounts={account_id(s)}</code></pre>
+<code class="language-http notranslate">https://analytics.api.brightcove.com/v1/data?accounts={account_id(s)}</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -182,12 +182,12 @@
 
 <p><button id="getData" class="bcls-button">Make a Request with these Options</button>(uses a sample Brightcove account)</p>
 
-<aside class="bcls-aside bcls-aside--information">Data for <code>ad_mode_begin</code>, <code>ad_mode_complete</code>, and <code>play_request</code> is available starting 06-13-2016.</aside>
+<aside class="bcls-aside bcls-aside--information">Data for <code class="notranslate">ad_mode_begin</code>, <code class="notranslate">ad_mode_complete</code>, and <code class="notranslate">play_request</code> is available starting 06-13-2016.</aside>
 </fieldset>
 
 <fieldset class="bcls-fieldset"><legend>Output</legend>
 
-<h5>Earliest <code>from</code> date for this dimension combination: <code id="fromDisplay">&nbsp;</code></h5>
+<h5>Earliest <code class="notranslate">from</code> date for this dimension combination: <code id="fromDisplay">&nbsp;</code></h5>
 
 <h5 id="logger">&nbsp;</h5>
 
@@ -197,15 +197,15 @@
 <h5>Response data</h5>
 
 <pre class="line-numbers">
-<code id="responseData" class="language-json">Response will appear here...</code></pre>
+<code id="responseData" class="language-json notranslate">Response will appear here...</code></pre>
 </fieldset>
 
 <h3>Notes</h3>
 
 <ol>
-	<li>By default, <code>video_view</code> is the only field returned - other fields will be returned only if they are specified in the value of the <code>fields</code> parameter.</li>
-	<li>If you specify a field to return that is not supported for the dimension or dimension combination, an <code>UNSUPPORTED_FIELD_COMBINATION_ERROR</code> error will be returned.</li>
-	<li>The <code>bytes_delivered</code> field includes all data delivered by Video Cloud to clients, including video data, images, text tracks and other assets, as well as the player code itself. Some of this data is obtained from CDNs, and may not be available for up to 3 days.</li>
+	<li>By default, <code class="notranslate">video_view</code> is the only field returned - other fields will be returned only if they are specified in the value of the <code class="notranslate">fields</code> parameter.</li>
+	<li>If you specify a field to return that is not supported for the dimension or dimension combination, an <code class="notranslate">UNSUPPORTED_FIELD_COMBINATION_ERROR</code> error will be returned.</li>
+	<li>The <code class="notranslate">bytes_delivered</code> field includes all data delivered by Video Cloud to clients, including video data, images, text tracks and other assets, as well as the player code itself. Some of this data is obtained from CDNs, and may not be available for up to 3 days.</li>
 </ol>
 
 <h3>Example request</h3>
@@ -213,7 +213,7 @@
 <p>A typical use case for getting a report on multiple dimensions: you want a breakdown of video views between desktop and mobile devices, and also want to know how many of the mobile device views were on iOS versus Android devices, and how many of the desktop views were on Macs versus Windows machines. Currently there is no standard report in the Studio Analytics Module that provides this information, but you can obtain it via this Analytics API call:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">https://analytics.api.brightcove.com/v1/data?accounts=57838016001&amp;dimensions=video,device_type,device_os&amp;from=2014-01-01&amp;to=2014-04-01&amp;fields=video_view</code></pre>
+<code class="language-http notranslate">https://analytics.api.brightcove.com/v1/data?accounts=57838016001&amp;dimensions=video,device_type,device_os&amp;from=2014-01-01&amp;to=2014-04-01&amp;fields=video_view</code></pre>
 
 <p>(In this case we are requesting video views for the period from January 1 to April 1 in 2014.)</p>
 
@@ -231,7 +231,7 @@
 <p>Here is a sample cURL command:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl -s --header "Authorization: Bearer <span class="bcls-input">$ACCESS_TOKEN</span>" \
+<code class="language-bash notranslate">curl -s --header "Authorization: Bearer <span class="bcls-input">$ACCESS_TOKEN</span>" \
 "https://analytics.api.brightcove.com/v1/data?accounts=$ACCOUNT_ID&amp;dimensions=video&amp;from=2017-04-04&amp;limit=100"</code></pre>
 </section>
 
@@ -715,21 +715,21 @@
 <p>The general syntax for filters is:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">where=dimension1==value1;dimension2==value2</code></pre>
+<code class="language-http notranslate">where=dimension1==value1;dimension2==value2</code></pre>
 
 <p>For example:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">https://analytics.api.brightcove.com/v1?accounts=<span class="bcls-input">account_id(s)</span>&amp;dimensions=device_type&amp;where=video==<span class="bcls-input">video_id</span>;device_type==tablet</code></pre>
+<code class="language-http notranslate">https://analytics.api.brightcove.com/v1?accounts=<span class="bcls-input">account_id(s)</span>&amp;dimensions=device_type&amp;where=video==<span class="bcls-input">video_id</span>;device_type==tablet</code></pre>
 
-<p>Commas are treated as logical ORs, and semicolons as logical ANDs. For example, <code class="language-http">where=video==1234,5678;player==9876</code> is interpreted as "where video = 1234 <strong>OR</strong> 5678 <strong>AND</strong> player = 9876"</p>
+<p>Commas are treated as logical ORs, and semicolons as logical ANDs. For example, <code class="language-http notranslate">where=video==1234,5678;player==9876</code> is interpreted as "where video = 1234 <strong>OR</strong> 5678 <strong>AND</strong> player = 9876"</p>
 
 <h3>Spaces and special characters</h3>
 
 <p>String values should be URI encoded. You can also escape special characters using a "":</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">where=search_terms==boston,%20ma</code></pre>
+<code class="language-http notranslate">where=search_terms==boston,%20ma</code></pre>
 
 <p>You can use any dimension as a filter.</p>
 
@@ -737,15 +737,15 @@
 <p>Note the following when you are filtering on players:</p>
 
 <ul>
-	<li><strong>Brightcove Players</strong> - Enter the player URL in this format: <code>players.brightcove.com/account_id/player_id <span class="bcls-highlight">_default</span> </code></li>
-	<li>If you used an <a href="/node/16616">application-id</a> to identify the player, then enter the player URL in this format: <code>players.brightcove.com/account_id/player_id_default/ <span class="bcls-highlight">application-id</span> </code> - for example: <code>players.brightcove.com/1752604059001/BJFYWrtUl_default/AlltimeViewsPlayerSample</code></li>
+	<li><strong>Brightcove Players</strong> - Enter the player URL in this format: <code class="notranslate">players.brightcove.com/account_id/player_id <span class="bcls-highlight">_default</span> </code></li>
+	<li>If you used an <a href="/node/16616">application-id</a> to identify the player, then enter the player URL in this format: <code class="notranslate">players.brightcove.com/account_id/player_id_default/ <span class="bcls-highlight">application-id</span> </code> - for example: <code class="notranslate">players.brightcove.com/1752604059001/BJFYWrtUl_default/AlltimeViewsPlayerSample</code></li>
 	<li>Smart Players - Enter the Player ID</li>
 </ul>
 </aside>
 
 <h3 id="Filtering_by_video_properties">Filtering by video properties</h3>
 
-<p>Using the special <code class="language-http">where=video.q=={property}:{value}</code> filter, you can limit your report to a specific set of videos based on a variety of properties, including:</p>
+<p>Using the special <code class="language-http notranslate">where=video.q=={property}:{value}</code> filter, you can limit your report to a specific set of videos based on a variety of properties, including:</p>
 
 <ul>
 	<li>tags</li>
@@ -758,7 +758,7 @@
 <h4>Notes</h4>
 
 <div id="note1">
-<p><sup><strong>[1]</strong> </sup> The basic syntax is <code>where=video.q==custom_fields:value</code> (matches the value in any custom field) or <code>where=video.q==myfield:value</code> (matches the value in the specific custom field <code>myfield</code>). If you are searching on a specific custom fields, note that you must search on the <strong>Internal Name</strong>, not the Display Name:</p>
+<p><sup><strong>[1]</strong> </sup> The basic syntax is <code class="notranslate">where=video.q==custom_fields:value</code> (matches the value in any custom field) or <code class="notranslate">where=video.q==myfield:value</code> (matches the value in the specific custom field <code class="notranslate">myfield</code>). If you are searching on a specific custom fields, note that you must search on the <strong>Internal Name</strong>, not the Display Name:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="Internal Name vs Display Name" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/getting-started/api-overview/custom-field-names.png" />
 <figcaption class="bcls-caption--image">Internal Name vs Display Name</figcaption>
@@ -769,27 +769,27 @@
 
 <h4>Examples</h4>
 
-<p>Here are some example <code>where</code> filters for searching on tags and custom fields:</p>
+<p>Here are some example <code class="notranslate">where</code> filters for searching on tags and custom fields:</p>
 
 <h5>Single tag</h5>
 
 <pre class="line-numbers">
-<code class="language-http">where=video.q==tags:foo</code></pre>
+<code class="language-http notranslate">where=video.q==tags:foo</code></pre>
 
 <h5>Multiple tags:</h5>
 
 <pre class="line-numbers">
-<code class="language-http">where=video.q==tags:foo,bar</code></pre>
+<code class="language-http notranslate">where=video.q==tags:foo,bar</code></pre>
 
 <h5>Custom fields</h5>
 
 <pre class="line-numbers">
-<code class="language-http">where=video.q==custom_fields:foo</code></pre>
+<code class="language-http notranslate">where=video.q==custom_fields:foo</code></pre>
 
 <h5>Tags and custom fields</h5>
 
 <pre class="line-numbers">
-<code class="language-http">where=video.q==tags:foo,bar+custom_fields:fish</code></pre>
+<code class="language-http notranslate">where=video.q==tags:foo,bar+custom_fields:fish</code></pre>
 
 <p>For a complete explanation of this query syntax, see <a href="/node/18025">Using the CMS API: Search for Videos</a>.</p>
 
@@ -817,28 +817,28 @@
 <section class="bcls-section">
 <h2 id="dateRanges">Date ranges</h2>
 
-<p>Date ranges, specified in <code>from</code> and <code>to</code> parameters for all types of reports, can be indicated in different formats:</p>
+<p>Date ranges, specified in <code class="notranslate">from</code> and <code class="notranslate">to</code> parameters for all types of reports, can be indicated in different formats:</p>
 
 <ul>
 	<li>Text values:
 	<ul>
-		<li><code class="language-http">from=alltime</code></li>
-		<li><code class="language-http">to=now</code> (available and the default value for all requests)</li>
+		<li><code class="language-http notranslate">from=alltime</code></li>
+		<li><code class="language-http notranslate">to=now</code> (available and the default value for all requests)</li>
 	</ul>
 	</li>
-	<li>Epoch time values in milliseconds, such as <code>1377047323000</code></li>
-	<li>Dates expressed in ISO 8601 standard international date format: <code>YYYY-MM-DD</code>format, such as <code>2013-09-12</code>. For dates expressed in this format:
+	<li>Epoch time values in milliseconds, such as <code class="notranslate">1377047323000</code></li>
+	<li>Dates expressed in ISO 8601 standard international date format: <code class="notranslate">YYYY-MM-DD</code>format, such as <code class="notranslate">2013-09-12</code>. For dates expressed in this format:
 	<ul>
 		<li>Any date range specified will be interpreted <em>in the timezone set for the account</em></li>
-		<li>The time for the date give will be interpreted as midnight ( <code>00:00:00</code>) on the date specified <em>in the timezone set for the account</em></li>
+		<li>The time for the date give will be interpreted as midnight ( <code class="notranslate">00:00:00</code>) on the date specified <em>in the timezone set for the account</em></li>
 	</ul>
 	</li>
-	<li>Relative dates: you can express either of the <code>to</code> and <code>from</code> values relative to the other one in d (days) or h (hours). For example:
+	<li>Relative dates: you can express either of the <code class="notranslate">to</code> and <code class="notranslate">from</code> values relative to the other one in d (days) or h (hours). For example:
 	<ul>
-		<li><code class="language-http">from=2015-01-01&amp;to=31d</code></li>
-		<li><code class="language-http">from=-48h&amp;to=now</code></li>
-		<li><code class="language-http">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
-		<li><code class="language-http">from=-365d&amp;to=2014-12-31</code></li>
+		<li><code class="language-http notranslate">from=2015-01-01&amp;to=31d</code></li>
+		<li><code class="language-http notranslate">from=-48h&amp;to=now</code></li>
+		<li><code class="language-http notranslate">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
+		<li><code class="language-http notranslate">from=-365d&amp;to=2014-12-31</code></li>
 	</ul>
 
 	<p>Note that negative numbers (-2d) are interpreted as "before" (the other value) and positive numbers (48h) are treated as "from" (the other value)</p>
@@ -848,12 +848,12 @@
 <p>To generate a report on some dimension like "video" for a single day, set the to and from values to that date:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">...&amp;dimensions=video&amp;from=2013-11-01&amp;to=2013-11-01</code></pre>
+<code class="language-http notranslate">...&amp;dimensions=video&amp;from=2013-11-01&amp;to=2013-11-01</code></pre>
 
 <aside class="bcls-aside bcls-aside--tip">Notes:
 <ul>
-	<li>If you are trying to return all analytics data, use <code class="language-http">from=alltime</code> rather than setting <code>from</code> equal to a date</li>
-	<li>You can get the available date range for any report by using the endpoint <code class="language-http">/data/status</code> - see the <a href="https://docs.brightcove.com/analytics-api/v1/doc/index.html#api-Report-Get_Available_Date_Range">API Reference</a> for details</li>
+	<li>If you are trying to return all analytics data, use <code class="language-http notranslate">from=alltime</code> rather than setting <code class="notranslate">from</code> equal to a date</li>
+	<li>You can get the available date range for any report by using the endpoint <code class="language-http notranslate">/data/status</code> - see the <a href="https://docs.brightcove.com/analytics-api/v1/doc/index.html#api-Report-Get_Available_Date_Range">API Reference</a> for details</li>
 </ul>
 </aside>
 </section>
@@ -861,15 +861,15 @@
 <section class="bcls-section">
 <h2 id="limit">Limit and offset</h2>
 
-<p>The <code>limit</code> is the number of items to return (default: 10). To return all items, use <code class="language-http">limit=all</code>. <code>offset</code> is the number of items to skip (default: 0). You can use <code>limit</code> and <code>offset</code> together to create an app that pages through the results.</p>
+<p>The <code class="notranslate">limit</code> is the number of items to return (default: 10). To return all items, use <code class="language-http notranslate">limit=all</code>. <code class="notranslate">offset</code> is the number of items to skip (default: 0). You can use <code class="notranslate">limit</code> and <code class="notranslate">offset</code> together to create an app that pages through the results.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="reconciled">Reconciled data</h2>
 
-<p>The <code>reconciled</code> parameter is a boolean. If it is set to <code>true</code>, the results will be limited to reconciled data. If <code>false</code>, results will be limited to realtime (hourly unreconciled) data.</p>
+<p>The <code class="notranslate">reconciled</code> parameter is a boolean. If it is set to <code class="notranslate">true</code>, the results will be limited to reconciled data. If <code class="notranslate">false</code>, results will be limited to realtime (hourly unreconciled) data.</p>
 
-<aside class="bcls-aside bcls-aside--warning">Realtime data is only available for the previous 32 days. If you set <code class="language-http">reconciled=false</code> and the <code>from</code> date earlier than 32 days ago, the API will return an error.</aside>
+<aside class="bcls-aside bcls-aside--warning">Realtime data is only available for the previous 32 days. If you set <code class="language-http notranslate">reconciled=false</code> and the <code class="notranslate">from</code> date earlier than 32 days ago, the API will return an error.</aside>
 </section>
 
 <section class="bcls-section">
@@ -878,9 +878,9 @@
 <h3>Dimensions for geographical analytics</h3>
 
 <ul>
-	<li><code>country</code> - As the ISO-3611-1 country code. eg: 'US'</li>
-	<li><code>region</code> - As the ISO-3611-2 region code. eg: 'US-WA'</li>
-	<li><code>city</code> - City name. eg: Seattle</li>
+	<li><code class="notranslate">country</code> - As the ISO-3611-1 country code. eg: 'US'</li>
+	<li><code class="notranslate">region</code> - As the ISO-3611-2 region code. eg: 'US-WA'</li>
+	<li><code class="notranslate">city</code> - City name. eg: Seattle</li>
 </ul>
 
 <p>Note: For unknown country or region the API returns "ZZ" as the code (As per ISO-3611-alpha2).</p>
@@ -889,28 +889,28 @@
 <section class="bcls-section">
 <h2 id="fieldsAndSorting">Fields and Sorting</h2>
 
-<p>Use the <code>fields</code> parameter to specify the fields you want to return. By default, <code>video_view</code> is returned and the field corresponding to the dimension you are reporting on (e.g. <code>destination_domain</code>) are returned. See <a href="#metrics">dimensions and fields</a> for more details.</p>
+<p>Use the <code class="notranslate">fields</code> parameter to specify the fields you want to return. By default, <code class="notranslate">video_view</code> is returned and the field corresponding to the dimension you are reporting on (e.g. <code class="notranslate">destination_domain</code>) are returned. See <a href="#metrics">dimensions and fields</a> for more details.</p>
 
-<p>Use the <code>sort</code> parameter to specify which metric field is used to sort the returned items; for example: <code class="language-http">sort=video_view</code>. You can reverse the sort order by negating the sort field: <code> <span>sort= <span style="color:#CC0000;font-weight: bold;background-color:#FFFF00;">-</span>video_view</span> </code></p>
+<p>Use the <code class="notranslate">sort</code> parameter to specify which metric field is used to sort the returned items; for example: <code class="language-http notranslate">sort=video_view</code>. You can reverse the sort order by negating the sort field: <code class="notranslate"> <span>sort= <span style="color:#CC0000;font-weight: bold;background-color:#FFFF00;">-</span>video_view</span> </code></p>
 
-<aside class="bcls-aside bcls-aside--warning">The fields available to return or sort on depend on the <a href="#metrics">metrics</a> returned for the dimension(s) you are reporting on. These parameters are strictly validated, and your request will return an error if the <code>fields</code> or <code>sort</code> parameter points to a field not valid for the request.
+<aside class="bcls-aside bcls-aside--warning">The fields available to return or sort on depend on the <a href="#metrics">metrics</a> returned for the dimension(s) you are reporting on. These parameters are strictly validated, and your request will return an error if the <code class="notranslate">fields</code> or <code class="notranslate">sort</code> parameter points to a field not valid for the request.
 
-<p>For video dimension reports, valid sort values include video metadata fields: <code>video.name</code>, <code>video.reference_id</code>, and <code>video.tags</code>.</p>
+<p>For video dimension reports, valid sort values include video metadata fields: <code class="notranslate">video.name</code>, <code class="notranslate">video.reference_id</code>, and <code class="notranslate">video.tags</code>.</p>
 </aside>
 
 <aside class="bcls-aside bcls-aside--information">
 <h3>video_name vs. video.name</h3>
 
 <ul>
-	<li><code>video_name</code> is the video name recorded in analytics data</li>
-	<li><code>video.name</code> is the video name in the video metadata</li>
+	<li><code class="notranslate">video_name</code> is the video name recorded in analytics data</li>
+	<li><code class="notranslate">video.name</code> is the video name in the video metadata</li>
 </ul>
 
 <p>In most cases, the two values will be identical, but there are cases where they will not be:</p>
 
 <ul>
-	<li>In some cases, you may see a value for <code>video.name</code>, but not for <code>video_name</code> - in this case, the video name for some reason was not sent to the analytics data collector</li>
-	<li>In some cases, the values may be different - in this case, the video has been renamed at some point: <code>video.name</code> is the current name of the video in your Video Cloud media library; <code>video_name</code> will be the name of the video of the video at the time the data was sent to the analytics data collector (if you query a period in which the name changed, the value returned by the API will be the name associated with the majority of views during the period).</li>
+	<li>In some cases, you may see a value for <code class="notranslate">video.name</code>, but not for <code class="notranslate">video_name</code> - in this case, the video name for some reason was not sent to the analytics data collector</li>
+	<li>In some cases, the values may be different - in this case, the video has been renamed at some point: <code class="notranslate">video.name</code> is the current name of the video in your Video Cloud media library; <code class="notranslate">video_name</code> will be the name of the video of the video at the time the data was sent to the analytics data collector (if you query a period in which the name changed, the value returned by the API will be the name associated with the majority of views during the period).</li>
 </ul>
 </aside>
 </section>
@@ -921,7 +921,7 @@
 <p>You can add calculated fields to your API requests using the syntax:</p>
 
 <pre class="line-numbers">
-<code class="language-http">fields=calulated_field_name:expression</code></pre>
+<code class="language-http notranslate">fields=calulated_field_name:expression</code></pre>
 
 <p>You can use calculated fields to create your own custom fields out of existing metrics, or to rename an existing field.</p>
 
@@ -930,24 +930,24 @@
 <p>The name for the calculated field can be any URI-compatible string. The expression can include regular field names and the following arithmetic operators:</p>
 
 <ul>
-	<li><code><span class="bcls-highlight">+</span> </code> (addition)</li>
-	<li><code><span class="bcls-highlight">-</span> </code> (subtraction)</li>
-	<li><code><span class="bcls-highlight">*</span> </code>(multiplication)</li>
-	<li><code><span class="bcls-highlight">/</span> </code> (division)</li>
-	<li><code><span class="bcls-highlight">^</span> </code> (exponent)</li>
-	<li><code><span class="bcls-highlight">()</span> </code> (parentheses)</li>
+	<li><code class="notranslate"><span class="bcls-highlight">+</span> </code> (addition)</li>
+	<li><code class="notranslate"><span class="bcls-highlight">-</span> </code> (subtraction)</li>
+	<li><code class="notranslate"><span class="bcls-highlight">*</span> </code>(multiplication)</li>
+	<li><code class="notranslate"><span class="bcls-highlight">/</span> </code> (division)</li>
+	<li><code class="notranslate"><span class="bcls-highlight">^</span> </code> (exponent)</li>
+	<li><code class="notranslate"><span class="bcls-highlight">()</span> </code> (parentheses)</li>
 </ul>
 
 <h3>Examples</h3>
 
 <pre class="line-numbers">
-<code class="language-http">fields=avg_seconds_viewed:video_seconds_viewed/video_view,video.name</code></pre>
+<code class="language-http notranslate">fields=avg_seconds_viewed:video_seconds_viewed/video_view,video.name</code></pre>
 
 <pre class="line-numbers">
-<code class="language-http">fields=avg_incomplete_ads:(ad_mode_begin-ad_mode_complete)/video_view,video.name</code></pre>
+<code class="language-http notranslate">fields=avg_incomplete_ads:(ad_mode_begin-ad_mode_complete)/video_view,video.name</code></pre>
 
 <pre class="line-numbers">
-<code class="language-http">fields=Video%20Views:video_view,video.name</code></pre>
+<code class="language-http notranslate">fields=Video%20Views:video_view,video.name</code></pre>
 
 <h3>Sample request</h3>
 <textarea name="calculatedFieldSample" id="calculatedFieldSample" cols="30" rows="4" class="bcls-code">https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=video&amp;fields=avg_seconds_viewed:video_seconds_viewed/video_view,video_seconds_viewed,video.name&amp;sort=-video_view&amp;limit=4</textarea>
@@ -955,7 +955,7 @@
 <h4>Sample response (to the request above)</h4>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
   "item_count": 110,
   "items": [
     {
@@ -1005,10 +1005,10 @@
 
 <ul>
 	<li>Reports are available only for a single account, player, or video</li>
-	<li><code>where</code> filters are not supported</li>
-	<li>The only parameters supported are <code>from</code> and <code>to</code></li>
-	<li>If you provide <code>from</code> and <code>to</code> values in date format (MM-DD-YYYY), the report will reflect full day values</li>
-	<li>If you want hourly engagement data, the <code>from</code> and <code>to</code> values must be given in epoch milliseconds values that fall within the hours you want to report on</li>
+	<li><code class="notranslate">where</code> filters are not supported</li>
+	<li>The only parameters supported are <code class="notranslate">from</code> and <code class="notranslate">to</code></li>
+	<li>If you provide <code class="notranslate">from</code> and <code class="notranslate">to</code> values in date format (MM-DD-YYYY), the report will reflect full day values</li>
+	<li>If you want hourly engagement data, the <code class="notranslate">from</code> and <code class="notranslate">to</code> values must be given in epoch milliseconds values that fall within the hours you want to report on</li>
 </ul>
 </aside>
 
@@ -1017,7 +1017,7 @@
 <p>To get average values for engagement on viewed videos, use the endpoint:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">
+<code class="language-http notranslate">
     https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>
 </code></pre>
 
@@ -1026,7 +1026,7 @@
 <p>To get average values for all videos viewed in a player, use the endpoint:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">
+<code class="language-http notranslate">
     https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>/players/<em>:player_id</em>
 </code></pre>
 
@@ -1035,7 +1035,7 @@
 <p>To get engagement data for a specific video, use the endpoint:</p>
 
 <pre class="line-numbers" style="white-space:pre-wrap;padding-top:1em;padding-bottom:1em;">
-<code class="language-http">
+<code class="language-http notranslate">
     https://analytics.api.brightcove.com/v1/engagement/accounts/<em>:account_id</em>/videos/<em>:video_id</em>
 </code></pre>
 </section>
