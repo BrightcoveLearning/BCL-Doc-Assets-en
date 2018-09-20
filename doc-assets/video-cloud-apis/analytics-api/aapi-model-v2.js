@@ -135,7 +135,7 @@ var aapi_model = {
             required: false,
             description: 'If included, will limit results to either historical or realtime data',
             values: 'true | false',
-            default: 'none'
+            default: 'true'
         },
         from: {
             name: 'from',
