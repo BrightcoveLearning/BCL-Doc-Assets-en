@@ -1,7 +1,7 @@
 
 /*
  * Data Collection Plugin for Video JS
- * Version: 0.2
+ * Version: 0.3
  * Author: Robert Crooks
  * Description: Send analytics events for the Video JS player to Brightcove Analytics
  * Options:
@@ -15,7 +15,6 @@
  * Note: this is a sample only, not a supported Brightcove plugin
  */
 (function(videojs, window, document) {
-  "use strict";
   var defaults = {
       "showLog": "true",
       "accountID": 1752604059001,
