@@ -19,13 +19,13 @@ def get_access_token():
         print(access_token)
     return access_token
 
-def create_video():
+def get_video():
     access_token = get_access_token()
     headers = { 'Authorization': 'Bearer ' + access_token, "Content-Type": "application/json" }
 
     url = ("https://cms.api.brightcove.com/v1/accounts/{pubid}/videos/").format(pubid=pub_id)
-    data = '{"name": "***VIDEO TITLE HERE***"}'
-    r = requests.post(url, headers=headers, data=data)
+
+    r = requests.get(url, headers=headers, data=data)
     return r.json()
 
 
