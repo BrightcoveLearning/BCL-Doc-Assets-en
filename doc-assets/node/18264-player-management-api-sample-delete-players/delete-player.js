@@ -159,7 +159,7 @@ var BCLS = ( function (window, document) {
           endpoint            = '/' + options.account_id + '/players/' + playerToDelete;
           options.url         = baseURL + endpoint;
           options.requestType = 'DELETE';
-          api_response.textContent = 'We are not actually going to delete player ' + playerToDelete + ' here, as that is an irreversible action. If you need to actually create an app to delete players, you will find the code in the JavaScript source code here, commented out.'
+          api_response.textContent = 'We are not actually going to delete player ' + playerToDelete + ' here, as that is an irreversible action. If you need to create an app that really deletes players, you will find the code in the JavaScript source code here, commented out.'
 
           /**
            * If you really wanted to delete the player
