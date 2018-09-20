@@ -108,8 +108,8 @@ var BCLS = ( function (window, document) {
     // set event listeners on the new set of radio buttons
     for (i = 0; i < iMax; i++) {
       radioGroup[i].addEventListener('change', function() {
-        var playerId = getRadioValue(radioGroup);
-        showPlayerDetails(playerId);
+        playerToDelete = getRadioValue(radioGroup);
+        createRequest('deletePlayer');
       });
     }
   }
@@ -153,6 +153,23 @@ var BCLS = ( function (window, document) {
               // you would start with the last item instead of the first
               showNextPlayerList();
           });
+          break;
+
+        case 'deletePlayer':
+          endpoint            = '/' + options.account_id + '/players/' + playerToDelete;
+          options.url         = baseURL + endpoint;
+          options.requestType = 'DELETE';
+          api_response.textContent = 'We are not actually going to delete player ' + playerToDelete + ' here, as that is an irreversible action. If you need to actually create an app to delete players, you will find the code in the JavaScript source code here, commented out.'
+
+          /**
+           * If you really wanted to delete the player
+           * the lines commented out below would do it
+           */
+          // makeRequest(options, function(response) {
+          //     responseDecoded = JSON.parse(response);
+          //     api_response.textContent = JSON.stringify(responseDecoded, null, 2);
+          //     showNextPlayerList();
+          // });
           break;
 
         // additional cases
