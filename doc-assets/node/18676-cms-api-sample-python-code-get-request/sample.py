@@ -28,20 +28,6 @@ def create_video():
     r = requests.post(url, headers=headers, data=data)
     return r.json()
 
-def submit_pbi(video_id):
-    access_token = get_access_token()
-    print access_token
-    headers = { 'Authorization': 'Bearer ' + access_token, "Content-Type": "application/json" }
-
-    url = ("https://ingest.api.brightcove.com/v1/accounts/{pubid}/videos/{videoid}/ingest-requests").format(pubid=pub_id, videoid=video_id)
-    print url
-
-    data = '''{
-            "master": { "url": "****SOURCE VIDEO URL HERE***" }
-         }'''
-    r = requests.post(url, headers=headers, data=data)
-    print r.headers
-    return r.json()
 
 v = create_video()
 print v
