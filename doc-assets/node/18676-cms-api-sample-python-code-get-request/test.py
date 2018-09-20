@@ -3,7 +3,6 @@
 import sys
 import requests
 import json
-import argparse
 
 pub_id = "1752604059001"
 client_id = "3e23bbec-59b8-4861-b5ba-7c26e110a746"
@@ -31,4 +30,3 @@ def get_video():
 
 v = get_video()
 print(v)
-
