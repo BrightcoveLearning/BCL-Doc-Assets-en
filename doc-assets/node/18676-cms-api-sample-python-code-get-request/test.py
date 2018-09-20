@@ -5,10 +5,10 @@ import requests
 import json
 import argparse
 
-pub_id = "***ACCOUNT ID HERE****"
-client_id = "***CLIENT ID HERE****"
-client_secret = "***CLIENT SECRET HERE****"
-access_token_url = "https://oauth.brightcove.com/v3/access_token"
+pub_id = "1752604059001"
+client_id = "3e23bbec-59b8-4861-b5ba-7c26e110a746"
+client_secret = "quNdrH07IVoG8yZxSFsCySWmtvUuWfPYyzeg1Nil7Md7VpQ50A3KVV4eeMrZSR7FdeZA_3JS5jV9pBBI0skwWA"
+access_token_url = "https://oauth.brightcove.com/v4/access_token"
 profiles_base_url = "https://cms.api.brightcove.com/v1/accounts/{pub_id}"
 
 def get_access_token():
@@ -29,6 +29,6 @@ def get_video():
     return r.json()
 
 
-v = create_video()
+v = get_video()
 print v
-print submit_pbi(v['id'])
+
