@@ -25,10 +25,10 @@ def get_video():
 
     url = ("https://cms.api.brightcove.com/v1/accounts/{pubid}/videos/").format(pubid=pub_id)
 
-    r = requests.get(url, headers=headers, data=data)
+    r = requests.get(url, headers=headers)
     return r.json()
 
 
 v = get_video()
-print v
+print(v)
 
