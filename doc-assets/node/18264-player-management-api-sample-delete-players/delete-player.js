@@ -10,10 +10,11 @@ var BCLS = ( function (window, document) {
     show_more_players = document.getElementById('show_more_players'),
     radioGroup = document.getElementsByName('playerList'),
     player_list = document.getElementById('player_list'),
-    player_details = document.getElementById('player_details'),
+    delete_player = document.getElementById('delete_player'),
     playerCount = 0,
     nextPlayerStart = 0,
-    players;
+    players,
+    playerToDelete;
     // event handlers
     get_players.addEventListener('click', function() {
       createRequest('getPlayers');
