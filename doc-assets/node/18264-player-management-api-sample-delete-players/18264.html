@@ -1,70 +1,47 @@
 <article class="bcls-article">
-<section id="Disclaimer" class="bcls-section">
-<h2>Disclaimer</h2>
+<section class="bcls-section">
+<h2 id="Disclaimer">Disclaimer</h2>
 
-<aside class="bcls-aside bcls-aside--warning">Deleting players is a non-reversible action. To err on the side of caution, this page is non-functional (the <em>Delete Players</em> button does nothing).</aside>
+<aside class="bcls-aside bcls-aside--warning">Deleting players is a non-reversible action. To err on the side of caution, this page is non-functional (the <em>Delete Selected Players</em> button will just display an exlanatory message).</aside>
 
-<p>You can get the functional, non-styled <a href="https://gist.github.com/bcls/9351324">Delete Player code</a> and place it on a local web server if you need a delete players app.</p>
+<p>If you need to create a delete players app, you will find the code needed to make this app functional commented out in the JavaScript</p>
 
 <aside class="bcls-aside bcls-aside--warning">This sample app is meant as a way for you to explore the basics of the Player Management API. It is not meant to be an enterprise ready, deployable app. For instance, form validation is not exhaustive and passwords are sent NOT using HTTPS.
 <p>To learn about the general approach concerning the architecture of this sample app, specifically authentication and AJAX implementations, see the <a href="https://support.brightcove.com/search?search=xmlhttprequest">Examples using HTTPRequest</a>.</p>
 </aside>
 </section>
 
-<section id="defaultplayer" class="bcls-section">
-<h2>Default player</h2>
+<section class="bcls-section">
+<h2 id="the_app">The app</h2>
 
-<p>Although you can delete the default player, a new default player will automatically be recreated instantly. This is so there is always at least one player in each account, which provides an optimal UI experience.</p>
+<p>You can find all the code associated with the CodePen in <a href="https://github.com/BrightcoveLearning/18264-player-management-api-sample-delete-players">this Github repo</a>.</p>
+
+<p data-height="1000" data-theme-id="dark" data-slug-hash="vzbQvp" data-default-tab="result" data-user="rcrooks1969" data-pen-title="Delete Player" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/vzbQvp/">Delete Player</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+</section>
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+	<li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+	<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18266-player-management-api-sample-display-players">GitHub repository</a>.</li>
+</ul>
+</div>
 </section>
 
-<section id="architecture" class="bcls-section">
-<h2>App architecture</h2>
+<section class="bcls-section">
+<h2 id="proxy">Proxy code</h2>
 
-<p>The high-level application logic for this app is as follows:</p>
+<p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:</p>
 
-<ol>
-	<li>Gather necessary data to access account</li>
-	<li>On button click, perform AJAX call to retrieve all player info</li>
-	<li>On AJAX call success perform the following:
-	<ul>
-		<li>Call function to display a checkbox, followed by player name, for all players</li>
-		<li>Call function that continuously watches checkboxes for checked status and keeps an array of IDs for all checked players</li>
-	</ul>
-	</li>
-	<li>On button click, start process to loop over selected player IDs and perform AJAX call to delete each player</li>
-	<li>On AJAX call success perform the following:
-	<ul>
-		<li>Clear the existing list of players</li>
-		<li>Display the returned <code>204</code> status code that indicates successful deletion</li>
-	</ul>
-	</li>
-</ol>
+<ul>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
+	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
+</ul>
 </section>
 
-<section id="accountinput" class="bcls-section">
-<h2>Account input</h2>
-
-<p>Username: <input id="account_username" type="text" size="100" value="mboles@brightcove.com" name="account_username" /></p>
-
-<p>Account ID: <input id="account_id" type="text" size="40" value="1507807800001" name="account_id" /></p>
-
-<p>Password: <input id="account_password" type="password" size="40" name="account_password" /></p>
-
-<p><span class="bcls-button" onclick="getPlayerInfo()">Display Players</span></p>
-
-<div id="choosePlayers">Your players will be displayed here.</div>
-
-<aside class="bcls-aside bcls-aside--warning">Deleting players is a non-reversible action. To err on the side of caution, this page is non-functional (the <em>Delete Players</em> button does nothing). You can get the functional, non-styled <a href="https://gist.github.com/bcls/9351324">Delete Player code</a> and place it on a local web server if you need a delete players app.</aside>
-
-<p><span class="bcls-button">Delete Players</span></p>
-</section>
-
-<section id="processedResponse" class="bcls-section">
-<h2><a name="processedResponse"></a>Processed response</h2>
-
-<p>No response data is returned on a player delete, so the successful delete code of <code>204</code> is retrieved and displayed from the AJAX object for each deletion:</p>
-
-<div id="htmlOutput">&nbsp;</div>
-</section>
 </article>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/samples/delete-player/delete-player.js"></script>
