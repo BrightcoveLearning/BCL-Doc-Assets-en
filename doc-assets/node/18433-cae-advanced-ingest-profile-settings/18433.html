@@ -1,489 +1,152 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>The Static Entry Points (SEP) feature allows for a long-running live job that can be activated and deactivated while keeping the entry point URLs and playback URLs static and re-usable. This feature allows for customers to configure their encoder in their facilities or the field and allows the customer to create their own scheduling logic for live channels or programs.</p>
+</section>
 
 <section class="bcls-section">
-    <h2 id="Introduction">Introduction</h2>
-    <p>By default Video Cloud offers three preset CAE enabled profiles: multi-platform-standard-dynamic, multi-platform-extended-dynamic, and low-bandwidth-dynamic.  Customers who prefer to fine tune their CAE settings can create custom Ingest profiles including any of the following parameters.</p>
+<h2 id="dvr_and_sep">DVR and SEP</h2>
+
+<p>DVR capability is available for static entry points, but only while the SEP is <strong>activated</strong>.</p>
 </section>
+
 <section class="bcls-section">
-    <h2 id="dynamic_profile_options">Dynamic Profile Options</h2>
-    <p>The following parameters may be specified as part of the dynamic_profiles_options block for a CAE enabled Video Cloud Ingest Profile:</p>
-    <table class="bcls-table">
-        <thead class="bcls-table__head">
-            <tr>
-                <td>
-                    <p>Name</p>
-                </td>
-                <td>
-                    <p>Type</p>
-                </td>
-                <td>
-                    <p>Description</p>
-                </td>
-                <td>
-                    <p>Defaults</p>
-                </td>
-            </tr>
-        </thead>
-        <tbody class="bcls-table__body">
-            <tr>
-                <td>
-                    <p>"min_renditions"</p>
-                </td>
-                <td>
-                    <p>integer number</p>
-                </td>
-                <td>
-                    <p>Minimum number of renditions to generate.  </p>
-                </td>
-                <td>
-                    <p>Default = 1 Range   =  1 - 15</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"max_renditions"</p>
-                </td>
-                <td>
-                    <p>integer number</p>
-                </td>
-                <td>
-                    <p>Maximum number of renditions to generate.</p>
-                </td>
-                <td>
-                    <p>Default = 6 Range   =  1 - 15</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"max_resolution"</p>
-                </td>
-                <td>
-                    <p>structure {"width" : &lt;int&gt;,   "height": &lt;int&gt; }</p>
-                </td>
-                <td>
-                    <p>Maximum resolution to be considered for the ladder.</p>
-                    <p>(Aspect ratio of source will be preserved for outputs)</p>
-                </td>
-                <td>
-                    <p>Default = source resolution Range = 1x1 - 8192x8192.</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"max_frame_rate"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Maximum frame rate that can be used.</p>
-                </td>
-                <td>
-                    <p>Default = 30</p>
-                    <p>Range = 0.1 - 120</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"keyframe_rate"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Keyframe rate.  This value can be either 0.5 or 1.  For SSAI enabled content, this value needs to be 1.</p>
-                </td>
-                <td>
-                    <p>Default = 0.5fps</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"min_bitrate"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Minimum bitrate [kbps] that can be used.</p>
-                </td>
-                <td>
-                    <p>Default = 200 Kbps Range   =  40 - 400</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"max_bitrate"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Maximum bitrate [kbps] that can be used. </p>
-                </td>
-                <td>
-                    <p>Default = 15000 Kbps Range   =  400 - 40000</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"max_first_rendition_bitrate"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Maximum bitrate [kbps] that can be used for first rendition.</p>
-                </td>
-                <td>
-                    <p>Default = 400 Kbps Range   =  40 - 1000</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"min_ssim"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Lowest allowed SSIM for each rendition. </p>
-                </td>
-                <td>
-                    <p>Default = 0.94</p>
-                    <p>Range   = 0.8 - 0.99</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"max_ssim"</p>
-                </td>
-                <td>
-                    <p>floating point number</p>
-                </td>
-                <td>
-                    <p>Highest allowed SSIM for each rendition. </p>
-                </td>
-                <td>
-                    <p>Default = 0.99</p>
-                    <p>Range   = 0.9 - 0.99</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"video_configurations"</p>
-                </td>
-                <td>
-                    <p>array </p>
-                </td>
-                <td>
-                    <p>An array of structures describing resolutions, framerates and associated codec parameters that should be preferentially or mandatorily generated as part of the CAE encoding. See section below.</p>
-                </td>
-                <td> </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>"select_baseline_profile_configuration"</p>
-                </td>
-                <td>
-                    <p>boolean</p>
-                </td>
-                <td>
-                    <p>At least one rendition used in the profile will be baseline profile</p>
-                </td>
-                <td>
-                    <p>Default = false</p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<h2 id="Creating_a_static_entry_point">Creating a static entry point</h2>
+
+<p>The standard <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#api-Live_Jobs-Create_a_Live_Job">Create Job</a> operation will is used, but for the addition of Static Entry Points a property will need to be added to the job request:</p>
+
+<pre>
+<code class="language-json notranslate">"static": true</code></pre>
+
+<p>The responding RTMP URL from this job will be static and can then be reused by activating/deactivating the job with the operations described in the sections below. Please read and understand the limitations listed at the end of this document.</p>
 </section>
+
 <section class="bcls-section">
-    <h2 id="video_configurations">Video Configurations</h2>
-    <p>This is an array of structures describing video resolutions and codec parameters that CAE should/must produce as part of its output. This array is optional. If omitted, an array of 16 resolutions, ranging from 192x108 to 1920x1080 will be used as the
-        default  input set for CAE.</p>
-        <p>Each element in video_configurations array, may include the following elements:</p>
-        <table class="bcls-table">
-            <thead class="bcls-table__head">
-                <tr>
-                    <td>
-                        <p>Name</p>
-                    </td>
-                    <td>
-                        <p>Type</p>
-                    </td>
-                    <td>
-                        <p>Description</p>
-                    </td>
-                    <td>
-                        <p>Required/optional</p>
-                    </td>
-                </tr>
-            </thead>
-            <tbody class="bcls-table__body">
-                <tr>
-                    <td>
-                        <p>"width"</p>
-                    </td>
-                    <td>
-                        <p>integer number</p>
-                    </td>
-                    <td>
-                        <p>Video frame width [pixels]</p>
-                    </td>
-                    <td>
-                        <p>Required</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"height"</p>
-                    </td>
-                    <td>
-                        <p>integer number</p>
-                    </td>
-                    <td>
-                        <p>Video frame height [pixels]</p>
-                    </td>
-                    <td>
-                        <p>Required</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"sample_aspect_ratio"</p>
-                    </td>
-                    <td>
-                        <p>integer:integer pair</p>
-                    </td>
-                    <td>
-                        <p>Sample aspect ratio (e.g. 1:1, 4:3)</p>
-                    </td>
-                    <td>
-                        <p>Optional</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"frame_rate"</p>
-                    </td>
-                    <td>
-                        <p>floating point number</p>
-                    </td>
-                    <td>
-                        <p>Video frame rate [fps]</p>
-                    </td>
-                    <td>
-                        <p>Optional</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"video_codec_profile"</p>
-                    </td>
-                    <td>
-                        <p>string </p>
-                    </td>
-                    <td>
-                        <p>video codec profile</p>
-                    </td>
-                    <td>
-                        <p>Optional</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"video_codec_level"</p>
-                    </td>
-                    <td>
-                        <p>string</p>
-                    </td>
-                    <td>
-                        <p>video codec level</p>
-                    </td>
-                    <td>
-                        <p>Optional</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"video_reference_frames"</p>
-                    </td>
-                    <td>
-                        <p>integer number</p>
-                    </td>
-                    <td>
-                        <p>Constraint on number of reference frames. Default=4.</p>
-                    </td>
-                    <td>
-                        <p>Optional</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"video_bframes"</p>
-                    </td>
-                    <td>
-                        <p>integer number</p>
-                    </td>
-                    <td>
-                        <p>Constraint on number of B frames. </p>
-                        <p>Default=3. </p>
-                    </td>
-                    <td>
-                        <p>Optional</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>"required"</p>
-                    </td>
-                    <td>
-                        <p>boolean</p>
-                    </td>
-                    <td>
-                        <p>Setting this to true will guarantee the suggested configuration settings in the output</p>
-                    </td>
-                    <td>
-                        <p> Default = false</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p>Ingest Profile example:</p>
-        <p>The following JSON provides an example custom Video Cloud CAE Ingest Profile:</p>
-<pre class="line-numbers"><code class="language-json">{
-    "id": "1234567890",
-    "version": 1,
-    "name": "custom-cae-profile",
-    "description": "My custom CAE profile",
-    "account_id": 40000000001,
-    "brightcove_standard": false,
-    "digital_master": {
-        "rendition": "passthrough",
-        "distribute": false
-    },
-    "dynamic_origin": {
-        "renditions": [
-        "default/audio64",
-        "default/audio96",
-        "default/audio128",
-        "default/audio192"
-        ],
-        "dynamic_profile_options": {
-            "min_renditions": 3,
-            "max_renditions": 6,
-            "max_resolution": {
-                "width": 1920,
-                "height": 1080
-            },
-            "max_bitrate": 4200,
-            "max_first_rendition_bitrate": 400,
-            "max_frame_rate": 30,
-            "keyframe_rate": 0.5,
-            "select_baseline_profile_configuration": true,
-            "min_ssim": 0.95,
-            "video_configurations": [
-            {
-                "width": 1280,
-                "height": 720
-            },
-            {
-                "width": 960,
-                "height": 540
-            },
-            {
-                "width": 640,
-                "height": 360
-            }
-            ]
-        },
-        "images": [
-        {
-            "label": "poster",
-            "height": 720,
-            "width": 1280
-        },
-        {
-            "label": "thumbnail",
-            "height": 90,
-            "width": 160
-        }
-        ]
-    }
+<h2 id="max_waiting_time">Maximum waiting time</h2>
+
+<p>After an SEP job is activated, it will automatically deactivate after some time if the encoder is not started. The rules are as follows:</p>
+
+<ul>
+	<li>If the <code class="notranslate">event_length</code> value is greater than 30 minutes, the job will automatically terminate in 30 minutes.</li>
+	<li>If the <code class="notranslate">event_length</code>value is less than 30 minutes, the job will terminate in the time set for <code class="notranslate">event_length</code>.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Activate_static_entry_point_stream">Activate SEP Live Stream</h2>
+
+<p>To activate a static entry point live stream, send the following request to the Live API:</p>
+
+<aside class="bcls-aside bcls-aside--information">To be able to ingest to a Static Entry Point, you must make the <code class="notranslate">activate</code> API request.</aside>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Active SEP Stream</caption>
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td><code class="notranslate">PUT</code></td>
+		</tr>
+		<tr>
+			<th>Endpoint</th>
+			<td>
+			<pre>
+<code class="language-http notranslate">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">{jobID}</span>/<strong>activate</strong></code></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>No request body is required.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Deactivate_static_entry_point_stream">Deactivate SEP Live Stream</h2>
+
+<aside class="bcls-aside bcls-aside--warning">Note: always stop the encoder before deactivating the stream.</aside>
+
+<p>To deactivate a static entry point live stream, send the following request to the Live API:</p>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">Active SEP Stream</caption>
+	<tbody class="bcls-table__body">
+		<tr>
+			<th>Method</th>
+			<td><code class="notranslate">PUT</code></td>
+		</tr>
+		<tr>
+			<th>Endpoint</th>
+			<td>
+			<pre>
+<code class="language-http notranslate">https://api.bcovlive.io/v1/jobs/<span class="bcls-input">{jobID}</span>/<strong>deactivate</strong></code></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--information">Note that when you deactivate a static entry point, the last few seconds of the stream remain playable.</aside>
+
+<p>No request body is required.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Cancel_sep_job">Cancel an SEP job</h2>
+
+<p>To permanently stop a static entry point job, you can cancel the job just as you would any live job, by sending a <code class="notranslate">PUT</code> request the endpoint <code class="notranslate">/jobs/{job_id}/cancel</code>. See the <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#operation/CancelLiveJob">API reference</a> for full details.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<ul>
+	<li>Live to VOD can not be set to archive the stream on completion.
+	<p style="font-weight:bold;">Alternatives:</p>
+
+	<ul>
+		<li>Use <a href="/node/17761">clipping</a> to archive the full live event as a VOD. The window for clipping will be available for the standard duration after an event or until the next activation of the SEP (whichever is shorter).</li>
+	</ul>
+	</li>
+	<li>Job settings can not be modified. They are currently tied to the settings that initially created the SEP.</li>
+	<li>Activating the stream can take up to 60 seconds for the entrypoint to be available.
+	<p style="font-weight:bold;">Best practice:</p>
+
+	<p>Implement notifications from the Live platform for job state changes to get real-time updates for when a SEP job is actually ready.</p>
+
+	<p style="font-weight:bold;">Alternatives:</p>
+
+	<ol>
+		<li>Activate the stream at minimum 60 seconds in advance of starting the encoder.</li>
+		<li>If the encoder has built-in retry (Wirecast, Elemental, etc.), the stream can be connected immediately (though there may be some errors) and the encoders will reconnect as soon as the entry point is available.</li>
+	</ol>
+	</li>
+	<li>Reconnect_time is still applicable for SEP jobs on encoder disconnects. If the reconnect time is reached, the SEP job will be placed back to a deactivated state.
+	<p style="font-weight:bold;">Best practice:</p>
+
+	<p>Always deactivate a stream via the API’s when a job completes and set the reconnect time to an acceptable window of time to wait in the event of a disconnect (input hour costs are accrued during this wait period).</p>
+
+	<aside class="bcls-aside bcls-aside--warning">Note: always stop the encoder before deactivating the stream.</aside>
+	</li>
+	<li>Each account will only be allocated a finite number of available SEP jobs. If you hit the limit, you will need to <a href="https://docs.brightcove.com/live-api/v1/doc/index.html#operation/CancelLiveJob">cancel</a> one of your SEP jobs before you can create a new one.
+	<p>If you have reached the maximum number of SEP jobs and attempt to create another one, the following error will be returned:</p>
+
+	<pre class="line-numbers">
+<code class="language-json notranslate">{
+  "error": "You've reached the number of static entry points jobs you can create in this region for your account"
 }</code></pre>
+	</li>
+</ul>
+
+<p>See <a href="/node/17764#Support_aws_regions">Supported AWS Regions</a> for default limitations on the number of concurrent SEP jobs allowed per region.</p>
 </section>
+
 <section class="bcls-section">
-    <h2 id="creating_profiles">Creating Profiles</h2>
-    <p>Please use the instructions at <a href="/node/18433">Creating Ingest Profiles for CAE</a> or the <a href="/node/18374">Ingest Profiles API</a> to create custom Ingest Profiles.</p>
-    <p>Guidelines for using CAE options: </p>
-    <p>The following table includes some guidelines for using CAE parameters</p>
-    <table class="bcls-table">
-        <tbody class="bcls-table__body">
-            <tr>
-                <td>
-                    <p>Profile characteristics</p>
-                </td>
-                <td>
-                    <p>Guidelines</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>number of renditions</p>
-                </td>
-                <td>
-                    <p>Is controllable by using "min_renditions", "max_renditions"  parameters. When setting these parameters it is desirable to leave a certain gap (e.g. 3-4 renditions) between "min_renditions" and "max_renditions" limits. This gap will allow profile generator to adapt the number of renditions based on characteristics of the content. E.g., for easy to encode content, it may produce fewer renditions, while for more complex content it may produce more.</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>set of resolutions</p>
-                </td>
-                <td>
-                    <p>By default, profile generator uses a ladder of over 20 common resolutions, ranging from 192x108 to 3840x2160. It can truncated at any point by setting "max_resolution" parameter. </p>
-                    <p>Alternatively, a custom list of resolutions and associated codec parameters can be provided by using "video_configurations" array.</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>GOP length</p>
-                </td>
-                <td>
-                    <p>Is settable by "keyframe_rate" parameter.  This value can be either 0.5 (meaning 1 keyframe every 2 seconds)  or 1 .  For SSAI enabled content, this value needs to be 1.</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>Range of bitrates </p> </td>
-                    <td>
-                        <p>Can be set by using the "min_bitrate" and "max_bitrate" parameters. This will guarantee that first rendition will use at least "min_bitrate" kbps, and that last rendition will use less or equal than "max_bitrate" kbps.</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Startup latency</p>
-                    </td>
-                    <td>
-                        <p>Is controllable by setting "max_first_rendition_bitrate" limit.</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Support for legacy devices</p>
-                    </td>
-                    <td>
-                        <p>Is controllable by setting "select_baseline_profile_configuration" parameter. When this is true, at least one rendition will be encoded with H.264 baseline profile. </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Quality control</p>
-                    </td>
-                    <td>
-                        <p>Parameter "min_ssim" can be used to ensure that all renditions are encoded at given structural similarity (SSIM) index level. Foe example setting "min_ssim": 0.97, will enforce all renditions to be encoded at at least 0.97 SSIM level.
-                            Overly aggressive settings may reduce the effectiveness of CAE.</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<h2 id="Notes">Notes</h2>
+
+<dl>
+	<dt>Clipping SEP jobs after deactivation</dt>
+	<dd>Users can create clips up until the next activation of the stream, or for 24 hours, whichever is shorter. When the stream is re-activated, previous recording sessions are removed from the server and can no longer be clipped.</dd>
+	<dt>What is the timing for the stream_start_time field when a SEP is used?</dt>
+	<dd>When a SEP is activated that would be considered the start time.</dd>
+</dl>
 </section>
+</article>
