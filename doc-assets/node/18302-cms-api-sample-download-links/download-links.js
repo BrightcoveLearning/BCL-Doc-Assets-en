@@ -15,6 +15,7 @@ var BCLS = (function(window, document) {
     totalCalls = 0,
     callNumber = 0,
     videosArray = [],
+    noDownloadableSources = [],
     // elements
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
@@ -112,7 +113,11 @@ var BCLS = (function(window, document) {
     // sort sources by encoding rate
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
-    return sources[0];
+    if (sources.length > 0) {
+      return sources[0];
+    } else {
+      return null;
+    }
   }
 
   function addItems() {
@@ -272,9 +277,13 @@ var BCLS = (function(window, document) {
             // get the best MP4 rendition
             var source = processSources(sources);
             videosArray[callNumber].source = source;
+            if (source === null) {
+              noDownloadableSources.push(videosArray[callNumber])
+            }
           } else {
             // video has no sources
             videosArray[callNumber].source = null;
+            noDownloadableSources.push(videosArray[callNumber])
           }
           callNumber++;
           if (callNumber < iMax) {
@@ -286,7 +295,6 @@ var BCLS = (function(window, document) {
               i--;
               console.log('videosArray[i]', videosArray[i]);
               if (!isDefined(videosArray[i].source)) {
-                console.log('i', i);
                 videosArray.splice(i, 1);
               }
             }
