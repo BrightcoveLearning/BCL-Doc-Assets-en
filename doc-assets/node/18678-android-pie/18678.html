@@ -25,12 +25,126 @@
   <section class="bcls-section">
   <h2 id="TLS_enabled_by_default">TLS enabled by default</h2>
 
-  <p>With the release of Android Pie (API level 28), clear text traffic is disabled by default. If your application attempts to do a clear HTTP request, an <code class="notranslate">IOException</code> will be thrown with the message:</p>
+  <p>Transport Layer Security (TLS) is a protocol for providing secure communications over a computer network. TLS is implemented on top of HTTP, allowing for encrypted communication over HTTPS.</p>
+  <p>
+    When Google released Android Marshmallow (API level 23), it provided a configuration to disable clear text traffic, which would prevent your app from making clear HTTP requests. With the release of Android Pie (API level 28), clear text traffic is disabled by default.
+  </p>
+<p>
+  If your app targets Android Pie (API level 28) or above, you need to handle this behavior change so that your app works as expected. You have three options:
+</p>
+<ul>
+  <li>
+    <a href="#HTTPS_only">Ensure your app only makes HTTPS requests</a>
+  </li>
+  <li>
+    <a href="#HTTP_for_all_domains">Enable clear HTTP traffic for all domains</a>
+  </li>
+  <li>
+    <a href="#HTTP_for_specific_domains">Enable clear HTTP traffic for all domains</a>
+  </li>
+</ul>
+<p>
+  With clear text traffic disabled by default, if your application attempts to do a clear HTTP request, an IOException is thrown with the following message:
+</p>
+<pre>
+<code class="notranslate language-java">Exception: IOException java.io.IOException: Cleartext HTTP traffic to * not permitted</code></pre>
+<p>
+  For more information, visit google’s website: <a href="https://developer.android.com/about/versions/pie/android-9.0-changes-28#framework-security-changes">Framework security changes</a> and
+<a href="https://developer.android.com/training/articles/security-config">Network security configuration</a>.
+</p>
+
+
+
+
+
+  <!-- <p>With the release of Android Pie (API level 28), clear text traffic is disabled by default. If your application attempts to do a clear HTTP request, an <code class="notranslate">IOException</code> will be thrown with the message:</p>
   <pre><code class="notranslate language-java">Exception: IOException java.io.IOException: Cleartext HTTP traffic to * not permitted</code></pre>
   <p>
     To learn more about managing TLS with Android Pie, see the following document:
 https://docs.google.com/document/d/1PfXOq59MG8s87gcwiZvzWCZ_CuKDpLi3VO-VRF_LkjY/edit?usp=sharing
+  </p> -->
+
+  <h3 id="HTTPS_only">HTTPS only</h3>
+  <p>
+    One option is to make sure all of your network requests use HTTPS. To do so, follow these steps:
   </p>
+  <ol class="bcls-tasklist__restart">
+    <li>
+      <p>
+        Enable your CDN for secure communication.
+      </p>
+      <ul>
+        <li>
+          Video Cloud customers (whether you are using the house CDN or a named CDN) should contact their Brightcove account managers to ensure accounts are configured to deliver over HTTPS.
+        </li>
+        <li>
+          For those using remote assets, you may need to configure your CDN appropriately.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        Use secure communication to deliver your media content. This includes video, ads, captions, poster images, thumbnails and other third-party API connections.
+      </p>
+        <ul>
+          <li>
+            Video Cloud customers: Use the Playback API to retrieve the secure protocol for each of your assets. The Brightcove SDK for Android selects HTTPS by default when available.
+          </li>
+          <li>
+            Brightcove Player customers: Make sure your media content is delivered over HTTPS.
+          </li>
+        </ul>
+    </li>
+  </ol>
+
+  <h3 id="HTTP_for_all_domains">HTTP for all domains</h3>
+  <p>
+    Your app can use clear HTTP traffic for all domains.
+  </p>
+  <ol class="bcls-tasklist__restart">
+    <li>
+      <p>
+        To enable this, open the <strong>AndroidManifest</strong> file, and add the following line in the <code class="notranslate">application</code> tag. For example:
+      </p>
+      <pre>
+    <code class="notranslate language-java">&lt;application
+       android:name=&quot;mypackage.MyApplication&quot;
+       android:usesCleartextTraffic=&quot;true&quot;&gt;
+    &hellip;
+    &lt;/application&gt;</code></pre>
+    </li>
+
+  </ol>
+
+<h3 id="HTTP_for_specific_domains">HTTP for specific domains</h3>
+<p>
+  You can specify certain domains to be permitted to use clear HTTP requests. To do this, follow these steps:
+</p>
+<ol class="bcls-tasklist__restart">
+  <li>
+    <p>
+      Create an xml file, for example <strong>network-security-config.xml</strong>, and add it to the <strong>res/xml</strong> directory. See the following example for how to set your domains:
+    </p>
+    <pre><code class="notranslate language-java">&lt;network-security-config&gt;
+ &lt;domain-config cleartextTrafficPermitted=&quot;true&quot;&gt;
+     &lt;domain includeSubdomains=&quot;true&quot;&gt;c.brightcove.com&lt;/domain&gt;
+     &lt;domain includeSubdomains=&quot;true&quot;&gt;solutions.brightcove.com&lt;/domain&gt;
+ &lt;/domain-config&gt;
+&lt;/network-security-config&gt;</code></pre>
+  </li>
+  <li>
+    <p>
+      Set the file name in your <strong>AndroidManifest</strong> as shown below:
+    </p>
+    <pre><code class="notranslate language-java">&lt;application
+ android:name=&quot;mypackage.MyApplication&quot;
+ <span class="bcls-highlight">android:networkSecurityConfig=&quot;@xml/network_security_config&quot;&gt;</span>
+&hellip;
+&lt;/application&gt;</code></pre>
+  </li>
+</ol>
+<aside class="bcls-aside bcls-aside--information">The <code class="notranslate">networkSecurityConfig</code> parameter overrides the <code class="notranslate">usesCleartextTraffic</code> parameter. This means that if both are enabled, only the declared domains in the <code class="notranslate">networkSecurityConfig</code> file parameter will be allowed to use clear HTTP requests.</aside>
+
   </section>
 
   <section class="bcls-section">
