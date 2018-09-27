@@ -116,7 +116,7 @@
 
 <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
 
-<p><strong>Valid Values:</strong> A valid S3, Cloud Files, FTP, FTPS, SFTP, Aspera, Azure, or HTTP.</p>
+<p><strong>Valid Values:</strong> A valid S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, or HTTP.</p>
 
 <p><strong>Compatible Job Types:</strong> All</p>
 
@@ -126,6 +126,7 @@
 	<li>s3://my-output-bucket/final.mp4</li>
 	<li>cf://username:api_key@container/object</li>
 	<li>cf+uk://username:api_key@container/object</li>
+	<li>gcs://access_key:secret_key@gcs-bucket/object</li>
 	<li>ftp://user:password@ftp.example.com/final.mp4</li>
 	<li>sftp://user:password@sftp.example.com/final.mp4</li>
 	<li>aspera://user:password@host:ssh-port/path/to/file.mp4</li>
@@ -148,6 +149,12 @@
 <p>You can specify the region to use (DFW, ORD, or UK) by adding it to the protocol, like <code class="notranslate">cf+ord://username:api_key@container/object</code>. Currently the only Cloud Files regions supported are DFW, ORD and UK. The DFW region will be used by default.</p>
 
 <p>Any special characters in the container name must be URL encoded.</p>
+
+<p><strong>Notes on Google Cloud Storage:</strong></p>
+
+<p>GCS access keys can be found under the "Interoperable Access" section in the <a href="https://storage.cloud.google.com/m">Google APIs console</a>. Access keys must be <a href="/node/17895">properly escaped</a>.</p>
+
+<p>GCS bucket names that include dots are not supported.</p>
 
 <p><strong>Notes on Azure:</strong></p>
 
@@ -194,7 +201,7 @@
 
 <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
 
-<p><strong>Valid Values:</strong> A valid S3, Cloud Files, FTP, FTPS, SFTP, Aspera, Azure, or HTTP URL.</p>
+<p><strong>Valid Values:</strong> A valid S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, or HTTP URL.</p>
 
 <p><strong>Compatible Job Types:</strong> All</p>
 
@@ -217,7 +224,7 @@
 
 <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
 
-<p><strong>Valid Values:</strong> A valid S3, Cloud Files, Aspera, FTP, FTPS, or SFTP URL, without a filename.</p>
+<p><strong>Valid Values:</strong> A valid S3, Cloud Files, GCS, Aspera, FTP, FTPS, or SFTP URL, without a filename.</p>
 
 <p><strong>Compatible Job Types:</strong> All</p>
 
@@ -226,6 +233,7 @@
 <ul>
 	<li>s3://my-output-bucket/</li>
 	<li>cf://username:api_key@container/</li>
+	<li>gcs://access_key:secret_key@gcs-bucket/</li>
 	<li>ftp://user:password@ftp.example.com/path/to</li>
 	<li>http://s3.amazonaws.com/my-output-bucket/</li>
 	<li>aspera://user:password@host:ssh-port/path/to/</li>
@@ -233,7 +241,7 @@
 
 <p><strong>Description:</strong></p>
 
-<p>A base S3, Cloud Files, FTP, FTPS, or SFTP directory URL where the transcoded file will be uploaded, without a filename. If <a href="#filename">filename</a> is not specified, a random filename plus an appropriate extension will be generated.</p>
+<p>A base S3, Cloud Files, GCS, FTP, FTPS, or SFTP directory URL where the transcoded file will be uploaded, without a filename. If <a href="#filename">filename</a> is not specified, a random filename plus an appropriate extension will be generated.</p>
 
 <p><strong>Notes on S3:</strong></p>
 
@@ -246,6 +254,12 @@
 <p>You can specify the region to use (DFW, ORD, or UK) by adding it to the protocol, like <code class="notranslate">cf+ord://username:api_key@container/object</code>. Currently the only Cloud Files regions supported are DFW, ORD and UK. The DFW region will be used by default.</p>
 
 <p>Any special characters in the container name must be URL encoded.</p>
+
+<p><strong>Notes on Google Cloud Storage:</strong></p>
+
+<p>GCS access keys can be found under the "Interoperable Access" section in the <a href="https://storage.cloud.google.com/m">Google APIs console</a>. Access keys must be <a href="/node/17895">properly escaped</a>.</p>
+
+<p>GCS bucket names that include dots are not supported.</p>
 
 <p><strong>Notes on Azure:</strong></p>
 
@@ -263,7 +277,7 @@
 
 <p><strong>Notes on HTTP:</strong></p>
 
-<p>We officially support HTTP upload to S3, Cloud Files, and Akamai.</p>
+<p>We officially support HTTP upload to S3, GCS, Cloud Files, and Akamai.</p>
 
 <pre class="line-numbers">
 <code class="language-json notranslate">{
@@ -662,11 +676,11 @@
 
 <p><strong>Description:</strong></p>
 
-<p>HTTP headers to send with your file when we upload it. This feature is currently supported when using S3 or Cloud Files.</p>
+<p>HTTP headers to send with your file when we upload it. This feature is currently supported when using S3, GCS and Cloud Files.</p>
 
-<p>Zencoder supports setting a limited subset of these headers: Cache-Control, Content-Disposition, Content-Encoding, Content-Type, Expires, x-amz-acl, x-amz-storage-class, x-amz-server-side-encryption, x-amz-meta-*,.</p>
+<p>Zencoder supports setting a limited subset of these headers: Cache-Control, Content-Disposition, Content-Encoding, Content-Type, Expires, x-amz-acl, x-amz-storage-class, x-amz-server-side-encryption, x-amz-meta-*, x-goog-acl and x-goog-meta-*.</p>
 
-<aside class="bcls-aside bcls-aside--information">To use <a href="https://aws.amazon.com/blogs/aws/aws-storage-update-new-lower-cost-s3-storage-option-glacier-price-reduction/">S3's Standard_IA feature</a>, you will need to set the <code class="notranslate">x-amz-storage-class</code> header to the appropriate value. These values change and are controlled by AWS, so you will need to get correct values from them.</aside>
+<aside class="bcls-aside bcls-aside--information">To use <a href="https://aws.amazon.com/blogs/aws/aws-storage-update-new-lower-cost-s3-storage-option-glacier-price-reduction/">S3's Standard_IA feature</a>, you will need to set the <code class="notranslate">x-amz-storage-class</code> header to the appropriate value. These values change and are controlled by AWS and Google, so you will need to get correct values from them.</aside>
 
 <p>Headers will be ignored when an output location is not specified.</p>
 
