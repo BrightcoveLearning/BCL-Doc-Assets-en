@@ -28,7 +28,8 @@ var BCLS = (function(window, document) {
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
     linksDisplay = document.getElementById('linksDisplay'),
-    allButtons = document.getElementsByName('button');
+    allButtons = document.getElementsByName('button'),
+    noDownloadbody = document.getElementById('noDownloadbody');
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -202,6 +203,22 @@ var BCLS = (function(window, document) {
     logger.textContent = 'Finished!';
     linksDisplay.appendChild(fragment);
     enableButtons();
+  }
+
+  function listVideosWithNoDownload() {
+    var tr,
+      td,
+      frag = document.createDocumentFragment(),
+      i = 0,
+      iMax;
+    iMax = noDownloadableSources.length;
+    for (i; i < iMax; i++) {
+      tr = document.createElement('tr');
+      td = document.createElement('td');
+      td.textContent = noDownloadableSources[i].id;
+      tr.appendChild(td);
+      td = document.createElement('td');
+    }
   }
 
   /**
