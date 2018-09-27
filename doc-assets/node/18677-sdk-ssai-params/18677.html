@@ -13,7 +13,7 @@
     <p>
       With an SSAI ad configuration id, retrieve a video object from the Brightcove catalog (Playback API). Learn how to create an SSAI ad configuration with the <a href="/node/17942">Video Cloud SSAI Ad Config API</a>. A sample ad configuration looks like this:
     </p>
-    <pre class="line-numbers"><code class="language-java">{
+    <pre class="line-numbers"><code class="notranslate language-java">{
   &quot;name&quot;: &quot;SSAI VMAP Ad Server&quot;,
   &quot;vmap_response_namespace&quot;: &quot;bc&quot;,
   &quot;config_id&quot;: &quot;<span class="bcls-input">your ad config Id</span>&quot;,
@@ -29,47 +29,48 @@
   	}
   }
 }</code></pre>
-<aside class="bcls-aside bcls-aside--tip">The <code>template_url</code> property contains the ad URL.</aside>
+<aside class="bcls-aside bcls-aside--tip">The <code class="notranslate">template_url</code> property contains the ad URL.</aside>
   </li>
 	<li>
     <p>
-    From the video object, select and extract the VMAP URL. Each source from the jsonResponse will contain a VMAP property and a VMAP URL. You will be adding URL parameters to these VMAP URLs.
+    In the jsonResponse from the call to the Playback API, examine the sources for the video object. Each source object will contain a VMAP property and a VMAP URL. Select and extract the VMAP URL.
     </p>
-      <pre><code class="language-java">http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v3/clear/3981276734001/
+      <pre><code class="notranslate language-java">http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v3/clear/3981276734001/
   b871a6b8-4b3e-4787-b176-aed923287d5a/477b1308-fc18-47a6-bb99-6cb9e2ff2040/
   content.vmap<span class="bcls-highlight">?bc_token=XXX</span></code></pre>
-    <aside class="bcls-aside bcls-aside--tip">The VMAP URL above has only a <code>bc_token</code> URL parameter.</aside>
+    <aside class="bcls-aside bcls-aside--tip">The only URL parameter on the VMAP URL will be the <code class="notranslate">bc_token</code>.</aside>
   </li>
   <li>
     <p>
-      Let’s say you ad url looks like this:
+      Let’s say your ad URL looks like this:
     </p>
-    <pre><code class="language-java">https://myad.com/ads?rule={{url.rule}}&id={{url.video.id}}</code></pre>
+    <pre><code class="notranslate language-java">https://myad.com/ads?rule={{url.rule}}&id={{url.video.id}}</code></pre>
     <p>
-      Your VMAP URL should have these added URL parameters with the values for each ad macro replaced.
+      If your ad URL has the above ad macros, then you will add these query parameters to the VMAP URLs with the appropriate values.
     </p>
 
   </li>
 	<li>
     <p>
-      Append query parameters to the VMAP URL. In this example, the <code>{{url.rule}}</code> macro in the ad url is replaced with the value <code>discos-enabled</code>, and the <code>{{url.video_id}}</code> macro is replaced with the video id value.
+      Append query parameters to the VMAP URL. In this example, the <code class="notranslate">{{url.rule}}</code> macro in the ad url is replaced with the value <code class="notranslate">discos-enabled</code>, and the <code class="notranslate">{{url.video_id}}</code> macro is replaced with the video id value.
     </p>
-    <pre><code class="language-java">http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v3/clear/3981276734001/
+    <pre><code class="notranslate language-java">http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v3/clear/3981276734001/
 b871a6b8-4b3e-4787-b176-aed923287d5a/477b1308-fc18-47a6-bb99-6cb9e2ff2040/
 content.vmap<span class="bcls-highlight">?bc_token=XXX&rule=discos-enabled&video_id=5625751316001</span></code></pre>
   </li>
 	<li>
     Process the video with the Once UX plugin.
   </li>
+  <li>
+    <p>
+      For development details, see the following:
+    </p>
+    <ul>
+      <li><a href="#Android_implementation">Android implementation</a></li>
+      <li><a href="#iOS_implementation">iOS implementation</a></li>
+    </ul>
+  </li>
 </ol>
-
-<p>
-  For details, see the following:
-</p>
-<ul>
-  <li><a href="#Android_implementation">Android implementation</a></li>
-  <li><a href="#iOS_implementation">iOS implementation</a></li>
-</ul>
 
 </section>
 
@@ -84,7 +85,7 @@ content.vmap<span class="bcls-highlight">?bc_token=XXX&rule=discos-enabled&video
     <p>
       From the video object, select and extract the appropriate VMAP URL. Retrieve the default source using the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/onceux/OnceUxSourceSelectionController.html">OnceUxSourceSelectionController</a> object. The source object returned will have these properties:
     </p>
-    <pre><code class="language-java">source.getProperties().get(Source.Fields.VMAP);</code></pre>
+    <pre><code class="notranslate language-java">source.getProperties().get(Source.Fields.VMAP);</code></pre>
   </li>
   <li>
     Append query parameters to the VMAP URL.
@@ -93,13 +94,13 @@ content.vmap<span class="bcls-highlight">?bc_token=XXX&rule=discos-enabled&video
     <p>
       Process the modified URL with the Once UX plugin as follows:
     </p>
-    <pre><code class="language-java">plugin.processVideo(videoUrlString);</code></pre>
+    <pre><code class="notranslate language-java">plugin.processVideo(videoUrlString);</code></pre>
   </li>
 </ol>
 <!-- <p>
   Alternatively, you can select and extract the appropriate manifest URL as follows:
 </p>
-<pre><code class="language-java">source.getProperties().get(Source.Fields.URL);</code></pre>
+<pre><code class="notranslate language-java">source.getProperties().get(Source.Fields.URL);</code></pre>
 <p>
   Once you append query parameters to the manifest URL, you can create the Video object and add it to the VideoView.
 </p> -->
@@ -109,7 +110,7 @@ content.vmap<span class="bcls-highlight">?bc_token=XXX&rule=discos-enabled&video
 <p>Your <strong>MainActivity.java</strong> file should look similar to this:</p>
 
 <pre class="line-numbers">
-<code class="language-java">package com.brightcove.player.samples.onceux.basic;
+<code class="notranslate language-java">package com.brightcove.player.samples.onceux.basic;
 
 import android.os.Bundle;
 
@@ -129,7 +130,7 @@ import android.os.Bundle;
     <p>
       From the video object, select and extract the appropriate manifest or VMAP URL. From the playback service response, the jsonResponse (NSDictionary) contains the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVVideo.html">BCOVVideo</a> object, which includes the sources which hold the URL to the VMAP document. Your code may look similar to this:
     </p>
-    <pre><code class="language-java">source.getProperties().get(Source.Fields.VMAP);</code></pre>
+    <pre><code class="notranslate language-java">source.getProperties().get(Source.Fields.VMAP);</code></pre>
   </li>
   <li>
     Append query parameters to the VMAP URL.
@@ -138,7 +139,7 @@ import android.os.Bundle;
     <p>
       Process the modified URL with the Once UX plugin as follows:
     </p>
-    <pre class="line-numbers"><code class="language-java">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
+    <pre class="line-numbers"><code class="notranslate language-java">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
 {
     NSLog(@&quot;ViewController Debug - Advanced to new session.&quot;);
 
@@ -163,10 +164,10 @@ import android.os.Bundle;
     </p>
     <ol>
       <li>
-        Create a <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVSource.html">BCOVSource</a> object using the <code>videoUrlString</code>
+        Create a <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVSource.html">BCOVSource</a> object using the <code class="notranslate">videoUrlString</code>
       </li>
       <li>
-        Create the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVVideo.html">BCOVVideo</a> object and <code>initWithSource:mySource</code>
+        Create the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVVideo.html">BCOVVideo</a> object and <code class="notranslate">initWithSource:mySource</code>
       </li>
     </ol>
   </li>
@@ -179,7 +180,7 @@ import android.os.Bundle;
 <p>Your <strong>ViewController.m</strong> file should look similar to this:</p>
 
 <pre class="line-numbers">
-<code class="language-objectivec">//
+<code class="notranslate language-objectivec">//
 //  ViewController.m
 //  SSAI Params
 //
