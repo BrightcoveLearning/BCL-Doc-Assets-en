@@ -1,0 +1,239 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Player_example">Player example</h2>
+<!-- UPDATE description -->
+
+<p>You will be able to see all three call to action display techniques with this player.</p>
+
+<ul>
+  <li>Look below the player and you see the call to action in the HTML page.</li>
+  <li>Start then pause the video. You will see the call to action every time the video is paused.</li>
+  <li>At the end of the video the custom endscreen will appear containing the call to action.</li>
+</ul>
+<!-- UPDATE codepen here -->
+
+<p data-height="470" data-theme-id="dark" data-slug-hash="XaBMXZ" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="18151-dynamic-call-action" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/XaBMXZ/">18151-dynamic-call-action</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
+
+<p>View the <a href="https://github.com/BrightcoveLearning/18151-dynamic-call-action">source code</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+
+<div class="bcls-expander-content">
+<p>Here are some tips to effectively use the above CodePen:</p>
+
+<ul>
+  <li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+  <li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+  <li>Later in this document the logic, flow and styling used in the application will be discussed in the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and <a href="#Application_styling">Application styling</a> sections. The best way to follow along with the information in those sections is to:
+  <ol>
+    <li>Click the <strong>EDIT ON CODEPEN</strong> button in the CodePen and have the code available in one browser/browser tab.</li>
+    <li>In CodePen, adjust what code you want displayed. You can change the width of different code sections within CodePen.</li>
+    <li>View the <a href="#Player/HTML_configuration">Player/HTML configuration</a>, <a href="#Applicaton_flow">Application flow</a> and/or <a href="#Application_styling">Application styling</a> sections in another browser/browser tab. You will now be able to follow the code explanations and at the same time view the code.</li>
+  </ol>
+  </li>
+</ul>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="developmentsequence" class="bcls-expander-head">Development sequence</h2>
+
+<div class="bcls-expander-content">
+<p>Here is the recommended development sequence:</p>
+
+<ol>
+  <li>Use the In-Page embed player implementation to test the functionality of your player, plugin and CSS (if CSS is needed)</li>
+  <li>Put the plugin's JavaScript and CSS into separate files for local testing</li>
+  <li>Deploy the plugin code and CSS to your server once you have worked out any errors</li>
+  <li>Use Studio to add the plugin and CSS to your player</li>
+  <li>Replace the In-Page embed player implementation if you determine that the iframe implementation is a better fit (detailed in next section)</li>
+</ol>
+
+<p>For details about these steps, review the <a href="/node/18081">Quick Start: Plugin Development</a> guide.</p>
+
+<h3>iframe or In-Page embed</h3>
+
+<p>When developing enhancements for the Brightcove player you will need to decide if the code is a best fit for the iframe or In-Page embed implementation. The best practice recommendation is to build a plugin for use with an iframe implementation. The advantages of using the iframe player are:</p>
+
+<ul>
+  <li>No collisions with existing JavaScript and/or CSS</li>
+  <li>Automatically responsive</li>
+  <li>The iframe eases use in social media apps (or whenever the video will need to "travel" into other apps)</li>
+</ul>
+
+<p>Although integrating the In-Page embed player can be more complex, there are times when you will plan your code around that implementation. To generalize, this approach is best when the containing page needs to communicate to the player. Specifically, here are some examples:</p>
+
+<ul>
+  <li>Code in the containing page needs to listen for and act on player events</li>
+  <li>The player uses styles from the containing page</li>
+  <li>The iframe will cause app logic to fail, like a redirect from the containing page</li>
+</ul>
+
+<p>Even if your final implementation does not use the iframe code, you can still use the In-Page embed code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+</div>
+<!-- id="expanderContent" --></section>
+
+<section class="bcls-section">
+<h2 id="API/Plugin_resources_used">API/Plugin resources used</h2>
+<!-- UPDATE table, remove unneeded columns -->
+
+<table class="bcls-table">
+  <thead class="bcls-table__head">
+    <tr>
+      <th>API Methods</th>
+      <th>API Events</th>
+      <th>API Properties</th>
+      <th>Brightcove Player Plugins</th>
+    </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td><a href="https://docs.brightcove.com/brightcove-player/current-release/module-events.html#.on">on</a></td>
+      <td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:loadstart">loadstart</a></td>
+      <td><a href="/node/18085">mediainfo</a></td>
+      <td><a href="/node/18075">Display Overlay</a></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:ended">ended</a></td>
+      <td>&nbsp;</td>
+      <td><a href="/node/18130">Custom Endscreen</a></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+<!-- UPDATE player and HTML configuration -->
+
+<section class="bcls-section">
+<h2 id="Player/HTML_configuration">Player/HTML configuration</h2>
+
+<p>This section details any special configuration needed during player creation. In addition, other HTML elements that must be added to the page, beyond the in-page embed player implementation code, are described.</p>
+
+<h3>Player configuration</h3>
+
+<p>For the player you are using, in the <strong>PLUGINS</strong> section, add the JavaScript and CSS for both the Overlay and Custom Endscreen plugins. You do not need to enter the plugin name or options as that will be done in the code.</p>
+
+<pre class="line-numbers">
+          <code class="language-javascript">
+          //players.brightcove.net/videojs-overlay/2/videojs-overlay.min.js
+          //players.brightcove.net/videojs-overlay/2/videojs-overlay.css
+          //players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js
+          //players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css</code></pre>
+
+<p>The players published in the player need to have the <strong>Related Link URL</strong> and the <strong>Related Link Text</strong> set. Edit the <strong>VIDEO INFORMATION</strong> for videos you wish to use with this player and set the values:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="set link and link text" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/display-related-link/set-link-and-linktext.png" /></figure>
+
+<h3>Other HTML</h3>
+
+<p>If you wish to have the CTA appear in your HTML page, you need to enter a paragraph element to be the target for the injected, dynamically built an CTA.</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;p id="cta" style='color:red; font-weight: bold; font-size: 20px'&gt;&lt;/p&gt;</code></pre>
+</section>
+<!-- UPDATE application flow -->
+
+<section class="bcls-section">
+<h2 id="Application_flow">Application flow</h2>
+
+<p>The basic logic behind this application is:</p>
+
+<ul>
+  <li>Wait for <code>loadstart</code> event to be dispatched, the dynamically assemble an anchor tag.</li>
+  <li>Use the anchor tag to display a CTA in the HTML page.</li>
+  <li>Use the anchor tag to configure the overlay.</li>
+  <li>Use the anchor tag to configure the custom endscreen.</li>
+</ul>
+<!-- UPDATE task 1 -->
+
+<h3>Build an anchor tag with information from the mediainfo object</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Build dynamic anchor tag ###</code></pre>
+
+<p>Once the <code>loadstart</code> event has fired, which you must wait for to have access to the <code>mediainfo</code> data, extract the link and associated text and dynamically build an anchor tag.</p>
+<!-- UPDATE task 2 -->
+
+<h3>Inject the dynamically build anchor tag into the HTML page</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Inject dynamic HTML into p element ###</code></pre>
+
+<p>Get a reference to the HTML paragraph element, then assign its <code>innerHTML</code> the dynamically built anchor tag.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Configure the overlay</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Configure dynamic overlay ###</code></pre>
+
+<p>Use the dynamically built anchor tag as the content, and set the rest of the values so the overlay will display on video pause.</p>
+<!-- UPDATE task 3 -->
+
+<h3>Configure the custom endscreen</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Configure dynamic endscreen ###</code></pre>
+
+<p>Use the dynamically built anchor tag as the content for the custom endscreen</p>
+<!-- UPDATE task 3 -->
+
+<h3>Hide the overlay when video ends</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// ### Remove overlay after video has ended ###</code></pre>
+
+<p>The overlay will display on the customer endscreen by default, so hide it on video end.</p>
+</section>
+<!-- UPDATE CSS description -->
+
+<section class="bcls-section">
+<h2 id="Application_styling">Application styling</h2>
+
+<p>The only CSS sets the size of the player.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Plugin_code">Plugin code</h2>
+
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+
+<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
+
+<pre class="line-numbers">
+                  <code class="language-javascript">videojs('myPlayerID').ready(function(){
+                    var myPlayer = this;
+                    ...
+                  });</code></pre>
+
+<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
+
+<pre class="line-numbers">
+                  <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
+                    var myPlayer = this;
+                    ...
+                  });</code></pre>
+<!-- UPDATE path to plugin's JavaScript -->
+
+<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18151-dynamic-call-action/blob/master/plugin/dynamic-cta.js">dynamic-cta.js</a>.</p>
+
+<h3>Using the plugin with a player</h3>
+
+<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
+
+<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
+</section>
+</article>
