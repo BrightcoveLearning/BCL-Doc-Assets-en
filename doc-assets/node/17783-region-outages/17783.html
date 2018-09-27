@@ -2,11 +2,11 @@
 <section class="bcls-section">
 <h2 id="Overview">Overview</h2>
 
-<p>Zencoder transcodes using two cloud services: Amazon Elastic Compute Cloud (EC2) and Google Compute Engine (GCE). Each service hosts virtual machine (VM) instances in multiple regions and you can select the service/region using the <a href="/node/17878#region">region</a> option.</p>
+<p>Zencoder transcodes using Amazon Elastic Compute Cloud (EC2). The service hosts virtual machine (VM) instances in multiple regions and you can select the service/region using the <a href="/node/17878#region">region</a> option.</p>
 
-<p>There are many reasons you may want to select a specific service or region, but perhaps the most important is transfer costs. Our customers commonly use <a href="http://aws.amazon.com/s3/pricing/">Amazon Simple Storage Service (S3)</a> or <a href="https://cloud.google.com/storage/#pricing">Google Cloud Storage (GCS)</a> to store files. Transferring files into S3 and GCS (ingress) is free. Transferring files out of these services (egress), however, depends on the destination. In both services egress is free if the file is transferred to a VM instance in the same region. This means that transfers from US-East S3 buckets to US-East EC2 instances are free. Similarly, transfers from US GCS buckets to US GCE instances are free. Transfer costs to other destinations vary by service, but in both cases costs can add up quickly so selecting an appropriate service and region for transcoding is important.</p>
+<p>There are many reasons you may want to select a specific service or region, but perhaps the most important is transfer costs. Our customers commonly use <a href="http://aws.amazon.com/s3/pricing/">Amazon Simple Storage Service (S3)</a> or <a href="https://cloud.google.com/storage/#pricing">Google Cloud Storage (GCS)</a> to store files. Transferring files into S3 and GCS (ingress) is free. Transferring files out of these services (egress), however, depends on the destination. In both services egress is free if the file is transferred to a VM instance in the same region. This means that transfers from US-East S3 buckets to US-East EC2 instances are free. Transfer costs to other destinations vary by service, but in both cases costs can add up quickly so selecting an appropriate service and region for transcoding is important.</p>
 
-<p>Every service suffers outages from time to time. Sometimes networks are spotty and we have to retry requests or transfers. Sometimes VM instances fail and we have to move the work assigned to them to better-behaved instances. We even provide <a href="/node/17781">a guide on what to do in case Zencoder itself is broken</a>. Some things are out of our control, however, such as an entire EC2 or GCE region going down for hours. In times like these we would love nothing more than to automatically fail over to another service or region for our customers, but due to potential transfer costs we have decided not to.</p>
+<p>Every service suffers outages from time to time. Sometimes networks are spotty and we have to retry requests or transfers. Sometimes VM instances fail and we have to move the work assigned to them to better-behaved instances. We even provide <a href="/node/17781">a guide on what to do in case Zencoder itself is broken</a>. Some things are out of our control, however, such as an entire EC2 region going down for hours. In times like these we would love nothing more than to automatically fail over to another service or region for our customers, but due to potential transfer costs we have decided not to.</p>
 </section>
 
 <section class="bcls-section">
@@ -16,7 +16,7 @@
 
 <ul>
 	<li><strong>Wait.</strong> Region outages are often partial or last for a short period of time. If you can wait, you should.</li>
-	<li><strong>Submit to another region.</strong> If you can afford the transfer costs on EC2 or if you're transcoding on GCE you can submit your outstanding jobs to another region. <em>Be sure to cancel the jobs submitted for the region that is down</em>.</li>
+	<li><strong>Submit to another region.</strong> If you can afford the transfer costs on EC2 you can submit your outstanding jobs to another region. <em>Be sure to cancel the jobs submitted for the region that is down</em>.</li>
 	<li><strong>Submit to another service.</strong> There may be cases, however rare, where more than a single region is down. Again, if you can afford the transfer costs you can submit your outstanding jobs to another service. As with submitting to another region, <em>be sure to cancel the jobs submitted for the service that is down</em>.</li>
 </ul>
 </section>
