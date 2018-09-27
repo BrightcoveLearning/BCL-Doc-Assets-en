@@ -114,7 +114,7 @@
 
 <h3>Other HTML</h3>
 
-<p>An <code>&lt;ol&gt;</code> element must be added which defines the location of the playlist in the page.</p>
+<p>An <code class="notranslate">&lt;ol&gt;</code> element must be added which defines the location of the playlist in the page.</p>
 </section>
 
 <section class="bcls-section">
@@ -132,18 +132,18 @@
 <p>At the top of the JavaScript, find the code which is labeled:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">// +++ Check for loadedmetadata before acting on the playlist +++</code></pre>
+<code class="language-javascript notranslate">// +++ Check for loadedmetadata before acting on the playlist +++</code></pre>
 
-<p>Note that the <code>ready()</code> method is not used, rather the code waits for the <code>loadedmetadata</code> event to be dispatched. This is because the player itself can be ready to communicate with, but the video or playlist loading into the player will NOT be ready to interact with. Waiting for <code>loadedmetadata</code> ensures that the video or playlist can be started. This issue can be difficult to see as it is both browser and download speed dependent.</p>
+<p>Note that the <code class="notranslate">ready()</code> method is not used, rather the code waits for the <code class="notranslate">loadedmetadata</code> event to be dispatched. This is because the player itself can be ready to communicate with, but the video or playlist loading into the player will NOT be ready to interact with. Waiting for <code class="notranslate">loadedmetadata</code> ensures that the video or playlist can be started. This issue can be difficult to see as it is both browser and download speed dependent.</p>
 
 <h3>Check if last video is played, and if so, load desired video</h3>
 
 <p>Find the code which is labeled:</p>
 
 <pre class="line-numbers">
-      <code class="language-javascript">// +++ Define on event handler +++</code></pre>
+<code class="language-javascript notranslate">// +++ Define on event handler +++</code></pre>
 
-<p>When each video is finished playing the anonymous function that is the event handler will be called. To check if it is the last video, you compare the length of the array that contains the videos for the playlist to the position of the last video played. Note that <code>currentItem()</code> returns the zero indexed value from the array, so you must add 1 to the value. You then use the standard <code>catalog</code> methods to get and load the desired video.</p>
+<p>When each video is finished playing the anonymous function that is the event handler will be called. To check if it is the last video, you compare the length of the array that contains the videos for the playlist to the position of the last video played. Note that <code class="notranslate">currentItem()</code> returns the zero indexed value from the array, so you must add 1 to the value. You then use the standard <code class="notranslate">catalog</code> methods to get and load the desired video.</p>
 
 <aside class="bcls-aside bcls-aside--information">Based on the logic of the application, and the information in the <a href="#Development_sequence">Development sequence</a> section earlier in this document, you will see that you cannot use this code as a plugin with the iframe player implementation because the script that specifies, fetches, and plays the extra video needs to communicate with the player.</aside>
 </section>
@@ -152,19 +152,19 @@
 <section class="bcls-section">
 <h2 id="Application_styling">Application styling</h2>
 
-<p>The CSS if very standard when using Brightcove Player with a playlist. You style both the player using the <code>.video-js</code> selector and the playlist using the <code>.vjs-playlist</code> selector. The adjustments you will want to make are getting the widths of the player and playlist set so they maximize your horizontal real estate on your page.</p>
+<p>The CSS if very standard when using Brightcove Player with a playlist. You style both the player using the <code class="notranslate">.video-js</code> selector and the playlist using the <code class="notranslate">.vjs-playlist</code> selector. The adjustments you will want to make are getting the widths of the player and playlist set so they maximize your horizontal real estate on your page.</p>
 </section>
 <!-- Standard section, only need to update the link to the plugin's JavaScript -->
 
 <section class="bcls-section">
 <h2 id="Plugin_code">Plugin code</h2>
 
-<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code class="notranslate">ready()</code> method with the code that defines a plugin.</p>
 
 <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">videojs('myPlayerID').ready(function(){
+<code class="language-javascript notranslate">videojs('myPlayerID').ready(function(){
   var myPlayer = this;
   ...
 });</code></pre>
@@ -172,10 +172,10 @@
 <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+<code class="language-javascript notranslate">videojs.registerPlugin('pluginName', function(options) {
+  var myPlayer = this;
+  ...
+});</code></pre>
 <!-- UPDATE link here -->
 
 <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18431-play-video-end-playlist/blob/master/plugin/videoAfterPlaylist.js">videoAfterPlaylist.js</a>.</p>
