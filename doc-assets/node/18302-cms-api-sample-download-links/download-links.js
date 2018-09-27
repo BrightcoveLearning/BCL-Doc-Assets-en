@@ -203,6 +203,9 @@ var BCLS = (function(window, document) {
     logger.textContent = 'Finished!';
     linksDisplay.appendChild(fragment);
     enableButtons();
+    if (noDownloadableSources.length > 0) {
+      listVideosWithNoDownload();
+    }
   }
 
   function listVideosWithNoDownload() {
@@ -218,7 +221,11 @@ var BCLS = (function(window, document) {
       td.textContent = noDownloadableSources[i].id;
       tr.appendChild(td);
       td = document.createElement('td');
+      td.textContent = noDownloadableSources[i].name;
+      tr.appendChild(td);
+      frag.appendChild(tr);
     }
+    noDownloadbody.appendChild(frag);
   }
 
   /**
