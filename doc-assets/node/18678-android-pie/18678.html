@@ -1,0 +1,88 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+  <h2 id="Overview">Overview</h2>
+
+  <p>Android Pie is the newest Android OS and was officially released on August 6th 2018. For feature details, see the <a href="https://developer.android.com/about/versions/pie/android-9.0">Android Pie Features</a> document. Android Pie includes several behavior changes. Most of them affect apps which target Android Pie (API level 28), but you may also find issues with apps targeting an older Android version, running on an Android Pie device.</p>
+  <p>
+  There are a couple of changes to be aware of when using the Brightcove SDK for Android:
+  </p>
+  <ul>
+  <li>
+    <a href="">TLS enabled by default</a>
+  </li>
+  <li>
+    <a href="">Apache HTTP client deprecation</a>
+  </li>
+  <li>
+    <a href="">Deprecated constants</a>
+  </li>
+  </ul>
+  <p>
+  For a full list of behavioral changes for your apps, see the <a href="https://developer.android.com/about/versions/pie/android-9.0-changes-all">Behavior Changes for all apps</a> document. For behavioral changes exclusive when targeting Android Pie, see the <a href="https://developer.android.com/about/versions/pie/android-9.0-changes-28">Behavior Changes for API 28+</a> document.
+  </p>
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="TLS_enabled_by_default">TLS enabled by default</h2>
+
+  <p>With the release of Android Pie (API level 28), clear text traffic is disabled by default. If your application attempts to do a clear HTTP request, an <code class="notranslate">IOException</code> will be thrown with the message:</p>
+  <pre><code class="notranslate language-java">Exception: IOException java.io.IOException: Cleartext HTTP traffic to * not permitted</code></pre>
+  <p>
+    To learn more about managing TLS with Android Pie, see the following document:
+https://docs.google.com/document/d/1PfXOq59MG8s87gcwiZvzWCZ_CuKDpLi3VO-VRF_LkjY/edit?usp=sharing
+  </p>
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="Apache_HTTP_client_deprecation">Apache HTTP client deprecation</h2>
+
+  <p>With Android Pie, Apache HTTP client support has been removed. This affects apps that target Android Pie or higher. It might also affect apps that target older versions of Android when using a  non-standard <code class="notranslate">ClassLoader</code>. At runtime, if the <code class="notranslate">ClassLoader</code> attempts to load an Apache HTTP client class on Android Pie, it will throw a <code class="notranslate">NoClassDefFoundError</code>. For more information, see Google’s : <a hreef="https://developer.android.com/about/versions/pie/android-9.0-changes-all#apache-nonp">Apache HTTP client deprecation</a> document.</p>
+  <p>
+    If your app is using the Brightcove FreeWheel plugin, you will experience this problem and get an exception as shown here:
+  </p>
+  <pre><code class="notranslate language-java">java.lang.NoClassDefFoundError: tv.freewheel.utils.URLLoader
+Caused by: java.lang.NoClassDefFoundError: Failed resolution of: Lorg/apache/http/impl/client/BasicCookieStore;</code></pre>
+  <p>
+    In order to fix this problem, include the following line to your app’s manifest file:
+  </p>
+  <pre><code class="notranslate language-java">&lt;uses-library android:name=&quot;org.apache.http.legacy&quot; android:required=&quot;false&quot;/&gt;</code></pre>
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="Deprecated_constants">Deprecated constants</h2>
+
+  <p>There are several constants that were deprecated in the <a href="https://developer.android.com/reference/android/net/ConnectivityManager">ConnectivityManager</a> class. Some of these constants are currently used by the Brightcove SDK, specifically by the Offline Playback and the Offline Analytics features. Here is the list:</p>
+  <ul>
+    <li>
+      <code class="notranslate">android.net.ConnectivityManager.TYPE_BLUETOOTH</code>
+    </li>
+    <li>
+      <code class="notranslate">android.net.ConnectivityManager.TYPE_ETHERNET</code>
+    </li>
+    <li>
+      <code class="notranslate">android.net.ConnectivityManager.TYPE_MOBILE</code>
+    </li>
+    <li>
+      <code class="notranslate">android.net.ConnectivityManager.TYPE_VPN</code>
+    </li>
+    <li>
+      <code class="notranslate">android.net.ConnectivityManager.TYPE_WIFI</code>
+    </li>
+    <li>
+      <code class="notranslate">android.net.ConnectivityManager.TYPE_WIMAX</code>
+    </li>
+  </ul>
+  <p>
+    This doesn't affect any functionality on the mentioned features, but be aware that these constants might be removed in a future Android OS version. This also applies to the Brightcove Native SDK.
+  </p>
+
+  </section>
+
+  <section class="bcls-section">
+  <h2 id="Testing_limitations">Testing limitations</h2>
+
+  <p>Due to resource constraints, we have been unable to test the Brightcove SDK targeting Android Pie on a device that has a "cut-out" in its display. We are working on acquiring such a device to test with as soon as possible.</p>
+  </section>
+
+
+</article>
