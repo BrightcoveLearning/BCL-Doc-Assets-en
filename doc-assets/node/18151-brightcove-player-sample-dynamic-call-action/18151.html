@@ -117,11 +117,11 @@
 <p>For the player you are using, in the <strong>PLUGINS</strong> section, add the JavaScript and CSS for both the Overlay and Custom Endscreen plugins. You do not need to enter the plugin name or options as that will be done in the code.</p>
 
 <pre class="line-numbers">
-          <code class="language-javascript">
-          //players.brightcove.net/videojs-overlay/2/videojs-overlay.min.js
-          //players.brightcove.net/videojs-overlay/2/videojs-overlay.css
-          //players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js
-          //players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css</code></pre>
+<code class="language-javascript notranslate">
+//players.brightcove.net/videojs-overlay/2/videojs-overlay.min.js
+//players.brightcove.net/videojs-overlay/2/videojs-overlay.css
+//players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js
+//players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css</code></pre>
 
 <p>The players published in the player need to have the <strong>Related Link URL</strong> and the <strong>Related Link Text</strong> set. Edit the <strong>VIDEO INFORMATION</strong> for videos you wish to use with this player and set the values:</p>
 
@@ -132,7 +132,7 @@
 <p>If you wish to have the CTA appear in your HTML page, you need to enter a paragraph element to be the target for the injected, dynamically built CTA.</p>
 
 <pre class="line-numbers">
-<code class="language-html">&lt;p id="cta" style='color:red; font-weight: bold; font-size: 20px'&gt;&lt;/p&gt;</code></pre>
+<code class="language-html notranslate">&lt;p id="cta" style='color:red; font-weight: bold; font-size: 20px'&gt;&lt;/p&gt;</code></pre>
 </section>
 <!-- UPDATE application flow -->
 
@@ -142,7 +142,7 @@
 <p>The basic logic behind this application is:</p>
 
 <ul>
-  <li>Wait for <code>loadstart</code> event to be dispatched, the dynamically assemble an anchor tag.</li>
+  <li>Wait for <code class="notranslate">loadstart</code> event to be dispatched, the dynamically assemble an anchor tag.</li>
   <li>Use the anchor tag to display a CTA in the HTML page.</li>
   <li>Use the anchor tag to configure the overlay.</li>
   <li>Use the anchor tag to configure the custom endscreen.</li>
@@ -154,9 +154,9 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Build dynamic anchor tag ###</code></pre>
+<code class="language-javascript notranslate">// ### Build dynamic anchor tag ###</code></pre>
 
-<p>Once the <code>loadstart</code> event has fired, which you must wait for to have access to the <code>mediainfo</code> data, extract the link and associated text and dynamically build an anchor tag.</p>
+<p>Once the <code class="notranslate">loadstart</code> event has fired, which you must wait for to have access to the <code class="notranslate">mediainfo</code> data, extract the link and associated text and dynamically build an anchor tag.</p>
 <!-- UPDATE task 2 -->
 
 <h3>Inject the dynamically build anchor tag into the HTML page</h3>
@@ -164,9 +164,9 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Inject dynamic HTML into p element ###</code></pre>
+<code class="language-javascript notranslate">// ### Inject dynamic HTML into p element ###</code></pre>
 
-<p>Get a reference to the HTML paragraph element, then assign its <code>innerHTML</code> the dynamically built anchor tag.</p>
+<p>Get a reference to the HTML paragraph element, then assign its <code class="notranslate">innerHTML</code> the dynamically built anchor tag.</p>
 <!-- UPDATE task 3 -->
 
 <h3>Configure the overlay</h3>
@@ -174,7 +174,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Configure dynamic overlay ###</code></pre>
+<code class="language-javascript notranslate">// ### Configure dynamic overlay ###</code></pre>
 
 <p>Use the dynamically built anchor tag as the content, and set the rest of the values so the overlay will display on video pause.</p>
 <!-- UPDATE task 3 -->
@@ -184,7 +184,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Configure dynamic endscreen ###</code></pre>
+<code class="language-javascript notranslate">// ### Configure dynamic endscreen ###</code></pre>
 
 <p>Use the dynamically built anchor tag as the content for the custom endscreen</p>
 <!-- UPDATE task 3 -->
@@ -194,7 +194,7 @@
 <p>Find the code which is labeled:</p>
 
 <pre>
-<code class="language-javascript">// ### Remove overlay after video has ended ###</code></pre>
+<code class="language-javascript notranslate">// ### Remove overlay after video has ended ###</code></pre>
 
 <p>The overlay will display on the customer endscreen by default, so hide it on video end.</p>
 </section>
@@ -209,23 +209,23 @@
 <section class="bcls-section">
 <h2 id="Plugin_code">Plugin code</h2>
 
-<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
+<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code class="notranslate">ready()</code> method with the code that defines a plugin.</p>
 
 <p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs('myPlayerID').ready(function(){
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+<code class="language-javascript notranslate">videojs('myPlayerID').ready(function(){
+  var myPlayer = this;
+  ...
+});</code></pre>
 
 <p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
 
 <pre class="line-numbers">
-                  <code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
-                    var myPlayer = this;
-                    ...
-                  });</code></pre>
+<code class="language-javascript notranslate">videojs.registerPlugin('pluginName', function(options) {
+  var myPlayer = this;
+  ...
+});</code></pre>
 <!-- UPDATE path to plugin's JavaScript -->
 
 <p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18151-dynamic-call-action/blob/master/plugin/dynamic-cta.js">dynamic-cta.js</a>.</p>
