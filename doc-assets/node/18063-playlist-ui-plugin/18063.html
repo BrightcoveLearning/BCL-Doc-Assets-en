@@ -1,0 +1,449 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>The Playlist UI Plugin contains the options you can use to customize playlist behavior. The numerous options provide changes to playlists, including their layout, behaviors and implementation strategies. The following examples show the two basic layouts for playlists, vertical and horizontal. For each example a small set of behaviors are listed for an introduction of what can be customized.</p>
+
+<aside class="bcls-aside bcls-aside--tip">The following docs are essential information to complete the picture of using playlists:
+<ul>
+	<li><a href="/node/18055">Implementing Playlists</a>: This document shows what decisions you need to make about using playlists, and how to get the player code you need to actually get them on your HTML page.</li>
+	<li><a href="/node/18543">Styling Playlists</a>: This document provides information on to customize the look of the playlists.</li>
+</ul>
+</aside>
+
+<h3>Vertical layout</h3>
+
+<p>This playlist example below demonstrates:</p>
+
+<ul>
+	<li>The vertical playlist located on the right side of the player has a show/hide button and the playlist is automatically sized and positioned. This is default behavior when using the <strong>Standard (iframe)</strong> player implementation.</li>
+	<li>The playlist is initially displayed. This can be altered by using the <code class="notranslate">hideOnStart</code> option.</li>
+	<li>Near the end of the video an overlay appears that displays the time to the next video and the next video's thumbnail. This is default behavior and controlled via the <code class="notranslate">nextOverlay</code> option.</li>
+</ul>
+
+<div style="position: relative; display: block; max-width: 750px;">
+<div style="padding-top: 56.25%;"><iframe src="//players.brightcove.net/1752604059001/S13cJdUBz_default/index.html?playlistId=5718313430001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div>
+</div>
+
+<h3>Horizontal layout</h3>
+
+<p>This playlist example below demonstrates:</p>
+
+<ul>
+	<li>A horizontal playlist located below the video.</li>
+	<li>As well as the overlay being displayed near the end of the video, as is true in the example above, an endscreen shows the time before the next video begins playing. This is because the <code class="notranslate">autoadvance</code> option is non-zero and the endscreen displays for the pause between videos. The endscreen can be altered by using the <code class="notranslate">nextEndscreen</code> option.</li>
+</ul>
+
+<div style="position: relative; display: block; max-width: 750px;">
+<div style="padding-top: 70.6667%;"><iframe src="//players.brightcove.net/1752604059001/ryhwJzBBf_default/index.html?playlistId=5718313430001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div>
+</div>
+</section>
+
+<section class="bcls-section">
+<h2 id="Player/Playlist_association">Player/Playlist association</h2>
+
+<p>By default, the Playlist UI Plugin will handle finding the correct playlist container element for a given player. This means it will find the first empty <code class="notranslate">.vjs-playlist</code> element in the DOM and use that. However, the plugin offers more explicit associations that can be made between a player and playlist container when you are building complex workflows with multiple players.</p>
+
+<h3><code class="notranslate">data-for</code> attribute</h3>
+
+<p>The <code class="notranslate">data-for</code> attribute can be applied to the playlist container to associate it with a player's <code class="notranslate">id</code>, for example:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-html">&lt;video id="<span class="bcls-highlight">myPlayerID</span>"
+  ...&gt;&lt;/video&gt;
+
+&lt;div class="vjs-playlist" <span class="bcls-highlight">data-for="myPlayerID"</span>&gt;&lt;/div&gt;</code></pre>
+
+<p>This is the most specific method of explicit association available. It takes precedence over other method(s).</p>
+
+<h3><code class="notranslate">data-player</code> and <code class="notranslate">data-embed</code> attributes</h3>
+
+<p>The <code class="notranslate">data-player</code> and <code class="notranslate">data-embed</code> attributes can be applied to the playlist container to associate it with a Brightcove Player. Note that both attributes must be used for the associate to function properly. In the following example, only the second <code class="notranslate">&lt;div&gt;</code> tag will hold the playlist for the player as a specific association is made. The first <code class="notranslate">&lt;div&gt;</code> will be empty.</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-html">&lt;video data-playlist-id="5455901760001"
+	data-account="1507807800001"
+	data-player="<span class="bcls-highlight">SJLNAJye7</span>"
+	data-embed="<span class="bcls-highlight">default</span>"...&gt;&lt;/video&gt;
+&lt;script src="//players.brightcove.net/1507807800001/SJLNAJye7_default/index.min.js"&gt;&lt;/script&gt;
+
+&lt;div class="vjs-playlist"&gt;&lt;/div&gt;
+
+&lt;div class="vjs-playlist" <span class="bcls-highlight">data-player="SJLNAJye7" data-embed="default"</span>&gt;&lt;/div&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Options">Options</h2>
+
+<p>You may pass in an options object to the plugin upon initialization. This object may contain any of the following options:</p>
+
+<aside class="bcls-aside bcls-aside--tip">The next section details how to use the options using both code and Studio.</aside>
+
+<h3>autoadvance</h3>
+
+<ul>
+	<li><code class="notranslate">autoadvance</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">number</code></li>
+		<li>Default: <code class="notranslate">undefined</code></li>
+		<li>Determines if, and for now long, a pause between videos in a playlist occurs. For complete details see the <a href="/node/18099#autoadvance">autoadvance section</a> in the Playlist API Guide.</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>hideOnStart</h3>
+
+<ul>
+	<li><code class="notranslate">hideOnStart</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">false</code></li>
+		<li>Determines whether the playlist is initially hidden from view. This is only functional when using the <strong>iframe</strong> player implementation, which is logical since the show/hide playlist functionality is only available in the iframe. This option does NOT work with a horizontal playlist.</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>horizontal</h3>
+
+<ul>
+	<li><code class="notranslate">horizontal</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">false</code></li>
+		<li>Displays the playlist horizontally below the player instead of vertically.</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>nextButton</h3>
+
+<ul>
+	<li><code class="notranslate">nextButton</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">true</code></li>
+		<li>If <code class="notranslate">true</code>, a button is added for moving to the next playlist item. The button can be disabled by setting the option to <code class="notranslate">false</code>. The button is added to the control bar to the right of the play button.</li>
+	</ul>
+	</li>
+</ul>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="next button" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/playlist-ui-plugin/nextButton.png" /></figure>
+
+<h3>nextEndscreen</h3>
+
+<ul>
+	<li><code class="notranslate">nextEndscreen</code>:</li>
+	<li>Type: <code class="notranslate">boolean</code></li>
+	<li>Default: <code class="notranslate">true</code></li>
+	<li>If <code class="notranslate">true</code>, the player will display a modal endscreen over the player after playback. The endscreen can be disabled by setting the option to <code class="notranslate">false</code>. This endscreen will preview the upcoming video in the playlist. Mode details on the option are:
+	<ul>
+		<li>The <code class="notranslate">autoadvance</code> option must be set to a value greater than zero (otherwise, there is no time to display the endscreen and it is skipped).</li>
+		<li>The displayed countdown represents the time remaining until the <code class="notranslate">autoadvance</code> trigger.</li>
+		<li>The player must <strong>not</strong> include an implementation of the custom endscreen plugin or the social plugin configured to display after a video. If either condition is detected, the endscreen will not be displayed.</li>
+	</ul>
+	</li>
+</ul>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="next endscreen" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/playlist-ui-plugin/nextEndscreen.png" /></figure>
+
+<h3>nextOverlay</h3>
+
+<ul>
+	<li><code class="notranslate">nextOverlay</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">true</code></li>
+		<li>If <code class="notranslate">true</code>, the player will display a small overlay in the lower-right corner of the player. The overlay can be disabled by setting the option to <code class="notranslate">false</code>. This overlay will preview the upcoming video in the playlist. Mode details on the option are:
+		<ul>
+			<li>There must be a subsequent playlist item.</li>
+			<li>The <code class="notranslate">autoadvance</code> option must be set greater than or equal to zero.</li>
+			<li>The countdown represents the time remaining in the video plus any <code class="notranslate">autoadvance</code> wait time.</li>
+			<li>The overlay appears 10 seconds from the end of the video. However, if the video is less than 30 seconds long, it appears at the 2/3 point of the duration.</li>
+			<li>If the overlay is dismissed by the user, it will remain dismissed until the source is changed. It will re-appear for new sources.</li>
+			<li>If the <strong>Up Next endscreen</strong> is enabled, the overlay will hide when the video ends. Otherwise, it will stay open until the next video.</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="next overlay" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/playlist-ui-plugin/nextOverlay.png" /></figure>
+
+<h3>playlist</h3>
+
+<ul>
+	<li><code class="notranslate">playlist</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">array</code></li>
+		<li>Default: <code class="notranslate">undefined</code></li>
+		<li>Used to pass the initial playlist data. For complete details see the <a href="/node/18099#playlist">playlist section</a> in the Playlist API Guide.</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>playOnSelect</h3>
+
+<ul>
+	<li><code class="notranslate">playOnSelect</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">false</code></li>
+		<li>The <code class="notranslate">playOnSelect</code> option is used to control if the video should begin playing when the user clicks a video in the playlist. When the option is set to <code class="notranslate">true</code>, selecting a new video from the playlist will start playing that video, even if the player was previously paused. By default, clicking a new video from the playlist will load the new video but keep the player paused if it was paused beforehand.</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>repeat</h3>
+
+<ul>
+	<li><code class="notranslate">repeat</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">false</code></li>
+		<li>Repeats a playlist after it has finished the last video in the playlist. This functionality plays the first video in the playlist once the last video in the playlist is finished.</li>
+	</ul>
+	</li>
+</ul>
+
+<h3>shuffle</h3>
+
+<ul>
+	<li><code class="notranslate">shuffle</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">boolean</code></li>
+		<li>Default: <code class="notranslate">false</code></li>
+		<li>Shuffle the playlist items each time new data is loaded.</li>
+	</ul>
+	</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_the_options">Using the options</h2>
+
+<p>You have two ways you can utilize the option:</p>
+
+<ol>
+	<li>In Studio's <strong>PLAYERS &gt; PLUGINS</strong> section.</li>
+	<li>Using JavaScript with the player.</li>
+</ol>
+
+<h3>Using Studio</h3>
+
+<aside class="bcls-aside bcls-aside--tip">In order to have multiple playlists on a single page, the <strong>Default</strong> version of the Playlist UI Plugin must be designated in the Player Settings. The <strong>Legacy</strong> version of the Playlist UI plugin does not support multiple playlist players on a single page.</aside>
+
+<p>In Studio, edit the player to which you wish to supply options. Using proper JSON format, list the option (in quotation marks), followed by the appropriate value. If the values are string, they must be in quotes. If they are numeric or boolean, they cannot be included:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="options in studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/playlists/playlist-ui-plugin/options-studio.png" /></figure>
+
+<h3>Using JavaScript</h3>
+
+<p>To implement the options in code, you create an object, assign desired options their respective values, then pass the options object when calling the plugin:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-javascript">videojs("myPlayerID").ready(function() {
+ var myPlayer = this,
+   <span class="bcls-highlight">options</span> = {};
+  <span class="bcls-highlight">options</span>.horizontal = true;
+  <span class="bcls-highlight">options</span>.nextButton = false;
+  myPlayer.bcPlaylistUi(<span class="bcls-highlight">options</span>);
+</code>
+</pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="changelog">Changelog</h2>
+
+<h4>25 Sep 2018</h4>
+
+<p>v3.4.0</p>
+
+<ul>
+	<li>Added playlistPicker option, defaulting to true, to allow removal of the playlist picker.</li>
+</ul>
+
+<h4>17 Sep 2018</h4>
+
+<p>v3.3.2</p>
+
+<ul>
+	<li>Fixed an issue where a playlist player loaded at the wrong time could cause the UI not to render</li>
+	<li>Removed the postinstall script to prevent install issues</li>
+	<li>Silenced a <code class="notranslate">play</code> promise exception in playlists</li>
+	<li>Updated using plugin generator v7.2.0</li>
+</ul>
+
+<h4>13 Jun 2018</h4>
+
+<p>v3.3.1</p>
+
+<ul>
+	<li>Fixed an issue where the next item button did not have a pointer cursor</li>
+</ul>
+
+<h4>23 May 2018</h4>
+
+<p>v3.3.0</p>
+
+<ul>
+	<li>Support associating a playlist element explicitly with a player via attributes</li>
+</ul>
+
+<h4>9 May 2018</h4>
+
+<p>v3.2.1</p>
+
+<ul>
+	<li>Fixed an issue where an embed code which places a script before a playlist container on a page with multiple players with playlists could result in those playlists getting out of order</li>
+</ul>
+
+<h4>9 April 2018</h4>
+
+<p>v3.2.0</p>
+
+<ul>
+	<li>Added shuffle option to randomize playlist each time it's changed</li>
+</ul>
+
+<h4>29 Mar 2018</h4>
+
+<p>v3.1.1</p>
+
+<ul>
+	<li>Truncate longer video titles with ellipses when they overflow</li>
+</ul>
+
+<h4>25 Jan 2018</h4>
+
+<p>v3.1.0</p>
+
+<ul>
+	<li>Update to <strong>videojs-playlist</strong> 4.2.0, adding <code class="notranslate">duringplaylistchange</code> event and <code class="notranslate">rest</code> option for the <code class="notranslate">shuffle()</code> method</li>
+</ul>
+
+<h4>17 Jan 2018</h4>
+
+<p>v3.0.1</p>
+
+<ul>
+	<li>Addressed case where the playlist was empty, but the playlist sidebar in an iframe would still show</li>
+	<li>Fixed an issue where auto-advance would occur even if the user restarted playback after an ended event</li>
+	<li>Fixed clicking/tapping on icons in next overlay and endscreen on mobile</li>
+</ul>
+
+<h4>22 Dec 2017</h4>
+
+<p>v3.0.0</p>
+
+<ul>
+	<li>Features
+	<ul>
+		<li>Add optional <strong>Up Next</strong> closable overlay card</li>
+		<li>Add optional <strong>Up Next</strong> endscreen modal</li>
+		<li>Better support for multiple in-page players by more intelligently finding a player's associated playlist element</li>
+		<li>Bundle videojs-playlist as a direct dependency</li>
+		<li>Support horizontal playlists in iframe players</li>
+	</ul>
+	</li>
+	<li>Code Refactoring
+	<ul>
+		<li>Move sidebar to component and refactor plugin to be class-based</li>
+		<li>Refactor new <strong>Up Next</strong> feature</li>
+		<li>Update tooling to plugin generator v5.1.1</li>
+	</ul>
+	</li>
+	<li>BREAKING CHANGES
+	<ul>
+		<li>Removes support for IE8</li>
+		<li>No longer supports Video.js/Brightcove Player v5</li>
+	</ul>
+	</li>
+</ul>
+
+<h4>21 Sep 2017</h4>
+
+<p>v2.1.2</p>
+
+<ul>
+	<li>No changes</li>
+</ul>
+
+<h4>25 Jul 2017</h4>
+
+<p>v2.1.1</p>
+
+<ul>
+	<li>No changes</li>
+</ul>
+
+<h4>26 Apr 2017</h4>
+
+<p>v2.1.0</p>
+
+<ul>
+	<li>Features
+	<ul>
+		<li>Add optional "Up Next" closable overlay card</li>
+		<li>Add optional "Up Next" endscreen modal</li>
+		<li>Better support for multiple in-page players by more intelligently finding a player's associated playlist element</li>
+		<li>Bundle videojs-playlist as a direct dependency</li>
+		<li>Support horizontal playlists in iframe players</li>
+	</ul>
+	</li>
+	<li>Code Refactoring
+	<ul>
+		<li>Move sidebar to component and refactor plugin to be class-based</li>
+		<li>Refactor new 'Up Next' feature</li>
+		<li>Update tooling to plugin generator v5.1.1</li>
+	</ul>
+	</li>
+	<li>BREAKING CHANGES
+	<ul>
+		<li>Removes support for IE8</li>
+		<li>No longer supports Video.js/Brightcove Player v5</li>
+	</ul>
+	</li>
+</ul>
+
+<h4>8 Sep 2016</h4>
+
+<p>v2.0.0</p>
+
+<ul>
+	<li>Redesigned UI
+	<ul>
+		<li>Overall look and feel improvements</li>
+		<li>Bigger thumbnails</li>
+		<li>Room for longer video titles</li>
+		<li>Playlist drawer in iframe embeds</li>
+		<li>More responsive layout</li>
+	</ul>
+	</li>
+</ul>
+
+<h4>6 Sep 2016</h4>
+
+<p>v1.0.1</p>
+
+<ul>
+	<li>Fix bug embedding playlist with in-page embed</li>
+</ul>
+
+<h4>16 Aug 2016</h4>
+
+<p>v1.0.0</p>
+
+<ul>
+	<li>Moved playlist UI into a new plugin</li>
+</ul>
+</section>
+</article>
