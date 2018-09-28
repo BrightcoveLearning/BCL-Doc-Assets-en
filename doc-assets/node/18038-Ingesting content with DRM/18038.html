@@ -22,21 +22,21 @@
 
 <aside class="bcls-aside bcls-aside--information">If you have older videos in a Dynamic Delivery account that were ingested using the legacy ingest system, they will need to be re-transcoded using a Dynamic Delivery profile before DRM will be applied. Existing videos already ingested for Dynamic Delivery <strong>do not need to be re-transcoded</strong> when DRM is enabled for the account.</aside>
 
-<p>If your account is enabled for DRM and you want to deliver some titles without DRM, set the <code>drm_disabled</code> flag via CMS API to <code>true</code> using an <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video request</a>.</p>
+<p>If your account is enabled for DRM and you want to deliver some titles without DRM, set the <code class="notranslate">drm_disabled</code> flag via CMS API to <code class="notranslate">true</code> using an <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Update_Video">Update Video request</a>.</p>
 
 <h3>Sample request</h3>
 
 <h4>Request</h4>
 
-<p>The request is <code>PATCH</code> request to:</p>
+<p>The request is <code class="notranslate">PATCH</code> request to:</p>
 
 <pre class="line-numbers">
-    <code class="language-http">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
+    <code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-input">account_id</span>/videos/<span class="bcls-input">video_id</span></code></pre>
 
 <h4>Request body</h4>
 
 <pre class="line-numbers">
-    <code class="language-json">{
+    <code class="language-json notranslate">{
         "drm_disabled": true
     }</code></pre>
 
@@ -64,12 +64,12 @@
 <section class="bcls-section">
 <h2 id="reference_ids">Reference IDs</h2>
 
-<p>Renditions are assigned to DRM packages by <code>reference_id</code>, so you need to be sure that you assign a <code>reference_id</code> to each rendition defined in profiles that will have DRM packages.</p>
+<p>Renditions are assigned to DRM packages by <code class="notranslate">reference_id</code>, so you need to be sure that you assign a <code class="notranslate">reference_id</code> to each rendition defined in profiles that will have DRM packages.</p>
 
 <h3>Example</h3>
 
 <pre class="line-numbers">
-<code class="language-json">..."renditions": [
+<code class="language-json notranslate">..."renditions": [
     {
         "media_type": "video",
         <strong><em>"reference_id": "av0",</em></strong>
@@ -87,10 +87,10 @@
 <section class="bcls-section">
 <h2 id="definingPackages">Defining packages</h2>
 
-<p>For each DRM package you want to define, add an object to <code>packages</code> array specifying the package type and an array of rendition <code>reference_id</code>s to include in the package:</p>
+<p>For each DRM package you want to define, add an object to <code class="notranslate">packages</code> array specifying the package type and an array of rendition <code class="notranslate">reference_id</code>s to include in the package:</p>
 
 <pre class="line-numbers">
-<code class="language-json">"packages" : [
+<code class="language-json notranslate">"packages" : [
     {
         "package_type" : "widevine",
         "renditions" : [ "wv0", "wv1","wv2", "wv3","wv4", "wv5","wv6", "wv7" ]
@@ -99,10 +99,10 @@
 
 <aside class="bcls-aside bcls-aside--information">The example above is for the deprecated Widevine Classic - see the example below for packaging MPEG-DASH content with Widevine Modular.</aside>
 
-<p>For MPEG-DASH renditions, the syntax is slightly different, including an array of DRM types and <code>dash</code> as the package type:</p>
+<p>For MPEG-DASH renditions, the syntax is slightly different, including an array of DRM types and <code class="notranslate">dash</code> as the package type:</p>
 
 <pre class="line-numbers">
-<code class="language-json">"packages" : [
+<code class="language-json notranslate">"packages" : [
     {
         "drm" : ["widevine", "playready"],
         "package_type" : "dash",
@@ -110,7 +110,7 @@
     }
 ]</code></pre>
 
-<aside class="bcls-aside bcls-aside--warning">In the JSON for the profile, the <code>renditions</code> array <strong>must</strong> be defined before the <code>packages</code> array, so that the reference_ids referred to in the packages exist.</aside>
+<aside class="bcls-aside bcls-aside--warning">In the JSON for the profile, the <code class="notranslate">renditions</code> array <strong>must</strong> be defined before the <code class="notranslate">packages</code> array, so that the reference_ids referred to in the packages exist.</aside>
 </section>
 
 <section class="bcls-section">
@@ -126,23 +126,23 @@
 <h4>Notes</h4>
 
 <ul>
-	<li>For MPEG-DASH renditions using Widevine Modular DRM, each rendition must include the property <code>"streaming_delivery_profile": "live"</code>. Otherwise, Widevine protection will not be applied to the rendition.</li>
+	<li>For MPEG-DASH renditions using Widevine Modular DRM, each rendition must include the property <code class="notranslate">"streaming_delivery_profile": "live"</code>. Otherwise, Widevine protection will not be applied to the rendition.</li>
 	<li>The Brightcove player currently supports DASH playback only with the <a href="/node/18083">DRM plugin</a> (even if you are not using DRM packaging):
 	<ul>
 		<li>//players.brightcove.net/videojs-drm/3/videojs-drm.min.js</li>
 		<li>//players.brightcove.net/videojs-drm/3/videojs-drm.css</li>
 	</ul>
 	</li>
-	<li>The <code>force_aac_profile</code> property has to be present in each DASH rendition.
+	<li>The <code class="notranslate">force_aac_profile</code> property has to be present in each DASH rendition.
 	<ul>
-		<li><code>force_aac_profile</code> must one of these three values:
+		<li><code class="notranslate">force_aac_profile</code> must one of these three values:
 		<ul>
-			<li><code>aac-lc</code></li>
-			<li><code>he-aac</code></li>
-			<li><code>he-aac-v2</code></li>
+			<li><code class="notranslate">aac-lc</code></li>
+			<li><code class="notranslate">he-aac</code></li>
+			<li><code class="notranslate">he-aac-v2</code></li>
 		</ul>
 		</li>
-		<li>The value for <code>force_aac_profile</code> must be the same for all renditions in a profile</li>
+		<li>The value for <code class="notranslate">force_aac_profile</code> must be the same for all renditions in a profile</li>
 	</ul>
 	</li>
 </ul>
@@ -153,7 +153,7 @@
 <p>The syntax for specifying packages is as follows:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "account_id": 3742124955001,
     "digital_master": {
         "distribute": false,
@@ -368,7 +368,7 @@
 <p>Here is a sample profile with FairPlay packaging:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
   "name": "Fairplay",
   "description": "HLS NG with Fairplay",
   "account_id": "<span class="bcls-input">your_account_ID</span>",
@@ -549,16 +549,16 @@
 
 <ul>
 	<li>The Brightcove player currently supports DASH playback only with special plugins.</li>
-	<li>The <code>force_aac_profile</code> property has to be present in each DASH rendition.
+	<li>The <code class="notranslate">force_aac_profile</code> property has to be present in each DASH rendition.
 	<ul>
-		<li><code>force_aac_profile</code> must one of these three values:
+		<li><code class="notranslate">force_aac_profile</code> must one of these three values:
 		<ul>
-			<li><code>aac-lc</code></li>
-			<li><code>he-aac</code></li>
-			<li><code>he-aac-v2</code></li>
+			<li><code class="notranslate">aac-lc</code></li>
+			<li><code class="notranslate">he-aac</code></li>
+			<li><code class="notranslate">he-aac-v2</code></li>
 		</ul>
 		</li>
-		<li>The value for <code>force_aac_profile</code> must be the same for all renditions in a profile</li>
+		<li>The value for <code class="notranslate">force_aac_profile</code> must be the same for all renditions in a profile</li>
 	</ul>
 	</li>
 </ul>
@@ -655,7 +655,7 @@
 </table>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "account_id": 3742124955001,
     "digital_master": {
     "distribute": false,
@@ -864,7 +864,7 @@
 <p>You can also package Smooth renditions using Playready Smooth:</p>
 
 <pre class="line-numbers">
-<code class="language-json">..."renditions": [
+<code class="language-json notranslate">..."renditions": [
     {
         "reference_id" : "av0",
         "audio_codec" : "aac",
@@ -905,7 +905,7 @@
 <p>You can specify DRM packages of multiple types for MPEG-DASH:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "account_id": 3742124955001,
     "digital_master": {
         "distribute": false,
