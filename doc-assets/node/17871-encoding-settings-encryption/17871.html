@@ -5,6 +5,8 @@
 <p>Zencoder can perform AES encryption of video files. Our implementation is designed to be compatible with HTTP Live Streaming (HLS) outputs, but can be used to encrypt any video file similarly. When used for segmented outputs, only the segment files will be encrypted (leaving the manifest/playlist files readable, as expected). For HLS outputs, the necessary key/IV data will be added to the M3U8 manifest file, and encryption key files will be included with the other deliverable files if applicable.</p>
 
 <p>Encryption is turned on when <code>encryption_key</code>, <code>encryption_key_url</code>, <code>encryption_method</code>, or <code>encryption_key_rotation_period</code> are specified.</p>
+
+<p>Note that the way that you should specify encryption depends on how the player you are using expects to receive the key. For example, VideoJS expects raw bytes (not a hex string), and in this case you want to use <code>encryption_key_url</code> rather than <code>encryption_key</code>, which must be passed to Zencoder as a hex string.</p>
 </section>
 
 <section class="bcls-section">
