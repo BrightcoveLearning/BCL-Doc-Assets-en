@@ -4,6 +4,9 @@
     current_video = document.getElementById('current_video'),
     current_position = document.getElementById('current_position');
     console.log('experience', experience);
+
+    var videos = experience.getAllVideos();
+    console.log('videos', videos);
     // event listeners
     experience.on('stateChanged', function() {
       current_state.textContent = experience.getCurrentState();
