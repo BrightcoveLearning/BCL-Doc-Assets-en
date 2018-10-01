@@ -1,0 +1,125 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>Using Brightcove Player to autoplay a video when a page loads is not a simple issue. This stems from browser vendors responding to user wishes to NOT have videos autoplay. This document will detail the current state of autoplaying videos in various browsers and Brightcove Player configurations that affect autoplay.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Browser/platform_autoplay_policies">Browser/platform autoplay policies</h2>
+
+<p>The following is a brief summary of autoplay policies for a few browsers and iOS:</p>
+
+<ul>
+	<li><strong>Safari</strong>: In September 2017 with the release of Safari 11, Apple began preventing autoplay of videos with sound.</li>
+	<li><strong>Chrome</strong>: In April 2018 with the release of Chrome 66, Google began preventing autoplay of unmuted video. Be aware, there are special circumstances where Chrome may autoplay an unmuted video. See Google's <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes">Autoplay Policy Changes</a> document for full details.</li>
+	<li><strong>Firefox</strong>: Mozilla has taken the position of not having a firm autoplay policy for the time being. That may change in the future. That said, Firefox today does <a href="https://support.mozilla.org/en-US/questions/1150702">allow users to disable autoplay</a> with a few configuration changes.</li>
+	<li><strong>IE11/Edge</strong>: At the time of this writing, Microsoft’s browsers have no specific/known autoplay policy, autoplay just works in IE11 and Edge.</li>
+	<li><strong>iOS</strong>: In June 2016 with the release of iOS 10, Apple began preventing autoplay of videos with sound. Details can be obtained from Webkit.org's <a href="https://webkit.org/blog/6784/new-video-policies-for-ios/">New &lt;video&gt; Policies for iOS</a> document.</li>
+  <li>Note that if you are requesting a preroll ad and set <code class="notranslate">autoplay</code> to <code class="notranslate">true</code>, the IMA3 v3 plugin tries to autoplay the content/ad with sound, if that fails, it tries to autoplay muted, and only if that fails does it fall back to click-to-play.</li>
+</ul>
+
+<p>From the list above, you can see you should <strong>never assume autoplay will work</strong>. As an alternative to adding <code class="notranslate">autoplay</code> or calling <code class="notranslate">player.autoplay(true)</code>, you can call <code class="notranslate">player.play()</code> and check the promise to see if they can autoplay or not.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configure_autoplay">Configure autoplay</h2>
+
+<p>When you want Brightcove Player to try to autoplay a video you need to set that in the player's configuration. You can do this either with Studio or the <a href="/node/18378">Player Management API</a>.</p>
+
+<p>In Studio, edit the desired player then in the <strong>SETTINGS</strong> section set the value:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Set autoplay in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/autoplay/studio-setting.png" /></figure>
+
+<p>Of course, setting this value only asks Brightcove Player to try and autoplay the video. Browser/OS restrictions may prevent the video from starting on page load.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Warning: Using the <code class="notranslate">autoplay </code> attribute in the <code class="notranslate">&lt;video&gt; </code> tag or the query parameter in the iframe is NOT the same as configuring the player to use autoplay. Consistent behavior cannot be guaranteed if the attribute/option is used.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Programmatic_autoplay_using_the_play()_method">Programmatic autoplay using the <code class="notranslate">play()</code> method</h2>
+
+<p>For whatever reason, you may not be able to configure the player to use autoplay as discussed in the previous section of this document. In this case you can use the <code class="notranslate">play()</code> method to start the video on page load. Be aware, this approach is still governed by all the browser/platform rules mentioned earlier.</p>
+
+<p>Remember that you must wait for the media to be loaded into the player before using the <code class="notranslate">play() </code> method. Waiting for the <code class="notranslate">loadedmetadata </code> event will do the trick:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">&lt;script type="text/javascript"&gt;
+  var myPlayer = videojs.getPlayer('myPlayerId');
+  myPlayer.on('loadedmetadata',function() {
+    myPlayer.play();
+  });
+&lt;/script&gt;
+</code>
+</pre>
+
+<p>Using the <code class="notranslate">play() </code> method does NOT override broswer/OS restrictions on autoplay.</p>
+
+<p>For a sample which will always autoplay a video, but displays a large unmute button over the player if needed, see the <a href="/node/18567">Brightcove Player Sample: Autoplay with Unmute Button for iOS/Safari/Chrome</a> document.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Programmatic_autoplay_detection">Programmatic autoplay detection</h2>
+
+<p>You can programmatically detect if autoplay succeeded by listening for a JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> returned by the player's <code class="notranslate">play() </code> method. Brightcove Player's <code class="notranslate">play() </code> method returns a Promise object that indicates whether autoplay succeeded. Following are two console screenshots showing the Promise object when autoplay succeeded (Promise resolved) or autoplay failed (Promise rejected).</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="promise resolved" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/autoplay/promise-resolved.png" />
+<figcaption class="bcls-caption--image">Autoplay succeeded</figcaption>
+</figure>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="promise rejected" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/autoplay/promise-rejected.png" />
+<figcaption class="bcls-caption--image">Autoplay failed</figcaption>
+</figure>
+
+<p>As per standard JavaScript handling of a Promise, here is a code snippet using the <code class="notranslate">play() </code>'s Promise.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">var myPlayer = videojs.getPlayer('myPlayerID');
+myPlayer.on('loadedmetadata',function() {
+  var promise = myPlayer.play();
+  if (promise !== undefined) {
+    promise.then(function() {
+      // Autoplay started!
+    }).catch(function(error) {
+      // Autoplay was prevented.
+    });
+  }
+});
+</code>
+</pre>
+
+<p>You can use this snippet to implement your use case rules.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Note that with live content the <code class="notranslate">loadedmetadata </code> event is fired after the <code class="notranslate">play </code> event, except in Safari where the behavior is as shown above. When using live content with Chrome, for example, you would need to listen for the <code class="notranslate">durationchange </code> instead of <code class="notranslate">loadedmetadata </code>. The following code can be used for either VOD or live:
+
+<pre class="line-numbers">
+  <code class="language-javascript notranslate">var autoPlayEvents = ['loadedmetadata', 'durationchange'];
+  myPlayer.on(autoPlayEvents, autoplayableListener);
+
+  function autoplayableListener(event) {
+    console.log(event.type);
+    // for live videos we want to listen for durationchange
+    if (event.type === 'durationchange' &amp;&amp; myPlayer.duration() === Infinity) {
+      attemptAutoplay();
+      myPlayer.off(autoPlayEvents, autoplayableListener);
+    }
+    if (event.type === 'loadedmetadata') {
+      attemptAutoplay();
+      myPlayer.off(autoPlayEvents, autoplayableListener);
+    }
+  }
+
+  function attemptAutoplay() {
+    var promise = myPlayer.play();
+    if (promise !== undefined) {
+      promise.then(function () {
+        // Autoplay started!
+      }).
+      catch (function (error) {
+        // Autoplay was prevented.
+      });
+    }
+  }</code></pre>
+</aside>
+</section>
+</article>
