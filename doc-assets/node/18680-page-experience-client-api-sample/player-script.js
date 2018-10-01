@@ -5,13 +5,9 @@
     current_position = document.getElementById('current_position');
     console.log('experience', experience);
 
-    var videos = experience.getAllVideos();
-    console.log('videos', videos);
+    // var videos = experience.getAllVideos();
+    // console.log('videos', videos);
     // event listeners
-    experience.on('stateChanged', function() {
-      current_state.textContent = experience.getCurrentState();
-      console.log('current state', experience.getCurrentState())
-    });
 
     experience.on('videoChanged', function() {
       current_video.textContent = experience.getCurrentVideo();
@@ -26,7 +22,13 @@
 
     experience.on('videoStarted', function() {
       var interval;
+      video_paused.textContent = 'false';
       current_position.textContent = '0';
+    });
+
+    experience.on('videoPaused', function() {
+      var interval;
+      video_paused.textContent = 'true';
     });
 
   })(window, document);
