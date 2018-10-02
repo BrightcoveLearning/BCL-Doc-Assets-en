@@ -1,8 +1,10 @@
 var BCLS = ( function (window, document) {
   var experience = window.top.bcov.gal.getEmbed('experience_5bb2134180b4990011750f06'),
-  experienceApi = experience.clientApi,
+  experienceApi,
   current_video = document.getElementById('current_video'),
   video_paused = document.getElementById('video_paused');
+
+  experienceApi = experience.clientApi;
   console.log('experience', experience);
   console.log('experienceApi', experienceApi);
 
