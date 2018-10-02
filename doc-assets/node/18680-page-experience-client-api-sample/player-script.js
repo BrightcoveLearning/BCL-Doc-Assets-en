@@ -8,6 +8,8 @@ var BCLS = ( function (window, document) {
   console.log('experience', experience);
   console.log('experienceApi', experienceApi);
 
+
+
   // var videos = experience.getAllVideos();
   // console.log('videos', videos);
   // event listeners
@@ -23,10 +25,12 @@ var BCLS = ( function (window, document) {
   });
 
   experience.on('videoStarted', function(video) {
+    console.log('started');
     video_paused.textContent = 'false';
   });
 
   experience.on('videoPaused', function(video) {
+    console.log('paused');
     video_paused.textContent = 'true';
   });
 
