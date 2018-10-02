@@ -7,6 +7,7 @@ var BCLS = ( function (window, document) {
   experienceApi = experience.clientApi;
   console.log('experience', experience);
   console.log('experienceApi', experienceApi);
+  console.log('video', experienceApi.video);
 
 
 
