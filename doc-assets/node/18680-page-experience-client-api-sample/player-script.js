@@ -9,18 +9,14 @@ var BCLS = ( function (window, document) {
   console.log('experienceApi', experienceApi);
   console.log('video', experienceApi.video);
 
-
-
-  // var videos = experience.getAllVideos();
-  // console.log('videos', videos);
-  // event listeners
-
   experience.on('videoChanged', function() {
+    console.log('videoChanged');
     current_video.textContent = experienceApi.getCurrentVideo();
     console.log('current video', experienceApi.getCurrentVideo());
   });
 
   experience.on('playerLoad', function(player) {
+    console.log('playerLoad');
     current_video.textContent = experienceApi.getCurrentVideo();
     console.log('current video', experienceApi.getCurrentVideo());
   });
