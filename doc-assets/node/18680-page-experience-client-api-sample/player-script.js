@@ -4,6 +4,7 @@
     current_video = document.getElementById('current_video'),
     video_paused = document.getElementById('video_paused');
     console.log('experience', experience);
+    console.log('experienceApi', experienceApi);
 
     // var videos = experience.getAllVideos();
     // console.log('videos', videos);
