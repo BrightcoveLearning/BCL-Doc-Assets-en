@@ -1,30 +1,29 @@
   var BCLS = ( function (window, document) {
-    var experience = window.top.bcov.gal.getEmbed('experience_5bb2134180b4990011750f06'),
-    current_state = document.getElementById('current_state'),
+    var experience = window.top.bcov.gal.getEmbed(experience_5bb2134180b4990011750f06).clientApi,
     current_video = document.getElementById('current_video'),
-    current_position = document.getElementById('current_position');
+    video_paused = document.getElementById('video_paused');
     console.log('experience', experience);
 
     // var videos = experience.getAllVideos();
     // console.log('videos', videos);
     // event listeners
 
-    experience.on('videoChanged', function(video) {
-      // current_video.textContent = experience.getCurrentVideo();
-      console.log('current video', video);
+    experience.on('videoChanged', function() {
+      current_video.textContent = experience.getCurrentVideo();
+      console.log('current video', experience.getCurrentVideo());
     });
 
     experience.on('playerLoad', function(player) {
-      // current_video.textContent = experience.getCurrentVideo();
-      console.log('player', player);
+      current_video.textContent = experience.getCurrentVideo();
+      console.log('current video', experience.getCurrentVideo());
     });
 
     experience.on('videoStarted', function(video) {
-      console.log('video started', video);
+      video_paused.textContent = 'false';
     });
 
     experience.on('videoPaused', function(video) {
-      console.log('video paused', video);
+      video_paused.textContent = 'true';
     });
 
   })(window, document);
