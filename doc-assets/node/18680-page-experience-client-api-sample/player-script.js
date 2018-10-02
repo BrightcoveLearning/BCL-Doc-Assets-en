@@ -9,26 +9,22 @@
     // console.log('videos', videos);
     // event listeners
 
-    experience.on('videoChanged', function() {
-      current_video.textContent = experience.getCurrentVideo();
-      console.log('current video', experience.getCurrentVideo());
-      current_position.textContent = '0';
+    experience.on('videoChanged', function(video) {
+      // current_video.textContent = experience.getCurrentVideo();
+      console.log('current video', video);
     });
 
-    experience.on('playerLoad', function() {
-      current_video.textContent = experience.getCurrentVideo();
-      console.log('current video', experience.getCurrentVideo());
+    experience.on('playerLoad', function(player) {
+      // current_video.textContent = experience.getCurrentVideo();
+      console.log('player', player);
     });
 
-    experience.on('videoStarted', function() {
-      var interval;
-      video_paused.textContent = 'false';
-      current_position.textContent = '0';
+    experience.on('videoStarted', function(video) {
+      console.log('video started', video);
     });
 
-    experience.on('videoPaused', function() {
-      var interval;
-      video_paused.textContent = 'true';
+    experience.on('videoPaused', function(video) {
+      console.log('video paused', video);
     });
 
   })(window, document);
