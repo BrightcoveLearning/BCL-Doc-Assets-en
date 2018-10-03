@@ -7,37 +7,27 @@
   var BCLS = ( function (window, document) {
     var experience = window.top.bcov.gal.getEmbed('experience_5bb2134180b4990011750f06'),
     experienceApi,
+    video,
     current_video = document.getElementById('current_video'),
     video_paused = document.getElementById('video_paused');
 
     experienceApi = experience.clientApi;
 
-    // these all work
-    console.log('experience', experience);
-    console.log('experienceApi', experienceApi);
-    console.log('video', experienceApi.getCurrentVideo());
+    // get initial video
+    video = experienceApi.getCurrentVideo();
+    current_video.textContent = video.name;
 
     // event listeners
-    // none of these appear to be firing
     experienceApi.on('videoChanged', function() {
-      console.log('videoChanged');
-      current_video.textContent = experienceApi.getCurrentVideo();
-      console.log('current video', experienceApi.getCurrentVideo());
-    });
-
-    experienceApi.on('playerLoad', function(player) {
-      console.log('playerLoad');
-      current_video.textContent = experienceApi.getCurrentVideo();
-      console.log('current video', experienceApi.getCurrentVideo());
+      video = experienceApi.getCurrentVideo();
+      current_video.textContent = video.name;
     });
 
     experienceApi.on('videoStarted', function(video) {
-      console.log('started');
       video_paused.textContent = 'false';
     });
 
     experienceApi.on('videoPaused', function(video) {
-      console.log('paused');
       video_paused.textContent = 'true';
     });
 
