@@ -1,60 +1,90 @@
 <article class="bcls-article">
 <section class="bcls-section">
 <h2 id="Overview">Overview</h2>
+
 <p>Context Aware Encoding (CAE) analyzes each source video and intelligently builds a custom bitrate ladder (set of renditions) for each piece of content. In addition, Context Aware Encoding takes into account constraints associated with the delivery network and device being used to view the content. It decides how many renditions are needed and what resolutions and bitrates to use for each, while still maintaining a consistent level of quality across all titles. This results in massive savings on storage and bandwidth costs, while improving the playback experience for users. For additional information, please see the <a href="/node/18505">Overview of Context Aware Encoding</a>.</p>
 
 <aside class="bcls-aside bcls-aside--information">Context Aware Encoding is not available to all Zencoder customers. If you have questions about whether or not you can use Context Aware Encoding, please contact your Account Manager.</aside>
 </section>
 
 <section class="bcls-section">
-  <h2 id="process">Process</h2>
-  <p>CAE is enabled on a Zencoder Job by setting <code><a href="/node/17878#generate_dynamic_profile">generate_dynamic_profile</a></code> to true and adding <a href="/node/17852#dynamic_profile_rendition">dynamic_profile_rendition</a> values to Outputs of the Job.  (Optionally, <a href="/node/18610">dynamic_profile_options</a> may also be configured.  After downloading and inspecting the Input source file for the Job, Zencoder runs the CAE dynamic profile generator on the source file. The resulting dynamic profile ladder settings are added to each corresponding Output before they are encoded.  The following settings are automatically set for Outputs with a dynamic_profile_rendition value: </p>
-  <ul>
-    <li>width</li>
-    <li>height</li>
-    <li>frame_rate</li>
-    <li>video_codec</li>
-    <li>video_codec_profile</li>
-    <li>video_codec_tier</li>
-    <li>video_codec_level</li>
-    <li>video_reference_frames</li>
-    <li>video_bframes</li>
-    <li>video_bitrate</li>
-    <li>decoder_bitrate_cap</li>
-    <li>decoder_buffer_size</li>
-    <li>keyframe_rate</li>
-    <li>fixed_keyframe_interval</li>
-  </ul>
-  <p>Other Outputs without a <a href="/node/17852#dynamic_profile_rendition">dynamic_profile_rendition</a> will begin encoding as soon as the Input source is inspected, concurrently while the the dynamic profile generator is running.</p>
+<h2 id="process">Process</h2>
+
+<p>CAE is enabled on a Zencoder Job by setting <code><a href="/node/17878#generate_dynamic_profile">generate_dynamic_profile</a></code> to true and adding <a href="/node/17852#dynamic_profile_rendition">dynamic_profile_rendition</a> values to Outputs of the Job. (Optionally, <a href="/node/18610">dynamic_profile_options</a> may also be configured. After downloading and inspecting the Input source file for the Job, Zencoder runs the CAE dynamic profile generator on the source file. The resulting dynamic profile ladder settings are added to each corresponding Output before they are encoded. The following settings are automatically set for Outputs with a dynamic_profile_rendition value:</p>
+
+<ul>
+  <li>width</li>
+  <li>height</li>
+  <li>frame_rate</li>
+  <li>video_codec</li>
+  <li>video_codec_profile</li>
+  <li>video_codec_tier</li>
+  <li>video_codec_level</li>
+  <li>video_reference_frames</li>
+  <li>video_bframes</li>
+  <li>video_bitrate</li>
+  <li>decoder_bitrate_cap</li>
+  <li>decoder_buffer_size</li>
+  <li>keyframe_rate</li>
+  <li>fixed_keyframe_interval</li>
+</ul>
+
+<p>Other Outputs without a <a href="/node/17852#dynamic_profile_rendition">dynamic_profile_rendition</a> will begin encoding as soon as the Input source is inspected, concurrently while the the dynamic profile generator is running.</p>
 </section>
 
 <section class="bcls-section">
-  <h2 id="guidelines_for_configuring_dyanamic_profile_options">Guidelines for configuring dynamic_profile_options</h2>
-  <h3>Number of Renditions</h3>
-  <p>The minimum and maximum number of renditions to create is controlled with the <a href="/node/18610#min_renditions">min_renditions</a> and <a href="/node/18610#max_renditions">max_renditions</a> settings. For best performance, it is recommended to leave a certain gap between these limits (e.g. set <code>min_renditions</code> to 2 and <code>max_renditions</code> to 10), allowing CAE profile generator to select number most suitable for each content. For easy to encode content, it may produce fewer renditions, while for more complex content it may produce more. It is also recommended to set min_renditions to be as small as possible, to allow for saving bandwidth when more renditions are unnecessary.</p>
-  <h3>Resolutions</h3>
-  <p>By default, CAE uses a ladder of about 30 standard resolutions, ranging from 192x108 to 7680x4320. It can be limited on either the low or high end by using the <a href="/node/18610#min_resolution">min_resolution</a> and <a href="/node/18610#max_resolution">max_resolution</a> settings. Alternately, a custom list of resolutions and associated codec settings can be provided in the  <a href="/node/18610#video_configurations">video_configurations</a> setting.</p>
-  <h3>GOP length</h3>
-  <p>The <a href="/node/18610#keyframe_rate">keyframe_rate</a> setting controls the maximum GOP length of the encoded content.  Set this to correspond with <a href="/node/17863#segment_seconds">segment_seconds</a> for HLS/DASH encoding.  Otherwise a value of 0.5 is recommended, corresponding to a 2-second GOP length.</p>
-  <h3>Bitrate coverage</h3>
-  <p>The limits of the bitrates to be used can controlled by the <a href="/node/18610#min_bitrate">min_bitrate</a> and <a href="/node/18610#max_bitrate">max_bitrate</a> settings. This will instruct CAE to allocate at least <a href="/node/18610#min_bitrate">min_bitrate</a> Kbps for the first rendition and constrain the last rendition to at most <a href="/node/18610#max_bitrate">max_bitrate</a> Kbps.</p>
-  <p>To ensure the rendition bitrates are spaced appropriately, use the <a href="/node/18610#min_granularity">min_granularity</a> and <a href="/node/18610#max_granularity">max_granularity</a> settings.  For example, these can be used to make sure the step from one bitrate up to the next is not less than a 50% increase in bitrate or more than a 100% increase in bitrate.  Please note that most streaming authoring guidelines recommend granularity doesn’t exceed 100%.</p>
-  <h3>Startup latency, reliability at poor network conditions</h3>
-  <p>To ensure the bitrate ladder always starts with a low enough bitrate, use the <a href="/node/18610#max_first_rendition_bitrate">max_first_rendition_bitrate</a> setting. The lower the first rendition bitrate is set, the less likely a video player will need to buffer due to low connection speeds. Additionally, if the streaming manifest indicates to load the lowest bitrate first, this will also directly affect startup latency.</p>
-  <h3>Support for legacy devices</h3>
-  <p>To support older devices that are only capable of <code>Baseline</code> profile H.264 playback, use the <a href="/node/18610#select_baseline_profile_configuration">select_baseline_profile_configuration</a> setting. When this is set, at least one rendition will be encoded with <code>Baseline</code> profile. Additional constraints (codec profile, level, number of reference frames, b-frames, etc.) can be controlled with a custom <a href="/node/18610#video_configurations">video_configurations</a> setting.</p>
-  <h3>VBR variability control</h3>
-  <p>The maximum peak bitrates can be controlled with the <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> and <a href="/node/18610#bitrate_cap_offset">bitrate_cap_offset</a> settings. If a bitrate “<code>R</code>” is selected for a rendition, then the <a href="/node/17879#decoder_bitrate_cap">decoder_bitrate_cap</a> is calculated as:</p>
-  <pre class="line-numbers"><code class="language-javascript">decoder_bitrate_cap = R * bitrate_cap_to_bitrate_ratio + bitrate_cap_offset</code></pre>
-  <p>Similarly, the decoder buffer limits can be controlled with the <a href="/node/18610#buffer_size_to_bitrate_ratio">buffer_size_to_bitrate_ratio</a> and <a href="/node/18610#buffer_size_offset">buffer_size_offset</a> settings.  The <a href="/node/17879#decoder_buffer_size">decoder_buffer_size</a> is calculated as:</p>
-  <pre class="line-numbers"><code class="language-javascript">decoder_buffer_size = R * buffer_size_to_bitrate_ratio + buffer_size_offset</code></pre>
-  <p>Note that peak bitrate and buffer limits may also be constrained by the codec profile and/or level settings.  Some general device compatibility issues can be avoided by limiting <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> to 2.0 or below, and <a href="/node/18610#buffer_size_to_bitrate_ratio">buffer_size_to_bitrate_ratio</a> to 2.0 * GOP length (in seconds).</p>
+<h2 id="guidelines_for_configuring_dyanamic_profile_options">Guidelines for configuring dynamic_profile_options</h2>
+
+<h3>Number of Renditions</h3>
+
+<p>The minimum and maximum number of renditions to create is controlled with the <a href="/node/18610#min_renditions">min_renditions</a> and <a href="/node/18610#max_renditions">max_renditions</a> settings. For best performance, it is recommended to leave a certain gap between these limits (e.g. set <code>min_renditions</code> to 2 and <code>max_renditions</code> to 10), allowing CAE profile generator to select number most suitable for each content. For easy to encode content, it may produce fewer renditions, while for more complex content it may produce more. It is also recommended to set min_renditions to be as small as possible, to allow for saving bandwidth when more renditions are unnecessary.</p>
+
+<h3>Resolutions</h3>
+
+<p>By default, CAE uses a ladder of about 30 standard resolutions, ranging from 192x108 to 7680x4320. It can be limited on either the low or high end by using the <a href="/node/18610#min_resolution">min_resolution</a> and <a href="/node/18610#max_resolution">max_resolution</a> settings. Alternately, a custom list of resolutions and associated codec settings can be provided in the <a href="/node/18610#video_configurations">video_configurations</a> setting.</p>
+
+<h3>GOP length</h3>
+
+<p>The <a href="/node/18610#keyframe_rate">keyframe_rate</a> setting controls the maximum GOP length of the encoded content. Set this to correspond with <a href="/node/17863#segment_seconds">segment_seconds</a> for HLS/DASH encoding. Otherwise a value of 0.5 is recommended, corresponding to a 2-second GOP length.</p>
+
+<h3>Bitrate coverage</h3>
+
+<p>The limits of the bitrates to be used can controlled by the <a href="/node/18610#min_bitrate">min_bitrate</a> and <a href="/node/18610#max_bitrate">max_bitrate</a> settings. This will instruct CAE to allocate at least <a href="/node/18610#min_bitrate">min_bitrate</a> Kbps for the first rendition and constrain the last rendition to at most <a href="/node/18610#max_bitrate">max_bitrate</a> Kbps.</p>
+
+<p>To ensure the rendition bitrates are spaced appropriately, use the <a href="/node/18610#min_granularity">min_granularity</a> and <a href="/node/18610#max_granularity">max_granularity</a> settings. For example, these can be used to make sure the step from one bitrate up to the next is not less than a 50% increase in bitrate or more than a 100% increase in bitrate. Please note that most streaming authoring guidelines recommend granularity doesn’t exceed 100%.</p>
+
+<h3>Startup latency, reliability at poor network conditions</h3>
+
+<p>To ensure the bitrate ladder always starts with a low enough bitrate, use the <a href="/node/18610#max_first_rendition_bitrate">max_first_rendition_bitrate</a> setting. The lower the first rendition bitrate is set, the less likely a video player will need to buffer due to low connection speeds. Additionally, if the streaming manifest indicates to load the lowest bitrate first, this will also directly affect startup latency.</p>
+
+<h3>Support for legacy devices</h3>
+
+<p>To support older devices that are only capable of <code>Baseline</code> profile H.264 playback, use the <a href="/node/18610#select_baseline_profile_configuration">select_baseline_profile_configuration</a> setting. When this is set, at least one rendition will be encoded with <code>Baseline</code> profile. Additional constraints (codec profile, level, number of reference frames, b-frames, etc.) can be controlled with a custom <a href="/node/18610#video_configurations">video_configurations</a> setting.</p>
+
+<h3>VBR variability control</h3>
+
+<p>The maximum peak bitrates can be controlled with the <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> and <a href="/node/18610#bitrate_cap_offset">bitrate_cap_offset</a> settings. If a bitrate “<code>R</code>” is selected for a rendition, then the <a href="/node/17879#decoder_bitrate_cap">decoder_bitrate_cap</a> is calculated as:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">decoder_bitrate_cap = R * bitrate_cap_to_bitrate_ratio + bitrate_cap_offset</code></pre>
+
+<p>Similarly, the decoder buffer limits can be controlled with the <a href="/node/18610#buffer_size_to_bitrate_ratio">buffer_size_to_bitrate_ratio</a> and <a href="/node/18610#buffer_size_offset">buffer_size_offset</a> settings. The <a href="/node/17879#decoder_buffer_size">decoder_buffer_size</a> is calculated as:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">decoder_buffer_size = R * buffer_size_to_bitrate_ratio + buffer_size_offset</code></pre>
+
+<p>Note that peak bitrate and buffer limits may also be constrained by the codec profile and/or level settings. Some general device compatibility issues can be avoided by limiting <a href="/node/18610#bitrate_cap_to_bitrate_ratio">bitrate_cap_to_bitrate_ratio</a> to 2.0 or below, and <a href="/node/18610#buffer_size_to_bitrate_ratio">buffer_size_to_bitrate_ratio</a> to 2.0 * GOP length (in seconds).</p>
 </section>
+
 <section class="bcls-section">
-  <h2 id="CAE_and_Segmented_outputs">CAE and segmented outputs</h2>
-  <p>CAE is compatible with segmented outputs in Zencoder.  On the <code>Output</code> rendition settings, set the <a href="/node/17852#type">type</a> as <code>segmented</code> and the appropriate <a href="/node/17863#segment_seconds">segment_seconds</a> value. Also, <a href="/node/18610#keyframe_rate">keyframe_rate</a> and <a href="/node/18610#fixed_keyframe_interval">fixed_keyframe_interval</a> settings must be set in dynamic_profile_options.</p>
-  <h3>CAE - HLS example</h3>
-<pre class="line-numbers"><code class="language-json">{
+<h2 id="CAE_and_Segmented_outputs">CAE and segmented outputs</h2>
+
+<p>CAE is compatible with segmented outputs in Zencoder. On the <code>Output</code> rendition settings, set the <a href="/node/17852#type">type</a> as <code>segmented</code> and the appropriate <a href="/node/17863#segment_seconds">segment_seconds</a> value. Also, <a href="/node/18610#keyframe_rate">keyframe_rate</a> and <a href="/node/18610#fixed_keyframe_interval">fixed_keyframe_interval</a> settings must be set in dynamic_profile_options.</p>
+
+<h3>CAE - HLS example</h3>
+
+<pre class="line-numbers">
+<code class="language-json">{
  "input": "s3://test_bucket/test_media.mp4",
  "generate_dynamic_profile": true,
  "dynamic_profile_options": {
@@ -197,8 +227,11 @@
    ]
   }
 </code></pre>
+
 <h3>CAE - DASH example</h3>
-<pre class="line-numbers"><code class="language-json">
+
+<pre class="line-numbers">
+<code class="language-json">
 {
  "input": "s3://test_bucket/test.mov",
  "generate_dynamic_profile": true,
