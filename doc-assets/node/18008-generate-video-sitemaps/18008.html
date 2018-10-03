@@ -5,8 +5,8 @@
 <p>There are two different flavors of sitemaps that you can (and should) create:</p>
 
 <ul>
-	<li><em>Sitemap</em> – A sitemap that will index your content in the standard text based search engines such as www.google.com or search.yahoo.com</li>
-	<li><em>Video Sitemap</em> – A sitemap that will index your content in media-centric search engines such as video.google.com</li>
+  <li><em>Sitemap</em> – A sitemap that will index your content in the standard text based search engines such as www.google.com or search.yahoo.com</li>
+  <li><em>Video Sitemap</em> – A sitemap that will index your content in media-centric search engines such as video.google.com</li>
 </ul>
 
 <p>This topic focuses primarily on video sitemaps.</p>
@@ -38,16 +38,16 @@
 <p>Below is a sample app written in node.js to generate a video sitemap for a Video Cloud account using the CMS API. Some notes on the app:</p>
 
 <ul>
-	<li>All the data required for a video sitemap is available via the CMS API with one exception: the <code>loc</code> that provides the page URL where the video is published. You will either need to pull this from some other data source in your CMS, or you can store the information somewhere in the video metadata (as we did in the sample here, using a custom field called "galleryurl").</li>
-	<li>Some data from Video Cloud will need to be manipulated a bit. For example, the <code>duration</code> returned by the CMS API is in milliseconds, but in the sitemap you should provide it in seconds.</li>
-	<li>If you are providing <code>player_loc</code> instead of <code>video_loc</code>, you will need to know what the player URL will look like:
-	<pre class="line-numbers">
+  <li>All the data required for a video sitemap is available via the CMS API with one exception: the <code>loc</code> that provides the page URL where the video is published. You will either need to pull this from some other data source in your CMS, or you can store the information somewhere in the video metadata (as we did in the sample here, using a custom field called "galleryurl").</li>
+  <li>Some data from Video Cloud will need to be manipulated a bit. For example, the <code>duration</code> returned by the CMS API is in milliseconds, but in the sitemap you should provide it in seconds.</li>
+  <li>If you are providing <code>player_loc</code> instead of <code>video_loc</code>, you will need to know what the player URL will look like:
+  <pre class="line-numbers">
 <code class="language-http">http://players.brightcove.net/{player_id}/index.html?videoId={video_id}</code></pre>
 
-	<p>From this you can easily generate a URL for each video.</p>
-	</li>
-	<li>If instead you are providing <code>video_loc</code>, you will need to make an additional <a href="https://brightcovelearning.github.io/Brightcove-API-References/cms-api/v1/doc/index.html#api-Video-Get_Video_Sources">sources request</a> for each video and pick out an HTTP MP4 rendition.</li>
-	<li>The generated sitemap doesn't include every video in the account, for this sample, we just show the videos that have a page URL in the custom fields. You may want to choose/exclude videos on some other basis, but it's important that you do not include videos that are not published anywhere, as search engines may penalize your site for providing inaccurate information in the sitemap.</li>
+  <p>From this you can easily generate a URL for each video.</p>
+  </li>
+  <li>If instead you are providing <code>video_loc</code>, you will need to make an additional <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-Video-Get_Video_Sources">sources request</a> for each video and pick out an HTTP MP4 rendition.</li>
+  <li>The generated sitemap doesn't include every video in the account, for this sample, we just show the videos that have a page URL in the custom fields. You may want to choose/exclude videos on some other basis, but it's important that you do not include videos that are not published anywhere, as search engines may penalize your site for providing inaccurate information in the sitemap.</li>
 </ul>
 
 <pre data-src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/guides/sitemaps/sitemaps.js" class="line-numbers">
