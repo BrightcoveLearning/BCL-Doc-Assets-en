@@ -3,7 +3,9 @@ var BCLS = (function(window, document) {
     cmsURL = 'https://cms.api.brightcove.com/v1/accounts/',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
     video_id,
-    playlist_id
+    playlist_id,
+    video_selector = document.getElementById('video_selector'),
+    playlist_selector = document.getElementById('playlist_selector'),
     allButtons = document.getElementsByTagName('button'),
     createVideo = document.getElementById('createVideo'),
     ingestVideo = document.getElementById('ingestVideo'),
