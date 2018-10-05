@@ -43,16 +43,17 @@ var BCLS = (function(window, document) {
       iMax = allButtons.length;
     for (i = 0; i < iMax; i++) {
       allButtons[i].setAttribute('disabled', 'disabled');
+      allButtons[i].setAttribute('style', 'color:#999');
     }
   }
-  
+
   /**
    * disables a button element
    * @param {htmlElement} button the button
    */
   function disableButton(button) {
     button.setAttribute('disabled', 'disabled');
-    button.setAttribute('style', 'opacity:.6;')
+    button.setAttribute('style', 'color:#999')
   }
 
   /**
