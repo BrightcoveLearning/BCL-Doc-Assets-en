@@ -19,27 +19,35 @@ var BCLS = (function(window, document) {
     replace = document.getElementById('replace'),
     addImages = document.getElementById('addImages'),
     addTextTracks = document.getElementById('addTextTracks'),
-    single_video_templates = [];
+    single_video_templates = [
+      'ee-single-video'
+    ],
+    playlist_templates = [
+      'ee-carousel',
+      'ee-grid',
+      'ee-horizontal-playlist',
+      'ee-thumbnail',
+      'ee-vertical-playlist'
+    ],
+    live_templates = [
+      'ee-live-event'
+    ];
   /**
-   * disables all buttons so user can't submit new request until current one finishes
+   * disables a button element
+   * @param {htmlElement} button the button
    */
-  function disableButtons() {
-      var i,
-        iMax = allButtons.length;
-      for (i = 0; i < iMax; i++) {
-        allButtons[i].setAttribute('disabled', 'disabled');
-      }
-    }
-    /**
-     * re-enables all buttons
-     */
-  function enableButtons() {
-      var i,
-        iMax = allButtons.length;
-      for (i = 0; i < iMax; i++) {
-        allButtons[i].removeAttribute('disabled');
-      }
-    }
+  function disableButton(button) {
+    button.setAttribute('disabled', 'disabled');
+    button.setAttribute('style', 'opacity:.6;')
+  }
+  /**
+   * enables a button element
+   * @param {htmlElement} button the button
+   */
+  function enableButton(button) {
+    button.removeAttribute('disabled');
+    button.removeAttribute('style');
+  }
     /**
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
