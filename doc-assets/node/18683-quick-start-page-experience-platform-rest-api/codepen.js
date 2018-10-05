@@ -18,7 +18,8 @@ var BCLS = (function(window, document) {
     retranscode = document.getElementById('retranscode'),
     replace = document.getElementById('replace'),
     addImages = document.getElementById('addImages'),
-    addTextTracks = document.getElementById('addTextTracks');
+    addTextTracks = document.getElementById('addTextTracks'),
+    single_video_templates = [];
   /**
    * disables all buttons so user can't submit new request until current one finishes
    */
