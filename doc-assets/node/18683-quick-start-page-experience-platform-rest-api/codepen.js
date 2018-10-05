@@ -12,11 +12,13 @@ var BCLS = (function(window, document) {
     video_selector = document.getElementById('video_selector'),
     playlist_selector = document.getElementById('playlist_selector'),
     // buttons
+    all_buttons = document.querySelectorAll('button'),
     get_templates = document.getElementById('get_templates'),
     create_ipx = document.getElementById('create_ipx'),
     get_videos = document.getElementById('get_videos'),
-    retranscode = document.getElementById('retranscode'),
-    replace = document.getElementById('replace'),
+    get_videos = document.getElementById('get_videos'),
+    get_playlists = document.getElementById('get_playlists'),
+    update_experience = document.getElementById('update_experience'),
     addImages = document.getElementById('addImages'),
     addTextTracks = document.getElementById('addTextTracks'),
     single_video_templates = [
