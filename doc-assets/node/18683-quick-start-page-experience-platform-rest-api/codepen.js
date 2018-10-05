@@ -19,8 +19,8 @@ var BCLS = (function(window, document) {
     get_videos = document.getElementById('get_videos'),
     get_playlists = document.getElementById('get_playlists'),
     update_experience = document.getElementById('update_experience'),
-    addImages = document.getElementById('addImages'),
-    addTextTracks = document.getElementById('addTextTracks'),
+    publish_experience = document.getElementById('publish_experience'),
+    all_templates = [],
     single_video_templates = [
       'ee-single-video'
     ],
