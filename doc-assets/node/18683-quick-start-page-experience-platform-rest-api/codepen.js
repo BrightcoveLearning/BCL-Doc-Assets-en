@@ -93,13 +93,13 @@ function arrayContains(arr, item) {
         requestBody = {};
       // disable buttons to prevent a new request before current one finishes
       disableButtons();
-      options.account_id = '57838016001';
+      options.account_id = (account_id_input.value.length > 0) ? account_id_input.value : '57838016001';
       options.proxyURL = proxyURL;
       switch (id) {
-        case 'createVideo':
-          endPoint = '/videos';
-          options.url = baseURL + endPoint;
-          options.requestType = 'POST';
+        case 'get_templates':
+          endPoint = '/templates';
+          options.url = ipxURL + endPoint;
+          options.requestType = 'GET';
           requestBody.name = 'New Video from Dynamic Ingest API Quick Start';
           options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
@@ -114,7 +114,7 @@ function arrayContains(arr, item) {
             enableButtons();
           });
           break;
-        case 'ingestVideo':
+        case 'create_ipx':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
@@ -134,7 +134,7 @@ function arrayContains(arr, item) {
             enableButtons();
           });
           break;
-        case 'retranscode':
+        case 'get_videos':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
@@ -155,7 +155,7 @@ function arrayContains(arr, item) {
             enableButtons();
           });
           break;
-        case 'replace':
+        case 'get_playlists':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
@@ -176,7 +176,7 @@ function arrayContains(arr, item) {
             enableButtons();
           });
           break;
-        case 'addImages':
+        case 'update_experience':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
@@ -202,7 +202,7 @@ function arrayContains(arr, item) {
             enableButtons();
           });
           break;
-        case 'addTextTracks':
+        case 'publish_experience':
           endPoint = '/videos/' + newVideo_id;
           options.url = ingestURL + endPoint + ingestURLsuffix;
           options.requestType = 'POST';
