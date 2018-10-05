@@ -36,6 +36,17 @@ var BCLS = (function(window, document) {
     ];
 
   /**
+     * disables all buttons so user can't submit new request until current one finishes
+     */
+    function disableButtons() {
+        var i,
+          iMax = allButtons.length;
+        for (i = 0; i < iMax; i++) {
+          allButtons[i].setAttribute('disabled', 'disabled');
+        }
+      }
+
+  /**
    * disables a button element
    * @param {htmlElement} button the button
    */
