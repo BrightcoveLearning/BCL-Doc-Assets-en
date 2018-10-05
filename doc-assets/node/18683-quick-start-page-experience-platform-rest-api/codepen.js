@@ -1,12 +1,9 @@
 var BCLS = (function(window, document) {
-  var baseURL = 'https://cms.api.brightcove.com/v1/accounts/57838016001',
-    ingestURL = 'https://ingest.api.brightcove.com/v1/accounts/57838016001',
-    ingestURLsuffix = '/ingest-requests',
+  var ipxURL = ' https://experiences.api.brightcove.com/v1/accounts/',
+    cmsURL = 'https://cms.api.brightcove.com/v1/accounts/',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
-    dd_profile = 'multi-platform-standard-static',
-    dd_retranscode_profile = 'multi-platform-extended-static',
-    callback_url = 'https://solutions.brightcove.com/bcls/di-api/di-callback-app.php',
-    newVideo_id = '',
+    video_id,
+    playlist_id
     allButtons = document.getElementsByTagName('button'),
     createVideo = document.getElementById('createVideo'),
     ingestVideo = document.getElementById('ingestVideo'),
