@@ -8,13 +8,13 @@ var BCLS = (function(window, document) {
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
-    get_templates = document.getElementById('get_templates'),
     template_selector = document.getElementById('template_selector'),
     video_selector = document.getElementById('video_selector'),
     playlist_selector = document.getElementById('playlist_selector'),
-    allButtons = document.getElementsByTagName('button'),
-    createVideo = document.getElementById('createVideo'),
-    ingestVideo = document.getElementById('ingestVideo'),
+    // buttons
+    get_templates = document.getElementById('get_templates'),
+    create_ipx = document.getElementById('create_ipx'),
+    get_videos = document.getElementById('get_videos'),
     retranscode = document.getElementById('retranscode'),
     replace = document.getElementById('replace'),
     addImages = document.getElementById('addImages'),
@@ -32,6 +32,7 @@ var BCLS = (function(window, document) {
     live_templates = [
       'ee-live-event'
     ];
+
   /**
    * disables a button element
    * @param {htmlElement} button the button
@@ -40,6 +41,7 @@ var BCLS = (function(window, document) {
     button.setAttribute('disabled', 'disabled');
     button.setAttribute('style', 'opacity:.6;')
   }
+
   /**
    * enables a button element
    * @param {htmlElement} button the button
@@ -48,6 +50,25 @@ var BCLS = (function(window, document) {
     button.removeAttribute('disabled');
     button.removeAttribute('style');
   }
+
+  /**
+ * determines whether specified item is in an array
+ *
+ * @param {array} array to check
+ * @param {string} item to check for
+ * @return {boolean} true if item is in the array, else false
+ */
+
+function arrayContains(arr, item) {
+    var i,
+        iMax = arr.length;
+    for (i = 0; i < iMax; i++) {
+        if (arr[i] === item) {
+            return true;
+        }
+    }
+    return false;
+}
     /**
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
