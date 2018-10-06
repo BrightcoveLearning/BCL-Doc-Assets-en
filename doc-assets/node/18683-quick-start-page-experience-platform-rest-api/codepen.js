@@ -205,7 +205,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'get_videos':
-        endPoint = '/videos?limit=10';
+        endPoint = account_id + '/videos?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -237,7 +237,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'get_playlists':
-        endPoint = '/playlists?limit=10';
+        endPoint = account_id + '/playlists?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -269,7 +269,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'update_experience':
-        endPoint = '/experiences/' + new_experience_id;
+        endPoint = account_id + '/experiences/' + new_experience_id;
         options.url = ipxURL + endPoint;
         options.requestType = 'PUT';
         requestBody.name = new_experience_name;
