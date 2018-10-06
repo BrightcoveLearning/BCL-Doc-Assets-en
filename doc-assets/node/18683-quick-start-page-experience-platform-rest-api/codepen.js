@@ -250,6 +250,13 @@ var BCLS = (function(window, document) {
         options.url = ipxURL + endPoint;
         options.requestType = 'PUT';
         requestBody.videos = {};
+        if (is_playlist_template) {
+          requestBody.videos.type = 'playlist';
+          requestBody.videos.playlistid = getSelectedValue(playlist_selector);
+        } else {
+          requestBody.videos.type = 'manual';
+          requestBody.videos.videoids = getSelectedValue(video_selector);
+        }
         options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
