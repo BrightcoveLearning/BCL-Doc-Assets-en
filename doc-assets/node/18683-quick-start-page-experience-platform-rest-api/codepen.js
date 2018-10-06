@@ -13,8 +13,7 @@ var BCLS = (function(window, document) {
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     template_selector = document.getElementById('template_selector'),
-    video_selector = document.getElementById('video_selector'),
-    playlist_selector = document.getElementById('playlist_selector'),
+    videos_selector = document.getElementById('video_selector'),
     // buttons
     all_buttons = document.querySelectorAll('.bcls-button'),
     get_templates = document.getElementById('get_templates'),
@@ -85,6 +84,12 @@ var BCLS = (function(window, document) {
   function enableButton(button) {
     button.removeAttribute('disabled');
     button.removeAttribute('style');
+  }
+
+  function removeChildren(el) {
+    while (el.firstChild) {
+        el.removeChild(el.firstChild);
+    }
   }
 
   /**
@@ -221,6 +226,7 @@ var BCLS = (function(window, document) {
           console.log('parsedData', parsedData);
           apiData.textContent = '';
           // add video options to selector
+          removeChildren(video_selector);
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
@@ -231,7 +237,7 @@ var BCLS = (function(window, document) {
             option.textContent = parsedData[i].name;
             frag.appendChild(option);
           }
-          video_selector.appendChild(frag);
+          videos_selector.appendChild(frag);
           // enable the update button
           disableButtons();
           enableButton(update_experience);
@@ -254,6 +260,7 @@ var BCLS = (function(window, document) {
           console.log('parsedData', parsedData);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
           // add video options to selector
+          removeChildren(video_selector);
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
@@ -264,7 +271,7 @@ var BCLS = (function(window, document) {
             option.textContent = parsedData[i].name;
             frag.appendChild(option);
           }
-          playlist_selector.appendChild(frag);
+          videos_selector.appendChild(frag);
           // enable the update button
           disableButtons();
           enableButton(update_experience);
