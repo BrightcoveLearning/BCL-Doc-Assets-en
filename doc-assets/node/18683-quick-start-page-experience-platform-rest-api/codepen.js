@@ -368,8 +368,12 @@ var BCLS = (function(window, document) {
    * initial disable/enable buttons
    */
   function init() {
+    var i, iMax = all_buttons.length;
     disableButtons();
-    enableButton(get_templates)
+    enableButton(get_templates);
+    for (i = 0; i < iMax; i++) {
+      enableButton(all_buttons[i]);
+    }
   }
 
   init();
