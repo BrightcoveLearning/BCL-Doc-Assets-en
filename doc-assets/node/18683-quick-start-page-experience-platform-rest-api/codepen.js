@@ -8,37 +8,81 @@ var BCLS = (function(window, document) {
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
-    get_templates = document.getElementById('get_templates'),
     template_selector = document.getElementById('template_selector'),
     video_selector = document.getElementById('video_selector'),
     playlist_selector = document.getElementById('playlist_selector'),
-    allButtons = document.getElementsByTagName('button'),
-    createVideo = document.getElementById('createVideo'),
-    ingestVideo = document.getElementById('ingestVideo'),
-    retranscode = document.getElementById('retranscode'),
-    replace = document.getElementById('replace'),
+    // buttons
+    all_buttons = document.querySelectorAll('button'),
+    get_templates = document.getElementById('get_templates'),
+    create_ipx = document.getElementById('create_ipx'),
+    get_videos = document.getElementById('get_videos'),
+    get_videos = document.getElementById('get_videos'),
+    get_playlists = document.getElementById('get_playlists'),
+    update_experience = document.getElementById('update_experience'),
     addImages = document.getElementById('addImages'),
-    addTextTracks = document.getElementById('addTextTracks');
+    addTextTracks = document.getElementById('addTextTracks'),
+    single_video_templates = [
+      'ee-single-video'
+    ],
+    playlist_templates = [
+      'ee-carousel',
+      'ee-grid',
+      'ee-horizontal-playlist',
+      'ee-thumbnail',
+      'ee-vertical-playlist'
+    ],
+    live_templates = [
+      'ee-live-event'
+    ];
+
   /**
    * disables all buttons so user can't submit new request until current one finishes
    */
   function disableButtons() {
-      var i,
-        iMax = allButtons.length;
-      for (i = 0; i < iMax; i++) {
-        allButtons[i].setAttribute('disabled', 'disabled');
-      }
+    var i,
+      iMax = allButtons.length;
+    for (i = 0; i < iMax; i++) {
+      allButtons[i].setAttribute('disabled', 'disabled');
+      allButtons[i].setAttribute('style', 'color:#999');
     }
-    /**
-     * re-enables all buttons
-     */
-  function enableButtons() {
-      var i,
-        iMax = allButtons.length;
-      for (i = 0; i < iMax; i++) {
-        allButtons[i].removeAttribute('disabled');
-      }
+  }
+
+  /**
+   * disables a button element
+   * @param {htmlElement} button the button
+   */
+  function disableButton(button) {
+    button.setAttribute('disabled', 'disabled');
+    button.setAttribute('style', 'color:#999')
+  }
+
+  /**
+   * enables a button element
+   * @param {htmlElement} button the button
+   */
+  function enableButton(button) {
+    button.removeAttribute('disabled');
+    button.removeAttribute('style');
+  }
+
+  /**
+ * determines whether specified item is in an array
+ *
+ * @param {array} array to check
+ * @param {string} item to check for
+ * @return {boolean} true if item is in the array, else false
+ */
+
+function arrayContains(arr, item) {
+    var i,
+        iMax = arr.length;
+    for (i = 0; i < iMax; i++) {
+        if (arr[i] === item) {
+            return true;
+        }
     }
+    return false;
+}
     /**
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
