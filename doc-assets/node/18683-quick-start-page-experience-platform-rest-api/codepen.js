@@ -6,6 +6,8 @@ var BCLS = (function(window, document) {
     playlist_id,
     default_account_id = '57838016001',
     new_experience_id,
+    new_experience_name,
+    new_experience_template,
     is_playlist_template = true;
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
@@ -155,13 +157,14 @@ var BCLS = (function(window, document) {
         break;
       case 'create_ipx':
         var now = new Date().toISOString(),
-          selected_template = getSelectedValue(template_selector);
-          is_playlist_template = arrayContains(playlist_templates, selected_template);
+          is_playlist_template = arrayContains(playlist_templates, new_experience_template);
+          new_experience_template = getSelectedValue(template_selector);
+          new_experience_name = 'Experience from Quick Start ' + now;
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
         options.requestType = 'POST';
-        requestBody.name = 'Experience from Quick Start ' + now;
-        requestBody.template = getSelectedValue(template_selector);
+        requestBody.name = new_experience_name;
+        requestBody.template = new_experience_template;
         requestBody.description = 'A simple new experience created from the In-Page Experience API Quick Start';
         options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
