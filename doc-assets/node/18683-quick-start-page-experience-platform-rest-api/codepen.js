@@ -153,7 +153,8 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'create_ipx':
-        var now = new Date().toISOString();
+        var now = new Date().toISOString(),
+          selected_template = getSelectedValue(template_selector);
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
         options.requestType = 'POST';
@@ -170,7 +171,12 @@ var BCLS = (function(window, document) {
           new_experience_id = parsedData.id;
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
           // enable
-          enableButtons();
+          disableButtons();
+          if (arrayContains(single_video_templates, selected_template)) {
+            enableButton(get_videos);
+          } else {
+            enableButton(get_playlists);
+          }
         });
         break;
       case 'get_videos':
