@@ -183,12 +183,6 @@ var BCLS = (function(window, document) {
         endPoint = '/videos?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
-        requestBody.master = {};
-        requestBody.master.use_archived_master = true;
-        requestBody.profile = dd_retranscode_profile;
-        requestBody['capture-images'] = true;
-        requestBody.callbacks = [callback_url];
-        options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
         apiData.textContent = JSON.stringify(requestBody, null, '  ');
         apiMethod.textContent = options.requestType;
@@ -196,6 +190,7 @@ var BCLS = (function(window, document) {
           var parsedData;
           parsedData = JSON.parse(response);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          // add video options to selector
           // re-enable the buttons
           enableButtons();
         });
