@@ -180,9 +180,9 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'get_videos':
-        endPoint = '/videos/' + newVideo_id;
-        options.url = ingestURL + endPoint + ingestURLsuffix;
-        options.requestType = 'POST';
+        endPoint = '/videos?limit=10';
+        options.url = cmsURL + endPoint;
+        options.requestType = 'GET';
         requestBody.master = {};
         requestBody.master.use_archived_master = true;
         requestBody.profile = dd_retranscode_profile;
