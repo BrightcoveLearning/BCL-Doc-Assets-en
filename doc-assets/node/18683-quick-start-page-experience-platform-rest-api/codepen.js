@@ -361,8 +361,14 @@ var BCLS = (function(window, document) {
     httpRequest.send(JSON.stringify(options));
   }
 
+  /**
+   * initial disable/enable buttons
+   */
   function init() {
     disableButtons();
     enableButton(get_templates)
   }
+
+  init();
+  
 })(window, document);
