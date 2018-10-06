@@ -5,6 +5,7 @@ var BCLS = (function(window, document) {
     video_id,
     playlist_id,
     default_account_id = '57838016001',
+    new_experience_id,
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
@@ -83,10 +84,21 @@ function arrayContains(arr, item) {
     }
     return false;
 }
-    /**
-     * sets up the data for the API request
-     * @param {String} id the id of the button that was clicked
-     */
+
+/**
+ * get selected value for single select element
+ * @param {htmlElement} e the select element
+ * @return {String} the selected value
+ */
+function getSelectedValue(e) {
+    var selected = e.options[e.selectedIndex],
+        val = selected.value,
+    return val;
+}
+  /**
+   * sets up the data for the API request
+   * @param {String} id the id of the button that was clicked
+   */
   function createRequest(id) {
       var endPoint = '',
         options = {},
@@ -142,10 +154,8 @@ function arrayContains(arr, item) {
           endPoint = options.account_id + '/experiences';
           options.url = ipxURL + endPoint;
           options.requestType = 'POST';
-          requestBody.name = {};
-          requestBody.master.url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
-          requestBody.profile = dd_profile;
-          requestBody.callbacks = [callback_url];
+          requestBody.name = 'Experience from Quick Start ' + now;
+          requestBody.description = 'A simple new experience created from the In-Page Experience API Quick Start';
           options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
           apiData.textContent = JSON.stringify(requestBody, null, '  ');
@@ -153,8 +163,9 @@ function arrayContains(arr, item) {
           makeRequest(options, function(response){
             var parsedData;
             parsedData = JSON.parse(response);
+            new_experience_id = parsedData.id;
             responseData.textContent = JSON.stringify(parsedData, null, '  ');
-            // re-enable the buttons
+            // enable
             enableButtons();
           });
           break;
