@@ -140,6 +140,7 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
+          console.log('response', response);
           var parsedData,
             i,
             iMax,
