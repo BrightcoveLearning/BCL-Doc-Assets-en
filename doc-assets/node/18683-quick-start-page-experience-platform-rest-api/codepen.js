@@ -224,7 +224,7 @@ var BCLS = (function(window, document) {
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
-            option.setAttribute('value'. parsedData[i].id);
+            option.setAttribute('value', parsedData[i].id);
             if (i === 0) {
               option.setAttribute('selected', 'selected');
             }
@@ -257,7 +257,7 @@ var BCLS = (function(window, document) {
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
-            option.setAttribute('value'. parsedData[i].id);
+            option.setAttribute('value', parsedData[i].id);
             if (i === 0) {
               option.setAttribute('selected', 'selected');
             }
