@@ -139,6 +139,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
+        console.log('options', options);
         makeRequest(options, function(response) {
           console.log('response', response);
           var parsedData,
