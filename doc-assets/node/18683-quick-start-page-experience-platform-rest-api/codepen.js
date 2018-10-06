@@ -113,7 +113,7 @@ var BCLS = (function(window, document) {
    */
   function getSelectedValue(e) {
     var selected = e.options[e.selectedIndex],
-      val = selected.value,
+      val = selected.value;
       return val;
   }
   /**
@@ -370,5 +370,5 @@ var BCLS = (function(window, document) {
   }
 
   init();
-  
+
 })(window, document);
