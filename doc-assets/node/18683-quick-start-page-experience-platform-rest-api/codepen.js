@@ -218,7 +218,8 @@ var BCLS = (function(window, document) {
           iMax,
           frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
-          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          console.log('parsedData', parsedData);
+          apiData.textContent = '';
           // add video options to selector
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
@@ -241,7 +242,7 @@ var BCLS = (function(window, document) {
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiData.textContent = JSON.stringify(requestBody, null, '  ');
+        apiData.textContent = '';
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
           var parsedData,
@@ -250,6 +251,7 @@ var BCLS = (function(window, document) {
           iMax,
           frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
+          console.log('parsedData', parsedData);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
           // add video options to selector
           iMax = parsedData.length;
@@ -301,7 +303,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'POST';
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
-        apiData.textContent = JSON.stringify(requestBody, null, '  ');
+        apiData.textContent = '';
         makeRequest(options, function(response) {
           var parsedData;
           parsedData = JSON.parse(response);
