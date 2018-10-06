@@ -40,6 +40,33 @@ var BCLS = (function(window, document) {
     ];
 
   /**
+   * event listeners
+   */
+  get_templates.addEventListener('click', function() {
+    createRequest('get_templates');
+  });
+
+  create_ipx.addEventListener('click', function() {
+    createRequest('create_ipx');
+  });
+
+  get_videos.addEventListener('click', function() {
+    createRequest('get_videos');
+  });
+
+  get_playlists.addEventListener('click', function() {
+    createRequest('get_playlists');
+  });
+
+  update_experience.addEventListener('click', function() {
+    createRequest('update_experience');
+  });
+
+  publish_experience.addEventListener('click', function() {
+    createRequest('publish_experience');
+  });
+
+  /**
    * disables all buttons so user can't submit new request until current one finishes
    */
   function disableButtons() {
@@ -49,15 +76,6 @@ var BCLS = (function(window, document) {
       allButtons[i].setAttribute('disabled', 'disabled');
       allButtons[i].setAttribute('style', 'color:#999');
     }
-  }
-
-  /**
-   * disables a button element
-   * @param {htmlElement} button the button
-   */
-  function disableButton(button) {
-    button.setAttribute('disabled', 'disabled');
-    button.setAttribute('style', 'color:#999')
   }
 
   /**
@@ -252,6 +270,8 @@ var BCLS = (function(window, document) {
         endPoint = '/experiences/' + new_experience_id;
         options.url = ipxURL + endPoint;
         options.requestType = 'PUT';
+        requestBody.name = new_experience_name;
+        requestBody.template = new_experience_template;
         requestBody.videos = {};
         if (is_playlist_template) {
           requestBody.videos.type = 'playlist';
@@ -268,24 +288,15 @@ var BCLS = (function(window, document) {
           var parsedData;
           parsedData = JSON.parse(response);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
-          // re-enable the buttons
-          enableButtons();
+          // re-enable the publish ipx button
+          disableButtons();
+          enableButton(publish_experience);
         });
         break;
       case 'publish_experience':
-        endPoint = '/videos/' + newVideo_id;
-        options.url = ingestURL + endPoint + ingestURLsuffix;
+        endPoint = '/experiences/' + new_experience_id + '/actions/publish';
+        options.url = ipxURL + endPoint;
         options.requestType = 'POST';
-        requestBody.profile = dd_profile;
-        requestBody.text_tracks = [];
-        requestBody.text_tracks[0] = {};
-        requestBody.text_tracks[0].url = 'https://learning-services-media.brightcove.com/captions/for_video/Water-in-Motion.vtt';
-        requestBody.text_tracks[0].srclang = 'en';
-        requestBody.text_tracks[0].kind = 'captions';
-        requestBody.text_tracks[0].label = 'EN';
-        requestBody.text_tracks[0].default = true;
-        requestBody.callbacks = [callback_url];
-        options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
         apiData.textContent = JSON.stringify(requestBody, null, '  ');
@@ -293,8 +304,9 @@ var BCLS = (function(window, document) {
           var parsedData;
           parsedData = JSON.parse(response);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
-          // re-enable the buttons
-          enableButtons();
+          // re-enable the create IPX button
+          disableButtons();
+          enableButton(create_ipx);
         });
         break;
     }
@@ -349,23 +361,8 @@ var BCLS = (function(window, document) {
     httpRequest.send(JSON.stringify(options));
   }
 
-  // event listeners
-  createVideo.addEventListener('click', function() {
-    createRequest('createVideo');
-  });
-  ingestVideo.addEventListener('click', function() {
-    createRequest('ingestVideo');
-  });
-  retranscode.addEventListener('click', function() {
-    createRequest('retranscode');
-  });
-  replace.addEventListener('click', function() {
-    createRequest('replace');
-  });
-  addImages.addEventListener('click', function() {
-    createRequest('addImages');
-  });
-  addTextTracks.addEventListener('click', function() {
-    createRequest('addTextTracks');
-  });
+  function init() {
+    disableButtons();
+    enableButton(get_templates)
+  }
 })(window, document);
