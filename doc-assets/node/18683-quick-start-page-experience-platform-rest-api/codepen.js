@@ -183,7 +183,7 @@ var BCLS = (function(window, document) {
       case 'create_ipx':
         var now = new Date().toISOString(),
           is_playlist_template = arrayContains(playlist_templates, new_experience_template);
-          new_experience_template = getSelectedValue(template_selector);
+          // new_experience_template = getSelectedValue(template_selector);
           new_experience_name = 'Experience from Quick Start ' + now;
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
