@@ -16,7 +16,7 @@ var BCLS = (function(window, document) {
     video_selector = document.getElementById('video_selector'),
     playlist_selector = document.getElementById('playlist_selector'),
     // buttons
-    all_buttons = document.querySelectorAll('button'),
+    all_buttons = document.querySelectorAll('.bcls-button'),
     get_templates = document.getElementById('get_templates'),
     create_ipx = document.getElementById('create_ipx'),
     get_videos = document.getElementById('get_videos'),
