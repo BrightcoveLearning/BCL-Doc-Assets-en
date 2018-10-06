@@ -94,6 +94,10 @@ function arrayContains(arr, item) {
       // disable buttons to prevent a new request before current one finishes
       disableButtons();
       options.account_id = (account_id_input.value.length > 0) ? account_id_input.value : '57838016001';
+      if (client_id_input.value.length > 0 && client_secret_input.value.length > 0) {
+        options.client_id = client_id_input.value;
+        options.client_secret = client_secret_input.value;
+      }
       options.proxyURL = proxyURL;
       switch (id) {
         case 'get_templates':
