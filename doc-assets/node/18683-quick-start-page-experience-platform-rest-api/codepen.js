@@ -6,6 +6,7 @@ var BCLS = (function(window, document) {
     playlist_id,
     default_account_id = '57838016001',
     new_experience_id,
+    is_playlist_template = true;
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
@@ -155,6 +156,7 @@ var BCLS = (function(window, document) {
       case 'create_ipx':
         var now = new Date().toISOString(),
           selected_template = getSelectedValue(template_selector);
+          is_playlist_template = arrayContains(playlist_templates, selected_template);
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
         options.requestType = 'POST';
@@ -172,10 +174,10 @@ var BCLS = (function(window, document) {
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
           // enable
           disableButtons();
-          if (arrayContains(single_video_templates, selected_template)) {
-            enableButton(get_videos);
-          } else {
+          if (is_playlist_template) {
             enableButton(get_playlists);
+          } else {
+            enableButton(get_videos);
           }
         });
         break;
@@ -187,49 +189,67 @@ var BCLS = (function(window, document) {
         apiData.textContent = JSON.stringify(requestBody, null, '  ');
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
-          var parsedData;
+          var parsedData,
+          option,
+          i,
+          iMax,
+          frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
           // add video options to selector
-          // re-enable the buttons
-          enableButtons();
+          iMax = parsedData.length;
+          for (i = 0; i < iMax; i++) {
+            option = document.createElement('option');
+            option.setAttribute('value'. parsedData[i].id);
+            if (i === 0) {
+              option.setAttribute('selected', 'selected');
+            }
+            option.textContent = parsedData[i].name;
+            frag.appendChild(option);
+          }
+          video_selector.appendChild(frag);
+          // enable the update button
+          disableButtons();
+          enableButton(update_experience);
         });
         break;
       case 'get_playlists':
-        endPoint = '/videos/' + newVideo_id;
-        options.url = ingestURL + endPoint + ingestURLsuffix;
-        options.requestType = 'POST';
-        options.master = {};
-        options.master.url = 'https://learning-services-media.brightcove.com/videos/mp4/greathornedowl.mp4';
-        options.profile = dd_profile;
-        requestBody['capture-images'] = true;
-        requestBody.callbacks = [callback_url];
-        options.requestBody = JSON.stringify(requestBody);
+        endPoint = '/playlists?limit=10';
+        options.url = cmsURL + endPoint;
+        options.requestType = 'GET';
         apiRequest.textContent = options.url;
         apiData.textContent = JSON.stringify(requestBody, null, '  ');
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
-          var parsedData;
+          var parsedData,
+          option,
+          i,
+          iMax,
+          frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
           responseData.textContent = JSON.stringify(parsedData, null, '  ');
-          // re-enable the buttons
-          enableButtons();
+          // add video options to selector
+          iMax = parsedData.length;
+          for (i = 0; i < iMax; i++) {
+            option = document.createElement('option');
+            option.setAttribute('value'. parsedData[i].id);
+            if (i === 0) {
+              option.setAttribute('selected', 'selected');
+            }
+            option.textContent = parsedData[i].name;
+            frag.appendChild(option);
+          }
+          playlist_selector.appendChild(frag);
+          // enable the update button
+          disableButtons();
+          enableButton(update_experience);
         });
         break;
       case 'update_experience':
-        endPoint = '/videos/' + newVideo_id;
-        options.url = ingestURL + endPoint + ingestURLsuffix;
-        options.requestType = 'POST';
-        requestBody.poster = {};
-        requestBody.poster.url = 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-poster.png';
-        requestBody.poster.width = 640;
-        requestBody.poster.height = 360;
-        requestBody.thumbnail = {};
-        requestBody.thumbnail.url = 'https://learning-services-media.brightcove.com/images/for_video/Water-In-Motion-thumbnail.png';
-        requestBody.thumbnail.width = 160;
-        requestBody.thumbnail.height = 90;
-        requestBody.profile = dd_profile;
-        requestBody.callbacks = [callback_url];
+        endPoint = '/experiences/' + new_experience_id;
+        options.url = ipxURL + endPoint;
+        options.requestType = 'PUT';
+        requestBody.videos = {};
         options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
