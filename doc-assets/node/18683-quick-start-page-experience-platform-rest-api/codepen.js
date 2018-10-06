@@ -101,28 +101,48 @@ function arrayContains(arr, item) {
       options.proxyURL = proxyURL;
       switch (id) {
         case 'get_templates':
-          endPoint = '/templates';
+          endPoint = options.account_id + '/templates';
           options.url = ipxURL + endPoint;
           options.requestType = 'GET';
-          requestBody.name = 'New Video from Dynamic Ingest API Quick Start';
-          options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
-          apiData.textContent = JSON.stringify(requestBody, null, '  ');
           apiMethod.textContent = options.requestType;
-          makeRequest(options, function(response){
-            var parsedData;
+          makeRequest(options, function(response) {
+            var parsedData,
+              i,
+              iMax,
+              option,
+              frag = document.createDocumentFragment();
             parsedData = JSON.parse(response);
-            newVideo_id = parsedData.id;
+            all_templates = parsedData.items
+            i = all_templates.length;
+            // remove live templates
+            while (i < 0) {
+              i--;
+              if (arrayContains(live_templates, all_templates[i].id)) {
+                all_templates.splice(i, 1);
+              }
+            }
+            // populate template selector
+            iMax = all_templates.length;
+            for (i = 0; i < Imax; i++) {
+              option = document.createElement('option');
+              option.setAttribute('value', all_templates[i].id);
+              option.textContent = all_templates[i].name;
+              frag.appendChild(option);
+            }
+            template_selector.appendChild(frag);
             responseData.textContent = JSON.stringify(parsedData, null, '  ');
-            // re-enable the buttons
-            enableButtons();
+            // enable the create experience button
+            disableButtons();
+            enableButton(create_ipx);
           });
           break;
         case 'create_ipx':
-          endPoint = '/videos/' + newVideo_id;
-          options.url = ingestURL + endPoint + ingestURLsuffix;
+          var now = new Date().toISOString();
+          endPoint = options.account_id + '/experiences';
+          options.url = ipxURL + endPoint;
           options.requestType = 'POST';
-          requestBody.master = {};
+          requestBody.name = {};
           requestBody.master.url = 'https://learning-services-media.brightcove.com/videos/mp4/greatblueheron.mp4';
           requestBody.profile = dd_profile;
           requestBody.callbacks = [callback_url];
