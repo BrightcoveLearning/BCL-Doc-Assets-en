@@ -168,6 +168,7 @@ var BCLS = (function(window, document) {
             option,
             frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           all_templates = parsedData.items
           i = all_templates.length;
           // remove live templates
@@ -214,7 +215,7 @@ var BCLS = (function(window, document) {
           var parsedData;
           parsedData = JSON.parse(response);
           new_experience_id = parsedData.id;
-          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
           // enable
           disableButtons();
           if (is_playlist_template) {
@@ -229,7 +230,7 @@ var BCLS = (function(window, document) {
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiData.textContent = JSON.stringify(requestBody, null, '  ');
+        apiData.textContent = '';
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
           var parsedData,
@@ -239,7 +240,7 @@ var BCLS = (function(window, document) {
           frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
           console.log('parsedData', parsedData);
-          apiData.textContent = '';
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // add video options to selector
           removeChildren(video_selector);
           iMax = parsedData.length;
@@ -273,7 +274,7 @@ var BCLS = (function(window, document) {
           frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
           console.log('parsedData', parsedData);
-          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // add video options to selector
           removeChildren(video_selector);
           iMax = parsedData.length;
@@ -313,7 +314,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           var parsedData;
           parsedData = JSON.parse(response);
-          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // re-enable the publish ipx button
           disableButtons();
           enableButton(publish_experience);
@@ -329,7 +330,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           var parsedData;
           parsedData = JSON.parse(response);
-          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // re-enable the create IPX button
           disableButtons();
           enableButton(create_ipx);
