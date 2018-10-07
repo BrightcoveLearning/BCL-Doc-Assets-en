@@ -14,6 +14,10 @@ var BCLS = (function(window, document) {
     client_secret_input = document.getElementById('client_secret_input'),
     template_selector = document.getElementById('template_selector'),
     videos_selector = document.getElementById('video_selector'),
+    apiRequest = document.getElementById('apiRequest'),
+    apiData = document.getElementById('apiData'),
+    apiMethod = document.getElementById('apiMethod'),
+    apiResponse = document.getElementById('apiResponse'),
     // buttons
     all_buttons = document.querySelectorAll('.bcls-button'),
     get_templates = document.getElementById('get_templates'),
