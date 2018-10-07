@@ -23,6 +23,7 @@ var BCLS = (function(window, document) {
     get_playlists = document.getElementById('get_playlists'),
     update_experience = document.getElementById('update_experience'),
     publish_experience = document.getElementById('publish_experience'),
+    reset_app = document.getElementById('reset_app'),
     all_templates = [],
     single_video_templates = [
       'ee-single-video'
@@ -63,6 +64,10 @@ var BCLS = (function(window, document) {
 
   publish_experience.addEventListener('click', function() {
     createRequest('publish_experience');
+  });
+
+  reset_app.addEventListener('click', function() {
+    reset();
   });
 
   /**
@@ -121,6 +126,12 @@ var BCLS = (function(window, document) {
       val = selected.value;
       return val;
   }
+
+  function reset() {
+    disableButtons();
+    enableButton('get_templates');
+  }
+
   /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
@@ -183,13 +194,13 @@ var BCLS = (function(window, document) {
       case 'create_ipx':
         var now = new Date().toISOString(),
           is_playlist_template = arrayContains(playlist_templates, new_experience_template);
-          // new_experience_template = getSelectedValue(template_selector);
+          new_experience_template = getSelectedValue(template_selector);
           new_experience_name = 'Experience from Quick Start ' + now;
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
         options.requestType = 'POST';
         requestBody.name = new_experience_name;
-        requestBody.template = 'ee-carousel';
+        requestBody.template = new_experience_template;
         requestBody.description = 'A simple new experience created from the In-Page Experience API Quick Start';
         options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
