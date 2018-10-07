@@ -129,7 +129,7 @@ var BCLS = (function(window, document) {
 
   function reset() {
     disableButtons();
-    enableButton('get_templates');
+    enableButton(get_templates);
   }
 
   /**
