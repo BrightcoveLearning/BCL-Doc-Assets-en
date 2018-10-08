@@ -498,7 +498,36 @@
             getResponse = function() {
                 try {
                     if (httpRequest.readyState === 4) {
-                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status </code></pre>
+                        if (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) {
+                          response = httpRequest.responseText;
+                          console.log('raw response', response);
+                          // some API requests return '{null}' for empty responses - breaks JSON.parse
+                          if (response === '{null}') {
+                            response = null;
+                          }
+                          // return the response
+                          callback(response);
+                        } else {
+                          alert('There was a problem with the request. Request returned ' + httpRequest.status);
+                        }
+                      }
+                    } catch (e) {
+                      alert('Caught Exception: ' + e);
+                    }
+                  };
+                /**
+                 * set up request data
+                 * the proxy used here takes the following request body:
+                 * JSON.stringify(options)
+                 */
+                // set response handler
+                httpRequest.onreadystatechange = getResponse;
+                // open the request
+                httpRequest.open('POST', proxyURL);
+                // set headers if there is a set header line, remove it
+                // open and send request
+                httpRequest.send(JSON.stringify(options));
+              }</code></pre>
 
 <h3>Proxy</h3>
 
