@@ -2,7 +2,7 @@
 <section class="bcls-section">
 <h2 id="Use_credentials">Use credentials</h2>
 
-<p>You can save <a href="/node/17852#credentials">credentials</a> to your account, which will allow us to use your account to upload files instead of ours. This means your account is the owner of the file, with full rights and privileges over it. You can set credentials to be the default for all uploads and downloads or reference them with each request, but keep in mind that if you set them as the default for S3, they will be used for ALL S3 uploads and downloads. Generally this isn't a problem, but if later you'd like to upload to a third party's bucket, this can cause issues.</p>
+<p>You can save <a href="/node/17852#credentials">credentials</a> to your account, which will allow us to use your account to upload files instead of ours. This means your account is the owner of the file, with full rights and priveleges over it. You can set credentials to be the default for all uploads and downloads or reference them with each request, but keep in mind that if you set them as the default for S3, they will be used for ALL S3 uploads and downloads. Generally this isn't a problem, but if later you'd like to upload to a third party's bucket, this can cause issues.</p>
 </section>
 
 <section class="bcls-section">
@@ -50,30 +50,30 @@
 <p>There is only <strong>one change you will have to make</strong> to this bucket policy before it's ready to go.</p>
 
 <ol>
-	<li>Replace MY-BUCKET with the name of your bucket. Leave the /* at the end of the line, as that will apply the policy to every file within the bucket.</li>
-	<li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Zencoder may need are:
-	<h4>Object Permissions - first action array in the example above</h4>
+  <li>Replace MY-BUCKET with the name of your bucket. Leave the /* at the end of the line, as that will apply the policy to every file within the bucket.</li>
+  <li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Zencoder may need are:
+  <h4>Object Permissions - first action array in the example above</h4>
 
-	<ul>
-		<li>s3:PutObject - allow Zencoder to upload files to the bucket</li>
-		<li>s3:GetObject - allow Zencoder to download files from the bucket</li>
-		<li>s3:GetObjectAcl - allow Zencoder to get ACL permissions for files</li>
-		<li>s3:PutObjectAcl - allow Zencoder to set ACL permissions for other users on files</li>
-		<li>s3:ListMultipartUploadParts - allow Zencoder to list which parts of a multipart file have been uploaded to the bucket</li>
-	</ul>
+  <ul>
+    <li>s3:PutObject - allow Zencoder to upload files to the bucket</li>
+    <li>s3:GetObject - allow Zencoder to download files from the bucket</li>
+    <li>s3:GetObjectAcl - allow Zencoder to get ACL permissions for files</li>
+    <li>s3:PutObjectAcl - allow Zencoder to set ACL permissions for other users on files</li>
+    <li>s3:ListMultipartUploadParts - allow Zencoder to list which parts of a multipart file have been uploaded to the bucket</li>
+  </ul>
 
-	<h4>Bucket Permissions - second action array in the example above</h4>
+  <h4>Bucket Permissions - second action array in the example above</h4>
 
-	<ul>
-		<li>s3:GetBucketLocation - allow Zencoder to get the location of the bucket (US, EU, Asia, etc.)</li>
-		<li>s3:ListBucketMultipartUploads - allow Zencoder to view any multipart uploads currently happening on the bucket
-		<p>ex: If you want Zencoder to be able to download and upload files, replace the first Action array with:</p>
+  <ul>
+    <li>s3:GetBucketLocation - allow Zencoder to get the location of the bucket (US, EU, Asia, etc.)</li>
+    <li>s3:ListBucketMultipartUploads - allow Zencoder to view any multipart uploads currently happening on the bucket
+    <p>ex: If you want Zencoder to be able to download and upload files, replace the first Action array with:</p>
 
-		<pre class="line-numbers">
+    <pre class="line-numbers">
 <code class="language-json">["s3:PutObject", "s3:GetObject"]</code></pre>
-		</li>
-	</ul>
-	</li>
+    </li>
+  </ul>
+  </li>
 </ol>
 
 <p>Note that there are two statements in the policy. The first statement affects keys within the bucket, while the second part affects the bucket itself.</p>
