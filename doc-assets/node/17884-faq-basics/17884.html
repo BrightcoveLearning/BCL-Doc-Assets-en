@@ -61,7 +61,7 @@
   <li>
   <p style="font-weight:bold">Do I need an integration library?</p>
 
-  <p>No. At the minimum, integrating with Zencoder is just sending a HTTP request with a JSON or XML body. You can do this from the <a href="https://docs.brightcove.com/zencoder-api/v2/doc/index.html#api-Jobs-Create_a_Job">command line with curl</a>. Get a <code>201 Created</code> back, and you've just integrated with Zencoder.</p>
+  <p>No. At the minimum, integrating with Zencoder is just sending a HTTP request with a JSON or XML body. You can do this from the <a href="https://docs.brightcove.com/zencoder-api/v2/doc/index.html#api-Jobs-Create_a_Job">command line with curl</a>. Get a <code class="notranslate">201 Created</code> back, and you've just integrated with Zencoder.</p>
 
   <p>Beyond that, you might want to receive output_notification via HTTP. Give us a URL, and we'll POST job status back to you. You just need a URL on your site set up to receive a HTTP POST with a JSON or XML body.</p>
 
@@ -73,7 +73,7 @@
   <p>Our integration libraries abstract you from the raw HTTP requests. Using <a href="http://github.com/zencoder/zencoder-rb">our Ruby library</a>, for instance, you can create a job like this:</p>
 
   <pre class="line-numbers">
-<code class="language-ruby">Zencoder::Job.create({:input =&gt; 's3://bucket/key.mp4',
+<code class="language-ruby notranslate">Zencoder::Job.create({:input =&gt; 's3://bucket/key.mp4',
     :outputs =&gt; [{:label =&gt; 'vp8 for the web',
     :url =&gt; 's3://bucket/key_output.webm'}]})
 </code></pre>
@@ -81,7 +81,7 @@
   <p>Rather than doing something like this:</p>
 
   <pre class="line-numbers">
-<code class="language-ruby">require 'uri'
+<code class="language-ruby notranslate">require 'uri'
     require 'json'
     response = Net::HTTP.post_form(URI.parse('jobs.json'),
     {:input =&gt; 's3://bucket/key.mp4',
@@ -126,9 +126,9 @@
 
   <p>Each account is allowed 60 requests per minute, with the exception of job creation requests, which are limited to 1,000 requests per minute, and output progress requests, which are limited to 60 requests per minute per output.</p>
 
-  <p>Each HTTP response contains a header called " <code>X-Zencoder-Rate-Remaining</code>". This header lists the number of calls you can make to a given resource within the current time frame.</p>
+  <p>Each HTTP response contains a header called " <code class="notranslate">X-Zencoder-Rate-Remaining</code>". This header lists the number of calls you can make to a given resource within the current time frame.</p>
 
-  <p>If you exceed your quota, Zencoder will return a 403 error with a body of " <code>403 Forbidden (Rate Limit Exceeded)</code>". We'll also send back an additional header, " <code>Retry-After</code>", which contains the number of seconds until your quota is reset.</p>
+  <p>If you exceed your quota, Zencoder will return a 403 error with a body of " <code class="notranslate">403 Forbidden (Rate Limit Exceeded)</code>". We'll also send back an additional header, " <code class="notranslate">Retry-After</code>", which contains the number of seconds until your quota is reset.</p>
   </li>
   <li><a href="/node/18285#why">Why are API requests rate limited?</a>
   <p>We limit API requests to a reasonable number in order to ensure that one customer's use of Zencoder does not adversely affect other customers. Without rate limiting, one customer could flood our system with requests in a way that would prevent another customer from being able to use the system. This happens periodically by accident when customers are first working with an API - a simple programming error could flood the API with requests that the customer doesn't mean to send.</p>
