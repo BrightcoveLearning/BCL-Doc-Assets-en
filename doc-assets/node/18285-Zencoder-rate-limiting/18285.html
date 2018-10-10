@@ -4,19 +4,19 @@
 
 <h3 id="are_they">Are API requests rate limited?</h3>
 
-<p>Yes, Zencoder limits how many times you can call a particular method inside a given timeframe. Limits are tracked on a per-method (resource) basis (meaning that, for example, <code>GET</code> and <code>POST</code> requests are tracked separately), with the exception of progress requests, which are tracked per-output. For example, calls to get job and output info all count towards the same limit, while calls for output progress are tracked separately per output.</p>
+<p>Yes, <span class="notranslate">Zencoder</span> limits how many times you can call a particular method inside a given timeframe. Limits are tracked on a per-method (resource) basis (meaning that, for example, <code>GET</code> and <code>POST</code> requests are tracked separately), with the exception of progress requests, which are tracked per-output. For example, calls to get job and output info all count towards the same limit, while calls for output progress are tracked separately per output.</p>
 
 <p>Each account is allowed 60 requests per minute, with the exception of job creation requests, which are limited to 1,000 requests per minute, and output progress requests, which are limited to 60 requests per minute per output.</p>
 
 <p>Each HTTP response contains a header called "<code>X-Zencoder-Rate-Remaining</code>". This header lists the number of calls you can make to a given resource within the current time frame.</p>
 
-<p>If you exceed your quota, Zencoder will return a 403 error with a body of "<code>403 Forbidden (Rate Limit Exceeded)</code>". We'll also send back an additional header, "<code>Retry-After</code>", which contains the number of seconds until your quota is reset.</p>
+<p>If you exceed your quota, <span class="notranslate">Zencoder</s> will return a 403 error with a body of "<code>403 Forbidden (Rate Limit Exceeded)</code>". We'll also send back an additional header, "<code>Retry-After</code>", which contains the number of seconds until your quota is reset.</p>
 
 <h3 id="why">Why are API requests rate limited?</h3>
 
-<p>We limit API requests to a reasonable number in order to ensure that one customer's use of Zencoder does not adversely affect other customers. Without rate limiting, one customer could flood our system with requests in a way that would prevent another customer from being able to use the system. This happens periodically by accident when customers are first working with an API - a simple programming error could flood the API with requests that the customer doesn't mean to send.</p>
+<p>We limit API requests to a reasonable number in order to ensure that one customer's use of <span class="notranslate">Zencoder</s> does not adversely affect other customers. Without rate limiting, one customer could flood our system with requests in a way that would prevent another customer from being able to use the system. This happens periodically by accident when customers are first working with an API - a simple programming error could flood the API with requests that the customer doesn't mean to send.</p>
 
-<p>As long as your application is set up properly, rate limiting should not be a problem. When we return a 403 with "Rate Limit Exceeded" in the body, just retry your request after the the specified period of time.</p>
+<p>As long as your application is set up properly, rate limiting should not be a problem. When we return a 403 with "Rate Limit Exceeded" in the body, just retry your request after the specified period of time.</p>
 
 <p>If you find that you are regularly running in to these limits, <a href="http://zencoder.com/contact">contact us</a> to discuss your setup and options.</p>
 </section>
