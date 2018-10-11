@@ -82,7 +82,7 @@ var BCLS = (function(window, document) {
       iMax = all_buttons.length;
     for (i = 0; i < iMax; i++) {
       all_buttons[i].setAttribute('disabled', 'disabled');
-      all_buttons[i].setAttribute('style', 'color:#999;cursor:not-allowed;');
+      all_buttons[i].setAttribute('style', 'color:#999;cursor:not-allowed;border:1px #999 solid;');
     }
   }
 
