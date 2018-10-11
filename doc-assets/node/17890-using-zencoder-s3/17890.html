@@ -13,7 +13,7 @@
 <p>Our recommended bucket policy:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
                       "Version": "2012-10-17",
                       "Id": "ZencoderBucketPolicy",
                       "Statement": [
@@ -50,30 +50,30 @@
 <p>There is only <strong>one change you will have to make</strong> to this bucket policy before it's ready to go.</p>
 
 <ol>
-	<li>Replace MY-BUCKET with the name of your bucket. Leave the /* at the end of the line, as that will apply the policy to every file within the bucket.</li>
-	<li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Zencoder may need are:
-	<h4>Object Permissions - first action array in the example above</h4>
+  <li>Replace MY-BUCKET with the name of your bucket. Leave the /* at the end of the line, as that will apply the policy to every file within the bucket.</li>
+  <li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Zencoder may need are:
+  <h4>Object Permissions - first action array in the example above</h4>
 
-	<ul>
-		<li>s3:PutObject - allow Zencoder to upload files to the bucket</li>
-		<li>s3:GetObject - allow Zencoder to download files from the bucket</li>
-		<li>s3:GetObjectAcl - allow Zencoder to get ACL permissions for files</li>
-		<li>s3:PutObjectAcl - allow Zencoder to set ACL permissions for other users on files</li>
-		<li>s3:ListMultipartUploadParts - allow Zencoder to list which parts of a multipart file have been uploaded to the bucket</li>
-	</ul>
+  <ul>
+    <li><code class="notranslate">s3:PutObject</code> - allow Zencoder to upload files to the bucket</li>
+    <li><code class="notranslate">s3:GetObject</code> - allow Zencoder to download files from the bucket</li>
+    <li><code class="notranslate">s3:GetObjectAcl</code> - allow Zencoder to get ACL permissions for files</li>
+    <li><code class="notranslate">s3:PutObjectAcl</code> - allow Zencoder to set ACL permissions for other users on files</li>
+    <li><code class="notranslate">s3:ListMultipartUploadParts</code> - allow Zencoder to list which parts of a multipart file have been uploaded to the bucket</li>
+  </ul>
 
-	<h4>Bucket Permissions - second action array in the example above</h4>
+  <h4>Bucket Permissions - second action array in the example above</h4>
 
-	<ul>
-		<li>s3:GetBucketLocation - allow Zencoder to get the location of the bucket (US, EU, Asia, etc.)</li>
-		<li>s3:ListBucketMultipartUploads - allow Zencoder to view any multipart uploads currently happening on the bucket
-		<p>ex: If you want Zencoder to be able to download and upload files, replace the first Action array with:</p>
+  <ul>
+    <li><code class="notranslate">s3:GetBucketLocation</code> - allow Zencoder to get the location of the bucket (US, EU, Asia, etc.)</li>
+    <li><code class="notranslate">s3:ListBucketMultipartUploads</code> - allow Zencoder to view any multipart uploads currently happening on the bucket
+    <p><code class="notranslate">ex:</code> If you want Zencoder to be able to download and upload files, replace the first Action array with:</p>
 
-		<pre class="line-numbers">
-<code class="language-json">["s3:PutObject", "s3:GetObject"]</code></pre>
-		</li>
-	</ul>
-	</li>
+    <pre class="line-numbers">
+<code class="language-json notranslate">["s3:PutObject", "s3:GetObject"]</code></pre>
+    </li>
+  </ul>
+  </li>
 </ol>
 
 <p>Note that there are two statements in the policy. The first statement affects keys within the bucket, while the second part affects the bucket itself.</p>
@@ -92,9 +92,9 @@
 
 <h3>Can I Just Grant Permission To Specific Files?</h3>
 
-<p>You definitely can. While the Bucket Policy approach is generally easier and faster, it doesn't work well for everyone. If that's you, you can grant permissions to our Amazon AWS account, <code>aws@zencoder.com</code>.</p>
+<p>You definitely can. While the Bucket Policy approach is generally easier and faster, it doesn't work well for everyone. If that's you, you can grant permissions to our Amazon AWS account, <code class="notranslate">aws@zencoder.com</code>.</p>
 
-<p>If you need to use our canonical ID instead, you can use <code>6c8583d84664a381db0c6af0e79b285ede571885fbe768e7ea50e5d3760597dd</code>.</p>
+<p>If you need to use our canonical ID instead, you can use <code class="notranslate">6c8583d84664a381db0c6af0e79b285ede571885fbe768e7ea50e5d3760597dd</code>.</p>
 </section>
 
 <section class="bcls-section">
@@ -102,10 +102,10 @@
 
 <h3 id="Troubleshooting">I'm getting permission denied still!</h3>
 
-<p>S3 responds with "Access Denied" if access is denied or if the file isn't found. If you believe you've set up your S3 credentials or bucket policy correctly but are still getting "Access Denied" errors, double check the URL you're submitting. If the input looks like <code>"s3://my-bucket/this+file+is+great.mp4"</code>, there's a good chance what you actually want is <code>"s3://my-bucket/this file is great.mp4"</code></p>
+<p>S3 responds with "Access Denied" if access is denied or if the file isn't found. If you believe you've set up your S3 credentials or bucket policy correctly but are still getting "Access Denied" errors, double check the URL you're submitting. If the input looks like <code class="notranslate">"s3://my-bucket/this+file+is+great.mp4"</code>, there's a good chance what you actually want is <code class="notranslate">"s3://my-bucket/this file is great.mp4"</code></p>
 
 <h3>I get an error when using the EU Frankfurt region!</h3>
 
-<p>In order to use the EU Frankfurt region with Zencoder, you must generate S3 URLs that contain the region name. To do this, simply create URLs like this <code>"s3+eu-central-1://my-bucket/file.mp4"</code>.</p>
+<p>In order to use the EU Frankfurt region with Zencoder, you must generate S3 URLs that contain the region name. To do this, simply create URLs like this <code class="notranslate">"s3+eu-central-1://my-bucket/file.mp4"</code>.</p>
 </section>
 </article>

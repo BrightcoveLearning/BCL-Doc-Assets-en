@@ -1,148 +1,517 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="http_status_codes">HTTP status codes</h2>
+<h2 id="drm">drm (beta)</h2>
+<code>drm:Hash</code>
 
-<p>The following table lists the HTTP response code for Zencoder API requests, in the the case of errors, indicates the most likely cause, where possible.</p>
+<p><strong>API Versions:</strong> V2</p>
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">HTTP Response Codes</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Status Code</th>
-			<th>Probable Explanation</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>200 OK</code></td>
-			<td>Standard success response for actions that do not create a new asset</td>
-		</tr>
-		<tr>
-			<td><code>201 CREATED</code></td>
-			<td>Standard response for requests that create new assets</td>
-		</tr>
-		<tr>
-			<td><code>204 NO CONTENT</code></td>
-			<td>Standard response for a request that returns no response</td>
-		</tr>
-		<tr>
-			<td><code>400 BAD REQUEST</code></td>
-			<td>Invalid JSON in the request body</td>
-		</tr>
-		<tr>
-			<td><code>401 UNAUTHORIZED</code></td>
-			<td>Missing or invalid API Key</td>
-		</tr>
-		<tr>
-			<td><code>402 PAYMENT REQUIRED</code></td>
-			<td>Returned when an API request attempts to turn off Zencoder integration mode https://app.zencoder.com/docs/api/accounts/integration on an account where billing has not been setup. You should go to <a href="www.zencoder.com">www.zencoder.com</a> and choose a payment plan</td>
-		</tr>
-		<tr>
-			<td><code>403 FORBIDDEN</code></td>
-			<td><a href="/node/18285">rate limit</a> for requests exceeded, or in response to a retry/resubmit API request for resources that have been retried too many times</td>
-		</tr>
-		<tr>
-			<td><code>404 NOT FOUND</code></td>
-			<td>Incorrect request URL or invalid/old job ID</td>
-		</tr>
-		<tr>
-			<td><code>406 NOT ACCEPTIBLE</code></td>
-			<td>Returned for attempting to create a non-AWS credential through the API</td>
-		</tr>
-		<tr>
-			<td><code>409 CONFLICT</code></td>
-			<td>Generally only when trying to retry/resubmit a job that's too old</td>
-		</tr>
-		<tr>
-			<td><code>422 UNPROCESSIBLE ENTITY</code></td>
-			<td>Returned when an API request cannot be validated</td>
-		</tr>
-		<tr>
-			<td><code>500 INTERNAL SERVER ERROR</code></td>
-			<td>Either a temporary issue with Zencoder or something wrong with the request</td>
-		</tr>
-		<tr>
-			<td><code>503 SERVICE UNAVAILABLE</code></td>
-			<td>Zencoder temporarily unavailable, probably during scheduled maintenance</td>
-		</tr>
-		<tr>
-			<td><code>504 GATEWAY TIMEOUT</code></td>
-			<td>Returned if the Zencoder service is down</td>
-		</tr>
-	</tbody>
-</table>
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
+
+<p><strong>Valid Values:</strong> Hash containing DRM options.</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Provides a collection of DRM options.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#provider">provider</a>, <a href="#server_key">server_key</a>, <a href="#user_key">user_key</a>, <a href="#content_id">content_id</a>, <a href="#key-id">key_id</a>, <a href="#key-guid">key_guid</a>, and <a href="#schemas">schemas</a></p>
 </section>
 
 <section class="bcls-section">
-<h2 id="zencoder_error_codes">Zencoder Error codes</h2>
+<h2 id="method">method</h2>
+<code>method:String</code>
 
-<div style="display:inline-block;padding:1em;border-left:1px #ccc solid; margin: auto 0;vertical-align:top;">
-<ul>
-	<li><a href="/node/17830">AkamaiNetStorageFileSizeError</a></li>
-	<li><a href="/node/17840">ChecksumMismatchError</a></li>
-	<li><a href="/node/17817">DimensionTooSmallError</a></li>
-	<li><a href="/node/17847">DownloadAccessDeniedError</a></li>
-	<li><a href="/node/17810">DownloadFailureError</a></li>
-	<li><a href="/node/17850">DownloadTimeoutError</a></li>
-	<li><a href="/node/17823">FileNotFoundError</a></li>
-	<li><a href="/node/17834">FilePermanentlyMovedError</a></li>
-	<li><a href="/node/17801">InaccurateDurationError</a></li>
-	<li><a href="/node/17809">IncompatibleWithDynamicProfilesError</a></li>
-	<li><a href="/node/17842">InputFileNotFound</a></li>
-	<li><a href="/node/17803">InvalidAccessKeyIdError</a></li>
-	<li><a href="/node/17829">InvalidAudioSettingsError</a></li>
-	<li><a href="/node/17848">InvalidCodecCombinationError</a></li>
-	<li><a href="/node/17831">InvalidDownloadedFileTypeError</a></li>
-	<li><a href="/node/17804">InvalidEncryptionSettingsError</a></li>
-	<li><a href="/node/17821">InvalidFilePathError</a></li>
-	<li><a href="/node/17807">InvalidFormatCodecError</a></li>
-</ul>
-</div>
+<p><strong>API Versions:</strong> V2</p>
 
-<div style="display:inline-block;padding:1em;border-left:1px #ccc solid; margin: auto 0;vertical-align:top;">
-<ul>
-	<li><a href="/node/17813">InvalidFrameRateError</a></li>
-	<li><a href="/node/17802">InvalidUsernameOrPasswordError</a></li>
-	<li><a href="/node/17835">InvalidVideoBitrateError</a></li>
-	<li><a href="/node/17808">InvalidVideoSettingsError</a></li>
-	<li><a href="/node/17832">NoMediaError</a></li>
-	<li><a href="/node/17836">QuicktimeReferenceError</a></li>
-	<li><a href="/node/17819">RemoteServerProblemError</a></li>
-	<li><a href="/node/17837">RTMPAuthFailedError</a></li>
-	<li><a href="/node/17806">RTMPMaxStreamsXIdReached</a></li>
-	<li><a href="/node/17822">RTMPStreamNameAlreadyInUse</a></li>
-	<li><a href="/node/17826">S3BucketNotFoundError</a></li>
-	<li><a href="/node/17816">SegmentingError</a></li>
-	<li><a href="/node/18568">SkippedSourceError</a></li>
-	<li><a href="/node/17799">ThumbnailError</a></li>
-	<li><a href="/node/17843">TranscodingError</a></li>
-	<li><a href="/node/17838">Transfer::InvalidGranteeGroupURLError</a></li>
-	<li><a href="/node/17800">Transfer::InvalidGranteeIDError</a></li>
-	<li><a href="/node/17814">TruncatedFileError</a></li>
-	<li><a href="/node/17846">UnableToCreateDynamicProfilesError</a></li>
-</ul>
-</div>
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
 
-<div style="display:inline-block;padding:1em;border-left:1px #ccc solid; margin: auto 0;vertical-align:top;">
-<ul>
-	<li><a href="/node/17827">UnexpectedDownloadProblemError</a></li>
-	<li><a href="/node/17845">UnexpectedFfmpegResult</a></li>
-	<li><a href="/node/17824">UnexpectedMplayerResult</a></li>
-	<li><a href="/node/17825">UnexpectedProgenResult</a></li>
-	<li><a href="/node/17820">UnexpectedResultError</a></li>
-	<li><a href="/node/17839">UnexpectedUploadProblemError</a></li>
-	<li><a href="/node/17798">UnexpectedX264Result</a></li>
-	<li><a href="/node/17849">UnreadableFileError</a></li>
-	<li><a href="/node/17805">UnsupportedCodecError</a></li>
-	<li><a href="/node/17811">UnsupportedEncodingError</a></li>
-	<li><a href="/node/17818">UnsupportedEncryptionError</a></li>
-	<li><a href="/node/17828">UnsupportedTranscodeCombinationError</a></li>
-	<li><a href="/node/17812">UploadAccessDeniedError</a></li>
-	<li><a href="/node/17851">UploadFailureError</a></li>
-	<li><a href="/node/17844">UploadServerNotFoundError</a></li>
-	<li><a href="/node/17841">UploadTimeoutError</a></li>
-	<li><a href="/node/17833">WorkerTimeoutError</a></li>
-</ul>
-</div>
+<p><strong>Valid Values:</strong> playready, cenc</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> playready</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The Digital Rights Management (DRM) method used to protect content.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#provider">provider</a>, <a href="#server_key">server_key</a>, <a href="#user_key">user_key</a>, <a href="#content_id">content_id</a>, <a href="#key-id">key_id</a>, <a href="#key-guid">key_guid</a>, and <a href="#schemas">schemas</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="provider">provider</h2>
+<code>provider:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> buydrm</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> buydrm</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The Digital Rights Management (DRM) provider used.</p>
+
+<p>Only required for PlayReady.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#server_key">server_key</a>, <a href="#user_key">user_key</a>, and <a href="#content_id">content_id</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="key_id">key_id</h2>
+<code>key_id:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes for UUID formatting)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 526d3480-48d5-11e4-916c-0800200c9a66</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Identifier of the key to use. This is specified with all bytes in standard (big-endian) order.</p>
+
+<p>Some DRM services return key IDs in little-endian order formatted as a GUID; to specify the key in that format see <a href="#key_guid">key_guid</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "cenc",
+        "content_key": "25e75bb7-5c82-4213-a2d8-0796683bc409",
+        "key_id": "526d3480-48d5-11e4-916c-0800200c9a66"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#content_key">content_key</a>, and <a href="#schemas">schemas</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="key_guid">key_guid</h2>
+<code>key_guid:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes for UUID formatting)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 80346d52-d548-e411-916c-0800200c9a66</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Identifier of the key to use, in GUID-formatted little-endian order. Some DRM services return key IDs using this formatting.</p>
+
+<p>If a <a href="#key_id">key_id</a> is not also specified, this will be converted to use as the key_id. For specifying the key ID in a standard big-endian binary or UUID format, see <a href="#key_id">key_id</a>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "cenc",
+        "content_key": "25e75bb7-5c82-4213-a2d8-0796683bc409",
+        "key_guid": "80346d52-d548-e411-916c-0800200c9a66"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#content_key">content_key</a>, and <a href="#schemas">schemas</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="user_key">user_key</h2>
+<code>user_key:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 5897a089-98dc-4d43-96f2-d6857d69b196</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The user key from the DRM provider.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#provider">provider</a>, <a href="#server_key">server_key</a>, and <a href="#content_id">content_id</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="server_key">server_key</h2>
+<code>server_key:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> daaaecea-4526-4570-b9ef-0416275d760b</p>
+
+<p><strong>Description:</strong></p>
+
+<p>The server key from the DRM provider.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#provider">provider</a>, <a href="#user_key">user_key</a>, and <a href="#content_id">content_id</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="media_id">media_id</h2>
+<code>media_id:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 25e75bb7-5c82-4213-a2d8-0796683bc409</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Unique identifier for the media.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "media_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#provider">provider</a>, <a href="#server_key">server_key</a>, and <a href="#user_key">user_key</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="content_id">content_id</h2>
+<code>content_id:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 25e75bb7-5c82-4213-a2d8-0796683bc409</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Unique identifier for the content.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_id": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#key-id">key_id</a>, <a href="#key-guid">key_guid</a>, and <a href="#schemas">schemas</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="content_key">content_key</h2>
+<code>content_key:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> 32 hexadecimal characters (with optional dashes)</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 25e75bb7-5c82-4213-a2d8-0796683bc409</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Unique identifier for the content.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "playready",
+        "provider": "buydrm",
+        "user_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "server_key": "daaaecea-4526-4570-b9ef-0416275d760b",
+        "content_key": "25e75bb7-5c82-4213-a2d8-0796683bc409"
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#provider">provider</a>, <a href="#server_key">server_key</a>, <a href="#key-id">key_id</a>, <a href="#key-guid">key_guid</a>, and <a href="#schemas">schemas</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="schemas">schemas</h2>
+<code>schemas:Array</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a></p>
+
+<p><strong>Valid Values:</strong> Array of schemas</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> 25e75bb7-5c82-4213-a2d8-0796683bc409</p>
+
+<p><strong>Description:</strong></p>
+
+<p>When using Common Encryption to encrypt an output (or set of outputs), information about the DRM providers is specified as a schema including the schema type, and provider-specific information.</p>
+
+<p>This is generally only specified on playlist outputs for multi-bitrate encoding jobs, but may also be specified for a CENC-encoded output to ensure that output is playable on its own.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "cenc",
+        "content_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "key_id": "526d3480-48d5-11e4-916c-0800200c9a66",
+        "schemas": [
+          {
+            "type": "marlin"
+          },
+          {
+            "type": "playready",
+            "license_acquisition_url": "https://license.server.example.com/license/123456789"
+          },
+          {
+            "type": "widevine",
+            "license_acquisition_url": "https://widevine.example.com/license_server/"
+          }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#content_key">content_key</a>, <a href="#key-id">key_id</a>, and <a href="#key-guid">key_guid</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="type">type</h2>
+<code>type:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a> / <a href="#schemas">schemas</a></p>
+
+<p><strong>Valid Values:</strong> marlin, playready, widevine</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> playready</p>
+
+<p><strong>Description:</strong></p>
+
+<p>Provider type for this DRM schema.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "cenc",
+        "content_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "key_id": "526d3480-48d5-11e4-916c-0800200c9a66",
+        "schemas": [
+          {
+            "type": "marlin"
+          },
+          {
+            "type": "playready",
+            "license_acquisition_url": "https://license.server.example.com/license/123456789"
+          },
+          {
+            "type": "widevine",
+            "license_acquisition_url": "https://widevine.example.com/license_server/"
+          }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#content_key">content_key</a>, <a href="#key-id">key_id</a>, and <a href="#key-guid">key_guid</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="license_acquisition_url">license_acquisition_url</h2>
+<code>license_acquisition_url:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#drm">drm</a> / <a href="#schemas">schemas</a></p>
+
+<p><strong>Valid Values:</strong> marlin, playready, widevine</p>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Example:</strong> https://widevine.example.com/license_server/</p>
+
+<p><strong>Description:</strong></p>
+
+<p>License acquisition URL for Playready CENC DRM schema.</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "input": "s3://zencodertesting/test.mov",
+  "outputs": [
+    {
+      "drm": {
+        "method": "cenc",
+        "content_key": "5897a089-98dc-4d43-96f2-d6857d69b196",
+        "key_id": "526d3480-48d5-11e4-916c-0800200c9a66",
+        "schemas": [
+          {
+            "type": "marlin"
+          },
+          {
+            "type": "playready",
+            "license_acquisition_url": "https://license.server.example.com/license/123456789"
+          },
+          {
+            "type": "widevine",
+            "license_acquisition_url": "https://widevine.example.com/license_server/"
+          }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+
+<p><strong>See Also:</strong> <a href="#method">method</a>, <a href="#content_key">content_key</a>, <a href="#key-id">key_id</a>, and <a href="#key-guid">key_guid</a></p>
 </section>
 </article>

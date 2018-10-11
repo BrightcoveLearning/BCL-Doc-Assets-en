@@ -3,56 +3,56 @@
 <h2 id="faq">FAQ</h2>
 
 <ul>
-	<li>
-	<p style="font-weight:bold">Why are my audio and video out of sync?</p>
+  <li>
+  <p style="font-weight:bold">Why are my audio and video out of sync?</p>
 
-	<p><a href="https://support.brightcove.com/en/contact/create">File a support request</a>. We fix most a/v sync issues, so if one slides through, we want to hear about it.</p>
+  <p><a href="https://support.brightcove.com/en/contact/create">File a support request</a>. We fix most a/v sync issues, so if one slides through, we want to hear about it.</p>
 
-	<p>There are several things that can cause a/v sync issues. We fix most of them (like variable frame rate movies, edit lists, and corrupt metadata). But there are still a few things to watch for.</p>
+  <p>There are several things that can cause a/v sync issues. We fix most of them (like variable frame rate movies, edit lists, and corrupt metadata). But there are still a few things to watch for.</p>
 
-	<ul>
-		<li>Files with Quicktime edit lists can sometimes end up with a/v sync that slowly gets worse as the file progresses. We've <em>mostly</em> fixed this problem, but a few edge cases might get out of sync. We're working on fixing those edge cases too.</li>
-		<li>Some codecs are known to result in a/v sync issues. At the moment, MSS2 (a Windows codec optimized for screencasts) is one of them. Again, we hope to have this fixed soon.</li>
-		<li>Corrupt files can have problems. We can adapt to some file corruption, but some files are just too corrupt for us to fix.</li>
-	</ul>
-	</li>
-	<li>
-	<p style="font-weight:bold">Why did I get 2-channel audio? I asked for mono.</p>
+  <ul>
+    <li>Files with Quicktime edit lists can sometimes end up with a/v sync that slowly gets worse as the file progresses. We've <em>mostly</em> fixed this problem, but a few edge cases might get out of sync. We're working on fixing those edge cases too.</li>
+    <li>Some codecs are known to result in a/v sync issues. At the moment, MSS2 (a Windows codec optimized for screencasts) is one of them. Again, we hope to have this fixed soon.</li>
+    <li>Corrupt files can have problems. We can adapt to some file corruption, but some files are just too corrupt for us to fix.</li>
+  </ul>
+  </li>
+  <li>
+  <p style="font-weight:bold">Why did I get 2-channel audio? I asked for mono.</p>
 
-	<p>That's a bug, and we'll have it fixed soon. A library in our toolchain <em>always</em> reports AAC audio as 2-channel, even if it is mono. If you want to verify this for yourself, download the offending file, open it up in iTunes, and call "Get Info" on the file. It should report the correct number of channels.</p>
-	</li>
-	<li>
-	<p style="font-weight:bold">The resolution is wrong! I asked for 640x480, and I got 640x360. What's up?</p>
+  <p>That's a bug, and we'll have it fixed soon. A library in our toolchain <em>always</em> reports AAC audio as 2-channel, even if it is mono. If you want to verify this for yourself, download the offending file, open it up in iTunes, and call "Get Info" on the file. It should report the correct number of channels.</p>
+  </li>
+  <li>
+  <p style="font-weight:bold">The resolution is wrong! I asked for 640x480, and I got 640x360. What's up?</p>
 
-	<p>Resolution is complicated. There are several reasons why the output file could be different than the resolution target you asked for.</p>
+  <p>Resolution is complicated. There are several reasons why the output file could be different than the resolution target you asked for.</p>
 
-	<ul>
-		<li>You asked for a size that is larger than the input file, and you didn't set the "upscale" option. By default, if you ask for 1280x720, and your input is 640x360, we'll leave the file small. Your playback device can scale the video back up to 1280x720, whether it's Flash, HTML5 video, a mobile device, or a desktop player. This saves bandwidth. If you want us to increase the resolution (and the file size), set the "<a href="/node/17854#upscale.html">upscale</a>" option to true.</li>
-		<li>Sometimes, we have to make the height and width divisible by 2 or 4. Some codecs or settings don't work well with odd-numbered resolutions, or require resolutions divisible by 4.</li>
-		<li>You asked for a target with one aspect ratio, and your input has another aspect ratio. If you don't set the video <a href="/node/17854#aspect-mode.html">aspect_mode</a> to "stretch", we'll preserve the aspect ratio by default. Really, you want this -- stretching a video from 640x480 to 640x360 is going to make it look bad. Most players can account for this and pad the area with black bars, just like a letterboxed movie. If you really don't want this, set <a href="/node/17854#aspect-mode.html">aspect_mode</a> to "stretch" and we'll distort the movie to fit the target aspect ratio.</li>
-	</ul>
-	</li>
-	<li>
-	<p style="font-weight:bold">&gt;Why is my output only 5 seconds long?</p>
+  <ul>
+    <li>You asked for a size that is larger than the input file, and you didn't set the "upscale" option. By default, if you ask for 1280x720, and your input is 640x360, we'll leave the file small. Your playback device can scale the video back up to 1280x720, whether it's Flash, HTML5 video, a mobile device, or a desktop player. This saves bandwidth. If you want us to increase the resolution (and the file size), set the "<a href="/node/17854#upscale.html">upscale</a>" option to true.</li>
+    <li>Sometimes, we have to make the height and width divisible by 2 or 4. Some codecs or settings don't work well with odd-numbered resolutions, or require resolutions divisible by 4.</li>
+    <li>You asked for a target with one aspect ratio, and your input has another aspect ratio. If you don't set the video <a href="/node/17854#aspect-mode.html">aspect_mode</a> to "stretch", we'll preserve the aspect ratio by default. Really, you want this -- stretching a video from 640x480 to 640x360 is going to make it look bad. Most players can account for this and pad the area with black bars, just like a letterboxed movie. If you really don't want this, set <a href="/node/17854#aspect-mode.html">aspect_mode</a> to "stretch" and we'll distort the movie to fit the target aspect ratio.</li>
+  </ul>
+  </li>
+  <li>
+  <p style="font-weight:bold">&gt;Why is my output only 5 seconds long?</p>
 
-	<p>You're in <a href="/node/17878#test.html">Integration Mode</a>. If you're on a free/test account, all of your files are cut to 5 seconds long so you can test out the system without paying anything. On a paid account, you can do this with test job requests as well, and we won't charge you for those.</p>
-	</li>
-	<li>
-	<p style="font-weight:bold">Something else looks or sounds wrong! What should I do?</p>
+  <p>You're in <a href="/node/17878#test.html">Integration Mode</a>. If you're on a free/test account, all of your files are cut to 5 seconds long so you can test out the system without paying anything. On a paid account, you can do this with test job requests as well, and we won't charge you for those.</p>
+  </li>
+  <li>
+  <p style="font-weight:bold">Something else looks or sounds wrong! What should I do?</p>
 
-	<p><a href="https://support.brightcove.com/en/contact/create">Contact support</a> letting us know what's going wrong. Include a Job ID or two that has the problem and we'll look into it and let you know what we find.</p>
-	</li>
-	<li>
-	<p style="font-weight:bold">My output file is larger than my input. What's going on?</p>
+  <p><a href="https://support.brightcove.com/en/contact/create">Contact support</a> letting us know what's going wrong. Include a Job ID or two that has the problem and we'll look into it and let you know what we find.</p>
+  </li>
+  <li>
+  <p style="font-weight:bold">My output file is larger than my input. What's going on?</p>
 
-	<p>Occasionally an output file created by Zencoder will end up being larger than the input file. This typically happens when the input file is highly compressed or contains visual artifacts.</p>
+  <p>Occasionally an output file created by <span class="notranslate">Zencoder</span> will end up being larger than the input file. This typically happens when the input file is highly compressed or contains visual artifacts.</p>
 
-	<p>During transcoding Zencoder can't tell the difference between the actual content of the video and artifacts caused by compression, so it tries to preserve the artifacts in the video. Deliberately including this in the output takes more space compared to accidentally having it due to compression, which causes the outputs to be larger in size.</p>
+  <p>During transcoding <span class="notranslate">Zencoder</span> can't tell the difference between the actual content of the video and artifacts caused by compression, so it tries to preserve the artifacts in the video. Deliberately including this in the output takes more space compared to accidentally having it due to compression, which causes the outputs to be larger in size.</p>
 
-	<p>If your input files are compressed and you want to keep file sizes down your best bet is to determine the bitrate of the input file before sending it to Zencoder and setting your output's bitrate to match it. Otherwise, it is preferrable to send less compressed videos that contain fewer artifacts in them. This will result in better looking outputs that use less disk space.</p>
+  <p>If your input files are compressed and you want to keep file sizes down your best bet is to determine the bitrate of the input file before sending it to <span class="notranslate">Zencoder</span> and setting your output's bitrate to match it. Otherwise, it is preferable to send less compressed videos that contain fewer artifacts in them. This will result in better looking outputs that use less disk space.</p>
 
-	<p>Additionally, some codecs are less efficient than others. VP6, Theora, and MPEG-4, for example, are generally less efficient than H.264 and VP8. They're still fine codecs, but converting from a highly efficient codec to a lower one will obviously impact the file size.</p>
-	</li>
+  <p>Additionally, some codecs are less efficient than others. VP6, Theora, and MPEG-4, for example, are generally less efficient than H.264 and VP8. They're still fine codecs, but converting from a highly efficient codec to a lower one will obviously impact the file size.</p>
+  </li>
 </ul>
 </section>
 </article>
