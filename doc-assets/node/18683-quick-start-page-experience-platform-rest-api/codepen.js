@@ -223,8 +223,12 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
           // enable
           disableButtons();
-          enableButton(get_playlists);
-          enableButton(get_videos);
+          if (is_playlist_template) {
+            enableButton(get_playlists);
+          } else {
+            enableButton(get_videos);
+            en
+          }
         });
         break;
       case 'get_videos':
