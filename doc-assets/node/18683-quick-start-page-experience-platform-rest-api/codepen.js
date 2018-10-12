@@ -308,7 +308,7 @@ var BCLS = (function(window, document) {
         requestBody.videos = {};
         if (is_playlist_template) {
           requestBody.videos.type = 'playlist';
-          requestBody.videos.playlistid = getSelectedValue(playlist_selector);
+          requestBody.videos.playlistid = getSelectedValue(video_selector);
         } else {
           requestBody.videos.type = 'manual';
           requestBody.videos.videoids = getSelectedValue(video_selector);
