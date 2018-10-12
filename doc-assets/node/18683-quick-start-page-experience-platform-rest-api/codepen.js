@@ -228,7 +228,6 @@ var BCLS = (function(window, document) {
             enableButton(get_playlists);
           } else {
             enableButton(get_videos);
-            en
           }
         });
         break;
