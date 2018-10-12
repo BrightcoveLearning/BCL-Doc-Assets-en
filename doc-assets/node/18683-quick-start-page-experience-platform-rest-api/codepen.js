@@ -190,7 +190,7 @@ var BCLS = (function(window, document) {
             if (all_templates[i].hasOwnProperty('name')) {
               option.textContent = all_templates[i].name;
             } else {
-              option.textContent = all_templates[i].id;
+              option.textContent = all_templates[i].id.replace('ee-', '');
             }
             frag.appendChild(option);
           }
@@ -223,10 +223,8 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
           // enable
           disableButtons();
-          if (is_playlist_template) {
-            enableButton(get_playlists);
-          } else {
-            enableButton(get_videos);
+          enableButton(get_playlists);
+          enableButton(get_videos);
           }
         });
         break;
@@ -326,7 +324,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'publish_experience':
-        endPoint = '/experiences/' + new_experience_id + '/actions/publish';
+        endPoint = options.account_id + '/experiences/' + new_experience_id + '/actions/publish';
         options.url = ipxURL + endPoint;
         options.requestType = 'POST';
         apiRequest.textContent = options.url;
