@@ -172,7 +172,7 @@ var BCLS = (function(window, document) {
           all_templates = parsedData.items
           i = all_templates.length;
           // remove live templates
-          while (i < 0) {
+          while (i > 0) {
             i--;
             if (arrayContains(live_templates, all_templates[i].id)) {
               all_templates.splice(i, 1);
