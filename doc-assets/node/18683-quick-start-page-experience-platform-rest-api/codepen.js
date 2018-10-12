@@ -190,7 +190,7 @@ var BCLS = (function(window, document) {
             frag.appendChild(option);
           }
           template_selector.appendChild(frag);
-          responseData.textContent = JSON.stringify(parsedData, null, '  ');
+          apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
           // enable the create experience button
           disableButtons();
           enableButton(create_ipx);
