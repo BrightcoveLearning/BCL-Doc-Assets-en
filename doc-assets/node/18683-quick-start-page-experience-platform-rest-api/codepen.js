@@ -318,6 +318,7 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
         apiData.textContent = JSON.stringify(requestBody, null, '  ');
+        console.log('update options', options);
         makeRequest(options, function(response) {
           var parsedData;
           parsedData = JSON.parse(response);
