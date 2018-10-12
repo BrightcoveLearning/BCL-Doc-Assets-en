@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var ipxURL = ' https://experiences.api.brightcove.com/v1/accounts/',
+  var ipxURL = 'https://experiences.api.brightcove.com/v1/accounts/',
     cmsURL = 'https://cms.api.brightcove.com/v1/accounts/',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     video_id,
