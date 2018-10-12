@@ -314,6 +314,7 @@ var BCLS = (function(window, document) {
           requestBody.videos.videoids = getSelectedValue(video_selector);
         }
         options.requestBody = JSON.stringify(requestBody);
+        console.log('update body', JSON.parse(options.requestBody));
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
         apiData.textContent = JSON.stringify(requestBody, null, '  ');
