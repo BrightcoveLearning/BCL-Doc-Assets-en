@@ -394,6 +394,7 @@ var BCLS = (function(window, document) {
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
+    console.log('request', JSON.stringify(options));
     httpRequest.send(JSON.stringify(options));
   }
 
