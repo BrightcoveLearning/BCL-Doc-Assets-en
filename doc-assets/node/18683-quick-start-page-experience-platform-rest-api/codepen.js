@@ -180,7 +180,7 @@ var BCLS = (function(window, document) {
           }
           // populate template selector
           iMax = all_templates.length;
-          for (i = 0; i < Imax; i++) {
+          for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
             option.setAttribute('value', all_templates[i].id);
             if (i === 0) {
