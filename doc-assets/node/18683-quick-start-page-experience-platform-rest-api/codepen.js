@@ -187,8 +187,8 @@ var BCLS = (function(window, document) {
             if (i === 0) {
               option.setAttribute('selected', 'selected');
             }
-            if (all_templates[i].hasOwnProperty('name')) {
-              option.textContent = all_templates[i].name;
+            if (all_templates[i]metadata.hasOwnProperty('name')) {
+              option.textContent = all_templates[i].metadata.name;
             } else {
               option.textContent = all_templates[i].id.replace('ee-', '');
             }
