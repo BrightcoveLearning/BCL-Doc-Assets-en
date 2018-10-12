@@ -179,6 +179,7 @@ var BCLS = (function(window, document) {
             }
           }
           // populate template selector
+          console.log('all_templates', all_templates);
           iMax = all_templates.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
