@@ -225,7 +225,6 @@ var BCLS = (function(window, document) {
           disableButtons();
           enableButton(get_playlists);
           enableButton(get_videos);
-          }
         });
         break;
       case 'get_videos':
