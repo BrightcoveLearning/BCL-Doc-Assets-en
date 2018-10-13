@@ -321,8 +321,9 @@ var BCLS = (function(window, document) {
         console.log('update options', options);
         makeRequest(options, function(response) {
           var parsedData;
-          parsedData = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
+          // parsedData = JSON.parse(response);
+          // apiResponse.textContent = JSON.stringify(parsedData, null, 2);
+          apiResponse.textContent = response;
           // re-enable the publish ipx button
           disableButtons();
           enableButton(publish_experience);
