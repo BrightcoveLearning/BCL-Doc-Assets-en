@@ -1,46 +1,141 @@
 <article class="bcls-article">
-<section id="Overview" class="bcls-section">
-<h2>Overview</h2>
+<section class="bcls-section">
+<aside class="bcls-aside bcls-aside--warning">This document uses AMP with Brightcove Player and a Video Cloud video. If you are a non-Video Cloud customer see <a href="/node/18555">AMP Using an External Video</a>.</aside>
 
-<p>AMP HTML includes an <code>amp-brightcove</code> component which allows publishers to embed Brightcove Players within AMP HTML documents.</p>
+<h2 id="Overview">Overview</h2>
 
-<aside class="bcls-aside bcls-aside--tip">Go to <strong><a href="//solutions.brightcove.com/bcls/brightcove-player/amp.html">this page</a></strong> to see an example of an <a href="https://www.ampproject.org">AMP HTML</a> page containing a Brightcove Player.</aside>
-
-<aside class="bcls-aside bcls-aside--warning">Note that because of the way AMP works, Brightcove Analytics will not correctly report the referring page for AMP pages - instead the <code>referrer_domain</code> will be blank, and <code>source_type</code> will be recorded as <code>direct</code>.</aside>
-
-<p>First, add this scpript tag to the head of the AMP HTML document.</p>
-
-<pre class="line-numbers" data-start="1">
-<code class="language-html">&lt;script async custom-element="amp-brightcove" src="https://cdn.ampproject.org/v0/amp-brightcove-0.1.js"&gt;&lt;/script&gt;</code></pre>
-
-<p>Then add the <code>amp-brightcove</code> element to the page. It takes the same <code>data-account</code>, <code>data-player</code> and <code>data-video-id</code> attributes as the regular in-page (advanced) embed code.</p>
-
-<pre class="line-numbers" data-start="1">
-<code class="language-html">&lt;amp-brightcove
-    data-account="906043040001"
-    data-video-id="1401169490001"
-    data-player="14034c56-aa15-49f8-b644-2a01edec6d50"
-    layout="responsive" width="480" height="270"&gt;
-&lt;/amp-brightcove&gt;</code></pre>
-<!-- <amp-brightcove
-  data-account="906043040001"
-  data-video-id="1401169490001"
-  data-player="14034c56-aa15-49f8-b644-2a01edec6d50"
-  layout="responsive" width="480" height="270">
-</amp-brightcove> --></section>
-
-<section id="Advertising" class="bcls-section">
-<h2>Advertising</h2>
-
-<p>Advertising including prerolls works in players used in AMP.</p>
-
-<p>The ad plugin and its configuration just need to be included in the player's configuration. If you need to include article-specific values in your ad server calls, you can pass custom data through to a player plugin as described below.</p>
+<p>Accelerated Mobile Pages is a Google project that aims to enable "the creation of websites and ads that are consistently fast, beautiful and high-performing across devices and distribution platforms." You can use Brightcove Player with AMP because the project includes an <code>amp-brightcove</code> component which allows publishers to embed Brightcove Players within AMP HTML documents.</p>
 </section>
 
-<section id="Custom_parameters" class="bcls-section">
-<h2>Custom parameters</h2>
+<section class="bcls-section">
+<h2 id="Sample">Sample</h2>
 
-<p>You may want to pass additional information through to your player for your plugins to access. You can do this by adding extra attributes on the <code>amp-brightcove</code> element named <code>data-param-*</code>, where <code>*</code> is the name of your property.</p>
+<p>The following is a sample AMP HTML page that includes a Brightcove Player. The player functions normally, so the HTML is the interesting part of this sample. The HTML code is examined later in this document.</p>
+
+<p data-height="430" data-theme-id="dark" data-slug-hash="ddKwre" data-default-tab="html,result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="AMP Example" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/ddKwre/">AMP Example</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<aside class="bcls-aside bcls-aside--warning">Note that because of the way AMP works, you must carefully consider its limitations before use. For example:
+<ul>
+	<li>AMP has very strict rules on what HTML can and cannot be used on a page. Details on this can be viewed in the <a href="https://www.ampproject.org/docs/reference/spec">AMP HTML Specification</a>.</li>
+	<li>Brightcove Analytics will not correctly report the referring page for AMP pages - instead the <code>referrer_domain</code> will be blank, and <code>source_type</code> will be recorded as <code>direct</code>.</li>
+	<li>Few of the attributes used with Brightcove Player's Advanced (in-page) implementation are valid with <code>&lt;amp-brightcove ..&gt;</code>. Check the <a href="https://www.ampproject.org/docs/reference/spec">AMP HTML Specification</a> for those that can be used.</li>
+</ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Resources_from_AMP">Resources from AMP</h2>
+
+<p>The AMP project developed a special <code>amp-brightcove</code> component that displays the Brightcove Player. The component is detailed in the <a href="https://www.ampproject.org/docs/reference/components/amp-brightcove">amp-brightcove document.</a></p>
+
+<p>AMP provides an example <code>amp-brightcove</code> implementation with details in the following documents:</p>
+
+<ul>
+	<li><a href="https://ampbyexample.com/components/amp-brightcove/">amp-brightcove</a></li>
+	<li><a href="https://github.com/ampproject/amp-by-example/blob/master/src/20_Components/amp-brightcove.html">amp-by-example</a></li>
+	<li><a href="https://ampbyexample.com/playground/#url=https%3A%2F%2Fampbyexample.com%2Fcomponents%2Famp-brightcove%2Fsource%2F">AMP Playground</a></li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Player_configuration">Player configuration</h2>
+
+<p>Brightcove supplies a plugin to enhance the use of AMP with Brightcove Player. The plugin adds support for AMP's video interface API which enables some advanced features:</p>
+
+<ul>
+	<li><strong>Integration with amp-analytics</strong>: Allows tracking of views to third party analytics against the AMP page domain.</li>
+	<li><strong>Integration with amp-bind</strong>: Playback can be controlled by other elements in the AMP page.</li>
+	<li><strong>Auto pause</strong>: The AMP HTML page can pause Brightcove Player playback if it deems the page to be idle. In Google's carousel, this means a player can be paused rather than unloaded when the user moves between articles.</li>
+</ul>
+
+<p>Players without the plugin still work in AMP, but without that functionality.</p>
+
+<h3><strong>Plugin installation</strong></h3>
+
+<p>As with all Brightcove Player plugins, you need the plugin's name and URL to the plugin's JavaScript, which are provided here (no CSS file is necessary for this plugin's use):</p>
+
+<h4>Plugin name</h4>
+
+<pre class="line-numbers">
+<code class="language-html">ampSupport</code></pre>
+
+<h4>JavaScript URL</h4>
+
+<pre class="line-numbers">
+<code class="language-html">//players.brightcove.net/videojs-amp-support/1/videojs-amp-support.js</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Code_examination">Code examination</h2>
+
+<p>The code from the CodePen sample above is shown below. A complete explanation of the code is provided by AMP in the documents linked to above. In the following list are a few tricks/traps to be aware of:</p>
+
+<ul>
+	<li>Line 14: You can add a single <code>style</code> tag, but it must include the <code>amp-custom</code> attribute.</li>
+	<li>Line 26: DO NOT beautify the code. The boilerplate CSS is needed as supplied by AMP.</li>
+	<li>Line 42: The <code>width</code> and <code>height</code> attributes determine the aspect ratio of the player embedded in responsive layouts.</li>
+</ul>
+
+<pre class="line-numbers" data-start="1">
+<code class="language-html">&lt;!--
+  ## Introduction
+
+  The `amp-brightcove` component allows embedding a Brightcove
+  [Video Cloud](https://www.brightcove.com/en/online-video-platform) or
+  [Perform](https://www.brightcove.com/en/perform) player.
+--&gt;
+&lt;!-- --&gt;
+&lt;!doctype html&gt;
+&lt;html ⚡&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;amp-brightcove&lt;/title&gt;
+  &lt;style amp-custom&gt;
+    .player-container {
+      width: 640px;
+      height: 360px;
+    }
+  &lt;/style&gt;
+  &lt;script async src="https://cdn.ampproject.org/v0.js"&gt;&lt;/script&gt;
+  &lt;!-- ## Setup --&gt;
+  &lt;!-- Import the Brightcove component in the header. --&gt;
+  &lt;script async custom-element="amp-brightcove" src="https://cdn.ampproject.org/v0/amp-brightcove-0.1.js"&gt;&lt;/script&gt;
+  &lt;meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"&gt;
+  &lt;link rel="canonical" href="https://ampbyexample.com/components/amp-brightcove/"&gt;
+  &lt;style amp-boilerplate&gt;body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}&lt;/style&gt;&lt;noscript&gt;&lt;style amp-boilerplate&gt;body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}&lt;/style&gt;&lt;/noscript&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ## Basic Usage --&gt;
+  &lt;!--
+    A responsive brightcove video. The required data is `data-account` and `data-video-id`. Other
+    supported parameters are `data-player-id`, `data-embed` and `data-playlist-id`.
+  --&gt;
+  &lt;div class="player-container"&gt;
+    &lt;amp-brightcove
+      data-account="1752604059001"
+      data-video-id="5715315990001"
+      data-player-id="H1xW7NWcz"
+      layout="responsive"
+      width="16" height="9"&gt;
+    &lt;/amp-brightcove&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Features">Features</h2>
+
+<p>Although discussed in the AMP documentation, a few features are highlighted here that are of special importance:</p>
+<!-- These are features that are common to both Video Cloud and external videos --><!-- THIS SECTION CAN BE ADDED TO THEN COPIED TO SIMILAR SECTION IN EXTERNAL VIDEO FEATURES SECTION -->
+
+<h3>Custom parameters</h3>
+
+<p>You may want to pass additional information through to your player for your plugins to access. You can do this by adding extra attributes on the <code>amp-brightcove</code> element that must be named <code>data-param-*</code>, where <code>*</code> is the name of your property.</p>
 
 <p>The parameters are passed through as camel cased attribute names appended to the player URL. Keys and values are URL encoded. For example:</p>
 
@@ -48,16 +143,60 @@
 	<li><code>data-param-language="de"</code> becomes <code>&amp;language=de</code></li>
 	<li><code>data-param-ad-vars="key:val;key2:val2"</code> becomes <code>&amp;adVars=key%3Aval%3Bkey2%3Aval2</code></li>
 </ul>
-</section>
 
-<section id="Player_setup" class="bcls-section">
-<h2>Player setup</h2>
+<h3>External referrer support</h3>
 
-<p>The AMP HTML page can pause playback if it deems the page to be idle. To enable this, add this script to the player configuration in the studio, or via the player management API. You need only add the script, no name or json are required.</p>
+<p>Brightcove Player v6.25.0+ supports setting an arbitrary referrer on an iframe. The AMP component now supports passing through its own referrer to the player, by adding a <code>referrer="EXTERNAL_REFERRER"</code> attribute their amp-brightcove embed.</p>
 
-<pre class="line-numbers" data-start="1">
+<p>EXTERNAL_REFERRER is AMP's own macro - see <a href="https://github.com/ampproject/amphtml/blob/19135a3aac7813a9ff263a9f863fe35aeb316582/spec/amp-var-substitutions.md#external-referrer">https://github.com/ampproject/amphtml/blob/19135a3aac7813a9ff263a9f863fe35aeb316582/spec/amp-var-substitutions.md#external-referrer</a> for further information.</p>
+
+<h3>AMP Analytics</h3>
+
+<p>An <strong>amp-analytics</strong> component can be used in an AMP document to track data to any arbitrary analytics. If publishers wish to include video events they can now do so.</p>
+
+<p>AMP's doc on the AMP Analytics syntax (which is cumbersome) is here: <a href="https://www.ampproject.org/docs/reference/components/amp-analytics">https://www.ampproject.org/docs/reference/components/amp-analytics</a>. And specifically video analytics: <a href="https://github.com/ampproject/amphtml/blob/master/extensions/amp-analytics/amp-video-analytics.md">https://github.com/ampproject/amphtml/blob/master/extensions/amp-analytics/amp-video-analytics.md</a>.</p>
+
+<p>An example is available, tracking to <strong>example.com</strong> so you'll see the beacons as errors in the network tab: <a href="http://solutions.brightcove.com/bclifford/ampexamples/analytics.html">http://solutions.brightcove.com/bclifford/ampexamples/analytics.html</a>.</p>
+
+<h3>AMP Bind</h3>
+
+<p>AMP Bind is AMP's API for interacting between components. At a basic level, it allows you to have something external to the player to control playback. For example, the following code would play a video, where <code>myPlayer</code> is the <code>id</code> of the amp-brightcove player.</p>
+
+<pre class="line-numbers">
+  <code class="language-html notranslate">&lt;button on="tap:myPlayer.play"&gt;Play&lt;/button&gt;</code></pre>
+
+<p>AMP doesn't trust video events so you can't currently do something more useful, like acting on a video end. An example of this is available here: <a href="http://solutions.brightcove.com/bclifford/ampexamples/bind.html">http://solutions.brightcove.com/bclifford/ampexamples/bind.html</a>.</p>
+
+<h3>Auto pause</h3>
+
+<p>The AMP HTML page can pause Brightcove Player playback if it deems the page to be idle. The functionality is added via a custom Brightcove Player plugin. To enable this, add this script to the player configuration in Studio or via the Player Management API. You need only add the script, no name or JSON are required.</p>
+
+<pre class="line-numbers">
 <code class="language-html">http://players.brightcove.net/906043040001/plugins/postmessage_pause.js</code></pre>
+<!-- END OF COMMON FEATURES --><!-- These are features unique to Video Cloud videos and NOT shared with external videos -->
 
-<p><a href="https://www.ampproject.org/docs/reference/extended/amp-brightcove.html">Read the AMP Project documentation for <code>amp-brightcove</code>.</a></p>
+<h3>Advertising</h3>
+
+<p>Advertising including prerolls works in players used in AMP.</p>
+
+<p>The ad plugin and its configuration just need to be included in the player's configuration. If you need to include article-specific values in your ad server calls, you can pass custom data through to a player plugin as described below.</p>
+
+<p>As mentioned earlier, AMP is very strict in what can be added to a valid AMP page. For example, you CANNOT add an <code>id</code> to the <code>amp-brightcove</code> tag then use a <code>script</code> block to configure, for instance, the IMA3 plugin. To reiterate what was said in the previous paragraph, advertising must be implemented in the player's configuration, either using Studio or the Player Management API.</p>
+
+<p>If you wish to use ad configuration URLs that utilize an ad macro such as <code>{pageVariable.adId}</code>, you must alter the player's configuration. You can use a custom parameter (as described just above) like:</p>
+
+<pre class="line-numbers">
+<code class="language-html">data-param-ad-id="preonlybumper"</code></pre>
+
+<p>This does not make the value automatically available to the ad macro <code>{pageVariable.adId}</code>. To make the <code>ad-id/adId</code> property available to the ad URL, you must use Brightcove Player's <a href="//support.brightcove.com/player-configuration-guide#query_string_to_window">query_string_to_window</a> configuration option. This option controls the population of the global namespace (window) variables from query string parameters. So to make the <code class="language-html">data-param-ad-id="..."</code> available to the plugin you must add the following to the player configuration using the <a href="/node/18378">Player Management API</a> (also see note below the code):</p>
+
+<pre class="line-numbers">
+<code class="language-bash">  "query_string_to_window": {
+    "globals": [
+      "adId"
+    ]
+  }</code></pre>
+
+<p>For specific instructions on updating a player see <a href="https://brightcovelearning.github.io/Brightcove-API-References/player-management-api/v1/doc/index.html#api-Player_Configurations-Update_a_Player_Configuration">Player_Configurations - Update a Player Configuration</a> from the Player Management API reference.</p>
 </section>
 </article>
