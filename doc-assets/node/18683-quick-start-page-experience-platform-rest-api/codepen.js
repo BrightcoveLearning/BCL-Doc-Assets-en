@@ -9,11 +9,11 @@ var BCLS = (function(window, document) {
     new_experience_name,
     new_experience_template,
     is_playlist_template = true;
-    account_id_input = document.getElementById('account_id_input'),
+  account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     template_selector = document.getElementById('template_selector'),
-    videos_selector = document.getElementById('video_selector'),
+    video_selector = document.getElementById('video_selector'),
     apiRequest = document.getElementById('apiRequest'),
     apiData = document.getElementById('apiData'),
     apiMethod = document.getElementById('apiMethod'),
@@ -97,7 +97,7 @@ var BCLS = (function(window, document) {
 
   function removeChildren(el) {
     while (el.firstChild) {
-        el.removeChild(el.firstChild);
+      el.removeChild(el.firstChild);
     }
   }
 
@@ -121,6 +121,30 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * gets selected options values for multi-select control
+   * a comma-delimited string
+   * @param  {Element}   sel      the selector element
+   * @return {String}  comma-delimited string of values
+   */
+  function getSelectedValues(sel) {
+    var valuesArray = [],
+      opt, i, len;
+
+    // loop through options in select list
+    for (i = 0, len = sel.options.length; i < len; i++) {
+      opt = sel.options[i];
+
+      // check if selected
+      if (opt.selected) {
+        // add to array of option values
+        valuesArray.push(opt.value);
+      }
+    }
+    // return string of values
+    return valuesArray.join(',');
+  }
+
+  /**
    * get selected value for single select element
    * @param {htmlElement} e the select element
    * @return {String} the selected value
@@ -128,7 +152,7 @@ var BCLS = (function(window, document) {
   function getSelectedValue(e) {
     var selected = e.options[e.selectedIndex],
       val = selected.value;
-      return val;
+    return val;
   }
 
   function reset() {
@@ -159,9 +183,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
-        console.log('options', options);
         makeRequest(options, function(response) {
-          console.log('response', response);
           var parsedData,
             i,
             iMax,
@@ -179,7 +201,6 @@ var BCLS = (function(window, document) {
             }
           }
           // populate template selector
-          console.log('all_templates', all_templates);
           iMax = all_templates.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
@@ -203,9 +224,8 @@ var BCLS = (function(window, document) {
         break;
       case 'create_ipx':
         var now = new Date().toISOString();
-          new_experience_template = getSelectedValue(template_selector);
+        new_experience_template = getSelectedValue(template_selector);
         is_playlist_template = arrayContains(playlist_templates, new_experience_template);
-        console.log('is playlist', is_playlist_template);
         new_experience_name = 'Experience from Quick Start ' + now;
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
@@ -222,9 +242,10 @@ var BCLS = (function(window, document) {
           parsedData = JSON.parse(response);
           new_experience_id = parsedData.id;
           apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
-          // enable
+          // enable video/playlist selection
           disableButtons();
           if (is_playlist_template) {
+            enableButton(get_videos);
             enableButton(get_playlists);
           } else {
             enableButton(get_videos);
@@ -232,6 +253,10 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'get_videos':
+        // set select control to multiple
+        video_selector.setAttribute('multiple', true);
+        // set for videos, not playlist
+        is_playlist_template = false;
         endPoint = options.account_id + '/videos?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
@@ -240,12 +265,11 @@ var BCLS = (function(window, document) {
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
           var parsedData,
-          option,
-          i,
-          iMax,
-          frag = document.createDocumentFragment();
+            option,
+            i,
+            iMax,
+            frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
-          console.log('parsedData', parsedData);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // add video options to selector
           removeChildren(video_selector);
@@ -259,13 +283,15 @@ var BCLS = (function(window, document) {
             option.textContent = parsedData[i].name;
             frag.appendChild(option);
           }
-          videos_selector.appendChild(frag);
+          video_selector.appendChild(frag);
           // enable the update button
           disableButtons();
           enableButton(update_experience);
         });
         break;
       case 'get_playlists':
+        // set select control to single
+        video_selector.setAttribute('multiple', false);
         endPoint = options.account_id + '/playlists?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
@@ -274,12 +300,11 @@ var BCLS = (function(window, document) {
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
           var parsedData,
-          option,
-          i,
-          iMax,
-          frag = document.createDocumentFragment();
+            option,
+            i,
+            iMax,
+            frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
-          console.log('parsedData', parsedData);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // add video options to selector
           removeChildren(video_selector);
@@ -293,7 +318,7 @@ var BCLS = (function(window, document) {
             option.textContent = parsedData[i].name;
             frag.appendChild(option);
           }
-          videos_selector.appendChild(frag);
+          video_selector.appendChild(frag);
           // enable the update button
           disableButtons();
           enableButton(update_experience);
@@ -311,20 +336,17 @@ var BCLS = (function(window, document) {
           requestBody.videos.playlistid = getSelectedValue(video_selector);
         } else {
           requestBody.videos.type = 'manual';
-          requestBody.videos.videoids = getSelectedValue(video_selector);
+          requestBody.videos.videoids = getSelectedValues(video_selector);
         }
         options.requestBody = JSON.stringify(requestBody);
-        console.log('update body', JSON.parse(options.requestBody));
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
-        apiData.textContent = JSON.stringify(requestBody, null, '  ');
-        console.log('update options', options);
+        apiData.textContent = JSON.stringify(requestBody, null, 2);
         makeRequest(options, function(response) {
           var parsedData;
-          // parsedData = JSON.parse(response);
-          // apiResponse.textContent = JSON.stringify(parsedData, null, 2);
-          apiResponse.textContent = response;
-          // re-enable the publish ipx button
+          parsedData = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
+          // enable the publish ipx button
           disableButtons();
           enableButton(publish_experience);
         });
@@ -340,9 +362,8 @@ var BCLS = (function(window, document) {
           var parsedData;
           parsedData = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
-          // re-enable the create IPX button
-          disableButtons();
-          enableButton(create_ipx);
+          // reset
+          reset();
         });
         break;
     }
@@ -369,7 +390,6 @@ var BCLS = (function(window, document) {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
-              console.log('raw response', response);
               // some API requests return '{null}' for empty responses - breaks JSON.parse
               if (response === '{null}') {
                 response = null;
@@ -395,22 +415,10 @@ var BCLS = (function(window, document) {
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
-    console.log('request', JSON.stringify(options));
     httpRequest.send(JSON.stringify(options));
   }
 
-  /**
-   * initial disable/enable buttons
-   */
-  function init() {
-    var i, iMax = all_buttons.length;
-    disableButtons();
-    enableButton(get_templates);
-    for (i = 0; i < iMax; i++) {
-      enableButton(all_buttons[i]);
-    }
-  }
-
-  init();
+  // set initial state
+  reset();
 
 })(window, document);
