@@ -9,7 +9,7 @@ var BCLS = (function(window, document) {
     new_experience_name,
     new_experience_template,
     is_playlist_template = true;
-    account_id_input = document.getElementById('account_id_input'),
+  account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     template_selector = document.getElementById('template_selector'),
@@ -97,7 +97,7 @@ var BCLS = (function(window, document) {
 
   function removeChildren(el) {
     while (el.firstChild) {
-        el.removeChild(el.firstChild);
+      el.removeChild(el.firstChild);
     }
   }
 
@@ -121,28 +121,29 @@ var BCLS = (function(window, document) {
   }
 
   /**
- * gets selected options values for multi-select control
- * a comma-delimited string
- * @param  {Element}   sel      the selector element
- * @return {String}  comma-delimited string of values
- */
-function getSelectedOptions(sel, callback) {
-    var valuesArray = [], opt, i, len;
+   * gets selected options values for multi-select control
+   * a comma-delimited string
+   * @param  {Element}   sel      the selector element
+   * @return {String}  comma-delimited string of values
+   */
+  function getSelectedOptions(sel, callback) {
+    var valuesArray = [],
+      opt, i, len;
 
     // loop through options in select list
     for (i = 0, len = sel.options.length; i < len; i++) {
-        opt = sel.options[i];
+      opt = sel.options[i];
 
-        // check if selected
-        if ( opt.selected ) {
-            // add to array of option elements to return from this function
-            valuesArray.push(opt.value);
-        }
+      // check if selected
+      if (opt.selected) {
+        // add to array of option elements to return from this function
+        valuesArray.push(opt.value);
+      }
     }
 
     // return string of values
     return valuesArray.join(',');
-}
+  }
 
 
 
@@ -154,7 +155,7 @@ function getSelectedOptions(sel, callback) {
   function getSelectedValue(e) {
     var selected = e.options[e.selectedIndex],
       val = selected.value;
-      return val;
+    return val;
   }
 
   function reset() {
@@ -229,7 +230,7 @@ function getSelectedOptions(sel, callback) {
         break;
       case 'create_ipx':
         var now = new Date().toISOString();
-          new_experience_template = getSelectedValue(template_selector);
+        new_experience_template = getSelectedValue(template_selector);
         is_playlist_template = arrayContains(playlist_templates, new_experience_template);
         console.log('is playlist', is_playlist_template);
         new_experience_name = 'Experience from Quick Start ' + now;
@@ -269,10 +270,10 @@ function getSelectedOptions(sel, callback) {
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
           var parsedData,
-          option,
-          i,
-          iMax,
-          frag = document.createDocumentFragment();
+            option,
+            i,
+            iMax,
+            frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
           console.log('parsedData', parsedData);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
@@ -305,10 +306,10 @@ function getSelectedOptions(sel, callback) {
         apiMethod.textContent = options.requestType;
         makeRequest(options, function(response) {
           var parsedData,
-          option,
-          i,
-          iMax,
-          frag = document.createDocumentFragment();
+            option,
+            i,
+            iMax,
+            frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
           console.log('parsedData', parsedData);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
