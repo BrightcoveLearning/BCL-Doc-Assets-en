@@ -248,12 +248,8 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
           // enable
           disableButtons();
-          if (is_playlist_template) {
-            enableButton(get_playlists);
-          } else {
-            enableButton(get_videos);
-            enableButton(get_playlists)
-          }
+          enableButton(get_videos);
+          enableButton(get_playlists);
         });
         break;
       case 'get_videos':
