@@ -255,6 +255,8 @@ console.log('values', valuesArray.join(','));
       case 'get_videos':
         // set select control to multiple
         video_selector.setAttribute('multiple', true);
+        // set for videos, not playlist
+        is_playlist_template = false;
         endPoint = options.account_id + '/videos?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
