@@ -13,7 +13,7 @@ var BCLS = (function(window, document) {
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     template_selector = document.getElementById('template_selector'),
-    videos_selector = document.getElementById('video_selector'),
+    video_selector = document.getElementById('video_selector'),
     apiRequest = document.getElementById('apiRequest'),
     apiData = document.getElementById('apiData'),
     apiMethod = document.getElementById('apiMethod'),
@@ -119,6 +119,32 @@ var BCLS = (function(window, document) {
     }
     return false;
   }
+
+  /**
+ * gets selected options values for multi-select control
+ * a comma-delimited string
+ * @param  {Element}   sel      the selector element
+ * @return {String}  comma-delimited string of values
+ */
+function getSelectedOptions(sel, callback) {
+    var valuesArray = [], opt, i, len;
+
+    // loop through options in select list
+    for (i = 0, len = sel.options.length; i < len; i++) {
+        opt = sel.options[i];
+
+        // check if selected
+        if ( opt.selected ) {
+            // add to array of option elements to return from this function
+            valuesArray.push(opt.value);
+        }
+    }
+
+    // return string of values
+    return valuesArray.join(',');
+}
+
+
 
   /**
    * get selected value for single select element
@@ -228,10 +254,13 @@ var BCLS = (function(window, document) {
             enableButton(get_playlists);
           } else {
             enableButton(get_videos);
+            enableButton(get_playlists)
           }
         });
         break;
       case 'get_videos':
+        // set select control to multiple
+        video_selector.setAttribute('multiple', true);
         endPoint = options.account_id + '/videos?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
@@ -259,13 +288,15 @@ var BCLS = (function(window, document) {
             option.textContent = parsedData[i].name;
             frag.appendChild(option);
           }
-          videos_selector.appendChild(frag);
+          video_selector.appendChild(frag);
           // enable the update button
           disableButtons();
           enableButton(update_experience);
         });
         break;
       case 'get_playlists':
+        // set select control to single
+        video_selector.setAttribute('multiple', false);
         endPoint = options.account_id + '/playlists?limit=10';
         options.url = cmsURL + endPoint;
         options.requestType = 'GET';
@@ -293,7 +324,7 @@ var BCLS = (function(window, document) {
             option.textContent = parsedData[i].name;
             frag.appendChild(option);
           }
-          videos_selector.appendChild(frag);
+          video_selector.appendChild(frag);
           // enable the update button
           disableButtons();
           enableButton(update_experience);
