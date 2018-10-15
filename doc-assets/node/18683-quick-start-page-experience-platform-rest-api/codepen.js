@@ -345,8 +345,7 @@ var BCLS = (function(window, document) {
         console.log('update body', JSON.parse(options.requestBody));
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
-        apiData.textContent = JSON.stringify(requestBody, null, '  ');
-        console.log('update options', options);
+        apiData.textContent = JSON.stringify(requestBody, null, 2);
         makeRequest(options, function(response) {
           var parsedData;
           // parsedData = JSON.parse(response);
@@ -397,7 +396,6 @@ var BCLS = (function(window, document) {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
-              console.log('raw response', response);
               // some API requests return '{null}' for empty responses - breaks JSON.parse
               if (response === '{null}') {
                 response = null;
@@ -423,7 +421,6 @@ var BCLS = (function(window, document) {
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
-    console.log('request', JSON.stringify(options));
     httpRequest.send(JSON.stringify(options));
   }
 
@@ -431,12 +428,13 @@ var BCLS = (function(window, document) {
    * initial disable/enable buttons
    */
   function init() {
-    var i, iMax = all_buttons.length;
-    disableButtons();
-    enableButton(get_templates);
-    for (i = 0; i < iMax; i++) {
-      enableButton(all_buttons[i]);
-    }
+    // var i, iMax = all_buttons.length;
+    // disableButtons();
+    // enableButton(get_templates);
+    // for (i = 0; i < iMax; i++) {
+    //   enableButton(all_buttons[i]);
+    // }
+    reset();
   }
 
   init();
