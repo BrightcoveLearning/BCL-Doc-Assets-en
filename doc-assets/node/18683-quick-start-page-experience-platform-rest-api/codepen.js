@@ -140,7 +140,6 @@ var BCLS = (function(window, document) {
         valuesArray.push(opt.value);
       }
     }
-console.log('values', valuesArray.join(','));
     // return string of values
     return valuesArray.join(',');
   }
@@ -184,9 +183,7 @@ console.log('values', valuesArray.join(','));
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
-        console.log('options', options);
         makeRequest(options, function(response) {
-          console.log('response', response);
           var parsedData,
             i,
             iMax,
@@ -229,7 +226,6 @@ console.log('values', valuesArray.join(','));
         var now = new Date().toISOString();
         new_experience_template = getSelectedValue(template_selector);
         is_playlist_template = arrayContains(playlist_templates, new_experience_template);
-        console.log('is playlist', is_playlist_template);
         new_experience_name = 'Experience from Quick Start ' + now;
         endPoint = options.account_id + '/experiences';
         options.url = ipxURL + endPoint;
@@ -305,7 +301,6 @@ console.log('values', valuesArray.join(','));
             iMax,
             frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
-          console.log('parsedData', parsedData);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // add video options to selector
           removeChildren(video_selector);
@@ -340,7 +335,6 @@ console.log('values', valuesArray.join(','));
           requestBody.videos.videoids = getSelectedValues(video_selector);
         }
         options.requestBody = JSON.stringify(requestBody);
-        console.log('update body', JSON.parse(options.requestBody));
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
         apiData.textContent = JSON.stringify(requestBody, null, 2);
@@ -422,19 +416,7 @@ console.log('values', valuesArray.join(','));
     httpRequest.send(JSON.stringify(options));
   }
 
-  /**
-   * initial disable/enable buttons
-   */
-  function init() {
-    // var i, iMax = all_buttons.length;
-    // disableButtons();
-    // enableButton(get_templates);
-    // for (i = 0; i < iMax; i++) {
-    //   enableButton(all_buttons[i]);
-    // }
-    reset();
-  }
-
-  init();
+  // set initial state
+  reset();
 
 })(window, document);
