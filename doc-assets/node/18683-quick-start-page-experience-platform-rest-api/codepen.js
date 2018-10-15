@@ -340,10 +340,9 @@ var BCLS = (function(window, document) {
         apiData.textContent = JSON.stringify(requestBody, null, 2);
         makeRequest(options, function(response) {
           var parsedData;
-          // parsedData = JSON.parse(response);
-          // apiResponse.textContent = JSON.stringify(parsedData, null, 2);
-          apiResponse.textContent = response;
-          // re-enable the publish ipx button
+          parsedData = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
+          // enable the publish ipx button
           disableButtons();
           enableButton(publish_experience);
         });
@@ -359,9 +358,8 @@ var BCLS = (function(window, document) {
           var parsedData;
           parsedData = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
-          // re-enable the create IPX button
-          disableButtons();
-          enableButton(create_ipx);
+          // reset
+          reset();
         });
         break;
     }
