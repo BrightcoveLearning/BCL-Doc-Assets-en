@@ -242,10 +242,14 @@ var BCLS = (function(window, document) {
           parsedData = JSON.parse(response);
           new_experience_id = parsedData.id;
           apiResponse.textContent = JSON.stringify(parsedData, null, '  ');
-          // enable
+          // enable video/playlist selection
           disableButtons();
-          enableButton(get_videos);
-          enableButton(get_playlists);
+          if (is_playlist_template) {
+            enableButton(get_videos);
+            enableButton(get_playlists);
+          } else {
+            enableButton(get_videos);
+          }
         });
         break;
       case 'get_videos':
