@@ -136,11 +136,11 @@ var BCLS = (function(window, document) {
 
       // check if selected
       if (opt.selected) {
-        // add to array of option elements to return from this function
+        // add to array of option values
         valuesArray.push(opt.value);
       }
     }
-
+console.log('values', valuesArray.join(','));
     // return string of values
     return valuesArray.join(',');
   }
