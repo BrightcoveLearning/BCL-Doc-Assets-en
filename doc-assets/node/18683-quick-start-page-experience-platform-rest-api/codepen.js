@@ -126,7 +126,7 @@ var BCLS = (function(window, document) {
    * @param  {Element}   sel      the selector element
    * @return {String}  comma-delimited string of values
    */
-  function getSelectedOptions(sel, callback) {
+  function getSelectedValues(sel) {
     var valuesArray = [],
       opt, i, len;
 
@@ -144,8 +144,6 @@ var BCLS = (function(window, document) {
     // return string of values
     return valuesArray.join(',');
   }
-
-
 
   /**
    * get selected value for single select element
@@ -206,7 +204,6 @@ var BCLS = (function(window, document) {
             }
           }
           // populate template selector
-          console.log('all_templates', all_templates);
           iMax = all_templates.length;
           for (i = 0; i < iMax; i++) {
             option = document.createElement('option');
@@ -275,7 +272,6 @@ var BCLS = (function(window, document) {
             iMax,
             frag = document.createDocumentFragment();
           parsedData = JSON.parse(response);
-          console.log('parsedData', parsedData);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           // add video options to selector
           removeChildren(video_selector);
@@ -343,7 +339,7 @@ var BCLS = (function(window, document) {
           requestBody.videos.playlistid = getSelectedValue(video_selector);
         } else {
           requestBody.videos.type = 'manual';
-          requestBody.videos.videoids = getSelectedValue(video_selector);
+          requestBody.videos.videoids = getSelectedValues(video_selector);
         }
         options.requestBody = JSON.stringify(requestBody);
         console.log('update body', JSON.parse(options.requestBody));
