@@ -6,7 +6,7 @@
 
 <p>For this, you'll create a single job with two main sets of outputs (plus the playlists). The first set of outputs will be normal H.264/AAC MP4 files with a few special settings to allow them to work as source files for HLS outputs. The second set of outputs will use those MP4 files as "source" inputs, transmuxing their content to HLS outputs. Since these are dependent outputs, they will wait until their corresponding source finishes before being scheduled to process.</p>
 
-<p>The key part of the process is using <a href="/node/17852#source">source</a>, a new option in V2 of the Zencoder API. Source tells an output to use the file created by another output on the job for processing, instead of the input file. In this situation, Zencoder will create H.264 files based on the input file at requested bitrates. As each of those outputs finishes, a segmented version will then be created from the output.</p>
+<p>The key part of the process is using <a href="/node/17852#source"><code class="notranslate">source</code></a>, a new option in V2 of the Zencoder API. Source tells an output to use the file created by another output on the job for processing, instead of the input file. In this situation, Zencoder will create H.264 files based on the input file at requested bitrates. As each of those outputs finishes, a segmented version will then be created from the output.</p>
 
 <aside class="bcls-aside bcls-aside--information">Note: There is no a way to ensure the playback is smooth if you <strong>combine transmux and transcode outputs into one playlist</strong>. It is best practice that the renditions need to be encoded in the same manner.</aside>
 </section>
@@ -51,8 +51,8 @@
 <p>A few options in the request above to note:</p>
 
 <ul>
-	<li><a href="/node/17876#forced-keyframe-rate">forced_keyframe_rate</a> to 0.1. This forces the video to have a keyframe every 10 seconds. The segmented files will be 10 seconds long, so this ensures will ensure that there each segment will start with a keyframe.</li>
-	<li><a href="/node/17879#decoder-bitrate-cap">decoder_bitrate_cap</a> is set to 1.5x the target bitrate of the file. <a href="/node/17879#decoder-buffer-size">decoder_buffer_size</a> is set to 3.5x to 5x the target bitrate of the file. These settings will help keep a consistent bitrate throughout the file, so that the segmented segments won't vary too much in size and bitrate.</li>
+	<li><a href="/node/17876#forced-keyframe-rate"><code class="notranslate">forced_keyframe_rate</code></a> to 0.1. This forces the video to have a keyframe every 10 seconds. The segmented files will be 10 seconds long, so this ensures will ensure that there each segment will start with a keyframe.</li>
+	<li><a href="/node/17879#decoder-bitrate-cap"><code class="notranslate">decoder_bitrate_cap</code></a> is set to 1.5x the target bitrate of the file. <a href="/node/17879#decoder-buffer-size"><code class="notranslate">decoder_buffer_size</code></a> is set to 3.5x to 5x the target bitrate of the file. These settings will help keep a consistent bitrate throughout the file, so that the segmented segments won't vary too much in size and bitrate.</li>
 </ul>
 
 <p>Now that the H.264 files have been created, additional outputs can be added to the request to create HTTP Live Streaming segmented files from the source, without needing to do additional encoding.</p>
@@ -61,7 +61,7 @@
 <section class="bcls-section">
 <h2 id="Segmented_Outputs">Segmented Outputs</h2>
 
-<p>Each of the H.264 video and the audio outputs above have <a href="/node/17852#label">labels</a> in their API options. These labels can be used in conjunction with the <a href="/node/17852#source">source</a> option to tell Zencoder to use the video created by the output with the given label, rather than the input file. Since the H.264 files are already at good settings for HLS, no additional encoding is necessary.</p>
+<p>Each of the H.264 video and the audio outputs above have <a href="/node/17852#label">labels</a> in their API options. These labels can be used in conjunction with the <a href="/node/17852#source"><code class="notranslate">source</code></a> option to tell Zencoder to use the video created by the output with the given label, rather than the input file. Since the H.264 files are already at good settings for HLS, no additional encoding is necessary.</p>
 
 <pre class="line-numbers">
 <code class="language-json notranslate">{
