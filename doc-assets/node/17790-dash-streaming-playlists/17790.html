@@ -4,10 +4,10 @@
 
 <aside class="bcls-aside bcls-aside--information">Note that Dash is not compatible with live streams using Zencoder.</aside>
 
-<p>Because DASH isn't a specific video format, codec, or data-agnostic packaging format (such as Zip), we've introduced a new option named <code><a href="/node/17853#streaming-delivery-format">streaming_delivery_format</a></code> to specify that the media files should be structured / formatted according to a particular standard. Selecting "dash" as the <code>streaming_delivery_format</code> will modify some default options for compatibility with DASH, as well as put the output media files into a directory structure consistent with DASH requirements. DASH media outputs must also have <code><a href="/node/17852#type">type</a></code> set to "segmented", to ensure the media is prepared for DASH streaming.</p>
+<p>Because DASH isn't a specific video format, codec, or data-agnostic packaging format (such as Zip), we've introduced a new option named <a href="/node/17853#streaming-delivery-format"><code class="notranslate">streaming_delivery_format</code></a>to specify that the media files should be structured / formatted according to a particular standard. Selecting "dash" as the <code class="notranslate">streaming_delivery_format</code> will modify some default options for compatibility with DASH, as well as put the output media files into a directory structure consistent with DASH requirements. DASH media outputs must also have <code class="notranslate"><a href="/node/17852#type">type</a></code> set to "segmented", to ensure the media is prepared for DASH streaming.</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -19,11 +19,11 @@
     ]
 }</code></pre>
 
-<p>Details for outputs with <code>streaming_delivery_format</code> set to "dash":</p>
+<p>Details for outputs with <code class="notranslate">streaming_delivery_format</code> set to "dash":</p>
 
 <ul>
-	<li><code><a href="/node/17876#fixed-keyframe-interval">fixed_keyframe_interval</a></code> will be set to true.</li>
-	<li><code><a href="/node/17853#segment-seconds">segment_seconds</a></code> will default to 2.</li>
+	<li><code class="notranslate"><a href="/node/17876#fixed-keyframe-interval">fixed_keyframe_interval</a></code> will be set to true.</li>
+	<li><code class="notranslate"><a href="/node/17853#segment-seconds">segment_seconds</a></code> will default to 2.</li>
 	<li>The default format will be m4f (with an mpd manifest file)</li>
 </ul>
 
@@ -36,7 +36,7 @@
 	<li>The media data will be in files named "seg-N.m4f" (where N starts at zero and increases for each segment).</li>
 </ul>
 
-<p>DASH outputs with the <code><a href="/node/17853#streaming-delivery-profile">streaming_delivery_profile</a></code> set to "on_demand" will use fragmented media files rather than segments:</p>
+<p>DASH outputs with the <code class="notranslate"><a href="/node/17853#streaming-delivery-profile">streaming_delivery_profile</a></code> set to "on_demand" will use fragmented media files rather than segments:</p>
 
 <ul>
 	<li>The mpd manifest file will be at the root level of the output.</li>
@@ -50,7 +50,7 @@
 	<li>Formats supported: m4f and webm</li>
 	<li>Video codecs supported: h264, hevc, vp8, and vp9</li>
 	<li>Audio codecs supported: aac, ac3, eac3, and vorbis</li>
-	<li>Outputs in "webm" format currently only support the "on_demand" <code>streaming_delivery_profile</code></li>
+	<li>Outputs in "webm" format currently only support the "on_demand" <code class="notranslate">streaming_delivery_profile</code></li>
 	<li>Outputs in "webm" format currently do not support DRM</li>
 </ul>
 </section>
@@ -61,7 +61,7 @@
 <p>Zencoder-generated DASH outputs will have the necessary structure to be played on their own, but to truly benefit from such streaming delivery options, you should generate multiple versions at different bitrates (renditions) along with a "playlist" type output that lists the renditions so that a player can switch up / down bitrates as needed depending on the current network conditions. The playlist output is a dependent output - that is, it'll reference the other outputs by their label, and will use data from those outputs to generate the final rendition of the playlist. Note that you must be careful to set the stream paths in the playlist output so that they are relative paths to the location of the rendition files.</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -102,10 +102,10 @@
 <section class="bcls-section">
 <h2 id="Encryption">Encryption</h2>
 
-<p>Zencoder also supports generating CENC-encrypted DASH outputs, with necessary headers for integrating with Marlin or Playready license servers. For each output, simply specify a hash of drm options, including the <code><a href="/node/18287#method">method</a></code>, <code><a href="/node/18287#key-id">key_id</a></code>, and <code><a href="/node/18287#content-key">content_key</a></code>. The <code>key_id</code> and <code>content_key</code> should either be retrieved from your DRM vendor, or pre-generated and sent to your DRM vendor. Once you have those keys, the Zencoder API structure for a single rendition is:</p>
+<p>Zencoder also supports generating CENC-encrypted DASH outputs, with necessary headers for integrating with Marlin or Playready license servers. For each output, simply specify a hash of drm options, including the <code class="notranslate"><a href="/node/18287#method">method</a></code>, <code class="notranslate"><a href="/node/18287#key-id">key_id</a></code>, and <code class="notranslate"><a href="/node/18287#content-key">content_key</a></code>. The <code class="notranslate">key_id</code> and <code class="notranslate">content_key</code> should either be retrieved from your DRM vendor, or pre-generated and sent to your DRM vendor. Once you have those keys, the Zencoder API structure for a single rendition is:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -122,10 +122,10 @@
     ]
 }</code></pre>
 
-<p>The content will be encrypted with the <code>content_key</code>, and the .mpd manifest file will include the <code>key_id</code> in its headers. However, to ensure this output is playable, it also needs headers specifying how to retrieve the <code>content_key</code>. On a multi-bitrate DASH encode, these headers only need to be added to the playlist output, but can also be added to each rendition, so the rendition is individually playable. This is done by adding one or more DRM schemas:</p>
+<p>The content will be encrypted with the <code class="notranslate">content_key</code>, and the .mpd manifest file will include the <code class="notranslate">key_id</code> in its headers. However, to ensure this output is playable, it also needs headers specifying how to retrieve the <code class="notranslate">content_key</code>. On a multi-bitrate DASH encode, these headers only need to be added to the playlist output, but can also be added to each rendition, so the rendition is individually playable. This is done by adding one or more DRM schemas:</p>
 
 <pre class="line-numbers">
-<code class="language-json">
+<code class="language-json notranslate">
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -149,7 +149,7 @@
 <p>We can then put this together to create a multi-bitrate, DRM-encrypted DASH job:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -215,14 +215,14 @@
 <section class="bcls-section">
 <h2 id="Transmuxing">Transmuxing</h2>
 
-<p>Of course, generating multiple formats of a video can get expensive and wasteful. So Zencoder supports repackaging the same encoded streams into different formats (called transmuxing), by using the <code><a href="/node/17855#copy-video">copy_video</a></code> and <code><a href="/node/17855#copy-audio">copy_audio</a></code> options. Outputs for which the video is transmuxed rather than encoded are charged at 1/4 the regular duration. So if you're planning to make multiple formats of the same video (MP4, HLS, and DASH, for example), you can encode the MP4 version of each bitrate first, and then transmux those outputs to create the HLS and DASH versions. (Note that we don't support transmuxing from a format that's segmented, since the video is no longer a single stream.)</p>
+<p>Of course, generating multiple formats of a video can get expensive and wasteful. So Zencoder supports repackaging the same encoded streams into different formats (called transmuxing), by using the <code class="notranslate"><a href="/node/17855#copy-video">copy_video</a></code> and <code class="notranslate"><a href="/node/17855#copy-audio">copy_audio</a></code> options. Outputs for which the video is transmuxed rather than encoded are charged at 1/4 the regular duration. So if you're planning to make multiple formats of the same video (MP4, HLS, and DASH, for example), you can encode the MP4 version of each bitrate first, and then transmux those outputs to create the HLS and DASH versions. (Note that we don't support transmuxing from a format that's segmented, since the video is no longer a single stream.)</p>
 
-<p>To ensure that the MP4 is prepared according to the constraints of the subsequent segmented streaming formats, also use the <code><a href="/node/17853#prepare-for-segmenting">prepare_for_segmenting</a></code> option on the MP4 output. This will control default values for keyframes and captions when encoding the video stream of the MP4 to ensure that it will be compatible with transmuxing to segmented formats afterward.</p>
+<p>To ensure that the MP4 is prepared according to the constraints of the subsequent segmented streaming formats, also use the <code class="notranslate"><a href="/node/17853#prepare-for-segmenting">prepare_for_segmenting</a></code> option on the MP4 output. This will control default values for keyframes and captions when encoding the video stream of the MP4 to ensure that it will be compatible with transmuxing to segmented formats afterward.</p>
 
 <p>Using the MP4 as a source for the transmuxed outputs works similarly to the playlist outputs. You specify a source option that matches the label of another output, but this time it's part of the main-level options for the output instead of in the streams hash.</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -256,27 +256,27 @@
 <p>Since DASH is intended for streaming delivery, we recommend controlling the peaks of the bitrates in each rendition to avoid having the player rebuffer or switch to lower bitrate encodes unnecessarily. The options that control the variability of the encoded stream according to what the decoder/player can handle are</p>
 
 <ul>
-	<li><code><a href="/node/17879#decoder-bitrate-cap">decoder_bitrate_cap</a></code></li>
-	<li><code><a href="/node/17879#decoder-buffer-size">decoder_buffer_size</a></code></li>
+	<li><code class="notranslate"><a href="/node/17879#decoder-bitrate-cap">decoder_bitrate_cap</a></code></li>
+	<li><code class="notranslate"><a href="/node/17879#decoder-buffer-size">decoder_buffer_size</a></code></li>
 </ul>
 
-<aside class="bcls-aside bcls-aside--information">Note: <code><a href="/node/17879#max-video-bitrate">max_video_bitrate</a></code> is for controlling the maximum average bitrate over the entire stream, and is not suitable for use with streaming content.</aside>
+<aside class="bcls-aside bcls-aside--information">Note: <code class="notranslate"><a href="/node/17879#max-video-bitrate">max_video_bitrate</a></code> is for controlling the maximum average bitrate over the entire stream, and is not suitable for use with streaming content.</aside>
 
-<p>Our general recommendation is to set <code>decoder_bitrate_cap</code> to the maximum bitrate available for the video stream. Remember you need to take into account the audio, as well as a bit of overhead for the file format. The <code>decoder_buffer_size</code> is technically supposed to match the available video buffer memory on the decoding device, but is often better used to control how much content may be pre-buffered. It works as a multiple of the <code>decoder_bitrate_cap</code>, so that for example, if <code>decoder_bitrate_cap</code> was 500 (Kilobits per second), and <code>decoder_buffer_size</code> was 1000 (Kilobits), then the buffer could store 2 seconds worth of video. We also recommend setting the <code><a href="/node/17879#video-bitrate">video_bitrate</a></code> a little lower than the <code>decoder_bitrate_cap</code>, which allows the encoder to use more data to encode complex scenes and less data on simpler scenes. A decent starting point would be to assume up to 10% of overhead for the file format, setting the <code>video_bitrate</code> 10% lower than the <code>decoder_bitrate_cap</code>, and allowing about 1.5 seconds of video to be buffered.</p>
+<p>Our general recommendation is to set <code class="notranslate">decoder_bitrate_cap</code> to the maximum bitrate available for the video stream. Remember you need to take into account the audio, as well as a bit of overhead for the file format. The <code class="notranslate">decoder_buffer_size</code> is technically supposed to match the available video buffer memory on the decoding device, but is often better used to control how much content may be pre-buffered. It works as a multiple of the <code class="notranslate">decoder_bitrate_cap</code>, so that for example, if <code class="notranslate">decoder_bitrate_cap</code> was 500 (Kilobits per second), and <code class="notranslate">decoder_buffer_size</code> was 1000 (Kilobits), then the buffer could store 2 seconds worth of video. We also recommend setting the <code class="notranslate"><a href="/node/17879#video-bitrate">video_bitrate</a></code> a little lower than the <code class="notranslate">decoder_bitrate_cap</code>, which allows the encoder to use more data to encode complex scenes and less data on simpler scenes. A decent starting point would be to assume up to 10% of overhead for the file format, setting the <code class="notranslate">video_bitrate</code> 10% lower than the <code class="notranslate">decoder_bitrate_cap</code>, and allowing about 1.5 seconds of video to be buffered.</p>
 
 <p>Assuming a 1000 Kbps connection is available to the customer:</p>
 
 <ul>
 	<li>1000 * 0.90 = 900 Kbps available after subtracting 10% for format overhead.</li>
-	<li>900 - 128 = 772 Kbps video <code>decoder_bitrate_cap</code> after subtracting 128 Kbps for the audio.</li>
-	<li>772 * 1.5 = 1158 Kb <code>decoder_buffer_size</code> (for 1.5 seconds worth of video).</li>
-	<li>772 * 0.90 = 695 Kbps target video bitrate (10% lower than the <code>decoder_bitrate_cap</code>).</li>
+	<li>900 - 128 = 772 Kbps video <code class="notranslate">decoder_bitrate_cap</code> after subtracting 128 Kbps for the audio.</li>
+	<li>772 * 1.5 = 1158 Kb <code class="notranslate">decoder_buffer_size</code> (for 1.5 seconds worth of video).</li>
+	<li>772 * 0.90 = 695 Kbps target video bitrate (10% lower than the <code class="notranslate">decoder_bitrate_cap</code>).</li>
 </ul>
 
 <p>So, for a more correct streaming encode example:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
@@ -313,7 +313,7 @@
 <h2 id="Putting_it_all_together">Putting it all together</h2>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "http://s3.amazonaws.com/zencodertesting/test.mov",
     "outputs": [
     {
