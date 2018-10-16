@@ -17,7 +17,7 @@
 <p>We'll start by creating 2 H.264 files, targeting high and low bitrates.</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "label": "low",
     "format": "mp4",
     "video_bitrate": 200,
@@ -64,7 +64,7 @@
 <p>Each of the H.264 video and the audio outputs above have <a href="/node/17852#label">labels</a> in their API options. These labels can be used in conjunction with the <a href="/node/17852#source">source</a> option to tell Zencoder to use the video created by the output with the given label, rather than the input file. Since the H.264 files are already at good settings for HLS, no additional encoding is necessary.</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "source": "low",
     "format": "ts",
     "copy_audio": "true",
@@ -99,9 +99,9 @@
 
 <p>The resulting files from these outputs are segmented outputs, targeting different bandwidths, plus a playlist file for the playback device to know the available streams.</p>
 
-<p>Each segmented output includes the <a href="/node/17852#source">source</a>, and specifies one of the outputs listed earlier. They also include the <a href="/node/17855#copy-audio">copy_audio</a> and <a href="/node/17855#copy-video">copy_video</a> options, which tell Zencoder to use the audio and video streams from the source file and repackage them in the new container, rather than transcode them. Finally, the outputs also specify a <a href="/node/17852#type">type</a> of segmented and a <a href="/node/17856#format">format</a> of ts, plus a <a href="/node/17852#url">url</a> with an extension of .m3u8, so that Zencoder knows to create segmented HLS files.</p>
+<p>Each segmented output includes the <a href="/node/17852#source"><code class="notranslate">source</code></a>, and specifies one of the outputs listed earlier. They also include the <a href="/node/17855#copy-audio"><code class="notranslate">copy_audio</code></a> and <a href="/node/17855#copy-video"><code class="notranslate">copy_video</code></a> options, which tell Zencoder to use the audio and video streams from the source file and repackage them in the new container, rather than transcode them. Finally, the outputs also specify a <a href="/node/17852#type"><code class="notranslate">type</code></a> of segmented and a <a href="/node/17856#format"><code class="notranslate">format</code></a> of ts, plus a <a href="/node/17852#url"><code class="notranslate">url</code></a> with an extension of .m3u8, so that Zencoder knows to create segmented HLS files.</p>
 
-<p>Finally, there is also a playlist generated that references each of the segmented outputs. Note that the first file refrenced in the playlist is the low bitrate video; the device playing the video will generally load the first stream listed in the playlist initially, and switch to other streams as necessary. This means that the first 10 seconds of playback will use this stream, after which the device will have enough information to select the appropriate stream to play.</p>
+<p>Finally, there is also a playlist generated that references each of the segmented outputs. Note that the first file referenced in the playlist is the low bitrate video; the device playing the video will generally load the first stream listed in the playlist initially, and switch to other streams as necessary. This means that the first 10 seconds of playback will use this stream, after which the device will have enough information to select the appropriate stream to play.</p>
 
 <p><strong>NOTES</strong></p>
 
@@ -117,7 +117,7 @@
 <p>Now that we've gone over each of the major output sections, let's pull it together in to a single API request.</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "input": "s3://zencodertesting/test.mov",
     "outputs": [
     {
