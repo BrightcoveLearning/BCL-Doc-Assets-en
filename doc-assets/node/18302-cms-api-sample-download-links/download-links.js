@@ -103,7 +103,7 @@ var BCLS = (function(window, document) {
     // remove non-MP4 sources
     while (i > 0) {
       i--;
-      console.log('source', sources[i]);
+      // console.log('source', sources[i]);
       if (sources[i].hasOwnProperty('container')) {
         if (sources[i].container !== 'MP4' && sources[i].container !== 'FLV') {
           sources.splice(i, 1);
@@ -318,7 +318,7 @@ var BCLS = (function(window, document) {
             i = videosArray.length;
             while (i > 0) {
               i--;
-              console.log('videosArray[i]', videosArray[i]);
+              // console.log('videosArray[i]', videosArray[i]);
               if (!isDefined(videosArray[i].source)) {
                 videosArray.splice(i, 1);
               }
@@ -540,9 +540,9 @@ var BCLS = (function(window, document) {
     }
     // sort sources by encoding rate
     sortArray(sources, 'encoding_rate');
-    console.log('processed sources', sources);
     // return the first item (highest bitrate)
     if (sources.length > 0) {
+      // console.log('processed source', sources[0]);
       return sources[0];
     } else {
       return null;
@@ -596,8 +596,10 @@ var BCLS = (function(window, document) {
         // video may not have a valid source
         if (isDefined(video.source) && isDefined(video.source.src)) {
           videoURL = video.source.src;
+        } else if (isDefined(video.source.streaming_src)) {
+          videoURL = video.source.streaming_src;
         } else {
-          videoURL = "";
+          videoURL = null;
         }
         linkTr = document.createElement('tr');
         linkTd = document.createElement('td');
@@ -728,7 +730,6 @@ var BCLS = (function(window, document) {
           if (sources.length > 0) {
             // get the best MP4 rendition
             var source = processSources(sources);
-            console.log('processed source', source);
             videosArray[callNumber].source = source;
             if (source === null) {
               noDownloadableSources.push(videosArray[callNumber])
