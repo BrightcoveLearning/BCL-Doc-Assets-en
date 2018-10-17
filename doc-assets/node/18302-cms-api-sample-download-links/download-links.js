@@ -731,9 +731,9 @@ var BCLS = (function(window, document) {
             // get the best MP4 rendition
             var source = processSources(sources);
             videosArray[callNumber].source = source;
-            if (source === null) {
-              noDownloadableSources.push(videosArray[callNumber])
-            }
+            // if (source === null) {
+            //   noDownloadableSources.push(videosArray[callNumber])
+            // }
           } else {
             // video has no sources
             videosArray[callNumber].source = null;
