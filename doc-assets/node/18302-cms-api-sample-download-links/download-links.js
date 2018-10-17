@@ -633,9 +633,9 @@ var BCLS = (function(window, document) {
     logger.textContent = 'Finished!';
     linksDisplay.appendChild(fragment);
     enableButtons();
-    if (noDownloadableSources.length > 0) {
-      listVideosWithNoDownload();
-    }
+    // if (noDownloadableSources.length > 0) {
+    //   listVideosWithNoDownload();
+    // }
   }
 
   function listVideosWithNoDownload() {
