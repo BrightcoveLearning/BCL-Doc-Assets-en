@@ -599,6 +599,7 @@ var BCLS = (function(window, document) {
             videoURL = video.source.src;
           } else if (isDefined(video.source.streaming_src)) {
           videoURL = video.source.streaming_src;
+          }
         } else {
           videoURL = null;
         }
