@@ -1,0 +1,52 @@
+<p>The AEM, Drupal, SharePoint, Sitecore, and WordPress CMS connectors for Brightcove as well as CMS and DAM connectors developed by third parties require access to Brightcove’s REST APIs.&nbsp; To use Brightcove APIs, they must first be enabled in Brightcove Studio under Admin-&gt;API Authentication.&nbsp; Below is a typical configuration with necessary permissions for CMS connector use:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="API Permissions" width="800" src="//learning-services-media.brightcove.com/doc-assets/node/18584-debugging-network-and-api-connection-issues/node18584-api-permissions.png" />
+<figcaption class="bcls-caption--image">API Permissions</figcaption>
+</figure>
+
+<p>More details on managing API authentication can be found <a href="https://support.brightcove.com/managing-api-authentication-credentials">here</a>.</p>
+
+<p>After retrieving the clientID and client Secret from Brightcove and entering them into the CMS connector configuration, if the connector is unable to connect to Brightcove to synchronize videos there might be a firewall&nbsp;or other network configurations blocking access to Brightcove APIs.</p>
+
+<p>The simplest way to test access to Brightcove APIs is with the simple shell script below.&nbsp; Run this script from the CMS server itself or a Linux or OS X machine on the same network as the CMS server.&nbsp; Be sure to update the script first with your Brightcove account ID (pubID), client ID, and client Secret.</p>
+
+<pre>
+<code>
+#!/bin/sh
+
+# Set up proxy if necessary
+# export http_proxy="http://<proxy-host>:<proxy-port>"
+# export https_proxy=" http://<proxy-host>:<proxy-port>"
+
+# Enter pub_id, client_id, and client_secret below
+PUB_ID='xxxxxx'
+CLIENT_ID='xxxxxxxxxxxxxxxxxxxx'
+CLIENT_SECRET='xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+API_CALL='https://cms.api.brightcove.com/v1/accounts/'$PUB_ID'/videos'
+VERB='GET'
+
+TOKEN=$(curl -s --data "grant_type=client_credentials" https://oauth.brightcove.com/v4/access_token --header "Content-Type: application/x-www-form-urlencoded" --user "$CLIENT_ID:$CLIENT_SECRET" | sed -E 's/.*access_token\"\:\"([^\"]+)\".*/\1/');
+RESPONSE=$(curl -s -v -X $VERB "$API_CALL" -d "$DATA" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json")
+echo $RESPONSE
+</proxy-port></proxy-host></proxy-port></proxy-host></code></pre>
+
+<p>This script simply returns a list of videos from the account. &nbsp; It does not perform any write operations on the Brightcove account.&nbsp; If you do not see the list of videos or if you see an error message, then your network is blocking HTTPS access to either or both of the following API endpoints:</p>
+
+<ul>
+	<li>oath.brightcove.com</li>
+	<li>cms.api.brightcove.com</li>
+</ul>
+
+<p>If those endpoints are being blocked, it is likely that the other Brightcove API endpoints used by CMS and DAM connectors&nbsp;are also being blocked.&nbsp; These include:</p>
+
+<ul>
+	<li>ingest.api.brightcove.com</li>
+	<li>oauth.brightcove.com</li>
+	<li>ingestion.api.brightcove.com&nbsp;</li>
+	<li>policy.api.brightcove.com&nbsp;</li>
+	<li>players.api.brightcove.com</li>
+	<li>edge.api.brightcove.com</li>
+	<li>experiences.api.brightcove.com&nbsp;</li>
+</ul>
+
+<p>To use the CMS connectors, all nine of these endpoints will need to be accessible from the CMS server and responses from those endpoints also must be allowed to pass back to the CMS server.&nbsp; If the firewall cannot be opened for the endpoints listed above and proxy support needs to be added to the CMS or DAM connector, contact your Brightcove representative about a custom development project for the CMS connectors listed above or contact the developer of the third party connector you are using.</p>
