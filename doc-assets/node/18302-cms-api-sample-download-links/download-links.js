@@ -542,7 +542,7 @@ var BCLS = (function(window, document) {
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
     if (sources.length > 0) {
-      // console.log('processed source', sources[0]);
+      console.log('processed source', sources[0]);
       return sources[0];
     } else {
       return null;
