@@ -122,92 +122,92 @@ var BCLS = (function(window, document) {
     }
   }
 
-  function addItems() {
-    var i,
-      iMax,
-      video,
-      pubdate,
-      videoURL,
-      linkTable = document.createElement('table'),
-      linkHead = document.createElement('thead'),
-      linkBody = document.createElement('tbody'),
-      linkTh,
-      linkTd,
-      linkTr,
-      content,
-      linkA;
-    linkTable.setAttribute('class', 'bcls-table');
-    linkHead.setAttribute('class', 'bcls-table__head');
-    linkBody.setAttribute('class', 'bcls-table__body');
-    fragment.appendChild(linkTable);
-    linkTable.appendChild(linkHead);
-    linkTable.appendChild(linkBody);
-    // create the header row
-    linkTr = document.createElement('tr');
-    linkTh = document.createElement('th');
-    content = document.createTextNode('Video id');
-    linkTh.appendChild(content);
-    linkTr.appendChild(linkTh);
-    linkTh = document.createElement('th');
-    content = document.createTextNode('Name');
-    linkTh.appendChild(content);
-    linkTr.appendChild(linkTh);
-    linkTh = document.createElement('th');
-    content = document.createTextNode('Date Created');
-    linkTh.appendChild(content);
-    linkTr.appendChild(linkTh);
-    linkTh = document.createElement('th');
-    content = document.createTextNode('Download Link');
-    linkTh.appendChild(content);
-    linkTr.appendChild(linkTh);
-    linkHead.appendChild(linkTr);
-    // add the body rows
-    if (videosArray.length > 0) {
-      iMax = videosArray.length;
-      for (i = 0; i < iMax; i += 1) {
-        video = videosArray[i];
-        // video may not have a valid source
-        if (isDefined(video.source) && isDefined(video.source.src)) {
-          videoURL = video.source.src;
-        } else {
-          videoURL = "";
-        }
-        linkTr = document.createElement('tr');
-        linkTd = document.createElement('td');
-        content = document.createTextNode(video.id);
-        linkTd.appendChild(content);
-        linkTr.appendChild(linkTd);
-        linkTd = document.createElement('td');
-        content = document.createTextNode(video.name);
-        linkTd.appendChild(content);
-        linkTr.appendChild(linkTd);
-        linkTd = document.createElement('td');
-        content = document.createTextNode(video.created_at);
-        linkTd.appendChild(content);
-        linkTr.appendChild(linkTd);
-        linkTd = document.createElement('td');
-        if (isDefined(videoURL)) {
-          linkA = document.createElement('a');
-          linkA.setAttribute('href', videoURL);
-          linkA.setAttribute('target', '_blank');
-          content = document.createTextNode(videoURL);
-          linkA.appendChild(content);
-          linkTd.appendChild(linkA);
-        } else {
-          content = document.createTextNode('No downloadable rendition');
-          linkTd.appendChild(content);
-        }
-        linkTr.appendChild(linkTd);
-        linkBody.appendChild(linkTr);
-      }
-    }
-    logger.textContent = 'Finished!';
-    linksDisplay.appendChild(fragment);
-    enableButtons();
-    if (noDownloadableSources.length > 0) {
-      listVideosWithNoDownload();
-    }
-  }
+  // function addItems() {
+  //   var i,
+  //     iMax,
+  //     video,
+  //     pubdate,
+  //     videoURL,
+  //     linkTable = document.createElement('table'),
+  //     linkHead = document.createElement('thead'),
+  //     linkBody = document.createElement('tbody'),
+  //     linkTh,
+  //     linkTd,
+  //     linkTr,
+  //     content,
+  //     linkA;
+  //   linkTable.setAttribute('class', 'bcls-table');
+  //   linkHead.setAttribute('class', 'bcls-table__head');
+  //   linkBody.setAttribute('class', 'bcls-table__body');
+  //   fragment.appendChild(linkTable);
+  //   linkTable.appendChild(linkHead);
+  //   linkTable.appendChild(linkBody);
+  //   // create the header row
+  //   linkTr = document.createElement('tr');
+  //   linkTh = document.createElement('th');
+  //   content = document.createTextNode('Video id');
+  //   linkTh.appendChild(content);
+  //   linkTr.appendChild(linkTh);
+  //   linkTh = document.createElement('th');
+  //   content = document.createTextNode('Name');
+  //   linkTh.appendChild(content);
+  //   linkTr.appendChild(linkTh);
+  //   linkTh = document.createElement('th');
+  //   content = document.createTextNode('Date Created');
+  //   linkTh.appendChild(content);
+  //   linkTr.appendChild(linkTh);
+  //   linkTh = document.createElement('th');
+  //   content = document.createTextNode('Download Link');
+  //   linkTh.appendChild(content);
+  //   linkTr.appendChild(linkTh);
+  //   linkHead.appendChild(linkTr);
+  //   // add the body rows
+  //   if (videosArray.length > 0) {
+  //     iMax = videosArray.length;
+  //     for (i = 0; i < iMax; i += 1) {
+  //       video = videosArray[i];
+  //       // video may not have a valid source
+  //       if (isDefined(video.source) && isDefined(video.source.src)) {
+  //         videoURL = video.source.src;
+  //       } else {
+  //         videoURL = "";
+  //       }
+  //       linkTr = document.createElement('tr');
+  //       linkTd = document.createElement('td');
+  //       content = document.createTextNode(video.id);
+  //       linkTd.appendChild(content);
+  //       linkTr.appendChild(linkTd);
+  //       linkTd = document.createElement('td');
+  //       content = document.createTextNode(video.name);
+  //       linkTd.appendChild(content);
+  //       linkTr.appendChild(linkTd);
+  //       linkTd = document.createElement('td');
+  //       content = document.createTextNode(video.created_at);
+  //       linkTd.appendChild(content);
+  //       linkTr.appendChild(linkTd);
+  //       linkTd = document.createElement('td');
+  //       if (isDefined(videoURL)) {
+  //         linkA = document.createElement('a');
+  //         linkA.setAttribute('href', videoURL);
+  //         linkA.setAttribute('target', '_blank');
+  //         content = document.createTextNode(videoURL);
+  //         linkA.appendChild(content);
+  //         linkTd.appendChild(linkA);
+  //       } else {
+  //         content = document.createTextNode('No downloadable rendition');
+  //         linkTd.appendChild(content);
+  //       }
+  //       linkTr.appendChild(linkTd);
+  //       linkBody.appendChild(linkTr);
+  //     }
+  //   }
+  //   logger.textContent = 'Finished!';
+  //   linksDisplay.appendChild(fragment);
+  //   enableButtons();
+  //   if (noDownloadableSources.length > 0) {
+  //     listVideosWithNoDownload();
+  //   }
+  // }
 
   function listVideosWithNoDownload() {
     var tr,
