@@ -594,7 +594,7 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i += 1) {
         video = videosArray[i];
         // video may not have a valid source
-        if (isDefined(video.source) && isDefined(video.source.src)) {
+        if (isDefined(video.source) && (isDefined(video.source.src) || isDefined(video.source.streaming_src))) {
           videoURL = video.source.src;
         } else if (isDefined(video.source.streaming_src)) {
           videoURL = video.source.streaming_src;
