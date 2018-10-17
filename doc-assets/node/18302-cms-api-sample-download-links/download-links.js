@@ -303,11 +303,13 @@ var BCLS = (function(window, document) {
             var source = processSources(sources);
             videosArray[callNumber].source = source;
             if (source === null) {
-              noDownloadableSources.push(videosArray[callNumber])
+              console.log('null source', source);
+              noDownloadableSources.push(videosArray[callNumber]);
             }
           } else {
             // video has no sources
             videosArray[callNumber].source = null;
+            console.log('no sources', videosArray[callNumber].source);
             noDownloadableSources.push(videosArray[callNumber])
           }
           callNumber++;
@@ -542,7 +544,7 @@ var BCLS = (function(window, document) {
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
     if (sources.length > 0) {
-      console.log('processed source', sources[0]);
+      // console.log('processed source', sources[0]);
       return sources[0];
     } else {
       return null;
