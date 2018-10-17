@@ -540,6 +540,7 @@ var BCLS = (function(window, document) {
     }
     // sort sources by encoding rate
     sortArray(sources, 'encoding_rate');
+    console.log('processed sources', sources);
     // return the first item (highest bitrate)
     if (sources.length > 0) {
       return sources[0];
@@ -727,6 +728,7 @@ var BCLS = (function(window, document) {
           if (sources.length > 0) {
             // get the best MP4 rendition
             var source = processSources(sources);
+            console.log('processed source', source);
             videosArray[callNumber].source = source;
             if (source === null) {
               noDownloadableSources.push(videosArray[callNumber])
@@ -744,7 +746,7 @@ var BCLS = (function(window, document) {
             i = videosArray.length;
             while (i > 0) {
               i--;
-              console.log('videosArray[i]', videosArray[i]);
+              // console.log('videosArray[i]', videosArray[i]);
               if (!isDefined(videosArray[i].source)) {
                 videosArray.splice(i, 1);
               }
