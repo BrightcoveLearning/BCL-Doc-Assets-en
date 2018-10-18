@@ -108,6 +108,10 @@ var BCLS = (function(window, document) {
           sources.splice(i, 1);
         } else if (sources[i].hasOwnProperty('stream_name')) {
           sources.splice(i, 1);
+        } else if (sources[i].hasOwnProperty('src')) {
+          if (sources[i].src.indexOf('master.m3u8') > -1 || sources[i].src.indexOf('manifest.mpd') > -1) {
+            sources.splice(i, 1);
+          }
         }
       }
     }
