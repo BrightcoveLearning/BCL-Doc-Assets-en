@@ -13,10 +13,12 @@
 <section class="bcls-section">
 <h2 id="Player_example">Player example</h2>
 
-<p>The following is a Brightcove Player that is using the quality selection plugin. Once you play the video, in the controlbar you will see the following icon: <img class="bcls-image" alt="" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/icon-in-controlbar.png" />. Once you make a selection, the gear will spin until the new quality is rendered, for DASH sources, or until the the new quality is being loaded, for HLS sources. More information is provided below on the quality options you see for the selection, and gear spinning behavior.</p>
+<p>The following is a Brightcove Player that is using the quality selection plugin. Once you play the video, in the controlbar you will see the following icon:<img class="bcls-image" alt="" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/icon-in-controlbar.png" /></p>
+
+<p>Once you make a selection, the gear will spin until the new quality is rendered, for DASH sources, or until the new quality is being loaded, for HLS sources. More information is provided below on the quality options you see for the selection, and gear spinning behavior.</p>
 
 <aside class="bcls-aside bcls-aside--information">If you have a fast Internet connection, you may have to make a number of selections before you see the gear spin as changes take place quickly with HLS renditions, which this video is using.</aside>
-<iframe src="//players.brightcove.net/1752604059001/B1CWQFiPZ_default/index.html?videoId=5323141859001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="640" height="360"></iframe></section>
+<iframe src="https://players.brightcove.net/1752604059001/B1CWQFiPZ_default/index.html?videoId=5323141859001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" width="640" height="360"></iframe></section>
 
 <section class="bcls-section">
 <h2 id="Quality_options">Quality options</h2>
@@ -55,20 +57,23 @@
 <p>To implement the quality selection plugin using the Players module, follow these steps:</p>
 
 <ol class="bcls-tasklist">
-	<li>Open the <strong>Players</strong> module and locate the player.</li>
-	<li>Click the link for the player to open the player properties.</li>
-	<li>Locate the <strong>SETTINGS</strong> section and click <strong>Edit</strong>.</li>
-	<li>Set the <strong>Show Quality Selector</strong> to <strong>Yes</strong>:
+	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
+	<li>Click the link for the player to open the player's properties.</li>
+	<li>Click <strong>Controls</strong> in the left navigation menu.</li>
+	<li>Check the box in front of <strong>Quality Selector</strong>.
 	<figure class="bcls-figure"><img class="bcls-image" alt="Configuration show quality selector" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/studio-show-quality-selector.png" /></figure>
 	</li>
-	<li>Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
+	<li>Use a radio button to display either the different resolutions available, or simply an <strong>HD/SD</strong> option.</li>
+	<li>Click <strong>Save</strong>.</li>
+	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
+	<li>To close the open dialog, click <strong>Close</strong>.</li>
 </ol>
 </section>
 
 <section class="bcls-section">
 <h2 id="Configuration_options">Configuration options</h2>
 
-<p>The following options are available to configure the plugin:</p>
+<p>The following options are available to configure the plugin if you are implementing the plugin using code:</p>
 
 <ul>
 	<li>
@@ -101,9 +106,9 @@
 	<p>To implement the <code>useResolutionLabels</code> option, you would enter the following in the plugin's options in Studio:</p>
 
 	<pre class="line-numbers">
-                  <code class="language-json">{
-                    "useResolutionLabels": false
-                  }</code></pre>
+<code class="language-json">{
+  "useResolutionLabels": false
+}</code></pre>
 
 	<p>The resulting quality options would appear as follows:</p>
 
@@ -123,10 +128,6 @@
 	<p>When this configuration option is set the <code>true</code>, the quality selector will appear as follows:</p>
 
 	<figure class="bcls-figure"><img class="bcls-image" alt="All video bitrates" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/bitrates-displayed.png" /></figure>
-
-	<p>To configure this, go to Studio's <strong>PLAYERS</strong> module and select the player to configure. In the <strong>PLUGINS</strong> section add the configuration in the <strong>Name, Options (JSON)</strong> section, as shown here:</p>
-
-	<figure class="bcls-figure"><img class="bcls-image" alt="All video bitrates" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/manual-rendition-selection/bitrates-json.png" /></figure>
 	</li>
 </ul>
 </section>
@@ -138,6 +139,7 @@
 	<li>The plugin functions with Brightcove Player version 5.17.0 and later. Functionality with earlier versions of the player is not supported.</li>
 	<li>The quality selector does not work in Safari.</li>
 	<li>The quality selector does not appear in iOS.</li>
+	<li>At times the quality switch will not happen at the desired time, it can take longer than expected.</li>
 	<li>Setting the source in the player configuration and building with single video template will cause the quality menu to not be initialized properly. This is because the source will be set through a call to the <code>videojs</code> constructor, which does not have access to the player or plugins. The source should be set by calling <code>player.src()</code>. This does not affect Video Cloud users.</li>
 	<li>The quality menu will not be displayed when using DASH content with Silverlight.</li>
 </ul>
@@ -145,6 +147,22 @@
 
 <section class="bcls-section">
 <h2 id="Changelog">Changelog</h2>
+
+<h4>10 Aug 2018</h4>
+
+<p>v1.2.2</p>
+
+<ul>
+	<li>Fixed styling of cog icon</li>
+</ul>
+
+<h4>2 May 2018</h4>
+
+<p>v1.2.1</p>
+
+<ul>
+	<li>Fixed listener disposal</li>
+</ul>
 
 <h4>5 Sep 2017</h4>
 
