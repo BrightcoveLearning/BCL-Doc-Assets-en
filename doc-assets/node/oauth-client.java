@@ -24,19 +24,19 @@ public class OltuJavaClient {
     /**
      * Client ID of your client credential.  Change this to match whatever credential you have created.
      */
-    public static final String CLIENT_ID = "YOUR_CLIENT_ID";
+    public static final String CLIENT_ID = "5f781efe-3fc5-4f41-9cd5-d40b6c21ac18";
 
     /**
      * Client secret of your client credential.  Change this to match whatever credential you have created.
      */
     public static final String CLIENT_SECRET =
-            "YOUR_CLIENT_SECRET";
+            "_wTTGx710UrBhvU-xjgWaPg1c9_SBqfH66pcKT79xmEmNDqTqkyVvcQyXieArPKHEf1kqjgWuX_d3rj1-TvUeQ";
 
     /**
      * Account on which you want to request a resource. Change this to match the account you want to
      * retrieve resources on.
      */
-    public static final String ACCOUNT_ID = "YOUR_ACCOUNT_ID";
+    public static final String ACCOUNT_ID = "1752604059001";
 
     /**
      * URL from which you are going to request a resource.  The example below is for the Analytics
@@ -72,7 +72,7 @@ public class OltuJavaClient {
             HttpURLConnection resource_cxn =
                     (HttpURLConnection)(new URL(resourceUrl).openConnection());
             resource_cxn.addRequestProperty("Authorization", "Bearer " + token);
-
+            resource_cxn.addRequestProperty("Content-Type", "application/json");
             InputStream resource = resource_cxn.getInputStream();
 
             // Do whatever you want to do with the contents of resource at this point.
