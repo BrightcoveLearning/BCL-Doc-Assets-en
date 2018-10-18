@@ -116,7 +116,6 @@ var BCLS = (function(window, document) {
         }
       }
       console.log('sources processed', sources);
-    }
     // sort sources by encoding rate
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
