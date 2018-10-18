@@ -52,7 +52,7 @@
               controls&gt;&lt;/video&gt;</code></pre>
 <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="366-371" data-gist-highlight-line="369"></code></p> -->
 
-<p>The <code>data-embed</code> attribute determines if the player is a parent or child. If the value is <code>default</code>, the player is a parent. If the player is a child, the <code>data-embed</code> attribute will contain the ID of the parent player.</p>
+<p>The <code class="notranslate">data-embed</code> attribute determines if the player is a parent or child. If the value is <code class="notranslate">default</code>, the player is a parent. If the player is a child, the <code class="notranslate">data-embed</code> attribute will contain the ID of the parent player.</p>
 </section>
 
 <section class="bcls-section">
@@ -72,7 +72,7 @@
 <section class="bcls-section">
 <h2 id="why">Parent/child use case</h2>
 
-<p>Assume you use multiple video players. Often, the common features of the players are very nearly the same, but in a few instances you want to tweak the player for special cases. You could create multiple players using the Player Configuration APIs with <code>POST</code> and <code>PATCH</code> methods, but this could lead to significant maintenance issues. For instance, say you wanted to change the poster for all the players. This would mean using <code>PATCH</code> on all the different players. Whereas if you created child players, you would only <code>PATCH</code> the parent player, and all the child players would automatically have the new poster.</p>
+<p>Assume you use multiple video players. Often, the common features of the players are very nearly the same, but in a few instances you want to tweak the player for special cases. You could create multiple players using the Player Configuration APIs with <code class="notranslate">POST</code> and <code class="notranslate">PATCH</code> methods, but this could lead to significant maintenance issues. For instance, say you wanted to change the poster for all the players. This would mean using <code class="notranslate">PATCH</code> on all the different players. Whereas if you created child players, you would only <code class="notranslate">PATCH</code> the parent player, and all the child players would automatically have the new poster.</p>
 </section>
 
 <section class="bcls-section">
@@ -83,17 +83,17 @@
 <p>To create a player you have most likely used a few HTTP methods with the Player Configuration APIs, such as:</p>
 
 <ul>
-	<li>Create the player using a <code>POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</em></li>
-	<li>Update the player using a <code>PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</em></li>
-	<li>Publish the updated player using a <code>POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</em></li>
+	<li>Create the player using a <code class="notranslate">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</em></li>
+	<li>Update the player using a <code class="notranslate">PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</em></li>
+	<li>Publish the updated player using a <code class="notranslate">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</em></li>
 </ul>
 
 <p>A similar approach will be used for child players using the embed APIs. At a very high level you will:</p>
 
 <ul>
-	<li>Create a child player using a <code>POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds</strong></em>. Note: Child players created with the embed APIs self publish on creation so there is no need to publish on child player creation, only on child player update.</li>
-	<li>Update the child player using a <code>PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds/$EMBED_ID/configuration</strong></em></li>
-	<li>Publish the child player using a <code>POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds/$EMBED_ID/publish</strong></em></li>
+	<li>Create a child player using a <code class="notranslate">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds</strong></em>. Note: Child players created with the embed APIs self publish on creation so there is no need to publish on child player creation, only on child player update.</li>
+	<li>Update the child player using a <code class="notranslate">PATCH</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds/$EMBED_ID/configuration</strong></em></li>
+	<li>Publish the child player using a <code class="notranslate">POST</code> to <em>https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/<strong>embeds/$EMBED_ID/publish</strong></em></li>
 </ul>
 
 <p>The following content describes the process in detail.</p>
@@ -102,10 +102,10 @@
 <section class="bcls-section">
 <h2 id="createembed">Create child player</h2>
 
-<p>To create a child player you use an HTTP <code>POST</code> method, as shown here:</p>
+<p>To create a child player you use an HTTP <code class="notranslate">POST</code> method, as shown here:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl /
+<code class="language-bash notranslate">curl /
 --header "Content-Type: application/json" /
 --user $EMAIL /
 --request POST /
@@ -128,7 +128,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 <p>An example response to the child player creation is as follows:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "id": "be864624-8d85-4dfc-8fe6-4e9dd4c70417",
     "url": "http://players.brightcove.net/1507807800001/668c5107-a80c-4940-8c17-279c01ce101c_be864624-8d85-4dfc-8fe6-4e9dd4c70417/index.html",
     "embed_code": "&lt;iframe src='//players.brightcove.net/1507807800001/668c5107-a80c-4940-8c17-279c01ce101c_be864624-8d85-4dfc-8fe6-4e9dd4c70417/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;",
@@ -138,9 +138,9 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 }</code></pre>
 <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="322-329"></code></p> -->
 
-<p class="BCL-aside">Note: The child player self publishes on creation, so there is no need to publish the child player after creation. You still must publish child player if it is altered with a <code>PATCH</code> method. At this point the preview information is not helpful as you can use the published child player immediately upon creation.</p>
+<p class="BCL-aside">Note: The child player self publishes on creation, so there is no need to publish the child player after creation. You still must publish child player if it is altered with a <code class="notranslate">PATCH</code> method. At this point the preview information is not helpful as you can use the published child player immediately upon creation.</p>
 
-<p>You can now use the <code>url</code> property from the child player to see the results. In the example below the child player was added to the parent player created in the Quick Start to Player Management. You see the new poster and video, but the overlay plugin from the parent player is still present.</p>
+<p>You can now use the <code class="notranslate">url</code> property from the child player to see the results. In the example below the child player was added to the parent player created in the Quick Start to Player Management. You see the new poster and video, but the overlay plugin from the parent player is still present.</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="Child Player with Parent's Overlay" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/guides/embeds/embed-guide-robin.png" />
 <figcaption class="bcls-caption--image">Child Player with Parent's Overlay</figcaption>
@@ -150,10 +150,10 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 <section class="bcls-section">
 <h2 id="updateembed">Update child player</h2>
 
-<p>To update the child player you use an HTTP <code>PATCH</code> method. The following curl statement updates the <code>poster</code> property. It is assumed you have set the <code>$EMBED_ID</code> environment variable appropriately:</p>
+<p>To update the child player you use an HTTP <code class="notranslate">PATCH</code> method. The following curl statement updates the <code class="notranslate">poster</code> property. It is assumed you have set the <code class="notranslate">$EMBED_ID</code> environment variable appropriately:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl
+<code class="language-bash notranslate">curl
 --header "Content-Type: application/json"
 --user $EMAIL
 --request PATCH
@@ -168,10 +168,10 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 </code></pre>
 <!-- <p><code data-gist-id="11401488" data-gist-hide-footer="true" data-gist-line="336-347"></code></p> -->
 
-<p>The response provides preview information for both a <code>preview_url</code> and <code>preview_embed_code</code> code:</p>
+<p>The response provides preview information for both a <code class="notranslate">preview_url</code> and <code class="notranslate">preview_embed_code</code> code:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "preview_url": "http://preview-players.brightcove.net/1507807800001/668c5107-a80c-4940-8c17-279c01ce101c/be864624-8d85-4dfc-8fe6-4e9dd4c70417/index.html",
     "preview_embed_code": "&lt;iframe src='//preview-players.brightcove.net/1507807800001/668c5107-a80c-4940-8c17-279c01ce101c/be864624-8d85-4dfc-8fe6-4e9dd4c70417/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;"
 }</code></pre>
@@ -180,10 +180,10 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 <section class="bcls-section">
 <h2 id="publishembed">Publish child player</h2>
 
-<p>Once the child player is altered you will need to publish it. Be sure the <code>$EMBED_ID</code> environment variable is set and you can then publish the newly altered child player:</p>
+<p>Once the child player is altered you will need to publish it. Be sure the <code class="notranslate">$EMBED_ID</code> environment variable is set and you can then publish the newly altered child player:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl
+<code class="language-bash notranslate">curl
 --header "Content-Type: application/json"
 --user $EMAIL
 --request POST
@@ -193,7 +193,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 <p>The response provides the vital information needed to use the child player, very much like publishing a player does:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
     "id": "be864624-8d85-4dfc-8fe6-4e9dd4c70417",
     "url": "http://players.brightcove.net/1507807800001/668c5107-a80c-4940-8c17-279c01ce101c_be864624-8d85-4dfc-8fe6-4e9dd4c70417/index.html",
     "embed_code": "&lt;iframe src='//players.brightcove.net/1507807800001/668c5107-a80c-4940-8c17-279c01ce101c_be864624-8d85-4dfc-8fe6-4e9dd4c70417/index.html' allowfullscreen webkitallowfullscreen mozallowfullscreen&gt;&lt;/iframe&gt;",
@@ -204,10 +204,10 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 <section class="bcls-section">
 <h2 id="displayembed">Display child info</h2>
 
-<p>You can use the HTTP <code>GET</code> method to retrieve the information about a child player. An example curl statement is:</p>
+<p>You can use the HTTP <code class="notranslate">GET</code> method to retrieve the information about a child player. An example curl statement is:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl
+<code class="language-bash notranslate">curl
   --header "Content-Type: application/json"
   --user $EMAIL
   --request GET
@@ -219,10 +219,10 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/em
 <section class="bcls-section">
 <h2 id="deletingembeds">Delete child players</h2>
 
-<p>You can also delete a child player by using the <code>DELETE</code> method. Here is an example curl statement to delete a child player:</p>
+<p>You can also delete a child player by using the <code class="notranslate">DELETE</code> method. Here is an example curl statement to delete a child player:</p>
 
 <pre class="line-numbers">
-<code class="language-bash">curl
+<code class="language-bash notranslate">curl
 --header "Content-Type: application/json"
 --user $EMAIL
 --request DELETE
