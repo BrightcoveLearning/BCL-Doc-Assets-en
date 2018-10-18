@@ -104,8 +104,9 @@ var BCLS = (function(window, document) {
     while (i > 0) {
       i--;
       if (sources[i].hasOwnProperty('container')) {
-        if (sources[i].container !== 'MP4' && sources[i].container !== 'FLV') {
-          sources.splice(i, 1);
+          if (sources[i].container !== 'MP4' && sources[i].container !== 'FLV') {
+            sources.splice(i, 1);
+          }
         } else if (sources[i].hasOwnProperty('stream_name')) {
           sources.splice(i, 1);
         } else if (sources[i].hasOwnProperty('src')) {
@@ -114,6 +115,7 @@ var BCLS = (function(window, document) {
           }
         }
       }
+      console.log('sources processed', sources);
     }
     // sort sources by encoding rate
     sortArray(sources, 'encoding_rate');
