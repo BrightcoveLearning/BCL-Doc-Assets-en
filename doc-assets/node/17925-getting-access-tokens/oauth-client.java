@@ -43,7 +43,7 @@ public class OltuJavaClient {
      * resource server. :account-id will be replaced with {@link ACCOUNT_ID} below.
      */
     public static final String RESOURCE_URL_TPL =
-            "https://analytics.api.brightcove.com/v1/data?accounts=:account-id&dimensions=video";
+            "https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=video";
 
     /**
      * Request a fresh access token using the given client ID, client secret, and token request URL,
