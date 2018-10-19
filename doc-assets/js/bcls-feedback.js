@@ -58,6 +58,7 @@ var BCLS_feedback = ( function (window, document) {
   });
 
   window.addEventListener('resize', function() {
+    console.log('window size', window.innerWidth);
     if (window.innerWidth < 1430) {
       iframe.setAttribute('style', 'visibility: hidden;');
     } else {
