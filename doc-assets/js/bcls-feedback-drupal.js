@@ -70,9 +70,9 @@ if (thirdRowItems) {
   window.addEventListener('resize', function() {
     console.log('window size', window.innerWidth);
     if (window.innerWidth < 1430) {
-      iframeEl.setAttribute('style', 'visibility: hidden;');
+      iframeEl.setAttribute('style', 'opacity: 0;');
     } else {
-      iframeEl.setAttribute('style', 'visibility: visible;')
+      iframeEl.setAttribute('style', 'opacity: 1;')
     }
   })
 
