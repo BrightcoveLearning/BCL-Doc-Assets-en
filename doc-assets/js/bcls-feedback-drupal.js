@@ -76,4 +76,11 @@ if (thirdRowItems) {
     }
   })
 
+  window.addEventListener('load', function() {
+    console.log('window size', window.innerWidth);
+    if (window.innerWidth < 1200) {
+      surveyDiv.setAttribute('style', 'visibility:hidden');
+    }
+  })
+
 })(window, document);
