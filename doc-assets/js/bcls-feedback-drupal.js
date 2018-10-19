@@ -69,11 +69,10 @@ if (thirdRowItems) {
 
   window.addEventListener('resize', function() {
     console.log('window size', window.innerWidth);
-    console.log('iframeEl', iframeEl);
-    if (window.innerWidth < 1430) {
-      iframeEl.setAttribute('style', 'opacity: 0;');
+    if (window.innerWidth < 1200) {
+      surveyDiv.setAttribute('style', 'visibility:hidden');
     } else {
-      iframeEl.setAttribute('style', 'opacity: 1;')
+      surveyDiv.removeAttribute('style')
     }
   })
 
