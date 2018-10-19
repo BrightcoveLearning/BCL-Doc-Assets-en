@@ -6,12 +6,24 @@
 <section class="bcls-section">
 <h2 id="Default_selection_process">Default selection process</h2>
 
-<p>The Brightcove Player SDK for Android provides a default implementation as follows. To simplify this discussion, we will focus on the SDK’s support for the Brightcove Playback API and Google’s ExoPlayer.</p>
+<p>The Brightcove Player SDK for Android uses a default source selection process. To simplify, we will focus on the SDK’s support for the Brightcove Playback API and Google’s ExoPlayer.</p>
 
+<aside class="bcls-aside bcls-aside--tip">
+	<p>
+		With the Brightcove Native SDK for Android 6.4+, HTTPS delivery for all source types is selected if available.
+	</p>
+	<p>
+		Both the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> attempt to select the HTTPS version of the <code class="notranslate">deliveryType</code> selected. If no HTTPS source exists, the selection controller will select the first available.
+	</p>
+</aside>
+
+<p>
+	The default selection process is defined as follows:
+</p>
 <ol class="bcls-tasklist">
-	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> looks for the first source that has a <code>deliveryType</code> of <strong>MPEG-DASH</strong>, and a profile that is neither <strong>urn:hbbtv</strong> nor <strong>urn:dvb</strong>. The SDK does not support playback with either of these DASH profiles, and so they will be filtered out of the sources.</li>
-	<li>If the above is not found, source selection falls back to the first source with a <code>deliveryType</code> of <strong>HLS</strong>.</li>
-	<li>If no such source is found, it falls back to the source with a <code>deliveryType</code> of <strong>MP4</strong> and a bitrate closest to 256 kBps.</li>
+	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> looks for the first source that has a <code class="notranslate">deliveryType</code> of <strong>MPEG-DASH</strong>, and a profile that is neither <strong>urn:hbbtv</strong> nor <strong>urn:dvb</strong>. The SDK does not support playback with either of these DASH profiles, and so they will be filtered out of the sources.</li>
+	<li>If the above is not found, source selection falls back to the first source with a <code class="notranslate">deliveryType</code> of <strong>HLS</strong>.</li>
+	<li>If no such source is found, it falls back to the source with a <code class="notranslate">deliveryType</code> of <strong>MP4</strong> and a bitrate closest to 256 kBps.</li>
 </ol>
 
 <p>Once a source is found, the implementation continues as follows:</p>
@@ -27,48 +39,6 @@
 </section>
 
 <section class="bcls-section">
-<h2 id="Setting_HTTPS_sources">Setting HTTPS sources</h2>
-
-<p>You may prefer secure network communication for your video sources. To do this, you can filter your source results to use HTTPS.</p>
-
-<p>This example selects the HTTPS source for the HLS Delivery Type. If one is not found, then the default behavior is used:</p>
-
-<pre class="line-numbers">
-<code class="language-java">eventEmitter.on(EventType.SELECT_SOURCE, new EventListener() {
-@Override
-public void processEvent(Event event) {
-
-Video video = (Video) event.properties.get(Event.VIDEO);
-
-Source newSource = null;
-
-Map&lt;DeliveryType, SourceCollection&gt; map = video.getSourceCollections();
-for (Map.Entry&lt;DeliveryType, SourceCollection&gt; entry : map.entrySet()) {
-if (entry.getKey().equals(DeliveryType.HLS)) {
-	SourceCollection sc = entry.getValue();
-	Set&lt;Source&gt; set = sc.getSources();
-	for (Source src : set) {
-		String url = src.getUrl();
-		if (url.startsWith(&quot;https://&quot;)) {
-				newSource = src;
-				break;
-		}
-	}
-}
-}
-
-if (newSource != null) {
-	event.preventDefault();
-	event.properties.put(Event.SOURCE, newSource);
-	eventEmitter.respond(event);
-}
-}
-});</code></pre>
-
-<!-- <aside class="bcls-aside bcls-aside--tip">This example will set the source to whatever is listed first in your source <code>Set</code>. If you have both HLS and MP4 renditions in the <code>Set</code>, you may want to filter your result a bit further to set the type you want to use.</aside> -->
-</section>
-
-<section class="bcls-section">
 <h2 id="Setting_HLS_sources">Setting HLS sources</h2>
 
 <p>It is possible to customize source selection at the app level, to filter out any undesired delivery types before the SDK’s default source selection policy is invoked. To do this, you would modify the source collections that are set into the Video object from the Playback API’s JSON response.</p>
@@ -76,27 +46,25 @@ if (newSource != null) {
 <p>This example uses only HLS sources:</p>
 
 <pre class="line-numbers">
-<code class="language-java">catalog.findVideoByReferenceID(videoReferenceId, new com.brightcove.player.edge.VideoListener() {
-@Override
-public void onVideo(Video video) {
- sourceSelectionFilter(DeliveryType.HLS, video);
- brightcoveVideoView.add(video);
- brightcoveVideoView.start();
-}
-});
-</code></pre>
+<code class="notranslate language-java">catalog.findVideoByReferenceID(videoReferenceId, new com.brightcove.player.edge.VideoListener() {
+	@Override
+	public void onVideo(Video video) {
+	 sourceSelectionFilter(DeliveryType.HLS, video);
+	 brightcoveVideoView.add(video);
+	 brightcoveVideoView.start();
+	}
+});</code></pre>
 
-<p>And the <code>sourceSelectionFilter()</code> method would look like this:</p>
+<p>And the <code class="notranslate">sourceSelectionFilter()</code> method would look like this:</p>
 
 <pre class="line-numbers">
-<code class="language-java">public static void sourceSelectionFilter(String deliveryTypeFilter, Video video){
-for (DeliveryType deliveryType : DeliveryType.values()) {
-if (!deliveryType.name().equals(deliveryTypeFilter)) {
- Log.v(TAG, "Removing the deliveryType " + deliveryType.name());
- video.getSourceCollections().remove(deliveryType);
-}
-}
-}
-</code></pre>
+<code class="notranslate language-java">public static void sourceSelectionFilter(String deliveryTypeFilter, Video video){
+	for (DeliveryType deliveryType : DeliveryType.values()) {
+		if (!deliveryType.name().equals(deliveryTypeFilter)) {
+		 Log.v(TAG, "Removing the deliveryType " + deliveryType.name());
+		 video.getSourceCollections().remove(deliveryType);
+		}
+	}
+}</code></pre>
 </section>
 </article>
