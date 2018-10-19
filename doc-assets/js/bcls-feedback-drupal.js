@@ -66,4 +66,14 @@ if (thirdRowItems) {
     // send message to surveyForm window
     surveyWin.postMessage(feedbackParams, 'https://learning-services-media.brightcove.com');
   });
+
+  window.addEventListener('resize', function() {
+    console.log('window size', window.innerWidth);
+    if (window.innerWidth < 1430) {
+      iframeEl.setAttribute('style', 'visibility: hidden;');
+    } else {
+      iframeEl.setAttribute('style', 'visibility: visible;')
+    }
+  })
+
 })(window, document);
