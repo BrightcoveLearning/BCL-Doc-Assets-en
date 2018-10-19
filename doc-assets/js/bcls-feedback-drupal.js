@@ -31,7 +31,7 @@ var BCLS_feedback = ( function (window, document) {
   surveyDiv.setAttribute('style', 'text-align:left; position:relative;');
   surveyDiv.appendChild(iframe);
   contentBlock.appendChild(surveyDiv);
-  iframeEl = document.getElementById('CSAT');
+  iframeEl = document.querySelector('#CSAT');
   surveyWin = iframeEl.contentWindow;
 
   for (i = 0; i < cookiesArray.length; i++) {
