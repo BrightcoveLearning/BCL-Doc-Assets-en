@@ -470,7 +470,7 @@ var BCLS = (function(window, document, rome) {
             case 'getVideoRenditions':
                 var i,
                     iMax = videosArray.length;
-                callback = function(renditions) {
+                handleRenditions = function(renditions) {
                     if (renditions.length > 0) {
                         // get the best MP4 rendition
                         processRenditions(renditions, function(hlsRenditions, mp4Renditions) {
@@ -505,7 +505,17 @@ var BCLS = (function(window, document, rome) {
                 apiRequest.textContent = options.url;
                 spanVideosCountEl.textContent = callNumber + 1;
                 spanVideosTotalEl.textContent = superSetVideos;
-                makeRequest(options, callback);
+                makeRequest(options, function(response) {
+                  if (response === '[]') {
+                      // no video returned
+                      renditions = [];
+                      handleRenditions(renditions);
+                  } else {
+                      renditions = JSON.parse(response);
+                      // increment offset
+                      handleRenditions(renditions);
+                  }
+                });
                 break;
         }
     }
