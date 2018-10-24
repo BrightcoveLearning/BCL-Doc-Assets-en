@@ -1,4 +1,4 @@
-var BCLS = (function(window, document) {
+var BCLS = (function (window, document) {
   var // account stuff
     accountId,
     bcToken,
@@ -6,7 +6,7 @@ var BCLS = (function(window, document) {
     clientSecret,
     newProfile,
     // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/beml-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
     ipURLsuffix = '/configuration',
     totalCalls = 0,
@@ -91,126 +91,127 @@ var BCLS = (function(window, document) {
       case 'setDefaults':
         var reqBody = {},
           now;
-    logger.textContent = 'Processing account: ' + accountsArray[callNumber];
-    endPoint = accountsArray[callNumber];
-    options.url = ipURL + endPoint + ipURLsuffix;
-    options.requestType = type;
-    reqBody.account_id = parseInt(accountsArray[callNumber]);
-    reqBody.default_profile_id = newProfile;
-    options.requestBody = JSON.stringify(reqBody);
-    apiRequest.textContent = options.url;
-    makeRequest(options, function(response) {
-      var now = new Date().toISOString();
-      parsedData = JSON.parse(response);
-      responseArray.push(parsedData);
-      if (Array.isArray(parsedData)) {
-        // we have an error, most likely a conflict
-          setoptions('setDefaults', 'PUT');
-      } else {
-        callNumber++;
-        if (callNumber < totalCalls) {
-          setoptions('setDefaults', 'POST');
-        } else {
-          logger.textContent = 'Finished at ' + now;
-          apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
-        }
-      }
-
-    });
-    break;
-  }
-}
-
-/**
- * send API request to the proxy
- * @param  {Object} options for the request
- * @param  {String} options.url the full API request URL
- * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
- * @param  {String} options.proxyURL proxyURL to send the request to
- * @param  {String} options.client_id client id for the account (default is in the proxy)
- * @param  {String} options.client_secret client secret for the account (default is in the proxy)
- * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
- * @param  {Function} [callback] callback function that will process the response
- */
-function makeRequest(options, callback) {
-  var httpRequest = new XMLHttpRequest(),
-    response,
-    proxyURL = options.proxyURL,
-    // response handler
-    getResponse = function() {
-      try {
-        if (httpRequest.readyState === 4) {
-          if (httpRequest.status >= 200 && httpRequest.status < 300) {
-            response = httpRequest.responseText;
-            // some API requests return '{null}' for empty responses - breaks JSON.parse
-            if (response === '{null}') {
-              response = null;
-            }
-            // return the response
-            callback(response);
+        logger.textContent = 'Processing account: ' + accountsArray[callNumber];
+        endPoint = accountsArray[callNumber];
+        options.url = ipURL + endPoint + ipURLsuffix;
+        options.requestType = type;
+        reqBody.account_id = parseInt(accountsArray[callNumber]);
+        reqBody.default_profile_id = newProfile;
+        options.requestBody = JSON.stringify(reqBody);
+        apiRequest.textContent = options.url;
+        makeRequest(options, function (response) {
+          var now = new Date().toISOString();
+          parsedData = JSON.parse(response);
+          responseArray.push(parsedData);
+          if (Array.isArray(parsedData)) {
+            // we have an error, most likely a conflict
+            setoptions('setDefaults', 'PUT');
           } else {
-            alert('There was a problem with the request. Request returned ' + httpRequest.status);
+            callNumber++;
+            if (callNumber < totalCalls) {
+              setoptions('setDefaults', 'POST');
+            } else {
+              logger.textContent = 'Finished at ' + now;
+              apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
+            }
           }
-        }
-      } catch (e) {
-        alert('Caught Exception: ' + e);
-      }
-    };
-  /**
-   * set up request data
-   * the proxy used here takes the following request body:
-   * JSON.stringify(options)
-   */
-  // set response handler
-  httpRequest.onreadystatechange = getResponse;
-  // open the request
-  httpRequest.open('POST', proxyURL);
-  // set headers if there is a set header line, remove it
-  // open and send request
-  httpRequest.send(JSON.stringify(options));
-}
 
-function init() {
-  var i,
-    iMax,
-    opt;
-  // set up profiles selector
-  iMax = profilesArray.length;
-  for (i = 0; i < iMax; i++) {
-    opt = document.createElement('option');
-    opt.value = profilesArray[i];
-    opt.text = profilesArray[i];
-    profileSelect.add(opt, null);
+        });
+        break;
+    }
   }
-  // event handlers
-  setDefaults.addEventListener('click', function() {
-    var accountIds;
-    // get the inputs
-    clientId = client_id.value;
-    clientSecret = client_secret.value;
-    newProfile = getSelectedValue(profileSelect);
-    // only use entered account id if client id and secret are entered also
-    if (isDefined(clientId) && isDefined(clientSecret)) {
-      if (isDefined(account_ids.value)) {
-        accountIds = removeSpaces(account_ids.value);
-        accountsArray = accountIds.split(',');
+
+  /**
+   * send API request to the proxy
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
+   */
+  function makeRequest(options, callback) {
+    var httpRequest = new XMLHttpRequest(),
+      response,
+      proxyURL = options.proxyURL,
+      // response handler
+      getResponse = function () {
+        try {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '{null}') {
+                response = null;
+              }
+              // return the response
+              callback(response);
+            } else {
+              alert('There was a problem with the request. Request returned ' + httpRequest.status);
+            }
+          }
+        } catch (e) {
+          alert('Caught Exception: ' + e);
+        }
+      };
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // set headers if there is a set header line, remove it
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
+  }
+
+  function init() {
+    var i,
+      iMax,
+      opt;
+    // set up profiles selector
+    iMax = profilesArray.length;
+    for (i = 0; i < iMax; i++) {
+      opt = document.createElement('option');
+      opt.value = profilesArray[i];
+      opt.text = profilesArray[i];
+      profileSelect.add(opt, null);
+    }
+    // event handlers
+    setDefaults.addEventListener('click', function () {
+      var accountIds;
+      // get the inputs
+      clientId = client_id.value;
+      clientSecret = client_secret.value;
+      newProfile = getSelectedValue(profileSelect);
+      // only use entered account id if client id and secret are entered also
+      if (isDefined(clientId) && isDefined(clientSecret)) {
+        if (isDefined(account_ids.value)) {
+          accountIds = removeSpaces(account_ids.value);
+          accountsArray = accountIds.split(',');
+        } else {
+          window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+          clientId = '';
+          clientSecret = '';
+          accountsArray = defaultAccounts;
+        }
       } else {
-        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        clientId = '';
-        clientSecret = '';
         accountsArray = defaultAccounts;
       }
-    } else {
-      accountsArray = defaultAccounts;
-    }
-    totalCalls = accountsArray.length;
-    setoptions('setDefaults', 'POST');
-  });
+      totalCalls = accountsArray.length;
+      setoptions('setDefaults', 'POST');
+    });
 
-  apiResponse.addEventListener('click', function() {
-    apiResponse.select();
-  });
-}
-// kick things off
-init();
+    apiResponse.addEventListener('click', function () {
+      apiResponse.select();
+    });
+  }
+  // kick things off
+  init();
 })(window, document);
+
