@@ -1,4 +1,4 @@
-var BCLS = (function(window, document) {
+var BCLS = (function (window, document) {
   var account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
@@ -18,12 +18,12 @@ var BCLS = (function(window, document) {
     selectedProfile;
 
   // event listeners
-  get_profiles.addEventListener('click', function() {
+  get_profiles.addEventListener('click', function () {
     getAccountInfo();
-      createRequest('get_profiles');
+    createRequest('get_profiles');
   });
 
-  set_default_profile.addEventListener('click', function() {
+  set_default_profile.addEventListener('click', function () {
     selectedProfile = getSelectedValue(profile_select).value;
     if (isDefined(selectedProfile)) {
       createRequest('set_default_profile');
@@ -32,7 +32,7 @@ var BCLS = (function(window, document) {
     }
   });
 
-  update_default_profile.addEventListener('click', function() {
+  update_default_profile.addEventListener('click', function () {
     selectedProfile = getSelectedValue(profile_select).value;
     if (isDefined(selectedProfile)) {
       createRequest('update_default_profile');
@@ -45,14 +45,14 @@ var BCLS = (function(window, document) {
    * get account info from input fields
    */
   function getAccountInfo() {
-    account_id    = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : '57838016001';
-    client_id     = removeSpaces(client_id_input.value);
+    account_id = (isDefined(account_id_input.value)) ? removeSpaces(account_id_input.value) : '57838016001';
+    client_id = removeSpaces(client_id_input.value);
     client_secret = removeSpaces(client_secret_input.value);
   }
 
   function logMessage(message) {
     var p = document.createElement('p'),
-        txt = document.createTextNode(message);
+      txt = document.createTextNode(message);
     p.appendChild(txt);
     logger.appendChild(p);
   }
@@ -63,10 +63,10 @@ var BCLS = (function(window, document) {
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-      if ( x === '' || x === null || x === undefined) {
-          return false;
-      }
-      return true;
+    if (x === '' || x === null || x === undefined) {
+      return false;
+    }
+    return true;
   }
 
   /*
@@ -75,12 +75,12 @@ var BCLS = (function(window, document) {
    * @return {Boolean}
    */
   function isJson(str) {
-      try {
-          JSON.parse(str);
-      } catch (e) {
-          return false;
-      }
-      return true;
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -89,8 +89,8 @@ var BCLS = (function(window, document) {
    * @return {String} trimmed string
    */
   function removeSpaces(str) {
-      str= str.replace(/\s/g, '');
-      return str;
+    str = str.replace(/\s/g, '');
+    return str;
   }
 
   /**
@@ -117,15 +117,15 @@ var BCLS = (function(window, document) {
    * @return {Object} object containing the `value`, text, and selected `index`
    */
   function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
+    var selected = e.options[e.selectedIndex],
+      val = selected.value,
+      txt = selected.textContent,
+      idx = e.selectedIndex;
+    return {
+      value: val,
+      text: txt,
+      index: idx
+    };
   }
 
   /**
@@ -181,7 +181,7 @@ var BCLS = (function(window, document) {
         api_request_display.textContent = options.url;
         api_request_body_display.textContent = 'no request body for this operation';
         options.requestType = 'GET';
-        makeRequest(options, function(response) {
+        makeRequest(options, function (response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
@@ -194,7 +194,7 @@ var BCLS = (function(window, document) {
             iMax = responseDecoded.length;
             for (i = 0; i < iMax; i++) {
               if (responseDecoded[i].hasOwnProperty('dynamic_origin')) {
-                var o = {value:responseDecoded[i].id, label:responseDecoded[i].name};
+                var o = { value: responseDecoded[i].id, label: responseDecoded[i].name };
                 tmpArray.push(o);
               }
             }
@@ -213,7 +213,7 @@ var BCLS = (function(window, document) {
         requestBody.default_profile_id = selectedProfile;
         api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
         options.requestBody = JSON.stringify(requestBody);
-        makeRequest(options, function(response) {
+        makeRequest(options, function (response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
@@ -239,7 +239,7 @@ var BCLS = (function(window, document) {
         requestBody.default_profile_id = selectedProfile;
         api_request_body_display.textContent = JSON.stringify(requestBody, null, '  ');
         options.requestBody = JSON.stringify(requestBody);
-        makeRequest(options, function(response) {
+        makeRequest(options, function (response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
@@ -272,7 +272,7 @@ var BCLS = (function(window, document) {
       response,
       proxyURL = options.proxyURL,
       // response handler
-      getResponse = function() {
+      getResponse = function () {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -306,3 +306,4 @@ var BCLS = (function(window, document) {
   }
 
 })(window, document);
+
