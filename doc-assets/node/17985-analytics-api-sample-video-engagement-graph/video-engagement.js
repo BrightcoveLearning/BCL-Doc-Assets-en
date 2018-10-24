@@ -3,7 +3,7 @@ var BCLS = (function(window, document) {
   var // aapi stuff
     useMyAccount = document.getElementById('useMyAccount'),
     basicInfo = document.getElementById('basicInfo'),
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     $accountID = document.getElementById('accountID'),
     account_id = '1752604059001',
     $client_id = document.getElementById('client_id'),
