@@ -327,7 +327,7 @@ var BCLS = (function(window, document) {
   function createRequest(type) {
     var options = {},
       requestBody = {},
-      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+      proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
       baseURL = 'https://ingestion.api.brightcove.com/v1/accounts/' + account_id,
       endpoint,
       responseDecoded,
