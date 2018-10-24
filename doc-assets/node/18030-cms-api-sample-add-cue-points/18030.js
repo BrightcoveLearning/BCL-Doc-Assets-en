@@ -136,10 +136,11 @@ var BCLS = (function(window, document) {
 
     switch (type) {
       case 'getVideos':
-        endpoint = '/videos?q=playable:true&limit=20&sort=-updated_at';
+        endpoint = '/videos?q=playable:true&limit=20';
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
+          console.log('response', response);
           responseDecoded = JSON.parse(response);
           // add options to the video selector
           if (Array.isArray(responseDecoded)) {
