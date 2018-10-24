@@ -127,7 +127,6 @@ var BCLS = (function(window, document) {
       iMax,
       el,
       txt;
-    console.log('account_id', account_id);
     // set credentials and proxy url
     // if no client id and secret entered, let the proxy use defaults
     if (cid.value.length > 0 && secret.value.length > 0) {
@@ -142,7 +141,6 @@ var BCLS = (function(window, document) {
         options.url = cmsBaseURL + endpoint;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          console.log('response', response);
           responseDecoded = JSON.parse(response);
           // add options to the video selector
           if (Array.isArray(responseDecoded)) {
