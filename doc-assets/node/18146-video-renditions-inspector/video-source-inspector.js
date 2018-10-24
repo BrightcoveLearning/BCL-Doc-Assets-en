@@ -505,7 +505,7 @@ var BCLS = (function(window, document, rome) {
                 apiRequest.textContent = options.url;
                 spanVideosCountEl.textContent = callNumber + 1;
                 spanVideosTotalEl.textContent = superSetVideos;
-                makeRequest(options, id, callback);
+                makeRequest(options, callback);
                 break;
         }
     }
