@@ -1,6 +1,6 @@
 var BCLS = (function (window, document) {
     "use strict";
-    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
         accountID = document.getElementById('accountID'),
         account_id,
         clientID = document.getElementById('clientID'),
