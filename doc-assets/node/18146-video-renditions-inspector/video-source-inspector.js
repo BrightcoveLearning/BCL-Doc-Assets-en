@@ -427,8 +427,15 @@ var BCLS = (function(window, document, rome) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 makeRequest(options, function(response) {
-                  
-                });
+                  parsedData = JSON.parse(response);
+                  // set total videos
+                  totalVideos = parsedData.count;
+                  superSetVideos = (totalVideos < 100) ? totalVideos : 100;
+                  totalCalls = Math.ceil(superSetVideos / limit);
+                  logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
+                  spanSetsCountEl.textContent = callNumber + 1;
+                  spanSetsTotalEl.textContent = totalCalls;
+                  setoptions('getVideos');                });
                 break;
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
@@ -439,7 +446,9 @@ var BCLS = (function(window, document, rome) {
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
-                makeRequest(options, id);
+                makeRequest(options, function(response) {
+                  
+                });
                 break;
             case 'getVideoRenditions':
                 var i,
