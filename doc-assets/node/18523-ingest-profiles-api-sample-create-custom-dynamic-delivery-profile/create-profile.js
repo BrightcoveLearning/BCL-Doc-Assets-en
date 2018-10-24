@@ -1,4 +1,4 @@
-var BCLS = (function(window, document) {
+var BCLS = (function (window, document) {
   var account_id_input = document.getElementById("account_id_input"),
     client_id_input = document.getElementById("client_id_input"),
     client_secret_input = document.getElementById("client_secret_input"),
@@ -63,7 +63,7 @@ var BCLS = (function(window, document) {
     checkboxCollection;
 
   // event listeners
-  create_profile.addEventListener("click", function() {
+  create_profile.addEventListener("click", function () {
     selectedRenditions = getCheckedBoxValues(checkboxCollection);
     if (renditions.length === 0) {
       alert(
@@ -327,7 +327,7 @@ var BCLS = (function(window, document) {
       // set up select all option
       checkboxCollection = document.getElementsByName("checkboxCollection");
       selectAll = document.getElementById("selectAll");
-      selectAll.addEventListener("change", function() {
+      selectAll.addEventListener("change", function () {
         if (this.checked) {
           selectAllCheckboxes(checkboxCollection);
         } else {
@@ -372,7 +372,7 @@ var BCLS = (function(window, document) {
         api_request_body_display.textContent =
           "no request body for this operation";
         options.requestType = "GET";
-        makeRequest(options, function(response) {
+        makeRequest(options, function (response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(
@@ -440,7 +440,7 @@ var BCLS = (function(window, document) {
           "  "
         );
         options.requestBody = JSON.stringify(requestBody);
-        makeRequest(options, function(response) {
+        makeRequest(options, function (response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
             api_response.textContent = JSON.stringify(
@@ -484,7 +484,7 @@ var BCLS = (function(window, document) {
       response,
       proxyURL = options.proxyURL,
       // response handler
-      getResponse = function() {
+      getResponse = function () {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -498,7 +498,7 @@ var BCLS = (function(window, document) {
             } else {
               alert(
                 "There was a problem with the request. Request returned " +
-                  httpRequest.status
+                httpRequest.status
               );
             }
           }
@@ -526,3 +526,4 @@ var BCLS = (function(window, document) {
 
   init();
 })(window, document);
+
