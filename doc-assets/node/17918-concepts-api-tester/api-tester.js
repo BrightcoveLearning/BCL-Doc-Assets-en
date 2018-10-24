@@ -46,7 +46,7 @@ var BCLS = (function (window, document) {
     var httpRequest = new XMLHttpRequest(),
       parsedData,
       proxyURL =
-        "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+        "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
       options = {};
     if (isDefined($client_id.value) && isDefined($client_secret.value)) {
       options.client_id = $client_id.value;
