@@ -407,7 +407,8 @@ var BCLS = (function(window, document, rome) {
      */
     function setoptions(id) {
         var endPoint = '',
-            options = {};
+            options = {},
+            parsedData;
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         // set options
@@ -447,7 +448,23 @@ var BCLS = (function(window, document, rome) {
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
                 makeRequest(options, function(response) {
-                  
+                  if (response === '[]') {
+                      // no video returned
+                      alert('no video returned');
+                  }
+                  parsedData = JSON.parse(response);
+                  videosArray = videosArray.concat(parsedData);
+                  callNumber++;
+                  if (callNumber < totalCalls) {
+                      spanSetsCountEl.textContent = callNumber + 1;
+                      setoptions('getVideos');
+                  } else {
+                      // get rid of Dynamic Delivery videos - no need to check them
+                      removeDDvideos();
+
+                      callNumber = 0;
+                      setoptions('getVideoRenditions');
+                  }
                 });
                 break;
             case 'getVideoRenditions':
