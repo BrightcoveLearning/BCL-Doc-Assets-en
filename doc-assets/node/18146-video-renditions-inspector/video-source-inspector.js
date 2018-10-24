@@ -410,6 +410,12 @@ var BCLS = (function(window, document, rome) {
             options = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
+        // set options
+        options.proxyURL = proxyURL;
+        if (clientId.length > 0 && clientSecret.length > 0) {
+          options.client_id = clientId;
+          options.client_secret = clientSecret;
+        }
         switch (id) {
             case 'getCount':
                 endPoint = accountId + '/counts/videos?sort=created_at';
@@ -420,7 +426,9 @@ var BCLS = (function(window, document, rome) {
                 options.url = baseURL + endPoint;
                 options.requestType = 'GET';
                 apiRequest.textContent = options.url;
-                makeRequest(options, id);
+                makeRequest(options, function(response) {
+                  
+                });
                 break;
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
