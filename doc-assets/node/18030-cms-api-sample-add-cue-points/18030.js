@@ -132,7 +132,7 @@ var BCLS = (function(window, document) {
     options.account_id    = account_id;
     options.client_id     = cid.value;
     options.client_secret = secret.value;
-    options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
+    options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php';
 
     switch (type) {
       case 'getVideos':
