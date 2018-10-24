@@ -1,16 +1,56 @@
 <article class="bcls-article">
 <section class="bcls-section">
 <h2 id="Overview">Overview</h2>
+<p>Even though the Native player SDKs do not perform client-side macro replacement, you can manually append query string parameters for ad targeting. This can be done for either client-side or server-side ads.</p>
+<p>
+  To learn more about URL parameters, see the <a href="/node/17942#Ad_variables">Ad Variables</a> section of the Video Cloud SSAI Ad Config API document.
+</p>
 
-<p>The Native player SDKs do not perform client-side macro replacement, but you can manually append query string parameters for ad targeting with SSAI. Learn more about <a href="/node/17942#Ad_variables">VOD SSAI ad macros</a>.</p>
+<section class="bcls-section">
+    <h2 id="Client_side_ads">Client-side ads</h2>
+    <p>To provide custom values through URL parameters appended to the VMAP URL, follow these steps:</p>
+    <ol class="bcls-tasklist">
+      <li>
+        <p>
+          Start with one of the client-side code samples for IMA advertising with the Brightcove Native SDKs:
+        </p>
+        <ul>
+          <li>
+            <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer">Android player samples</a>
+          </li>
+          <li>
+            <a href="https://github.com/BrightcoveOS/ios-player-samples">iOS player samples</a>
+          </li>
+        </ul>
 
-<p>To provide custom values through URL parameters appended to the VMAP URL, follow these steps:</p>
+      </li>
+      <li>
+        <p>
+          Append the URL query parameters to the VMAP URL before calling the IMA plugin. This can be done before the following methods:
+        </p>
+        <p>
+          <strong>Android</strong>
+          <pre>
+<code class="notranslate language-java">adsRequest.setAdTagUrl(adRulesURL);</code></pre>
+        </p>
 
-<ol class="bcls-tasklist">
-	<li>
-	<p>With an SSAI ad configuration id, retrieve a video object from the Brightcove catalog (Playback API). Learn how to create an SSAI ad configuration with the <a href="/node/17942">Video Cloud SSAI Ad Config API</a>. A sample ad configuration looks like this:</p>
+          <strong>iOS</strong>
+          <pre>
+<code class="notranslate language-objectivec">updatedVideos.append(_video.updateVideo(withVMAPTag: IMAConfig.VMAPResponseAdTag))</code></pre>
 
-	<pre class="line-numbers">
+      </li>
+    </ol>
+
+</section>
+
+<section class="bcls-section">
+    <h2 id="Server_side_ads">Server-side ads</h2>
+    <p>To provide custom values through URL parameters appended to the VMAP URL, follow these steps:</p>
+
+    <ol class="bcls-tasklist__restart"><li>
+    	<p>With an SSAI ad configuration id, retrieve a video object from the Brightcove catalog (Playback API). Learn how to create an SSAI ad configuration with the <a href="/video-cloud-ssai-ad-config-api">Video Cloud SSAI Ad Config API</a>. A sample ad configuration looks like this:</p>
+
+    	<pre class="line-numbers">
 <code class="notranslate language-java">{
   "name": "SSAI VMAP Ad Server",
   "vmap_response_namespace": "bc",
@@ -28,48 +68,42 @@
   }
 }</code></pre>
 
-	<aside class="bcls-aside bcls-aside--tip">The <code class="notranslate">template_url</code> property contains the ad URL.</aside>
-	</li>
-	<li>
-	<p>In the jsonResponse from the call to the Playback API, examine the sources for the video object. Each source object will contain a VMAP property and a VMAP URL. Select and extract the VMAP URL.</p>
+    	<aside class="bcls-aside bcls-aside--tip">The <code class="notranslate">template_url</code> property contains the ad URL.</aside></li>
+    	<li>
+    	<p>In the jsonResponse from the call to the Playback API, examine the sources for the video object. Each source object will contain a VMAP property and a VMAP URL. Select and extract the VMAP URL.</p>
 
-	<pre>
+    	<pre>
 <code class="notranslate language-java">http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v3/clear/3981276734001/
   b871a6b8-4b3e-4787-b176-aed923287d5a/477b1308-fc18-47a6-bb99-6cb9e2ff2040/
   content.vmap<span class="bcls-highlight">?bc_token=XXX</span></code></pre>
 
-	<aside class="bcls-aside bcls-aside--tip">The only URL parameter on the VMAP URL will be the <code class="notranslate">bc_token</code>.</aside>
-	</li>
-	<li>
-	<p>Let’s say your ad URL looks like this:</p>
+    	<aside class="bcls-aside bcls-aside--tip">The only URL parameter on the VMAP URL will be the <code class="notranslate">bc_token</code>.</aside></li>
+    	<li>
+    	<p>Let’s say your ad URL looks like this:</p>
 
-	<pre>
+    	<pre>
 <code class="notranslate language-java">https://myad.com/ads?rule={{url.rule}}&amp;id={{url.video.id}}</code></pre>
 
-	<p>If your ad URL has the above ad macros, then you will add these query parameters to the VMAP URLs with the appropriate values.</p>
-	</li>
-	<li>
-	<p>Append query parameters to the VMAP URL. In this example, the <code class="notranslate">{{url.rule}}</code> macro in the ad url is replaced with the value <code class="notranslate">discos-enabled</code>, and the <code class="notranslate">{{url.video_id}}</code> macro is replaced with the video id value.</p>
+    	<p>If your ad URL has the above ad macros, then you will add these query parameters to the VMAP URLs with the appropriate values.</p>
+    	</li>
+    	<li>
+    	<p>Append query parameters to the VMAP URL. In this example, the <code class="notranslate">{{url.rule}}</code> macro in the ad url is replaced with the value <code class="notranslate">discos-enabled</code>, and the <code class="notranslate">{{url.video_id}}</code> macro is replaced with the video id value.</p>
 
-	<pre>
+    	<pre>
 <code class="notranslate language-java">http://ssaiplayback.prod.boltdns.net/playback/once/v1/vmap/hls/v3/clear/3981276734001/
 b871a6b8-4b3e-4787-b176-aed923287d5a/477b1308-fc18-47a6-bb99-6cb9e2ff2040/
 content.vmap<span class="bcls-highlight">?bc_token=XXX&amp;rule=discos-enabled&amp;video_id=5625751316001</span></code></pre>
-	</li>
-	<li>Process the video with the Once UX plugin.</li>
-	<li>
-	<p>For development details, see the following:</p>
+    	</li>
+    	<li>Process the video with the Once UX plugin.</li>
+    	<li>
+    	<p>For development details, see the following:</p>
 
-	<ul>
-		<li><a href="#Android_implementation">Android implementation</a></li>
-		<li><a href="#iOS_implementation">iOS implementation</a></li>
-	</ul>
-	</li>
-</ol>
-</section>
+    	<ul><li><a href="#Android_implementation">Android implementation</a></li>
+    		<li><a href="#iOS_implementation">iOS implementation</a></li>
+    	</ul></li>
+    </ol>
 
-<section class="bcls-section">
-<h2 id="Android_implementation">Android implementation</h2>
+<h3 id="Android_implementation">Android implementation</h3>
 
 <p>From the Playback API response, you can extract the appropriate VMAP source URL and append your query parameters. To do this, follow these steps:</p>
 
@@ -106,10 +140,9 @@ import android.os.Bundle;
 
 }</code></pre>
 </div>
-&nbsp; --></section>
+&nbsp; -->
 
-<section class="bcls-section">
-<h2 id="iOS_implementation">iOS implementation</h2>
+<h3 id="iOS_implementation">iOS implementation</h3>
 
 <p>From the Playback API response, you can extract the appropriate VMAP source URL and append your query parameters. To do this, follow these steps:</p>
 
@@ -132,10 +165,9 @@ NSURLQueryItem *queryItemVideoId = [NSURLQueryItem queryItemWithName:@&quot;vide
 [videoPropertiesDictionary addEntriesFromDictionary:jsonResponse];</code></pre>
 	</li>
 	<li>
-    <p>
-      Append query parameters to the VMAP URL.
-    </p>
-  <pre class="line-numbers">
+	<p>Append query parameters to the VMAP URL.</p>
+
+	<pre class="line-numbers">
 <code class="notranslate language-java">// For each source, update each VMAP URL stored in the jsonResponse NSDictionary object and assemble the NSURLQueryItem. Store it in the mutable version of the jsonResponse NSDictionary object.
 for (NSDictionary *source in videoPropertiesDictionary[@&quot;sources&quot;])
 {
@@ -152,19 +184,18 @@ for (NSDictionary *source in videoPropertiesDictionary[@&quot;sources&quot;])
 
     [updatedSources addObject:mutableSource];
 }</code></pre>
-  </li>
+	</li>
 	<li>
 	<p>Process the modified URL with the Once UX plugin as follows:</p>
 
 	<pre class="line-numbers">
-<code class="notranslate language-java">videoPropertiesDictionary[@&quot;sources&quot;] = updatedSources;
+<code class="notranslate language-java">videoPropertiesDictionary[@"sources"] = updatedSources;
 // Create a new video object with the updated jsonResponse NSDictionary object
 BCOVVideo *video = [BCOVPlaybackService videoFromJSONDictionary:videoPropertiesDictionary];
 // Setting this video object to the BCOVPlaybackController will call the new vmap URL (with the URL parameters appended) when playback starts.
 [self.controller setVideos:@[video]];</code></pre>
-    <p>
-      For a complete code example, expand the <strong>iOS ViewController using Objective-C</strong> section below.
-    </p>
+
+	<p>For a complete code example, expand the <strong>iOS ViewController using Objective-C</strong> section below.</p>
 	</li>
 </ol>
 
@@ -178,19 +209,19 @@ BCOVVideo *video = [BCOVPlaybackService videoFromJSONDictionary:videoPropertiesD
 //  ViewController.m
 //  SSAI Params
 //
-//  Copyright © 2018 Brightcove. All rights reserved.
+//  Copyright &copy; 2018 Brightcove. All rights reserved.
 //
 
-#import "ViewController.h"
+#import &quot;ViewController.h&quot;
 
 @import BrightcovePlayerSDK;
 @import BrightcoveOUX;
 
 // ** Customize these values with your own account information **
-static NSString * const kViewControllerPlaybackServicePolicyKey = @"<span class="bcls-input">your policy key</span>";
-static NSString * const kViewControllerAccountID = @"<span class="bcls-input">your account id</span>";
-static NSString * const kViewControllerVideoID = @"<span class="bcls-input">your video id</span>";
-static NSString * const kViewControllerAdConfigID = @"<span class="bcls-input">your ad config id</span>";
+static NSString * const kViewControllerPlaybackServicePolicyKey = @&quot;<span class="bcls-input">your policy key</span>&quot;;
+static NSString * const kViewControllerAccountID = @&quot;<span class="bcls-input">your account id</span>&quot;;
+static NSString * const kViewControllerVideoID = @&quot;<span class="bcls-input">your video id</span>&quot;;
+static NSString * const kViewControllerAdConfigID = @&quot;<span class="bcls-input">your ad config id</span>&quot;;
 
 @interface ViewController () &lt;BCOVPlaybackControllerDelegate&gt;
 
@@ -243,9 +274,9 @@ static NSString * const kViewControllerAdConfigID = @"<span class="bcls-input">y
 
 - (void)requestContentFromPlaybackService
 {
-  // Set your SSAI ad configuration id as a query parameter
+	// Set your SSAI ad configuration id as a query parameter
   NSDictionary *queryParameters = @{
-                                    @"ad_config_id" : kViewControllerAdConfigID
+                                    @&quot;ad_config_id&quot; : kViewControllerAdConfigID
                                     };
   // Retrieve a video from the Playback API using a video Id and your ad config Id
   [self.playbackService findVideoWithVideoID:kViewControllerVideoID parameters:queryParameters
@@ -258,31 +289,31 @@ static NSString * const kViewControllerAdConfigID = @"<span class="bcls-input">y
       NSMutableDictionary *videoPropertiesDictionary = [[NSMutableDictionary alloc] init];
       NSMutableArray *updatedSources = [[NSMutableArray alloc] init];
 
-      // Define the URL parameters that will be added to the VMAP URL
-      NSURLQueryItem *queryItemEntrypointUrlParameter = [NSURLQueryItem queryItemWithName:@"rule" value:@"discos-enabled"];
-      NSURLQueryItem *queryItemVideoId = [NSURLQueryItem queryItemWithName:@"video_id" value:jsonResponse[@"id"]];
+			// Define the URL parameters that will be added to the VMAP URL
+      NSURLQueryItem *queryItemEntrypointUrlParameter = [NSURLQueryItem queryItemWithName:@&quot;rule&quot; value:@&quot;discos-enabled&quot;];
+      NSURLQueryItem *queryItemVideoId = [NSURLQueryItem queryItemWithName:@&quot;video_id&quot; value:jsonResponse[@&quot;id&quot;]];
 
       //deserialize the video and store in dictionary
       [videoPropertiesDictionary addEntriesFromDictionary:jsonResponse];
 
       // For each source, update each VMAP URL stored in the jsonResponse NSDictionary object
       // and assemble the NSURLQueryItem. Store it in the mutable version of the jsonResponse NSDictionary object.
-      for (NSDictionary *source in videoPropertiesDictionary[@"sources"])
+      for (NSDictionary *source in videoPropertiesDictionary[@&quot;sources&quot;])
       {
-        NSMutableDictionary *mutableSource = [[NSMutableDictionary alloc] init];
+				NSMutableDictionary *mutableSource = [[NSMutableDictionary alloc] init];
         [mutableSource addEntriesFromDictionary:source];
 
-        NSString *vmapURL = mutableSource[@"vmap"];
+        NSString *vmapURL = mutableSource[@&quot;vmap&quot;];
         components = [NSURLComponents componentsWithString:vmapURL];
 
         NSArray *queryItemsArray = components.queryItems;
         NSURLQueryItem *bctoken = [queryItemsArray firstObject];
         components.queryItems = @[bctoken, queryItemEntrypointUrlParameter, queryItemVideoId ];
-        mutableSource[@"vmap"] = components.URL.absoluteString;
+        mutableSource[@&quot;vmap&quot;] = components.URL.absoluteString;
 
         [updatedSources addObject:mutableSource];
       }
-      videoPropertiesDictionary[@"sources"] = updatedSources;
+			videoPropertiesDictionary[@&quot;sources&quot;] = updatedSources;
       // Create a new video object with the updated jsonResponse NSDictionary object
       BCOVVideo *video = [BCOVPlaybackService videoFromJSONDictionary:videoPropertiesDictionary];
       // Setting this video object to the BCOVPlaybackController will call the new vmap URL
@@ -291,7 +322,7 @@ static NSString * const kViewControllerAdConfigID = @"<span class="bcls-input">y
     }
     else
     {
-      NSLog(@"ViewController Debug - Error retrieving video playlist: `%@`", error);
+      NSLog(@&quot;ViewController Debug - Error retrieving video playlist: `%@`&quot;, error);
     }
 
   }];
