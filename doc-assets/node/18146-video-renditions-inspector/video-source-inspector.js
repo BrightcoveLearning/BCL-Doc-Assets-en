@@ -3,7 +3,7 @@ var BCLS = (function(window, document, rome) {
         clientId,
         clientSecret,
         // api stuff
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/mrss-proxy.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
         baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
         sort,
         sortDirection = "",
@@ -405,9 +405,9 @@ var BCLS = (function(window, document, rome) {
      * sets up the data for the API request
      * @param {String} id the id of the button that was clicked
      */
-    function setRequestData(id) {
+    function setoptions(id) {
         var endPoint = '',
-            requestData = {};
+            options = {};
         // disable buttons to prevent a new request before current one finishes
         disableButtons();
         switch (id) {
@@ -417,10 +417,10 @@ var BCLS = (function(window, document, rome) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
 // console.log('endPoint', endPoint);
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                makeRequest(options, id);
                 break;
             case 'getVideos':
                 var offset = (superSet * 100) + (limit * callNumber);
@@ -428,10 +428,10 @@ var BCLS = (function(window, document, rome) {
                 if (isDefined(fromDateValue) || isDefined(toDateValue)) {
                     endPoint += '&q=' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
                 }
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
-                getMediaData(requestData, id);
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
+                makeRequest(options, id);
                 break;
             case 'getVideoRenditions':
                 var i,
@@ -457,7 +457,7 @@ var BCLS = (function(window, document, rome) {
                     logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
                     callNumber++;
                     if (callNumber < iMax) {
-                        setRequestData('getVideoRenditions');
+                        setoptions('getVideoRenditions');
                     } else {
                         // write the report
                         writeReport();
@@ -466,23 +466,23 @@ var BCLS = (function(window, document, rome) {
                 videosArray[callNumber].hlsRenditions = [];
                 videosArray[callNumber].mp4Renditions = [];
                 endPoint = accountId + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
-                requestData.url = baseURL + endPoint;
-                requestData.requestType = 'GET';
-                apiRequest.textContent = requestData.url;
+                options.url = baseURL + endPoint;
+                options.requestType = 'GET';
+                apiRequest.textContent = options.url;
                 spanVideosCountEl.textContent = callNumber + 1;
                 spanVideosTotalEl.textContent = superSetVideos;
-                getMediaData(requestData, id, callback);
+                makeRequest(options, id, callback);
                 break;
         }
     }
 
     /**
      * send API request to the proxy
-     * @param  {Object} requestData options for the request
+     * @param  {Object} options options for the request
      * @param  {String} requestID the type of request = id of the button
      * @param  {Function} [callback] callback function
      */
-    function getMediaData(options, requestID, callback) {
+    function makeRequest(options, requestID, callback) {
         var httpRequest = new XMLHttpRequest(),
             responseRaw,
             parsedData,
@@ -505,7 +505,7 @@ var BCLS = (function(window, document, rome) {
                                 logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
                                 spanSetsCountEl.textContent = callNumber + 1;
                                 spanSetsTotalEl.textContent = totalCalls;
-                                setRequestData('getVideos');
+                                setoptions('getVideos');
                             } else if (requestID === 'getVideos') {
                                 if (httpRequest.responseText === '[]') {
                                     // no video returned
@@ -517,13 +517,13 @@ var BCLS = (function(window, document, rome) {
                                 callNumber++;
                                 if (callNumber < totalCalls) {
                                     spanSetsCountEl.textContent = callNumber + 1;
-                                    setRequestData('getVideos');
+                                    setoptions('getVideos');
                                 } else {
                                     // get rid of Dynamic Delivery videos - no need to check them
                                     removeDDvideos();
 
                                     callNumber = 0;
-                                    setRequestData('getVideoRenditions');
+                                    setoptions('getVideoRenditions');
                                 }
                             } else if (requestID === 'getVideoRenditions') {
                                 if (httpRequest.responseText === '[]') {
@@ -647,7 +647,7 @@ var BCLS = (function(window, document, rome) {
             }
             // if first set, we need to get the count
             if (superSet === 0) {
-                setRequestData('getCount');
+                setoptions('getCount');
             } else {
                 if ((totalVideos - videosCompleted) < 100) {
                     superSetVideos = totalVideos - videosCompleted;
@@ -665,7 +665,7 @@ var BCLS = (function(window, document, rome) {
                 summaryTableBody.innerHTML = "";
                 reportTableBody.innerHTML = "";
                 startCSVStrings();
-                setRequestData('getVideos');
+                setoptions('getVideos');
             }
 
         });
