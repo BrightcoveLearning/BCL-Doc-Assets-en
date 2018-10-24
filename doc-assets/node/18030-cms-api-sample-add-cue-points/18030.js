@@ -129,9 +129,11 @@ var BCLS = (function(window, document) {
       txt;
     console.log('account_id', account_id);
     // set credentials and proxy url
-    options.account_id    = account_id;
-    options.client_id     = cid.value;
-    options.client_secret = secret.value;
+    // if no client id and secret entered, let the proxy use defaults
+    if (cid.value.length > 0 && secret.value.length > 0) {
+      options.client_id     = cid.value;
+      options.client_secret = secret.value;
+    }
     options.proxyURL      = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php';
 
     switch (type) {
