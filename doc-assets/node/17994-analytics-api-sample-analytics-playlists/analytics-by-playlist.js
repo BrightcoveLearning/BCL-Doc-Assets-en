@@ -1,5 +1,4 @@
 var BCLS = (function(window, document, Pikaday) {
-  'use strict';
   var getPlaylists,
     limit = 25,
     offset = 0,
