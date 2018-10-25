@@ -258,7 +258,7 @@ console.log('affiliatesToShareWith', affiliatesToShareWith);
     options.account_id = account_id;
 
     // set proxyURL
-    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
+    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php';
 
     switch (type) {
       case 'getVideoCount':
