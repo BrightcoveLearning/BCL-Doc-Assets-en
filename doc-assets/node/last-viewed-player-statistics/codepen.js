@@ -164,7 +164,7 @@ function buildTable(rawPlayerData){
   sortArray(arrayOfPlayers,'last_viewed');
   numPlayers = arrayOfPlayers.length;
   var table = document.getElementById("myTable");
-  table.setAttribute('class', bclsDataTable);
+  table.setAttribute('class', 'bcls-Data-Table');
 
   for (var i = 0; i < numPlayers; i++) {
     var lastViewedAra = arrayOfPlayers[i].last_viewed;
