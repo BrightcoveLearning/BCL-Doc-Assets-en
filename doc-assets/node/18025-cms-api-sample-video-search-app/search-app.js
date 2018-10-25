@@ -14,7 +14,7 @@ function cmsSearchModel() {
         self.limit = [10, 25, 50, 100];
         self.dateRangeType = ["updated_at", "created_at", "published_at", "schedule.starts_at", "schedule.ends_at"];
         self.sortOptions = ["name", "reference_id", "created_at", "published_at", "updated_at", "schedule_starts_at", "schedule_ends_at", "state", "plays_total", "plays_trailing_week"];
-        self.proxyURL = ko.observable("https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php");
+        self.proxyURL = ko.observable("https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php");
 
         // editable data
         self.client_id = ko.observable("");
