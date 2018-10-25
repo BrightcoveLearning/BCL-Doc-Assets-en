@@ -137,6 +137,8 @@ var BCLS = (function(window, document) {
     return;
   }
 
+
+
   // set options for the Dynamic Ingest API request
   function createRequest(type) {
     var options = {},
