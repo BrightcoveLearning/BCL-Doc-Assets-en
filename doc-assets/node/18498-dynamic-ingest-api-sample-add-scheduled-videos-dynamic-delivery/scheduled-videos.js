@@ -77,7 +77,7 @@ var BCLS = (function(window, document) {
       options.client_id = cid;
       options.client_secret = csec;
     }
-    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php';
+    options.proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php';
 
     switch (type) {
       case 'createVideo':
