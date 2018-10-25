@@ -21,7 +21,7 @@ var BCLS = (function(window, document) {
     di_submit_display = document.getElementById("di_Submit"),
     api_response_display = document.getElementById('api_response'),
     proxyURL =
-      "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+      "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
     response = document.getElementById("response"),
     videoData = [],
     totalVideos,
