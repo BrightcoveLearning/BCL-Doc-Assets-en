@@ -1,0 +1,123 @@
+<div class="BCL-concept">
+<p>The Live settings allow you to manage ad configurations, fill slates and Live credentials.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="ad_config">Managing ad configurations</h2>
+
+<p>The Live module integrates with Server-Side Ad Insertion (SSAI) so that ads can be displayed during a live event when ad requests are made. Here are the main features of SSAI:</p>
+
+<ul>
+	<li>Since ads are stitched into the live stream on the server side, they are not affected by ad blockers</li>
+	<li>Ads are inserted at cue points sent from your encoder or you can create an instant cue point using the <a href="/node/18470#ad">Live module Control Room</a></li>
+	<li>You can configure <a href="#fill_slate">fill slates</a> to fill any unused ad time</li>
+</ul>
+
+<p class="BCL-aside">Note: Before you can use SSAI, it must be enabled for your account. Contact your account manager for details.</p>
+
+<p class="BCL-aside">Note: Ad configurations can also be managed using the Live API. For information, see <a href="/node/17763#Create_an_ad_configuration">Brightcove Live API: Server-Side Ad Insertion (SSAI)</a>.</p>
+
+<p>To add an ad configuration, follow these steps.</p>
+
+<ol class="bcls-tasklist">
+	<li>Click the <strong>ADMIN &gt; Live Settings</strong> link in the Studio header.
+
+	<p class="BCL-aside">Note: You must be an account administrator to access the ADMIN menu.</p>
+	</li>
+	<li>Click <strong>+ Add Configuration</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18588-ad-config.png" /></div>
+	</li>
+	<li>Enter a <strong>Title</strong>.</li>
+	<li>Select the <strong>Ad Server</strong>:
+	<ul>
+		<li>VAST</li>
+		<li>DFP Ad Rules</li>
+		<li>Freewheel Smart XML</li>
+	</ul>
+	</li>
+	<li>Enter the<strong> Ad Tag</strong>.</li>
+	<li>Click <strong>Save</strong>.</li>
+</ol>
+
+<p>To delete an ad configuration, click the delete button (<img alt="" src="https://img.brightcove.com/node18588-delete-icon.png" />) next to the ad.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="fill_slate">Managing fill slates</h2>
+
+<p>Fill slates are content that can be served when there are gaps in a live stream ad break. Slates can be used to provide a "Be right back" message or any other content you want to display. All Zencoder <a href="https://zencoder.com/en/formats">input formats</a> are supported.</p>
+
+<p class="BCL-aside">Note: Fill slates can also be managed using the Live API. For information, see <a href="/node/17763#Managing_slates">Brightcove Live API: Server-Side Ad Insertion (SSAI)</a>.</p>
+
+<p>To add a fill slate, follow these steps.</p>
+
+<ol class="bcls-tasklist">
+	<li>Click the <strong>ADMIN &gt; Live Settings </strong>link in the Studio header.
+
+	<p class="BCL-aside">Note: You must be an account administrator to access the ADMIN menu.</p>
+	</li>
+	<li>Click <strong>+ Add Fill Slate</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18588-fill-slate.png" /></div>
+	</li>
+	<li>Enter a <strong>Name</strong>.</li>
+	<li>Enter the <strong>Source URL</strong> for the slate.</li>
+	<li>Click <strong>Save</strong>. The ingestion process for the slate will begin.</li>
+</ol>
+
+<p>To delete a fill slate, click the delete button (<img alt="" src="https://img.brightcove.com/node18588-delete-icon.png" />) next to the fill slate.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="credentials">Managing credentials</h2>
+
+<p>Credentials are used by both the Live API and Live module. If you are creating a new Live Video Cloud credential, you must first create an API Authentication credential. The client ID and client secret that are created will be used when creating the Live Video Cloud credential. When creating FTP, S3 or RTMP credentials, an API Authentication credential is not needed.</p>
+
+<p>If you are creating an S3, FTP or RTMP credential, skip to <strong>step 5</strong>. To create a Live Video Cloud credential, start by creating an API credential.</p>
+
+<ol class="bcls-tasklist">
+	<li>Click the <strong>ADMIN</strong> link in the Studio header.
+
+	<p class="BCL-aside">Note: You must be an account administrator to access the ADMIN menu.</p>
+	</li>
+	<li>Click the <strong>API Authentication</strong> link. The API Authentication page will open displaying your current client registrations.</li>
+	<li>Click <strong>Register New Application</strong> to create a new API credential. The following APIs should be selected.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18588-apis-to-select.png" /></div>
+
+	<p class="BCL-aside">Note: For information on creating API Authentication Credentials, see <a href="/node/14056">Managing API Authentication Credentials</a>.</p>
+	</li>
+	<li>When the credential is created, save the <strong>Client ID</strong> and <strong>Client secret</strong> values. These will be needed when creating the Live Video Cloud credential.</li>
+	<li>Click the <strong>ADMIN &gt; Live Settings</strong> link in the Studio header.</li>
+	<li>Click <strong>+ Add Credential</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18588-create-credential.png" /></div>
+	</li>
+	<li>Enter a <strong>Label</strong>. This is the name that will be used internally to refer to the credential.</li>
+	<li>Select a <strong>Type</strong>:
+	<ul>
+		<li><strong>FTP</strong> - Used to save the VOD asset to an ftp location (API use)</li>
+		<li><strong>RTMP</strong> - Used to create RTMP credentials to be used by the encoder</li>
+		<li><strong>S3</strong> - Used to save the VOD asset to an Amazon S3 account (API use)</li>
+		<li><strong>Video Cloud</strong> - Used to save the VOD asset to a Video Cloud account (API use)</li>
+	</ul>
+	</li>
+	<li>For the <strong>Public Key / Username</strong>, enter the following depending on the type of credential:
+	<ul>
+		<li><strong>FTP</strong> - Enter the username for the FTP site</li>
+		<li><strong>RTMP</strong> - Enter the username that the encoder will use to authenticate</li>
+		<li><strong>S3</strong> - Enter the username for the S3 account</li>
+		<li><strong>Video Cloud</strong> - Enter the <strong>Client ID</strong> generated for the API Authentication credential</li>
+	</ul>
+	</li>
+	<li>For the <strong>Private Key / Password</strong>, enter the following depending on the type of credential:
+	<ul>
+		<li><strong>FTP </strong>- Enter the username for the FTP site</li>
+		<li><strong>RTMP</strong> - Enter the password that the encoder will use to authenticate</li>
+		<li><strong>S3</strong> - Enter the password for the S3 account</li>
+		<li><strong>Video Cloud</strong> - Enter the <strong>Client secret</strong> generated for the API Authentication credential</li>
+	</ul>
+	</li>
+	<li>Click <strong>Save</strong>.</li>
+</ol>
+
+<p>The credential will appear in the list of credentials. To delete a credential, click the delete button (<img alt="" src="https://img.brightcove.com/node18588-delete-icon.png" />) next to the credential.</p>
+</div>
+<!-- End of Drupal content -->
