@@ -8,7 +8,7 @@ var BCLS = ( function (window, document) {
     'default/progressive2000',
     'default/progressive2500',
     'default/progressive3500',
-    'default/progressive400'
+    'default/progressive4000'
   ],
   renditions_list = document.getElementById('renditions_list'),
   li,
