@@ -14,7 +14,7 @@ var BCLS = (function(window, document) {
     profilesArray = ['high-resolution', 'screencast-1280', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'single-bitrate-standard'],
     di_url_display = document.getElementById("di_url"),
     di_submit_display = document.getElementById("di_Submit"),
-    proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php",
+    proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
     response_display = document.getElementById("response"),
     videoData = [],
     totalVideos,
