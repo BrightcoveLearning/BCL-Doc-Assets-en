@@ -7,104 +7,216 @@
 <ul>
 	<li>Methods: <code class="notranslate">playerName.catalog.methodName()</code></li>
 </ul>
+
+<p>Several of the catalog methods will pass an object of parameters that define the request. The <a href="#Catalog_parameters_object">Catalog parameters object</a> is defined in the next section, and will be referenced in the methods' descriptions, where applicable.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note: In all content on this page, when a parameter is surrounded by brackets (<strong class="notranslate">[ ]</strong>) it indicates the parameter is optional.</aside>
 </section>
 
 <section class="bcls-section">
-<h2 id="getVideo">getVideo( ) method</h2>
+<h2 id="Catalog_parameters_object">Catalog parameters object</h2>
 
-<p>The <code class="notranslate">getVideo(videoID,callback)</code> method makes a catalog request for the video with the specified id and invokes a callback when the request completes.</p>
+<p>The following table describes the properties in the <code class="notranslate">CatalogParams</code> object. This true object (not a constructor) defines the format for parameters to be used with many catalog requests.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code class="notranslate">type</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p>The type of request to make. Must be one of video, playlist, or search.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">accountId</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p>The account ID from which to get data. This will default to the account ID of the player.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">policyKey</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td>The policy key for this account. This will default to the policy key of the player.<strong class="notranslate">**</strong></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[id]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p>A video or playlist ID or reference ID prefixed by "ref:". <strong class="notranslate">Required</strong> for video and playlist requests. <strong class="notranslate">DEPRECATED:</strong> For backward-compatibility, this is supported as a search query instead of <code class="notranslate">q</code>. This can be provided as a sub-object, which is also a <code class="notranslate">CatalogParams</code> object, which can be used to provide parameters.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[q]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p>A search query. <strong class="notranslate">Required</strong> for search requests, ignored for others.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[adConfigId]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p>A Video Could SSAI ad configuration ID.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[tveToken]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p>An optional TVE token to be sent as a query string parameter.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[limit]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p><em>Supported for <strong class="notranslate">playlist</strong> and <strong class="notranslate">search</strong> types only.</em> Limit the number of videos returned.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[offset]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p><em>Supported for <strong class="notranslate">playlist</strong> and <strong class="notranslate">search</strong> types only.</em> The number of videos to skip.</p></td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">[sort]</code></td>
+			<td><code class="notranslate">string</code></td>
+			<td><p><em>Supported for <strong class="notranslate">search</strong> type only.</em> How the videos should be sorted for searches</p></td>
+		</tr>
+	</tbody>
+</table>
+
+<aside class="bcls-aside bcls-aside--warning">**Note: By default the policy key generated with a player is NOT search enabled. This means you must either (choose one):
+<ol>
+	<li><p>Use the <code class="notranslate">policyKey</code> parameter to pass a search enabled policy key.</p></li>
+	<li><p>Use the <a href="/node/18378">Player Management API</a> to overwrite the player's default policy key. You can use a curl statement similar to the following to do so:</p>
+	<pre class="line-numbers">
+<code class="language-bash notranslate">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request PATCH \
+  --data '{
+    "video_cloud": {
+      "policy_key": "YOUR SEARCH ENABLED POLICY KEY"
+    }
+  }' \
+https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+
+	<p>Be sure to consider any security issues when associating a search enabled policy key with the player.</p>
+
+	<p>For information on creating a search enabled policy key see the <a href="/node/18003#Search_videos">Overview: Policy API - Search Videos</a> section.</p>
+	</li>
+</ol>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="getVideo"><code class="notranslate">getVideo( )</code> method</h2>
+
+<p>The <code class="notranslate">getVideo(params | videoID,callback,[adConfigId]) ⇒ XMLHttpRequest</code> method makes a catalog request for the video with the specified id and invokes a callback when the request completes.</p>
 
 <h3>Parameters</h3>
 
 <ul>
-	<li><strong>videoID</strong>: A string containing the video ID or a reference ID prefixed with <strong>ref:</strong>.</li>
-	<li><strong>callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:
+	<li><p><strong class="notranslate">params | videoID</strong>: An object of type <a href="#Catalog_parameters_object">Catalog parameters</a> OR a string containing the video ID or a reference ID prefixed with <strong class="notranslate">ref:</strong>.</p></li>
+	<li><p><strong class="notranslate">callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:</p>
 	<ul>
-		<li>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong>null</strong>.</li>
-		<li>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</li>
+		<li><p>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong class="notranslate">null</strong>.</p></li>
+		<li><p>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</p></li>
 	</ul>
 	</li>
+	<li><p><strong class="notranslate">[adConfigId]</strong>: DEPRECATED A Video Cloud ad configuration ID that will be passed along to the Playback API. Instead, pass the adConfigId in the initial params object.</p></li>
 </ul>
 
 <h3>Returned value</h3>
 
-<p>The catalog call itself returns an object of type <strong>XMLHttpRequest</strong>. An example of this object follows:</p>
+<p>The catalog call itself returns an object of type <strong class="notranslate">XMLHttpRequest</strong>. An example of this object follows:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="request object" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/request-object.png" /></figure>
 
-<h3>Example</h3>
+<p>Although the call returns an <strong class="notranslate">XMLHttpRequest</strong> object, you will most likely never deal with that object. The reason is that in the callback function the JSON response is automatically parsed and a usable object is what is passed to the callback function, in this case a video object.</p>
+
+<h3>Example: Video ID as string</h3>
 
 <p>The following example shows a use of the <code class="notranslate">getVideo()</code> method:</p>
 
 <pre class="line-numbers">
-            <code class="language-html notranslate">  &lt;video id="myPlayerID"
-              data-account="1507807800001"
-              data-player="3bc25a34-086a-4060-8745-dd87af3d53b4"
-              data-embed="default"
-              data-video-id=""
+<code class="language-html notranslate">&lt;video-js id="myPlayerID"
+  data-account="1507807800001"
+  data-player="3bc25a34-086a-4060-8745-dd87af3d53b4"
+  data-embed="default"
+  data-video-id=""
+  class="video-js" controls&gt;&lt;/video-js&gt;
+&lt;script src="https://brightcove.net/1507807800001/3bc25a34-086a-4060-8745-dd87af3d53b4_default/index.min.js"&gt;&lt;/script&gt;
 
-              class="video-js" controls&gt;&lt;/video&gt;
-              &lt;script src="//players.brightcove.net/1507807800001/3bc25a34-086a-4060-8745-dd87af3d53b4_default/index.min.js"&gt;&lt;/script&gt;
 
+&lt;script type="text/javascript"&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this;
+    <span class="bcls-highlight">myPlayer.catalog.getVideo('2114345471001', function(error, video){</span>
+    //deal with error
+    myPlayer.catalog.load(video);
+  });
+});
+&lt;/script&gt;</code></pre>
 
-              &lt;script type="text/javascript"&gt;
-              videojs("myPlayerID").ready(function() {
-                var myPlayer = this;
-                <span class="bcls-highlight">myPlayer.catalog.getVideo('2114345471001', function(error, video){</span>
-                  //deal with error
-                  myPlayer.catalog.load(video);
-                });
-              });
-              &lt;/script&gt;</code></pre>
+<h3>Example: Using catalogParams</h3>
+
+<p>The equivalent of the code just above, but using the CatalogParams object appears as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-html notranslate">&lt;script&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this,
+      catalogParams = {};
+    catalogParams.type = 'video';
+    catalogParams.id = '2114345471001';
+    myPlayer.catalog.getVideo(catalogParams, function(error, video){
+    //deal with error
+    myPlayer.catalog.load(video);
+  });
+});
+&lt;/script&gt;</code></pre>
 </section>
 
 <section class="bcls-section">
-<h2 id="getPlaylist">getPlaylist( ) method</h2>
+<h2 id="getPlaylist"><code class="notranslate">getPlaylist( )</code> method</h2>
 
-<p>The <code class="notranslate">getPlaylist(playlistID,callback)</code> method makes a catalog request for the playlist with the specified id and invokes a callback when the request completes.</p>
+<p>The <code class="notranslate">getPlaylist(params | playlistID,callback,[adConfigId]) ⇒ XMLHttpRequest</code> method makes a catalog request for the playlist with the specified id and invokes a callback when the request completes.</p>
 
 <h3>Parameters</h3>
 
 <ul>
-	<li><strong>playlistID</strong>: A string containing the playlist ID or a reference ID prefixed with <strong>ref:</strong>.</li>
-	<li><strong>callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:
+	<li><p><strong class="notranslate">params | playlistID</strong>: An object of type <a href="#Catalog_parameters_object">Catalog parameters</a> OR a string containing the playlist ID or a reference ID prefixed with <strong class="notranslate">ref:</strong>.</p></li>
+	<li><p><strong class="notranslate">callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:</p>
 	<ul>
-		<li>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong>null</strong>.</li>
-		<li>If no error occurs, the second argument is the requested playlist object. If an error occurs, this value contains the empty string.</li>
+		<li><p>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong class="notranslate">null</strong>.</p></li>
+		<li><p>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</p></li>
 	</ul>
 	</li>
+	<li><p><strong class="notranslate">[adConfigId]</strong>: DEPRECATED A Video Cloud ad configuration ID that will be passed along to the Playback API. Instead, pass the adConfigId in the initial params object.</p></li>
 </ul>
 
 <h3>Returned value</h3>
 
-<p>The catalog call itself returns an <strong>array of objects</strong>. An example of this data structure follows:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="playlist object" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/playlist-vc-object.png" /></figure>
+<p>The catalog call itself returns an <strong class="notranslate">XMLHttpRequest</strong>. Although the call returns an <strong class="notranslate">XMLHttpRequest</strong> object, you will most likely never deal with that object. The reason is that in the callback function the JSON response is automatically parsed and a usable object is what is passed to the callback function, in this case a playlist object.</p>
 
 <h3>Example</h3>
 
 <p>The following example shows a use of the <code class="notranslate">getPlaylist()</code> method follows:</p>
 
 <pre class="line-numbers" data-start="26">
-<code class="language-html notranslate">  &lt;video id="myPlayerID"
-    data-account="1752604059001"
-    data-player="f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe"
-    data-embed="default"
-    class="video-js" controls&gt;&lt;/video&gt;
+<code class="language-html notranslate">&lt;video-js id="myPlayerID"
+  data-account="1752604059001"
+  data-player="f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe"
+  data-embed="default"
+  class="video-js" controls&gt;&lt;/video-js&gt;
 
-  &lt;script src="//players.brightcove.net/1752604059001/f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe_default/index.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://players.brightcove.net/1752604059001/f50a2d3c-af51-4d8c-84e3-0c7cdec0edbe_default/index.min.js"&gt;&lt;/script&gt;
 
-  &lt;script type="text/javascript"&gt;
-    var myPlayer;
-
-    videojs('myPlayerID').ready(function(){
-      myPlayer = this;
-      <span class="bcls-highlight">myPlayer.catalog.getPlaylist('1754200320001', function(error, playlist){</span>
-        //deal with error
-        myPlayer.catalog.load(playlist);
-      })
-    });
-  &lt;/script&gt;</code></pre>
+&lt;script type="text/javascript"&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this;
+    <span class="bcls-highlight">myPlayer.catalog.getPlaylist('1754200320001', function(error, playlist){</span>
+      //deal with error
+      myPlayer.catalog.load(playlist);
+    })
+  });
+&lt;/script&gt;</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -115,7 +227,7 @@
 <h3>Parameters</h3>
 
 <ul>
-	<li><strong>mediaobject</strong>: A video or playlist object to load. This object should have the same format as the response object from a call to <code class="notranslate">getVideo()</code> or <code class="notranslate">getPlaylist()</code>method.</li>
+	<li><p><strong class="notranslate">mediaobject</strong>: A video or playlist object to load. This object should have the same format as the response object from a call to <code class="notranslate">getVideo()</code> or <code class="notranslate">getPlaylist()</code>method.</p></li>
 </ul>
 
 <h3>Example</h3>
@@ -123,120 +235,158 @@
 <p>THe following example retrieves a video and loads it into the player.</p>
 
 <pre class="line-numbers">
-<code class="language-html notranslate">  &lt;video id="myPlayerID"
-    data-account="1507807800001"
-    data-player="3bc25a34-086a-4060-8745-dd87af3d53b4"
-    data-embed="default"
-    data-video-id=""
+<code class="language-html notranslate">&lt;video-js id="myPlayerID"
+  data-account="1507807800001"
+  data-player="3bc25a34-086a-4060-8745-dd87af3d53b4"
+  data-embed="default"
+  data-video-id=""
+  class="video-js" controls&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/3bc25a34-086a-4060-8745-dd87af3d53b4_default/index.min.js"&gt;&lt;/script&gt;
 
-    class="video-js" controls&gt;&lt;/video&gt;
-  &lt;script src="//players.brightcove.net/1507807800001/3bc25a34-086a-4060-8745-dd87af3d53b4_default/index.min.js"&gt;&lt;/script&gt;
 
-
-  &lt;script type="text/javascript"&gt;
-    videojs("myPlayerID").ready(function() {
-      var myPlayer = this;
-      myPlayer.catalog.getVideo('2114345471001', function(error, video) {
-        //deal with error
-        <span class="bcls-highlight">myPlayer.catalog.load(video);</span>
-      });
+&lt;script type="text/javascript"&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this;
+    myPlayer.catalog.getVideo('2114345471001', function(error, video) {
+      //deal with error
+      <span class="bcls-highlight">myPlayer.catalog.load(video);</span>
     });
-  &lt;/script&gt;</code></pre>
+  });
+&lt;/script&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="get_method">get() method</h2>
+
+<p>The <code class="notranslate">get(params, [callback]) ⇒ Promise | XMLHttpRequest</code> method permits searching the catalog using <a href="/node/18005">CMS/Playback API: Videos Search</a> syntax. Under the hood, this method uses the Playback API.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+	<li><p><strong class="notranslate">params</strong>: An object of type <a href="#Catalog_parameters_object">Catalog parameters</a>.</p></li>
+	<li><p><strong class="notranslate">callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:</p>
+	<ul>
+		<li><p>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong class="notranslate">null</strong>.</p></li>
+		<li><p>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</p></li>
+	</ul>
+	</li>
+</ul>
+
+<h3>Returned value</h3>
+
+<p>The method returns a <strong class="notranslate">Promise</strong> or an object of type <strong class="notranslate">XMLHttpRequest</strong>. If you are using a callback function, the JSON response is automatically parsed and a usable object is what is passed to the callback function. The exact structure of the returned data in the callback will vary depending what was searched for.</p>
+
+<h3>Callback example</h3>
+
+<p>The following example does the following:</p>
+
+<ol>
+	<li><p>Builds a catalogParams object that will be passed as an argument with the function. The search will query for videos with the string <strong class="notranslate">Desert</strong> in the video's <strong class="notranslate">name</strong>.</p></li>
+	<li><p>Performs the search using the <code class="notranslate">get()</code> method. Note that the callback function will use the parameters named <code class="notranslate">errorObj</code> and <code class="notranslate">videosReturned</code>.</p></li>
+	<li><p>Use the <code class="notranslate">playlist()</code> method to assign the returned videos to the Brightcove Player.</p></li>
+</ol>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">&lt;script type="text/javascript"&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this,
+      catalogParams = {};
+    catalogParams.type = 'search';
+    catalogParams.policyKey = 'BCpkADawqM3dv_...Cv8-nlTX';
+    catalogParams.q = 'name:Desert';
+    console.log('catalogParams',catalogParams);
+    myPlayer.catalog.get(catalogParams,function(errorObj,videosReturned){
+      console.log('videosReturned',videosReturned);
+      myPlayer.playlist(videosReturned);
+    });
+  });
+&lt;/script&gt;</code></pre>
+
+<p>The following screenshot shows the two <code class="notranslate">console.log()</code> results in the code above. The <code class="notranslate">catalogParams</code> shows the parameters for the search, and the <code class="notranslate">videosReturned</code> array shows the three videos returned by the search.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Objects in console from get method call" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/get-search-callback.png" /></figure>
+
+<h3>Promise example</h3>
+
+<p>In this code the same search is done using <code class="notranslate">get()</code> method as shown just above, but the result is handled as a Promise.</p>
+
+<pre class="line-numbers">
+<code class="language-html notranslate">&lt;script type="text/javascript"&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this,
+      catalogParams = {};
+    catalogParams.type = 'search';
+    catalogParams.policyKey = 'BCpkADawqM3dv_...Cv8-nlTX';
+    catalogParams.q = 'name:Desert';
+    myPlayer.catalog.get(catalogParams).then(function(videosReturned){
+      console.log('videosReturned',videosReturned);
+      myPlayer.playlist(videosReturned);
+    }).catch(function(errorObj){
+      console.log('errorObj',errorObj);
+    })
+  });
+&lt;/script&gt;</code></pre>
+
+<p>For more information on Promises, see <a href="/node/18652">Using JavaScript Promises</a>.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="getSearch_method">getSearch() method</h2>
 
-<p>The <code class="notranslate">getSearch(query, callback, adConfigId)</code> method permits searching the catalog using <a href="/node/18005">CMS/Playback API: Videos Search</a> syntax. Under the hood, this method uses the Playback API.</p>
+<p>The <code class="notranslate">getSearch(params, [callback], [adConfigId]) ⇒ XMLHttpRequest</code> method permits searching the catalog using <a href="/node/18005">CMS/Playback API: Videos Search</a> syntax. Under the hood, this method uses the Playback API.</p>
 
 <h3>Parameters</h3>
 
-<p>Any of the follow options are recognized:</p>
-
 <ul>
-	<li><code class="notranslate">query</code> (string or object): Can be a string representing <code class="notranslate">query.q</code> or an object.</li>
-	<li><code class="notranslate">query.q</code> (string): The query string with which to search for videos.</li>
-	<li><code class="notranslate">policyKey</code> (string): A search-enabled policy key for the account.</li>
-	<li><code class="notranslate">query.limit</code> (number): <strong>Default: 20</strong> Number of videos to return, can be between 1 and 100.</li>
-	<li><code class="notranslate">query.offset</code> (number): <strong>Default: 0</strong> Number of videos to skip from the start, must be &gt;= to 0.</li>
-	<li><code class="notranslate">query.sort</code> (string): A string the specifies the field on which to sort.</li>
-	<li><code class="notranslate">callback</code> (function): A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:
+	<li><p><strong class="notranslate">params</strong>: An object of type <a href="#Catalog_parameters_object">Catalog parameters</a>.</p></li>
+	<li><p><strong class="notranslate">callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:</p>
 	<ul>
-		<li>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong>null</strong>.</li>
-		<li>If no error occurs, the second argument is the requested video object(s). If an error occurs, this value contains the empty string.</li>
+		<li><p>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong class="notranslate">null</strong>.</p></li>
+		<li><p>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</p></li>
 	</ul>
 	</li>
-	<li><code class="notranslate">adConfigId</code> (string): A numeric value for an ad configuration that will be passed along to the Playback API. This value will be called <code class="notranslate">ad_config_id</code> when the actual call is made.</li>
+	<li><strong class="notranslate">[adConfigId]</strong>: DEPRECATED A Video Cloud ad configuration ID that will be passed along to the Playback API. Instead, pass the adConfigId in the initial params object.</li>
 </ul>
 
 <h3>Returned value</h3>
 
-<p>The catalog call itself returns an object of type <strong>XMLHttpRequest</strong>. The exact structure of the returned data will vary depending what was searched for.</p>
+<p>The catalog call itself returns an object of type <strong class="notranslate">XMLHttpRequest</strong>. Although the call returns an <strong class="notranslate">XMLHttpRequest</strong> object, you will most likely never deal with that object. The reason is that in the callback function the JSON response is automatically parsed and a usable object is what is passed to the callback function. The exact structure of the returned data in the callback will vary depending what was searched for.</p>
 
 <h3>Example</h3>
 
 <p>The following example does the following:</p>
 
 <ol>
-	<li>Builds a query object that will be passed as an argument with the function. The required, search-enabled policy key is passed. The search will query for videos with the string <strong>desert</strong> in the video's <strong>name</strong>.</li>
-	<li>Performs the search using the <code class="notranslate">getSearch()</code> method. Note that the callback function will use the parameters named <code class="notranslate">errorObj</code> and <code class="notranslate">videosReturned</code>.</li>
-	<li>Use the <code class="notranslate">playlist()</code> method to assign the returned videos to the Brightcove Player.</li>
+	<li><p>Builds a <a href="Catalog_parameters_object">CatalogParams</a> object that will be passed as an argument with the function. The search-enabled policy key is passed. The search will query for videos with the string <strong class="notranslate">desert</strong> in the video's <strong class="notranslate">name</strong>.</p></li>
+	<li><p>Performs the search using the <code class="notranslate">getSearch()</code> method. Note that the callback function will use the parameters named <code class="notranslate">errorObj</code> and <code class="notranslate">videosReturned</code>.</p></li>
+	<li><p>Use the <code class="notranslate">playlist()</code> method to assign the returned videos to the Brightcove Player.</p></li>
 </ol>
 
 <pre class="line-numbers">
-<code class="language-javascript notranslate">&lt;style type="text/css"&gt;
-    .video-js {
-      height: 360px;
-      width: 640px;
-      float: left;
-    }
-    .vjs-playlist {
-      width: 280px;
-      height: 350px;
-    }
-&lt;/style&gt;
-
-...
-
-&lt;video id="myPlayerID"
-  data-account="1752604059001"
-  data-player="Sk5m8XYoG"
-  data-embed="default"
-  data-application-id
-  class="video-js"
-  controls&gt;&lt;/video&gt;
-
-&lt;div class="vjs-playlist"&gt;&lt;/div&gt;
-
-&lt;script src="//players.brightcove.net/1752604059001/Sk5m8XYoG_default/index.min.js"&gt;&lt;/script&gt;
-
-&lt;script type="text/javascript"&gt;
-  videojs('myPlayerID').ready(function(){
+<code class="language-javascript notranslate">&lt;script type="text/javascript"&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this,
-      queryObject = {};
-    <span class="bcls-highlight">queryObject.policyKey = 'BCpkADawqM...fj0vsWCv8-nlTX';
-    queryObject.q = 'name:desert';</span>
-    console.log('queryObject',queryObject);
-    <span class="bcls-highlight">myPlayer.catalog.getSearch(queryObject,function(errorObj,videosReturned){
+      catalogParams = {};
+    catalogParams.type = 'search';
+    catalogParams.policyKey = 'BCpkADawqM3dv_...-rSSaDpwCVfj0vsWCv8-nlTX';
+    catalogParams.q = 'name:Desert';
+    console.log('catalogParams',catalogParams);
+    myPlayer.catalog.getSearch(catalogParams,function(errorObj,videosReturned){
       console.log('videosReturned',videosReturned);
       myPlayer.playlist(videosReturned);
-    });</span>
+    });
   });
 &lt;/script&gt;</code></pre>
 
-<p>The following screenshot shows the two <code class="notranslate">console.log()</code> results in the code above. The <code class="notranslate">queryObject</code> shows the required parameters for the search, and the <code class="notranslate">videosReturned</code> array shows the three videos returned by the search.</p>
+<p>The following screenshot shows the two <code class="notranslate">console.log()</code> results in the code above. The <code class="notranslate">catalogParams</code> shows the required parameters for the search, and the <code class="notranslate">videosReturned</code> array shows the three videos returned by the search.</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="Objects in console from getSearch method call" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/getsearch-console.png" /></figure>
-
-<h3>Obtaining a policy key</h3>
-
-<p>In the example above, you see a <code class="notranslate">policyKey</code> value is needed. This policy key must be <strong>search-enabled</strong>. For information on creating a policy key and then search-enabling it see the <a href="/node/18003#Search_videos">Overview: Policy API - Search Videos</a> section.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="getSequence_method">getSequence() method</h2>
 
-<p>The <code class="notranslate">getSequence(sequences, callback, adConfigId)</code> method permits passing multiple catalog operations and retrieves all video objects from those multiple catalog operations. You can have three types of operations, those being:</p>
+<p>The <code class="notranslate">getSequence(sequences, callback, [adConfigId]) ⇒ Array.&lt;XMLHttpRequest&gt;</code> method permits passing multiple catalog operations and retrieves all video objects from those multiple catalog operations. You can have three types of operations, those being:</p>
 
 <ol>
 	<li>search</li>
@@ -256,65 +406,36 @@
 
 <h3>Parameters</h3>
 
-<p>Any of the follow options are recognized:</p>
-
 <ul>
-	<li><code class="notranslate">sequences</code> (object or array of objects): An object or an array of objects representing the sequence of catalog operations that are to be performed.</li>
-	<li><code class="notranslate">sequences[].type</code> (string): The type of operation to be performed. This can be <code class="notranslate">search</code>, <code class="notranslate">playlist</code> or <code class="notranslate">video</code>.</li>
-	<li><code class="notranslate">sequences[].id</code> (string or object): The identifier/options for the operation. For <code class="notranslate">playlist</code> and <code class="notranslate">video</code>, this will be the media's ID. For searches, this can be a string representing <code class="notranslate">q</code> or an object with all of the options from the search function.</li>
-	<li><code class="notranslate">policyKey</code> (string): A search-enabled policy key for the account.</li>
-	<li><code class="notranslate">callback</code> (function): A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:
+	<li><p><strong class="notranslate">sequences</strong>: An object of type <a href="#Catalog_parameters_object">Catalog parameters</a> OR an array of objects representing a sequence of catalog operations.</p></li>
+	<li><p><strong class="notranslate">callback</strong>: A function that will be called when the request completes, whether it's successful or not. It is invoked with two arguments:</p>
 	<ul>
-		<li>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong>null</strong>.</li>
-		<li>If no error occurs, the second argument is the requested video object(s). If an error occurs, this value contains the empty string.</li>
+		<li><p>The first argument will contain an error object, if an error occurs. This object contains details of the error. If no error occurs, this object is <strong class="notranslate">null</strong>.</p></li>
+		<li><p>If no error occurs, the second argument is the requested video object. If an error occurs, this value contains the empty string.</p></li>
 	</ul>
 	</li>
-	<li><code class="notranslate">adConfigId</code> (string): A numeric value for an ad configuration that will be passed along to the playback API. This value will be called <code class="notranslate">ad_config_id</code> when the actual call is made.</li>
+	<li><p><strong class="notranslate">[adConfigId]</strong>: An ad configuration ID that will be passed along with each request.</p></li>
 </ul>
 
 <p>Note that if a specific video is returned in more than one of the operations, it will be in the result multiple times.</p>
 
 <h3>Returned value</h3>
 
-<p>The catalog call itself returns an object of type <strong>XMLHttpRequest</strong>. The exact structure of the returned data will vary depending what was searched for.</p>
+<p>The catalog call itself returns an object of type <strong class="notranslate">XMLHttpRequest</strong>. Although the call returns an <strong class="notranslate">XMLHttpRequest</strong> object, you will most likely never deal with that object. The reason is that in the callback function the JSON response is automatically parsed and a usable object is what is passed to the callback function. The exact structure of the returned data in the callback will vary depending what was searched for.</p>
 
 <h3>Example</h3>
 
 <p>The following example uses a sequence of three catalog operations. The first is a search for the 10 oldest videos in the catalog, the second an individual video is added, and lastly a playlist's videos are added to the result.</p>
 
 <pre class="line-numbers">
-<code class="language-javascript notranslate">&lt;style type="text/css"&gt;
-    .video-js {
-      height: 360px;
-      width: 640px;
-      float: left;
-    }
-    .vjs-playlist {
-      width: 280px;
-      height: 350px;
-    }
-&lt;/style&gt;
-...
-&lt;video id="myPlayerID"
-  data-account="1752604059001"
-  data-player="Sk5m8XYoG"
-  data-embed="default"
-  data-application-id
-  class="video-js"
-  controls&gt;&lt;/video&gt;
-
-&lt;div class="vjs-playlist"&gt;&lt;/div&gt;
-
-&lt;script src="//players.brightcove.net/1752604059001/Sk5m8XYoG_default/index.min.js"&gt;&lt;/script&gt;
-
-&lt;script type="text/javascript"&gt;
-  videojs('myPlayerID').ready(function(){
+<code class="language-javascript notranslate">&lt;script&gt;
+  videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this,
       // Declare object for catalog search
-      queryObject = {};
-      // Declare mySequences array which will hold
-      // three different types of catalog operations
-      mySequences = [];
+      catalogParams = {};
+    // Declare mySequences array which will hold
+    // three different types of catalog operations
+    mySequences = [];
 
     // Declare 3 objects for different catalog operations
     mySequences[0]={};
@@ -323,26 +444,30 @@
 
     // Define the object for catalog search
     // Search will retrieve 10 oldest videos in catalog
-    queryObject.policyKey = 'BCpkADawqM3dv_...df3s-rSSaDpwCVfj0vsWCv8-nlTX';
-    queryObject.q = 'type:*';
-    queryObject.sort = 'created_at';
-    queryObject.limit = 10;
-    <span class="bcls-highlight">mySequences[0].type = 'search';
-    mySequences[0].id=queryObject;</span>
+    catalogParams.policyKey = 'BCpkADawqM3dv_-rSSaDpwCVfj0vsWCv8-nlTX';
+    catalogParams.q = 'type:*';
+    catalogParams.sort = 'created_at';
+    catalogParams.limit = 10;
+    catalogParams.type = 'search';
+    mySequences[0] = catalogParams;
 
     // Create a video retrieval catalog operation
-    <span class="bcls-highlight">mySequences[1].type = 'video';
-    mySequences[1].id = '5755775186001';</span>
+    catalogParams = {};
+    catalogParams.type = 'video';
+    catalogParams.id = '5755775186001';
+    mySequences[1] = catalogParams;
 
     // Create a playlist retrieval catalog operation
-    <span class="bcls-highlight">mySequences[2].type = 'playlist';
-    mySequences[2].id = '5531423971001';</span>
+    catalogParams = {};
+    catalogParams.type = 'playlist';
+    catalogParams.id = '5531423971001';
+    mySequences[2] = catalogParams;
 
     // Display mySequences array
     console.log('mySequences',mySequences);
 
     // Perform sequence of catalog operations
-    <span class="bcls-highlight">myPlayer.catalog.getSequence(mySequences,function(errorObj,videosReturned)</span>{
+    myPlayer.catalog.getSequence(mySequences,function(errorObj,videosReturned){
       // Display video objects returned
       console.log('videosReturned',videosReturned);
       // Assign video objects as a playlist
@@ -351,27 +476,21 @@
   });
 &lt;/script&gt;</code></pre>
 
-<p>The following screenshots show the structure of the <code class="notranslate">myStructure</code> array, followed by the array of video objects returned:</p>
+<p>The following screenshot shows the structure of the <code class="notranslate">mySequences</code> array, followed by the array of video objects returned:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="The myStructures data structure" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/getSequences-mySequences.png" /></figure>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Returned video objects" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/getSequence-videosReturned.png" /></figure>
-
-<h3>Obtaining a policy key</h3>
-
-<p>In the example above, you see a <code class="notranslate">policyKey</code> value is needed. This policy key must be <strong>search-enabled</strong>. For information on creating a policy key and then search-enabling it see the <a href="/node/18003#Search_videos">Overview: Policy API - Search Videos</a> section.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="getLazySequence_method">getLazySequence() method</h2>
 
-<p>The <code class="notranslate">getLazySequence(sequences, callback, adConfigId)</code> method behaves the same as the <a href="#getSequence_method">getSequence() method</a>, except that lazy loading of videos is employed. This means that when the videos for a sequence operation are retrieved, the next sequence operation's videos won't be retrieved until the last video from the previous operation is reached. A special case exists if a sequence returns only a single video, in which case the next sequence operation is performed and more videos are retrieved.</p>
+<p>The <code class="notranslate">getLazySequence(sequences, callback, [adConfigId]) ⇒ XMLHttpRequest</code> method behaves the same as the <a href="#getSequence_method">getSequence() method</a>, except that lazy loading of videos is employed. This means that when the videos for a sequence operation are retrieved, the next sequence operation's videos won't be retrieved until the last video from the previous operation is reached. A special case exists if a sequence returns only a single video, in which case the next sequence operation is performed and more videos are retrieved.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="autoFindAndLoadMedia_method">autoFindAndLoadMedia() method</h2>
 
-<p>The <code class="notranslate">autoFindAndLoadMedia(options)</code> method looks for the last-defined video or playlist ID, requests it from the API, and loads it into the player. This method defines the default behavior for the Brightcove Player.</p>
+<p>The <code class="notranslate">autoFindAndLoadMedia([opts]) ⇒ Object | undefined</code> method looks for the last-defined video or playlist ID, requests it from the API, and loads it into the player. This method defines the default behavior for the Brightcove Player.</p>
 
 <h3>Parameters</h3>
 
@@ -379,13 +498,14 @@
 	<li><code class="notranslate">options</code>: Any of the follow options are recognized:
 
 	<ul>
-		<li><code class="notranslate">adConfigId</code> (number): A numeric value for an ad configuration that will be passed along to the playback API. Will be called ad_config_id in the end.</li>
-		<li><code class="notranslate">embedHasPoster</code> (boolean): Whether or not the original embed had a poster.</li>
-		<li><code class="notranslate">embedHasSources</code> (boolean): Whether or not the original embed had sources.</li>
-		<li><code class="notranslate">embedHasTracks</code> (boolean): Whether or not the original embed had tracks.</li>
-		<li><code class="notranslate">videoId</code> (string): A video ID provided in the player configuration.</li>
-		<li><code class="notranslate">playlistId</code> (string): A playlist ID provided in the player configuration.</li>
-		<li><code class="notranslate">playlistVideoId</code> (string): A video ID, which will be the first video in a playlist to be loaded if it's present in the playlist. You would use this in conjunction with the <code class="notranslate">playlistId</code> option.</li>
+		<li><p><code class="notranslate">adConfigId</code> (number): A numeric value for an ad configuration that will be passed along to the playback API. Will be called ad_config_id in the end.</p></li>
+		<li><p><code class="notranslate">embedHasPoster</code> (boolean): Whether or not the original embed had a poster.</p></li>
+		<li><p><code class="notranslate">embedHasSources</code> (boolean): Whether or not the original embed had sources.</p></li>
+		<li><p><code class="notranslate">embedHasTracks</code> (boolean): Whether or not the original embed had tracks.</p></li>
+		<li><p><code class="notranslate">playlistId</code> (string): A playlist ID provided in the player configuration.</p></li>
+		<li><p><code class="notranslate">search</code> (string | Object): A search string/object that was provided in the player config or embed. See <code class="notranslate">get()</code> method for more info on the supported parameters.</p></li>
+		<li><p><code class="notranslate">sequence</code> (Object | Array.Object): A search string/object that was provided in the player config or embed. See <code class="notranslate">get()</code> method for more info on the supported parameters.</p></li>
+		<li><p><code class="notranslate">videoId</code> (string): A video ID provided in the player configuration.</p></li>
 	</ul>
 	</li>
 </ul>
@@ -394,7 +514,7 @@
 
 <pre class="line-numbers">
 <code class="language-javascript notranslate">&lt;script type="text/javascript"&gt;
-  videojs('myPlayerID').ready(function(){
+  videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this,
 		options = {};
     options.videoId = '5141730843001';
@@ -408,7 +528,7 @@
 
 <pre class="line-numbers">
 <code class="language-javascript notranslate">&lt;script type="text/javascript"&gt;
-  videojs('myPlayerID').ready(function(){
+  videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this,
         options = {};
     options.playlistId = '4845949311001';
@@ -428,7 +548,7 @@
 <h3>Parameters</h3>
 
 <ul>
-	<li><code class="notranslate">data</code>: A raw video object parsed from a catalog API response.</li>
+	<li><p><code class="notranslate">data</code>: A raw video object parsed from a catalog API response.</p></li>
 </ul>
 
 <p>An example use of the method follows:</p>
@@ -451,16 +571,16 @@
 <p>There are three catalogs events for which you can listen. They are:</p>
 
 <ul>
-	<li><code class="notranslate">catalog_request</code>: An event dispatched when a request to the catalog is made.</li>
-	<li><code class="notranslate">catalog_response</code>: An event dispatched when a response from the catalog is received. The JSON formatted response contains the raw data the Catalog API returned. See the <a href="#Response_information">Response information</a> content later in this section for more details.</li>
-	<li><code class="notranslate">catalog_request_error</code>: An event dispatched when there is an error when interacting with the catalog.</li>
+	<li><p><code class="notranslate">catalog_request</code>: An event dispatched when a request to the catalog is made.</p></li>
+	<li><p><code class="notranslate">catalog_response</code>: An event dispatched when a response from the catalog is received. The JSON formatted response contains the raw data the Catalog API returned. See the <a href="#Response_information">Response information</a> content later in this section for more details.</p></li>
+	<li><p><code class="notranslate">catalog_request_error</code>: An event dispatched when there is an error when interacting with the catalog.</p></li>
 </ul>
 
 <p>The following shows the console log of the events from a request to, and response from, the catalog:</p>
 
 <figure class="bcls-figure"><img class="bcls-image" alt="Request and response event objects" src="//learning-services-media.brightcove.com/doc-assets/player-development/references/player-catalog/events.png" /></figure>
 
-<p>You see many standard properties of an event object. Of special interest for catalog events is <strong>type</strong> and <strong>url</strong>.</p>
+<p>You see many standard properties of an event object. Of special interest for catalog events is <strong class="notranslate">type</strong> and <strong class="notranslate">url</strong>.</p>
 
 <p>The following shows a console log of a catalog request error object:</p>
 
@@ -483,7 +603,7 @@
 <p>Below is the JSON of an example <code class="notranslate">response</code> property:</p>
 
 <pre class="line-numbers">
-<code class="language-json">{
+<code class="language-json notranslate">{
   "description": null,
   "poster_sources": [{
     "src": "http://brightcove.vo.llnwd.net/e1/pd/1507807800001/1507807800001_4784518686001_4784463159001-vs.jpg?pubId=1507807800001&amp;videoId=4784463159001"
@@ -586,19 +706,19 @@
 	</thead>
 	<tbody class="bcls-table__body">
 		<tr>
-			<td>VIDEO_CLOUD_ERR_ACCOUNT_NOT_FOUND</td>
+			<td><code class="notranslate">Video ID as string</code></td>
 			<td>The player has been configured with an invalid Video Cloud account ID.</td>
 		</tr>
 		<tr>
-			<td>VIDEO_CLOUD_ERR_RESOURCE_NOT_FOUND</td>
+			<td><code class="notranslate">VIDEO_CLOUD_ERR_RESOURCE_NOT_FOUND</code></td>
 			<td>The default playlist ID is invalid.</td>
 		</tr>
 		<tr>
-			<td>VIDEO_CLOUD_ERR_VIDEO_NOT_FOUND</td>
+			<td><code class="notranslate">VIDEO_CLOUD_ERR_VIDEO_NOT_FOUND</code></td>
 			<td>The default video is invalid.</td>
 		</tr>
 		<tr>
-			<td>VIDEO_CLOUD_ERR_NOT_PLAYABLE</td>
+			<td><code class="notranslate">VIDEO_CLOUD_ERR_NOT_PLAYABLE</code></td>
 			<td>The Video Cloud video is not playable.&nbsp;Frequent causes of this error include when a video ID is deactivated or when the scheduled availability has expired.</td>
 		</tr>
 	</tbody>
@@ -615,19 +735,19 @@
 <p>In the code sample below, you see a code block handle the <code class="notranslate">bc-catalog-error</code> (line 62), and also a code block for <code class="notranslate">ready</code> (line 71).</p>
 
 <pre class="line-numbers" data-start="50">
-<code class="language-html notranslate">  &lt;video id="myPlayerID"
+<code class="language-html notranslate">  &lt;video-js id="myPlayerID"
     data-account="1486906377"
     data-player="77a8e8b7-e8d1-4a3c-8a1b-292ba8233006"
     data-embed="default"
     data-video-id="4040394419001"
-    class="video-js" controls&gt;&lt;/video&gt;
+    class="video-js" controls&gt;&lt;/video-js&gt;
 
   &lt;p id="textTarget"&gt;&lt;/p&gt;
 
-  &lt;script src="//players.brightcove.net/1486906377/77a8e8b7-e8d1-4a3c-8a1b-292ba8233006_default/index.min.js"&gt;&lt;/script&gt;
+  &lt;script src="https://players.brightcove.net/1486906377/77a8e8b7-e8d1-4a3c-8a1b-292ba8233006_default/index.min.js"&gt;&lt;/script&gt;
 
   &lt;script type="text/javascript"&gt;
-    <span class="bcls-highlight">videojs('myPlayerID').one('bc-catalog-error', function(){</span>
+    <span class="bcls-highlight">videojs.getPlayer('myPlayerID').one('bc-catalog-error', function(){</span>
       var myPlayer = this,
         specificError;
       if (myPlayer.catalog.error !== undefined) {
@@ -636,7 +756,7 @@
       };
     });
 
-    <span class="bcls-highlight">videojs("myPlayerID").ready(function(){</span>
+    <span class="bcls-highlight">videojs.getPlayer('myPlayerID').ready(function() {</span>
       var myPlayer = this;
       console.log('in ready');
     });
@@ -644,7 +764,7 @@
 
 <h3>Using custom error</h3>
 
-<p>The best solution to handle a specific <strong>bc-catalog-error</strong> maybe using a custom error. The following code shows a plugin that uses a custom error to notify a viewer of an inactive video why the video won't play:</p>
+<p>The best solution to handle a specific <strong class="notranslate">bc-catalog-error</strong> maybe using a custom error. The following code shows a plugin that uses a custom error to notify a viewer of an inactive video why the video won't play:</p>
 
 <pre class="line-numbers">
 <code class="language-javascript notranslate">videojs.registerPlugin('inactiveErrorCheck', function(options) {
@@ -671,30 +791,30 @@
 <p>The code to use the plugin, utilizing an in-page embed player implementation, follows:</p>
 
 <pre class="line-numbers">
-<code class="language-html notranslate">&lt;video id="myPlayerID" data-video-id="5350958927001"
+<code class="language-html notranslate">&lt;video-js id="myPlayerID" data-video-id="5350958927001"
   data-account="1507807800001"
   data-player="default"
   data-embed="default"
   data-application-id
   class="video-js"
-  controls&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
+  controls&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
 
 &lt;script type="text/javascript" src="inactive-error-check.js"&gt;&lt;/script&gt;
 
 &lt;script type="text/javascript"&gt;
-  videojs('myPlayerID').ready(function(){
+  videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this,
     options =[];
     options.inactiveMessage = "This is the message to display for inactive videos.";
     myPlayer.inactiveErrorCheck(options);
 });&lt;/script&gt;</code></pre>
 
-<p>If you are adding the plugin via the <strong>PLUGINS</strong> section in Studio, you would supply the correct URL where you stored your JavaScript code, then in the <strong>Name, Option (JSON)</strong> entry supply:</p>
+<p>If you are adding the plugin via the <strong class="notranslate">PLUGINS</strong> section in Studio, you would supply the correct URL where you stored your JavaScript code, then in the <strong class="notranslate">Name, Option (JSON)</strong> entry supply:</p>
 
 <ul>
-	<li>Name: <strong>inactiveErrorCheck</strong></li>
-	<li>Options: <strong>{ "inactiveMessage": "This is the message to display for inactive videos." }</strong></li>
+	<li><p>Name: <strong class="notranslate">inactiveErrorCheck</strong></p></li>
+	<li><p>Options: <strong class="notranslate">{ "inactiveMessage": "This is the message to display for inactive videos." }</strong></p></li>
 </ul>
 </section>
 
