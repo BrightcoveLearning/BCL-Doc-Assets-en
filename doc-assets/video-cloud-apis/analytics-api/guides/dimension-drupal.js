@@ -12,7 +12,7 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
     sendDimensionRequest = document.getElementById('sendDimensionRequest'),
     sendFilterRequest = document.getElementById('sendFilterRequest'),
     dimensionObj = aapi_model.dimensions[dimension],
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php'
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php'
   account_id = '1752604059001';
 
   /**
