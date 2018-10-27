@@ -960,7 +960,6 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               // try {
               tmpArr = JSON.parse(httpRequest.responseText);
-              console.log('tmpArr', tmpArr);
               iMax = tmpArr.length;
               data.BCLSprofilesStatic = [];
               data.BCLSprofilesDynamic = [];
