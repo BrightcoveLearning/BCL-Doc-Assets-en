@@ -1,11 +1,14 @@
 var codeBlocks;
 var BCLS = ( function (window, document, bclsProfiles_cached) {
     var  mainSection = document.querySelector('.bcls-article'),
-        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
-                requestData = "client_id=cca7ae2a-503d-472e-996c-3aa664d4aa95&client_secret=OE43iNQ6HluFxM2I_f6QDfGLoSSW28jnDWbX8gDgS6GIFD2P6VNWKbRHyln0I5aVyoSeil0l5ikWYQ2hUbR99g&url=" + encodeURI('https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles') + "&requestBody=null&requestType=GET",
+        proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
+        requestData = {},
         data = bclsProfiles_cached,
         navLabel = [],
         standardProfileList = ['screencast-1280', 'smart-player-transition', 'Live - Standard', 'single-bitrate-high', 'audio-only', 'videocloud-default-v1', 'Live - Premium HD', 'Live - HD', 'single-bitrate-standard', 'high-resolution'];
+
+    requestData.url = 'https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles';
+    requestData.requestType = 'GET';
         /**
          * determines whether specified item is in an array
          *
@@ -447,7 +450,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
     }
     function getProfileData() {
         var httpRequest = new XMLHttpRequest(),
-            proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy.php",
+            proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
             i,
             iMax,
             tmpArr,
@@ -498,7 +501,7 @@ var BCLS = ( function (window, document, bclsProfiles_cached) {
         // set headers
         httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         // open and send request
-        httpRequest.send(requestData);
+        httpRequest.send(JSON.stringify(requestData));
     }
     getProfileData();
     // BCLSmain.createInPageNav();
