@@ -1,6 +1,6 @@
 var BCLS = (function(window, document) {
   var baseURL                 = 'https://cms.api.brightcove.com/v1/accounts/57838016001',
-    proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php',
+    proxyURL                = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     video_id                = '5191499941001',
     newVideo_id             = '5191509290001',
     playlist_id             = '4492151631001',
