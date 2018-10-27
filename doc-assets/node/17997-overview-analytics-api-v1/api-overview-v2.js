@@ -2,7 +2,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
     var filterAllowableValues = document.getElementById("filterAllowableValues"),
         paramTable = document.getElementById("paramTable"),
         combination,
-        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+        proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
         dimension,
         selectedDimensions      = [],
         fromDate,
