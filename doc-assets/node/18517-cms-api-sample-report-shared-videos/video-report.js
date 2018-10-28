@@ -31,6 +31,7 @@ var BCLS = (function(window, document) {
     toDate              = document.getElementById('toDate'),
     videoCount          = document.getElementById('videoCount'),
     makeReport          = document.getElementById('makeReport'),
+    useMyAccount        = document.getElementById('useMyAccount'),
     content,
     logger              = document.getElementById('logger'),
     csvData             = document.getElementById('csvData'),
