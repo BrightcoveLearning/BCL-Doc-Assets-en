@@ -89,7 +89,11 @@ var BCLS = (function(window, document) {
   }
 
   function hideElement(el) {
-    el.setAttribute('style', 'display:none')
+    el.setAttribute('style', 'display:none');
+  }
+
+  function showElement(el) {
+    el.setAttribute('style', 'display:inline');
   }
 
   /**
