@@ -185,7 +185,8 @@ var BCLS = (function(window, document) {
     var i,
       iMax,
       field,
-      option;
+      option,
+      frag = document.createDocumtentFragment();
     iMax = custom_fields.length;
     for (i = 0; i < iMax; i++) {
       field = custom_fields[i];
