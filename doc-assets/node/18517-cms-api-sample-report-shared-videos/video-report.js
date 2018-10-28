@@ -19,12 +19,13 @@ var BCLS = (function(window, document) {
     csvStr,
     summaryCsvStr,
     // elements
-    account_id_input          = document.getElementById('account_id'),
-    client_id_input           = document.getElementById('client_id'),
-    client_secret_input       = document.getElementById('client_secret'),
+    account_id_input    = document.getElementById('account_id'),
+    client_id_input     = document.getElementById('client_id'),
+    client_secret_input = document.getElementById('client_secret'),
     searchTags          = document.getElementById('searchTags'),
-    searchField         = document.getElementById('searchField'),
-    searchFieldValue    = document.getElementById('searchFieldValue'),
+    searchField         = document.querySelect('#searchField'),
+    searchFieldValue    = document.querySelect('#searchFieldValue'),
+    searchFieldValues   = document.querySelect('#searchFieldValues'),
     dateRangeType       = document.getElementById('dateRangeType'),
     fromDate            = document.getElementById('fromDate'),
     toDate              = document.getElementById('toDate'),
@@ -87,7 +88,9 @@ var BCLS = (function(window, document) {
     return str;
   }
 
-
+  function hideElement(el) {
+    el.setAttribute('style', 'display:none')
+  }
 
   /**
    * find index of an object in array of objects
@@ -163,6 +166,12 @@ var BCLS = (function(window, document) {
     logger.appendChild(message);
   }
 
+  function createCustomFieldOptions(custom_fields) {
+    var i,
+      iMax,
+      option;
+  }
+
   function writeReport() {
     var i,
       iMax,
@@ -209,6 +218,19 @@ var BCLS = (function(window, document) {
     }
 
     switch (id) {
+      case 'getCustomFields':
+        endpoint = '/video_fields';
+        options.url = cmsBaseURL + endpoint;
+        apiRequest.textContent = options.url;
+        options.requestType = 'GET';
+        makeRequest(options, function(response) {
+          custom_fields = JSON.parse(response).custom_fields;
+          apiResponse.textContent = JSON.stringify(custom_fields, null, 2);
+          logMessage('Custom fields retrieved');
+          createCustomFieldOptions(custom_fields);
+          createRequest('getCount');
+        });
+        break;
       case 'getAffiliates':
         endpoint = '/channels/default/members';
         options.url = cmsBaseURL + endpoint;
