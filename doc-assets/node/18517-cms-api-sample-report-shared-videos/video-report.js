@@ -88,10 +88,18 @@ var BCLS = (function(window, document) {
     return str;
   }
 
+  /**
+   * hide an element
+   * @param {htmlElement} el the element to hide
+   */
   function hideElement(el) {
     el.setAttribute('style', 'display:none');
   }
 
+  /**
+   * show a hidden element
+   * @param {htmlElement} el the element to hide
+   */
   function showElement(el) {
     el.setAttribute('style', 'display:inline');
   }
@@ -140,7 +148,6 @@ var BCLS = (function(window, document) {
     }
   }
 
-
   /**
    * determines whether specified item is in an array
    *
@@ -170,10 +177,19 @@ var BCLS = (function(window, document) {
     logger.appendChild(message);
   }
 
+  /**
+   * populate field selector with account custom fields
+   * @param {object[]} custom_fields array of custom field objects
+   */
   function createCustomFieldOptions(custom_fields) {
     var i,
       iMax,
+      field,
       option;
+    iMax = custom_fields.length;
+    for (i = 0; i < iMax; i++) {
+      field = custom_fields[i];
+    }
   }
 
   function writeReport() {
