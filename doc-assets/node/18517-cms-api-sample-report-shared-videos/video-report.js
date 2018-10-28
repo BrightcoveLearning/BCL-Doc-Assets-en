@@ -48,6 +48,7 @@ var BCLS = (function(window, document) {
     fromDateValue,
     toDateValue,
     tagsSearchString,
+    custom_fields,
     fieldsSearchString,
     dateSearchString,
     searchString,
@@ -179,9 +180,8 @@ var BCLS = (function(window, document) {
 
   /**
    * populate field selector with account custom fields
-   * @param {object[]} custom_fields array of custom field objects
    */
-  function createCustomFieldOptions(custom_fields) {
+  function createCustomFieldOptions() {
     var i,
       iMax,
       field,
@@ -189,6 +189,9 @@ var BCLS = (function(window, document) {
     iMax = custom_fields.length;
     for (i = 0; i < iMax; i++) {
       field = custom_fields[i];
+      option = document.createElement('option');
+      option.setAttribute('value', field.id);
+      option.textContent = field.display_name;
     }
   }
 
@@ -247,7 +250,7 @@ var BCLS = (function(window, document) {
           custom_fields = JSON.parse(response).custom_fields;
           apiResponse.textContent = JSON.stringify(custom_fields, null, 2);
           logMessage('Custom fields retrieved');
-          createCustomFieldOptions(custom_fields);
+          createCustomFieldOptions();
           createRequest('getCount');
         });
         break;
