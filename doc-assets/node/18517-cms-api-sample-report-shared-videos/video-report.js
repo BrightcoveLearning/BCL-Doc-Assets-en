@@ -107,6 +107,18 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value;
+      return val;
+  }
+
+
+  /**
    * find index of an object in array of objects
    * based on some property value
    *
@@ -187,7 +199,7 @@ var BCLS = (function(window, document) {
       iMax,
       field,
       option,
-      frag = document.createDocumtentFragment();
+      frag = document.createDocumentFragment();
     iMax = custom_fields.length;
     for (i = 0; i < iMax; i++) {
       field = custom_fields[i];
@@ -197,6 +209,20 @@ var BCLS = (function(window, document) {
       frag.appendChild(option);
     }
     searchField.appendChild(frag);
+  }
+
+  /**
+   * set the field for custom field value, depending on whether it's a string or enum type
+   */
+  function createCustomFieldValueOptions() {
+    var i,
+      iMax,
+      field,
+      option,
+      idx,
+      frag = document.createDocumentFragment();
+    idx = findObjectInArray(custom_fields, 'id', getSelectedValue(searchField));
+    field = custom_fields[idx];
   }
 
   function writeReport() {
