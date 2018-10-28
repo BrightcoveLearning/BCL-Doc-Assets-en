@@ -193,7 +193,9 @@ var BCLS = (function(window, document) {
       option = document.createElement('option');
       option.setAttribute('value', field.id);
       option.textContent = field.display_name;
+      frag.appendChild(option);
     }
+    searchField.appendChild(frag);
   }
 
   function writeReport() {
