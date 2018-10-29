@@ -494,7 +494,9 @@ console.log('sharedVideos', sharedVideos);
     useMyAccount.addEventListener('click', function() {
       getAccountInfo();
     });
-    // set up the log elements
+    searchFieldValues.addEventListener('change', function() {
+      createCustomFieldValueOptions();
+    });
   }
 
   // button event handlers
