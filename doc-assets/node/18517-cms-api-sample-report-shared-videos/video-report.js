@@ -514,6 +514,8 @@ console.log('sharedVideos', sharedVideos);
           fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
         }
       }
+    } else {
+      fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(getSelectedValue(searchFieldValues)) + '"';
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
     fromDateValue = rome(fromDate).getDate();
