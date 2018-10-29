@@ -533,7 +533,7 @@ console.log('sharedVideos', sharedVideos);
         }
       }
     } else {
-      fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(getSelectedValue(searchFieldValues)) + '"';
+      fieldsSearchString = '%2Bcustom_fields:"' + uriEncode(getSelectedValue(searchFieldValues)) + '"';
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
     fromDateValue = rome(fromDate).getDate();
