@@ -493,7 +493,7 @@ console.log('sharedVideos', sharedVideos);
     useMyAccount.addEventListener('click', function() {
       getAccountInfo();
     });
-    searchFieldValues.addEventListener('change', function() {
+    searchField.addEventListener('change', function() {
       createCustomFieldValueOptions();
     });
     getAccountInfo();
