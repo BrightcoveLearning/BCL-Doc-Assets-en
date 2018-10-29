@@ -527,13 +527,13 @@ console.log('sharedVideos', sharedVideos);
     if (searchFieldValue.getAttribute('style') === 'display:inline') {
       if (isDefined(searchFieldValue.value)) {
         if (isDefined(searchField.value)) {
-          fieldsSearchString = '%2B' + searchField.value + ':' + uriEncode(searchFieldValue.value);
+          fieldsSearchString = '%2B' + searchField.value + ':' + encodeURI(searchFieldValue.value);
         } else {
-          fieldsSearchString = '%2Bcustom_fields:"' + uriEncode(searchFieldValue.value) + '"';
+          fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(searchFieldValue.value) + '"';
         }
       }
     } else {
-      fieldsSearchString = '%2Bcustom_fields:"' + uriEncode(getSelectedValue(searchFieldValues)) + '"';
+      fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(searchFieldValues)) + '"';
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
     fromDateValue = rome(fromDate).getDate();
