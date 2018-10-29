@@ -270,6 +270,7 @@ var BCLS = (function(window, document) {
       j,
       jMax,
       video;
+    console.log('writing report');
     if (sharedVideoData.length > 0) {
       csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
       iMax = videosArray.length;
