@@ -272,7 +272,7 @@ var BCLS = (function(window, document) {
       video;
     if (sharedVideoData.length > 0) {
       csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
-      iMax = videosArray.length;
+      iMax = sharedVideoData.length;
       for (i = 0; i < iMax; i += 1) {
         video = sharedVideoData[i];
         console.log('video', video);
