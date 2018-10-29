@@ -468,7 +468,6 @@ console.log('sharedVideos', sharedVideos);
     account_id = account_id_input.value;
     client_id = client_id_input.value;
     client_secret = client_secret_input.value;
-    totalVideos = getSelectedValue(videoCount);
     // only use entered account id if client id and secret are entered also
     if (isDefined(client_id) && isDefined(client_secret)) {
       if (isDefined(account_id_input.value)) {
@@ -503,6 +502,7 @@ console.log('sharedVideos', sharedVideos);
   // button event handlers
   makeReport.addEventListener('click', function() {
     // get the inputs
+    totalVideos = getSelectedValue(videoCount);
     // check for search terms
     if (isDefined(searchTags.value)) {
       tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
