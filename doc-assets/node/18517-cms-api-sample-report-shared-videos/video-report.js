@@ -453,13 +453,14 @@ console.log('sharedVideos', sharedVideos);
         account_id = account_id_input.value;
       } else {
         window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        client_id = '';
-        client_secret = '';
+        client_id = null;
+        client_secret = null;
         account_id = '57838016001';
       }
     } else {
       account_id = '57838016001';
     }
+    createRequest('getCustomFields');
   }
   
   function init() {
