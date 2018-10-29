@@ -510,9 +510,9 @@ console.log('sharedVideos', sharedVideos);
     if (searchFieldValue.getAttribute('style') === 'display:inline') {
       if (isDefined(searchFieldValue.value)) {
         if (isDefined(searchField.value)) {
-          fieldsSearchString = '%2B' + searchField.value + ':' + convertSpaces(searchFieldValue.value);
+          fieldsSearchString = '%2B' + searchField.value + ':' + uriEncode(searchFieldValue.value);
         } else {
-          fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
+          fieldsSearchString = '%2Bcustom_fields:"' + uriEncode(searchFieldValue.value) + '"';
         }
       }
     } else {
