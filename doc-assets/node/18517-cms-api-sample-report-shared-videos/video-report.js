@@ -513,6 +513,7 @@ console.log('sharedVideos', sharedVideos);
       createCustomFieldValueOptions();
     });
     hideElement(searchFieldValues);
+    showElement(searchFieldValue);
     getAccountInfo();
   }
 
@@ -533,6 +534,7 @@ console.log('sharedVideos', sharedVideos);
         }
       }
     } else {
+      console.log('searchFieldValues');
       fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(searchFieldValues)) + '"';
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
