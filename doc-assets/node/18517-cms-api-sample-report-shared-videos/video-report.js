@@ -270,12 +270,12 @@ var BCLS = (function(window, document) {
       j,
       jMax,
       video;
-    console.log('writing report');
     if (sharedVideoData.length > 0) {
       csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
         video = sharedVideoData[i];
+        console.log('video', video);
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.affiliate_id + '","' + video.affiliate_name + '","' + video.affiliate_video_id + '","' + video.share_status + '","' ;
           csvStr += '\r\n';
