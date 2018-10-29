@@ -304,7 +304,6 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(custom_fields, null, 2);
           logMessage('Custom fields retrieved');
           createCustomFieldOptions();
-          createRequest('getCount');
         });
         break;
       case 'getAffiliates':
