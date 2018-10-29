@@ -442,6 +442,26 @@ console.log('sharedVideos', sharedVideos);
     httpRequest.send(JSON.stringify(options));
   }
 
+  function getAccountInfo() {
+    account_id = account_id_input.value;
+    client_id = client_id_input.value;
+    client_secret = client_secret_input.value;
+    totalVideos = getSelectedValue(videoCount);
+    // only use entered account id if client id and secret are entered also
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      if (isDefined(account_id_input.value)) {
+        account_id = account_id_input.value;
+      } else {
+        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+        client_id = '';
+        client_secret = '';
+        account_id = '57838016001';
+      }
+    } else {
+      account_id = '57838016001';
+    }
+  }
+  
   function init() {
     // event listeners
     csvData.addEventListener('click', function() {
