@@ -496,6 +496,7 @@ console.log('sharedVideos', sharedVideos);
     searchField.addEventListener('change', function() {
       createCustomFieldValueOptions();
     });
+    hideElement(searchFieldValues);
     getAccountInfo();
   }
 
