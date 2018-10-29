@@ -163,6 +163,18 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * removes all children from an element
+   * @param {htmlElement} el the element to empty
+   */
+  function removeChildren(el) {
+    while (el.firstChild) {
+    el.removeChild(el.firstChild);
+  }
+
+
+  }
+
+  /**
    * determines whether specified item is in an array
    *
    * @param {array} array to check
@@ -200,6 +212,8 @@ var BCLS = (function(window, document) {
       field,
       option,
       frag = document.createDocumentFragment();
+    // remove any existing options
+    removeChildren(searchField);
     // set the 'any' option
     option = document.createElement('option');
     option.setAttribute('value', 'custom_fields');
@@ -234,6 +248,8 @@ var BCLS = (function(window, document) {
     } else {
       hideElement(searchFieldValue);
       showElement(searchFieldValues);
+      // remove existing options
+      removeChildren(searchFieldValues);
       option = document.createElement('option');
       option.setAttribute('value', 'null');
       option.textContent = 'Do not search on custom fields';
