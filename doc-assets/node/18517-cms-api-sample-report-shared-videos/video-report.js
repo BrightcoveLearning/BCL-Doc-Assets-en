@@ -200,6 +200,11 @@ var BCLS = (function(window, document) {
       field,
       option,
       frag = document.createDocumentFragment();
+    // set the 'any' option
+    option = document.createElement('option');
+    option.setAttribute('value', 'custom_fields');
+    option.textContent = 'any';
+    frag.appendChild(option);
     iMax = custom_fields.length;
     for (i = 0; i < iMax; i++) {
       field = custom_fields[i];
@@ -483,24 +488,26 @@ console.log('sharedVideos', sharedVideos);
     csvData.addEventListener('click', function() {
       this.select();
     });
+    useMyAccount.addEventListener('click', function() {
+      getAccountInfo();
+    });
     // set up the log elements
   }
 
   // button event handlers
   makeReport.addEventListener('click', function() {
     // get the inputs
-    client_id     = client_id_input.value;
-    client_secret = client_secret_input.value;
-    totalVideos  = getSelectedValue(videoCount);
     // check for search terms
     if (isDefined(searchTags.value)) {
       tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
     }
-    if (isDefined(searchFieldValue.value)) {
-      if (isDefined(searchField.value)) {
-        fieldsSearchString = '%2B' + searchField.value + ':' + convertSpaces(searchFieldValue.value);
-      } else {
-        fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
+    if (searchFieldValue.getAttribute('style') === 'display:inline') {
+      if (isDefined(searchFieldValue.value)) {
+        if (isDefined(searchField.value)) {
+          fieldsSearchString = '%2B' + searchField.value + ':' + convertSpaces(searchFieldValue.value);
+        } else {
+          fieldsSearchString = '%2Bcustom_fields:"' + convertSpaces(searchFieldValue.value) + '"';
+        }
       }
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
