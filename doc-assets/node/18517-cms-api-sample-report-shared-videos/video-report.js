@@ -234,6 +234,9 @@ var BCLS = (function(window, document) {
     } else {
       hideElement(searchFieldValue);
       showElement(searchFieldValues);
+      option = document.createElement('option');
+      option.setAttribute('value', 'null');
+      option.textContent = 'Do not search on custom fields';
       iMax = field.enum_values.length;
       for (i = 0; i < iMax; i++) {
         option = document.createElement('option');
