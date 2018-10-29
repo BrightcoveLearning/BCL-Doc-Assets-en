@@ -223,6 +223,21 @@ var BCLS = (function(window, document) {
       frag = document.createDocumentFragment();
     idx = findObjectInArray(custom_fields, 'id', getSelectedValue(searchField));
     field = custom_fields[idx];
+    if (field.type === 'string') {
+      hideElement(searchFieldValues);
+      showElement(searchFieldValue);
+    } else {
+      hideElement(searchFieldValue);
+      showElement(searchFieldValues);
+      iMax = field.enum_values.length;
+      for (i = 0; i < iMax; i++) {
+        option = document.createElement('option');
+        option.setAttribute('value', field.enum_values[i]);
+        option.textContent = field.enum_values[i];
+        frag.appendChild(option);
+      }
+      searchFieldValues.appendChild(frag);
+    }
   }
 
   function writeReport() {
@@ -462,7 +477,7 @@ console.log('sharedVideos', sharedVideos);
     }
     createRequest('getCustomFields');
   }
-  
+
   function init() {
     // event listeners
     csvData.addEventListener('click', function() {
