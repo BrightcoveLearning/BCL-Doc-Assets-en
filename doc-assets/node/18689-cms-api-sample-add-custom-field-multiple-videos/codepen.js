@@ -9,7 +9,8 @@ var BCLS = (function(window, document) {
     offset              = 0,
     totalVideos         = 0,
     totalCalls          = 0,
-    callNumber          = 0,
+    getVideoCallNumber  = 0,
+    updateVideoCallNumber = 0,
     videosCompleted     = 0,
     videosArray         = [],
     // elements
