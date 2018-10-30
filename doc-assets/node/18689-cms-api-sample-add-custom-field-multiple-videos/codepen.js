@@ -374,9 +374,6 @@ console.log('sharedVideos', sharedVideos);
 
   function init() {
     // event listeners
-    csvData.addEventListener('click', function() {
-      this.select();
-    });
     useMyAccount.addEventListener('click', function() {
       getAccountInfo();
     });
