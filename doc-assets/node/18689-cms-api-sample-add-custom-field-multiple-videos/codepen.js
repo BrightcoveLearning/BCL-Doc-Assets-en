@@ -359,17 +359,18 @@ var BCLS = (function(window, document) {
           apiRequest.textContent = options.url;
           options.requestType = 'PATCH';
           makeRequest(options, function(response) {
-            updateVideoCallNumber++;
-            if (updateVideoCallNumber < totalCalls) {
-              get_videos.textContent = 'Get Next Set of Videos';
-            } else {
-              get_videos.textContent = 'No More Videos';
-              get_videos.setAttribute('disabled', disabled);
-            }
             responseParsed = JSON.parse(response);
             logMessage(videos.length + ' videos retrieved');
-            apiResponse.textContent = JSON.stringify(videos, null, '  ');
-            createVideoList();
+            apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+            updateVideoCallNumber++;
+            if (updateVideoCallNumber < totalCalls) {
+              createRequest('updateVideo');
+            } else {
+              logMessage('All videos updated');
+              if (window.confirm('All videos were updated. Do you want to get more videos?')) {
+                get_videos.removeAttribute('disabled', disabled);
+              }
+            }
             });
             break;
       default:
