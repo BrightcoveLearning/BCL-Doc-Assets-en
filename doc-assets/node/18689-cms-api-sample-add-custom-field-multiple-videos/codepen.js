@@ -27,7 +27,9 @@ var BCLS = (function(window, document) {
     api_response          = document.getElementById('api_response'),
     videos,
     totalCurrentVideos    = 0,
-    custom_fields;
+    custom_fields,
+    selected_field,
+    selected_field_value;
 
 
   /**
@@ -347,20 +349,24 @@ var BCLS = (function(window, document) {
             });
             break;
         case 'updateVideo':
-          va
-          endpoint = '/videos?limit=' + limit + '&offset=' + (limit * getVideoCallNumber);
+          var video = videos[updateVideoCallNumber],
+            requestBody = {};
+          endpoint = '/videos/' + video.id';
           options.url = cmsBaseURL + endpoint;
+          requestBody.custom_fields = {};
+          requestBody.custom_fields[selected_field] = selected_field_value;
+          options.requestBody = JSON.stringify(requestBody);
           apiRequest.textContent = options.url;
-          options.requestType = 'GET';
+          options.requestType = 'PATCH';
           makeRequest(options, function(response) {
-            getVideoCallNumber++;
-            if (getVideoCallNumber < totalCalls) {
+            updateVideoCallNumber++;
+            if (updateVideoCallNumber < totalCalls) {
               get_videos.textContent = 'Get Next Set of Videos';
             } else {
               get_videos.textContent = 'No More Videos';
               get_videos.setAttribute('disabled', disabled);
             }
-            videos = JSON.parse(response);
+            responseParsed = JSON.parse(response);
             logMessage(videos.length + ' videos retrieved');
             apiResponse.textContent = JSON.stringify(videos, null, '  ');
             createVideoList();
