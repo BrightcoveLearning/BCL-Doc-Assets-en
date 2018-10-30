@@ -9,6 +9,7 @@ var BCLS = (function(window, document) {
     offset                = 0,
     totalVideos           = 0,
     totalCalls            = 0,
+    totalUpdateCalls      = 0,
     getVideoCallNumber    = 0,
     updateVideoCallNumber = 0,
     videosCompleted       = 0,
@@ -230,12 +231,17 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         api_request.textContent = options.url;
         makeRequest(options, function(response) {
-          videosArray = videosArray.concat(JSON.parse(response));
+          videosArray = JSON.parse(response);
           api_response.textContent = JSON.stringify(videosArray, null, '  ');
-          callNumber++;
-          if (callNumber = totalCalls) {
+          getVideoCallNumber++;
+          if (getVideoCallNumber = totalCalls) {
             logMessage('There are no more videos to retrieve');
-          } 
+            get_videos.textContent = 'No more videos'
+            get_videos.setAttribute('disabled', 'disabled');
+          } else {
+            get_videos.textContent = 'Get Next 10 Videos';
+          }
+          createVideoList();
         });
         break;
       default:
