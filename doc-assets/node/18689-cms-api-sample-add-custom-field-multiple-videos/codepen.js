@@ -17,8 +17,8 @@ var BCLS = (function(window, document) {
     client_id_input     = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
     custom_field        = document.querySelector('#searchField'),
-    custom_field_value  = document.querySelector('#searchFieldValue'),
-    custom_field_values = document.querySelector('#searchFieldValues'),
+    custom_field_value  = document.querySelector('#custom_field_value'),
+    custom_field_values = document.querySelector('#custom_field_values'),
     videoCount          = document.getElementById('videoCount'),
     content,
     logger              = document.getElementById('logger'),
@@ -36,9 +36,6 @@ var BCLS = (function(window, document) {
     spanRenditionsTotalEl,
     spanRenditionsCountEl;
 
-  // date pickers
-  rome(fromDate);
-  rome(toDate);
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -183,13 +180,13 @@ var BCLS = (function(window, document) {
     idx = findObjectInArray(custom_fields, 'id', getSelectedValue(searchField));
     field = custom_fields[idx];
     if (field.type === 'string') {
-      hideElement(searchFieldValues);
-      showElement(searchFieldValue);
+      hideElement(custom_field_values);
+      showElement(custom_field_value);
     } else {
-      hideElement(searchFieldValue);
-      showElement(searchFieldValues);
+      hideElement(custom_field_value);
+      showElement(custom_field_values);
       // remove existing options
-      removeChildren(searchFieldValues);
+      removeChildren(custom_field_values);
       option = document.createElement('option');
       option.setAttribute('value', 'null');
       option.textContent = 'Do not search on custom fields';
@@ -200,31 +197,7 @@ var BCLS = (function(window, document) {
         option.textContent = field.enum_values[i];
         frag.appendChild(option);
       }
-      searchFieldValues.appendChild(frag);
-    }
-  }
-
-  function writeReport() {
-    var i,
-      iMax,
-      j,
-      jMax,
-      video;
-    if (sharedVideoData.length > 0) {
-      csvStr = '"ID","Name","Affiliate ID","Affiliate Name","Affiliate Video ID","Share Status",\r\n';
-      iMax = sharedVideoData.length;
-      for (i = 0; i < iMax; i += 1) {
-        video = sharedVideoData[i];
-        console.log('video', video);
-        // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.affiliate_id + '","' + video.affiliate_name + '","' + video.affiliate_video_id + '","' + video.share_status + '","' ;
-          csvStr += '\r\n';
-      }
-      csvData.textContent += csvStr;
-      // content = document.createTextNode('Finished! See the results or get the CSV data below.');
-      logMessage('Finished! Get the CSV data below.');
-      // reportDisplay.innerHTML = summaryReportStr + reportStr;
-      enableButtons();
+      custom_field_values.appendChild(frag);
     }
   }
 
@@ -261,19 +234,6 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(custom_fields, null, 2);
           logMessage('Custom fields retrieved');
           createCustomFieldOptions();
-        });
-        break;
-      case 'getAffiliates':
-        endpoint = '/channels/default/members';
-        options.url = cmsBaseURL + endpoint;
-        apiRequest.textContent = options.url;
-        options.requestType = 'GET';
-        makeRequest(options, function(response) {
-          affiliates = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(affiliates, null, '  ');
-          logMessage('Affiliates retrieved');
-          // get some videos
-          createRequest('getCount');
         });
         break;
       case 'getCount':
@@ -333,36 +293,6 @@ console.log('sharedVideos', sharedVideos);
             logMessage('All videos retrieved; checking for shares...');
             callNumber = 0;
             createRequest('getShares');
-          }
-        });
-        break;
-      case 'getShares':
-        endPoint = '/videos/' + sharedVideos[callNumber].id + '/shares';
-        options.url = cmsBaseURL + endPoint;
-        apiRequest.textContent = options.url;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          responseParsed = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
-          iMax = responseParsed.length;
-          for (i = 0; i < iMax; i++) {
-            var o = {};
-            o.id = sharedVideos[callNumber].id;
-            o.name = sharedVideos[callNumber].name;
-            o.affiliate_id = responseParsed[i].affiliate_id;
-            // look up affiliate name from get affiliates response
-            o.affiliate_name = affiliates[findObjectInArray(affiliates, 'account_id', responseParsed[i].affiliate_id)].account_name;
-            o.affiliate_video_id = responseParsed[i].affiliate_video_id;
-            o.share_status = responseParsed[i].status;
-            sharedVideoData.push(o);
-          }
-          callNumber++;
-          if (callNumber < totalSharedVideos) {
-            createRequest('getShares');
-          } else {
-            logMessage('Video sharing info retrieved; writing report...');
-            writeReport();
           }
         });
         break;
@@ -453,8 +383,8 @@ console.log('sharedVideos', sharedVideos);
     searchField.addEventListener('change', function() {
       createCustomFieldValueOptions();
     });
-    hideElement(searchFieldValues);
-    showElement(searchFieldValue);
+    hideElement(custom_field_values);
+    showElement(custom_field_value);
     getAccountInfo();
   }
 
@@ -466,17 +396,17 @@ console.log('sharedVideos', sharedVideos);
     if (isDefined(searchTags.value)) {
       tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
     }
-    if (searchFieldValue.getAttribute('style') === 'display:inline') {
-      if (isDefined(searchFieldValue.value)) {
+    if (custom_field_value.getAttribute('style') === 'display:inline') {
+      if (isDefined(custom_field_value.value)) {
         if (isDefined(searchField.value)) {
-          fieldsSearchString = '%2B' + searchField.value + ':' + encodeURI(searchFieldValue.value);
+          fieldsSearchString = '%2B' + searchField.value + ':' + encodeURI(custom_field_value.value);
         } else {
-          fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(searchFieldValue.value) + '"';
+          fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(custom_field_value.value) + '"';
         }
       }
     } else {
-      console.log('searchFieldValues');
-      fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(searchFieldValues)) + '"';
+      console.log('custom_field_values');
+      fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(custom_field_values)) + '"';
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
     fromDateValue = rome(fromDate).getDate();
