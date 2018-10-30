@@ -26,12 +26,6 @@ var BCLS = (function(window, document) {
     logger                = document.getElementById('logger'),
     api_request           = document.getElementById('api_request'),
     api_response          = document.getElementById('api_response'),
-    allButtons            = document.getElementsByName('button'),
-    pLogGettingVideos     = document.createElement('p'),
-    gettingVideoShares    = document.createElement('p'),
-    pLogFinish            = document.createElement('p'),
-    spanIntro2            = document.createElement('span'),
-    spanOf2               = document.createElement('span'),
     custom_fields;
 
 
@@ -94,28 +88,6 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * disables all buttons so user can't submit new request until current one finishes
-   */
-  function disableButtons() {
-    var i,
-      iMax = allButtons.length;
-    for (i = 0; i < iMax; i++) {
-      allButtons[i].setAttribute('disabled', 'disabled');
-    }
-  }
-
-  /**
-   * re-enables all buttons
-   */
-  function enableButtons() {
-    var i,
-      iMax = allButtons.length;
-    for (i = 0; i < iMax; i++) {
-      allButtons[i].removeAttribute('disabled');
-    }
-  }
-
-  /**
    * removes all children from an element
    * @param {htmlElement} el the element to empty
    */
@@ -123,7 +95,6 @@ var BCLS = (function(window, document) {
     while (el.firstChild) {
     el.removeChild(el.firstChild);
   }
-
 
   }
 
