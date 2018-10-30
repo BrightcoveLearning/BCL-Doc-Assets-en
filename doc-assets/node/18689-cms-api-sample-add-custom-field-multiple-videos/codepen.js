@@ -24,7 +24,7 @@ var BCLS = (function(window, document) {
     content,
     logger              = document.getElementById('logger'),
     api_request          = document.getElementById('api_request'),
-    apiResponse         = document.getElementById('apiResponse'),
+    api_response         = document.getElementById('api_response'),
     allButtons          = document.getElementsByName('button'),
     pLogGettingVideos   = document.createElement('p'),
     gettingVideoShares  = document.createElement('p'),
@@ -228,7 +228,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           custom_fields = JSON.parse(response).custom_fields;
-          apiResponse.textContent = JSON.stringify(custom_fields, null, 2);
+          api_response.textContent = JSON.stringify(custom_fields, null, 2);
           logMessage('Custom fields retrieved');
           createCustomFieldOptions();
         });
@@ -244,7 +244,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
           logMessage('Video count retrieved');
-          apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+          api_response.textContent = JSON.stringify(responseParsed, null, '  ');
           totalVideos = responseParsed.count;
           if (totalVideos === 0) {
             alert('No videos found; try changing or removing the search criteria');
@@ -267,7 +267,7 @@ var BCLS = (function(window, document) {
         api_request.textContent = options.url;
         makeRequest(options, function(response) {
           videosArray = videosArray.concat(JSON.parse(response));
-          apiResponse.textContent = JSON.stringify(videosArray, null, '  ');
+          api_response.textContent = JSON.stringify(videosArray, null, '  ');
           callNumber++;
           if (callNumber < totalCalls) {
             createRequest('custom_field_values');
