@@ -16,6 +16,7 @@ var BCLS = (function(window, document) {
     account_id_input    = document.getElementById('account_id'),
     client_id_input     = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
+    getVideos           = document.getElementById('getVideos'),
     custom_field        = document.querySelector('#searchField'),
     custom_field_value  = document.querySelector('#custom_field_value'),
     custom_field_values = document.querySelector('#custom_field_values'),
@@ -30,11 +31,7 @@ var BCLS = (function(window, document) {
     pLogFinish          = document.createElement('p'),
     spanIntro2          = document.createElement('span'),
     spanOf2             = document.createElement('span'),
-    spanRenditionsTotal = document.createElement('span'),
-    spanRenditionsCount = document.createElement('span'),
-    custom_fields,
-    spanRenditionsTotalEl,
-    spanRenditionsCountEl;
+    custom_fields;
 
 
   /**
@@ -255,10 +252,10 @@ var BCLS = (function(window, document) {
             totalVideos = getSelectedValue(videoCount);
           }
           totalCalls = Math.ceil(totalVideos / limit);
-          createRequest('getVideos');
+          createRequest('custom_field_values');
         });
         break;
-      case 'getVideos':
+      case 'custom_field_values':
         var offset = (limit * callNumber);
         endPoint = '/videos?limit=' + limit + '&offset=' + offset;
         if (isDefined(searchString)) {
@@ -273,7 +270,7 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(videosArray, null, '  ');
           callNumber++;
           if (callNumber < totalCalls) {
-            createRequest('getVideos');
+            createRequest('custom_field_values');
           } else {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
@@ -374,7 +371,7 @@ console.log('sharedVideos', sharedVideos);
 
   function init() {
     // event listeners
-    useMyAccount.addEventListener('click', function() {
+    getVideos.addEventListener('click', function() {
       getAccountInfo();
     });
     searchField.addEventListener('change', function() {
