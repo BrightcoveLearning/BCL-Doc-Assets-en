@@ -164,6 +164,53 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * get array of values for checked boxes in a collection
+   * @param {htmlElementCollection} checkBoxCollection collection of checkbox elements
+   * @return {Array} array of the values of the checked boxes
+   */
+  function getCheckedBoxValues(checkBoxCollection) {
+    var checkedValues = [],
+      i,
+      iMax;
+    if (checkBoxCollection) {
+      iMax = checkBoxCollection.length;
+      for (i = 0; i < iMax; i++) {
+        if (checkBoxCollection[i].checked === true) {
+          checkedValues.push(checkBoxCollection[i].value);
+        }
+      }
+      return checkedValues;
+    } else {
+      console.log('Error: no input received');
+      return null;
+    }
+  }
+
+  /**
+   * selects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function selectAllCheckboxes(checkboxCollection) {
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].setAttribute('checked', 'checked');
+    }
+  }
+
+  /**
+   * deselects all checkboxes in a collection
+   * @param {htmlElementCollection} checkboxCollection a collection of the checkbox elements, usually gotten by document.getElementsByName()
+   */
+  function deselectAllCheckboxes(checkboxCollection) {
+    var i,
+      iMax = checkboxCollection.length;
+    for (i = 0; i < iMax; i += 1) {
+      checkboxCollection[i].removeAttribute('checked');
+    }
+  }
+
+  /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
@@ -220,30 +267,72 @@ var BCLS = (function(window, document) {
           createRequest('custom_field_values');
         });
         break;
-      case 'getVideos':
-        var offset = (limit * callNumber);
-        endPoint = '/videos?limit=' + limit + '&offset=' + offset;
-        if (isDefined(searchString)) {
-          endPoint += '&q=' + searchString;
-        }
-        options.url = cmsBaseURL + endPoint;
-        api_request.textContent = options.url;
-        options.requestType = 'GET';
-        api_request.textContent = options.url;
-        makeRequest(options, function(response) {
-          videosArray = JSON.parse(response);
-          api_response.textContent = JSON.stringify(videosArray, null, '  ');
-          getVideoCallNumber++;
-          if (getVideoCallNumber = totalCalls) {
-            logMessage('There are no more videos to retrieve');
-            get_videos.textContent = 'No more videos'
-            get_videos.setAttribute('disabled', 'disabled');
-          } else {
-            get_videos.textContent = 'Get Next 10 Videos';
-          }
-          createVideoList();
-        });
-        break;
+        case 'getVideos':
+          endpoint = '/videos?limit=' + limit + '&offset=' + (limit * getVideoCallNumber);
+          options.url = cmsBaseURL + endpoint;
+          apiRequest.textContent = options.url;
+          options.requestType = 'GET';
+          makeRequest(options, function(response) {
+            getVideoCallNumber++;
+            if (getVideoCallNumber < totalCalls) {
+              get_videos.textContent = 'Get Next Set of Videos';
+            } else {
+              get_videos.textContent = 'No More Videos';
+              get_videos.setAttribute('disabled', disabled);
+            }
+            videos = JSON.parse(response);
+            logMessage(videos.length + ' videos retrieved');
+            apiResponse.textContent = JSON.stringify(videos, null, '  ');
+            input = document.createElement('input');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'videosChkAll');
+            input.setAttribute('id', 'videosChkAll');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', 'all');
+            label.setAttribute('for', 'videosChkAll');
+            label.setAttribute('style', 'color:#F3951D;');
+            text = document.createTextNode('Select All');
+            label.appendChild(text);
+            br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
+              iMax = videos.length;
+              for (i = 0; i < iMax; i++) {
+                input = document.createElement('input');
+                space = document.createTextNode(' ');
+                label = document.createElement('label');
+                input.setAttribute('name', 'videosChk');
+                input.setAttribute('id', 'field' + videos[i].id);
+                input.setAttribute('type', 'checkbox');
+                input.setAttribute('value', videos[i].id);
+                label.setAttribute('for', 'field' + videos[i].id);
+                text = document.createTextNode(videos[i].name);
+                label.appendChild(text);
+                br = document.createElement('br');
+                fragment.appendChild(input);
+                fragment.appendChild(space);
+                fragment.appendChild(label);
+                fragment.appendChild(br);
+              }
+              // clear videos videos
+              removeChildren(video_list);
+              video_list.appendChild(fragment);
+              // get references to checkboxes
+              videosCollection = document.getElementsByName('videosChk');
+              videosSelectAll = document.getElementById('videosChkAll');
+              // add event listener for select allows
+              videosSelectAll.addEventListener('change', function() {
+                if (this.checked) {
+                  selectAllCheckboxes(videosCollection);
+                } else {
+                  deselectAllCheckboxes(videosCollection);
+                }
+              });
+            });
+            break;
       default:
         console.log('Something wrong; should never get here');
         break;
