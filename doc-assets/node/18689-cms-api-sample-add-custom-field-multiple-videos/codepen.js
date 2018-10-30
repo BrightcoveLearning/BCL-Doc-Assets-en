@@ -16,7 +16,7 @@ var BCLS = (function(window, document) {
     account_id_input    = document.getElementById('account_id'),
     client_id_input     = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
-    getVideos           = document.querySelector('#getVideos'),
+    get_videos           = document.querySelector('#get_videos'),
     custom_field        = document.querySelector('#custom_field'),
     custom_field_value  = document.querySelector('#custom_field_value'),
     custom_field_values = document.querySelector('#custom_field_values'),
@@ -371,7 +371,7 @@ console.log('sharedVideos', sharedVideos);
 
   function init() {
     // event listeners
-    getVideos.addEventListener('click', function() {
+    get_videos.addEventListener('click', function() {
       getAccountInfo();
     });
     searchField.addEventListener('change', function() {
