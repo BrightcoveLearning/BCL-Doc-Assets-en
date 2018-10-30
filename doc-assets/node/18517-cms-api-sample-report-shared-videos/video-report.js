@@ -253,6 +253,7 @@ var BCLS = (function(window, document) {
       option = document.createElement('option');
       option.setAttribute('value', 'null');
       option.textContent = 'Do not search on custom fields';
+      frag.appendChild(option);
       iMax = field.enum_values.length;
       for (i = 0; i < iMax; i++) {
         option = document.createElement('option');
@@ -536,7 +537,9 @@ console.log('sharedVideos', sharedVideos);
       }
     } else {
       console.log('searchFieldValues');
-      fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(searchFieldValues)) + '"';
+      if (getSelectedValue(searchFieldValues) !== 'null') {
+        fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(searchFieldValues)) + '"';
+      }
     }
     dateTypeValue = getSelectedValue(dateRangeType).value;
     fromDateValue = rome(fromDate).getDate();
