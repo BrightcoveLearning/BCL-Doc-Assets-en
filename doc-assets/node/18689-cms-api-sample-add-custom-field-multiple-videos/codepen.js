@@ -26,6 +26,7 @@ var BCLS = (function(window, document) {
     api_request           = document.getElementById('api_request'),
     api_response          = document.getElementById('api_response'),
     videos,
+    totalCurrentVideos    = 0,
     custom_fields;
 
 
@@ -339,6 +340,7 @@ var BCLS = (function(window, document) {
               get_videos.setAttribute('disabled', disabled);
             }
             videos = JSON.parse(response);
+            totalCurrentVideos = videos.length;
             logMessage(videos.length + ' videos retrieved');
             apiResponse.textContent = JSON.stringify(videos, null, '  ');
             createVideoList(videos);
