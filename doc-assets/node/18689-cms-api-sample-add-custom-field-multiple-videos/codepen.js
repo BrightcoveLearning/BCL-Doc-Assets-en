@@ -23,7 +23,7 @@ var BCLS = (function(window, document) {
     videoCount          = document.getElementById('videoCount'),
     content,
     logger              = document.getElementById('logger'),
-    apiRequest          = document.getElementById('apiRequest'),
+    api_request          = document.getElementById('api_request'),
     apiResponse         = document.getElementById('apiResponse'),
     allButtons          = document.getElementsByName('button'),
     pLogGettingVideos   = document.createElement('p'),
@@ -224,7 +224,7 @@ var BCLS = (function(window, document) {
       case 'getCustomFields':
         endpoint = '/video_fields';
         options.url = cmsBaseURL + endpoint;
-        apiRequest.textContent = options.url;
+        api_request.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           custom_fields = JSON.parse(response).custom_fields;
@@ -240,7 +240,7 @@ var BCLS = (function(window, document) {
         }
         options.url = cmsBaseURL + endPoint;
         options.requestType = 'GET';
-        apiRequest.textContent = options.url;
+        api_request.textContent = options.url;
         makeRequest(options, function(response) {
           responseParsed = JSON.parse(response);
           logMessage('Video count retrieved');
@@ -262,9 +262,9 @@ var BCLS = (function(window, document) {
           endPoint += '&q=' + searchString;
         }
         options.url = cmsBaseURL + endPoint;
-        apiRequest.textContent = options.url;
+        api_request.textContent = options.url;
         options.requestType = 'GET';
-        apiRequest.textContent = options.url;
+        api_request.textContent = options.url;
         makeRequest(options, function(response) {
           videosArray = videosArray.concat(JSON.parse(response));
           apiResponse.textContent = JSON.stringify(videosArray, null, '  ');
