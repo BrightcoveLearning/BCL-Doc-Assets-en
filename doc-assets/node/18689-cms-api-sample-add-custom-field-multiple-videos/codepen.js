@@ -219,7 +219,7 @@ var BCLS = (function(window, document) {
           createRequest('custom_field_values');
         });
         break;
-      case 'custom_field_values':
+      case 'getVideos':
         var offset = (limit * callNumber);
         endPoint = '/videos?limit=' + limit + '&offset=' + offset;
         if (isDefined(searchString)) {
@@ -233,28 +233,9 @@ var BCLS = (function(window, document) {
           videosArray = videosArray.concat(JSON.parse(response));
           api_response.textContent = JSON.stringify(videosArray, null, '  ');
           callNumber++;
-          if (callNumber < totalCalls) {
-            createRequest('custom_field_values');
-          } else {
-            iMax = videosArray.length;
-            for (i = 0; i < iMax; i++) {
-              var o = {};
-              if (isDefined(videosArray[i].sharing)) {
-                o.id = videosArray[i].id;
-                o.name = videosArray[i].name;
-                sharedVideos.push(o);
-console.log('sharedVideos', sharedVideos);
-              }
-            }
-            if (sharedVideos.length === 0) {
-              alert('None of the returned videos are shared');
-              return;
-            }
-            totalSharedVideos = sharedVideos.length;
-            logMessage('All videos retrieved; checking for shares...');
-            callNumber = 0;
-            createRequest('getShares');
-          }
+          if (callNumber = totalCalls) {
+            logMessage('There are no more videos to retrieve');
+          } 
         });
         break;
       default:
