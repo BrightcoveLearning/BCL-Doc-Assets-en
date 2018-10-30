@@ -148,11 +148,6 @@ var BCLS = (function(window, document) {
       frag = document.createDocumentFragment();
     // remove any existing options
     removeChildren(searchField);
-    // set the 'any' option
-    option = document.createElement('option');
-    option.setAttribute('value', 'custom_fields');
-    option.textContent = 'any';
-    frag.appendChild(option);
     iMax = custom_fields.length;
     for (i = 0; i < iMax; i++) {
       field = custom_fields[i];
@@ -184,9 +179,6 @@ var BCLS = (function(window, document) {
       showElement(custom_field_values);
       // remove existing options
       removeChildren(custom_field_values);
-      option = document.createElement('option');
-      option.setAttribute('value', 'null');
-      option.textContent = 'Do not search on custom fields';
       iMax = field.enum_values.length;
       for (i = 0; i < iMax; i++) {
         option = document.createElement('option');
