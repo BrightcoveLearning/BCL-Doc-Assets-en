@@ -209,6 +209,57 @@ var BCLS = (function(window, document) {
     }
   }
 
+  function createVideoList(videos) {
+    input = document.createElement('input');
+    space = document.createTextNode(' ');
+    label = document.createElement('label');
+    input.setAttribute('name', 'videosChkAll');
+    input.setAttribute('id', 'videosChkAll');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('value', 'all');
+    label.setAttribute('for', 'videosChkAll');
+    label.setAttribute('style', 'color:#F3951D;');
+    text = document.createTextNode('Select All');
+    label.appendChild(text);
+    br = document.createElement('br');
+    fragment.appendChild(input);
+    fragment.appendChild(space);
+    fragment.appendChild(label);
+    fragment.appendChild(br);
+      iMax = videos.length;
+      for (i = 0; i < iMax; i++) {
+        input = document.createElement('input');
+        space = document.createTextNode(' ');
+        label = document.createElement('label');
+        input.setAttribute('name', 'videosChk');
+        input.setAttribute('id', 'field' + videos[i].id);
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('value', videos[i].id);
+        label.setAttribute('for', 'field' + videos[i].id);
+        text = document.createTextNode(videos[i].name);
+        label.appendChild(text);
+        br = document.createElement('br');
+        fragment.appendChild(input);
+        fragment.appendChild(space);
+        fragment.appendChild(label);
+        fragment.appendChild(br);
+      }
+      // clear videos videos
+      removeChildren(video_list);
+      video_list.appendChild(fragment);
+      // get references to checkboxes
+      videosCollection = document.getElementsByName('videosChk');
+      videosSelectAll = document.getElementById('videosChkAll');
+      // add event listener for select allows
+      videosSelectAll.addEventListener('change', function() {
+        if (this.checked) {
+          selectAllCheckboxes(videosCollection);
+        } else {
+          deselectAllCheckboxes(videosCollection);
+        }
+      });
+  }
+
   /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
