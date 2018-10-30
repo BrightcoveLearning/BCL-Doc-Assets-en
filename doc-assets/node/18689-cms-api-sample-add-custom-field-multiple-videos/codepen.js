@@ -61,16 +61,6 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * remove spaces from a string
-   * @param {String} str string to process
-   * @return {String} trimmed string
-   */
-  function removeSpaces(str) {
-    str = str.replace(/\s/g, '');
-    return str;
-  }
-
-  /**
    * hide an element
    * @param {htmlElement} el the element to hide
    */
@@ -85,18 +75,6 @@ var BCLS = (function(window, document) {
   function showElement(el) {
     el.setAttribute('style', 'display:inline');
   }
-
-  /**
-   * get selected value for single select element
-   * @param {htmlElement} e the select element
-   * @return {Object} object containing the `value`, text, and selected `index`
-   */
-  function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value;
-      return val;
-  }
-
 
   /**
    * find index of an object in array of objects
