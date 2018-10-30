@@ -110,20 +110,20 @@
 	<li>
 	<p>At the bottom of the file, add the <code class="notranslate">repositories</code> section and alter the <code class="notranslate">dependencies</code> section as shown here:</p>
 
-<pre class="line-numbers" data-start="1">
+	<pre class="line-numbers" data-start="1">
 <code class="notranslate language-java"><span class="bcls-highlight">repositories {
-maven {
-url 'http://repo.brightcove.com/releases'
-}
+  maven {
+      url 'http://repo.brightcove.com/releases'
+  }
 }</span>
 
 dependencies {
-implementation fileTree(dir: 'libs', include: ['*.jar'])
-implementation 'com.android.support:appcompat-v7:26.1.0'
-implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-testImplementation 'junit:junit:4.12'
-androidTestImplementation 'com.android.support.test:runner:1.0.1'
-androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.android.support:appcompat-v7:26.1.0'
+  implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+  testImplementation 'junit:junit:4.12'
+  androidTestImplementation 'com.android.support.test:runner:1.0.1'
+  androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 <span class="bcls-highlight">  implementation "com.brightcove.player:exoplayer2:6.+"</span>
 }</code></pre>
 
@@ -131,8 +131,8 @@ androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1
 	<ul>
 		<li><a href="https://google.github.io/ExoPlayer/">Google's ExoPlayer</a> is an open source, application-level media player for Android. Notice that we are using the ExoPlayer 2 framework. For details, see the <a href="/node/18467">Migrating to ExoPlayer 2 Framework</a> document.</li>
 		<!-- <li>
-						Setting the <code class="notranslate">transitive</code> option to <code class="notranslate">true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin.
-					</li> -->
+                  Setting the <code class="notranslate">transitive</code> option to <code class="notranslate">true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin.
+                </li> -->
 		<li>
 		<p>The ExoPlayer dependency includes the Native SDK for Android, so you do not have to include the SDK separately. It is recommended that you use the ExoPlayer.If you are not using the exoplayer, you can use the following:</p>
 		<code class="notranslate">implementation 'com.brightcove.player:android-sdk:6.+'</code></li>
@@ -164,21 +164,21 @@ androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1
 	<li>
 	<p>Remove the existing <code class="notranslate">TextView</code> section and add a <code class="notranslate">BrightcoveExoPlayerVideoView</code> section so the resulting XML appears as follows. Note for later use the <code class="notranslate">id</code> of the view is named <code class="notranslate">brightcove_video_view</code>.</p>
 
-<pre class="line-numbers" data-start="1">
+	<pre class="line-numbers" data-start="1">
 <code class="notranslate language-java">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context="com.brightcove.playvideos.MainActivity"&gt;
+    &lt;android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.brightcove.playvideos.MainActivity"&gt;
 
-<span class="bcls-highlight">&lt;com.brightcove.player.view.BrightcoveExoPlayerVideoView
-	android:id="@+id/brightcove_video_view"
-	android:layout_width="match_parent"
-	android:layout_height="280dp"
-	android:layout_gravity="center_horizontal|top"/&gt;</span>
-&lt;/android.support.constraint.ConstraintLayout&gt;</code></pre>
+    <span class="bcls-highlight">&lt;com.brightcove.player.view.BrightcoveExoPlayerVideoView
+        android:id="@+id/brightcove_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_gravity="center_horizontal|top"/&gt;</span>
+    &lt;/android.support.constraint.ConstraintLayout&gt;</code></pre>
 	</li>
 </ol>
 
@@ -189,57 +189,57 @@ androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1
 	<li>
 	<p>Just after the <code class="notranslate">&lt;application&gt;</code> code block, but above the ending <code class="notranslate">&lt;/manifest&gt;</code> tag, insert the following to enable Internet access.</p>
 
-<pre class="line-numbers" data-start="1">
+	<pre class="line-numbers" data-start="1">
 <code class="notranslate language-java">&lt;uses-permission android:name="android.permission.INTERNET"/&gt;</code></pre>
 	</li>
 	<li>Rebuild the project now to pick up these changes.</li>
 </ol>
 <!-- <h3>Import the appropriate classes</h3>
-								<ol class="bcls-tasklist">
-									<li><p>If it is not already open (which it should be), open the <code class="notranslate">app/java/com.brightcove.playvideos/MainActivity.java</code> file.</p>
-										<aside class="bcls-aside bcls-aside--information">Of course, as is standard Android Studio functionality, as you use classes they will automatically be imported. It is suggested you take advantage of this functionality, and not add the import statements in the next step.</aside>
-									</li>
-									<li><p>Just below the package name, the following list of classes will be added automatically as you run through the rest of this guide. Use this list as a reference for later steps.</p>
-									<pre class="line-numbers video-cloud-only" data-start="3"><code class="notranslate language-java">import com.brightcove.player.edge.Catalog;
-		import com.brightcove.player.edge.PlaylistListener;
-		import com.brightcove.player.edge.VideoListener;
-		import com.brightcove.player.event.EventEmitter;
-		import com.brightcove.player.media.DeliveryType;
-		import com.brightcove.player.model.Playlist;
-		import com.brightcove.player.model.Video;
-		import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
-		import com.brightcove.player.view.BrightcovePlayer;
-		import com.brightcove.player.analytics.Analytics;</code></pre>
-									<pre class="line-numbers player-only" data-start="3"><code class="notranslate language-java">import com.brightcove.player.media.DeliveryType;
-		import com.brightcove.player.model.Video;
-		import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
-		import com.brightcove.player.view.BrightcovePlayer;
-		import com.brightcove.player.analytics.Analytics;</code></pre>
-								</li>
-								</ol>
+                      <ol class="bcls-tasklist">
+                        <li><p>If it is not already open (which it should be), open the <code class="notranslate">app/java/com.brightcove.playvideos/MainActivity.java</code> file.</p>
+                          <aside class="bcls-aside bcls-aside--information">Of course, as is standard Android Studio functionality, as you use classes they will automatically be imported. It is suggested you take advantage of this functionality, and not add the import statements in the next step.</aside>
+                        </li>
+                        <li><p>Just below the package name, the following list of classes will be added automatically as you run through the rest of this guide. Use this list as a reference for later steps.</p>
+                        <pre class="line-numbers video-cloud-only" data-start="3"><code class="notranslate language-java">import com.brightcove.player.edge.Catalog;
+          import com.brightcove.player.edge.PlaylistListener;
+          import com.brightcove.player.edge.VideoListener;
+          import com.brightcove.player.event.EventEmitter;
+          import com.brightcove.player.media.DeliveryType;
+          import com.brightcove.player.model.Playlist;
+          import com.brightcove.player.model.Video;
+          import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
+          import com.brightcove.player.view.BrightcovePlayer;
+          import com.brightcove.player.analytics.Analytics;</code></pre>
+                        <pre class="line-numbers player-only" data-start="3"><code class="notranslate language-java">import com.brightcove.player.media.DeliveryType;
+          import com.brightcove.player.model.Video;
+          import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
+          import com.brightcove.player.view.BrightcovePlayer;
+          import com.brightcove.player.analytics.Analytics;</code></pre>
+                      </li>
+                      </ol>
 
-								<h4>Run the application</h4>
-									<p>You are now going to run the application. This is not so you will see any video playing, but it will force a Gradle build. Once this is done, the app will be aware of the Brightcove Player SDK for Android and you will get typing help when entering Brightcove class names.</p>
-									<ol class="bcls-tasklist">
-											<li>Connect an Android device, if you have one, to your computer.</li>
-											<li>You may choose one of several ways to run the app:
-										<ul>
-											<li>From the top menu select <strong>Run > Run 'app'</strong></li>
-											<li>Click the run icon in the toolbar. <img alt="run app" src="../guides/assets/studioqs-run-app.png"></li>
-											<li>Right click on the project and select <strong>Run 'PlayVideos - App Eng...'</strong></li>
-										</ul>
-										</li>
-									</ol>
-									<ol class="bcls-tasklist">
-										<li><p>As shown in the following screenshot, you can choose your device or the simulator:</p>
-											<figure class="bcls-figure">
-												 <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/getting-started/studio-quick-start/studioqs-device-choose.png" alt="Select device or simulator">
-												 <figcaption class="bcls-caption--image">Select device or simulator</figcaption>
-											</figure>
-										</li>
-										<li>Click <strong>OK</strong>.</li>
-										<li>You will now see just a blank, black rectangle representing the empty <code class="notranslate">BrightcoveVideoView</code>.</li>
-									</ol> -->
+                      <h4>Run the application</h4>
+                        <p>You are now going to run the application. This is not so you will see any video playing, but it will force a Gradle build. Once this is done, the app will be aware of the Brightcove Player SDK for Android and you will get typing help when entering Brightcove class names.</p>
+                        <ol class="bcls-tasklist">
+                            <li>Connect an Android device, if you have one, to your computer.</li>
+                            <li>You may choose one of several ways to run the app:
+                          <ul>
+                            <li>From the top menu select <strong>Run > Run 'app'</strong></li>
+                            <li>Click the run icon in the toolbar. <img alt="run app" src="../guides/assets/studioqs-run-app.png"></li>
+                            <li>Right click on the project and select <strong>Run 'PlayVideos - App Eng...'</strong></li>
+                          </ul>
+                          </li>
+                        </ol>
+                        <ol class="bcls-tasklist">
+                          <li><p>As shown in the following screenshot, you can choose your device or the simulator:</p>
+                            <figure class="bcls-figure">
+                               <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/getting-started/studio-quick-start/studioqs-device-choose.png" alt="Select device or simulator">
+                               <figcaption class="bcls-caption--image">Select device or simulator</figcaption>
+                            </figure>
+                          </li>
+                          <li>Click <strong>OK</strong>.</li>
+                          <li>You will now see just a blank, black rectangle representing the empty <code class="notranslate">BrightcoveVideoView</code>.</li>
+                        </ol> -->
 
 <h3>Create the View and play a video</h3>
 
@@ -247,7 +247,7 @@ androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1
 	<li>
 	<p>Return to the <code class="notranslate">MainActivity.java</code> file. For the <code class="notranslate">MainActivity</code> class, extend the <code class="notranslate">BrightcovePlayer</code> class. This provides default lifecycle management for your app.</p>
 
-<pre class="line-numbers" data-start="13">
+	<pre class="line-numbers" data-start="13">
 <code class="notranslate language-java">public class MainActivity extends BrightcovePlayer {</code></pre>
 	</li>
 	<li>
@@ -259,88 +259,85 @@ androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1
 		</li>
 	</ul>
 
-<pre class="line-numbers" data-start="13">
+	<pre class="line-numbers" data-start="13">
 <code class="notranslate language-java">public class MainActivity extends BrightcovePlayer {
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 <span class="bcls-highlight">    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);</span></code></pre>
 	</li>
 	<li class="player-only">
 	<p>Next, you need to send your Brightcove Player Account ID to Brightcove using the analytics <code class="notranslate">setAccount()</code> method.</p>
 
-<pre class="line-numbers" data-start="22">
+	<pre class="line-numbers" data-start="22">
 <code class="notranslate language-java">Analytics analytics = brightcoveVideoView.getAnalytics();
-analytics.setAccount(&quot;<span class="bcls-input">your account Id</span>&quot;);</code></pre>
+analytics.setAccount("<span class="bcls-input">your account Id</span>");</code></pre>
 	</li>
 	<li class="video-cloud-only">
 	<p><strong>Optional:</strong> If you override the <code class="notranslate">BrightcoveExoPlayerVideoView</code> class or do not use the Brightcove player and catalog, you need to send your Video Cloud Publisher ID to Video Cloud Analytics. You can do this by using the analytics <code class="notranslate">setAccount()</code> method. This allows you to view data for this app in Video Cloud Analytics.</p>
 
-<pre class="line-numbers" data-start="22">
+	<pre class="line-numbers" data-start="22">
 <code class="notranslate language-java">Analytics analytics = brightcoveVideoView.getAnalytics();
-analytics.setAccount(&quot;<span class="bcls-input">your account Id</span>&quot;);</code></pre>
+analytics.setAccount("<span class="bcls-input">your account Id</span>");</code></pre>
 
 	<aside class="bcls-aside bcls-aside--tip video-cloud-only">For details about sending data to Video Cloud Analytics, see the <a href="/node/18214">Using Brightcove Analytics</a> guide.</aside>
 	</li>
 	<li>
-		<p>
-			Create a video object from your video hosted on a remote server. Set the <code>DeliveryType</code> to match the type of video you have.
-		</p>
-<pre class="line-numbers" data-start="26">
-<code class="notranslate language-java">Video video = Video.createVideo(&quot;https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8&quot;,
-DeliveryType.HLS);</code></pre>
+	<p>Create a video object from your video hosted on a remote server. Set the <code>DeliveryType</code> to match the type of video you have.</p>
+
+	<pre class="line-numbers" data-start="26">
+<code class="notranslate language-java">Video video = Video.createVideo("https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8",
+  DeliveryType.HLS);</code></pre>
 	</li>
 	<li>
-		<p>
-			Load a remote image to be used as the poster image before video playback starts.
-		</p>
-<pre class="line-numbers" data-start="29">
+	<p>Load a remote image to be used as the poster image before video playback starts.</p>
+
+	<pre class="line-numbers" data-start="29">
 <code class="notranslate language-java">try {
-java.net.URI myposterImage = new java.net.URI(&quot;https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png&quot;);
-video.getProperties().put(Video.Fields.STILL_IMAGE_URI, myposterImage);
+  java.net.URI myposterImage = new java.net.URI("https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png");
+  video.getProperties().put(Video.Fields.STILL_IMAGE_URI, myposterImage);
 } catch (URISyntaxException e) {
-e.printStackTrace();
+  e.printStackTrace();
 }</code></pre>
 	</li>
 	<li>
-		<p>
-			Add the video to the view and start video playback.
-		</p>
-<pre class="line-numbers" data-start="37">
+	<p>Add the video to the view and start video playback.</p>
+
+	<pre class="line-numbers" data-start="37">
 <code class="notranslate language-java">brightcoveVideoView.add(video);
 brightcoveVideoView.start();</code></pre>
 	</li>
 	<li>
 	<p>Check to be sure your <code class="notranslate">onCreate()</code> method appears as follows:</p>
 
-<pre class="line-numbers" data-start="15">
+	<pre class="line-numbers" data-start="15">
 <code class="notranslate language-java">@Override
-protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
-brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
 
-// Optional: For Brightcove Player customers to register their apps
-Analytics analytics = brightcoveVideoView.getAnalytics();
-analytics.setAccount(&quot;<span class="bcls-input">your account Id</span>&quot;);
+    // Optional: For Brightcove Player customers to register their apps
+    Analytics analytics = brightcoveVideoView.getAnalytics();
+    analytics.setAccount("<span class="bcls-input">your account Id</span>");
 
-// Define a video from a remote server
-Video video = Video.createVideo(&quot;https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8&quot;, DeliveryType.HLS);
+    // Define a video from a remote server
+    Video video = Video.createVideo("https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8", DeliveryType.HLS);
 
-// Load a remote poster image
-try {
-	java.net.URI myposterImage = new java.net.URI(&quot;https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png&quot;);
-	video.getProperties().put(Video.Fields.STILL_IMAGE_URI, myposterImage);
-} catch (URISyntaxException e) {
-	e.printStackTrace();
-}
+    // Load a remote poster image
+    try {
+        java.net.URI myposterImage = new java.net.URI("https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png");
+        video.getProperties().put(Video.Fields.STILL_IMAGE_URI, myposterImage);
+    } catch (URISyntaxException e) {
+        e.printStackTrace();
+    }
 
-// Add video to the view
-brightcoveVideoView.add(video);
-// Start video playback
-brightcoveVideoView.start();
-}</code></pre>
+    // Add video to the view
+    brightcoveVideoView.add(video);
+    // Start video playback
+    brightcoveVideoView.start();
+  }</code></pre>
 	</li>
 	<li>
 	<p>Run or debug the application to see the video playing.</p>
@@ -349,18 +346,18 @@ brightcoveVideoView.start();
 	</li>
 </ol>
 <!--
-								<h3>Add controls to the player</h3>
-								<p>You should have seen the default Android player controls when you ran your app in the last section. Now, you will use the Brightcove player controls.</p>
-								<ol start="31">
-									<li>Add a blank line just after the instantiation of the <code class="notranslate">BrightcoveVideoView</code> and before adding the video.</li>
-									<li><p>In this position add the following code to add controls to the player.</p>
-									<p><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="59-60"></code></p></li>
-									<li><p>Be sure your <code class="notranslate">onCreate()</code> method appears as follows:</p>
-									<p class="video-cloud-only"><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="52-64"></code></p>
-									<p class="player-only"><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="160-175"></code></p></li>
-									<li>Run the application and you will see the video playing, now with the controls visible. If you don't see the controls, tap the screen and they will appear.</li>
-								</ol>
-		--></section>
+                      <h3>Add controls to the player</h3>
+                      <p>You should have seen the default Android player controls when you ran your app in the last section. Now, you will use the Brightcove player controls.</p>
+                      <ol start="31">
+                        <li>Add a blank line just after the instantiation of the <code class="notranslate">BrightcoveVideoView</code> and before adding the video.</li>
+                        <li><p>In this position add the following code to add controls to the player.</p>
+                        <p><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="59-60"></code></p></li>
+                        <li><p>Be sure your <code class="notranslate">onCreate()</code> method appears as follows:</p>
+                        <p class="video-cloud-only"><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="52-64"></code></p>
+                        <p class="player-only"><code data-gist-id="9b3845c46244588687f7" data-gist-hide-footer="true" data-gist-line="160-175"></code></p></li>
+                        <li>Run the application and you will see the video playing, now with the controls visible. If you don't see the controls, tap the screen and they will appear.</li>
+                      </ol>
+          --></section>
 
 <section class="bcls-section video-cloud-only">
 <h2 id="Get_and_play_a_video">Get and play a video</h2>
@@ -376,15 +373,15 @@ brightcoveVideoView.start();
 	<li>
 	<p>Confirm your <code class="notranslate">onCreate()</code> method appears as follows:</p>
 
-<pre class="line-numbers" data-start="13">
+	<pre class="line-numbers" data-start="13">
 <code class="notranslate language-java">public class MainActivity extends BrightcovePlayer {
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
-brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
-}
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+  }
 }</code></pre>
 	</li>
 </ol>
@@ -395,23 +392,23 @@ brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcov
 	<li>
 	<p>Define the values for your account id, video id and policy key. In your project, update the <code class="notranslate">res/values/strings.xml</code> file as follows:</p>
 
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;resources&gt;
+  &lt;resources&gt;
 
-&lt;!-- Application name --&gt;
-&lt;string name="app_name"&gt;PlayVideos&lt;/string&gt;
+      &lt;!-- Application name --&gt;
+      &lt;string name="app_name"&gt;PlayVideos&lt;/string&gt;
 
-&lt;!-- A sample Brightcove Edge Account ID --&gt;
-&lt;string name="account"&gt;<span class="bcls-input">your account id</span>&lt;/string&gt;
+      &lt;!-- A sample Brightcove Edge Account ID --&gt;
+      &lt;string name="account"&gt;<span class="bcls-input">your account id</span>&lt;/string&gt;
 
-&lt;!-- A sample Brightcove Edge Policy Key --&gt;
-&lt;string name="policy"&gt;<span class="bcls-input">your policy key</span>&lt;/string&gt;
+      &lt;!-- A sample Brightcove Edge Policy Key --&gt;
+      &lt;string name="policy"&gt;<span class="bcls-input">your policy key</span>&lt;/string&gt;
 
-&lt;!-- A sample Brightcove Video ID --&gt;
-&lt;string name="videoId"&gt;<span class="bcls-input">your video id</span>&lt;/string&gt;
+      &lt;!-- A sample Brightcove Video ID --&gt;
+      &lt;string name="videoId"&gt;<span class="bcls-input">your video id</span>&lt;/string&gt;
 
-&lt;/resources&gt;</code></pre>
+  &lt;/resources&gt;</code></pre>
 	</li>
 	<li>
 	<p>Add the following code:</p>
@@ -423,12 +420,12 @@ brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcov
 		</li>
 	</ul>
 
-<pre class="line-numbers" data-start="21">
+	<pre class="line-numbers" data-start="21">
 <code class="notranslate language-java">// Get the event emitter from the SDK and create a catalog request to fetch a video from the
 // Brightcove Edge service, given a video id, an account id and a policy key.
 <span class="bcls-highlight">EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
 Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));</span>
-</code></pre>
+  </code></pre>
 
 	<aside class="bcls-aside bcls-aside--information">Notes:
 	<ul>
@@ -442,17 +439,17 @@ Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getStri
 	<p>Use the Catalog's <code class="notranslate">findVideoByID()</code> method with your video ID and a <code class="notranslate">VideoListener</code> for the callback.</p>
 	<!--				<p>For this example, select the  <code class="notranslate">VideoListener</code> associated with <code class="notranslate">com.brightcove.player.media</code>.</p>-->
 
-<pre class="line-numbers" data-start="26">
+	<pre class="line-numbers" data-start="26">
 <code class="notranslate language-java">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
 
-// Add the video found to the queue with add().
-// Start playback of the video with start().
-@Override
-}
+  // Add the video found to the queue with add().
+  // Start playback of the video with start().
+  @Override
+    }
 
-@Override
-public void onError(String s) {
-}
+  @Override
+    public void onError(String s) {
+    }
 });</code></pre>
 
 	<aside class="bcls-aside bcls-aside--information">The <code class="notranslate">VideoListener</code> identifies objects that expect to receive a Video object from an asynchronous operation. On a successful operation, an <code class="notranslate">onVideo()</code> method will be called. If there is an error in the operation, an <code class="notranslate">onError()</code> method will be called. Android Studio inserted the signatures of the two needed methods.</aside>
@@ -460,53 +457,53 @@ public void onError(String s) {
 	<li>
 	<p>In the <code class="notranslate">onVideo()</code> method, add the video to <code class="notranslate">brightcoveVideoView</code>, then start the video.</p>
 
-<pre class="line-numbers" data-start="29">
+	<pre class="line-numbers" data-start="29">
 <code class="notranslate language-java">// Start playback of the video with start().
-@Override
-public void onVideo(Video video) {
-brightcoveVideoView.add(video);
-brightcoveVideoView.start();
-}</code></pre>
+  @Override
+    public void onVideo(Video video) {
+      brightcoveVideoView.add(video);
+      brightcoveVideoView.start();
+    }</code></pre>
 	</li>
 	<li>
 	<p>In the <code class="notranslate">onError()</code> method throw the error string.</p>
 
-<pre class="line-numbers" data-start="36">
+	<pre class="line-numbers" data-start="36">
 <code class="notranslate language-java">@Override
-public void onError(String s) {
-throw new RuntimeException(s);
-}</code></pre>
+    public void onError(String s) {
+      throw new RuntimeException(s);
+    }</code></pre>
 	</li>
 	<li>
 	<p>The complete code for your <code class="notranslate">MainActivity</code> class should be similar to this:</p>
 
-<pre class="line-numbers" data-start="15">
+	<pre class="line-numbers" data-start="15">
 <code class="notranslate language-java">public class MainActivity extends BrightcovePlayer {
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
-brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
 
-EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
-Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
-catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
+    EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
+    Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
+    catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
 
-// Add the video found to the queue with add().
-// Start playback of the video with start().
-@Override
-public void onVideo(Video video) {
-	brightcoveVideoView.add(video);
-	brightcoveVideoView.start();
-}
+      // Add the video found to the queue with add().
+      // Start playback of the video with start().
+      @Override
+      public void onVideo(Video video) {
+        brightcoveVideoView.add(video);
+        brightcoveVideoView.start();
+      }
 
-@Override
-public void onError(String s) {
-	throw new RuntimeException(s);
-}
-});
-}
+      @Override
+      public void onError(String s) {
+        throw new RuntimeException(s);
+      }
+    });
+  }
 }</code></pre>
 	</li>
 	<li>Run the app to confirm the video plays.</li>
@@ -527,22 +524,22 @@ public void onError(String s) {
 	<li>
 	<p>Some code from the previous app is no longer needed. Remove the call to the Catalog's <code class="notranslate">findVideoByID()</code> method, and the associated <code class="notranslate">VideoListener</code> anonymous callback function.</p>
 
-<pre class="line-numbers" data-start="26">
+	<pre class="line-numbers" data-start="26">
 <code class="notranslate language-java">catalog.findVideoByID(getString(R.string.videoId), new VideoListener() {
 
-// Add the video found to the queue with add().
-// Start playback of the video with start().
-@Override
-public void onVideo(Video video) {
-	brightcoveVideoView.add(video);
-	brightcoveVideoView.start();
-}
+    // Add the video found to the queue with add().
+    // Start playback of the video with start().
+    @Override
+      public void onVideo(Video video) {
+        brightcoveVideoView.add(video);
+        brightcoveVideoView.start();
+      }
 
-@Override
-public void onError(String s) {
-	throw new RuntimeException(s);
-}
-});</code></pre>
+    @Override
+      public void onError(String s) {
+        throw new RuntimeException(s);
+      }
+  });</code></pre>
 	</li>
 </ol>
 
@@ -552,7 +549,7 @@ public void onError(String s) {
 	<li>
 	<p>The existing catalog instance will work for retrieving a playlist, so <strong>no changes are necessary</strong> to these lines of code:</p>
 
-<pre class="line-numbers" data-start="23">
+	<pre class="line-numbers" data-start="23">
 <code class="notranslate language-java">EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
 Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));</code></pre>
 	</li>
@@ -560,15 +557,15 @@ Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getStri
 	<li>
 	<p>Use the Catalog's <code class="notranslate">findPlaylistByID()</code> method using your playlist ID and a <code class="notranslate">PlaylistListener</code> for the callback.</p>
 
-<pre class="line-numbers" data-start="26">
+	<pre class="line-numbers" data-start="26">
 <code class="notranslate language-java">catalog.findPlaylistByID("2764931905001", new PlaylistListener() {
-@Override
-public void onPlaylist(Playlist playlist) {
-}
+  @Override
+  public void onPlaylist(Playlist playlist) {
+  }
 
-@Override
-public void onError(String s) {
-}
+  @Override
+  public void onError(String s) {
+  }
 });</code></pre>
 
 	<aside class="bcls-aside bcls-aside--tip">The <code class="notranslate">PlaylistListener</code> identifies objects that expect to receive a Playlist object from an asynchronous operation. On a successful operation, an <code class="notranslate">onPlaylist()</code> method will be called. If there is an error in the operation, an <code class="notranslate">onError()</code> method will be called. Android Studio inserted the signatures of the two needed methods.</aside>
@@ -576,49 +573,49 @@ public void onError(String s) {
 	<li>
 	<p>In the <code class="notranslate">onPlaylist()</code> method, retrieve the videos from the playlist, add all of the videos to <code class="notranslate">brightcoveVideoView</code>, then start the first video.</p>
 
-<pre class="line-numbers" data-start="27">
+	<pre class="line-numbers" data-start="27">
 <code class="notranslate language-java">@Override
-public void onPlaylist(Playlist playlist) {
-<span class="bcls-highlight">    brightcoveVideoView.addAll(playlist.getVideos());
-brightcoveVideoView.start();</span>
-}</code></pre>
+    public void onPlaylist(Playlist playlist) {
+  <span class="bcls-highlight">    brightcoveVideoView.addAll(playlist.getVideos());
+      brightcoveVideoView.start();</span>
+    }</code></pre>
 	</li>
 	<li>
 	<p>In the <code class="notranslate">onError()</code> method throw the error string.</p>
 
-<pre class="line-numbers" data-start="31">
+	<pre class="line-numbers" data-start="31">
 <code class="notranslate language-java"> @Override
-public void onError(String s) {
-<span class="bcls-highlight">    throw new RuntimeException(s);</span>
-}</code></pre>
+    public void onError(String s) {
+  <span class="bcls-highlight">    throw new RuntimeException(s);</span>
+    }</code></pre>
 	</li>
 	<li>
 	<p>The complete code for your <code class="notranslate">MainActivity</code> class should be similar to this:</p>
 
-<pre class="line-numbers" data-start="15">
+	<pre class="line-numbers" data-start="15">
 <code class="notranslate language-java">public class MainActivity extends BrightcovePlayer {
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
-brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
 
-EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
-Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
-catalog.findPlaylistByID("4845949311001", new PlaylistListener() {
-@Override
-public void onPlaylist(Playlist playlist) {
-	brightcoveVideoView.addAll(playlist.getVideos());
-	brightcoveVideoView.start();
-}
+    EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
+    Catalog catalog = new Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy));
+    catalog.findPlaylistByID("4845949311001", new PlaylistListener() {
+      @Override
+      public void onPlaylist(Playlist playlist) {
+        brightcoveVideoView.addAll(playlist.getVideos());
+        brightcoveVideoView.start();
+      }
 
-@Override
-public void onError(String s) {
-	throw new RuntimeException(s);
-}
-});
-}
+      @Override
+      public void onError(String s) {
+        throw new RuntimeException(s);
+      }
+    });
+  }
 }</code></pre>
 	</li>
 	<li>Run the app to confirm multiple videos from the playlist play.</li>
