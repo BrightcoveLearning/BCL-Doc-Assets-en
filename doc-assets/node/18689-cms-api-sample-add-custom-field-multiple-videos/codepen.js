@@ -267,30 +267,72 @@ var BCLS = (function(window, document) {
           createRequest('custom_field_values');
         });
         break;
-      case 'getVideos':
-        var offset = (limit * callNumber);
-        endPoint = '/videos?limit=' + limit + '&offset=' + offset;
-        if (isDefined(searchString)) {
-          endPoint += '&q=' + searchString;
-        }
-        options.url = cmsBaseURL + endPoint;
-        api_request.textContent = options.url;
-        options.requestType = 'GET';
-        api_request.textContent = options.url;
-        makeRequest(options, function(response) {
-          videosArray = JSON.parse(response);
-          api_response.textContent = JSON.stringify(videosArray, null, '  ');
-          getVideoCallNumber++;
-          if (getVideoCallNumber = totalCalls) {
-            logMessage('There are no more videos to retrieve');
-            get_videos.textContent = 'No more videos'
-            get_videos.setAttribute('disabled', 'disabled');
-          } else {
-            get_videos.textContent = 'Get Next 10 Videos';
-          }
-          createVideoList();
-        });
-        break;
+        case 'getVideos':
+          endpoint = '/videos?limit=' + limit + '&offset=' + (limit * getVideoCallNumber);
+          options.url = cmsBaseURL + endpoint;
+          apiRequest.textContent = options.url;
+          options.requestType = 'GET';
+          makeRequest(options, function(response) {
+            getVideoCallNumber++;
+            if (getVideoCallNumber < totalCalls) {
+              get_videos.textContent = 'Get Next Set of Videos';
+            } else {
+              get_videos.textContent = 'No More Videos';
+              get_videos.setAttribute('disabled', disabled);
+            }
+            videos = JSON.parse(response);
+            logMessage(videos.length + ' videos retrieved');
+            apiResponse.textContent = JSON.stringify(videos, null, '  ');
+            input = document.createElement('input');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'videosChkAll');
+            input.setAttribute('id', 'videosChkAll');
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', 'all');
+            label.setAttribute('for', 'videosChkAll');
+            label.setAttribute('style', 'color:#F3951D;');
+            text = document.createTextNode('Select All');
+            label.appendChild(text);
+            br = document.createElement('br');
+            fragment.appendChild(input);
+            fragment.appendChild(space);
+            fragment.appendChild(label);
+            fragment.appendChild(br);
+              iMax = videos.length;
+              for (i = 0; i < iMax; i++) {
+                input = document.createElement('input');
+                space = document.createTextNode(' ');
+                label = document.createElement('label');
+                input.setAttribute('name', 'videosChk');
+                input.setAttribute('id', 'field' + videos[i].id);
+                input.setAttribute('type', 'checkbox');
+                input.setAttribute('value', videos[i].id);
+                label.setAttribute('for', 'field' + videos[i].id);
+                text = document.createTextNode(videos[i].name);
+                label.appendChild(text);
+                br = document.createElement('br');
+                fragment.appendChild(input);
+                fragment.appendChild(space);
+                fragment.appendChild(label);
+                fragment.appendChild(br);
+              }
+              // clear videos videos
+              removeChildren(video_list);
+              video_list.appendChild(fragment);
+              // get references to checkboxes
+              videosCollection = document.getElementsByName('videosChk');
+              videosSelectAll = document.getElementById('videosChkAll');
+              // add event listener for select allows
+              videosSelectAll.addEventListener('change', function() {
+                if (this.checked) {
+                  selectAllCheckboxes(videosCollection);
+                } else {
+                  deselectAllCheckboxes(videosCollection);
+                }
+              });
+            });
+            break;
       default:
         console.log('Something wrong; should never get here');
         break;
