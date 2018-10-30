@@ -13,7 +13,6 @@ var BCLS = (function(window, document) {
     getVideoCallNumber    = 0,
     updateVideoCallNumber = 0,
     videosCompleted       = 0,
-    videosArray           = [],
     // elements
     account_id_input      = document.getElementById('account_id'),
     client_id_input       = document.getElementById('client_id'),
@@ -26,6 +25,7 @@ var BCLS = (function(window, document) {
     logger                = document.getElementById('logger'),
     api_request           = document.getElementById('api_request'),
     api_response          = document.getElementById('api_response'),
+    videos,
     custom_fields;
 
 
@@ -326,6 +326,26 @@ var BCLS = (function(window, document) {
         });
         break;
         case 'getVideos':
+          endpoint = '/videos?limit=' + limit + '&offset=' + (limit * getVideoCallNumber);
+          options.url = cmsBaseURL + endpoint;
+          apiRequest.textContent = options.url;
+          options.requestType = 'GET';
+          makeRequest(options, function(response) {
+            getVideoCallNumber++;
+            if (getVideoCallNumber < totalCalls) {
+              get_videos.textContent = 'Get Next Set of Videos';
+            } else {
+              get_videos.textContent = 'No More Videos';
+              get_videos.setAttribute('disabled', disabled);
+            }
+            videos = JSON.parse(response);
+            logMessage(videos.length + ' videos retrieved');
+            apiResponse.textContent = JSON.stringify(videos, null, '  ');
+            createVideoList(videos);
+            });
+            break;
+        case 'updateVideo':
+          va
           endpoint = '/videos?limit=' + limit + '&offset=' + (limit * getVideoCallNumber);
           options.url = cmsBaseURL + endpoint;
           apiRequest.textContent = options.url;
