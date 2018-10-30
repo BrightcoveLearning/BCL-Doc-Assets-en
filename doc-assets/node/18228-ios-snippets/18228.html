@@ -1,7 +1,6 @@
 <article class="bcls-article">
 <section class="bcls-section" id="top">
 <h3>Table of contents</h3>
-
 <!-- <h5 class="bcls-question">Accessibility</h5>
 
 <ul class="bcls-answer">
@@ -176,10 +175,10 @@ NSString *video_ID = session.video.properties[kBCOVVideoPropertyKeyId];
 if ([kBCOVPlaybackSessionLifecycleEventReady isEqualToString:lifecycleEvent.eventType])
 {
 	[FIRAnalytics logEventWithName:@"bcov_video_ready"
-											parameters:@{
-																	 @"bcov_video_name": video_name,
-																	 @"bcov_video_id": video_ID
-																	 }];
+    parameters:@{
+        @"bcov_video_name": video_name,
+        @"bcov_video_id": video_ID
+    }];
 }
 
 // Session encountered an error
@@ -188,21 +187,21 @@ if ([kBCOVPlaybackSessionLifecycleEventError isEqualToString:lifecycleEvent.even
 	NSError *error = lifecycleEvent.properties[kBCOVPlaybackSessionEventKeyError];
 	int error_code = error.code;
 	[FIRAnalytics logEventWithName:@"bcov_video_playback_error"
-											parameters:@{
-																	 @"bcov_video_name": video_name,
-																	 @"bcov_video_id": video_ID,
-																	 @"bcov_video_error_code": @(error_code)
-																	 }];
+    parameters:@{
+        @"bcov_video_name": video_name,
+        @"bcov_video_id": video_ID,
+        @"bcov_video_error_code": @(error_code)
+    }];
 }
 
 // Session has completed
 if ([kBCOVPlaybackSessionLifecycleEventTerminate isEqualToString:lifecycleEvent.eventType])
 {
 	[FIRAnalytics logEventWithName:@"bcov_video_terminate"
-											parameters:@{
-																	 @"bcov_video_name": video_name,
-																	 @"bcov_video_id": video_ID
-																	 }];
+    parameters:@{
+        @"bcov_video_name": video_name,
+        @"bcov_video_id": video_ID
+     }];
 }
 }</code></pre>
 	</li>
@@ -237,15 +236,15 @@ var preferredPeakBitRate: Double
 <pre class="line-numbers">
 <code class="notranslate language-swift">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent
 {
-if ([kBCOVPlaybackSessionLifecycleEventEnd isEqualToString:lifecycleEvent.eventType])
-{
-	[controller seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
-	if (finished)
-		{
-			[controller play];
-		}
-}];
-}
+  if ([kBCOVPlaybackSessionLifecycleEventEnd isEqualToString:lifecycleEvent.eventType])
+  {
+    [controller seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
+    if (finished)
+    	{
+        [controller play];
+    	}
+    }];
+  }
 }</code></pre>
 </section>
 
@@ -267,12 +266,12 @@ if ([kBCOVPlaybackSessionLifecycleEventEnd isEqualToString:lifecycleEvent.eventT
 
 // Retrieve a playlist through the BCOVPlaybackService
 BCOVPlaybackServiceRequestFactory *playbackServiceRequestFactory = [[BCOVPlaybackServiceRequestFactory alloc]         initWithAccountId:kDynamicDeliveryAccountID
-																policyKey:kDynamicDeliveryPolicyKey];
+		policyKey:kDynamicDeliveryPolicyKey];
 BCOVPlaybackService *playbackService = [[BCOVPlaybackService alloc] initWithRequestFactory:playbackServiceRequestFactory];
 
 [playbackService findPlaylistWithReferenceID:kDynamicDeliveryPlaylistRefID
-																parameters:nil
-																completion:^(BCOVPlaylist *playlist, NSDictionary *jsonResponse, NSError *error)
+		parameters:nil
+		completion:^(BCOVPlaylist *playlist, NSDictionary *jsonResponse, NSError *error)
 {
 	 [self.refreshControl endRefreshing];
 
@@ -280,17 +279,17 @@ BCOVPlaybackService *playbackService = [[BCOVPlaybackService alloc] initWithRequ
 
 	 if (playlist)
 	 {
-			 self.currentVideos = playlist.videos.mutableCopy;
-			 self.currentPlaylistTitle = playlist.properties[@"name"];
-			 self.currentPlaylistDescription = playlist.properties[@"description"];
+      self.currentVideos = playlist.videos.mutableCopy;
+      self.currentPlaylistTitle = playlist.properties[@"name"];
+      self.currentPlaylistDescription = playlist.properties[@"description"];
 
-			 NSLog(@"Retrieved playlist containing %d videos", (int)self.currentVideos.count);
+      NSLog(@"Retrieved playlist containing %d videos", (int)self.currentVideos.count);
 
-			 [self usePlaylist:self.currentVideos];
+      [self usePlaylist:self.currentVideos];
 	 }
 	 else
 	 {
-			 NSLog(@"No playlist for ID %@ was found.", kDynamicDeliveryPlaylistRefID);
+      NSLog(@"No playlist for ID %@ was found.", kDynamicDeliveryPlaylistRefID);
 	 }
 
 }];
@@ -309,10 +308,10 @@ BCOVPlaybackService *playbackService = [[BCOVPlaybackService alloc] initWithRequ
 NSDictionary *videoDictionary = self.videosTableViewData[ (int)indexPath.row ];
 BCOVVideo *video = videoDictionary[@"video"];
 
-if (video != nil)
-{
-	[self.playbackController setVideos:@[ video ]];
-}
+  if (video != nil)
+  {
+  	[self.playbackController setVideos:@[ video ]];
+  }
 }</code></pre>
 	</li>
 </ol>
@@ -444,11 +443,11 @@ NSLog(@"ViewController Debug - Error retrieving video: `%@`", error);
 -(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didPassCuePoints:(NSDictionary *)cuePointInfo {
 BCOVCuePointCollection *cpc = cuePointInfo[@"kBCOVPlaybackSessionEventKeyCuePoints"];
 for (BCOVCuePoint *cp in cpc) {
-if ([cp.type isEqualToString:@"<span class="bcls-input">your cue point type</span>"])
-{
-NSLog(@"Found your cue point at %f", CMTimeGetSeconds(cp.position));
-}
-}
+  if ([cp.type isEqualToString:@"<span class="bcls-input">your cue point type</span>"])
+    {
+    NSLog(@"Found your cue point at %f", CMTimeGetSeconds(cp.position));
+    }
+  }
 }</a></code></pre>
 </section>
 <!-- <section class="bcls-section" id="Setting_the_buffer_size">
@@ -461,22 +460,34 @@ NSLog(@"Found your cue point at %f", CMTimeGetSeconds(cp.position));
 <section class="bcls-section">
 <h2 id="Setting_the_playback_rate">Setting the playback rate</h2>
 
-<p>To control the playback rate, you can set the <code class="notranslate">rate </code> property on the <code class="notranslate">AVPlayer </code> class exposed on the session. For a <code class="notranslate">BCOVPlaybackSession </code>, you could do something like this:</p>
-
+<p>To control the playback rate, you can set the <code class="notranslate">rate </code> property on the <code class="notranslate">AVPlayer </code> class exposed on the session.</p>
+<p>
+  By default, the play rate can only be set on regular intervals (0.50, 0.67, 1.0, 1.25, 1.50 and 2.0). By setting the <code>audioTimePitchAlgorithm</code>, you can use more granular rate values (like 1.7). For more details, see this <a href="https://stackoverflow.com/questions/6630356/avplayer-rate-property-does-not-work">stackoverflow discussion</a>.
+</p>
 <pre>
-<code class="notranslate language-swift"><a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVPlaybackSession.html">session.player.rate = 2;</a></code></pre>
+<code class="notranslate language-objectivec">avPlayerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;</code></pre>
+<p>
+  For a <code class="notranslate">BCOVPlaybackSession </code>, your code would look similar to this:
+</p>
 
-<p>Note the following:</p>
+<pre class="line-numbers">
+<code class="notranslate language-objectivec">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller
+  playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent {
 
-<ul>
-	<li>For iOS6, a stream can only play at 2X if <code class="notranslate">session.player.currentItem.canPlayFastForward </code> returns <strong>YES</strong>.</li>
-	<li>For iOS7, you can play up to 2X always, but it won't go higher unless <code class="notranslate">session.player.currentItem.canPlayFastForward </code> returns <strong>Yes</strong>.</li>
-</ul>
+  if ( [lifecycleEvent.eventType isEqualToString:kBCOVPlaybackSessionLifecycleEventReady] ) {
+    NSLog(@&quot;%@ at time %f&quot;, kBCOVPlaybackSessionLifecycleEventReady, CMTimeGetSeconds([session.player currentTime]));
+    AVPlayerItem * avPlayerItem = [session.player currentItem];
+    avPlayerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
+    session.player.rate = 1.7;
+  }
+}</code></pre>
 
 <aside class="bcls-aside bcls-aside--information">
 <p>Notes</p>
 
 <ul>
+  <!-- <li>For iOS6, a stream can only play at 2X if <code class="notranslate">session.player.currentItem.canPlayFastForward </code> returns <strong>YES</strong>.</li>
+	<li>For iOS7, you can play up to 2X always, but it won't go higher unless <code class="notranslate">session.player.currentItem.canPlayFastForward </code> returns <strong>Yes</strong>.</li> -->
 	<li>The Native SDK for iOS does not support negative values for the playback rate (ie. we do not support playing videos in reverse.).</li>
 	<li>For more information about managing playback, see Apple's <a href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVPlayer_Class/index.html#//apple_ref/occ/instp/AVPlayer/rate">AVPlayer Class Reference</a>.</li>
 </ul>
@@ -498,7 +509,6 @@ BCOVVideo360ViewProjection *viewProjection = [self.playbackController.viewProjec
 
 <aside class="bcls-aside bcls-aside--information">Note that you need to set the controller's projection style in the <code class="notranslate">didAdvanceToPlaybackSession </code> delegate method.</aside>
 </section>
-
 <!-- <section class="bcls-section">
 <h2 id="VoiceOver_support">VoiceOver support</h2>
 
