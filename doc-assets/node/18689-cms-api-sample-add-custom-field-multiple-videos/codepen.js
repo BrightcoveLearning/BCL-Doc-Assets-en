@@ -332,7 +332,7 @@ var BCLS = (function(window, document) {
           makeRequest(options, function(response) {
             getVideoCallNumber++;
             if (getVideoCallNumber < totalCalls) {
-              get_videos.textContent = 'Get Next Set of Videos';
+              get_videos.textContent = 'Get Next 10 Videos';
             } else {
               get_videos.textContent = 'No More Videos';
             }
@@ -362,7 +362,7 @@ var BCLS = (function(window, document) {
             } else {
               logMessage('All videos updated');
               if (window.confirm('All videos were updated. Do you want to get more videos?')) {
-                get_videos.removeAttribute('disabled');
+                createRequest('getVideos');
               }
             }
             });
