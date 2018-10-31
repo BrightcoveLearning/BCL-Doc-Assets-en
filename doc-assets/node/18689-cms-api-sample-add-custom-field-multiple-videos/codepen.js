@@ -186,7 +186,6 @@ var BCLS = (function(window, document) {
       }
       return checkedValues;
     } else {
-      console.log('Error: no input received');
       return null;
     }
   }
@@ -302,7 +301,6 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           custom_fields_array = JSON.parse(response).custom_fields;
-          console.log('custom fields', custom_fields_array);
           api_response.textContent = JSON.stringify(custom_fields_array, null, 2);
           logMessage('Custom fields retrieved');
           createCustomFieldOptions();
@@ -431,7 +429,6 @@ var BCLS = (function(window, document) {
     if (isDefined(client_id) && isDefined(client_secret)) {
       if (isDefined(account_id_input.value)) {
         account_id = account_id_input.value;
-        console.log('account_id', account_id);
       } else {
         window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
         client_id = null;
@@ -468,7 +465,6 @@ var BCLS = (function(window, document) {
           }
         }
       } else {
-        console.log('custom_field_values');
         selected_field_value = getSelectedValue(custom_field_values);
       }
 
