@@ -348,9 +348,8 @@ var BCLS = (function(window, document) {
             });
             break;
         case 'updateVideo':
-          var video = videos[updateVideoCallNumber],
-            requestBody = {};
-          endpoint = '/videos/' + video.id;
+          var requestBody = {};
+          endpoint = '/videos/' + selectedVideoIds[updateVideoCallNumber];
           options.url = cmsBaseURL + endpoint;
           requestBody.custom_fields = {};
           requestBody.custom_fields[selected_field] = selected_field_value;
@@ -362,7 +361,7 @@ var BCLS = (function(window, document) {
             logMessage(videos.length + ' videos retrieved');
             api_response.textContent = JSON.stringify(responseParsed, null, '  ');
             updateVideoCallNumber++;
-            if (updateVideoCallNumber < totalCalls) {
+            if (updateVideoCallNumber < totalSelectedVideos) {
               createRequest('updateVideo');
             } else {
               logMessage('All videos updated');
@@ -457,6 +456,8 @@ var BCLS = (function(window, document) {
     update_videos.addEventListener('click', function() {
       // disable get videos button
       get_videos.setAttribute('disabled', disabled);
+      selectedVideoIds = getCheckedBoxValues(videosCollection);
+      totalSelectedVideos = selectedVideoIds.length;
       selected_field = getSelectedValue(custom_fields);
       if (custom_field_value.getAttribute('style') === 'display:inline') {
         if (isDefined(custom_field_value.value)) {
