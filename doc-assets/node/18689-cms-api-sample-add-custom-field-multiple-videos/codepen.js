@@ -26,7 +26,8 @@ var BCLS = (function(window, document) {
     api_request           = document.getElementById('api_request'),
     api_response          = document.getElementById('api_response'),
     videos,
-    totalCurrentVideos    = 0,
+    totalSelectedVideos    = 0,
+    selectedVideoIds       = [],
     custom_fields_array,
     selected_field,
     selected_field_value;
@@ -340,7 +341,7 @@ var BCLS = (function(window, document) {
               get_videos.textContent = 'No More Videos';
             }
             videos = JSON.parse(response);
-            totalCurrentVideos = videos.length;
+            totalSelectedVideos = videos.length;
             logMessage(videos.length + ' videos retrieved');
             api_response.textContent = JSON.stringify(videos, null, '  ');
             createVideoList(videos);
