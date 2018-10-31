@@ -319,11 +319,9 @@ var BCLS = (function(window, document) {
           totalVideos = responseParsed.count;
           if (totalVideos === 0) {
             alert('No videos found; try changing or removing the search criteria');
-          } else if (getSelectedValue(videoCount) !== 'All') {
-            totalVideos = getSelectedValue(videoCount);
           }
           totalCalls = Math.ceil(totalVideos / limit);
-          createRequest('custom_field_values');
+          createRequest('getVideos');
         });
         break;
         case 'getVideos':
