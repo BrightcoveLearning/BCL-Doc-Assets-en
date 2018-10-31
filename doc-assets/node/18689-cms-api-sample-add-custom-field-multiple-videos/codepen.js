@@ -309,9 +309,6 @@ var BCLS = (function(window, document) {
         break;
       case 'getCount':
         endPoint = '/counts/videos';
-        if (isDefined(searchString)) {
-          endPoint += '&q=' + searchString;
-        }
         options.url = cmsBaseURL + endPoint;
         options.requestType = 'GET';
         api_request.textContent = options.url;
@@ -367,7 +364,7 @@ var BCLS = (function(window, document) {
             } else {
               logMessage('All videos updated');
               if (window.confirm('All videos were updated. Do you want to get more videos?')) {
-                get_videos.removeAttribute('disabled', disabled);
+                get_videos.removeAttribute('disabled');
               }
             }
             });
@@ -445,6 +442,7 @@ var BCLS = (function(window, document) {
     } else {
       account_id = '57838016001';
     }
+    createRequest('getCount');
     createRequest('getVideos');
     createRequest('getCustomFields');
   }
@@ -456,7 +454,7 @@ var BCLS = (function(window, document) {
     });
     update_videos.addEventListener('click', function() {
       // disable get videos button
-      get_videos.setAttribute('disabled', disabled);
+      get_videos.setAttribute('disabled', 'disabled');
       selectedVideoIds = getCheckedBoxValues(videosCollection);
       totalSelectedVideos = selectedVideoIds.length;
       selected_field = getSelectedValue(custom_fields);
