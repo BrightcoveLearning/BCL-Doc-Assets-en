@@ -339,7 +339,6 @@ var BCLS = (function(window, document) {
               get_videos.textContent = 'Get Next Set of Videos';
             } else {
               get_videos.textContent = 'No More Videos';
-              get_videos.setAttribute('disabled', disabled);
             }
             videos = JSON.parse(response);
             totalCurrentVideos = videos.length;
@@ -446,89 +445,41 @@ var BCLS = (function(window, document) {
     } else {
       account_id = '57838016001';
     }
+    createRequest('getVideos');
     createRequest('getCustomFields');
   }
 
   function init() {
     // event listeners
     get_videos.addEventListener('click', function() {
-      getAccountInfo();
+      createRequest('getVideos');
     });
-    searchField.addEventListener('change', function() {
-      createCustomFieldValueOptions();
+    update_videos.addEventListener('click', function() {
+      // disable get videos button
+      get_videos.setAttribute('disabled', disabled);
+      selected_field = getSelectedValue(custom_field);
+      if (custom_field_value.getAttribute('style') === 'display:inline') {
+        if (isDefined(custom_field_value.value)) {
+          if (isDefined(searchField.value)) {
+            selected_field_value = custom_field_value.value;
+          } else {
+            alert('Please provide a value for the custom field');
+          }
+        }
+      } else {
+        console.log('custom_field_values');
+        selected_field_value = getSelectedValue(custom_field_values);
+      }
+
+      // get video count
+      createRequest('updateVideo');
+
     });
     hideElement(custom_field_values);
     showElement(custom_field_value);
     getAccountInfo();
   }
 
-  // button event handlers
-  makeReport.addEventListener('click', function() {
-    // get the inputs
-    totalVideos = getSelectedValue(videoCount);
-    // check for search terms
-    if (isDefined(searchTags.value)) {
-      tagsSearchString = '%2Btags:' + removeSpaces(searchTags.value);
-    }
-    if (custom_field_value.getAttribute('style') === 'display:inline') {
-      if (isDefined(custom_field_value.value)) {
-        if (isDefined(searchField.value)) {
-          fieldsSearchString = '%2B' + searchField.value + ':' + encodeURI(custom_field_value.value);
-        } else {
-          fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(custom_field_value.value) + '"';
-        }
-      }
-    } else {
-      console.log('custom_field_values');
-      fieldsSearchString = '%2Bcustom_fields:"' + encodeURI(getSelectedValue(custom_field_values)) + '"';
-    }
-    dateTypeValue = getSelectedValue(dateRangeType).value;
-    fromDateValue = rome(fromDate).getDate();
-    if (isDefined(fromDateValue)) {
-      fromDateValue = fromDateValue.toISOString();
-    }
-    toDateValue = rome(toDate).getDate();
-    if (isDefined(toDateValue)) {
-      toDateValue = toDateValue.toISOString();
-    }
-    if (isDefined(fromDateValue) || isDefined(toDateValue)) {
-      dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
-    }
-
-    // define the whole search string
-    if (isDefined(tagsSearchString)) {
-      searchString = tagsSearchString;
-      if (isDefined(fieldsSearchString)) {
-        searchString += '+' + fieldsSearchString;
-      }
-      if (isDefined(dateSearchString)) {
-        searchString += '+' + dateSearchString;
-      }
-    } else if (isDefined(fieldsSearchString)) {
-      searchString = fieldsSearchString;
-      if (isDefined(dateSearchString)) {
-        searchString += '+' + dateSearchString;
-      }
-    } else if (isDefined(dateSearchString)) {
-      searchString = dateSearchString;
-    }
-    // only use entered account id if client id and secret are entered also
-    if (isDefined(client_id) && isDefined(client_secret)) {
-      if (isDefined(account_id_input.value)) {
-        account_id = account_id_input.value;
-      } else {
-        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-        client_id     = '';
-        client_secret = '';
-        account_id    = '57838016001';
-      }
-    } else {
-      account_id = '57838016001';
-    }
-    // get video count
-    createRequest('getAffiliates');
-
-  });
-
   init();
+
 })(window, document);
