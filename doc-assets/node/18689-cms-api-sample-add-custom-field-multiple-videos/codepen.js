@@ -452,7 +452,7 @@ var BCLS = (function(window, document) {
   function init() {
     // event listeners
     get_videos.addEventListener('click', function() {
-      createRequest('getVideos');
+      getAccountInfo();
     });
     update_videos.addEventListener('click', function() {
       // disable get videos button
