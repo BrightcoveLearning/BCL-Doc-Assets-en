@@ -367,7 +367,7 @@ var BCLS = (function(window, document) {
             } else {
               logMessage('All videos updated');
               if (window.confirm('All videos were updated. Do you want to get more videos?')) {
-                get_videos.removeAttribute('disabled', disabled);
+                get_videos.removeAttribute('disabled');
               }
             }
             });
@@ -445,6 +445,7 @@ var BCLS = (function(window, document) {
     } else {
       account_id = '57838016001';
     }
+    createRequest('getCount');
     createRequest('getVideos');
     createRequest('getCustomFields');
   }
