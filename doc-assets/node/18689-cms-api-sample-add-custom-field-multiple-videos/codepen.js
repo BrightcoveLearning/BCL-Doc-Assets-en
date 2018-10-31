@@ -447,6 +447,9 @@ var BCLS = (function(window, document) {
 
   function init() {
     // event listeners
+    switch_accounts.addEventListener('click', function() {
+      getAccountInfo();
+    });
     get_videos.addEventListener('click', function() {
       getAccountInfo();
     });
