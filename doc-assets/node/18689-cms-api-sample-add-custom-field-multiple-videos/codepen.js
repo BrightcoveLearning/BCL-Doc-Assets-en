@@ -133,7 +133,6 @@ var BCLS = (function(window, document) {
       frag.appendChild(option);
     }
     custom_fields.appendChild(frag);
-    createCustomFieldValueOptions();
   }
 
   /**
@@ -471,6 +470,9 @@ var BCLS = (function(window, document) {
       // get video count
       createRequest('updateVideo');
 
+    });
+    custom_fields.addEventListener('change', function() {
+      createCustomFieldValueOptions();
     });
     hideElement(custom_field_values);
     showElement(custom_field_value);
