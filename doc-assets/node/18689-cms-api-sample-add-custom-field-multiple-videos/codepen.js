@@ -301,6 +301,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         makeRequest(options, function(response) {
           custom_fields_array = JSON.parse(response).custom_fields;
+          console.log('custom fields', custom_fields_array);
           api_response.textContent = JSON.stringify(custom_fields_array, null, 2);
           logMessage('Custom fields retrieved');
           createCustomFieldOptions();
