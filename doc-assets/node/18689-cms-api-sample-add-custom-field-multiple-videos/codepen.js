@@ -17,6 +17,7 @@ var BCLS = (function(window, document) {
     account_id_input      = document.getElementById('account_id'),
     client_id_input       = document.getElementById('client_id'),
     client_secret_input   = document.getElementById('client_secret'),
+    switch_accounts       = document.querySelector('#switch_accounts'),
     get_videos            = document.querySelector('#get_videos'),
     update_videos         = document.querySelector('#update_videos'),
     custom_fields         = document.querySelector('#custom_fields'),
