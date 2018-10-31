@@ -133,6 +133,7 @@ var BCLS = (function(window, document) {
       frag.appendChild(option);
     }
     custom_fields.appendChild(frag);
+    createCustomFieldValueOptions();
   }
 
   /**
