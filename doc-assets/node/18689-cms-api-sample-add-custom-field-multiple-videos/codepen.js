@@ -441,7 +441,6 @@ var BCLS = (function(window, document) {
       account_id = '57838016001';
     }
     createRequest('getCount');
-    createRequest('getVideos');
     createRequest('getCustomFields');
   }
 
