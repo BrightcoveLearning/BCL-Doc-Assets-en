@@ -354,7 +354,7 @@ var BCLS = (function(window, document) {
           options.requestType = 'PATCH';
           makeRequest(options, function(response) {
             responseParsed = JSON.parse(response);
-            logMessage(videos.length + ' videos retrieved');
+            logMessage(selectedVideoIds[updateVideoCallNumber] + ' has been updated');
             api_response.textContent = JSON.stringify(responseParsed, null, '  ');
             updateVideoCallNumber++;
             if (updateVideoCallNumber < totalSelectedVideos) {
