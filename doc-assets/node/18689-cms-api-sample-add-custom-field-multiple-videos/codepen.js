@@ -282,8 +282,6 @@ var BCLS = (function(window, document) {
       responseParsed,
       i,
       iMax;
-    // disable buttons to prevent a new request before current one finishes
-    disableButtons();
 
     // set general options
     options.account_id = account_id;
