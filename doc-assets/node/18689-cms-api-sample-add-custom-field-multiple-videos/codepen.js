@@ -329,7 +329,7 @@ var BCLS = (function(window, document) {
         case 'getVideos':
           endpoint = '/videos?limit=' + limit + '&offset=' + (limit * getVideoCallNumber);
           options.url = cmsBaseURL + endpoint;
-          apiRequest.textContent = options.url;
+          api_request.textContent = options.url;
           options.requestType = 'GET';
           makeRequest(options, function(response) {
             getVideoCallNumber++;
@@ -341,7 +341,7 @@ var BCLS = (function(window, document) {
             videos = JSON.parse(response);
             totalCurrentVideos = videos.length;
             logMessage(videos.length + ' videos retrieved');
-            apiResponse.textContent = JSON.stringify(videos, null, '  ');
+            api_response.textContent = JSON.stringify(videos, null, '  ');
             createVideoList(videos);
             });
             break;
@@ -353,12 +353,12 @@ var BCLS = (function(window, document) {
           requestBody.custom_fields = {};
           requestBody.custom_fields[selected_field] = selected_field_value;
           options.requestBody = JSON.stringify(requestBody);
-          apiRequest.textContent = options.url;
+          api_request.textContent = options.url;
           options.requestType = 'PATCH';
           makeRequest(options, function(response) {
             responseParsed = JSON.parse(response);
             logMessage(videos.length + ' videos retrieved');
-            apiResponse.textContent = JSON.stringify(responseParsed, null, '  ');
+            api_response.textContent = JSON.stringify(responseParsed, null, '  ');
             updateVideoCallNumber++;
             if (updateVideoCallNumber < totalCalls) {
               createRequest('updateVideo');
