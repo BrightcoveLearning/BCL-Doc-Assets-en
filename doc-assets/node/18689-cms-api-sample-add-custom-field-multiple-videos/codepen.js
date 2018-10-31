@@ -350,7 +350,7 @@ var BCLS = (function(window, document) {
         case 'updateVideo':
           var video = videos[updateVideoCallNumber],
             requestBody = {};
-          endpoint = '/videos/' + video.id';
+          endpoint = '/videos/' + video.id;
           options.url = cmsBaseURL + endpoint;
           requestBody.custom_fields = {};
           requestBody.custom_fields[selected_field] = selected_field_value;
