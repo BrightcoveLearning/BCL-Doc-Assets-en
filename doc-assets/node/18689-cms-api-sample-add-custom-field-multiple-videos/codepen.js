@@ -19,7 +19,7 @@ var BCLS = (function(window, document) {
     client_secret_input   = document.getElementById('client_secret'),
     get_videos            = document.querySelector('#get_videos'),
     update_videos         = document.querySelector('#update_videos'),
-    custom_field          = document.querySelector('#custom_field'),
+    custom_fields         = document.querySelector('#custom_fields'),
     custom_field_value    = document.querySelector('#custom_field_value'),
     custom_field_values   = document.querySelector('#custom_field_values'),
     logger                = document.getElementById('logger'),
@@ -27,7 +27,7 @@ var BCLS = (function(window, document) {
     api_response          = document.getElementById('api_response'),
     videos,
     totalCurrentVideos    = 0,
-    custom_fields,
+    custom_fields_array,
     selected_field,
     selected_field_value;
 
@@ -122,16 +122,17 @@ var BCLS = (function(window, document) {
       option,
       frag = document.createDocumentFragment();
     // remove any existing options
-    removeChildren(searchField);
-    iMax = custom_fields.length;
+    removeChildren(custom_fields);
+    iMax = custom_fields_array.length;
     for (i = 0; i < iMax; i++) {
-      field = custom_fields[i];
+      field = custom_fields_array[i];
       option = document.createElement('option');
       option.setAttribute('value', field.id);
       option.textContent = field.display_name;
       frag.appendChild(option);
     }
-    searchField.appendChild(frag);
+    custom_fields.appendChild(frag);
+    createCustomFieldValueOptions();
   }
 
   /**
@@ -144,8 +145,8 @@ var BCLS = (function(window, document) {
       option,
       idx,
       frag = document.createDocumentFragment();
-    idx = findObjectInArray(custom_fields, 'id', getSelectedValue(searchField));
-    field = custom_fields[idx];
+    idx = findObjectInArray(custom_fields_array, 'id', getSelectedValue(custom_fields));
+    field = custom_fields_array[idx];
     if (field.type === 'string') {
       hideElement(custom_field_values);
       showElement(custom_field_value);
@@ -298,8 +299,8 @@ var BCLS = (function(window, document) {
         api_request.textContent = options.url;
         options.requestType = 'GET';
         makeRequest(options, function(response) {
-          custom_fields = JSON.parse(response).custom_fields;
-          api_response.textContent = JSON.stringify(custom_fields, null, 2);
+          custom_fields_array = JSON.parse(response).custom_fields;
+          api_response.textContent = JSON.stringify(custom_fields_array, null, 2);
           logMessage('Custom fields retrieved');
           createCustomFieldOptions();
         });
@@ -455,10 +456,10 @@ var BCLS = (function(window, document) {
     update_videos.addEventListener('click', function() {
       // disable get videos button
       get_videos.setAttribute('disabled', disabled);
-      selected_field = getSelectedValue(custom_field);
+      selected_field = getSelectedValue(custom_fields);
       if (custom_field_value.getAttribute('style') === 'display:inline') {
         if (isDefined(custom_field_value.value)) {
-          if (isDefined(searchField.value)) {
+          if (isDefined(custom_fields.value)) {
             selected_field_value = custom_field_value.value;
           } else {
             alert('Please provide a value for the custom field');
