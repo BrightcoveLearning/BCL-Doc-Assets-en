@@ -26,7 +26,7 @@
 <p>This example uses IMA ads defined in a VMAP file to deliver server-side ads in the video stream. You should see that there is a pre-roll, mid-roll and post-roll ad. The VMAP file is defined in the ad configuration.</p>
 <!-- UPDATE codepen here -->
 
-<p data-height="475" data-theme-id="dark" data-slug-hash="YEKXWx" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18468-advertising-ssai-plugin" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/YEKXWx/">18468-advertising-ssai-plugin</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<p data-height="475" data-theme-id="34967" data-slug-hash="YEKXWx" data-default-tab="result" data-user="bcls1969" data-embed-version="2" data-pen-title="18468-advertising-ssai-plugin" class="codepen">See the Pen <a href="https://codepen.io/team/bcls1969/pen/YEKXWx/">18468-advertising-ssai-plugin</a> by Brightcove Learning Services (<a href="https://codepen.io/bcls1969">@bcls1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script><!-- UPDATE link to GitHub source -->
 
 <p>View the <a href="https://github.com/BrightcoveLearning/18468-advertising-ssai-plugin">source code</a>.</p>
@@ -66,13 +66,16 @@
 
 <h3 id="Create_an_ad_configuration">Create an ad configuration</h3>
 
-<p>The ad configuration defines various aspects of SSAI playback, including a URL to your Video Multiple Ad Playlist (VMAP) file, beacons, and other configurations. For now, you must contact your Brightcove account manager to create your ad configuration.</p>
+<p>The ad configuration defines various aspects of SSAI playback, including ad calls, beacons, and other configuration options. Your ad response can be VAST, VMAP or DFP Ad Rules.</p>
+<p>
+	For details about creating and managing your ad configurations, see the <a href="/node/17942">Video Cloud SSAI Ad Config API</a> document.
+	</p>
 
 <h4>Client-side ad macros</h4>
 
 <p>When your ad configuration includes an ad template that has macros of the form <code class="notranslate">{{page.pageVariable.param1}}</code>, then the value for the JavaScript variable named <code class="notranslate">param1</code> on the page where your player is embedded will be passed-through to the ad call.</p>
 
-<p>For more details, see the <a href="/node/17942#Client_side_macros">Dynamic Delivery and SSAI Ad Config API</a> document.</p>
+<p>For more details, see the <a href="/node/17942#Client_side_macros">Client-side macros</a> section of the Video Cloud SSAI Ad Config API document.</p>
 
 <h3 id="Create_a_Brightcove_player">Create a Brightcove player</h3>
 
@@ -85,26 +88,23 @@
 <p>You can either add the SSAI plugin files to your HTML code, or you can add it to your player's configuration as shown here:</p>
 
 <ol class="bcls-tasklist">
-	<li>Open the <strong>Players</strong> module and locate the player. Click the link for the player to open the player properties.</li>
-	<li>Locate the <strong>Plugins</strong> section and click <strong>Edit</strong>.</li>
-	<li>The JavaScript for the plugin is provided and will not change for different plugin implementations. For the <strong>JavaScript URL</strong>, enter:
-	<pre class="line-numbers">
-<code class="notranslate language-html">//players.brightcove.net/videojs-ssai/1/videojs-ssai.js</code></pre>
+	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
+	<li>Click the link for the player to open the player's properties.</li>
+	<li>Click <strong>Plugins</strong> in the left navigation menu.</li>
+	<li>Next, click <strong>Add a Plugin</strong>.</li>
+	<li>For the <strong>Plugin Name</strong> enter <strong>ssai</strong>.</li>
+	<li>For the <strong>JavaScript</strong> URL, enter:
+	<pre>
+<code class="notranslate language-json">https://players.brightcove.net/videojs-ssai/1/videojs-ssai.js</code></pre>
 	</li>
-	<li>The CSS for the plugin is provided and will not change for different plugin implementations. For the <strong>CSS URL</strong>, enter:
-	<pre class="line-numbers">
-<code class="notranslate language-html">//players.brightcove.net/videojs-ssai/1/videojs-ssai.css</code></pre>
+	<li>For the <strong>CSS</strong> URL, enter:
+	<pre>
+<code class="notranslate language-json">https://players.brightcove.net/videojs-ssai/1/videojs-ssai.css</code></pre>
 	</li>
-	<li>For the plugin name, enter <strong>ssai</strong>.</li>
-	<li>No <strong>Options</strong> are needed to use this plugin. Click <strong>Save</strong> and then <strong>Publish</strong> the player.</li>
-	<!-- <li>The <strong>Options</strong> provided in the form specifies the URI to call to get your Once VMAP data. A stub example is shown here:
-        	<pre class="line-numbers">
-              <code class="notranslate language-json">{
-                "metadataUri" : "http://onceux.unicornmedia.com/now/ads/vmap/od/auto/f1e8b045-e52e-4636-9459-818da5f90bab/3aaf99a3-57d7-4a8d-8dd9-2c6f671d77e1/825a2774-b49d-11e3-87e6-005056835b09/0a10b34f-85e7-44a8-a4fb-4a1b7c9e97ac/content.once"
-              }</code></pre>
-
-        	<figure class="bcls-figure"><img class="bcls-image" alt="onceux plugin configuration in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/onceux-plugin/onceux-options.png" /></figure>
-        	</li> -->
+	<li>You do not have to enter any options for this plugin.</li>
+	<li>Click <strong>Save</strong>.</li>
+	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
+	<li>To close the open dialog, click <strong>Close</strong>.</li>
 </ol>
 <!-- <h3>Initialize options</h3>
 
@@ -140,7 +140,7 @@
 <p>With the Standard embed code, include the <code class="notranslate">adConfigId</code> query string parameter with the value of your ad config id:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-javascript">&lt;iframe src="//players.brightcove.net/1752604059001/default_default/
+<code class="notranslate language-javascript">&lt;iframe src="https://players.brightcove.net/1752604059001/default_default/
 index.html?videoId=5625751316001&amp;<span class="bcls-highlight">adConfigId</span>=<span class="bcls-input">your ad config id</span>"
 	allowfullscreen
 	webkitallowfullscreen
@@ -153,7 +153,7 @@ index.html?videoId=5625751316001&amp;<span class="bcls-highlight">adConfigId</sp
 <p>With the Advanced embed code, include the <code class="notranslate">data-ad-config-id</code> attribute with the value of your ad config id:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-javascript">&lt;video data-video-id="5625751316001"
+<code class="notranslate language-javascript">&lt;video-js data-video-id="5625751316001"
   data-account="1752604059001"
   data-player="default"
   data-embed="default"
@@ -162,8 +162,8 @@ index.html?videoId=5625751316001&amp;<span class="bcls-highlight">adConfigId</sp
   class="video-js"
   controls
   width="640"
-  height="360"&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+  height="360"&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
 
 <h4 id="Using_the_catalog">Using the catalog</h4>
 
@@ -178,7 +178,7 @@ index.html?videoId=5625751316001&amp;<span class="bcls-highlight">adConfigId</sp
 
 <pre class="line-numbers">
 <code class="notranslate language-javascript"><span class="bcls-highlight">var adConfigId</span> = "<span class="bcls-input">your ad config id</span>";
-var myPlayer = videojs('myPlayerId');
+var myPlayer = videojs.getPlayer('myPlayerId');
 // If you added the SSAI plugin using the Players module, then the initialization
 // step is performed automatically. Uncomment the next line if you
 // did not use the Players module.
@@ -253,10 +253,10 @@ myPlayer.catalog.getVideo("<span class="bcls-input">your video id</span>", funct
     }
   ],
   "scripts": [
-    "//players.brightcove.net/videojs-ssai/1/videojs-ssai.js"
+    "https://players.brightcove.net/videojs-ssai/1/videojs-ssai.js"
   ],
   "stylesheets": [
-    "//players.brightcove.net/videojs-ssai/1/videojs-ssai.css"
+    "https://players.brightcove.net/videojs-ssai/1/videojs-ssai.css"
   ],</span>
   "updated_at": "2017-11-07T16:03:47.161Z",
   "video_cloud": {
@@ -266,7 +266,6 @@ myPlayer.catalog.getVideo("<span class="bcls-input">your video id</span>", funct
 }</code></pre>
 	</li>
 </ol>
-
 <!-- <h4 id="Using_the_src_method">Using the src method</h4>
 
 <p>To associate ads, you can also use the <a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#src">player src()</a> method. The SSAI plugin differentiates between being initialized and being enabled. Once you initialize the plugin, then the plugin will manage the enabled/disabled state, depending on whether an SSAI source is being played.</p>
@@ -276,7 +275,7 @@ myPlayer.catalog.getVideo("<span class="bcls-input">your video id</span>", funct
 <p>Here is an example of using a VMAP element:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-javascript">var myPlayer = videojs('myPlayerID');
+<code class="notranslate language-javascript">var myPlayer = videojs.getPlayer('myPlayerID');
 
 // initialize the ssai plugin
 myPlayer.ssai();
@@ -300,7 +299,7 @@ myPlayer.src({
 <p>You can also use a VMAP URL with the SSAI plugin like this:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-javascript">var myPlayer = videojs('myPlayerID');
+<code class="notranslate language-javascript">var myPlayer = videojs.getPlayer('myPlayerID');
 
 // initialize the ssai plugin
 myPlayer.ssai();
@@ -423,7 +422,7 @@ myPlayer.src({
 
         <p>This example enforces the playback of an advertisement before the main subject video. For this example, a skippable pre-roll is used.</p>
 
-        <div class="player-block"><iframe src="//players.brightcove.net/1752604059001/Hy1btkKDb_default/index.html" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div>
+        <div class="player-block"><iframe src="https://players.brightcove.net/1752604059001/Hy1btkKDb_default/index.html" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div>
 
         <aside class="bcls-aside bcls-aside--information">Note: The skippable functionality in this example is done as part of the VMAP definition. This functionality is available in both in-page embeds and iframe player implementations. The applicable fragment from the VMAP XML is shown here:
         <pre class="line-numbers">
@@ -468,11 +467,37 @@ myPlayer.src({
 
 <ul>
 	<li>Safari 10/11 sometimes show the last frame of the postroll at the end of the video.</li>
+	<li>SSAI won’t stitch overlay ads into the video stream.</li>
 </ul>
 </section>
 
 <section class="bcls-section">
 <h2 id="Changelog">Changelog</h2>
+
+<h4>24 Oct 2018</h4>
+
+<p>v1.4.2</p>
+
+<ul>
+	<li>Bug fix: Do not fire <code>playing</code> event before a preroll</li>
+</ul>
+
+<h4>15 Oct 2018</h4>
+
+<p>v1.4.1</p>
+
+<ul>
+	<li>Bug fix: Selectively enable multiperiod for non-MS browsers</li>
+	<li>Bug fix: Video corruption in IE/Edge</li>
+</ul>
+
+<h4>9 Oct 2018</h4>
+
+<p>v1.4.0</p>
+
+<ul>
+	<li>Added option to request content with discontinuities</li>
+</ul>
 
 <h4>19 Sep 2018</h4>
 
