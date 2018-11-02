@@ -1,6 +1,6 @@
 <article class="bcls-article">
-  <section id="Overview" class="bcls-section">
-    <h2>Overview</h2>
+  <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
 
     <p>It is possible to restrict where a video can be viewed via domain restrictions. The <a href="/node/15616">Configuring Player Content Restrictions</a> document shows you how to use Video Cloud to apply domain restrictions. The document you are now reading instructs you how to implement code to inform users that the player is using domain restrictions.</p>
 
@@ -15,22 +15,22 @@
     <p>This document implements a strategy to let the user know the video they are trying to watch is domain restricted.</p>
   </section>
 
-  <section id="errorobject" class="bcls-section">
-    <h2>Player catalog's error object</h2>
+  <section class="bcls-section">
+    <h2 id="errorobject">Player catalog's error object</h2>
 
     <p>The key to creating a user friendly message is the <code>error</code> object contained in Brightcove Player's <code>catalog</code>. An example of a domain restriction error is shown below in a screenshot from a browser's console. Notice that the object contains a <code>data</code> property, which itself contains an array. The array will hold the last error the catalog encountered loading a video. In the example you see the element in the array is reporting a domain restriction issue.</p>
 
     <figure class="bcls-figure"><img class="bcls-image" alt="catalog error object" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/troubleshooting/domain-restrictions-messaging/domain-restrictions-catalog-error.png" /></figure>
   </section>
 
-  <section id="bccatalogerror" class="bcls-section">
-    <h2>Handle bc-catalog-error</h2>
+  <section class="bcls-section">
+    <h2 id="bccatalogerror">Handle bc-catalog-error</h2>
 
     <p>It is possible that handling errors in the normal <code>ready()</code> section in the <code>script</code> block can cause issues. For instance, it can happen that the <code>bc-catalog-error</code> event could be dispatched before the player is ready, and if you listen for the error in the <code>ready()</code> section, you will not be able to handle the error. You may find that there is not a problem in your code, but the issue can browser dependent, so use caution. For this reason, the error handling code in this document will use the <code>one()</code> event handling method to listen for the <code>bc-catalog-error</code> in a separate code block rather than inside the <code>ready()</code> section.</p>
   </section>
 
-  <section id="htmlmessage" class="bcls-section">
-    <h2>Message in HTML</h2>
+  <section class="bcls-section">
+    <h2 id="htmlmessage">Message in HTML</h2>
 
     <p>Once you understand the structure of the error that is produced, and where it is located, you can use JavaScript to display a descriptive error for the user. The basic implementation steps are:</p>
 
@@ -88,8 +88,8 @@
     <figure class="bcls-figure"><img class="bcls-image" alt="error below player" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/troubleshooting/domain-restrictions-messaging/domain-restrictions-html-message.png" /></figure>
   </section>
 
-  <section id="errorplugin" class="bcls-section">
-    <h2>Message via errors plugin</h2>
+  <section class="bcls-section">
+    <h2 id="errorplugin">Message via errors plugin</h2>
 
     <p>You may wish to have the message displayed in the player if the video is domain restricted. You can do this utilizing the errors plugin. The errors plugin is automatically loaded into the player, so you do not need to explicitly perform that operation. For details on the errors plugin beyond what will be mentioned here, see the <a href="/node/18145">Display Error Messages Plugin</a> document.</p>
 
