@@ -1,0 +1,90 @@
+<article class="bcls-article">
+<section id="View_player_information" class="bcls-section">
+<h2>View player information</h2>
+
+<p>You display the player information by right-clicking on the player and selecting <strong>Player Information</strong>, as shown in this screenshot.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Select Player Information from context menu" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/player-info-modal/context-menu.png" /></figure>
+
+<aside class="bcls-aside bcls-aside--information">Note: On mobile you can use the long press to open the modal.</aside>
+
+<p>Once you select <strong>Player Information</strong> you will see the modal window containing information about the player, as shown in this screenshot.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Player Information in modal" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/player-info-modal/modal-with-info.png" /></figure>
+
+<aside class="bcls-aside bcls-aside--information">Note: Only Brightcove supplied plugins that are part of the the configuration will appear in the <strong>Plugins</strong> section. If you add a Brightcove plugin in an HTML page's JavaScript, it will NOT appear in the list. Customer developed plugins, even if listed as part of the player's configuration, will NOT appear.</aside>
+</section>
+
+<section id="Close_the_modal_window" class="bcls-section">
+<h2>Close the modal window</h2>
+
+<p>You close the modal either pressing the <strong>ESC</strong> key or by clicking on the close icon at the top-left.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Close icon" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/player-info-modal/close-modal.png" /></figure>
+</section>
+
+<section id="Alter_the_context_menu" class="bcls-section">
+<h2>Alter the context menu</h2>
+
+<p>You can alter the menu that appears on right-click, called the context menu. To do this you must alter the configuration of your player. The tool to perform the configuration change is <a href="/node/17908">curl</a>. The two changes you can make, and how to affect them, are shown here.</p>
+
+<aside class="bcls-aside bcls-aside--warning">Note: The curl statements below use the Player Management API to alter player configuration. In the curl statements you will see values of <strong>$EMAIL</strong>, <strong>$ACCOUNT_ID</strong> and <strong>$PLAYER_ID</strong>. You must either create environment variables by those names and assign corresponding values, or supply the literal values for the variables.</aside>
+
+<h3>Prevent the menu appearing</h3>
+
+<p>If you wish to prevent the player information context menu from appearing at all, you can use the following curl statement.</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request PATCH \
+  --data '{
+      "debugger": false
+  }' \
+  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">Note: Whenever you make a change to a player using curl, you need to re-publish the player. You can do that in Studio, and you will see your player is marked as needing to be published in the <strong>Status</strong> column:
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Status shows needs to be published" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/player-info-modal/needs-to-be-published.png" /></figure>
+
+<p>You can also use curl to publish your player:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request POST \
+    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</code></pre>
+</aside>
+
+<h3>Prevent the Brightcove menu option</h3>
+
+<p>If you wish to prevent the <strong>About Brightcove</strong> menu option from appearing, you can use the following curl statement.</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request PATCH \
+  --data '{
+       "debugger": {"brightcoveBranding": false}
+  }' \
+  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">Note: Whenever you make a change to a player using curl, you need to re-publish the player. You can do that in Studio, and you will see your player is marked as needing to be published in the <strong>Status</strong> column:
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Status shows needs to be published" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/player-info-modal/needs-to-be-published.png" /></figure>
+
+<p>You can also use curl to publish your player:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request POST \
+  https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/publish</code></pre>
+</aside>
+</section>
+</article>
+
