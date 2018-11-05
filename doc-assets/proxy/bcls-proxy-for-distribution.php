@@ -20,7 +20,7 @@
 
 // security checks
 // if you want to do some basic security checks, such as checking the origin of the
-// the request against some white list, this is the place to do it
+// the request against some white list, this would be a good place to do it
 // CORS enablement and other headers
 header("Access-Control-Allow-Origin: *");
 header("Content-type: application/json");
@@ -38,110 +38,124 @@ $default_client_secret = 'YOUR_CLIENT_SECRET';
 $requestData = json_decode(file_get_contents('php://input'));
 
 // set up access token request
-if ($requestData->client_id) {
+// check to see if client id and secret were passed with the request
+// and if so, use them instead of defaults
+if (isset($requestData->client_id)) {
     $client_id = $requestData->client_id;
-} else {
-    // default to the id for all permissions for most BCLS accounts
-    $client_id = $default_client_id;
 }
-if ($requestData->client_secret) {
+
+if (isset($requestData->client_secret)) {
     $client_secret = $requestData->client_secret;
-} else {
-    // default to the secret for all permissions for most BCLS accounts
-    $client_secret = $default_client_secret;
 }
 
 $auth_string = "{$client_id}:{$client_secret}";
-$request     = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
-$ch          = curl_init($request);
-curl_setopt_array($ch, array(
-        CURLOPT_POST           => TRUE,
-        CURLOPT_RETURNTRANSFER => TRUE,
-        CURLOPT_SSL_VERIFYPEER => FALSE,
-        CURLOPT_USERPWD        => $auth_string,
-        CURLOPT_HTTPHEADER     => array(
-            'Content-type: application/x-www-form-urlencoded',
-        ),
-    ));
-$response = curl_exec($ch);
-curl_close($ch);
+
+// make the request to get an access token
+$request = "https://oauth.brightcove.com/v4/access_token?grant_type=client_credentials";
+$curl          = curl_init($request);
+curl_setopt($curl, CURLOPT_USERPWD, $auth_string);
+curl_setopt($curl, CURLOPT_POST, TRUE);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+  'Content-type: application/x-www-form-urlencoded',
+));
+
+$response = curl_exec($curl);
+$curl_info = curl_getinfo($curl);
+$php_log = array(
+  "php_error_info" => $curl_info
+);
+$curl_error = curl_error($curl);
+
+curl_close($curl);
 
 // Check for errors
+// it's useful to log as much info as possible for debugging
 if ($response === FALSE) {
-    die(curl_error($ch));
+  log_error($php_log, $curl_error);
 }
 
-// Decode the response
+// Decode the response and get access token
 $responseData = json_decode($response, TRUE);
 $access_token = $responseData["access_token"];
-
 // get request type or default to GET
+$method = "GET";
 if ($requestData->requestType) {
     $method = $requestData->requestType;
-} else {
-    $method = "GET";
 }
-
-// more security checks
-// optional: you might want to check the URL for the API request here
-// and make sure it is to an approved API
-// and that there is no suspicious code appended to the URL
-
 
 // get the URL and authorization info from the form data
 $request = $requestData->url;
 //send the http request
-if ($requestData->requestBody) {
-  $ch = curl_init($request);
-  curl_setopt_array($ch, array(
-    CURLOPT_CUSTOMREQUEST  => $method,
-    CURLOPT_RETURNTRANSFER => TRUE,
-    CURLOPT_SSL_VERIFYPEER => FALSE,
-    CURLOPT_HTTPHEADER     => array(
-      'Content-type: application/json',
-      "Authorization: Bearer {$access_token}",
-    ),
-    CURLOPT_POSTFIELDS => $requestData->requestBody
-  ));
-  $response = curl_exec($ch);
-  curl_close($ch);
-} else {
-  $ch = curl_init($request);
-  curl_setopt_array($ch, array(
-    CURLOPT_CUSTOMREQUEST  => $method,
-    CURLOPT_RETURNTRANSFER => TRUE,
-    CURLOPT_SSL_VERIFYPEER => FALSE,
-    CURLOPT_HTTPHEADER     => array(
-      'Content-type: application/json',
-      "Authorization: Bearer {$access_token}",
-    )
-  ));
-  $response = curl_exec($ch);
-  curl_close($ch);
+if (isset($requestData->requestBody)) {
+  $data = $requestData->requestBody;
 }
+  $curl = curl_init($request);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    'Content-type: application/json',
+    "Authorization: Bearer {$access_token}"
+  ));
+  switch ($method)
+    {
+        case "POST":
+            curl_setopt($curl, CURLOPT_POST, TRUE);
+            if ($requestData->requestBody) {
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+            break;
+        case "PUT":
+            // don't use CURLOPT_PUT; it doesn't work
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            if ($requestData->requestBody) {
+              // echo $data;
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+            break;
+        case "PATCH":
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            if ($requestData->requestBody) {
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+            break;
+        case "DELETE":
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            if ($requestData->requestBody) {
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+            break;
+        default:
+            // GET request, nothing to do;
+    }
+  $response = curl_exec($curl);
+  $curl_info = curl_getinfo($curl);
+  $php_log = array(
+    "php_error_info" => $curl_info
+  );
+  $curl_error = curl_error($curl);
+  curl_close($curl);
 
 // Check for errors and log them if any
 // note that logging will fail unless
 // the file log.txt exists in the same
 // directory as the proxy and is writable
+
 if ($response === FALSE) {
-    $logEntry = "\nError:\n".
-    "\n".date("Y-m-d H:i:s")." UTC \n"
-    .$response;
-    $logFileLocation = "log.txt";
-    $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
-    fwrite($fileHandle, $logEntry);
-    fclose($fileHandle);
-    echo "Error: there was a problem with your API call"+
-    die(curl_error($ch));
+  log_error($php_log, $curl_error);
 }
 
-// Decode the response
-// $responseData = json_decode($response, TRUE);
-// return the response to the AJAX caller
-$responseDecoded = json_decode($response);
-if (!isset($responseDecoded)) {
-    $response = '{null}';
+function log_error($php_log, $curl_error) {
+  $logEntry = "\nError:\n". "\n".date("Y-m-d H:i:s"). " UTC \n" .$curl_error. "\n".json_encode($php_log, JSON_PRETTY_PRINT);
+  $logFileLocation = "log.txt";
+  $fileHandle      = fopen($logFileLocation, 'a') or die("-1");
+  fwrite($fileHandle, $logEntry);
+  fclose($fileHandle);
+  echo "Error: there was a problem with your API call"+
+  die(json_encode($php_log, JSON_PRETTY_PRINT));
 }
+
+// return the response to the AJAX caller
 echo $response;
 ?>
