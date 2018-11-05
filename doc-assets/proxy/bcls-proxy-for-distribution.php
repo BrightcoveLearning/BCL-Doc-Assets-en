@@ -87,7 +87,7 @@ if ($requestData->requestType) {
 
 // get the URL and authorization info from the form data
 $request = $requestData->url;
-//send the http request
+// check for a request body sent with the request
 if (isset($requestData->requestBody)) {
   $data = $requestData->requestBody;
 }
