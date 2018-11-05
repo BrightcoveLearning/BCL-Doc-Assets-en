@@ -100,34 +100,33 @@ if (isset($requestData->requestBody)) {
   ));
   switch ($method)
     {
-        case "POST":
-            curl_setopt($curl, CURLOPT_POST, TRUE);
-            if ($requestData->requestBody) {
-              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            }
-            break;
-        case "PUT":
-            // don't use CURLOPT_PUT; it doesn't work
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-            if ($requestData->requestBody) {
-              // echo $data;
-              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            }
-            break;
-        case "PATCH":
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-            if ($requestData->requestBody) {
-              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            }
-            break;
-        case "DELETE":
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-            if ($requestData->requestBody) {
-              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            }
-            break;
-        default:
-            // GET request, nothing to do;
+      case "POST":
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        if ($requestData->requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      case "PUT":
+        // don't use CURLOPT_PUT; it is not reliable
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if ($requestData->requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      case "PATCH":
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if ($requestData->requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      case "DELETE":
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if ($requestData->requestBody) {
+          curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        break;
+      default:
+        // GET request, nothing to do;
     }
   $response = curl_exec($curl);
   $curl_info = curl_getinfo($curl);
