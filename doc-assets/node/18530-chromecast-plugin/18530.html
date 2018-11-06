@@ -14,25 +14,17 @@
 </ol>
 
 <aside class="bcls-aside bcls-aside--information">
-	<p>
-		Notes:
-	</p>
+<p>Notes:</p>
+
+<ul>
+	<li>The Chromecast Plugin is supported with the Brightcove Player version 6+.</li>
+	<li>Since the Chromecast Plugin relies on the browser's support for casting, it is only supported in the following OS/browser combinations:
 	<ul>
-		<li>
-			The Chromecast Plugin is supported with the Brightcove Player version 6+.
-		</li>
-		<li>
-				Since the Chromecast Plugin relies on the browser's support for casting, it is only supported in the following OS/browser combinations:
-			<ul>
-				<li>
-					Desktop/Chrome
-				</li>
-				<li>
-					Android/Chrome
-				</li>
-			</ul>
-		</li>
+		<li>Desktop/Chrome</li>
+		<li>Android/Chrome</li>
 	</ul>
+	</li>
+</ul>
 </aside>
 </section>
 
@@ -60,23 +52,47 @@
 <section class="bcls-section">
 <h2 id="Using_the_plugin">Using the plugin</h2>
 
-<p>The Chromecast Plugin for Brightcove Player is used like all other Brightcove Player plugins, that is you must:</p>
+<p>The Chromecast Plugin for Brightcove Player is used like all other Brightcove Player plugins, that is you must load the plugin into the player.</p>
 
-<ul>
-	<li>Load the CSS for the plugin, located at:
+<h3>Using Studio</h3>
+
+<p>The following steps detail using Studio to load the plugin.</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
+	<li>Click the link for the player to open the player's properties.</li>
+	<li>Click <strong>Plugins</strong> in the left navigation menu.</li>
+	<li>Next, click <strong>Add a Plugin</strong>.</li>
+	<li>For the <strong>Plugin Name</strong> enter <strong>chromecastReceiver</strong>.</li>
+	<li><p>
+		Include the plugin URLs.
+		</p>
+		<aside class="bcls-aside bcls-aside--information">When using the Brightcove Player v6.26.0+, you will need to use the Chromecast Plugin v1.1.1+. For the URLs listed below, simply replace <code>1</code> with <code>1.1.1</code>, or the latest version of the plugin.</aside>
+		<p>
+			For the <strong>JavaScript</strong> URL, enter:
+			</p>
 	<pre>
-<code class="notranslate language-javascript">https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.css</code></pre>
-	</li>
-	<li>Load the JavaScript for the plugin, located at:
+<code class="notranslate language-json">https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.min.js</code></pre>
+<p>
+	For the <strong>CSS</strong> URL, enter:
+	</p>
 	<pre>
-<code class="notranslate language-javascript">https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.min.js</code></pre>
+<code class="notranslate language-json">https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.css</code></pre>
 	</li>
-	<li>Call the plugin's name: <code class="notranslate">chromecastReceiver</code></li>
-</ul>
+	<li>Enter the configuration options in the <strong>Options(JSON)</strong> text box. An example for the default player in the <strong>1507807800001</strong> account is shown. You, of course, need to enter information for your player.
+	<pre class="line-numbers">
+<code class="language-json notranslate">{
+  "playerUrl" = "https://players.brightcove.net/1507807800001/default_default/index.min.js"
+}</code></pre>
 
-<p>You can do this in code or using Studio. In Studio, you use the <strong>PLUGINS</strong> section:</p>
+	<p>See below for details on the options.</p>
+	</li>
+	<li>Click <strong>Save</strong>.</li>
+	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
+	<li>To close the open dialog, click <strong>Close</strong>.</li>
+</ol>
 
-<figure class="bcls-figure"><img class="bcls-image" alt="Plugin  configuration in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/studio-plugins-section.png" /></figure>
+<h3>Code implementation</h3>
 
 <p>In code, the implementation would look like:</p>
 
@@ -86,19 +102,19 @@
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
   &lt;title&gt;Untitled Document&lt;/title&gt;
-  <span class="bcls-highlight">&lt;link href="//players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.css" rel="stylesheet"&gt;</span>
+  <span class="bcls-highlight">&lt;link href="https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.css" rel="stylesheet"&gt;</span>
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;video id="myPlayerID"
+  &lt;video-js id="myPlayerID"
   data-video-id="5622718636001"
   data-account="1507807800001"
   data-player="default"
   data-embed="default"
   data-application-id
   class="video-js"
-  controls&gt;&lt;/video&gt;
-  &lt;script src="//players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
-  <span class="bcls-highlight">&lt;script src="//players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.min.js"&gt;&lt;/script&gt;</span>
+  controls&gt;&lt;/video-js&gt;
+  &lt;script src="https://players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
+  <span class="bcls-highlight">&lt;script src="https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.min.js"&gt;&lt;/script&gt;</span>
   &lt;script&gt;
   videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this;
@@ -137,20 +153,53 @@
 <p>To pass options in code, you would use something similar to the following:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-javascript">videojs('myPlayerID').ready(function(){
+<code class="notranslate language-javascript">videojs.getPlayer('myPlayerID').ready(function() {
   var myPlayer = this;
   options = {};
   options.playerUrl = '//players.brightcove.net/1507807800001/default_default/index.min.js';
   myPlayer.chromecastReceiver(options);
 });</code></pre>
-
-<p>In Studio, options are passed as follows:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Pass plugin options in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/studio-pass-options.png" /></figure>
 </section>
 
 <section class="bcls-section">
 <h2 id="Changelog">Changelog</h2>
+
+<h4>31 Oct 2018</h4>
+
+<p>v1.1.1</p>
+
+<ul>
+	<li>Fixed a syntax error on the receiver, causing it to fail to load</li>
+</ul>
+
+<h4>12 Oct 2018</h4>
+
+<p>v1.1.0</p>
+
+<ul>
+	<li>Features
+	<ul>
+		<li>Add a splashScreen to show an image when a player is not loaded</li>
+		<li>UI improvements</li>
+		<li>Use a default player if one is not given</li>
+	</ul>
+	</li>
+	<li>Bug Fixes
+	<ul>
+		<li><code>accountId</code> not being passed correctly to receiver</li>
+		<li>Pass <code>withCredentials</code> into player.src on the receiver</li>
+		<li>Prevent registering receiver player twice, on new videos</li>
+		<li>Report sender data for analytics</li>
+		<li>Seeking issues caused by errors being thrown</li>
+		<li>Switching to another catalog video</li>
+	</ul>
+	</li>
+	<li>Chores
+	<ul>
+		<li>Update using plugin generator v7.2.4</li>
+	</ul>
+	</li>
+</ul>
 
 <h4>26 Jun 2018</h4>
 
