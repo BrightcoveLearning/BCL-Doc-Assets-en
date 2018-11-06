@@ -1,204 +1,281 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+	<section class="bcls-section">
+		<h2 id="Introduction">Introduction</h2>
 
-<div class="BCL-concept">
-<p>The <strong>Advanced (in-page) embed</strong>&nbsp;code permits you to have the player exist in the the HTML page directly, not in an iframe. This offers the benefits of ease of accessing the player and associated properties and events. By using the non-iframe player, you lose the ease of use of the player as a single, contained unit in social media applications and sharing.</p>
-</div>
-</section>
+		<div class="BCL-concept">
+			<p>The <strong>Advanced (in-page) embed</strong>&nbsp;code permits you to have the player exist in the the HTML page directly, not in an iframe. This offers the benefits of ease of accessing the player and associated properties and events. By using the non-iframe player, you lose the ease of use of the player as a single, contained unit in social media applications and sharing.</p>
+		</div>
+	</section>
 
-<section class="bcls-section">
-<h2 id="Usage">Usage</h2>
+	<section class="bcls-section">
+		<h2 id="Usage">Usage</h2>
 
-<aside class="bcls-aside bcls-aside--information player-only">Note: If you are a Brightcove Player customer, you will not use the <code>data-video-id</code> attribute to assign a video to your player. You would either assign the video in the <strong>Players</strong> module or using curl.</aside>
+		<aside class="bcls-aside bcls-aside--information player-only">Note: If you are a Brightcove Player customer, you will not use the <code>data-video-id</code> attribute to assign a video to your player. You would either assign the video in the <strong>Players</strong> module or using curl.</aside>
 
-<p>To use the <strong>in-page embed</strong> code follow these steps:</p>
+		<p>To use the <strong>in-page embed</strong> code follow these steps:</p>
 
-<ol class="bcls-tasklist">
-	<li>Use the&nbsp;<strong>PLAYERS</strong> module to create a player.</li>
-	<li>Go to the <strong>MEDIA</strong> module and publish a video using the newly created player.</li>
-	<li>Copy the <strong>Advanced</strong>&nbsp;embed code. The HTML will be similar to the following:
-	<pre class="line-numbers">
-<code class="language-html">&lt;video data-video-id="4093372393001"
+		<ol class="bcls-tasklist">
+			<li>Use the&nbsp;<strong>PLAYERS</strong> module to create a player.</li>
+			<li>Go to the <strong>MEDIA</strong> module and publish a video using the newly created player.</li>
+			<li>Copy the <strong>Advanced</strong>&nbsp;embed code. The HTML will be similar to the following:
+				<pre class="line-numbers">
+<code class="language-html">&lt;video-js data-video-id="4093372393001"
   data-account="1507807800001"
   data-player="ry3j6rsze"
   data-embed="default"
   data-application-id
   class="video-js"
-  controls&gt;&lt;/video&gt;
-&lt;script src="//players.brightcove.net/1507807800001/ry3j6rsze_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
-	</li>
-	<li>Copy the HTML from the browser and paste into the <code>body</code> of a full HTML page.</li>
-	<li>Browse the HTML page to see the player functioning.</li>
-</ol>
-</section>
+  controls&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/ry3j6rsze_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+			</li>
+			<li>Copy the HTML from the browser and paste into the <code>body</code> of a full HTML page.</li>
+			<li>Browse the HTML page to see the player functioning.</li>
+		</ol>
 
-<section class="bcls-section">
-<h2 id="Attributes">Attributes</h2>
+		<div class="BCL-concept">
+			<p>When publishing videos using the Media module, you can use the player URL to preview the video or copy the iframe or In-Page embed code to paste into your web page or application.</p>
 
-<p>Numerous attributes are available for the <code>&lt;video&gt;</code> tag to provide additional information about how a player should behave. The table below details available attributes.</p>
+			<p class="BCL-aside">Note: Click the <strong>Shorten</strong> button next to the preview URL to generated a shortened preview URL.</p>
 
-<aside class="bcls-aside bcls-aside--tip">
-<p>When using tag attributes that can only be true or false (data type <strong>Boolean</strong>), you simply include the attribute (no equals sign) to turn it on.</p>
+			<p>The <strong>Standard</strong> link displays the iframe embed code and the <strong>Advanced</strong> link displays the In-Page embed code. From the Player Management API perspective, you will also see the <strong>Advanced</strong> player code referred to as the <strong>embed_in_page</strong> implementation.</p>
 
-<p>RIGHT: <code>controls</code></p>
+			<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15622-pub-code-options.png" /></div>
 
-<p>WRONG: <code>controls="true"</code></p>
+			<p class="BCL-aside">Note: For information on working with responsive players, see the <a href="/node/18173">Responsive Sizing for the Brightcove Player</a> developer document.</p>
 
-<p>In order to use Booleans, the attribute should be disabled by default in the player configuration settings, then it is enabled by including the attribute in the in-page embed code. For instance, if <strong>autoplay</strong> is enabled in the player configuration there is no way to disable that feature in the in-page embed code. This means that if you want to control a Boolean attribute, you want to be sure it is disabled in the player configuration then you can optionally enable it by placing the appropriate attribute in the in-page embed code. Enabling the attribute in the player configuration overrides omitting the attribute in the in-page embed code.</p>
-</aside>
+			<div>
+				<h2 id="iframe">iframe embed code (Standard)</h2>
 
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th style="width:20%">Attribute</th>
-			<th style="width:70%">Description</th>
-			<th style="width:10%">Data Type</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>autoplay</td>
-			<td>Causes the video to start playing as soon as page is loaded (without any interaction from the user). Supported on APPLE iOS devices only if muted used concurrently.<br />
-			<br />
-			The <code>autoplay</code> attribute may not behave as you intend. It is possible that the player will issue a play command before the video is loaded, and when the video does finish loading it will not autoplay. For safety's sake, it is best to set <code>autoplay</code> as part of the player configuration. This can be done either in Studio's <strong>PLAYER &gt; PROPERTIES</strong> or via the <a href="/node/18262#autoplay">Player Management API</a>.</td>
-			<td>Boolean</td>
-		</tr>
-		<tr>
-			<td>class</td>
-			<td>Standard HTML attribute that will be assigned the <strong>video-js</strong> value by default.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>controls</td>
-			<td>Determine if the controls should be visible in the player.</td>
-			<td>Boolean</td>
-		</tr>
-		<tr>
-			<td>crossorigin</td>
-			<td>If <strong>true</strong>, the underlying <strong>&lt;video&gt;</strong> element will have <strong>crossorigin="anonymous"</strong>. This means that any videos or text tracks pulled into the player must have CORS headers.
-			<aside class="bcls-aside bcls-aside--information">Note: This feature should only be used if you know that all your content (video and text tracks) have CORS headers applied to them.</aside>
-			</td>
-			<td>Boolean</td>
-		</tr>
-		<tr>
-			<td>data-account</td>
-			<td>The account ID, sometimes also called the Publisher ID.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-ad-config-id</td>
-			<td>A Dynamic Delivery SSAI ad configuration ID.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-application-id</td>
-			<td>Allows re-use of a single player, but differentiates analytics on a per-site or per-application basis. See the <a href="/node/16616">Adding an Application ID to the Player Embed Code</a> document for full details.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-embed</td>
-			<td>Displays information if you are using embeds (parent-child player relationships).</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-player</td>
-			<td>Sets the player ID.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-playlist-id</td>
-			<td>Sets the ID or reference ID of the playlist in the player.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-playlist-video-id</td>
-			<td>Sets the initial video to be played in the video, which must be in the designated playlist.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>data-start-time</td>
-			<td>Sets the time offset from which a video will start playing. See the <a href="/node/18104">Deep Linking</a> document for details.</td>
-			<td>String</td>
-		</tr>
-		<tr class="video-cloud-only">
-			<td>data-video-id</td>
-			<td>Sets the ID or reference ID of the video in the player.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>height</td>
-			<td>Sets the display height of the video, measured in pixels <strong>ONLY</strong>. For further details using percentages for the height see the <a href="/node/18134#Using_percentages">Sizing the Player</a> document.</td>
-			<td>Number</td>
-		</tr>
-		<tr>
-			<td>language</td>
-			<td>Sets the language (using a valid language code, usually two letters) for the player.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>loop</td>
-			<td>Causes the video to start over as soon as it ends.</td>
-			<td>Boolean</td>
-		</tr>
-		<tr>
-			<td>muted</td>
-			<td>Mutes the video's sound.</td>
-			<td>Boolean</td>
-		</tr>
-		<tr>
-			<td>playsinline</td>
-			<td>If the platform and OS allow it, will display video content within the player's playback area, meaning it won't displayed fullscreen or in an independent, resizable window; does work on iPhone and iPad</td>
-			<td>Boolean</td>
-		</tr>
-		<tr>
-			<td>preload</td>
-			<td>Informs the browser whether or not the video data should begin downloading as soon as the video tag is loaded. Possible values are <code>none</code>, <code>metadata</code> or <code>auto</code>. See the next section for further details.</td>
-			<td>String</td>
-		</tr>
-		<tr>
-			<td>width</td>
-			<td>Sets the display width of the video, measured in pixels <strong>ONLY</strong>. For further details using percentages for the width see the <a href="/node/18134#Using_percentages">Sizing the Player</a> document.</td>
-			<td>Number</td>
-		</tr>
-	</tbody>
-</table>
-</section>
+				<p>Typical iframe embed code will appear as follows:</p>
 
-<section class="bcls-section">
-<h2 id="preload_details">preload details</h2>
+				<pre class="line-numbers">
+<code class="language-html">&lt;iframe src="//players.brightcove.net/1507807800001/BkTGbgSq_default/index.html?videoId=5076962725001"
+allowfullscreen
+webkitallowfullscreen
+mozallowfullscreen&gt;&lt;/iframe&gt;
+</code>
+</pre>
 
-<aside class="bcls-aside bcls-aside--warning">Note: currently the value for preload set in the <a href="/node/14052#preload">Studio Player Settings</a> will always override the value set in the <code>video</code> tag attributes, so you must set this in Studio.</aside>
+				<p>Some advantages of using the iframe embed code</p>
 
-<aside class="bcls-aside bcls-aside--information">Note: The preload settings are actually just suggestions in the HTML5 spec and as a result there can be different behavior on different browsers. Setting the value to <strong>Yes</strong> could potentially have significant impact on bandwidth consumption.
-</aside>
+				<ul>
+					<li>No collisions with existing JavaScript and/or CSS</li>
+					<li>Automatically responsive</li>
+					<li>The iframe eases use in social media apps or whenever the video will need to "travel" into other apps</li>
+				</ul>
+			</div>
 
-<p>The preload attribute informs the browser whether or not the video data should begin downloading as soon as the video tag is loaded. The options are <strong>auto</strong>, <strong>metadata</strong>, and <strong>none</strong>. For HLS playback technology the settings mean slightly different things and noted below.</p>
+			<div>
+				<h2 id="inpage">In-Page embed code (Advanced)</h2>
 
-<ul>
-	<li>
-	<p><strong>auto</strong> (default): Start loading the video immediately (if the browser agrees). Some mobile devices like iPhones and iPads will not preload the video in order to protect their users' bandwidth. This is why the value is called <strong>auto</strong> and not something more final like <strong>true</strong>.</p>
+				<p>Typical in-page embed code will appear as follows:</p>
 
-	<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>auto</strong> means the player downloads the m3u8 manifest file and only 1 segment instead of 3-4, as was the case before version 5.3 of Brightcove Player.</aside>
-	</li>
-	<li>
-	<p><strong>metadata</strong>: Load only the meta data of the video, which includes information like the duration and dimensions of the video.</p>
+				<pre class="line-numbers">
+<code class="language-html">&lt;video-js data-video-id="5076962725001"
+data-account="1507807800001"
+data-player="BkTGbgSq"
+data-embed="default"
+data-application-id
+class="video-js"
+controls&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/BkTGbgSq_default/index.min.js"&gt;&lt;/script&gt;
+</code></pre>
 
-	<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>metadata</strong> is the same as <strong>auto</strong>.</aside>
-	</li>
-	<li>
-	<p><strong>none</strong>: Don't preload any of the video data. This will wait until the user clicks play to begin downloading. Note that on iOS there may be segment downloading even with this setting. See the <a href="/node/18106">Brightcove Player and iOS</a> document for more information.</p>
+				<p>Although integrating the In-Page publishing code can be more complex, using the In-Page code is best when the page containing the player needs to communicate with the player. Some examples of when to use the In-Page embed code include:</p>
 
-	<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>none</strong> means the player will only download the m3u8 manifest so that the video duration can be calculated.</aside>
-	</li>
-</ul>
+				<ul>
+					<li>The code in the containing page needs to listen for and act on player events</li>
+					<li>The player uses styles from the parent page</li>
+					<li>The iframe code will cause application logic to fail, like a redirect from the parent page</li>
+				</ul>
 
-<pre class="line-numbers">
-<code class="language-html">&lt;video preload ...&gt;
+				<p>Even if your final implementation does not use the iframe embed&nbsp;code, you can still use the In-Page code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+
+				<aside class="bcls-aside bcls-aside--information">Note: If you selected the iframe implementation when publishing from Studio, you will see the options <code>allowfullscreen webkitallowfullscreen mozallowfullscreen </code> added in the iframe. If you are ever manually placing a Brightcove Player, either the in-page embed or iframe implementation, in an iframe you should also include those options for proper fullscreen functionality. If for some reason you nest a player in multiple iframes, all iframes should have the options added.</aside>
+
+				<h3>Chrome and "broken" HTML video icon</h3>
+
+				<p>Chrome versions 67+ will display a broken video icon momentarily until the <code>&lt;video ...&gt;</code> tag gets converted into a Brightcove Player. The icon appears as follows:</p>
+
+				<figure class="bcls-figure"><img class="bcls-image" width="200" height="109" alt="chrome broken video icon" src="//learning-services-media.brightcove.com/doc-assets/general/chrome-broken-video-icon.png" /></figure>
+
+				<p>If you are using Brightcove Player version 6.11+, you change the video tag to <code>&lt;video-js ...&gt;</code> and you will NOT see the icon.</p>
+			</div>
+
+			<div class="BCL-concept">
+				<h2 id="recommend">Recommendation</h2>
+
+				<p>It is considered a best practice to use the iframe implementation unless some application logic requires the use of the In-Page code.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="bcls-section">
+		<h2 id="Attributes">Attributes</h2>
+
+		<p>Numerous attributes are available for the <code>&lt;video&gt;</code> tag to provide additional information about how a player should behave. The table below details available attributes.</p>
+
+		<aside class="bcls-aside bcls-aside--tip">
+			<p>When using tag attributes that can only be true or false (data type <strong>Boolean</strong>), you simply include the attribute (no equals sign) to turn it on.</p>
+
+			<p>RIGHT: <code>controls</code></p>
+
+			<p>WRONG: <code>controls="true"</code></p>
+
+			<p>In order to use Booleans, the attribute should be disabled by default in the player configuration settings, then it is enabled by including the attribute in the in-page embed code. For instance, if <strong>autoplay</strong> is enabled in the player configuration there is no way to disable that feature in the in-page embed code. This means that if you want to control a Boolean attribute, you want to be sure it is disabled in the player configuration then you can optionally enable it by placing the appropriate attribute in the in-page embed code. Enabling the attribute in the player configuration overrides omitting the attribute in the in-page embed code.</p>
+		</aside>
+
+		<table class="bcls-table">
+			<thead class="bcls-table__head">
+				<tr>
+					<th style="width:20%">Attribute</th>
+					<th style="width:70%">Description</th>
+					<th style="width:10%">Data Type</th>
+				</tr>
+			</thead>
+			<tbody class="bcls-table__body">
+				<tr>
+					<td>autoplay</td>
+					<td>Causes the video to start playing as soon as page is loaded (without any interaction from the user). Supported on APPLE iOS devices only if muted used concurrently.<br />
+						<br />
+						The <code>autoplay</code> attribute may not behave as you intend. It is possible that the player will issue a play command before the video is loaded, and when the video does finish loading it will not autoplay. For safety's sake, it is best to set <code>autoplay</code> as part of the player configuration. This can be done either in Studio's <strong>PLAYER &gt; PROPERTIES</strong> or via the <a href="/node/18262#autoplay">Player Management API</a>.
+						<p>Getting a video to autoplay can be a complex situation. See the <a href="/node/18602">Autoplay Considerations</a> document for further details.</p>
+					</td>
+					<td>Boolean</td>
+				</tr>
+				<tr>
+					<td>class</td>
+					<td>Standard HTML attribute that will be assigned the <strong>video-js</strong> value by default.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>controls</td>
+					<td>Determine if the controls should be visible in the player.</td>
+					<td>Boolean</td>
+				</tr>
+				<tr>
+					<td>crossorigin</td>
+					<td>If <strong>true</strong>, the underlying <strong>&lt;video&gt;</strong> element will have <strong>crossorigin="anonymous"</strong>. This means that any videos or text tracks pulled into the player must have CORS headers.
+						<aside class="bcls-aside bcls-aside--information">Note: This feature should only be used if you know that all your content (video and text tracks) have CORS headers applied to them.</aside>
+					</td>
+					<td>Boolean</td>
+				</tr>
+				<tr>
+					<td>data-account</td>
+					<td>The account ID, sometimes also called the Publisher ID.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-ad-config-id</td>
+					<td>A Dynamic Delivery SSAI ad configuration ID.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-application-id</td>
+					<td>Allows re-use of a single player, but differentiates analytics on a per-site or per-application basis. See the <a href="/node/16616">Adding an Application ID to the Player Embed Code</a> document for full details.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-embed</td>
+					<td>Displays information if you are using embeds (parent-child player relationships).</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-player</td>
+					<td>Sets the player ID.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-playlist-id</td>
+					<td>Sets the ID or reference ID of the playlist in the player.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-playlist-video-id</td>
+					<td>Sets the initial video to be played in the video, which must be in the designated playlist.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>data-start-time</td>
+					<td>Sets the time offset from which a video will start playing. See the <a href="/node/18104">Deep Linking</a> document for details.</td>
+					<td>String</td>
+				</tr>
+				<tr class="video-cloud-only">
+					<td>data-video-id</td>
+					<td>Sets the ID or reference ID of the video in the player.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>height</td>
+					<td>Sets the display height of the video, measured in pixels <strong>ONLY</strong>. For further details using percentages for the height see the <a href="/node/18134#Using_percentages">Sizing the Player</a> document.</td>
+					<td>Number</td>
+				</tr>
+				<tr>
+					<td>language</td>
+					<td>Sets the language (using a valid language code, usually two letters) for the player.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>loop</td>
+					<td>Causes the video to start over as soon as it ends.</td>
+					<td>Boolean</td>
+				</tr>
+				<tr>
+					<td>muted</td>
+					<td>Mutes the video's sound.</td>
+					<td>Boolean</td>
+				</tr>
+				<tr>
+					<td>playsinline</td>
+					<td>If the platform and OS allow it, will display video content within the player's playback area, meaning it won't displayed fullscreen or in an independent, resizable window; does work on iPhone and iPad</td>
+					<td>Boolean</td>
+				</tr>
+				<tr>
+					<td>preload</td>
+					<td>Informs the browser whether or not the video data should begin downloading as soon as the video tag is loaded. Possible values are <code>none</code>, <code>metadata</code> or <code>auto</code>. See the next section for further details.</td>
+					<td>String</td>
+				</tr>
+				<tr>
+					<td>width</td>
+					<td>Sets the display width of the video, measured in pixels <strong>ONLY</strong>. For further details using percentages for the width see the <a href="/node/18134#Using_percentages">Sizing the Player</a> document.</td>
+					<td>Number</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section class="bcls-section">
+		<h2 id="preload_details">preload details</h2>
+
+		<aside class="bcls-aside bcls-aside--warning">Note: currently the value for preload set in the <a href="/node/14052#preload">Studio Player Settings</a> will always override the value set in the <code>video</code> tag attributes, so you must set this in Studio.</aside>
+
+		<aside class="bcls-aside bcls-aside--information">Note: The preload settings are actually just suggestions in the HTML5 spec and as a result there can be different behavior on different browsers. Setting the value to <strong>Yes</strong> could potentially have significant impact on bandwidth consumption.</aside>
+
+		<p>The preload attribute informs the browser whether or not the video data should begin downloading as soon as the video tag is loaded. The options are <strong>auto</strong>, <strong>metadata</strong>, and <strong>none</strong>. For HLS playback technology the settings mean slightly different things and noted below.</p>
+
+		<ul>
+			<li>
+				<p><strong>auto</strong> (default): Start loading the video immediately (if the browser agrees). Some mobile devices like iPhones and iPads will not preload the video in order to protect their users' bandwidth. This is why the value is called <strong>auto</strong> and not something more final like <strong>true</strong>.</p>
+
+				<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>auto</strong> means the player downloads the m3u8 manifest file and only 1 segment instead of 3-4, as was the case before version 5.3 of Brightcove Player.</aside>
+			</li>
+			<li>
+				<p><strong>metadata</strong>: Load only the meta data of the video, which includes information like the duration and dimensions of the video.</p>
+
+				<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>metadata</strong> is the same as <strong>auto</strong>.</aside>
+			</li>
+			<li>
+				<p><strong>none</strong>: Don't preload any of the video data. This will wait until the user clicks play to begin downloading. Note that on iOS there may be segment downloading even with this setting. See the <a href="/node/18106">Brightcove Player and iOS</a> document for more information.</p>
+
+				<aside class="bcls-aside bcls-aside--information">For the HLS playback technology, <strong>none</strong> means the player will only download the m3u8 manifest so that the video duration can be calculated.</aside>
+			</li>
+		</ul>
+
+		<pre class="line-numbers">
+<code class="language-html">&lt;video-js preload ...&gt;
 or
 { "preload": "auto" }</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">Note: Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.</aside>
-
-</section>
+		<aside class="bcls-aside bcls-aside--information">Note: Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.</aside>
+	</section>
 </article>
