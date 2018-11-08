@@ -1,6 +1,6 @@
 var BCLS = (function(window, document, Pikaday) {
   'use strict';
-  var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
+  var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     basicInfo = document.getElementById('basicInfo'),
     useMyAccount = document.getElementById('useMyAccount'),
     $accountID = document.getElementById('accountID'),
@@ -24,6 +24,8 @@ var BCLS = (function(window, document, Pikaday) {
     tags = 'bird,budapest',
     $request = document.getElementById('request'),
     $submitButton = document.getElementById('submitButton'),
+    csv_format = document.getElementById('csv_format'),
+    csvFormat = false,
     $selectData = document.getElementById('selectData'),
     $requestInputs = document.getElementsByClassName('aapi-request'),
     $responseFrame = document.getElementById('responseFrame'),
@@ -50,6 +52,18 @@ var BCLS = (function(window, document, Pikaday) {
       str = encodeURI(str);
       return str;
     }
+  }
+
+  /**
+   * determines if checkbox is checked
+   * @param  {htmlElement}  e the checkbox to check
+   * @return {Boolean}  true if box is checked
+   */
+  function isChecked(e) {
+    if (e.checked) {
+      return true;
+    }
+    return false;
   }
 
   // construct the request
@@ -80,6 +94,13 @@ var BCLS = (function(window, document, Pikaday) {
     options.url += '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.tags';
     // add ref id filter
     options.url += '&where=video.q==tags:' + removeSpaces(tags);
+    // check format
+    if (isChecked(csv_format)) {
+      options.url += '&format=csv';
+      csvFormat = true;
+    }
+
+
     $request.textContent = options.url;
     $request.setAttribute('value', options.url);
   }
@@ -105,6 +126,7 @@ var BCLS = (function(window, document, Pikaday) {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
+              console.log('response', response);
               // some API requests return '{null}' for empty responses - breaks JSON.parse
               if (response === '{null}') {
                 response = null;
@@ -170,8 +192,13 @@ var BCLS = (function(window, document, Pikaday) {
   // send request
   $submitButton.addEventListener('click', function() {
     makeRequest(options, function(response) {
-      response = JSON.parse(response);
+      if (!csvFormat) {
+       response = JSON.parse(response);
       responseFrame.textContent = JSON.stringify(response, null, '  ');
+      } else {
+        responseFrame.textContent = response;
+      }
+
     });
   });
   // select all the data
