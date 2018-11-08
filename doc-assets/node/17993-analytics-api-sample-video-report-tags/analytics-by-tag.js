@@ -46,7 +46,7 @@ var BCLS = (function(window, document, Pikaday) {
   }
 
   // remove space after comma and URI encode
-  function removeSpaces(str) {
+  function encodeString(str) {
     if (isDefined(str)) {
       str = str.replace(', ', ',');
       str = encodeURI(str);
@@ -93,7 +93,8 @@ var BCLS = (function(window, document, Pikaday) {
     // add limit and fields
     options.url += '&limit=all&fields=engagement_score,play_rate,video,video_duration,video_engagement_1,video_engagement_100,video_engagement_25,video_engagement_50,video_engagement_75,video_impression,video_name,video_percent_viewed,video_seconds_viewed,video_view,video.tags';
     // add ref id filter
-    options.url += '&where=video.q==tags:' + removeSpaces(tags);
+    tags = encodeString(tags);
+    options.url += '&where=video.q==tags:"' + tags + '"';
     // check format
     if (isChecked(csv_format)) {
       options.url += '&format=csv';
