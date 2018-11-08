@@ -1,0 +1,502 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>The Custom Endscreen plugin allows display of customer supplied HTML at the conclusion of video playback.</p>
+
+<p>The sample video below demonstrates the use of the Custom Endscreen plugin. At the end of this short video you will see text displayed from the following HTML:</p>
+
+<pre class="line-numbers">
+<code class="language-html notranslate">&lt;strong&gt;Content&lt;/strong&gt; for &lt;em&gt;custom&lt;/em&gt; end screen</code></pre>
+<iframe src="https://players.brightcove.net/1752604059001/0b0bd7d7-6907-4e12-a644-747b38fab305_default/index.html?videoId=5701193190001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" allow="encrypted-media" width="640" height="360"></iframe></section>
+
+<section id="implementplayersmodule" class="bcls-section">
+<h2>Implement using Players module</h2>
+
+<p>Custom endscreens can be implemented by <a href="/node/15267">editing the endscreen properties</a> or by using the custom endscreen plugin. To implement the custom endscreen plugin using the Players module, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
+	<li>Click the link for the player to open the player's properties.</li>
+	<li>Click <strong>End Screens</strong> in the left navigation menu.</li>
+	<li>Next, for the <strong>Player End Screen</strong> type, click the down arrow and select <strong>Custom</strong>.</li>
+	<li>Enter the configuration options in the <strong>Custom HTML</strong> text box.
+	<pre class="line-numbers">
+<code class="language-json notranslate">{
+  "content": "&lt;strong&gt;Content&lt;/strong&gt; for &lt;em&gt;custom&lt;/em&gt; end screen"
+}</code></pre>
+	</li>
+	<li>Click <strong>Save</strong>.</li>
+	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
+	<li>To close the open dialog, click <strong>Close</strong>.</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="implementcode">Implement using code</h2>
+
+<div class="video-cloud-only">
+<p>To implement a plugin the player needs to know the location of the plugin code, a stylesheet if needed, the plugin name and plugin configuration options. The location of the plugin code and stylesheet are as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js</code></pre>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css</code></pre>
+
+<p>The name of the plugin is <code class="notranslate">customEndscreen</code>, and an example set of options is:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">{
+  "content": "<strong>Content</strong> for <em>custom</em> end screen"
+}</code></pre>
+
+<p>The following shows using the In-Page Embed implementation of the player to associate the Custom Endscreen plugin with a single instance of a player.</p>
+
+<ul>
+	<li>Line 12: Uses a <code class="notranslate">link</code> tag to include the plugin's CSS in the <code class="notranslate">head</code> of the HTML page.</li>
+	<li>Line 14: Gives the <code class="notranslate">video</code> tag an <code class="notranslate">id</code> attribute, with some value, in this case <strong>myPlayerID</strong>.</li>
+	<li>Line 23: Uses a <code class="notranslate">script</code> tag to include the plugin's JavaScript in the <code class="notranslate">body</code> of the HTML page.</li>
+	<li>Line 27: Creates a reference to the player.</li>
+	<li>Lines 28-30: Initializes the plugin and passes in custom options.</li>
+</ul>
+
+<pre class="line-numbers" data-start="12">
+<code class="language-html notranslate">  &lt;link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css"&gt;
+
+  &lt;video-js id="myPlayerID"
+    data-account="1752604059001"
+    data-player="decfdaf5-0a6e-43f6-82d3-39d125c413c4"
+    data-embed="default"
+    data-video-id="4077874637001"
+    class="video-js" controls&gt;&lt;/video-js&gt;
+
+  &lt;script src="https://players.brightcove.net/1752604059001/decfdaf5-0a6e-43f6-82d3-39d125c413c4_default/index.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript"&gt;
+    videojs.getPlayer('myPlayerID').ready(function() {
+      var myPlayer = this;
+      myPlayer.customEndscreen({
+        "content": "&lt;strong&gt;Content&lt;/strong&gt; for &lt;em&gt;custom&lt;/em&gt; end screen"
+      })
+    });
+  &lt;/script&gt;</code></pre>
+</div>
+
+<div class="player-only">
+<p>To implement a plugin the player needs to know the location of the plugin code, a stylesheet if needed, the plugin name and plugin configuration options. The location of the plugin code and stylesheet are as follows:</p>
+
+<ul>
+	<li>https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js</li>
+	<li>https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css</li>
+</ul>
+
+<p>The name of the plugin is <code class="notranslate">customEndscreen</code>, and an example set of options is:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">{
+  "content": "<strong>Content</strong> for <em>custom</em> end screen"
+}</code></pre>
+
+<p>The following shows using the In-Page Embed implementation of the player to associate the Custom Endscreen plugin with a single instance of a player.</p>
+
+<ul>
+	<li>Line 1: Uses a <code class="notranslate">link</code> tag to include the plugin's CSS in the <code class="notranslate">head</code> of the HTML page.</li>
+	<li>Line 3: Gives the <code class="notranslate">video</code> tag an <code class="notranslate">id</code> attribute, with some value, in this case <strong>myPlayerID</strong>.</li>
+	<li>Line 12: Uses a <code class="notranslate">script</code> tag to include the plugin's JavaScript in the <code class="notranslate">body</code> of the HTML page.</li>
+	<li>Line 16: Creates a reference to the player.</li>
+	<li>Lines 17-19: Initializes the plugin and passes in custom options.</li>
+</ul>
+
+<pre class="line-numbers" data-start="1">
+<code class="language-html notranslate">  &lt;link rel="stylesheet" type="text/css" href="https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css"&gt;
+
+  &lt;video-js id="myPlayerID"
+    data-account="1752604059001"
+    data-player="decfdaf5-0a6e-43f6-82d3-39d125c413c4"
+    data-embed="default"
+    class="video-js"
+    controls&gt;&lt;/video-js&gt;
+
+  &lt;script src="https://players.brightcove.net/1752604059001/decfdaf5-0a6e-43f6-82d3-39d125c413c4_default/index.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript" src="https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript"&gt;
+    videojs.getPlayer('myPlayerID').ready(function() {
+      var myPlayer = this;
+      myPlayer.customEndscreen({
+        "content": "&lt;strong&gt;Content&lt;/strong&gt; for &lt;em&gt;custom&lt;/em&gt; end screen"
+      })
+    });
+  &lt;/script&gt;</code></pre>
+</div>
+</section>
+
+<section id="properties" class="bcls-section">
+<h2>Property</h2>
+
+<p>The following plugin property is used to control the Custom Endscreen plugin:</p>
+
+<ul>
+	<li><code class="notranslate">content</code>:
+
+	<ul>
+		<li>Type: <code class="notranslate">string</code></li>
+		<li>Any string literal or HTML that is rendered on the custom endscreen.</li>
+	</ul>
+	</li>
+</ul>
+</section>
+
+<section id="customize" class="bcls-section">
+<h2>Customize the endscreen</h2>
+
+<p>You can use CSS to customize the appearance of your endscreen. Below are a few examples of what you can do. Make sure to test your implementations to ensure they work with your page content.</p>
+
+<aside class="bcls-aside bcls-aside--information">The code in this section uses relative positioning, which can be used in conjunction with a responsive player. To make your player responsive, see the <a href="/node/18173">Responsive Sizing</a> document or use the <strong>Players</strong> module to set the <strong>Sizing</strong> setting to <strong>Responsive</strong>.</aside>
+
+<p>This is how the endscreen appears with the restart video button and a social sharing button.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="default custom endscreen" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/custom-endscreens/plugin-doc/endscreen-default.png" /></figure>
+
+<h3>Change button size</h3>
+
+<p>Let's say you want to change the size of the endscreen buttons. These button images are Scalable Vector Graphics (SVG) format so that they load quickly on all platforms. Because of this, you can't change their size by using the <code class="notranslate">width</code> and <code class="notranslate">height</code> CSS properties.</p>
+
+<p>Instead, since these buttons are XML text files, you can change their size by using the <code class="notranslate">font-size</code> CSS property.</p>
+
+<p>Use the code below to make both buttons smaller:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">.vjs-overlay-buttons {
+  font-size: .5em;
+}</code></pre>
+
+<p>Using a percentage value should have the same effect:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">.vjs-overlay-buttons {
+  font-size: 50%;
+}</code></pre>
+
+<p>The result should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="small endscreen buttons" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/custom-endscreens/plugin-doc/endscreen-small-buttons.png" /></figure>
+
+<p>Or you can control the size of each button independently:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">.vjs-restart-control {
+  font-size: .5em;
+}
+.vjs-trigger-social-control {
+  font-size: .5em;
+}</code></pre>
+
+<h3>Move content below buttons</h3>
+
+<p>Earlier in this document, you learned how to add content to the endscreen. To review, you can add any HTML to the plugin. The code below adds a link to our homepage to the endscreen:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">{
+  "content": "&lt;a href='https://www.brightcove.com'&gt;Visit our home page&lt;/a&gt;"
+}</code></pre>
+
+<p>By default, your added content displays above the endscreen buttons:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="content above endscreen buttons" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/custom-endscreens/plugin-doc/endscreen-content-above.png" /></figure>
+
+<p>Use the following CSS to position your HTML content below the endscreen buttons:</p>
+
+<ul>
+	<li>Lines 190-193: Position the buttons from the top. These elements are already centered on the page for you.</li>
+	<li>Lines 194-196: Remove the default padding for the entire overlay to help center your custom text.</li>
+	<li>Lines 197-202: Position your custom text from the bottom and center it horizontally.</li>
+</ul>
+
+<pre class="line-numbers" data-start="190">
+<code class="language-javascript notranslate">.vjs-overlay-buttons {
+  position: absolute;
+  top: 5em;
+}
+.vjs-custom-overlay {
+  padding: 0;
+}
+.vjs-endscreen-overlay-content {
+  position: absolute;
+  bottom: 5em;
+  text-align: center;
+  width: 100%;
+}</code></pre>
+
+<p>The result should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="content below endscreen buttons" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/custom-endscreens/plugin-doc/endscreen-content-below.png" /></figure>
+
+<h3>Display vertical content and buttons</h3>
+
+<p>You can also change the layout of your HTML content and the endscreen buttons. By default, they are displayed horizontally, with your content above the buttons. The code below floats your content to the left of the buttons and displays the buttons vertically:</p>
+
+<ul>
+	<li>Lines 205-210: Position the buttons from the top and left. The small width caused the buttons to align vertically.</li>
+	<li>Lines 211-213: Remove the default padding for the entire overlay.</li>
+	<li>
+	<p>Lines 214-223: Positions you custom text to the left of the buttons, centered horizontally and vertically in half of the overlay.</p>
+
+	<aside class="bcls-aside bcls-aside--information">For details on how to center elements horizontally and vertically, refer to the W3C document on <a href="//www.w3.org/Style/Examples/007/center.en.html">Centering Things</a>.</aside>
+	</li>
+</ul>
+
+<pre class="line-numbers" data-start="205">
+<code class="language-javascript notranslate">.vjs-overlay-buttons {
+  position: absolute;
+  width: 10%;
+  top: 20%;
+  left: 50%;
+}
+.vjs-custom-overlay {
+  padding: 0;
+}
+.vjs-endscreen-overlay-content {
+  position: absolute;
+  float: left;
+  width: 50%;
+  text-align: center;
+  top: 45%;
+  transform: translate(0, -50%)
+  -webkit-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+}
+</code></pre>
+
+<p>The result should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="vertical content and endscreen buttons" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/custom-endscreens/plugin-doc/endscreen-vertical.png" /></figure>
+
+<p>You can be creative with how your endscreen will look by overriding the default CSS properties. In your browser, inspect the elements to find the element class names and values. For a quick review of how to do this, see the <a href="/node/18066">Customize Player Appearance</a> document.</p>
+</section>
+
+<section id="mailto" class="bcls-section video-cloud-only">
+<h2>Use mailto with video name</h2>
+
+<p>You may wish to allow the viewer of the video to email you a question or comment. You can do this by using an HTML <strong>mailto</strong> link in the custom endscreen, as shown here:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="mailto customer endscreen" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/custom-endscreens/plugin-doc/custom-endscreen-mailto.png" /></figure>
+
+<p>Clicking the link will open the customers default email client. The code below shows how to use the video's metatdata, in this case the video name, to automatically be the subject of the email.</p>
+
+<p>The following section explains how to do that particular task, but moreover, once you have data from the <a href="/node/18085">mediainfo</a> property, any video metatdata could be used in the mailto link.</p>
+
+<ul>
+	<li>Line 235: Include the CSS for the customEndscreen plugin.</li>
+	<li>Lines 236-241: CSS to change the size of the player.</li>
+	<li>Lines 245-251: Standard in-page embed code used. Note an <code class="notranslate">id</code> is added.</li>
+	<li>Line 253: Specify the source for the JavaScript code for the endscreen plugin.</li>
+	<li>Lines 256,257,270: Standard setup for using code with the player.</li>
+	<li>Line 262: Listens for the <code class="notranslate">loadstart</code> event. This is when the video has started loading and its metadata, found in <code class="notranslate">myPlayer.mediainfo</code>, is available.</li>
+	<li>Line 263: URL encode the name of the video and assign to a variable. For the value to be used as a subject in a mailto link it is required by HTML standards the string be URL encoded.</li>
+	<li>Lines 264-265: Build the <code class="notranslate">&lt;a href="mailto"&gt;</code> link.</li>
+	<li>Lines 266-268: Call the <code class="notranslate">customEndscreen()</code> method, and use the created mailto link for the endscreen's content.</li>
+</ul>
+
+<pre class="line-numbers" data-start="229">
+<code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;End screen with title as subject&lt;/title&gt;
+
+  &lt;link href="https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.css" rel='stylesheet'&gt;
+  &lt;style type="text/css"&gt;
+    .video-js {
+      width: 600px;
+      height: 338px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;video-js id="myPlayerID"
+    data-video-id="1507781667001"
+    data-account="1507807800001"
+    data-player="default"
+    data-embed="default"
+    class="video-js" controls&gt;&lt;/video-js&gt;
+  &lt;script src="https://players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
+
+  &lt;script src="https://players.brightcove.net/videojs-custom-endscreen/2/videojs-custom-endscreen.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript"&gt;
+    videojs.getPlayer('myPlayerID').ready(function() {
+      var myPlayer = this,
+        subjectEncoded,
+        theMailto,
+        theLink;
+
+      myPlayer.on('loadstart',function(){
+        subjectEncoded = encodeURI(myPlayer.mediainfo.name);
+        theMailto = 'mailto:nowhere@mozilla.org?subject=' + subjectEncoded;
+        theLink = '&lt;a href="' + theMailto + '"&gt;Email a Comment&lt;/a&gt;&lt;br /&gt;&lt;br/&gt;';
+        myPlayer.customEndscreen({
+          "content": theLink
+        })
+      })
+    });
+  &lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="changelog">Changelog</h2>
+
+<h4>5 Dec 2017</h4>
+
+<p>v2.0.15</p>
+
+<ul>
+	<li>Fixed an issue where the endscreen would incorrectly wait for a post-roll to complete when there was no post-roll</li>
+</ul>
+
+<h4>17 Nov 2017</h4>
+
+<p>v2.0.14</p>
+
+<ul>
+	<li>Fixed an issue where custom endscreen was not showing at end of non-repeating playlist</li>
+</ul>
+
+<h4>15 Nov 2017</h4>
+
+<p>v2.0.13</p>
+
+<ul>
+	<li>Fixed an issue where endscreens might not appear for some players without playlists</li>
+</ul>
+
+<h4>9 Nov 2017</h4>
+
+<p>v2.0.11</p>
+
+<ul>
+	<li>Better playlist support via closing the dialog on the loadstart event</li>
+	<li>Avoid possible issues with playlists with autoadvance of zero</li>
+</ul>
+
+<h4>4 Oct 2017</h4>
+
+<p>v2.0.10</p>
+
+<ul>
+	<li>Removed unnecessary media query so that social share button will display in endscreens on mobile devices</li>
+</ul>
+
+<h4>10 Feb 2017</h4>
+
+<p>v2.0.9</p>
+
+<ul>
+	<li>Video.js 5 and 6 cross-compatibility</li>
+</ul>
+
+<h4>18 Oct 2016</h4>
+
+<p>v2.0.8</p>
+
+<ul>
+	<li>Fixed an issue with tapping on mobile devices</li>
+</ul>
+
+<h4>29 Jan 2016</h4>
+
+<p>v2.0.7</p>
+
+<ul>
+	<li>Fixed an issue with clickability of the endscreen buttons</li>
+	<li>Fixed an issue where the social button incorrectly appeared on small screens</li>
+	<li>Fixed some issues with the endscreen opening at the wrong time after social had been closed</li>
+</ul>
+
+<h4 id="toc_0">29 Jan 2016</h4>
+
+<p>v2.0.6</p>
+
+<ul>
+	<li>Fixed an issue where closing the social modal would not re-open the custom-endscreen modal.</li>
+	<li>IE9 CSS fixes and other minor CSS improvements</li>
+</ul>
+
+<h4 id="toc_1">29 Jan 2016</h4>
+
+<p>v2.0.5</p>
+
+<ul>
+	<li>Fix an issue where social/replay buttons in the modal were not appearing</li>
+</ul>
+
+<h4 id="toc_2">14 Jan 2016</h4>
+
+<p>v2.0.4</p>
+
+<ul>
+	<li>Include videojs-endscreen via NPM</li>
+	<li>Fixed an issue where modal content was not being displayed</li>
+</ul>
+
+<h4 id="toc_3">11 Jan 2016</h4>
+
+<p>v2.0.3</p>
+
+<ul>
+	<li>Fixed NPM publish-ability</li>
+</ul>
+
+<h4 id="toc_4">11 Jan 2016</h4>
+
+<p>v2.0.2</p>
+
+<ul>
+	<li>Applied generator-videojs-plugin conventions</li>
+	<li>Prepared for publishing as a private NPM package</li>
+</ul>
+
+<h4 id="toc_5">15 Dec 2015</h4>
+
+<p>v2.0.1</p>
+
+<ul>
+	<li>videojs-social is no longer bundled with the output in <code class="notranslate">dist/</code> (plugin behavior/API unchanged).</li>
+	<li>Updated style changes to use HTML classes instead of modifying the <code class="notranslate">style</code> directly</li>
+	<li>Fixed an issue where events were bound, but never unbound</li>
+	<li>Fixed an issue where <code class="notranslate">options.content</code> was not being localized</li>
+</ul>
+
+<h4 id="toc_6">23 Nov 2015</h4>
+
+<p>v2.0.0</p>
+
+<ul>
+	<li>video.js 5.0 compatibility, videojs-social 3.0.0</li>
+</ul>
+
+<h4 id="toc_7">17 Feb 2015</h4>
+
+<p>v1.0.0</p>
+
+<ul>
+	<li>Add videojs-social and videojs-endscreen to dist files</li>
+</ul>
+
+<h4 id="toc_8">14 Feb 2015</h4>
+
+<p>v0.1.0</p>
+
+<ul>
+	<li>Initial release</li>
+</ul>
+</section>
+</article>
