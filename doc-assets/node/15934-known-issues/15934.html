@@ -60,12 +60,15 @@
 <p>Source file name containing double byte characters gets garbled after retranscoding in the media module.</p>
 
 <h3>Media Sharing</h3>
-<ul>
-  <p>When sharing large numbers of videos, Brightcove recommends sharing at most two pages of videos at a time. Sharing a large number of videos at once may cause a timeout error.</p>
-  <p>Adding captions to a video that was shared which already contains captions is not supported.</p>
-  <p>Media sharing will fail for videos created by clipping <a href="live">Live streams</a>.</p>
-</ul>
 
+<p>When sharing large numbers of videos, Brightcove recommends sharing at most two pages of videos at a time. Sharing a large number of videos at once may cause a timeout error.</p>
+
+<p>Adding captions to a video that was shared which already contains captions is not supported.</p>
+
+<p>Media sharing will fail for videos created by clipping <a href="live">Live streams</a>.</p>
+
+<ul>
+</ul>
 
 <h3>Scheduled Videos</h3>
 
@@ -513,6 +516,26 @@ myPlayer.play();
 	<li>With Android 8.0 Oreo, when <strong>Background Activity</strong> is switched off, a download is started, and the app is put in the background, the download stops and does not continue when the app is reopened. The notification bar displays a status of <strong>Downloading...</strong></li>
 	<li>When using Widevine with Android 8.0 Oreo, you may notice that on some devices the rental license acquired is already expired. This is a known issue with Google's ExoPlayer, but it has been fixed with Android 8.1.0 on most devices. Unfortunately, there is no workaround for Android 8.0.</li>
 	<li>Observed only with Android 5.x devices: When releasing the Widevine license by calling the <code class="”notranslate”">OfflineLicenseManager.releaseLicense </code> method, a <code class="”notranslate”">MediaDrmStateException </code> error is thrown.</li>
+	<li>
+		<p>
+			In the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">OfflinePlaybackSampleApp</a>, there are two Widevine license expiration periods.
+		</p>
+		<ul>
+			<li>
+				<code>absoluteExpiration</code> is an expiration date of the license to start playback of downloaded video
+			</li>
+			<li>
+				<code>playDuration</code> is how long the video can be played
+			</li>
+		</ul>
+		<br />
+		<p>
+			When <code>playDuration</code> becomes less than 60 seconds, the Widevine CDM handles the license as expired and throws a <strong>Failed to get key request</strong> error. Playback will not start with this Widevine license exception.
+		</p>
+		<p>
+			With the Brightcove Native SDK for Android v6.1.0+, you can try calling <code>AbstractOfflineCatalog.requestRentalLicense(Video, Date, long, EventListener)</code> or <code>AbstractOfflineCatalog.requestPurchaseLicense(Video, EventListener)</code> to retrieve a new license. Note: The device must be online to acquire a new license.
+		</p>
+	</li>
 </ul>
 
 <h4>360° videos</h4>
