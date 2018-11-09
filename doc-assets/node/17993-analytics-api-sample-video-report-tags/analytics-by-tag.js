@@ -48,7 +48,7 @@ var BCLS = (function(window, document, Pikaday) {
   // remove space after comma and URI encode
   function encodeString(str) {
     if (isDefined(str)) {
-      str = str.replace(', ', ',');
+      str = '"' + str + '"';
       str = encodeURI(str);
       return str;
     }
