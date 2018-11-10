@@ -24,6 +24,10 @@ var BCLS = ( function (window, document, rome) {
   rome(fromDate);
   rome(toDate);
 
+  function getIsoDate(d) {
+    var isoString = d.toISOString();
+  }
+
 
   function getAccountInfo() {
     account_id = account_id_input.value;
@@ -148,5 +152,44 @@ var BCLS = ( function (window, document, rome) {
       httpRequest.send(JSON.stringify(options));
   }
 
+  function init() {
+    // event listeners
+    csvData.addEventListener('click', function() {
+      this.select();
+    });
+    useMyAccount.addEventListener('click', function() {
+      getAccountInfo();
+    });
+    searchField.addEventListener('change', function() {
+      createCustomFieldValueOptions();
+    });
+    hideElement(searchFieldValues);
+    showElement(searchFieldValue);
+    getAccountInfo();
+  }
+
+  // button event handlers
+  makeReport.addEventListener('click', function() {
+    // get the inputs
+    getAccountInfo();
+
+    fromDateValue = rome(fromDate).getDate();
+    if (isDefined(fromDateValue)) {
+      fromDateValue = fromDateValue.toISOString();
+    }
+    toDateValue = rome(toDate).getDate();
+    if (isDefined(toDateValue)) {
+      toDateValue = toDateValue.toISOString();
+    }
+    if (isDefined(fromDateValue) || isDefined(toDateValue)) {
+      dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
+    }
+
+    // get video count
+    createRequest('getAffiliates');
+
+  });
+
+  init();
 
 })(window, document, rome);
