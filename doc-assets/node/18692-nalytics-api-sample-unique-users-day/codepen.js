@@ -25,6 +25,27 @@ var BCLS = ( function (window, document, rome) {
   rome(toDate);
 
 
+  function getAccountInfo() {
+    account_id = account_id_input.value;
+    client_id = client_id_input.value;
+    client_secret = client_secret_input.value;
+    // only use entered account id if client id and secret are entered also
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      if (isDefined(account_id_input.value)) {
+        account_id = account_id_input.value;
+        console.log('account_id', account_id);
+      } else {
+        window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+        client_id = null;
+        client_secret = null;
+        account_id = '1752604059001';
+      }
+    } else {
+      account_id = '1752604059001';
+    }
+    createRequest('getCustomFields');
+  }
+
   /**
    * createRequest sets up requests, send them to makeRequest(), and handles responses
    * @param  {string} type the request type
