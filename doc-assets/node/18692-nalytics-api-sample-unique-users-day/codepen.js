@@ -54,7 +54,6 @@ var BCLS = ( function (window, document, rome) {
     } else {
       account_id = '1752604059001';
     }
-    createRequest('getCustomFields');
   }
 
   /**
@@ -63,23 +62,22 @@ var BCLS = ( function (window, document, rome) {
    */
   function createRequest(type) {
       var options   = {},
-          requestBody = {},
-          // next line for BrightcoveLearning proxy (use if you are making write requests)
-          // for read requests only, use https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php
-          proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/brightcove-learning-proxy-v2.php'
+          proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php'
           baseURL = 'https://cms.api.brightcove.com/v1/accounts',
           endpoint,
           responseDecoded;
 
       // set credentials
       // assumes input fields with ids: account_id, client_id, and client_secret
-      if (document.getElementById('client_id').value.length > 0 && document.getElementById('client_secret').value.length > 0)
-      options.client_id     = document.getElementById('client_id').value;
-      options.client_secret = document.getElementById('client_secret').value;
+      if (document.getElementById('client_id').value.length > 0 && document.getElementById('client_secret').value.length > 0) {
+        options.client_id     = client_id;
+        options.client_secret = client_secret;
+      }
       options.proxyURL      = proxyURL;
 
+
       switch (type) {
-          case 'getVideoCount':
+          case 'getJSON':
               endpoint            = '/' + options.account_id + '/counts/videos';
               options.url         = baseURL + endpoint;
               options.requestType = 'GET';
@@ -88,7 +86,7 @@ var BCLS = ( function (window, document, rome) {
                   // do what you want here
               });
               break;
-          case 'createVideo':
+          case 'getCSV':
               endpoint            = '/' + options.account_id + '/counts/videos';
               options.url         = baseURL + endpoint;
               options.requestType = 'POST';;
@@ -164,14 +162,7 @@ var BCLS = ( function (window, document, rome) {
     csvData.addEventListener('click', function() {
       this.select();
     });
-    useMyAccount.addEventListener('click', function() {
-      getAccountInfo();
-    });
-    searchField.addEventListener('change', function() {
-      createCustomFieldValueOptions();
-    });
-    hideElement(searchFieldValues);
-    showElement(searchFieldValue);
+    // get initial account info
     getAccountInfo();
   }
 
@@ -192,9 +183,6 @@ var BCLS = ( function (window, document, rome) {
       toDateValue = getIsoDate(toDateValue);
     } else {
       toDateValue = getIsoDate(new Date());
-    }
-    if (isDefined(fromDateValue) || isDefined(toDateValue)) {
-      dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
     }
 
     // get video count
