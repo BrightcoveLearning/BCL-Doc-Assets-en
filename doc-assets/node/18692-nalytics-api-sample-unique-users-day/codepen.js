@@ -24,8 +24,15 @@ var BCLS = ( function (window, document, rome) {
   rome(fromDate);
   rome(toDate);
 
+  /**
+   * get the date part of an ISO date for a JavaScript date
+   * @param  {date}   d A JavaScript date
+   * @return {[type]}     The date part of the ISO string, e.g. 2019-01-01
+   */
   function getIsoDate(d) {
-    var isoString = d.toISOString();
+    var isoString = d.toISOString(),
+      isoDate = isoString.substring(0, isoString.indexOf('T'));
+    return isoDate;
   }
 
 
@@ -175,11 +182,16 @@ var BCLS = ( function (window, document, rome) {
 
     fromDateValue = rome(fromDate).getDate();
     if (isDefined(fromDateValue)) {
-      fromDateValue = fromDateValue.toISOString();
+      fromDateValue = getIsoDate(fromDateValue);
+    } else {
+      var from = new Date(new Date() - 30);
+      fromDateValue = getIsoDate(from);
     }
     toDateValue = rome(toDate).getDate();
     if (isDefined(toDateValue)) {
-      toDateValue = toDateValue.toISOString();
+      toDateValue = getIsoDate(toDateValue);
+    } else {
+      toDateValue = getIsoDate(new Date());
     }
     if (isDefined(fromDateValue) || isDefined(toDateValue)) {
       dateSearchString = '%2B' + dateTypeValue + ':' + fromDateValue + '..' + toDateValue;
