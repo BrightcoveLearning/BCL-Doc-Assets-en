@@ -28,15 +28,17 @@ var BCLS = (function(window, document, rome) {
   /**
    * get the date part of an ISO date for a JavaScript date
    * @param  {date}   d A JavaScript date
-   * @return {[type]}     The date part of the ISO string, e.g. 2019-01-01
+   * @return {string}     The date part of the ISO string, e.g. 2019-01-01
    */
   function getIsoDate(d) {
-    var isoString = d.toISOString(),
-      isoDate = isoString.substring(0, isoString.indexOf('T'));
-    return isoDate;
+    var isoString = d.toISOString();
+    return isoString.substring(0, isoString.indexOf('T'));
   }
 
 
+  /**
+   * gets account info from inputs; if none, uses default account
+   */
   function getAccountInfo() {
     account_id = account_id_input.value;
     client_id = client_id_input.value;
@@ -57,6 +59,10 @@ var BCLS = (function(window, document, rome) {
     }
   }
 
+  /**
+   * creates the HTML table body for the display of results
+   * @param {object} response the API response (parsed)
+   */
   function createReportTable(response) {
     var iMax = response.items.length,
       i,
