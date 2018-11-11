@@ -19,11 +19,12 @@ var BCLS = (function(window, document, rome) {
     apiRequest = document.getElementById('apiRequest'),
     apiResponse = document.getElementById('apiResponse'),
     fromDateValue,
-    toDateValue;
+    toDateValue,
+    defaultFromDate = new Date(new Date() - 30);
 
   // date pickers
-  rome(fromDate);
-  rome(toDate);
+  rome(fromDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(defaultFromDate), time: false});
+  rome(toDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(new Date()), time: false});
 
   /**
    * get the date part of an ISO date for a JavaScript date
