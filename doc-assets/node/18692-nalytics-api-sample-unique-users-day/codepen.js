@@ -74,7 +74,7 @@ console.log('defaultFromDate', defaultFromDate);
       td3;
     for (i = 0; i < iMax; i++) {
       item = response.items[i];
-      row = results_table_body.createRow();
+      row = results_table_body.insertRow();
       td1 = row.insertCell();
       td2 = row.insertCell();
       td3 = row.insertCell();
