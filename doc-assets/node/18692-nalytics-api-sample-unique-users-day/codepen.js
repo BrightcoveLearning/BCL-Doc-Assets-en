@@ -62,10 +62,7 @@ var BCLS = ( function (window, document, rome) {
    */
   function createRequest(type) {
       var options   = {},
-          proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php'
-          baseURL = 'https://cms.api.brightcove.com/v1/accounts',
-          endpoint,
-          responseDecoded;
+          proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php';
 
       // set credentials
       // assumes input fields with ids: account_id, client_id, and client_secret
@@ -73,19 +70,17 @@ var BCLS = ( function (window, document, rome) {
         options.client_id     = client_id;
         options.client_secret = client_secret;
       }
+      options.requestType = 'GET';
       options.proxyURL      = proxyURL;
-
+      options.url = baseURL + account_id + '&dimensions=date&limit=all&fields=video_view,daily_unique_users&from=' + fromDateValue + '&to=' + toDateValue;
 
       switch (type) {
           case 'getJSON':
-              endpoint            = '/' + options.account_id + '/counts/videos';
-              options.url         = baseURL + endpoint;
-              options.requestType = 'GET';
-              makeRequest(options, function(response) {
-                  responseDecoded = JSON.parse(response);
-                  // do what you want here
-              });
-              break;
+            makeRequest(options, function(response) {
+                responseDecoded = JSON.parse(response);
+                // do what you want here
+            });
+            break;
           case 'getCSV':
               endpoint            = '/' + options.account_id + '/counts/videos';
               options.url         = baseURL + endpoint;
