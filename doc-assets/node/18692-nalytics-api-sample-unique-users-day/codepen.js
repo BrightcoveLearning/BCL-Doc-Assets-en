@@ -20,7 +20,8 @@ var BCLS = (function(window, document, rome) {
     apiResponse = document.getElementById('apiResponse'),
     fromDateValue,
     toDateValue,
-    defaultFromDate = new Date(new Date() - 30);
+    dayMS = 86400000,
+    defaultFromDate = new Date(new Date() - 30 * dayMS);
 console.log('defaultFromDate', defaultFromDate);
   // date pickers
   rome(fromDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(defaultFromDate), time: false});
