@@ -4,7 +4,7 @@ var BCLS = (function(window, document, rome) {
     client_secret,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
-    baseURL = 'https://analytics.api.brightcove.com/v1?accounts=',
+    baseURL = 'https://analytics.api.brightcove.com/v1/data?accounts=',
     itemsArray = [],
     csvData,
     // elements
