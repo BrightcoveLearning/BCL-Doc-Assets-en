@@ -45,7 +45,7 @@ var BCLS = (function(window, document, rome) {
     client_secret = client_secret_input.value;
     // only use entered account id if client id and secret are entered also
     if (client_id.length > 0 && client_secret.length > 0) {
-      if (account_id.length > 0)) {
+      if (account_id.length > 0) {
         account_id = account_id_input.value;
       } else {
         window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
