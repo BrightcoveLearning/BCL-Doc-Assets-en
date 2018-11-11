@@ -118,8 +118,7 @@ console.log('defaultFromDate', defaultFromDate);
         options.url += '&format=csv';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          response = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(response, null, 2);
+          apiResponse.textContent = response;
           csvData_display.textContent = response;
         });
         break;
