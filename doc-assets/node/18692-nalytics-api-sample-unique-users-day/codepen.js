@@ -104,8 +104,10 @@ console.log('defaultFromDate', defaultFromDate);
 
     switch (type) {
       case 'getJSON':
+        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           response = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(response, null, 2);
           createReportTable(response);
           // now get the csv version
           createRequest('getCSV');
@@ -113,8 +115,10 @@ console.log('defaultFromDate', defaultFromDate);
         break;
       case 'getCSV':
         options.url += '&format=csv';
+        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           response = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(response, null, 2);
           csvData_display.textContent = response;
         });
         break;
