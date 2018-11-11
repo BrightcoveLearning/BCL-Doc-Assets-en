@@ -79,7 +79,7 @@ console.log('defaultFromDate', defaultFromDate);
       td2 = row.insertCell();
       td3 = row.insertCell();
       td1.textContent = item.date;
-      td2.textContent = item.daily_unique_users;
+      td2.textContent = item.daily_unique_viewers;
       td3.textContent = item.video_view;
     }
   }
