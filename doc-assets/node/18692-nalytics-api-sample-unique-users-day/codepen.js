@@ -191,18 +191,9 @@ var BCLS = (function(window, document, rome) {
     getAccountInfo();
     // get date range or default values
     fromDateValue = rome(fromDate).getDate();
-    if (isDefined(fromDateValue)) {
-      fromDateValue = getIsoDate(fromDateValue);
-    } else {
-      var from = new Date(new Date() - 30);
-      fromDateValue = getIsoDate(from);
-    }
+    fromDateValue = getIsoDate(fromDateValue);
     toDateValue = rome(toDate).getDate();
-    if (isDefined(toDateValue)) {
-      toDateValue = getIsoDate(toDateValue);
-    } else {
-      toDateValue = getIsoDate(new Date());
-    }
+    toDateValue = getIsoDate(toDateValue);
 
   });
 
