@@ -107,6 +107,7 @@ console.log('defaultFromDate', defaultFromDate);
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           response = JSON.parse(response);
+          console.log('response', response);
           apiResponse.textContent = JSON.stringify(response, null, 2);
           createReportTable(response);
           // now get the csv version
