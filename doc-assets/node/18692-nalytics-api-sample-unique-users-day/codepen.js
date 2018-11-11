@@ -77,20 +77,16 @@ var BCLS = ( function (window, document, rome) {
       switch (type) {
           case 'getJSON':
             makeRequest(options, function(response) {
-                responseDecoded = JSON.parse(response);
-                // do what you want here
+                response = JSON.parse(response);
+                createReportTable(response);
+                // now get the csv version
+                createRequest('getCSV');
             });
             break;
           case 'getCSV':
-              endpoint            = '/' + options.account_id + '/counts/videos';
-              options.url         = baseURL + endpoint;
-              options.requestType = 'POST';;
-              requestBody.name    = 'My New Video';
-              // add more properties
-              options.requestBody = JSON.stringify(requestBody);
+              options.url         += '&format=csv';
               makeRequest(options, function(response) {
-                  responseDecoded = JSON.parse(response);
-                  // do more stuff
+                  response = JSON.parse(response);
               });
               break;
 
@@ -179,9 +175,6 @@ var BCLS = ( function (window, document, rome) {
     } else {
       toDateValue = getIsoDate(new Date());
     }
-
-    // get video count
-    createRequest('getAffiliates');
 
   });
 
