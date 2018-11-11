@@ -15,6 +15,7 @@ var BCLS = (function(window, document, rome) {
     toDate = document.getElementById('toDate'),
     makeReport = document.getElementById('makeReport'),
     csvData_display = document.getElementById('csvData_display'),
+    results_table_body = document.getElementById('results_table_body'),
     apiRequest = document.getElementById('apiRequest'),
     apiResponse = document.getElementById('apiResponse'),
     fromDateValue,
@@ -53,6 +54,26 @@ var BCLS = (function(window, document, rome) {
       }
     } else {
       account_id = '1752604059001';
+    }
+  }
+
+  function createReportTable(response) {
+    var iMax = response.items.length,
+      i,
+      item,
+      row,
+      td1,
+      td2,
+      td3;
+    for (i = 0; i < iMax; i++) {
+      item = response.items[i];
+      row = results_table_body.createRow();
+      td1 = row.insertCell();
+      td2 = row.insertCell();
+      td3 = row.insertCell();
+      td1.textContent = item.date;
+      td2.textContent = item.daily_unique_users;
+      td3.textContent = item.video_view;
     }
   }
 
