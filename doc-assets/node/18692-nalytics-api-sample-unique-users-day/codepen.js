@@ -176,6 +176,7 @@ console.log('defaultFromDate', defaultFromDate);
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
+    console.log('options', options);
     httpRequest.send(JSON.stringify(options));
   }
 
