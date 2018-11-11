@@ -195,7 +195,7 @@ console.log('defaultFromDate', defaultFromDate);
     fromDateValue = getIsoDate(fromDateValue);
     toDateValue = rome(toDate).getDate();
     toDateValue = getIsoDate(toDateValue);
-
+    createRequest('getJSON');
   });
 
   init();
