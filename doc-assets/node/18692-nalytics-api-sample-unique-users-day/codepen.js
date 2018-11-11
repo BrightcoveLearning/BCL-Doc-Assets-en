@@ -21,7 +21,7 @@ var BCLS = (function(window, document, rome) {
     fromDateValue,
     toDateValue,
     defaultFromDate = new Date(new Date() - 30);
-
+console.log('defaultFromDate', defaultFromDate);
   // date pickers
   rome(fromDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(defaultFromDate), time: false});
   rome(toDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(new Date()), time: false});
