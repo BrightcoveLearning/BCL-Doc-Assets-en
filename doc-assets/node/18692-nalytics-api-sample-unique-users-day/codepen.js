@@ -100,7 +100,7 @@ console.log('defaultFromDate', defaultFromDate);
     }
     options.requestType = 'GET';
     options.proxyURL = proxyURL;
-    options.url = baseURL + account_id + '&dimensions=date&limit=all&fields=video_view,daily_unique_users&from=' + fromDateValue + '&to=' + toDateValue;
+    options.url = baseURL + account_id + '&dimensions=date&limit=all&fields=video_view,daily_unique_viewers&from=' + fromDateValue + '&to=' + toDateValue;
 
     switch (type) {
       case 'getJSON':
