@@ -22,7 +22,6 @@ var BCLS = (function(window, document, rome) {
     toDateValue,
     dayMS = 86400000,
     defaultFromDate = new Date(new Date() - 30 * dayMS);
-console.log('defaultFromDate', defaultFromDate);
   // date pickers
   rome(fromDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(defaultFromDate), time: false});
   rome(toDate, {inputFormat:'YYYY-MM-DD', initialValue:getIsoDate(new Date()), time: false});
@@ -107,7 +106,6 @@ console.log('defaultFromDate', defaultFromDate);
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           response = JSON.parse(response);
-          console.log('response', response);
           apiResponse.textContent = JSON.stringify(response, null, 2);
           createReportTable(response);
           // now get the csv version
@@ -153,7 +151,6 @@ console.log('defaultFromDate', defaultFromDate);
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
-              console.log('response', response);
               // return the response
               callback(response);
             } else {
@@ -175,7 +172,6 @@ console.log('defaultFromDate', defaultFromDate);
     httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
-    console.log('options', options);
     httpRequest.send(JSON.stringify(options));
   }
 
