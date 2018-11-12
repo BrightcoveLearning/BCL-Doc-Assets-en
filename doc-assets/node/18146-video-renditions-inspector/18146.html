@@ -1,50 +1,49 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="Use_and_limitations">Use and limitations</h2>
+<h2 id="overview">Overview</h2>
 
-<p>You can generate the code here and use it as your publishing code if you are using a single <span class="”notranslate”">Brightcove Player</span> for the account and a standard (iframe) embed. If you are using another player or the advanced (in-page) embed, you can just use the schema part of the generated code and insert it above your player embed code in the page.</p>
+<p>This tool generates a report that includes the following:</p>
 
-<aside class="bcls-aside bcls-aside--information">
-<p>This is a client-side app, and therefore makes requests to the <span class="”notranslate”">CMS API</span> from the client-side. However, you cannot simply use this script in pages with your players to generate effective schemas, because the schema code must be injected into the page on the server side, before the page is delivered to the browser, to be recognized by search engines. If you are serving your pages via a web server application, use the logic here to get the information using the <a href="/node/18034"><span class="”notranslate”">CMS API</span> </a> and embed it in the page before it is served.</p>
+<aside class="bcls-aside bcls-aside--information">Note that this app was built to help Brightcove customers migrate from the old Smart Player to the new Brightcove Player. It was built around videos added using the legacy ingest system, and does not return meaningful results for Dynamic Delivery videos.</aside>
 
-<p>Also note that this app produces code for a single video player only, and if you are embedding the schema code manually, you should update it periodically, as URLs can change</p>
-</aside>
+<ul>
+	<li>Summary showing how many videos have <strong>no</strong> HLS or MP4 renditions or both</li>
+	<li>Report for each video showing the HLS and MP4 (HTTP) renditions (with the bitrate range and frame size for each)</li>
+</ul>
+
+<p>The aim is to help you get ready to migrate from the Smart Player to the Brightcove Player by identifying videos that need to be transcoded to create HLS and/or MP4 renditions.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note that Dynamic Delivery videos are not checked, as there is no need to.</aside>
 </section>
 
 <section class="bcls-section">
-<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+<h2 id="obtaincredentials" class="bcls-expander-head">Obtain credentials</h2>
 
 <div class="bcls-expander-content">
-<p>To use the <span class="”notranslate”">CMS API</span> you will need proper credentials.</p>
+<p>Like most of Brightcove's RESTful APIs, the CMS API requires OAuth access tokens to authorize requests. In order to get access tokens, you first need to obtain client credentials with permissions for kinds of operations you want to request.</p>
 
-<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all <span class="”notranslate”">CMS API</span> operation:</p>
+<ol>
+	<li>To obtain your credentials follow the instructions in <a href="/node/14056">Managing API Credentials</a>. This is the recommended way of obtaining your client credentials. This sample only requires <code>Video Read</code> permissions, but in most cases, you will likely want to get all permissions:
 
-<figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-<figcaption class="bcls-caption--image"><span class="”notranslate”">CMS API</span> Permissions</figcaption>
-</figure>
+	<figure class="bcls-figure"><img class="bcls-image" alt="required permissions" width="466" height="178" src="//learning-services-media.brightcove.com/doc-assets/player-development/publishing/video-renditions-inspector/quick-start-required-permissions.png" /></figure>
 
-<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the <span class="”notranslate”">CMS API</span> :</p>
-
-<pre class="line-numbers">
-<code class="language-json">"operations": [
-  "video-cloud/video/all",
-  "video-cloud/playlist/all",
-  "video-cloud/sharing-relationships/all",
-  "video-cloud/notifications/all"
-]</code></pre>
+	<p>You can also obtain credentials using the OAuth API, following the instructions in one of the guides listed below:</p>
+	</li>
+</ol>
 
 <ul>
-	<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+	<li><a href="/node/17924">OAuth: Get Client Credentials Using CURL</a></li>
 	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
 </ul>
 </div>
 </section>
 
 <section class="bcls-section">
-<h2 id="accountInput">Schema Generator</h2>
-Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18027-cms-api-sample-video-schema-builder">GitHub repository</a>.
+<h2 id="workingSample">Rendition inspector</h2>
 
-<p data-height="900" data-theme-id="34967" data-slug-hash="WzpQgw" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="CMS API Sample: Video Schema Builder" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/WzpQgw/">CMS API Sample: Video Schema Builder</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<p>You can use the app below to generate a report on the renditions for all videos in your account. Videos with no HLS or HTTP MP4 (progressive download) renditions will need to be retranscoded to work well in the new player. Videos with only low bitrate HLS renditions should be retranscoded as well.</p>
+
+<p data-height="1500" data-theme-id="34967" data-slug-hash="OvrMXQ" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="Video Renditions Inspector" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/OvrMXQ/">Video Renditions Inspector</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
 
 <section class="bcls-section">
@@ -57,15 +56,7 @@ Find all the code associated with this sample in this <a href="https://github.co
 	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
 	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
 	<li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-	<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18027-cms-api-sample-video-schema-builder">GitHub repository</a>.</li>
 </ul>
 </div>
 </section>
-<section class="bcls-section">
-<h2 id="proxy">Proxy code</h2>
-
-<p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub respository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/node/18132">Using the REST APIs</a>.</p>
-
-</section>
-
 </article>
