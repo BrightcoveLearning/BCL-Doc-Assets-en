@@ -53,11 +53,76 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</textarea>
 <section class="bcls-section">
 <h2 id="proxy">Proxy code</h2>
 
-<p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:</p>
+<p>In order to build your own version the sample app on this page, you must create and host your own proxy. This proxy is somewhat different than the proxy used for most of our sample apps, because authentication for the OAuth API method for creating client credentials is different that that for general API authentication. Complete code for the proxy used here is shown below.</p>
 
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
+<pre class="line-numbers"><code class="language-php notranslate">&lt;?php
+/**
+ * client-credentials-proxy.php - proxy for Brightcove RESTful APIs
+ * gets a client id and client secret and returns the whole response
+ * Accessing:
+ *         (note you should *always* access the proxy via HTTPS)
+ *     Method: POST
+ *
+ * @post {string} bc_token - BC_TOKEN with admin permissions on all accounts that credentials are requested for
+ * @post {JSONstring} requestBody - the full request body as a JSON string
+ *
+ * @returns {string} $response - JSON response received from the OAuth API
+ */
+
+// security checks
+if (strpos($_SERVER['HTTP_REFERER'], 'solutions.brightcove.com') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 'ondemand.brightcovelearning.com') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 'video.brightcovelearning.com') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 's.codepen.io') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 'fiddle.jshell.net') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 'players.brightcove.net') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 'support.brightcove.com') == false &amp;&amp; strpos($_SERVER['HTTP_REFERER'], 'master-7rqtwti-6sglloa4yrkti.us.platform.sh') == false) {
+    exit('{"ERROR":"Only requests from http://docs.brightcove.com or http:solutions.brightcove.com are accepted by this proxy"}');
+}
+
+// CORS enablement and other headers
+header("Access-Control-Allow-Origin: *");
+header("Content-type: application/json");
+header("X-Content-Type-Options: nosniff");
+header("X-XSS-Protection");
+
+// get data or die
+if ($_POST["requestBody"]) {
+    $data = json_decode($_POST["requestBody"]);
+} else {
+  exit("request body missing");
+}
+// get request type or default to POST
+if ($_POST["requestType"]) {
+    $method = $_POST["requestType"];
+} else {
+  $method = 'POST';
+}
+// get bc_token or die
+if ($_POST["bc_token"]) {
+    $bc_token = $_POST["bc_token"];
+} else {
+  exit("bc_token missing");
+}
+
+$request  = "https://oauth.brightcove.com/v4/client_credentials";
+$ch       = curl_init($request);
+curl_setopt_array($ch, array(
+    CURLOPT_CUSTOMREQUEST  =&gt; $method,
+    CURLOPT_RETURNTRANSFER =&gt; TRUE,
+    CURLOPT_SSL_VERIFYPEER =&gt; FALSE,
+    CURLOPT_HTTPHEADER     =&gt; array(
+        'Content-type: application/json',
+        "Authorization: BC_TOKEN {$bc_token}"
+    ),
+    CURLOPT_POSTFIELDS =&gt; json_encode($data)
+));
+$response = curl_exec($ch);
+curl_close($ch);
+
+// Check for errors
+if ($response === FALSE) {
+    die(curl_error($ch));
+    exit('An error occurred on making the request');
+} else {
+  echo $response;
+}
+
+?&gt;
+</code></pre>
 </section>
 </article>
