@@ -299,6 +299,72 @@ spacer.appendChild(newElement);
 </section>
 
 <section class="bcls-section">
+<h2 id="Simple_debugging">Simple debugging</h2>
+
+<p>As you see, there are a number of pieces involved when using the REST APIs. This can present challenges when an app is not functioning correctly. Where do you start debugging?</p>
+
+<p>A couple of simple suggestions are made in this section, and are a great place to start your debugging adventure. The following two sections give you a way to see the most basic information you need, what is being passed in to make the call, and what is returned.</p>
+
+<h3>Checking the call options</h3>
+
+<p>The client side code discussed in this document is basically all about providing the correct options to be used with the proxy, and in turn the actual API. So knowing the options are correct is essential to the correct functioning of your code. A simple way to do this is log to the console the <code>options</code> object just before they get passed into the <code>makeRequest</code> function where they are used:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-code-log-options.png" /></figure>
+
+<p>What the options object contains will vary upon what you are trying to do, but some basics will always be there, those being:</p>
+
+<ul>
+	<li>The account ID. This can be either a separate property, or part of the API endPoint URL.</li>
+	<li>The URL to the proxy, which will be dependent upon where you store your proxy.</li>
+	<li>The HTTP method type, for example <code>GET</code>, <code>POST</code> or <code>PATCH</code>.</li>
+	<li>The API endpoint URL used by the proxy to make the actual request from the API. For example:
+	<pre class="line-numbers">
+<code class="language-html">https://players.api.brightcove.com/v2/accounts/57838016001/players
+https://edge.api.brightcove.com/playback/v1/accounts/1752604059001/videos/5842800655001
+https://analytics.api.brightcove.com/v1/alltime/accounts/1752604059001/videos/4093643993001</code></pre>
+	</li>
+</ul>
+
+<p>Other properties may be required in the options object depending on the API request. Here is an example of what you would see in the console when logging the options object for making a request for all the players in a specific account:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging options simple" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-options-simple.png" /></figure>
+
+<p>Here is a bit more complex logged options object used when updating players:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-options.png" /></figure>
+
+<h3>Viewing returned data</h3>
+
+<p>What is returned will vary upon what data you have requested, and if an error is returned. But no matter what is returned, you will most likely want to see what data is returned. A simple way to do this is log to the console the raw <code>response</code> data just after the call to the <code>makeRequest</code> function:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging code log options" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-code-log-response.png" /></figure>
+
+<p>What will be returned has nearly infinite possibilities, but following are a few examples. The first shows the beginning of a response when asking for all the players in an account:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging response on players request" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-multiple-players.png" /></figure>
+
+<aside class="bcls-aside bcls-aside--tip">This is a good example of when viewing the response can be exceedingly helpful for it shows the player information is stored in an array named <code>items</code>.</aside>
+
+<p>Here is the response after updating players, using the <code>PATCH</code> HTTP method:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging response on player patch" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-on-player-patch.png" /></figure>
+
+<p>Here is a more nicely formatted view of the data in the first response:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
+  "id": "1OHQdsTAr",
+  "preview_url": "http://preview-players.brightcove.net/v2/accounts/.../master/index.html",
+  "preview_embed_in_page": "http://preview-players.brightcove.net/v2/accounts/.../master/in_page.embed",
+  "preview_embed_code": "&lt;iframe src='//preview-players.brightcove.net/v2/accounts/.../master/index.html' ...&gt;&lt;/iframe&gt;"
+}</code></pre>
+
+<p>And finally, here is a very valuable response from when an error occurred. In this case, an account was being used without proper credentials:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="debugging response on error" src="//learning-services-media.brightcove.com/doc-assets/player-development/architecture/proxy-API-call/debugging-response-on-error.png" /></figure>
+</section>
+
+<section class="bcls-section">
 <h2 id="Proxy_code">Proxy code</h2>
 
 <p>As mentioned earlier, the proxy can be written in the language of your choice. The Brightcove API documentation examples use a proxy written in PHP. Since the implementation of the proxy is so language dependent, the PHP code below will not be analyzed in detail in this document.</p>
