@@ -42,6 +42,7 @@ var BCLS = (function(window, document) {
       "video-cloud/sharing-relationships/update",
       "video-cloud/sharing-relationships/delete",
       "video-cloud/sharing-relationships/all",
+      "video-cloud/social/api/read",
       "video-cloud/notifications/all"
     ],
     selectedOperations = [],
