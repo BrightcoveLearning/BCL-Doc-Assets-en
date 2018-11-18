@@ -33,33 +33,26 @@
 		<tr>
 			<td>422</td>
 			<td><code class="notranslate"></code></td>
-			<td><code class="notranslate">[Message varies according to the problem; example: "Page size is not within the range(1-100) 200"]</code></td>
+			<td><code class="notranslate">(Message varies according to the problem; examples:
+        <ul>
+          <li>"Page size is not within the range(1-100) 200"</li>
+          <li>"The since parameter must be an ISO-8601 datetime string"</li>
+        </ul>
+        )</code></td>
 			<td>Check query parameters to make sure the values are valid</td>
 		</tr>
 		<tr>
 			<td>500</td>
-			<td><code class="notranslate">UNKNOWN</code></td>
-			<td><code class="notranslate">an unknown internal error occurred</code></td>
+			<td><code class="notranslate"></code></td>
+			<td><code class="notranslate">an  internal error occurred</code></td>
 			<td>Issue in Brightcove system - try again later.</td>
-		</tr>
-		<tr>
-			<td>503</td>
-			<td><code class="notranslate">SERVICE_UNAVAILABLE</code></td>
-			<td><code class="notranslate">The API is temporarily unavailable</code></td>
-			<td>Backend issue - try again later.</td>
-		</tr>
-		<tr>
-			<td>504</td>
-			<td><code class="notranslate">TIMEOUT</code></td>
-			<td><code class="notranslate">something took too long</code></td>
-			<td>Server likely too busy - try again later.</td>
 		</tr>
 	</tbody>
 </table>
 </section>
 
 <section class="bcls-section">
-<h2 id="Media_sharing_errors">Media Sharing Errors</h2>
+<h2 id="social_sharing_errors">Social sharing errors</h2>
 
 <p>Media sharing errors are not returned as a separate error response to the API request, but rather in an <code class="notranslate">error_message</code> field in the normal response:</p>
 
@@ -82,54 +75,26 @@
 
 <h3><code class="notranslate">error_code</code></h3>
 
-<p>The error code will usually be sharing-specific but it could be any of the valid error codes that can be returned by a PATCH (update) operation on a video as well. The sharing specific error codes are shown in the table below.</p>
+<p>If the sharing operation failed, the API will report <code>"result": "ERROR"</code> and return an error object containing the:</p>
+<ul>
+  <li><code>error_code</code> - The error code returned recorded by the server, from the social platform, if any.</li>
+  <li><code>error_message</code> - The error message recorded by the server, or returned from the social platform, if any.</li>
+  <li><code>platform_error</code> - JSON representation of the error object returned from the social platform, if any.</li>
+</ul>
 
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Media Sharing Error Codes</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th><code class="notranslate">error_code</code></th>
-			<th><code class="notranslate">error_message</code></th>
-			<th>Cause</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code class="notranslate">MISSING_CUSTOM_FIELDS</code></td>
-			<td><code class="notranslate">Affiliate account is missing custom fields: [field1, field2]}</code></td>
-			<td>The master has set <code class="notranslate">enforce_custom_fields</code> to <code class="notranslate">true</code>, but the video being shared references fields that do not exist in the affiliate account.</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">CONFLICT</code></td>
-			<td><code class="notranslate">Affiliate account is not configured for geo restriction.</code></td>
-			<td>The master has enforce_geo set to true and their account is configured for geo-filtering, but the affiliate account is not configured for geo-filtering.</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">SHARING_DISABLED</code></td>
-			<td><code class="notranslate">Affiliate account is not enabled for media sharing.</code></td>
-			<td>The master has attempted to share a video with an affiliate that is not enabled for media sharing.</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">NOT_FOUND</code></td>
-			<td><code class="notranslate">Resource does not exist.</code></td>
-			<td>Something was missing. Usually this means the master video is gone. This can happen if a share request is immediately followed by a delete of the master video. This might also mean the master account does not have a channel yet or if the affiliate account does not exist or is not a valid member of the channel. This might happen if something went wrong in migration to CMS API media sharing.</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">UNKNOWN</code></td>
-			<td><code class="notranslate">Sharing failed with an unknown error, error_id INSERT-UNIQUE-ERROR-ID</code></td>
-			<td>Something unexpected happened. The error_message will include an error id that can be used by devops to identify the underlying cause. Retrying the share attempt will work in many cases.</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">VALIDATION_ERROR</code></td>
-			<td><code class="notranslate">{field}: ILLEGAL_VALUE</code></td>
-			<td>If {field} is "economics" then the problem is that the master video is "AD SUPPORTED" but the affiliate account does not have ads enabled. Also occurs if you set the Advertising to Ad supported on the video metadata (of a non-shared video) when the account is disabled for ads. If {field} is something else, then investigation is required.</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">REFERENCE_ID_IN_USE</code></td>
-			<td><code class="notranslate">Reference id whatever-you-used is already in use.</code></td>
-			<td>The reference id was valid in the master account but is already in use by the affiliate account.</td>
-		</tr>
-	</tbody>
-</table>
+<p>Here is an examples</p>
+<pre class="line-numbers"><code class="language-json">"errors": [
+  {
+    "error_code": "UPLOAD_FAILURE",
+    "message": "Upload error: Received Facebook error response of type OAuthException: (#100) sponsor_id requires publishing profile/page to be verified or branding partner. (code 100, subcode null)"
+  }
+]</code></pre>
+
+<p>See the documentation for the specific social platform for more information on the errors they return:</p>
+<ul>
+  <li><a href="https://developers.google.com/youtube/v3/docs/errors">YouTube</a></li>
+  <li><a href="https://developers.facebook.com/docs/graph-api/video-uploads#errors">Facebook</a></li>
+  <li><a href="https://developer.twitter.com/en/docs/basics/response-codes.html">Twitter</a></li>
+</ul>
 </section>
 </article>
