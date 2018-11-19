@@ -421,7 +421,7 @@ var aapi_model = {
         video: {
             name: 'video',
             data_group: 'Video',
-            description: 'In this topic, you will learn about the Analytics API videos dimension. The video dimension provides analytics by video. NOTE: if you wish to include an "video." fields (such as video.name) in the response, your client credentials must include the CMS: Video read permission.',
+            description: 'In this topic, you will learn about the Analytics API videos dimension. The video dimension provides analytics by video. NOTE: if you wish to include an "video." fields (such as video.name) in the response, your client credentials must include the CMS: Video read permission. Also note that while you cannot return "video.custom_fields", you can return "video.custom_fields.{field_name}".',
             from: '2011-01-01',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video_download_request', 'video_download_complete','video_download_cancellation','video_download_error'],
