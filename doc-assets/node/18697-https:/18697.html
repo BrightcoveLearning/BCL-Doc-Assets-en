@@ -3,3 +3,258 @@
     <h2 id="Overview">Overview</h2>
   </section>
 </article>
+<h1>brightcove-live-demo-srt-rtmpout-fac</h1>
+<p><img src="./pics/block-diagram.png" alt="general-block-diagram" title="Block diagram"></p>
+<h1>Introduction</h1>
+<p>This repo explains at API level how to create a live streaming job in <a href="https://www.brightcove.com/en/live">Brightcove live</a> and take advantage of some of the advaced features this platform offers, such as:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol">RTMP</a> outputs (you can re stream live to social media)</li>
+<li>Frame accurate clipping based on SMPTE Time code</li>
+</ul>
+<h2>Create a live job</h2>
+<ul>
+<li>We assume you already have a brightcove acount and they you have your API-KEY, let's call it <code>bcov-live-api-key</code></li>
+<li>You need to create the following requests with <a href="https://curl.haxx.se/">curl</a></li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/jobs \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+    &quot;live_stream&quot;: true,
+    &quot;region&quot;: &quot;{{closest-region-encoder}}&quot;,
+    &quot;outputs&quot;: [{
+        &quot;label&quot;: &quot;hls360p&quot;,
+        &quot;live_stream&quot;: true,
+        &quot;height&quot;: 360,
+        &quot;video_bitrate&quot;: 365,
+        &quot;segment_seconds&quot;: 6,
+        &quot;keyframe_interval&quot;: 60
+   },
+   {
+        &quot;label&quot;: &quot;hls432p&quot;,
+        &quot;live_stream&quot;: true,
+        &quot;height&quot;: 432,
+        &quot;video_bitrate&quot;: 730,
+        &quot;segment_seconds&quot;: 6,
+        &quot;keyframe_interval&quot;: 60
+   },
+   {
+        &quot;label&quot;: &quot;hls540p&quot;,
+        &quot;live_stream&quot;: true,
+        &quot;height&quot;: 540,
+        &quot;video_bitrate&quot;: 2000,
+        &quot;segment_seconds&quot;: 6,
+        &quot;keyframe_interval&quot;: 60
+   },
+   {
+        &quot;label&quot;: &quot;hls720p3M&quot;,
+        &quot;live_stream&quot;: true,
+        &quot;height&quot;: 540,
+        &quot;video_bitrate&quot;: 2000,
+        &quot;segment_seconds&quot;: 6,
+        &quot;keyframe_interval&quot;: 60
+   },
+   {
+        &quot;label&quot;: &quot;hls720p4.5M&quot;,
+        &quot;live_stream&quot;: true,
+        &quot;height&quot;: 540,
+        &quot;video_bitrate&quot;: 4500,
+        &quot;segment_seconds&quot;: 6,
+        &quot;keyframe_interval&quot;: 60
+   }]
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{closest-region-encoder}}</code> for the closest available region to your encoder, see <a href="https://support.brightcove.com/overview-brightcove-live-api#Support_aws_regions">closest available regions</a> to your encoder. For instance: <code>us-west-2</code></li>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{
+    &quot;id&quot;: &quot;3b6871bf2f344acaa6b397d09b476018&quot;,
+    &quot;outputs&quot;: [... removed for simplicity ...],
+    &quot;stream_url&quot;: &quot;rtmp://ep1-usw2.bcovlive.io:1935/3b6871bf2f344acaa6b397d09b476018&quot;,
+    &quot;stream_name&quot;: &quot;alive&quot;,
+    &quot;static&quot;: false,
+    &quot;encryption&quot;: {},
+    &quot;playback_url&quot;: &quot;https://bcovlive-a.akamaihd.net/3b6871bf2f344acaa6b397d09b476018/us-west-2/NA/playlist.m3u8&quot;,
+    &quot;playback_url_dvr&quot;: &quot;https://bcovlive-a.akamaihd.net/3b6871bf2f344acaa6b397d09b476018/us-west-2/NA/playlist_dvr.m3u8&quot;
+}
+</code></pre>
+<p>This jobs will create 5 renditions <strong>based</strong> on <a href="https://developer.apple.com/documentation/http_live_streaming/hls_authoring_specification_for_apple_devices">Apple recommendations</a>.</p>
+<h2>Configure your encoder</h2>
+<p>In this case we'll use a <a href="https://www.elemental.com/products/aws-elemental-live">Elemental live box</a> encoder.
+The most imporant point for this tests are:</p>
+<ul>
+<li>Configure timecode source as &quot;system clock&quot;</li>
+<li>Set &quot;OnFi timecode frequency&quot; to 1</li>
+<li>Check &quot;time code insertion&quot; inside video</li>
+<li>Strongly recommended Framerate = follow source</li>
+</ul>
+<p>This is the config we used for this experiment:
+<img src="./pics/elemental-live-job-config-v1.png" alt="elemental-live-job-config" title="Elemental live config"></p>
+<h2>Test playback</h2>
+<p>You can use <a href="https://videojs.github.io/videojs-contrib-hls/">VideoJS HLS demo page</a> to test playback, just paste the value &quot;playback_url&quot; returned in the creation job response. See next picture.
+<img src="./pics/videojs-hls-playback.png" alt="videojs-hls-playback" title="VideoJS HLS playback demo page"></p>
+<h2>Add the live stream to Youtube live</h2>
+<p>It is assumed you have a Youtube account enabled for live streaming.</p>
+<ul>
+<li>Click &quot;go live&quot;, see:
+<img src="./pics/youtube-go-live.png" alt="youtube-go-live" title="Youtube go live"></li>
+<li>Click on &quot;Encoder live streaming&quot;:
+<img src="./pics/youtube-encoder-live.png" alt="youtube-encoder-live" title="Youtube encoder live source"></li>
+<li>Configure your live event Youtube metadata and use the &quot;Encoder set up&quot; data to connect the Brightcove live stream to Youtube
+<img src="./pics/youtube-encoder-setup.png" alt="youtube-encoder-setup" title="Youtube encoder setup"></li>
+<li>Create live output for Brightcove live job using &quot;encoder setup&quot; settings:</li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/jobs/{{bcov-live-job-id}}/rtmpouts \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+  &quot;url&quot;: &quot;rtmp://a.rtmp.youtube.com/live2/{{youtube-secret-stream-name}}&quot;
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+<li><code>{{youtube-secret-stream-name}}</code> for the stream name / key that Youtube provides</li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{
+    &quot;connection_info&quot;: {
+        &quot;host&quot;: &quot;a.rtmp.youtube.com&quot;,
+        &quot;port&quot;: 1935,
+        &quot;application&quot;: &quot;live2&quot;,
+        &quot;streamName&quot;: &quot;{{youtube-secret-stream-name}}&quot;
+    },
+    &quot;duration_history&quot;: [],
+    &quot;rtmp_out_id&quot;: &quot;27aacdfa5bcf4436ade0519e6a748aba&quot;,
+    &quot;stream_start&quot;: 1542902218238
+}
+</code></pre>
+<ul>
+<li>Finally to test Youtube playback you can go to Youtube my channel
+<img src="./pics/youtube-my-channel-playback.png" alt="youtube-my-channel-playback" title="Youtube my channel playback"></li>
+</ul>
+<h2>Add the live stream to Facebook live</h2>
+<p>It is assumed you have a Facebook account enabled for live streaming.</p>
+<ul>
+<li>Just click &quot;Live video&quot;</li>
+<li>Click &quot;connect&quot; and stream key to get the data needed to connect your Brightcove live job, see:
+<img src="./pics/facebook-live-config.png" alt="facebook-live-config" title="Facebook live config"></li>
+<li>Create live output for Brightcove live job using &quot;server url&quot; and &quot;stream key&quot; from Facebook:</li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/jobs/{{bcov-live-job-id}}/rtmpouts \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+  &quot;url&quot;: &quot;rtmp://live-api-s.facebook.com:80/rtmp/{{facebook-secret-stream-name}}&quot;
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+<li><code>{{facebook-secret-stream-name}}</code> for you stream name that Facebook gives you</li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{
+    &quot;connection_info&quot;: {
+        &quot;host&quot;: &quot;live-api-s.facebook.com&quot;,
+        &quot;port&quot;: 80,
+        &quot;application&quot;: &quot;rtmp&quot;,
+        &quot;streamName&quot;: &quot;{{facebook-secret-stream-name}}&quot;
+    },
+    &quot;duration_history&quot;: [],
+    &quot;rtmp_out_id&quot;: &quot;59323c3d1e2b44748755853193fb126c&quot;,
+    &quot;stream_start&quot;: 1542904101097
+}
+</code></pre>
+<ul>
+<li>The last step is just to click &quot;Go Live&quot; on Facebook webpage and test Facebook live playback
+<img src="./pics/facebook-playback.png" alt="facebook-playback" title="Facebook playback"></li>
+</ul>
+<h2>Create a <strong>frame accurate</strong> clip based on SMPTE TC</h2>
+<p>It is assumed you have an AWS account.</p>
+<ul>
+<li>Create the destination S3 bucket and configure the credentials (you just need to to that once):
+<ul>
+<li>Create an S3 bucket and a AWS IAM user with write rights to that bucket, see <a href="https://docs.aws.amazon.com/quickstarts/latest/s3backup/step-1-create-bucket.html">create s3 bukcet</a>, <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">create IAM user</a>, <a href="https://aws.amazon.com/premiumsupport/knowledge-center/iam-s3-user-specific-folder/">set IAM user rights to access S3 folders</a></li>
+<li>Get AWS access ID and SECRET for that user and add those as s3 credential to Brighcove live with the following command:</li>
+</ul>
+</li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/credentials \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+  &quot;credential_default_for_type&quot;: false,
+  &quot;credential_label&quot;: &quot;AWS-TEST-S3-UPLOADS&quot;,
+  &quot;credential_private&quot;: &quot;{{aws-iam-user-id}}&quot;,
+  &quot;credential_public&quot;: &quot;{{aws-iam-user-secret}}&quot;,
+  &quot;credential_type&quot;: &quot;s3&quot;
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+<li><code>{{aws-iam-user-id}}</code> and <code>{{aws-iam-user-secret}}</code> for the values provided by AWS</li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{&quot;credential_id&quot;:&quot;296f44cb4fb54ef7a828ba0a60512cd2&quot;,&quot;user_id&quot;:&quot;666f23e01f57441890650a97dc189301&quot;,&quot;credential_label&quot;:&quot;AWS-TEST-S3-UPLOADS&quot;}
+</code></pre>
+<ul>
+<li>Create the following request that will create the clip and upload it to your S3 bucket:</li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/vods \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+    &quot;live_job_id&quot;:&quot;{{bcov-live-job-id}}&quot;,
+    &quot;outputs&quot;:[{
+        &quot;label&quot;: &quot;Trim by SMPTE TC 17:33:11:12 to 17:34:00:00&quot;,
+    	&quot;stream_start_timecode&quot;: &quot;{{timecode-in}}&quot;,
+    	&quot;stream_end_timecode&quot;: &quot;{{timecode-out}}&quot;,
+        &quot;url&quot;:&quot;s3://jordi-test/clipping-test/smpte_tc_1542910526.mp4&quot;,
+        &quot;credentials&quot;: &quot;AWS-TEST-S3-UPLOADS&quot;
+    }]
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+<li><code>{{timecode-in}}</code> and <code>{{timecode-out}}</code> should be values that make sense (present) in your live stream. In our example we have used: <code>17:33:11:12</code> and <code>17:34:00:00</code></li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{
+    &quot;vod_jobs&quot;: [
+        {
+            &quot;jvod_id&quot;: &quot;0b14a4ba326d4dd08f15053ca2a403b7&quot;,
+            &quot;label&quot;: &quot;Trim by SMPTE TC 17:33:11:12 to 17:34:00:00&quot;
+        }
+    ],
+    &quot;live_job_id&quot;: &quot;3b6871bf2f344acaa6b397d09b476018&quot;
+}
+</code></pre>
+<ul>
+<li>To test the accuracy of the experiment we downloaded the clip and used <a href="https://www.adobe.com/products/premiere.html">Adobe premiere</a> to checked the 1st and last frame, since the timecode is overlayed a simple visual check is enough to confirm the accuracy at input and output points:
+<img src="./pics/clip-accuracy-in.png" alt="clip-accuracy-in" title="Visual clip accuracy test - in">
+<img src="./pics/clip-accuracy-out.png" alt="clip-accuracy-out" title="Visual clip accuracy test - out"></li>
+</ul>
+<p>Note: We can use <a href="https://aws.amazon.com/lambda/">AWS lambdas</a> and <a href="https://aws.amazon.com/step-functions/">AWS Lambdas step functions</a> to automate any kind of VOD publishing process based on the event trigered by S3 PUT.</p>
+<h1>References</h1>
+<ul>
+<li><a href="https://docs.brightcove.com/live-api/v1/doc/index.html">Brightcove live API reference</a></li>
+</ul>
+<h1>TODOs</h1>
+<ul>
+<li>Add <a href="https://www.srtalliance.org/about-github/">SRT</a> as ingest option.  <em>Remember SRT is based on UDP bidirectional communication</em>, your firewall / router needs to be configured properly and allow UDP outputs from the encoder's IP (caller) and UDP back from the internet on the same port</li>
+<li>Add TS+FEC as ingest option. <em>This communications is based on UDP unidirectional communication (encoder to live platform)</em>, your firewall / router needs to be configured properly and allow UDP outputs from the encoder to the internet from the encoder's IP.</li>
+</ul>
