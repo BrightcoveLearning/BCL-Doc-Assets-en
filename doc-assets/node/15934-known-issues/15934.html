@@ -11,18 +11,10 @@
 		<li><a href="#audience">Audience module</a></li>
 		<li><a href="#social">Social module</a></li>
 		<li><a href="#di">Upload module / Dynamic Ingestion</a></li>
-		<li><a href="#admin">Administration</a></li>
-		<li><a href="#marketplace">Marketplace</a></li>
 	</ul>
 	</li>
-</ul>
-
-<ul>
 	<li><a href="#player">Brightcove Player</a></li>
 	<li><a href="#player_plugins">Brightcove Player Plugins</a></li>
-</ul>
-
-<ul>
 	<li><a href="#brightcoveLive">Brightcove Live</a></li>
 </ul>
 
@@ -173,38 +165,6 @@
 <h3>File names</h3>
 
 <p>Video file names (including the extension) must not exceed 120 single-byte (60 double-byte) characters. If it does, the video will be ingested successfully, but you will not be able to retranscode it later.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="admin">Administration</h2>
-
-<h3>Custom Fields</h3>
-
-<p>The Custom Fields interface is Flash-based and your browser must allow Flash for the UI to appear. If you are seeing a blank page, make sure Flash is installed, enabled, up-to-date and not being blocked by any extensions such as ad blockers. See these links to enable Flash for <a href="https://helpx.adobe.com/flash-player/kb/enabling-flash-player-chrome.html">Chrome</a> and <a href="https://helpx.adobe.com/flash-player/kb/enabling-flash-player-safari.html">Safari</a> browsers.</p>
-
-<h3>API Authentication interface in French, German, Spanish, and Korean</h3>
-
-<p>The API Authentication does not appear except in the English and Japanese versions of Studio.</p>
-
-<p><strong>Workaround</strong>: please switch to English or Japanese to access this feature.</p>
-
-<h3>API Authentication Copy buttons</h3>
-
-<p>The <strong>Copy</strong> buttons in modal dialog that displays the client id and client secret for a new registered app will not work if Flash is not enabled in the browser.</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Copy Buttons for API Authentication" src="https://img.brightcove.com/node15934-auth-flash.png" />
-<figcaption class="bcls-caption--image">Copy Buttons for API Authentication</figcaption>
-</figure>
-
-<p><strong>Workaround</strong>: Select the client id and secret, and use right-click or two-finger click (or keyboard shortcuts) to copy them.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="marketplace">Marketplace</h2>
-
-<h3>Marketplace module will not load in Google Chrome with an ad-blocking extension enabled</h3>
-
-<p>The Marketplace (Vemba) module will not load in Google Chrome with an ad-blocking extension enabled. Rather, the user will be served with an entirely blank page.</p>
 </section>
 
 <section class="bcls-section">
@@ -517,24 +477,17 @@ myPlayer.play();
 	<li>When using Widevine with Android 8.0 Oreo, you may notice that on some devices the rental license acquired is already expired. This is a known issue with Google's ExoPlayer, but it has been fixed with Android 8.1.0 on most devices. Unfortunately, there is no workaround for Android 8.0.</li>
 	<li>Observed only with Android 5.x devices: When releasing the Widevine license by calling the <code class="”notranslate”">OfflineLicenseManager.releaseLicense </code> method, a <code class="”notranslate”">MediaDrmStateException </code> error is thrown.</li>
 	<li>
-		<p>
-			In the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">OfflinePlaybackSampleApp</a>, there are two Widevine license expiration periods.
-		</p>
-		<ul>
-			<li>
-				<code>absoluteExpiration</code> is an expiration date of the license to start playback of downloaded video
-			</li>
-			<li>
-				<code>playDuration</code> is how long the video can be played
-			</li>
-		</ul>
-		<br />
-		<p>
-			When <code>playDuration</code> becomes less than 60 seconds, the Widevine CDM handles the license as expired and throws a <strong>Failed to get key request</strong> error. Playback will not start with this Widevine license exception.
-		</p>
-		<p>
-			With the Brightcove Native SDK for Android v6.1.0+, you can try calling <code>AbstractOfflineCatalog.requestRentalLicense(Video, Date, long, EventListener)</code> or <code>AbstractOfflineCatalog.requestPurchaseLicense(Video, EventListener)</code> to retrieve a new license. Note: The device must be online to acquire a new license.
-		</p>
+	<p>In the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp">OfflinePlaybackSampleApp</a>, there are two Widevine license expiration periods.</p>
+
+	<ul>
+		<li><code>absoluteExpiration</code> is an expiration date of the license to start playback of downloaded video</li>
+		<li><code>playDuration</code> is how long the video can be played</li>
+	</ul>
+	&nbsp;
+
+	<p>When <code>playDuration</code> becomes less than 60 seconds, the Widevine CDM handles the license as expired and throws a <strong>Failed to get key request</strong> error. Playback will not start with this Widevine license exception.</p>
+
+	<p>With the Brightcove Native SDK for Android v6.1.0+, you can try calling <code>AbstractOfflineCatalog.requestRentalLicense(Video, Date, long, EventListener)</code> or <code>AbstractOfflineCatalog.requestPurchaseLicense(Video, EventListener)</code> to retrieve a new license. Note: The device must be online to acquire a new license.</p>
 	</li>
 </ul>
 
@@ -585,6 +538,9 @@ myPlayer.play();
 <h4>Offline playback</h4>
 
 <ul>
+	<li>
+		With iOS 12, the <code>didProgress</code> event may stop firing when your app is resumed from background to foreground while downloading. You will notice that the downloading status is no longer updated. This problem has been reported to Apple.
+	</li>
 	<li>When playback is attempted for the same offline video two times in a row, the user may experience unexpected network activity. The <code class="notranslate">AVPlayer</code> may switch to playing the online version of the video. A bug report has been submitted to Apple. For work-around steps, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md#playing-the-same-offline-video-twice">Playing the Same Offline Video Twice</a> section of the reference document.</li>
 	<li>If your app is targeting iOS 11.0 - 11.2, we don't recommend concurrent downloads because pause and resume behavior is unreliable with multiple simultaneous downloads. The problem has been fixed with iOS 11.3.</li>
 </ul>
