@@ -30,6 +30,7 @@ import BrightcovePlayerSDK
 let kViewControllerPlaybackServicePolicyKey = "<span class="bcls-input">your policy key</span>"
 let kViewControllerAccountID = "<span class="bcls-input">your account id</span>"
 let kViewControllerVideoID = "<span class="bcls-input">your video id</span>"
+
 class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
 
 let sharedSDKManager = BCOVPlayerSDKManager.shared()
@@ -38,42 +39,49 @@ let playbackController :BCOVPlaybackController
 @IBOutlet weak var videoContainerView: UIView!
 
 required init?(coder aDecoder: NSCoder) {
-	playbackController = (sharedSDKManager?.createPlaybackController())!
+  playbackController = (sharedSDKManager?.createPlaybackController())!
 
-	super.init(coder: aDecoder)
+  super.init(coder: aDecoder)
 
-	playbackController.delegate = self
-	playbackController.isAutoAdvance = true
-	playbackController.isAutoPlay = true
+  playbackController.delegate = self
+  playbackController.isAutoAdvance = true
+  playbackController.isAutoPlay = true
 }
 
 override func viewDidLoad() {
-	super.viewDidLoad()
-	// Do any additional setup after loading the view, typically from a nib.
+  super.viewDidLoad()
+  // Do any additional setup after loading the view, typically from a nib.
 
-	// Set up our player view. Create with a standard VOD layout.
-	let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
+  // Set up our player view. Create with a standard VOD layout.
+  guard let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout()) else {
+      return
+  }
 
-	// Install in the container view and match its size.
-	playerView?.frame = self.videoContainerView.bounds
-	playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-	self.videoContainerView.addSubview(playerView!)
+  // Install in the container view and match its size.
+  self.videoContainerView.addSubview(playerView)
+  playerView.translatesAutoresizingMaskIntoConstraints = false
+  NSLayoutConstraint.activate([
+    playerView.topAnchor.constraint(equalTo: self.videoContainerView.topAnchor),
+    playerView.rightAnchor.constraint(equalTo: self.videoContainerView.rightAnchor),
+    playerView.leftAnchor.constraint(equalTo: self.videoContainerView.leftAnchor),
+    playerView.bottomAnchor.constraint(equalTo: self.videoContainerView.bottomAnchor)
+  ])
 
-	// Associate the playerView with the playback controller.
-	playerView?.playbackController = playbackController
+  // Associate the playerView with the playback controller.
+  playerView?.playbackController = playbackController
 
-	requestContentFromPlaybackService()
+  requestContentFromPlaybackService()
 }
 
 func requestContentFromPlaybackService() {
-	playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+  playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-		if let v = video {
-			self.playbackController.setVideos([v] as NSArray)
-		} else {
-			print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
-		}
-	}
+    if let v = video {
+    	self.playbackController.setVideos([v] as NSArray)
+    } else {
+    	print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+    }
+  }
 }
 }</code></pre>
 
@@ -91,16 +99,16 @@ func requestContentFromPlaybackService() {
 <code class="notranslate language-swift">func requestContentFromPlaybackService() {
 playbackService?.findVideo(withVideoID: kViewControllerVideoID, parameters: nil) { (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-	if let v = video {
-<span class="bcls-highlight">		print("video name: \(v.properties["name"] as AnyObject)")
-		print("video id: \(v.properties["id"] as AnyObject)")
-		print("video thumbnail: \(v.properties["thumbnail"] as AnyObject)")
-		print("video metadata: \(v.properties)")</span>
+  if let v = video {
+<span class="bcls-highlight">	print("video name: \(v.properties["name"] as AnyObject)")
+  	print("video id: \(v.properties["id"] as AnyObject)")
+  	print("video thumbnail: \(v.properties["thumbnail"] as AnyObject)")
+  	print("video metadata: \(v.properties)")</span>
 
-		self.playbackController.setVideos([v] as NSArray)
-	} else {
-		print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
-	}
+  	self.playbackController.setVideos([v] as NSArray)
+  } else {
+  	print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+  }
 }
 }</code></pre>
 
@@ -154,36 +162,69 @@ entries =&gt;
 <p>Here is an example of adding an array of videos to the playback controller and starting playback:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-swift">override func viewDidLoad() {
-super.viewDidLoad()
-// Do any additional setup after loading the view, typically from a nib.
+<code class="notranslate language-swift">import UIKit
+import BrightcovePlayerSDK
 
-// Create an array of videos
-var videoArray = [AnyObject]()
-videoArray = [videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4")!),
-						videoWithURL(url: NSURL(string: "https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4")!)]
+let kViewControllerAccountID = &quot;<span class="bcls-input">your account id</span>&quot; // For Brightcove registration
 
-// Set up the player view with a standard VOD layout.
-let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout())
+class ViewController: UIViewController, BCOVPlaybackControllerDelegate {
+  let sharedSDKManager = BCOVPlayerSDKManager.shared()
+  let playbackController :BCOVPlaybackController
+  @IBOutlet weak var videoContainerView: UIView!
 
-// Install in the container view and match its size.
-playerView?.frame = self.videoContainerView.bounds
-playerView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-self.videoContainerView.addSubview(playerView!)
+  required init?(coder aDecoder: NSCoder) {
+    // Create the Brightcove playback controller
+    playbackController = (sharedSDKManager?.createPlaybackController())!
 
-// Associate the playerView with the playback controller.
-playerView?.playbackController = playbackController
+    super.init(coder: aDecoder)
 
-// Load the video array into the player and start video playback
-playbackController.setVideos(videoArray as NSArray)
-playbackController.play();
-}
+    // Register your app with Brightcove
+    playbackController.analytics.account = kViewControllerAccountID
 
-func videoWithURL(url: NSURL) -&gt; BCOVVideo {
-// Set the delivery method for BCOVSources that belong to a video
-let source:BCOVSource = BCOVSource(url: url as URL!, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
-let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
-return video!
+    // Configure the player
+    playbackController.delegate = self
+    playbackController.isAutoAdvance = true
+    playbackController.isAutoPlay = true
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view, typically from a nib.
+
+    // Create an array of videos
+    var videoArray = [AnyObject]()
+    videoArray = [videoWithURL(url: NSURL(string: &quot;https://solutions.brightcove.com/bcls/assets/videos/Great_Horned_Owl.mp4&quot;)!),
+                  videoWithURL(url: NSURL(string: &quot;https://solutions.brightcove.com/bcls/assets/videos/Great_Blue_Heron.mp4&quot;)!)]
+
+    // Set up the player view with a standard VOD layout.
+    guard let playerView = BCOVPUIPlayerView(playbackController: self.playbackController, options: nil, controlsView: BCOVPUIBasicControlView.withVODLayout()) else {
+      return
+    }
+
+    // Install in the container view and match its size.
+    self.videoContainerView.addSubview(playerView)
+    playerView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      playerView.topAnchor.constraint(equalTo: self.videoContainerView.topAnchor),
+      playerView.rightAnchor.constraint(equalTo: self.videoContainerView.rightAnchor),
+      playerView.leftAnchor.constraint(equalTo: self.videoContainerView.leftAnchor),
+      playerView.bottomAnchor.constraint(equalTo: self.videoContainerView.bottomAnchor)
+    ])
+
+    // Associate the playerView with the playback controller.
+    playerView.playbackController = playbackController
+
+    // Load the video array into the player and start video playback
+    playbackController.setVideos(videoArray as NSArray)
+    playbackController.play();
+  }
+
+  func videoWithURL(url: NSURL) -&gt; BCOVVideo {
+    // Set the delivery method for BCOVSources that belong to a video
+    let source:BCOVSource = BCOVSource(url: url as URL, deliveryMethod: kBCOVSourceDeliveryHLS, properties: nil)
+    let video = BCOVVideo.init(source: source, cuePoints: BCOVCuePointCollection.init(array: []), properties: [NSObject:AnyObject]())
+    return video!
+  }
 }</code></pre>
 
 <p>For complete samples, see the following:</p>
