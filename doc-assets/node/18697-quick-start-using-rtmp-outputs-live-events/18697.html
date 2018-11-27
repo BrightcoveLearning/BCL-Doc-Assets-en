@@ -159,7 +159,7 @@
       <li>
         <p><strong>Replace:</strong></p>
         <ul>
-          <li><code>{{bcov-live-job-id}}</code> with your Brightcove live job id. In our example this value would be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+          <li><code>{{bcov-live-job-id}}</code> with your Brightcove live job id. In our example this value would be <code>3b6871bf2f344acaa6b397d09b476018</code> - your value, from the response to your request to create the live job , will be different.</li>
           <li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
           <li><code>{{youtube-secret-stream-name}}</code> for the stream name / key that Youtube provides</li>
         </ul>
@@ -194,41 +194,49 @@
     <h2 id="facebook_live">Add the live stream to Facebook live</h2>
     <p>We are assuming here that you have a Facebook account enabled for live streaming.</p>
     <ol class="bcls-bcls-tasklist">
-      <li>Click "Live video"</li>
-      
-    </ol>
-  </section>
-</article>
-<ul>
-<li>Click "connect" and stream key to get the data needed to connect your Brightcove live job, see:
-<img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/facebook-live-config-small.png" alt="facebook-live-config" title="Facebook live config"></li>
-<li>Create live output for Brightcove live job using "server url" and "stream key" from Facebook:</li>
-</ul>
-<pre><code>curl -X POST \
+      <li>
+        <p>Click <strong>Live video</strong></p>
+      </li>
+      <li>
+        <p>Click <strong>connect</strong> and stream key to get the data needed to connect your Brightcove live job:</p>
+        <figure class="bcls-figure">
+          <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/facebook-live-config-small.png" alt="facebook-live-config" title="Facebook live config">
+          <figcaption class="bcls-caption--image">Facebook live config</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>Next, create live output for Brightcove live job using "server url" and "stream key" from Facebook. Copy the <span class="notranslate">curl</span> command below and paste it into a text editor:</p>
+<pre class="line-numbers"><code class="language-bash">curl -X POST \
   https://api.bcovlive.io/v1/jobs/{{bcov-live-job-id}}/rtmpouts \
   -H 'Content-Type: application/json' \
   -H 'x-api-key: {{bcov-live-api-key}}' \
   -d '{
   "url": "rtmp://live-api-s.facebook.com:80/rtmp/{{facebook-secret-stream-name}}"
-}'
-</code></pre>
-<p><strong>Replace:</strong></p>
-<ul>
-<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
-<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
-<li><code>{{facebook-secret-stream-name}}</code> for you stream name that Facebook gives you</li>
-</ul>
+}'</code></pre>
+      </li>
+      <li>
+        <p><strong>Replace:</strong></p>
+        <ul>
+          <li><code>{{bcov-live-job-id}}</code> with your Brightcove live job id. In our example this value would be <code>3b6871bf2f344acaa6b397d09b476018</code> - your value, from the response to your request to create the live job , will be different.</li>
+          <li><code>{{bcov-live-api-key}}</code> with your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+          <li><code>{{facebook-secret-stream-name}}</code> with you stream name that Facebook gives you</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+</article>
+<p></p>
 <p>The response should be something like this:</p>
 <pre><code>{
-    "connection_info": {
-        "host": "live-api-s.facebook.com",
-        "port": 80,
-        "application": "rtmp",
-        "streamName": "{{facebook-secret-stream-name}}"
-    },
-    "duration_history": [],
-    "rtmp_out_id": "59323c3d1e2b44748755853193fb126c",
-    "stream_start": 1542904101097
+  "connection_info": {
+      "host": "live-api-s.facebook.com",
+      "port": 80,
+      "application": "rtmp",
+      "streamName": "{{facebook-secret-stream-name}}"
+  },
+  "duration_history": [],
+  "rtmp_out_id": "59323c3d1e2b44748755853193fb126c",
+  "stream_start": 1542904101097
 }
 </code></pre>
 <ul>
