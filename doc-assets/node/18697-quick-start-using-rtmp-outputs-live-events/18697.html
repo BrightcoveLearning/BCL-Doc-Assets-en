@@ -143,12 +143,26 @@
         </figure>
         <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/youtube-encoder-setup-small.png" alt="youtube-encoder-setup" title="Youtube encoder setup"></li>
     </ol>
-    <h3>Create live output for Brightcove live job using "encoder setup" settings</h3>
+    <h3>Create live output for Brightcove live job using the "encoder setup" settings</h3>
     <p>Now that we have YouTube live set up, we will create the RTMP output for it from our Live job.</p>
     <ol class="bcls-bcls-tasklist">
       <li>
         <p>Copy the <span class="notranslate">curl</span> command below into a text editor:</p>
-<pre class="line-numbers"><code class="language-bash"></code></pre>
+<pre class="line-numbers"><code class="language-bash">curl -X POST \
+  https://api.bcovlive.io/v1/jobs/{{bcov-live-job-id}}/rtmpouts \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+  "url": "rtmp://a.rtmp.youtube.com/live2/{{youtube-secret-stream-name}}"
+}'</code></pre>
+      </li>
+      <li>
+        <p><strong>Replace:</strong></p>
+        <ul>
+          <li><code>{{bcov-live-job-id}}</code> with your Brightcove live job id. In our example this value would be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+          <li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+          <li><code>{{youtube-secret-stream-name}}</code> for the stream name / key that Youtube provides</li>
+        </ul>
       </li>
     </ol>
   </section>
@@ -164,9 +178,9 @@
   "url": "rtmp://a.rtmp.youtube.com/live2/{{youtube-secret-stream-name}}"
 }'
 </code></pre>
-<p><strong>Replace:</strong></p>
+<p></p>
 <ul>
-<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code> (your value will be different - get it from the response to your request to create the live job)</li>
 <li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
 <li><code>{{youtube-secret-stream-name}}</code> for the stream name / key that Youtube provides</li>
 </ul>
