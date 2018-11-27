@@ -2,16 +2,21 @@
   <section class="bcls-section">
     <h2 id="Overview">Overview</h2>
     <figure class="bcls-figure">
-      <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/block-diagram-small.png" alt="general-block-diagram" title="Block diagram">
+      <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/block-diagram-small-small.png" alt="general-block-diagram" title="Block diagram">
       <figcaption class="bcls-caption--image">Block Diagram</figcaption>
     </figure>
     <p>This tutorial explains at the API level how to create a live streaming job in <a href="/node/19642">Brightcove live</a> and then create <a href="https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol">RTMP</a> outputs and re-stream them to YouTube Live and Facebook Live.</p>
+    <ul>
+      <li></li>
+      <li>Frame accurate clipping based on SMPTE Time code</li>
+    </ul>
     <p>This tutorial will use <a href="/node/17908" class="notranslate">curl</a> to make the API requests, but you can easily make them in <a href="/node/18462" class="notranslate">Insomnia</a>, <a href="/node/17919" class="notranslate">Postman</a> or other REST clients instead.</p>
   </section>
   <section class="bcls-section">
     <h2 id="create_a_live_job">Create a live job</h2>
     <p>First, we will create a live job. You will need an <code>API-KEY</code> for the Live API. If you do not, and are interested in obtaining access, please contact your account manager.</p>
     <ol class="bcls-tasklist">
+      <li>We assume you already have a brightcove acount and they you have your API-KEY, let's call it <code>bcov-live-api-key</code></li>
       <li>
         <p>Copy and paste the following <span class="notranslate">curl</span> command into a text editor:</p>
 <pre class="line-numbers"><code class="language-bash">curl -X POST \
@@ -137,9 +142,10 @@
           <figcaption class="bcls-caption--image">Youtube encoder setup</figcaption>
         </figure>
         <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/youtube-encoder-setup-small.png" alt="youtube-encoder-setup" title="Youtube encoder setup"></li>
-      <li>
-        <p>Now that we have YouTube live set up, we will create the RTMP output for it from our Live job.</p>
-      </li>
+    </ol>
+    <h3>Create live output for Brightcove live job using the "encoder setup" settings</h3>
+    <p>Now that we have YouTube live set up, we will create the RTMP output for it from our Live job.</p>
+    <ol class="bcls-bcls-tasklist">
       <li>
         <p>Copy the <span class="notranslate">curl</span> command below into a text editor:</p>
 <pre class="line-numbers"><code class="language-bash">curl -X POST \
@@ -176,7 +182,7 @@
         }</code></pre>
       </li>
       <li>
-        <p>To test Youtube playback you can go to Youtube <strong>my channel</strong>:</p>
+        <p>To test Youtube playback you can go to Youtube my channel:</p>
         <figure class="bcls-figure">
           <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/youtube-my-channel-playback-small.png" alt="youtube-my-channel-playback" title="Youtube my channel playback">
           <figcaption class="bcls-caption--image">Youtube my channel playback</figcaption>
@@ -187,7 +193,7 @@
   <section class="bcls-section">
     <h2 id="facebook_live">Add the live stream to Facebook live</h2>
     <p>We are assuming here that you have a Facebook account enabled for live streaming.</p>
-    <ol class="bcls-tasklist">
+    <ol class="bcls-bcls-tasklist">
       <li>
         <p>Click <strong>Live video</strong></p>
       </li>
@@ -231,9 +237,98 @@
 }</code></pre>
       </li>
       <li>
-        <p>To test your Facebook Live stream, click "Go Live" on your Facebook webpage.</p>
-        <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/facebook-playback-small.png" alt="facebook-playback" title="Facebook playback">
+        <p>To test your </p>
       </li>
     </ol>
   </section>
 </article>
+<p></p>
+<p></p>
+<pre><code>
+</code></pre>
+<ul>
+<li>The last step is just to click "Go Live" on Facebook webpage and test Facebook live playback
+<img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/facebook-playback-small.png" alt="facebook-playback" title="Facebook playback"></li>
+</ul>
+
+
+<h2>Create a <strong>frame accurate</strong> clip based on SMPTE TC</h2>
+<p>It is assumed you have an AWS account.</p>
+<ul>
+<li>Create the destination S3 bucket and configure the credentials (you just need to to that once):
+<ul>
+<li>Create an S3 bucket and a AWS IAM user with write rights to that bucket, see <a href="https://docs.aws.amazon.com/quickstarts/latest/s3backup/step-1-create-bucket.html">create s3 bukcet</a>, <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">create IAM user</a>, <a href="https://aws.amazon.com/premiumsupport/knowledge-center/iam-s3-user-specific-folder/">set IAM user rights to access S3 folders</a></li>
+<li>Get AWS access ID and SECRET for that user and add those as s3 credential to Brighcove live with the following command:</li>
+</ul>
+</li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/credentials \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+  "credential_default_for_type": false,
+  "credential_label": "AWS-TEST-S3-UPLOADS",
+  "credential_private": "{{aws-iam-user-id}}",
+  "credential_public": "{{aws-iam-user-secret}}",
+  "credential_type": "s3"
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+<li><code>{{aws-iam-user-id}}</code> and <code>{{aws-iam-user-secret}}</code> for the values provided by AWS</li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{"credential_id":"296f44cb4fb54ef7a828ba0a60512cd2","user_id":"666f23e01f57441890650a97dc189301","credential_label":"AWS-TEST-S3-UPLOADS"}
+</code></pre>
+<ul>
+<li>Create the following request that will create the clip and upload it to your S3 bucket:</li>
+</ul>
+<pre><code>curl -X POST \
+  https://api.bcovlive.io/v1/vods \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -d '{
+    "live_job_id":"{{bcov-live-job-id}}",
+    "outputs":[{
+        "label": "Trim by SMPTE TC 17:33:11:12 to 17:34:00:00",
+    	"stream_start_timecode": "{{timecode-in}}",
+    	"stream_end_timecode": "{{timecode-out}}",
+        "url":"s3://jordi-test/clipping-test/smpte_tc_1542910526.mp4",
+        "credentials": "AWS-TEST-S3-UPLOADS"
+    }]
+}'
+</code></pre>
+<p><strong>Replace:</strong></p>
+<ul>
+<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
+<li><code>{{timecode-in}}</code> and <code>{{timecode-out}}</code> should be values that make sense (present) in your live stream. In our example we have used: <code>17:33:11:12</code> and <code>17:34:00:00</code></li>
+</ul>
+<p>The response should be something like this:</p>
+<pre><code>{
+    "vod_jobs": [
+        {
+            "jvod_id": "0b14a4ba326d4dd08f15053ca2a403b7",
+            "label": "Trim by SMPTE TC 17:33:11:12 to 17:34:00:00"
+        }
+    ],
+    "live_job_id": "3b6871bf2f344acaa6b397d09b476018"
+}
+</code></pre>
+<ul>
+<li>To test the accuracy of the experiment we downloaded the clip and used <a href="https://www.adobe.com/products/premiere.html">Adobe premiere</a> to checked the 1st and last frame, since the timecode is overlayed a simple visual check is enough to confirm the accuracy at input and output points:
+<img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-in-small.png" alt="clip-accuracy-in" title="Visual clip accuracy test - in">
+<img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-out-small.png" alt="clip-accuracy-out" title="Visual clip accuracy test - out"></li>
+</ul>
+<p>Note: We can use <a href="https://aws.amazon.com/lambda/">AWS lambdas</a> and <a href="https://aws.amazon.com/step-functions/">AWS Lambdas step functions</a> to automate any kind of VOD publishing process based on the event trigered by S3 PUT.</p>
+<h1>References</h1>
+<ul>
+<li><a href="https://docs.brightcove.com/live-api/v1/doc/index.html">Brightcove live API reference</a></li>
+</ul>
+<h1>TODOs</h1>
+<ul>
+<li>Add <a href="https://www.srtalliance.org/about-github/">SRT</a> as ingest option.  <em>Remember SRT is based on UDP bidirectional communication</em>, your firewall / router needs to be configured properly and allow UDP outputs from the encoder's IP (caller) and UDP back from the internet on the same port</li>
+<li>Add TS+FEC as ingest option. <em>This communications is based on UDP unidirectional communication (encoder to live platform)</em>, your firewall / router needs to be configured properly and allow UDP outputs from the encoder to the internet from the encoder's IP.</li>
+</ul>
