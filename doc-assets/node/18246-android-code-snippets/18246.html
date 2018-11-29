@@ -42,7 +42,8 @@
 <h5 class="bcls-question">Playback</h5>
 
 <ul class="bcls-answer">
-	<li><a href="#Offline_playback_with_DRM">Offline playback with DRM</a></li>
+	<li><a href="#Getting_the_ExoPlayer_instance">Getting the ExoPlayer instance</a></li>
+  <li><a href="#Offline_playback_with_DRM">Offline playback with DRM</a></li>
 	<li><a href="#Paging_with_the_Playback_API">Paging with the Playback API</a></li>
 	<li><a href="#Playing_local_videos">Playing local videos</a></li>
 	<li><a href="#Setting_the_buffer_size">Setting the buffer size</a></li>
@@ -85,7 +86,7 @@
 	<li>Open the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-player-controls/CustomizedControlsSampleApp">Customized Controls</a> sample app. We'll use this as a starting point. Review the sample app's <a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/brightcove-player-controls/CustomizedControlsSampleApp/README.md">README</a> file for details about customizing player controls.</li>
 	<li>Open the <strong>res/layout/land/my_media_controller.xml</strong> file in Android Studio.</li>
 	<li>Copy the <copy>Button</copy> element for the <code class="notranslate">full_screen</code> button. The code should look similar to this:
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/brightcove-player-controls/CustomizedControlsSampleApp/src/main/res/layout-land/my_media_controller.xml">&lt;Button
 style="@style/BorderlessButton"
 android:id="@id/full_screen"
@@ -99,7 +100,7 @@ android:text="@string/brightcove_controls_enter_full_screen"/&gt;</a></code></pr
 	<li>Open the <strong>res/layout/my_tv_media_controller.xml</strong> file in Android Studio.</li>
 	<li>Paste the copied <copy>Button</copy> element into this layout file. The position of the elements determines their position in the control bar.</li>
 	<li>Scroll to the top of the <strong>res/layout/my_tv_media_controller.xml</strong> file. Make sure the style property is set to <code class="notranslate">@style/BrightcoveControlBar.TV.Custom</code>. The code should look like this:
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;com.brightcove.player.mediacontroller.BrightcoveControlBar
 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -118,7 +119,7 @@ android:layout_gravity="bottom"
 	</li>
 	<li>Open the <strong>res/values/styles.xml</strong> file in Android Studio.</li>
 	<li>To the <code class="notranslate">style</code> element with a <code class="notranslate">name</code> value of <code class="notranslate">BrightcoveControlBar.TV.Custom</code>, add an <code class="notranslate">item</code> element for the fullscreen button and set it to <code class="notranslate">true</code> to display it.
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/brightcove-player-controls/CustomizedControlsSampleApp/src/main/res/values/styles.xml">&lt;style name="BrightcoveControlBar.TV.Custom"&gt;
 &lt;item name="brightcove_vr_mode"&gt;false&lt;/item&gt;
 <span class="bcls-highlight">  &lt;item name="brightcove_full_screen"&gt;true&lt;/item&gt;</span>
@@ -133,6 +134,27 @@ android:layout_gravity="bottom"
 </section>
 
 <section class="bcls-section">
+<h2 id="Fullscreen_mode">Fullscreen mode</h2>
+
+<p>You can manage fullscreen mode using code.</p>
+
+<ul>
+	<li>
+	<p>Here is the code to set fullscreen mode:</p>
+
+	<pre class="line-numbers">
+<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ENTER_FULL_SCREEN">brightcoveVideoView.getEventEmitter().emit(EventType.ENTER_FULL_SCREEN);</a></code></pre>
+	</li>
+	<li>
+	<p>Here is the code to exit fullscreen mode:</p>
+
+	<pre class="line-numbers">
+<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#EXIT_FULL_SCREEN">brightcoveVideoView.getEventEmitter().emit(EventType.EXIT_FULL_SCREEN);</a></code></pre>
+	</li>
+</ul>
+</section>
+
+<section class="bcls-section">
 <h2 id="Getting_duration_for_live_streams">Getting duration for live streams</h2>
 
 <p>To get the duration for a live stream, you can use the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/Event.html#MAX_POSITION"><code class="notranslate">MAX_POSITION</code></a>. This gives you the largest seekable position for a live stream (ie., the furthest you can drag the scrollbar). Your code should look similar to this:</p>
@@ -144,6 +166,36 @@ android:layout_gravity="bottom"
   int duration = (int) event.properties.get(Event.MAX_POSITION);
   }
 });</a></code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Getting_the_ExoPlayer_instance">Getting the ExoPlayer instance</h2>
+
+<p>There may be times when you need to get the ExoPlayer object to modify properties which are not exposed through the Brightcove Native SDK. An instance of this object is created after the video is set. So, you need to wait for the <code>DID_SET_VIDEO</code> event.</p>
+
+<p>You can get the ExoPlayer instance by doing the following:</p>
+<pre class="line-numbers">
+<code class="notranslate language-java">// Get the ExoPlayer instance
+eventEmitter.on(EventType.DID_SET_VIDEO, new EventListener() {
+  @Override
+  public void processEvent(Event event) {
+    VideoDisplayComponent videoDisplayComponent = brightcoveVideoView.getVideoDisplay();
+    if (videoDisplayComponent instanceof ExoPlayerVideoDisplayComponent) {
+      // Get ExoPlayer
+      ExoPlayer exoPlayer = ((ExoPlayerVideoDisplayComponent) videoDisplayComponent).getExoPlayer();
+      if (exoPlayer instanceof SimpleExoPlayer) {
+        // Get SimpleExoPlayer
+        SimpleExoPlayer simpleExoPlayer = (SimpleExoPlayer) exoPlayer;
+        Log.v(TAG, &quot;onDID_SET_VIDEO: ExoPlayer = &quot; + simpleExoPlayer);
+      }
+    }
+  }
+});</code></pre>
+
+<p>
+  For an example of modifying the <code>AudioAttribute</code> property for the ExoPlayer, see the <a href="https://groups.google.com/forum/#!topic/brightcove-native-player-sdks/-bbFKw3fOtk">Setting AudioAttributes on Exoplayer Instance</a> forum post.
+</p>
+
 </section>
 
 <section class="bcls-section">
@@ -174,7 +226,7 @@ android:layout_gravity="bottom"
 	<li>Get a Google configuration file and add it to your project.</li>
 	<li>Extend the Application and provide a helper method that returns your applications tracker. It should look similar to the <a href="https://github.com/googlesamples/google-services/blob/master/android/analytics/app/src/main/java/com/google/samples/quickstart/analytics/AnalyticsApplication.java">google-services AnalyticsApplication</a>.</li>
 	<li>In a separate class which extends the BrightcovePlayer, obtain the shared tracker instance:
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://developers.google.com/analytics/devguides/collection/android/v4/#set-up-your-project">// Obtain the shared Tracker instance
 AnalyticsApplication application = (AnalyticsApplication) getApplication();
 tracker = application.getDefaultTracker();</a></code></pre>
@@ -186,55 +238,33 @@ tracker = application.getDefaultTracker();</a></code></pre>
 </section>
 
 <section class="bcls-section">
-<h2 id="Fullscreen_mode">Fullscreen mode</h2>
-
-<p>You can manage fullscreen mode using code.</p>
-
-<ul>
-	<li>
-	<p>Here is the code to set fullscreen mode:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ENTER_FULL_SCREEN">brightcoveVideoView.getEventEmitter().emit(EventType.ENTER_FULL_SCREEN);</a></code></pre>
-	</li>
-	<li>
-	<p>Here is the code to exit fullscreen mode:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#EXIT_FULL_SCREEN">brightcoveVideoView.getEventEmitter().emit(EventType.EXIT_FULL_SCREEN);</a></code></pre>
-	</li>
-</ul>
-</section>
-
-<section class="bcls-section">
 <h2 id="Loading_a_remote_video_and_poster_image">Loading a remote video and poster image</h2>
+
 <p>Brightcove Player only customers use video assets from a remote server. Follow these steps to load a video and a poster image, both residing on a remote server:</p>
+
 <ol class="bcls-tasklist__restart">
 	<li>
-		<p>
-			In the  <code class="notranslate">onCreate()</code> method, after defining the video view, create a video object from your video hosted on a remote server. Set the <code>DeliveryType</code> to match the type of video you have.
-		</p>
-		<pre class="line-numbers" data-start="26">
-<code class="notranslate language-java">Video video = Video.createVideo(&quot;https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8&quot;,
+	<p>In the <code class="notranslate">onCreate()</code> method, after defining the video view, create a video object from your video hosted on a remote server. Set the <code>DeliveryType</code> to match the type of video you have.</p>
+
+	<pre class="line-numbers" data-start="26">
+<code class="notranslate language-java">Video video = Video.createVideo("https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8",
   DeliveryType.HLS);</code></pre>
 	</li>
 	<li>
-		<p>
-			Load a remote image to be used as the poster image before video playback starts.
-		</p>
-		<pre class="line-numbers" data-start="29">
+	<p>Load a remote image to be used as the poster image before video playback starts.</p>
+
+	<pre class="line-numbers" data-start="29">
 <code class="notranslate language-java">try {
-  java.net.URI myposterImage = new java.net.URI(&quot;https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png&quot;);
+  java.net.URI myposterImage = new java.net.URI("https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png");
   video.getProperties().put(Video.Fields.STILL_IMAGE_URI, myposterImage);
 } catch (URISyntaxException e) {
   e.printStackTrace();
 }</code></pre>
 	</li>
 	<li>
-		<p>
-			Add the video to the view and start video playback.
-		</p>
-<pre class="line-numbers" data-start="37">
+	<p>Add the video to the view and start video playback.</p>
+
+	<pre class="line-numbers" data-start="37">
 <code class="notranslate language-java">brightcoveVideoView.add(video);
 brightcoveVideoView.start();</code></pre>
 	</li>
@@ -250,14 +280,14 @@ brightcoveVideoView.start();</code></pre>
 
     // Optional: For Brightcove Player customers to register their apps
     Analytics analytics = brightcoveVideoView.getAnalytics();
-    analytics.setAccount(&quot;<span class="bcls-input">your account Id</span>&quot;);
+    analytics.setAccount("<span class="bcls-input">your account Id</span>");
 
     // Define a video from a remote server
-    Video video = Video.createVideo(&quot;https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8&quot;, DeliveryType.HLS);
+    Video video = Video.createVideo("https://learning-services-media.brightcove.com/videos/hls/greatblueheron/greatblueheron.m3u8", DeliveryType.HLS);
 
     // Load a remote poster image
     try {
-        java.net.URI myposterImage = new java.net.URI(&quot;https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png&quot;);
+        java.net.URI myposterImage = new java.net.URI("https://solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png");
         video.getProperties().put(Video.Fields.STILL_IMAGE_URI, myposterImage);
     } catch (URISyntaxException e) {
         e.printStackTrace();
@@ -270,7 +300,6 @@ brightcoveVideoView.start();</code></pre>
   }</code></pre>
 	</li>
 </ol>
-
 </section>
 
 <section class="bcls-section">
@@ -410,20 +439,20 @@ brightcoveVideoView.start();</a></code></pre>
 	<li>
 	<p>Get the <code class="notranslate">VideoPlaybackController</code> instance from the <code class="notranslate">BrightcoveVideoView</code>.</p>
 
-<pre class="line-numbers" data-start="1">
+	<pre class="line-numbers" data-start="1">
 <code class="notranslate language-java">VideoPlaybackController playbackController = brightcoveVideoView.getPlaybackController();</code></pre>
 	</li>
 	<li>
 	<p>Disable ad playback.</p>
 
-<pre class="line-numbers" data-start="1">
+	<pre class="line-numbers" data-start="1">
 <code class="notranslate language-java">playbackController.setAdsDisabled(true);</code></pre>
 	</li>
 	<li>Seek to the desired time position in the current video.</li>
 	<li>
 	<p>Resume normal ad behavior.</p>
 
-<pre class="line-numbers" data-start="1">
+	<pre class="line-numbers" data-start="1">
 <code class="notranslate language-java">playbackController.setAdsDisabled(false);</code></pre>
 	</li>
 </ol>
@@ -468,7 +497,7 @@ eventEmitter.on(EventType.DID_SEEK_TO, new EventListener() {
 	<li>
 	<p>The <code class="notranslate">LoadControlConfig</code> and <code class="notranslate">AllocatorConfig</code> classes follow the Builder patterns. Values you can set in both classes reflect the values you can set in their constructors.</p>
 
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java">AllocatorConfig allocatorConfig = new AllocatorConfig.Builder().build();
 LoadControlConfig loadControlConfig = new LoadControlConfig.Builder()
 .setAllocatorConfig(allocatorConfig)
@@ -479,7 +508,7 @@ LoadControlConfig loadControlConfig = new LoadControlConfig.Builder()
 	<li>
 	<p>Values not set in the builder will use default values. Use the <code class="notranslate">ExoPlayerVideoDisplayerComponent.setLoadControlConfig()</code> method to set the <code class="notranslate">LoadControlConfig</code>.</p>
 
-<pre class="line-numbers">
+	<pre class="line-numbers">
 <code class="notranslate language-java">brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
 ...
 ExoPlayerVideoDisplayComponent dc = (ExoPlayerVideoDisplayComponent) brightcoveVideoView.getVideoDisplay();
