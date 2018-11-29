@@ -9,17 +9,13 @@
 <p>The Brightcove Player SDK for Android uses a default source selection process. To simplify, we will focus on the SDK’s support for the Brightcove Playback API and Google’s ExoPlayer.</p>
 
 <aside class="bcls-aside bcls-aside--tip">
-	<p>
-		With the Brightcove Native SDK for Android 6.4+, HTTPS delivery for all source types is selected if available.
-	</p>
-	<p>
-		Both the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> attempt to select the HTTPS version of the <code class="notranslate">deliveryType</code> selected. If no HTTPS source exists, the selection controller will select the first available.
-	</p>
+<p>With the Brightcove Native SDK for Android 6.4+, HTTPS delivery for all source types is selected if available.</p>
+
+<p>Both the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> attempt to select the HTTPS version of the <code class="notranslate">deliveryType</code> selected. If no HTTPS source exists, the selection controller will select the first available.</p>
 </aside>
 
-<p>
-	The default selection process is defined as follows:
-</p>
+<p>The default selection process is defined as follows:</p>
+
 <ol class="bcls-tasklist">
 	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> looks for the first source that has a <code class="notranslate">deliveryType</code> of <strong>MPEG-DASH</strong>, and a profile that is neither <strong>urn:hbbtv</strong> nor <strong>urn:dvb</strong>. The SDK does not support playback with either of these DASH profiles, and so they will be filtered out of the sources.</li>
 	<li>If the above is not found, source selection falls back to the first source with a <code class="notranslate">deliveryType</code> of <strong>HLS</strong>.</li>
@@ -58,13 +54,15 @@
 <p>And the <code class="notranslate">sourceSelectionFilter()</code> method would look like this:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-java">public static void sourceSelectionFilter(String deliveryTypeFilter, Video video){
-	for (DeliveryType deliveryType : DeliveryType.values()) {
-		if (!deliveryType.name().equals(deliveryTypeFilter)) {
-		 Log.v(TAG, "Removing the deliveryType " + deliveryType.name());
-		 video.getSourceCollections().remove(deliveryType);
-		}
-	}
+<code class="notranslate language-java">public static void sourceSelectionFilter(DeliveryType deliveryTypeFilter, Video video) {
+   if (deliveryTypeFilter == null || deliveryTypeFilter.name().equals(&quot;UNKNOWN&quot;)) {
+       return;
+   }
+   for (DeliveryType deliveryType : DeliveryType.values()) {
+       if (!deliveryType.equals(deliveryTypeFilter)) {
+           video.getSourceCollections().remove(deliveryType);
+       }
+   }
 }</code></pre>
 </section>
 </article>
