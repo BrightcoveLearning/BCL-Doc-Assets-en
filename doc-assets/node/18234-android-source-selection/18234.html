@@ -54,15 +54,15 @@
 <p>And the <code class="notranslate">sourceSelectionFilter()</code> method would look like this:</p>
 
 <pre class="line-numbers">
-<code class="notranslate language-java">public static void sourceSelectionFilter(DeliveryType deliveryTypeFilter, Video video) {
-   if (deliveryTypeFilter == null || deliveryTypeFilter.name().equals(&quot;UNKNOWN&quot;)) {
-       return;
-   }
+<code class="notranslate language-java">public static void sourceSelectionFilter(@NonNull DeliveryType deliveryTypeFilter, @NonNull Video video) {
+ if (video.getSourceCollections().containsKey(deliveryTypeFilter)) {
+   // Only remove the other delivery types if the desired type is in our Source collections
    for (DeliveryType deliveryType : DeliveryType.values()) {
-       if (!deliveryType.equals(deliveryTypeFilter)) {
-           video.getSourceCollections().remove(deliveryType);
-       }
+     if (!deliveryType.equals(deliveryTypeFilter)) {
+            video.getSourceCollections().remove(deliveryType);
+     }
    }
+ }
 }</code></pre>
 </section>
 </article>
