@@ -184,38 +184,13 @@
           <li><code>{{bcov-live-api-key}}</code> with your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
           <li><code>{{bcov-live-job-id}}</code> with the job id in the response to your request to create the live job. In our example this value would be <code>3b6871bf2f344acaa6b397d09b476018</code> - yours will be different.</li>
           <li><code>{{timecode-in}}</code> and <code>{{timecode-out}}</code> should be values that make sense (are present) in your live stream. In our example we have used: <code>17:33:11:12</code> and <code>17:34:00:00</code></li>
+          <li><code>{{video-cloud-credentials}}</code> with the label for your Video Cloud credentials. If you did not already have them and created them using the steps above, this would be <code>Video_Cloud_Uploads</code></li>
           </ul>
         </li>
-      </ol>
-    </section>
-  </section>
-</article>
-
-<li>Create the following request that will create the clip and upload it to your S3 bucket:</li>
-</ul>
-<pre><code>curl -X POST \
-  https://api.bcovlive.io/v1/vods \
-  -H 'Content-Type: application/json' \
-  -H 'x-api-key: {{bcov-live-api-key}}' \
-  -d '{
-    "live_job_id":"{{bcov-live-job-id}}",
-    "outputs":[{
-        "label": "Trim by SMPTE Timecodes",
-    	"stream_start_timecode": "{{timecode-in}}",
-    	"stream_end_timecode": "{{timecode-out}}",
-        "url":"s3://jordi-test/clipping-test/smpte_tc_1542910526.mp4",
-        "credentials": "AWS-TEST-S3-UPLOADS"
-    }]
-}'
-</code></pre>
-<p><strong>Replace:</strong></p>
-<ul>
-<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
-<li><code>{{bcov-live-job-id}}</code> for your Brightcove live API key. In out example this value should be <code>3b6871bf2f344acaa6b397d09b476018</code></li>
-<li><code>{{timecode-in}}</code> and <code>{{timecode-out}}</code> should be values that make sense (present) in your live stream. In our example we have used: <code>17:33:11:12</code> and <code>17:34:00:00</code></li>
-</ul>
-<p>The response should be something like this:</p>
-<pre><code>{
+        <li>Copy and paste the edited code into Terminal or your command line app, and run it.</li>
+        <li>
+          The response should look similar to this:
+<pre class="line-numbers"><code class="language-json">{
     "vod_jobs": [
         {
             "jvod_id": "0b14a4ba326d4dd08f15053ca2a403b7",
@@ -223,10 +198,19 @@
         }
     ],
     "live_job_id": "3b6871bf2f344acaa6b397d09b476018"
-}
-</code></pre>
-<ul>
-<li>To test the accuracy of the experiment we downloaded the clip and used <a href="https://www.adobe.com/products/premiere.html">Adobe premiere</a> to checked the 1st and last frame, since the timecode is overlayed a simple visual check is enough to confirm the accuracy at input and output points:
-<img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-in-small.png" alt="clip-accuracy-in" title="Visual clip accuracy test - in">
-<img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-out-small.png" alt="clip-accuracy-out" title="Visual clip accuracy test - out"></li>
-</ul>
+}</code></pre>
+        </li>
+      </ol>
+      <p>We tested the accuracy of the experiment we downloaded the clip and used <a href="https://www.adobe.com/products/premiere.html">Adobe premiere</a> to checked the 1st and last frame, since the timecode is overlayed a simple visual check is enough to confirm the accuracy at input and output points:
+        <figure class="bcls-figure">
+        <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-in-small.png" alt="clip-accuracy-in" title="Visual clip accuracy test - in">
+        <figcaption class="bcls-caption--image">Visual clip accuracy test - in</figcaption>
+      </figure>
+      <figure class="bcls-figure">
+        <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-out-small.png" alt="clip-accuracy-out" title="Visual clip accuracy test - out">
+        <figcaption class="bcls-caption--image">Visual clip accuracy test - out</figcaption>
+      </figure>
+      </p>
+    </section>
+  </section>
+</article>
