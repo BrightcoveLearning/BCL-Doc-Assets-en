@@ -116,7 +116,7 @@
   </section>
 
   <section class="bcls-section">
-    <h2 id="create_clip">Create a frame-accurate clip</h2>
+    <h2 id="create_frame_accurate_clip">Create a frame-accurate clip</h2>
     <p>In this tutorial, we will assume that you are sending the clip to your Video Cloud library. If you are sending the clip to an S3 bucket or some other location, the process is the same - there are just some minor differences in the request body for the API requests.</p>
     <section class="bcls-subsection">
       <h3 id="video-cloud-credentials">Credentials</h3>
@@ -157,38 +157,40 @@
       </li>
       </ol>
     </section>
-  </section>
-</article>
-
-<ul>
-<li>Create the destination S3 bucket and configure the credentials (you just need to to that once):
-<ul>
-<li>Create an S3 bucket and a AWS IAM user with write rights to that bucket, see <a href="https://docs.aws.amazon.com/quickstarts/latest/s3backup/step-1-create-bucket.html">create s3 bucket</a>, <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">create IAM user</a>, <a href="https://aws.amazon.com/premiumsupport/knowledge-center/iam-s3-user-specific-folder/">set IAM user rights to access S3 folders</a></li>
-<li>Get AWS access ID and SECRET for that user and add those as s3 credential to Brighcove live with the following command:</li>
-</ul>
-</li>
-</ul>
-<pre><code>curl -X POST \
-  https://api.bcovlive.io/v1/credentials \
+    <section class="bcls-subsection">
+      <h3 id="create_clip">Create the clip</h3>
+      <p>Once you have your Video Cloud credentials, you are ready to create a clip.</p>
+      <ol class="bcls-tasklist">
+        <li>
+          Copy the curl request below and paste it into a text editor:
+<pre class="line-numbers"><code class="language-bash">curl -X POST \
+  https://api.bcovlive.io/v1/vods \
   -H 'Content-Type: application/json' \
   -H 'x-api-key: {{bcov-live-api-key}}' \
   -d '{
-  "credential_default_for_type": false,
-  "credential_label": "AWS-TEST-S3-UPLOADS",
-  "credential_private": "{{aws-iam-user-id}}",
-  "credential_public": "{{aws-iam-user-secret}}",
-  "credential_type": "s3"
-}'
-</code></pre>
-<p><strong>Replace:</strong></p>
-<ul>
-<li><code>{{bcov-live-api-key}}</code> for your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
-<li><code>{{aws-iam-user-id}}</code> and <code>{{aws-iam-user-secret}}</code> for the values provided by AWS</li>
-</ul>
-<p>The response should be something like this:</p>
-<pre><code>{"credential_id":"296f44cb4fb54ef7a828ba0a60512cd2","user_id":"666f23e01f57441890650a97dc189301","credential_label":"AWS-TEST-S3-UPLOADS"}
-</code></pre>
-<ul>
+    "live_job_id":"{{bcov-live-job-id}}",
+    "outputs":[{
+        "label": "Trim by SMPTE TC 17:33:11:12 to 17:34:00:00",
+    	"stream_start_timecode": "{{timecode-in}}",
+    	"stream_end_timecode": "{{timecode-out}}",
+        "videocloud":{"ingest":{"capture-images":true},"video":{"name":"test-frame-accurate-clip"}},
+        "credentials": "{{video-cloud-credentials}}"
+    }]
+}'</code></pre>
+        </li>
+        <li>
+          <p><strong>Replace:</strong></p>
+          <ul>
+          <li><code>{{bcov-live-api-key}}</code> with your Brightcove live API key. For instance: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+          <li><code>{{bcov-live-job-id}}</code> with the job id in the response to your request to create the live job. In our example this value would be <code>3b6871bf2f344acaa6b397d09b476018</code> - yours will be different.</li>
+          <li><code>{{timecode-in}}</code> and <code>{{timecode-out}}</code> should be values that make sense (are present) in your live stream. In our example we have used: <code>17:33:11:12</code> and <code>17:34:00:00</code></li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+  </section>
+</article>
+
 <li>Create the following request that will create the clip and upload it to your S3 bucket:</li>
 </ul>
 <pre><code>curl -X POST \
@@ -198,7 +200,7 @@
   -d '{
     "live_job_id":"{{bcov-live-job-id}}",
     "outputs":[{
-        "label": "Trim by SMPTE TC 17:33:11:12 to 17:34:00:00",
+        "label": "Trim by SMPTE Timecodes",
     	"stream_start_timecode": "{{timecode-in}}",
     	"stream_end_timecode": "{{timecode-out}}",
         "url":"s3://jordi-test/clipping-test/smpte_tc_1542910526.mp4",
@@ -217,7 +219,7 @@
     "vod_jobs": [
         {
             "jvod_id": "0b14a4ba326d4dd08f15053ca2a403b7",
-            "label": "Trim by SMPTE TC 17:33:11:12 to 17:34:00:00"
+            "label": "Trim by SMPTE Timecodes"
         }
     ],
     "live_job_id": "3b6871bf2f344acaa6b397d09b476018"
@@ -227,14 +229,4 @@
 <li>To test the accuracy of the experiment we downloaded the clip and used <a href="https://www.adobe.com/products/premiere.html">Adobe premiere</a> to checked the 1st and last frame, since the timecode is overlayed a simple visual check is enough to confirm the accuracy at input and output points:
 <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-in-small.png" alt="clip-accuracy-in" title="Visual clip accuracy test - in">
 <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/clip-accuracy-out-small.png" alt="clip-accuracy-out" title="Visual clip accuracy test - out"></li>
-</ul>
-<p>Note: We can use <a href="https://aws.amazon.com/lambda/">AWS lambdas</a> and <a href="https://aws.amazon.com/step-functions/">AWS Lambdas step functions</a> to automate any kind of VOD publishing process based on the event trigered by S3 PUT.</p>
-<h1>References</h1>
-<ul>
-<li><a href="https://docs.brightcove.com/live-api/v1/doc/index.html">Brightcove live API reference</a></li>
-</ul>
-<h1>TODOs</h1>
-<ul>
-<li>Add <a href="https://www.srtalliance.org/about-github/">SRT</a> as ingest option.  <em>Remember SRT is based on UDP bidirectional communication</em>, your firewall / router needs to be configured properly and allow UDP outputs from the encoder's IP (caller) and UDP back from the internet on the same port</li>
-<li>Add TS+FEC as ingest option. <em>This communications is based on UDP unidirectional communication (encoder to live platform)</em>, your firewall / router needs to be configured properly and allow UDP outputs from the encoder to the internet from the encoder's IP.</li>
 </ul>
