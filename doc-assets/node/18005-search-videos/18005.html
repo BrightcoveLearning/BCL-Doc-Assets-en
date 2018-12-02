@@ -285,7 +285,8 @@
 <section class="bcls-section">
 <h2 id="required_excluded_terms">Required/excluded terms</h2>
 
-<p>You can mark a search term as required (returned videos MUST match) or excluded (returned videos must NOT match). This is controlled with a URI-encoded <code>+ (%2B)</code> or <code>- (%2D)</code> sign immediately preceding the term.</p>
+<p>You can mark a search term as required (returned videos MUST match) or excluded (returned videos must NOT match). This is controlled with a URI-encoded <code>+ (%2B)</code> or <code>-</code> sign immediately preceding the term.</p>
+<p>Note that because of the potential confusion between "+" as an indicator of a space or a required term, you must encode it as <code>%2B</code> when using it to indicated a required term.</p>
 
 <table class="bcls-table">
 	<caption class="bcls-caption--table">Required/Excluded Terms</caption>
@@ -309,12 +310,12 @@
 		</tr>
 		<tr>
 			<td><code>-foo</code></td>
-			<td><code>%2Dfoo</code></td>
+			<td><code>-foo</code></td>
 			<td>videos must NOT include the term <code>foo</code> in the name, <code>description</code>, <code>long_description</code>, <code>tags</code>, <code>reference_id</code> or <code>custom_fields</code></td>
 		</tr>
 		<tr>
 			<td><code>-name:foo</code></td>
-			<td><code>%2Dname:foo&lt;</code>/td&gt;</td>
+			<td><code>-name:foo</code></td>
 			<td>videos must NOT include the term <code>foo</code> in the <code>name</code></td>
 		</tr>
 	</tbody>
@@ -323,7 +324,7 @@
 <p>Example: This request returns videos which DO NOT have a value of <code>sea</code> in the <code>tags</code> field.</p>
 
 <pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=%2Dtags:sea
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=-tags:sea
 </code>
 </pre>
 
@@ -426,7 +427,7 @@ q=my_field:"foo"
 			<td>This represents midnight on a day in UTC. The example is equivalent to 2012-08-01T00:00:00Z</td>
 		</tr>
 		<tr>
-			<td>-1d (%2D1d)</td>
+			<td>-1d (-1d)</td>
 			<td>The current time minus 1 day. (see <a href="#relativeDates">below</a>)</td>
 		</tr>
 	</tbody>
@@ -436,7 +437,7 @@ q=my_field:"foo"
 
 <p>For relative dates we support a direction ( <code>+</code> or <code>-</code>) followed by a number, followed by a duration. Relative dates are always measured from the current time. Legal durations are: minutes, hours, days.</p>
 
-<aside class="bcls-aside bcls-aside--warning">The <code>+</code> and <code>-</code> signs must be URI-encoded as <code>%2B</code> and <code>%2D</code> respectively.</aside>
+<aside class="bcls-aside bcls-aside--warning">The <code>+</code> signs must be URI-encoded as <code>%2B</code>.</aside>
 
 <p>Examples:</p>
 
@@ -452,32 +453,32 @@ q=my_field:"foo"
 	<tbody class="bcls-table__body">
 		<tr>
 			<td>q=updated_at:-1day..</td>
-			<td>q=updated_at:%2D1day</td>
+			<td>q=updated_at:-1day..</td>
 			<td>videos updated from 1 day ago to the current day</td>
 		</tr>
 		<tr>
 			<td>q=created_at:-2days</td>
-			<td>q=created_at:%2D2days</td>
-			<td>videos added from 2 days ago to the current day</td>
+			<td>q=created_at:-2days</td>
+			<td>videos added 2 days ago</td>
 		</tr>
 		<tr>
-			<td>q=updated_at:-4hours</td>
-			<td>q=updated_at:%2D4hours</td>
+			<td>q=updated_at:-4hours..</td>
+			<td>q=updated_at:-4hours..</td>
 			<td>video updated from 4 hours ago to the current time</td>
 		</tr>
 		<tr>
-			<td>q=created_at:-60minutes</td>
-			<td>q=created_at:%2D60minutes</td>
+			<td>q=created_at:-60minutes..</td>
+			<td>q=created_at:-60minutes..</td>
 			<td>videos added from 60 minutes ago to the current time</td>
 		</tr>
 		<tr>
-			<td>q=created_at:2016-01-01&amp;to=-1d</td>
-			<td>q=created_at:2016-01-01&amp;to=%2D1d</td>
+			<td>q=created_at:2016-01-01&amp..-1d</td>
+			<td>q=created_at:2016-01-01&amp..-1d</td>
 			<td>videos created from January 1, 2015 to one day ago</td>
 		</tr>
 		<tr>
 			<td>q=updated_at:-14d..</td>
-			<td>q=updated_at:%2D2d..</td>
+			<td>q=updated_at:-14d..</td>
 			<td>videos in the past two weeks</td>
 		</tr>
 	</tbody>
@@ -490,7 +491,7 @@ q=my_field:"foo"
 <p>Example: Search for all videos modified in the last 2 days</p>
 
 <pre class="line-numbers">
-<code class="language-http">q=updated_at:%2D2days..
+<code class="language-http">q=updated_at:-2days..
 </code>
 </pre>
 
@@ -527,12 +528,12 @@ q=my_field:"foo"
 		</tr>
 		<tr>
 			<td>?q=-schedule.starts_at:NOW..</td>
-			<td>?q=%2Dschedule.starts_at:NOW..</td>
+			<td>?q=-schedule.starts_at:NOW..</td>
 			<td>starts_at is NOT between this moment and the end of time (equivalent to starts_at is before this moment)</td>
 		</tr>
 		<tr>
 			<td>?q=-schedule.ends_at:NOW..</td>
-			<td>?q=%2Dschedule.ends_at:NOW..</td>
+			<td>?q=-schedule.ends_at:NOW..</td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
@@ -568,7 +569,7 @@ q=my_field:"foo"
 
 <ul>
 	<li><code>q=%2Bis_clip:true</code> - returns only clips</li>
-	<li><code>q=%2Dis_clip:true</code> - returns only non-clips</li>
+	<li><code>q=-is_clip:true</code> - returns only non-clips</li>
 	<li><code>q=%2Bis_clip:false</code> - returns only non-clips (functionally identical to the previous item)</li>
 	<li><code>q=%2Bclip_source_video_id: <span class="bcls-input">video_id</span></code> - returns clips generated from the specified video</li>
 </ul>
@@ -614,7 +615,7 @@ q=my_field:"foo"
 
 <pre class="line-numbers">
 <code class="language-http">(unencoded) q=<strong>+</strong>name:foo<strong> -</strong>tags:bar
-(encoded) q=<strong>%2B</strong>name:foo+<strong>%2D</strong>tags:bar
+(encoded) q=<strong>%2B</strong>name:foo+<strong>-</strong>tags:bar
 </code>
 </pre>
 
@@ -652,7 +653,7 @@ q=my_field:"foo"
 		</tr>
 		<tr>
 			<td><code>q=-foo +bar</code></td>
-			<td><code>q=%2Dfoo+%2Bbar</code></td>
+			<td><code>q=-foo+%2Bbar</code></td>
 			<td>returned item must have "bar" AND not have "foo"</td>
 		</tr>
 		<tr>
