@@ -333,11 +333,13 @@
 <section class="bcls-section">
 <h2 id="Quoted_search_terms">Quoted search terms</h2>
 
-<p>By default, a search will match similar words with your search terms. If you want to match multiple words, just wrap the term in quotes:</p>
+<p>By default, a search will match similar words with your search terms. If you want to match multiple words, just wrap the term in quotes.</p>
+
+<p>Most browsers and other agents will treat literal quotation marks (<code>"..."</code>) correctly, but if you run into a case where quoted search terms do not appear to be returning correct results, try replacing the quotation marks with <code>%22</code> (<code>%22...%22</code>)</p>
 
 <pre class="line-numbers">
-<code class="language-http">q="foo"
-q="foo bar"
+<code class="language-http">q="foo" or q=%22foo%22
+q="foo+bar"or q=%22foo+bar%22
 </code>
 </pre>
 
@@ -346,21 +348,12 @@ q="foo bar"
 <p>This also works when searching against a specific field:</p>
 
 <pre class="line-numbers">
-<code class="language-http">q="foo"
-q=name:"foo bar"
+<code class="language-http">q=name:"foo"
+q=name:name:"foo+bar"
 </code>
 </pre>
 
-<ul>
-	<li>Exact match
-	<p>Example: This request returns videos which matches exactly a value of <code>sea</code> in the <code>tags</code> field.</p>
-
-	<pre class="line-numbers">
-<code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea"
-</code>
-</pre>
-	</li>
-	<li>Multiple words
+<h3>Multiple words</h3>
 	<p>Example: Notice that this request returns videos which have either a value of <code>sea</code> or <code>mammal</code> in the <code>tags</code> field.</p>
 
 	<pre class="line-numbers">
@@ -368,16 +361,14 @@ q=name:"foo bar"
 </code>
 </pre>
 
-	<p>But, this request returns only those videos which have a value of <code>sea,mammal</code> in the <code>tags</code> field.</p>
+	<p>But, the following request returns only those videos which have a tag <code>sea,mammal</code>.</p>
 
-	<pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea,mammal"
 </code>
 </pre>
 
 	<aside class="bcls-aside bcls-aside--warning">Tags are a special case where you can search for multiple tags as a comma-delimited list - that is not true for other fields like name, description, etc. For other kinds of multiple terms, combine terms with <code>+</code> sign, like this: <code>q=tags:"bird"+name:"owl"</code>.</aside>
-	</li>
-</ul>
 </section>
 
 <section class="bcls-section">
