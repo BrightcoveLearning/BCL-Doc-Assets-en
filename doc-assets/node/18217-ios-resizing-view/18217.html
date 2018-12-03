@@ -4,7 +4,7 @@
 <section class="bcls-section" id="Overview">
 <h2>Overview</h2>
 
-<p>One reason to assume control over the resizing animation of the <code>AVPlayerLayer</code> would be to implement a <strong>full screen</strong> button.</p>
+<p>One reason to assume control over the resizing animation of the <code>AVPlayerLayer</code> would be to implement a <strong>fullscreen</strong> button.</p>
 
 <p>If you want to do this, Brightcove recommends that you create your own <code>UIView</code> and capture the <code>AVPlayerLayer</code> that is created for each <code>BCOVPlaybackSession</code> and not use <code>BCOVPlaybackController.view</code> at all.</p>
 
@@ -18,17 +18,39 @@
 
 <p>Here is an example of what you might do:</p>
 
-<ol>
-	<li>If you are using the code from the Basic Player Sample, in the <code>viewDidLoad</code> method, comment any references to the <code>playbackController.view</code> as follows:
-
-	<pre class="line-numbers">
-<code class="language-swift">// self.playbackController.view.frame = self.videoContainer.bounds;
+<ol class="bcls-tasklist">
+  <li>
+    Start with the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/VideoCloudBasicPlayer">Video Cloud Basic Player</a> sample.
+  </li>
+  <li>
+    Open the view controller file:
+    <ul>
+      <li>
+        Objective-C: <code>ViewConroller.m</code>
+      </li>
+      <li>
+        Swift: <code>ViewController.swift</code>
+      </li>
+    </ul>
+  </li>
+  <li>
+    For this example, we will use Objective-C code. In the <code>viewDidLoad</code> method, comment any references to the <code>playbackController.view</code> as follows:
+    <h3>Auto Layout Method</h3>
+    <pre class="line-numbers">
+<code class="language-swift">// [self.videoContainer addSubview:self.playbackController.view];
+// self.playbackController.view.translatesAutoresizingMaskIntoConstraints = NO;
+// [NSLayoutConstraint activateConstraints:@[[self.playbackController.view.topAnchor constraintEqualToAnchor:self.videoContainer.topAnchor],
+// [self.playbackController.view.rightAnchor constraintEqualToAnchor:self.videoContainer.rightAnchor],
+// [self.playbackController.view.leftAnchor constraintEqualToAnchor:self.videoContainer.leftAnchor],
+// [self.playbackController.view.bottomAnchor constraintEqualToAnchor:self.videoContainer.bottomAnchor]]];</code></pre>
+<h3>Struts & Springs Layout Method</h3>
+<pre class="line-numbers"><code class="language-swift">// self.playbackController.view.frame = self.videoContainer.bounds;
 // self.playbackController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 // [self.videoContainer addSubview:self.playbackController.view];</code></pre>
-	</li>
-	<li>Then, in the <code>didAdvanceToPlaybackSession</code> method, add the <code>AVPlayerLayer</code> to the layer of your view.</li>
+<p>If you really need to use <code>BCOVPlaybackController.view</code>, you can remove the bounds and position entries from the <code>AVPlayerLayer.actions</code> dictionary, but you’ll have to assume responsibility for setting up the <code>CALayer</code> animations to look good in your code.</p>
+  </li>
+	<li>In the <code>didAdvanceToPlaybackSession</code> method, add the <code>AVPlayerLayer</code> to the layer of your view.</li>
 </ol>
 
-<p>If you really need to use <code>BCOVPlaybackController.view</code>, you can remove the bounds and position entries from the <code>AVPlayerLayer.actions</code> dictionary, but you’ll have to assume responsibility for setting up the <code>CALayer</code> animations to look good in your code.</p>
 </section>
 </article>
