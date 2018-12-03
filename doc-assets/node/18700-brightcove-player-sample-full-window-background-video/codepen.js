@@ -11,12 +11,25 @@ videojs.getPlayer('myPlayerID').ready(function() {
     videoDescription.textContent = myPlayer.mediainfo.description;
     window.addEventListener('resize', function(){
       var windowWidth = window.innerWidth,
-        windowHeight = window.innerHeight;
+        windowHeight = window.innerHeight,
+        playerWidth,
+        playerHeight,
+        windowAspectRatio = windowWidth / windowHeight;
         /* If the aspect ratio of the window is
          greater than or equal to 16:9, we will set
          the player width to 100% and then set the
          width to match the 16:9 aspect ratio. If
-         the window aspect ratio is less than 16:9
+         the window aspect ratio is less than 16:9,
+         we will set the height to 100% and the width
+         accordingly */
+      if (windowAspectRatio >= (16 / 9)) {
+        playerWidth = windowWidth;
+        playerHeight = (9 / 16) * playerWidth;
+      } else {
+        playerHeight = windowHeight;
+        playerWidth = (16 / 9) * playerHeight;
+      }
+      
     })
   });
 });
