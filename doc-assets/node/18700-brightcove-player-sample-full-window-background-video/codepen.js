@@ -7,9 +7,10 @@ videojs.getPlayer('myPlayerID').ready(function() {
 
   // +++ Display the title and description +++
   myPlayer.on("loadstart", function() {
+    sizePlayer();
     videoTitle.textContent = myPlayer.mediainfo.name;
     videoDescription.textContent = myPlayer.mediainfo.description;
-    window.addEventListener('resize', function(){
+    function sizePlayer() {
       var windowWidth = window.innerWidth,
         windowHeight = window.innerHeight,
         playerWidth,
@@ -32,6 +33,9 @@ videojs.getPlayer('myPlayerID').ready(function() {
       // now use the Player API to set the actual width and height
       myPlayer.width(playerWidth);
       myPlayer.height(playerHeight);
+    }
+    window.addEventListener('resize', function(){
+      sizePlayer();
     })
   });
 });
