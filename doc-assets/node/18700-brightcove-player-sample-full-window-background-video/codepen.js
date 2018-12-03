@@ -6,11 +6,11 @@ videojs.getPlayer('myPlayerID').ready(function() {
   myPlayer.playlist.repeat(true);
 
   // +++ Initial player sizing +++
-  sizePlayer();
+  // sizePlayer();
 
   // +++ Event handler for window resize +++
   window.addEventListener('resize', function(){
-    sizePlayer();
+    // sizePlayer();
   });
 
   function sizePlayer() {
