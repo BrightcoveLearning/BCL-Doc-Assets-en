@@ -5,41 +5,6 @@ videojs.getPlayer('myPlayerID').ready(function() {
   // +++ Set the playlist to repeat +++
   myPlayer.playlist.repeat(true);
 
-  // +++ Initial player sizing +++
-  // sizePlayer();
-
-  // +++ Event handler for window resize +++
-  window.addEventListener('resize', function(){
-    // sizePlayer();
-  });
-
-  function sizePlayer() {
-    console.log('resizing player');
-    var windowWidth = window.innerWidth,
-      windowHeight = window.innerHeight,
-      playerWidth,
-      playerHeight,
-      windowAspectRatio = windowWidth / windowHeight;
-      /* If the aspect ratio of the window is
-       greater than or equal to 16:9, we will set
-       the player width to 100% and then set the
-       width to match the 16:9 aspect ratio. If
-       the window aspect ratio is less than 16:9,
-       we will set the height to 100% and the width
-       accordingly */
-    if (windowAspectRatio >= (16 / 9)) {
-      playerWidth = windowWidth;
-      playerHeight = (9 / 16) * playerWidth;
-    } else {
-      playerHeight = windowHeight;
-      playerWidth = (16 / 9) * playerHeight;
-    }
-    // now use the Player API to set the actual width and height
-    myPlayer.width(playerWidth);
-    myPlayer.height(playerHeight);
-  }
-
-
   // +++ Display the title and description +++
   myPlayer.on("loadstart", function() {
     videoTitle.textContent = myPlayer.mediainfo.name;
