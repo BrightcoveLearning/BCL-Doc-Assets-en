@@ -125,23 +125,25 @@
 <p>You will also need to modify the attributes of the <code>video-js</code> tag:</p>
 
 <ul>
-  <li>Add the attribute <code>data-playlist-id="<span class="bcls-input">{your playlist id}</span>"</code> </li>
+  <li>Add the attribute <code>data-playlist-id="<span class="bcls-input">{your playlist id}</span>"</code></li>
+  <li>Add the attribute <code>id="myPlayerID"</code></li>
+  <li>Remove the attribute <code>class="video-js"</code></li>
+  <li>Add the attribute <code>style="object-fit: cover;"</code></li>
 </ul>
 
-<pre class="line-numbers"><code class="language-html">&lt;div class="full-bg"&gt;
-  &lt;video-js id="myPlayerID"
-    data-playlist-id="4450721964001"
+<pre class="line-numbers"><code class="language-html"><span class="bcls-highlight">&lt;div class="full-bg"&gt;</span>
+  &lt;video-js <span class="bcls-highlight">id="myPlayerID"</span>
+    <span class="bcls-highlight">data-playlist-id="4450721964001"</span>
     data-account="1752604059001"
     data-player="opeki2sGq"
     data-embed="default"
     data-application-id
-    class="video-js"
     autoplay
     muted
     controls
-    style="object-fit: cover;"&gt;
-  </video>
-</div></code></pre>
+    <span class="bcls-highlight">style="object-fit: cover;"</span>
+  &lt;/video&gt;
+<span class="bcls-highlight">&lt;/div&gt;</span></code></pre>
 
 </section>
 <!-- UPDATE application flow -->
@@ -185,42 +187,26 @@
 <p>The CSS performs the following tasks:</p>
 
 <ul>
-	<li>Makes the background color of the window black.</li>
+	<li>Makes the background color of the window black. (for the CodePen only - you don't need to include this)</li>
 	<li>Hides the player controls for the background video player.</li>
 	<li>Disables pointer events on the player.</li>
 	<li>Styles the box that overlays the text. Depending on the size of your player and the amount of content display these styles may need to be adjusted.</li>
+  <li>Styles the player to completely fill the container</li>
 	<li>Styles the <code>h1</code> used in the overlay text.</li>
+  <li>Styles the <code>div</code> container for the player</li>
+  <li>Styles the <code>vjs-tech</code> component to make the video fully fill the player</li>
 </ul>
 </section>
 
-<section class="bcls-section">
-<h2 id="Plugin_code">Plugin code</h2>
-
-<p>Normally when converting the JavaScript into a Brightcove Player plugin nominal changes are needed. One required change is to replace the standard use of the <code>ready()</code> method with the code that defines a plugin.</p>
-
-<p>Here is the very commonly used start to JavaScript code that will work with the player:</p>
-
-<pre class="line-numbers">
-<code class="language-javascript">videojs.getPlayer('myPlayerID').ready(function() {
-  var myPlayer = this;
-  ...
-});</code></pre>
-
-<p>You will change the first line to use the standard syntax to start a Brightcove Player plugin:</p>
-
-<pre class="line-numbers">
-<code class="language-javascript">videojs.registerPlugin('pluginName', function(options) {
-  var myPlayer = this;
-  ...
-});</code></pre>
-<!-- UPDATE path to plugin's JavaScript -->
-
-<p>As mentioned earlier, you can see the plugin's JavaScript code in this document's corresponding GitHub repo: <a href="https://github.com/BrightcoveLearning/18529-background-video-playlist/blob/master/plugin/background-playlist.js">background-playlist.js</a>.</p>
-
-<h3>Using the plugin with a player</h3>
-
-<p>Once you have the plugin's CSS and JavaScript files stored in an Internet accessible location, you can use the plugin with a player. In Studio's <strong>PLAYERS</strong> module you can choose a player, then in the <strong>PLUGINS</strong> section add the URLs to the CSS and JavaScript files, and also add the <strong>Name</strong> and <strong>Options</strong>, if options are needed.</p>
-
-<aside class="bcls-aside bcls-aside--tip">For more information on using Studio to assign plugins to players see the <a href="/node/14053">Configuring Player Plugins</a> document.</aside>
-</section>
 </article>
+
+<script>
+  var BCLS = ( function (window, document) {
+    var cp_embed_wrapper = document.querySelector('.cp_embed_wrapper'),
+      resize_button = document.getElementById('resize_button');
+    resize_button.addEventListener('click', function() {
+      cp_embed_wrapper.setAttribute('style', 'height:800px;')
+    });
+  })(window, document);
+
+</script>
