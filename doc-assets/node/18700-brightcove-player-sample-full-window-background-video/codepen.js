@@ -29,7 +29,9 @@ videojs.getPlayer('myPlayerID').ready(function() {
         playerHeight = windowHeight;
         playerWidth = (16 / 9) * playerHeight;
       }
-      
+      // now use the Player API to set the actual width and height
+      myPlayer.width(playerWidth);
+      myPlayer.height(playerHeight);
     })
   });
 });
