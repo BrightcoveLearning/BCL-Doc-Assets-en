@@ -14,6 +14,7 @@ videojs.getPlayer('myPlayerID').ready(function() {
   });
 
   function sizePlayer() {
+    console.log('resizing player');
     var windowWidth = window.innerWidth,
       windowHeight = window.innerHeight,
       playerWidth,
