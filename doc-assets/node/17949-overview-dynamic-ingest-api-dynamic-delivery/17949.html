@@ -109,6 +109,61 @@
 </section>
 
 <section class="bcls-section">
+  <h2 id="special_characters">Special characters</h2>
+  <p><strong>If you are sending credentials as part of the URL</strong>, you need to <a href="https://en.wikipedia.org/wiki/Percent-escape">percent-encode</a> certain reserved special characters:</p>
+  <table class="bcls-table">
+      <caption class="bcls-caption--table">Special Charaters</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Character</th>
+              <th>Percent-Encoded</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr><td>]</td><td>%5B</td></tr>
+        <tr><td>[</td><td>%5D</td></tr>
+        <tr><td>?</td><td>%3F</td></tr>
+        <tr><td>/</td><td>%2F</td></tr>
+        <tr><td>&lt;</td><td>%3C</td></tr>
+        <tr><td>~</td><td>%7E</td></tr>
+        <tr><td>#</td><td>%23</td></tr>
+        <tr><td>`</td><td>%6D</td></tr>
+        <tr><td>!</td><td>%21</td></tr>
+        <tr><td>@</td><td>%40</td></tr>
+        <tr><td>$</td><td>%24</td></tr>
+        <tr><td>%</td><td>%25</td></tr>
+        <tr><td>^</td><td>%5E</td></tr>
+        <tr><td>&</td><td>%26</td></tr>
+        <tr><td>*</td><td>%2A</td></tr>
+        <tr><td>(</td><td>%28</td></tr>
+        <tr><td>)</td><td>%29</td></tr>
+        <tr><td>+</td><td>%2B</td></tr>
+        <tr><td>=</td><td>%3D</td></tr>
+        <tr><td>}</td><td>%7D</td></tr>
+        <tr><td>|</td><td>%7C</td></tr>
+        <tr><td>:</td><td>%3A</td></tr>
+        <tr><td>"</td><td>%22</td></tr>
+        <tr><td>;</td><td>%3B</td></tr>
+        <tr><td>'</td><td>%27</td></tr>
+        <tr><td>,</td><td>%2C</td></tr>
+        <tr><td>&gt;</td><td>%3E</td></tr>
+        <tr><td>{</td><td>%7B</td></tr>
+        <tr><td>space</td><td>%20</td></tr>
+      </tbody>
+  </table>
+
+  <p>For example:</p>
+
+  <pre><code class="language-http">
+    /* unencoded */
+    ftp://user@example.com:pass!word@example.com/path/to/input.mp3
+
+    /* encoded */
+    ftp://<span class="bcls-highlight">user%40example.com:pass%21word</span>@example.com/path/to/input.mp3
+  </code></pre>
+</section>
+
+<section class="bcls-section">
 <h2 id="Source_file_names">Source file names</h2>
 
 <p>All input urls must properly url encoded according to <a href="https://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986</a> when being sent to Brightcove. This means that any <a href="https://tools.ietf.org/html/rfc3986#section-2.2">reserved characters</a> found in the path of the url are percent encoded (spaces being encoded to <code class="notranslate">%20</code>), and any reserved characters found in the query of the url are percent encoded (spaces being encoded to <code class="notranslate">+</code> or <code class="notranslate">%20</code>, and <code class="notranslate">+</code> being encoded to <code class="notranslate">%2B</code>).</p>
