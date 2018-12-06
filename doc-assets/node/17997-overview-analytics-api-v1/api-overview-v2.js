@@ -521,6 +521,14 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             selectedDimensions = getSelectedCheckboxes(dimensionCheckboxes, selectedDimensions);
             // get the array of fields from the fieldsCheckboxes
             fieldsToReturn = getSelectedCheckboxes(fieldsCheckboxes, fieldsToReturn);
+            if (isItemInArray(fieldsToReturn,'video.custom_fields.{fielfield_name}')) {
+              i = fieldsToReturn.length;
+              while (i > 0) {
+                if (fieldsToReturn[i] === 'video.custom_fields.{fielfield_name}') {
+                  fieldsToReturn.splice(i, 1);
+                }
+              }
+            }
             // make the request
             setRequestData('getAnalytics');
         });
