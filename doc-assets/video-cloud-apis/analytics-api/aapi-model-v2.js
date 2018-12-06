@@ -693,17 +693,17 @@ var aapi_model = {
         source_type__video: {
             dimensions: ['video', 'source_type'],
             from: '2012-10-01',
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.name', 'source_type']
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.name', 'source_type', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
         },
         referrer_domain__source_type__video: {
             dimensions: ['video', 'referrer_domain', 'source_type'],
             from: '2012-10-01',
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'source_type', 'video', 'video_duration', 'video_name']
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'source_type', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
         },
         account__referrer_domain__source_type__video: {
             dimensions: ['account', 'video', 'referrer_domain', 'source_type'],
             from: '2012-10-01',
-            fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'referrer_domain', 'source_type', 'video', 'video_duration', 'video_name']
+            fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'referrer_domain', 'source_type', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
         },
         player__referrer_domain: {
             dimensions: ['player', 'referrer_domain'],
@@ -848,12 +848,12 @@ var aapi_model = {
         destination_domain__video: {
             dimensions: ['video', 'destination_domain'],
             from: '2014-03-03',
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'destination_domain', ]
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'destination_domain', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
         },
         account__destination_domain__video: {
             dimensions: ['account', 'video', 'destination_domain'],
             from: '2014-03-03',
-            fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'destination_domain', 'video', 'video_duration', 'video_name']
+            fields: ['account', 'account.name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'destination_domain', 'video', 'video_duration', 'video_name', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}']
         }
     }
 };
