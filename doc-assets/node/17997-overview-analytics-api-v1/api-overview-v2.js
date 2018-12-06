@@ -604,6 +604,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
             var i,
                 iMax = fieldsCheckboxes.length;
             for (i = 0; i < iMax; i += 1) {
+              i--;
                 fieldsCheckboxes[i].removeAttribute('checked');
             }
             fieldsToReturn = [];
