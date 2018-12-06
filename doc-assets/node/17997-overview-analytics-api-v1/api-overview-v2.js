@@ -528,6 +528,7 @@ var BCLS = ( function (window, document, aapi_model, Prism) {
                   fieldsToReturn.splice(i, 1);
                 }
               }
+              console.log('fieldsToReturn', fieldsToReturn);
             }
             // make the request
             setRequestData('getAnalytics');
