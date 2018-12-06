@@ -20,28 +20,9 @@
 
 <pre class="line-numbers"><code class="language-bash">video-cloud/social/status/read</code></pre>
 
-<ol class="bcls-tasklist">
-	<li>
-	<p>To the <a href="https://support.brightcove.com/managing-api-authentication-credentials">Managing API Credentials</a> section of Studio.</p>
-	</li>
-	<li>Click <strong>Register New Application</strong></li>
-	<li>
-	<p>Select the appropriate account(s) and select <em>at least</em> these permissions:</p>
-
-	<ul>
-		<li>Dynamic Ingest Create</li>
-		<li>Ingestion Profiles Configuration Read</li>
-		<li>Ingestion Profiles Read</li>
-	</ul>
-	</li>
-	<li>
-	<p>Copy and save the <strong>client id</strong> and <strong>client secret</strong> that are created (there is no way to get the client secret again once you close the dialog!).</p>
-	</li>
-</ol>
-
 <h3>Get OAuth token</h3>
 
-<p>The <code>client_id</code> and <code>client_secret</code> are used as username and password to get a token (basic authentication), which is used to authenticate subsequent requests.</p>
+<p>The <code>client_id</code> and <code>client_secret</code> are used as username and password to get a token (basic authentication), which is used to authenticate the actual API request.</p>
 
 <ol class="bcls-tasklist">
 	<li>Copy the code below into a text editor, and replace <code>CLIENT_ID</code> and <code>CLIENT_SECRET</code> with your own client credentials:
@@ -74,9 +55,9 @@
 	<li>Note that the <code>access_token</code> expires in 5 minutes, but you can rerun the code to get a new one whenever you need it. You will know you need a new one if the API requests in the following steps return an <code>UNAUTHORIZED</code> error.</li>
 </ol>
 
-<h3>Create video</h3>
+<h3>List status of social distribution</h3>
 
-<p>A call to the CMS API creates the video object in Video Cloud. The body of the request stipulates metadata like <code>name</code> and <code>description</code>. The only required field is the <code>name</code>.</p>
+<p>You can get the social distribution status of every video in an account, up to 100 at a time. You can also limit the results in various ways, such as the platform distributed to, or a date range in which the status changed. Here we will just get the status for 10 videos, and then an additional 10.</p>
 
 <ol class="bcls-tasklist">
 	<li>Copy the following code into a text editor and replace <code>ACCOUNT_ID</code> with your own Video Cloud account id, and <code>ACCESS_TOKEN</code> with the token from the response to the request in the previous steps.
