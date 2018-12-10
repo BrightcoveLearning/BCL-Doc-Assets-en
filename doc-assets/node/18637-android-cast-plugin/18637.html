@@ -435,7 +435,16 @@ protected void setupBrightcoveControlBar(BrightcoveControlBar controlBar) {
 <p>With the current Brightcove Native SDK for Android release, certain Video Cloud features have limited support, or are not supported when using the Cast plugin with the Google sample receiver app:</p>
 
 <ul>
-	<li>Captions - Only in-manifest captions with Dynamic Delivery are supported when using the Cast plugin with the Google sample receiver app.</li>
+	<li>Captions
+    <ul>
+      <li>
+        Only in-manifest captions with Dynamic Delivery DASH display as expected when using the Cast plugin with the Google sample receiver app.
+      </li>
+      <li>
+        In-manifest captions with HLS and Sidecar captions in any video configuration are not currently supported when using the Cast plugin with the Google sample receiver app.
+      </li>
+    </ul>
+  </li>
 	<li>Widevine Modular DRM is not supported when using the Cast plugin with the Google sample receiver app.</li>
 	<li>Multiple Audio Tracks are not supported when using the Cast plugin with the Google sample receiver app.</li>
 	<li>Client-side and Server-side Advertising is not supported when using the Cast plugin with the Google sample receiver app.</li>
@@ -453,12 +462,20 @@ protected void setupBrightcoveControlBar(BrightcoveControlBar controlBar) {
 <section class="bcls-section">
 <h2 id="Known_Issues">Known Issues</h2>
 
-<h4>The volume control in the Cast dialog may not decrease all the way to zero on the sending device.</h4>
+<h4>Android 9</h4>
 
-<p>Testing has shown that when using either the volume control in the Cast dialog, or the volume buttons on the sending device, that the displayed volume level may jump back up slightly to show a non-zero value on the sender. However, the receiver will display a non-zero value. This is a behavior with the Google Cast dialog, and not within the Brightcove Android SDK.</p>
+<p>When using Chromecast with Android 9, you will need to include a <code>FOREGROUND_SERVICE</code> permission. This allows the app to use notifications to control a casting session when the app is backgrounded and brought back to the foreground.</p>
+<p>
+  The <code>uses-permission</code> tag should be added to the app's <strong>AndroidManifest.xml</strong> file, as follows:
+</p>
+<pre><code class="language-java">&lt;uses-permission android:name=&quot;android.permission.FOREGROUND_SERVICE&quot;/&gt;</code></pre>
 
-<h4>The Casting connection may not be created if the sender’s Google Play Services version is not up to date.</h4>
+<h4>Volume control</h4>
 
-<p>Testing has shown that when the sender’s Google Play Services, in particular the Cast Services framework, are out of date, that creating a Cast connection may be unsuccessful. This is remedied by updating the sender’s Google Play Services through the Google Play Store.</p>
+<p>The volume control in the Cast dialog may not decrease all the way to zero on the sending device. When using the volume control in the Cast dialog, or the volume buttons on the sending device, the displayed volume level may jump back up slightly to show a non-zero value on the sender. However, the receiver will display a non-zero value. This is a behavior with the Google Cast dialog, and not within the Brightcove Android SDK.</p>
+
+<h4>Google Play services</h4>
+
+<p>The Casting connection may not be created if the sender’s Google Play Services version is not up to date. When the sender’s Google Play Services, in particular the Cast Services framework, are out of date, you may be unsuccessful in creating a Cast connection. This is remedied by updating the sender’s Google Play Services through the Google Play Store.</p>
 </section>
 </article>
