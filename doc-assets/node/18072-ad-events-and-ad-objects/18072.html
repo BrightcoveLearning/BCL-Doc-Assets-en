@@ -1,0 +1,135 @@
+<article class="bcls-article">
+<section id="Overview" class="bcls-section">
+<h2>Overview</h2>
+
+<p>The <em>videojs-contrib-ads</em>, located in the <a href="https://github.com/videojs/videojs-contrib-ads">videojs/videojs-contrib-ads</a> GitHub repository, provides common functionality needed by video advertisement libraries and video ad integrations, reducing the code you have to write for your specific ad integration.</p>
+
+<p>These events and objects are implemented in the Brightcove supplied FreeWheel, SSAI and IMA3 plugins.</p>
+</section>
+
+<section id="events" class="bcls-section">
+<h2>Ad events</h2>
+
+<p>Each ad provider can emit a unique set of events. Typically, these events are used to track the state of ad playback for metrics purposes and to create custom UI's. It is suggested to implement the following events to encourage uniformity, and allow custom UIs and analytics providers to remain ad provider agnostic.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th style="width:30%">Event</th>
+			<th style="width:70%">Dispatched when:</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code class="notranslate">ads-request</code></td>
+			<td>Ad data is requested</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-load</code></td>
+			<td>Ad data is available following an ad request</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-pod-started</code></td>
+			<td>A linear ad pod has started</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-pod-ended</code></td>
+			<td>A linear ad pod has completed</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-allpods-completed</code></td>
+			<td>All linear ads are completed</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-ad-started</code></td>
+			<td>Ad starts playing</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-ad-ended</code></td>
+			<td>Ad completes playing</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-first-quartile</code></td>
+			<td>Ad playhead crosses the first quartile</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-midpoint</code></td>
+			<td>Ad playhead crosses the midpoint</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-third-quartile</code></td>
+			<td>Ad playhead crosses the third quartile</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-pause</code></td>
+			<td>Ad is paused</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-play</code></td>
+			<td>Ad is resumed</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-volumechange</code></td>
+			<td>Ad volume has been changed</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">ads-click</code></td>
+			<td>Ad is clicked</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>These events can be listened for from the player object. Below is the code to listen for the <code class="notranslate">ads-ad-started</code> object, as well as a screenshot of what the object passed to the event handler looks like.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript notranslate">videojs.getPlayer('myPlayerID').on('loadedmetadata',function(){
+  var myPlayer = this;
+  ...
+  <span class="bcls-highlight">myPlayer.on('ads-ad-started',function( evt ){</span>
+    console.log('ads-ad-started event passed to event handler', evt);
+  });</code></pre>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="ad event object" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-events/event-object.png" /></figure>
+</section>
+
+<section id="adobjects" class="bcls-section">
+<h2>Ad objects</h2>
+
+<p>As you see, the event object passed to the event handler is not terribly informative. For this reason, there are two objects you can leverage from which you can gather more ad information, they are <strong class="notranslate">player.ads.ad</strong> and <strong class="notranslate">player.ads.pod</strong>.</p>
+
+<aside class="bcls-aside bcls-aside--information"><p>Note: If you are not familiar with the term <code class="notranslate">ad pod</code>, it is a sequence of linear ads that are played back to back. Commercial breaks on TV are examples of pods. Pods are commonly used in long form videos to create a TV like ad experience.</p></aside>
+
+<p>From the screenshot below, you see the <strong class="notranslate">player.ads.ad</strong> object contains information on the ad <code class="notranslate">type</code> and <code class="notranslate">duration</code> of ad, among other details.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="player ads" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-events/player-ads-ad-object.png" /></figure>
+
+<p>The <strong class="notranslate">player.ads.pod</strong> object contains similar information to <strong>player.ads.ad</strong>, with the addition of the number of ads in the pod. The first screenshot below shows an ad pod with a single ad, whereas the second shows a pod with three ads.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="ads pod object" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-events/player-ads-pod-object.png" /></figure>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="multiple ads pod" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ad-events/ad-pod-multiple-ads.png" /></figure>
+
+<aside class="bcls-aside bcls-aside--information">
+<p>Object notes:</p>
+
+<ul>
+	<li>Everything but <code class="notranslate">player.ads.provider.type</code> is undefined during content-playback.</li>
+	<li>The type of ad should be one of <code class="notranslate">PREROLL</code>, <code class="notranslate">MIDROLL</code> or <code class="notranslate">POSTROLL</code></li>
+</ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Googles_AdsManager">Google's AdsManager</h2>
+
+<p>There are methods and properties available from Google's <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdsManager">google.ima.AdsManager</a> Interface. You can use the interface's properties/methods that retrieve information. It is not advised to use the methods that perform actions, like <code class="notranslate">destroy </code>, <code class="notranslate">setAutoPlayAdBreaks </code> and <code class="notranslate">stop </code>. For example, one method you can use is shown here:</p>
+
+<h3>AdsManager.getRemainingTime</h3>
+
+<p>Type: <code class="notranslate">google.ima.AdsManager.getRemainingTime </code></p>
+
+<p>Usage: <code class="notranslate">myPlayer.ima3.adsManager.getRemainingTime() </code></p>
+
+<p>Calling this method returns the amount of time remaining for the current ad. If an ad isn't available or has finished playing, it returns -1. For more information see Google's <a href="//developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdsManager.getRemainingTime">document</a> on the method.</p>
+</section>
+</article>
