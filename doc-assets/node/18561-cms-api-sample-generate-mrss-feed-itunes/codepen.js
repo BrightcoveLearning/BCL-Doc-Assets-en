@@ -548,11 +548,14 @@ var BCLS = (function(window, document) {
       video,
       videoURL,
       posterURL,
+      pubdate,
       doPoster = true;
     if (videos.length > 0) {
       iMax = videos.length;
       for (i = 0; i < iMax; i += 1) {
         video = videos[i];
+        pubDate = new Date(video.published_at);
+        pubDate = pubDate.toUTCString();
         // video may not have a valid source
         if (isDefined(video.source) && isDefined(video.source.src)) {
           videoURL = encodeURI(video.source.src.replace(/&/g, "&amp;"));
@@ -581,7 +584,7 @@ var BCLS = (function(window, document) {
           '"' +
           eEnclosure;
         mrssStr += sGuid + video.source.src + eGuid;
-        mrssStr += sPubDate + video.published_at + ePubDate;
+        mrssStr += sPubDate + pubDate + ePubDate;
         mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
         mrssStr += sExplicit + explicit + eExplicit;
         mrssStr += sisClosedCaptioned + closed_captioned + eisClosedCaptioned;
