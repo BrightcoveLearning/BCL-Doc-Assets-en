@@ -29,22 +29,22 @@
 <p>Follow these steps to add ExoPlayer 2 to a new Android project:</p>
 
 <ol class="bcls-tasklist">
-	<li>In your <strong>build.gradle</strong> file, add the following compile dependency:
+	<li>In your <strong>build.gradle</strong> file, add the following dependency:
 
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}")
+  implementation "com.brightcove.player:exoplayer2:${anpVersion}"
 }</code></pre>
 	</li>
-	<li>Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin. If you are using a gradle version less than 5, the <a href="https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html">transitive dependencies</a> are off by default. So, you will need to add the following to your <code>compile</code> statement:
+	<li>Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin. If you are using a gradle version less than 5, the <a href="https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html">transitive dependencies</a> are off by default. So, you will need to add the following statement:
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-	compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}") <span class="bcls-highlight">{transitive = true}</span>
-	}</code></pre>
+  implementation "com.brightcove.player:exoplayer2:${anpVersion}" <span class="bcls-highlight">{transitive = true}</span>
+}</code></pre>
 	</li>
 	<li>If you are using an environment variable for the SDK version, then open the <strong>gradle.properties</strong> file, and set the current version value for the Native SDK for Android. It should look similar to this:
 	<pre class="line-numbers">
-<code class="language-java">brightcoveAndroidSdkVersion=6.0.1</code></pre>
+<code class="language-java">anpVersion=6.5.0</code></pre>
 	</li>
 </ol>
 </section>
@@ -55,38 +55,41 @@ compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}")
 <p>Follow these steps to update an existing ExoPlayer 1 project to use the ExoPlayer 2 framework:</p>
 
 <ol class="bcls-tasklist__restart">
+  <li>In your <strong>constants.gradle</strong> file, update the Android Build Tools version:
+	<pre class="line-numbers">
+<code class="language-java">buildToolsVersion "28.0.2"
+</code></pre>
+	</li>
 	<li>In your <strong>build.gradle</strong> file, update Android support libraries:
 
 	<pre class="line-numbers">
-<code class="language-java">compile 'com.android.support:appcompat-v7:25.4.0'
-compile 'com.android.support:support-v4:25.4.0'
-compile 'com.android.support:recyclerview-v7:25.4.0'
-compile 'com.android.support:support-vector-drawable:25.4.0'
+<code class="language-java">implementation 'com.android.support:appcompat-v7:${APPCOMPAT_V7_VERSION}'
+implementation 'com.android.support:support-v4:${SUPPORT_V4_VERSION}'
+implementation 'com.android.support:recyclerview-v7:${SUPPORT_V4_VERSION}'
+implementation 'com.android.support:support-vector-drawable:${SUPPORT_V4_VERSION}'
 </code></pre>
-	</li>
-	<li>In your <strong>build.gradle</strong> file, update Android Build Tools:
-	<pre class="line-numbers">
-<code class="language-java">buildToolsVersion "25.0.3"
-</code></pre>
+<p>
+  The current values for the constants can be found in the <a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/constants.gradle">constants.gradle</a> file.
+</p>
 	</li>
 	<li>In your <strong>build.gradle</strong> file, add the Google Maven Repository:
 	<pre class="line-numbers">
 <code class="language-java">maven {
-url 'https://maven.google.com'
+  url 'https://maven.google.com'
 }
 </code></pre>
 	</li>
 	<li>If your project uses advertising with Google IMA, update Google Play Services Ads:
 	<pre class="line-numbers">
-<code class="language-java">compile 'com.google.android.gms:play-services-ads:11.0.4'
+<code class="language-java">implementation 'com.google.android.gms:play-services-ads:'+PLAY_SERVICES_VERSION
 </code></pre>
 
 	<aside class="bcls-aside bcls-aside--information">It is important to note here that the Brightcove Native Player SDK for Android does not support applications that attempt to use both ExoPlayer and ExoPlayer 2.</aside>
 	</li>
-	<li>Where you previously imported the Brightcove ExoPlayer library as a dependency in build.gradle:
+	<li>In your <strong>build.gradle</strong> file, where you previously imported the Brightcove ExoPlayer library as a dependency like this:
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-compile "com.brightcove.player:exoplayer:${brightcoveAndroidSdkVersion}"
+  implementation "com.brightcove.player:exoplayer:${anpVersion}"
 }
 </code></pre>
 
@@ -94,19 +97,22 @@ compile "com.brightcove.player:exoplayer:${brightcoveAndroidSdkVersion}"
 
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}")
+  implementation "com.brightcove.player:exoplayer2:${anpVersion}"
 }
 </code></pre>
+<p>
+  The current value for the Brightcove SDK version (<code>anpVersion</code>) can be found in the <a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/gradle.properties">gradle.properties</a> file.
+</p>
 	</li>
-	<li>Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin. If you are using a gradle version less than 5, the <a href="https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html">transitive dependencies</a> are off by default. So, you will need to add the following to your <code>compile</code> statement:
+	<li>Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin. If you are using a gradle version less than 5, the <a href="https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html">transitive dependencies</a> are off by default. So, you will need to add the following:
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-	compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}") <span class="bcls-highlight">{transitive = true}</span>
-	}</code></pre>
+	implementation "com.brightcove.player:exoplayer2:${anpVersion}" <span class="bcls-highlight">{transitive = true}</span>
+}</code></pre>
 	</li>
 	<li>If you are using an environment variable for the SDK version, then open the <strong>gradle.properties</strong> file, and set the current version value for the Native SDK for Android. It should look similar to this:
 	<pre class="line-numbers">
-<code class="language-java">brightcoveAndroidSdkVersion=6.0.1</code></pre>
+<code class="language-java">anpVersion=6.5.0</code></pre>
 
 	<p>There should be no additional coding required to integrate ExoPlayer 2 into your project.</p>
 	</li>
@@ -119,22 +125,22 @@ compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}")
 <p>Follow these steps to update an existing MediaPlayer project to use the ExoPlayer 2 framework:</p>
 
 <ol class="bcls-tasklist__restart">
-	<li>In your <strong>build.gradle</strong> file, add the following compile dependency:
+	<li>In your <strong>build.gradle</strong> file, add the following dependency:
 
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}")
+  implementation "com.brightcove.player:exoplayer2:${anpVersion}"
 }</code></pre>
 	</li>
-	<li>Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin. If you are using a gradle version less than 5, the <a href="https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html">transitive dependencies</a> are off by default. So, you will need to add the following to your <code>compile</code> statement:
+	<li>Setting the <code>transitive</code> option to <code>true</code> tells gradle to automatically include other dependencies such as the offline-playback plugin. If you are using a gradle version less than 5, the <a href="https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html">transitive dependencies</a> are off by default. So, you will need to add the following:
 	<pre class="line-numbers">
 <code class="language-java">dependencies {
-	compile("com.brightcove.player:exoplayer2:${brightcoveAndroidSdkVersion}") <span class="bcls-highlight">{transitive = true}</span>
-	}</code></pre>
+  implementation "com.brightcove.player:exoplayer2:${anpVersion}" <span class="bcls-highlight">{transitive = true}</span>
+}</code></pre>
 	</li>
 	<li>If you are using an environment variable for the SDK version, then open the <strong>gradle.properties</strong> file, and set the current version value for the Native SDK for Android. It should look similar to this:
 	<pre class="line-numbers">
-<code class="language-java">brightcoveAndroidSdkVersion=6.0.1</code></pre>
+<code class="language-java">anpVersion=6.5.0</code></pre>
 	</li>
 	<li>In your app, use the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> instead of the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html">BrightcoveVideoView</a>, which uses the Android Media Player.</li>
 </ol>
