@@ -173,7 +173,7 @@
 	<li><code>name</code></li>
 	<li><code>description</code></li>
 	<li><code>long_description</code></li>
-  <li><code>text</code> (not a real metadata field, but a pseudo-field that you can use to search the <code>name</code>, <code>description</code>, and <code>long_description</code> - e.g. <code>q=text:bird</code>)</li>
+	<li><code>text</code> (not a real metadata field, but a pseudo-field that you can use to search the <code>name</code>, <code>description</code>, and <code>long_description</code> - e.g. <code>q=text:bird</code>)</li>
 	<li><code>tags</code></li>
 	<li><code>reference_id</code></li>
 	<li><code>custom_fields</code> (searches all custom fields)</li>
@@ -286,6 +286,7 @@
 <h2 id="required_excluded_terms">Required/excluded terms</h2>
 
 <p>You can mark a search term as required (returned videos MUST match) or excluded (returned videos must NOT match). This is controlled with a URI-encoded <code>+ (%2B)</code> or <code>-</code> sign immediately preceding the term.</p>
+
 <p>Note that because of the potential confusion between "+" as an indicator of a space or a required term, you must encode it as <code>%2B</code> when using it to indicated a required term.</p>
 
 <table class="bcls-table">
@@ -355,21 +356,22 @@ q=name:name:"foo+bar"
 </pre>
 
 <h3>Multiple words</h3>
-	<p>Example: Notice that this request returns videos which have either a value of <code>sea</code> or <code>mammal</code> in the <code>tags</code> field.</p>
 
-	<pre class="line-numbers">
+<p>Example: Notice that this request returns videos which have either a value of <code>sea</code> or <code>mammal</code> in the <code>tags</code> field.</p>
+
+<pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:sea,mammal
 </code>
 </pre>
 
-	<p>But, the following request returns only those videos which have a tag <code>sea,mammal</code>.</p>
+<p>But, the following request returns only those videos which have a tag <code>sea,mammal</code>.</p>
 
 <pre class="line-numbers">
 <code class="language-http">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?q=tags:"sea,mammal"
 </code>
 </pre>
 
-	<aside class="bcls-aside bcls-aside--warning">Tags are a special case where you can search for multiple tags as a comma-delimited list - that is not true for other fields like name, description, etc. For other kinds of multiple terms, combine terms with <code>+</code> sign, like this: <code>q=tags:"bird"+name:"owl"</code>.</aside>
+<aside class="bcls-aside bcls-aside--warning">Tags are a special case where you can search for multiple tags as a comma-delimited list - that is not true for other fields like name, description, etc. For other kinds of multiple terms, combine terms with <code>+</code> sign, like this: <code>q=tags:"bird"+name:"owl"</code>.</aside>
 </section>
 
 <section class="bcls-section">
@@ -472,8 +474,8 @@ q=my_field:"foo"
 			<td>videos added from 60 minutes ago to the current time</td>
 		</tr>
 		<tr>
-			<td>q=created_at:2016-01-01&amp..-1d</td>
-			<td>q=created_at:2016-01-01&amp..-1d</td>
+			<td>q=created_at:2016-01-01&amp;..-1d</td>
+			<td>q=created_at:2016-01-01&amp;..-1d</td>
 			<td>videos created from January 1, 2015 to one day ago</td>
 		</tr>
 		<tr>
