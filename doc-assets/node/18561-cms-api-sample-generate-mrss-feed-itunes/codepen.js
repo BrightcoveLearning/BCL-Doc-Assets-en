@@ -1,6 +1,6 @@
 var BCLS = (function(window, document) {
   var mrssStr =
-      '<?xml version="1.0" encoding="utf-8"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">',
+      '<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">',
     sChannel = "<channel>",
     eChannel = "</channel>",
     sTitle = "<title>",
