@@ -415,6 +415,7 @@ var BCLS = (function(window, document) {
     podcast_url = podcast_url_input.value;
     podcast_title = podcast_title_input.value;
     podcast_description = podcast_description_input.value;
+    podcast_image = podcast_image_input.value;
     podcast_author = podcast_author_input.value;
     podcast_owner = podcast_owner_input.value;
     podcast_email = podcast_email_input.value;
