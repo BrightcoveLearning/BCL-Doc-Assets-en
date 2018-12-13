@@ -3,7 +3,7 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
     limit = 25,
     totalVideos = 0,
