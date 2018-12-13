@@ -10,6 +10,7 @@ var BCLS_style_fixes = ( function (window, document) {
     code = document.getElementsByTagName('code'),
     bod = document.querySelector('body');
 
+
   if (header_block) {
     header_block.setAttribute('style', 'color:white;background-color:RGB(45, 59, 108);padding-top:10px;padding-botton:5px;margin-bottom:30px;');
     header_text.setAttribute('style', 'color:white;line-height:1;');
@@ -41,7 +42,7 @@ var BCLS_style_fixes = ( function (window, document) {
     var i = 0,
       iMax = menu_items.length;
       for (i; i < iMax; i++) {
-        menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:0;clear:both;display:block;');
+        menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:0;clear:both;display:block;line-height:.9');
       }
   }
   if (code) {
