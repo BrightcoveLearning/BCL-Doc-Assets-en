@@ -50,7 +50,7 @@ var BCLS_style_fixes = ( function (window, document) {
   if (nav_menu_items) {
     iMax = nav_menu_items.length;
     for (i; i < iMax; i++) {
-      nav_menu_items[i].setAttribute('style', 'padding-bottom:1.3em;');
+      nav_menu_items[i].setAttribute('style', 'padding-bottom:1.2em;');
     }
   }
   if (code) {
