@@ -55,9 +55,11 @@ var BCLS_style_fixes = ( function (window, document) {
   }
   if (code) {
     var i = 0,
+    currentStyle,
     iMax = code.length;
     for (i; i < iMax; i++) {
-      code[i].setAttribute('style', 'color:RGB(155, 37, 86);')
+      currentStyle = code[i].getAttribute('style');
+      code[i].setAttribute('style', currentStyle + ';color:RGB(155, 37, 86);')
     }
   }
   // if (linkedCode) {
