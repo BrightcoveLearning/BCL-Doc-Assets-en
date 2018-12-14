@@ -60,12 +60,12 @@ var BCLS_style_fixes = ( function (window, document) {
       code[i].setAttribute('style', 'color:RGB(155, 37, 86);')
     }
   }
-  if (linkedCode) {
-    var i = 0,
-    iMax = code.length;
-    for (i; i < iMax; i++) {
-      code[i].setAttribute('style', 'color:RGB(155, 37, 86);text-decoration:underline;')
-    }
+  // if (linkedCode) {
+  //   var i = 0,
+  //   iMax = code.length;
+  //   for (i; i < iMax; i++) {
+  //     code[i].setAttribute('style', 'color:RGB(155, 37, 86);text-decoration:underline;')
+  //   }
   }
   if (bod) {
     bod.setAttribute('style', '-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;')
