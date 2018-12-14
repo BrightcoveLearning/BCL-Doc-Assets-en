@@ -9,7 +9,8 @@ var BCLS_style_fixes = ( function (window, document) {
     menu_headers = document.querySelectorAll('#block-mainnavigation>ul>li>a'),
     code = document.getElementsByTagName('code'),
     bod = document.querySelector('body'),
-    nav_menu_items = document.querySelectorAll('.region-navigation-collapsible .nav li a');
+    nav_menu_items = document.querySelectorAll('.region-navigation-collapsible .nav li a'),
+    linkedCode = document.querySelectorAll('a>code');
 
 
   if (header_block) {
@@ -57,6 +58,13 @@ var BCLS_style_fixes = ( function (window, document) {
     iMax = code.length;
     for (i; i < iMax; i++) {
       code[i].setAttribute('style', 'color:RGB(155, 37, 86);')
+    }
+  }
+  if (linkedCode) {
+    var i = 0,
+    iMax = code.length;
+    for (i; i < iMax; i++) {
+      code[i].setAttribute('style', 'color:RGB(155, 37, 86);text-decoration:underline;')
     }
   }
   if (bod) {
