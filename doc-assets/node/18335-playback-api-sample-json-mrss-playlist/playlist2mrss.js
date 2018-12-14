@@ -271,8 +271,8 @@ var BCLS = (function(window, document) {
             mrssStr += eMediaThumbnail;
           }
         }
-        mrssStr += eItem;
         mrssStr += eMediaContent;
+        mrssStr += eItem;
       }
       mrssStr += eChannel + "</rss>";
       feed.textContent = vkbeautify.xml(mrssStr);
