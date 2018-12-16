@@ -1,8 +1,10 @@
 <article class="bcls-article">
 <section class="bcls-section">
-<h2 id="Introduction">Introduction</h2>
+<p class="BCL-aside">Note: This document has been updated since it was originally published. Our original intent was to actively disable TLS 1.0 and 1.1 on many endpoints on June 30, 2018. However, due to the amount of traffic still dependent on these protocols we have updated our plans to be as described below.</p>
 
-<p>Transport Layer Security (TLS) protects data transferred over the internet by encrypting it. (TLS replaced an earlier crytographic protocol called SSL.) The process is largely transparent to users. Data delivered over the web can be delivered with or without encryption, so it is up to the client (a brower, for example) to signal to servers that data should be encrypted. This is usually done by using the HTTPS protocol for URLs instead of HTTP.</p>
+<h2>Introduction</h2>
+
+<p>Transport Layer Security (TLS) protects data transferred over the internet by encrypting it. (TLS replaced an earlier cryptographic protocol called SSL.) The process is largely transparent to users. Data delivered over the web can be delivered with or without encryption, so it is up to the client (a broker, for example) to signal to servers that data should be encrypted. This is usually done by using the HTTPS protocol for URLs instead of HTTP.</p>
 
 <p>Video Cloud supports TLS for all media delivery on these terms:</p>
 
@@ -22,51 +24,28 @@
 <section class="bcls-subsection">
 <h3>What is the change?</h3>
 
-<p>As of June 30, 2018, Video Cloud will no longer provide support for TLS versions 1.0 or 1.1. Going forward, only HTTPS connections using the TLS 1.2 encryption protocol will be supported.</p>
+<p>As of June 30, 2018, Video Cloud will no longer provide support for TLS versions 1.0 or 1.1. We will not be actively turning off support for TLS 1.0 or 1.1, however, these protocols will no longer be actively supported and we encourage customers to migrate as soon as possible.</p>
 </section>
 
 <section class="bcls-subsection">
 <h3>Why is Brightcove deprecating older TLS versions?</h3>
 
-<p>The security of customer data is a top priority for Brightcove. These changes are unfolding across our industry, and many of our technology partners and peers have already taken the steps to disable early TLS. These changes are necessary to maintain best practices and, in part, to ensure that updated compliance requirements from the PCI Security Standards Council are met.</p>
+<p>The security of customer data is a top priority for Brightcove. These changes are unfolding across our industry, and many of our technology partners and peers have already taken the steps to disable early TLS.</p>
 </section>
 
 <section class="bcls-subsection">
 <h3>When will Brightcove stop supporting older TLS?</h3>
 
-<p>June 30th, 2018 is the deadline to disable SSL and early versions of TLS. Going forward all secure connections will be made using TLS 1.2.</p>
-</section>
-
-<section class="bcls-subsection">
-<h3>What specific endpoints are changing on the 30th?</h3>
-
-<p>Below find the list of services that will be affected as of the 30th. To the extent that any unlisted endpoints accept early TLS, customers should assume that this is unsupported, and that this is subject to change at any time.</p>
-
-<ul>
-	<li>Catalog APIs
-	<ul>
-		<li>Playback API</li>
-		<li>CMS API</li>
-		<li>Dynamic Ingest API</li>
-	</ul>
-	</li>
-	<li>Content Delivery
-	<ul>
-		<li>HTTPS Player Delivery (players.brightcove.net)</li>
-		<li>HTTPS Manifest Delivery (manifest.prod.boltdns.net and secure.brightcove.com)</li>
-		<li>HTTPS Dynamic Delivery Media Origin (media-origin.*.prod.boltdns.net)</li>
-	</ul>
-	</li>
-</ul>
+<p>Currently, we do not plan to actively disable TLS 1.0 or 1.1 on any of our endpoints. However, many of our upstream providers are formulating plans to deprecate support at which point we will no longer be able to support these protocols. As we are made aware of such plans, we will provide updates via the system status page.</p>
 </section>
 
 <section class="bcls-subsection">
 <h3>How do I know if we are ready for this change?</h3>
 
-<p>Following the cutover, all connections with the Video Cloud platform will need to use the TLS 1.2 encryption protocol (or later). We expect the impact to be minimal, but there are two areas of risk:</p>
+<p>As TLS 1.0/1.1 are deprecated, connections with the Video Cloud platform will need to use the TLS 1.2 encryption protocol (or later). We expect the impact to be minimal, but there are two areas of risk:</p>
 
 <ol>
-	<li>You should make sure that all connections to the Video Cloud APIs (e.g., a call from a Python script to the CMS API) are made from platforms that support TLS 1.2 or later. This means that automated processes should be hosted from a compatible browser.</li>
+	<li>You should make sure that all connections to the Video Cloud APIs (e.g., a call from a Python script to the CMS API) are made from platforms that support TLS 1.2 or later. This means that automated processes should be hosted from a compatible platform.</li>
 	<li>Your users may be impacted if they are using an unsupported browser, if they have disabled the relevant encryption protocols, or if they are using an unsupported device.</li>
 </ol>
 
@@ -76,11 +55,7 @@
 <section class="bcls-subsection">
 <h3>Unsupported Platforms (Players/SDKs)</h3>
 
-<p>As noted before, HTTP connections "in the clear" are unaffected by the change.</p>
-
-<p>All recent versions of browsers and operating systems support TLS 1.2.</p>
-
-<p>Below find a list of <strong>older</strong> user agents where HTTPS connections using TLS 1.2 are not supported.</p>
+<p>As noted before, HTTP connections "in the clear" are unaffected by the change. Below find a list of user agents where HTTPS connections using TLS 1.2 are not supported.</p>
 
 <h4>OS/Browser Combinations</h4>
 
@@ -138,51 +113,51 @@
 <h4 id="Microsoft_Internet_Explorer">Microsoft Internet Explorer</h4>
 
 <ol>
-	<li>Open Internet Explorer</li>
+	<li>Open Internet Explorer.</li>
 	<li>From the menu bar, click Tools &gt; Internet Options &gt; Advanced tab:
 	<figure class="bcls-figure"><img class="bcls-image" alt="Internet Explorer Settings" src="//learning-services-media.brightcove.com/doc-assets/node/18576-tls-media-urls/node18576-IE-dialolog.png" />
-	<figcaption class="bcls-caption--image">Internet Explorer Settings</figcaption>
+	<figcaption class="bcls-caption--image">Internet Explorer Settings.</figcaption>
 	</figure>
 	</li>
-	<li>Scroll down to Security category, manually check the option box for Use TLS 1.2</li>
-	<li>Click OK</li>
-	<li>Close your browser and restart Internet Explorer</li>
+	<li>Scroll down to Security category, manually check the option box for Use TLS 1.2.</li>
+	<li>Click OK.</li>
+	<li>Close your browser and restart Internet Explorer.</li>
 </ol>
 
 <h4 id="Google_Chrome">Google Chrome</h4>
 
 <ol>
-	<li>Open Google Chrome</li>
-	<li>Click Alt F and select Settings</li>
-	<li>Scroll down and select Show advanced settings</li>
-	<li>Scroll down to the Network section and click on Change proxy settings</li>
-	<li>Select the Advanced tab</li>
-	<li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2</li>
-	<li>Click OK</li>
-	<li>Close your browser and restart Google Chrome</li>
+	<li>Open Google Chrome.</li>
+	<li>Click Alt-F and select Settings.</li>
+	<li>Scroll down and select Show advanced settings.</li>
+	<li>Scroll down to the Network section and click on Change proxy settings.</li>
+	<li>Select the Advanced tab.</li>
+	<li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2.</li>
+	<li>Click OK.</li>
+	<li>Close your browser and restart Google Chrome.</li>
 </ol>
 
 <h4 id="Mozilla_Firefox">Mozilla Firefox</h4>
 
 <ol>
-	<li>Open Firefox</li>
-	<li>In the address bar, type about:config and press Enter</li>
-	<li>In the Search field, enter <code>tls</code>. Find and double-click the entry for <code>security.tls.version.max</code></li>
-	<li>Set the integer value to 3 to force protocol of TLS 1.2</li>
-	<li>Click OK</li>
-	<li>Close your browser and restart Mozilla Firefox</li>
+	<li>Open Firefox.</li>
+	<li>In the address bar, type about:config and press Enter.</li>
+	<li>In the Search field, enter <code>tls</code>. Find and double-click the entry for <code>security.tls.version.max</code>.</li>
+	<li>Set the integer value to 3 to force protocol of TLS 1.2.</li>
+	<li>Click OK.</li>
+	<li>Close your browser and restart Mozilla Firefox.</li>
 </ol>
 
 <h4 id="Opera">Opera</h4>
 
 <ol>
-	<li>Open Opera</li>
-	<li>Click Ctrl plus F12</li>
-	<li>Scroll down to the Network section and click on Change proxy settings</li>
-	<li>Select the Advanced tab</li>
-	<li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2</li>
-	<li>Click OK</li>
-	<li>Close your browser and restart Opera</li>
+	<li>Open Opera.</li>
+	<li>Click Ctrl plus F12.</li>
+	<li>Scroll down to the Network section and click on Change proxy settings.</li>
+	<li>Select the Advanced tab.</li>
+	<li>Scroll down to Security category, manually check the option box for Use TLS 1.1 and Use TLS 1.2.</li>
+	<li>Click OK.</li>
+	<li>Close your browser and restart Opera.</li>
 </ol>
 </section>
 </section>
