@@ -53,6 +53,7 @@ var BCLS = (function(window, document) {
     account_id,
     client_id,
     client_secret,
+    podcast_guid,
     podcast_url,
     site_url,
     podcast_title,
@@ -64,6 +65,8 @@ var BCLS = (function(window, document) {
     podcast_description,
     podcast_summary,
     podcast_type = "video/mp4",
+    type,
+    episode_type,
     language,
     category,
     sub_category,
@@ -85,6 +88,7 @@ var BCLS = (function(window, document) {
     account_id_input = document.getElementById("account_id_input"),
     client_id_input = document.getElementById("client_id_input"),
     client_secret_input = document.getElementById("client_secret_input"),
+    guid_input = document.getElementById("guid_input"),
     site_url_input = document.getElementById("site_url_input"),
     podcast_url_input = document.getElementById("podcast_url_input"),
     podcast_title_input = document.getElementById("podcast_title_input"),
@@ -416,6 +420,8 @@ var BCLS = (function(window, document) {
     site_url = site_url_input.value;
     podcast_url = podcast_url_input.value;
     podcast_title = podcast_title_input.value;
+    podcast_subtitle = podcast_subtitle_input.value;
+    podcast_guid = guid_input.value;
     podcast_description = podcast_description_input.value;
     podcast_image = podcast_image_input.value;
     podcast_author = podcast_author_input.value;
@@ -439,14 +445,22 @@ var BCLS = (function(window, document) {
         podcast_url,
         podcast_description,
         podcast_email,
-        language
+        language,
+        podcast_guid,
+        client_id,
+        client_secret,
+        account_id,
+        podcast_image,
+        type,
+        episode_type,
+        category
       ])
     ) {
       setPodcastData();
       createRequest("getVideos");
     } else {
       alert(
-        "One or more required inputs was missing: be sure you include the podcast title, author, email, description, url and language, as well as your site url"
+        "One or more required inputs was missing"
       );
     }
   }
