@@ -427,6 +427,8 @@ var BCLS = (function(window, document) {
     podcast_author = podcast_author_input.value;
     podcast_owner = podcast_owner_input.value;
     podcast_email = podcast_email_input.value;
+    episode_type = getSelectedValue(episode_type_select);
+    type = getSelectedValue(type_select);
     podcast_summary = isDefined(podcast_summary_input.value)
       ? podcast_summary_input.value
       : podcast_description;
