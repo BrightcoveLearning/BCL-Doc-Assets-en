@@ -231,7 +231,7 @@ var BCLS = (function(window, document) {
    * @param {String} str string to process
    * @return {String} fixed string
    */
-  function removeSpaces(str) {
+  function replaceSpaces(str) {
       str= str.replace(/\s/g, '+');
       return str;
   }
@@ -590,7 +590,7 @@ var BCLS = (function(window, document) {
 
     switch (id) {
       case "getVideos":
-        endPoint = account_id + "/videos?limit=20";
+        endPoint = account_id + "/videos?limit=100";
         if (isDefined(search_string)) {
           endPoint += "&q=" + encodeURI(search_string);
         }
