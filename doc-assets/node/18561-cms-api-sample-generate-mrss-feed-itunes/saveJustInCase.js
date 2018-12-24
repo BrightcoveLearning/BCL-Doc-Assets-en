@@ -44,3 +44,16 @@ function deselectAllCheckboxes(checkboxCollection) {
     checkboxCollection[i].removeAttribute("checked");
   }
 }
+
+function getVideosForFeed() {
+  var checkedBoxes = getCheckedBoxValues(videosCollection),
+    i,
+    iMax,
+    index;
+  iMax = checkedBoxes.length;
+  for (i = 0; i < iMax; i++) {
+    index = findObjectInArray(all_videos, "id", checkedBoxes[i]);
+    videos.push(all_videos[index]);
+    sortArray(videos, "published_at");
+  }
+}
