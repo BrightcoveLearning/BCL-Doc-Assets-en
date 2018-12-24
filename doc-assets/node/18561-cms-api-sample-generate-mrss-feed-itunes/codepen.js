@@ -55,6 +55,7 @@ var BCLS = (function(window, document) {
     account_id,
     client_id,
     client_secret,
+    podcast_item,
     podcast_guid,
     podcast_url,
     site_url,
@@ -223,6 +224,16 @@ var BCLS = (function(window, document) {
     return e.options[e.selectedIndex].value;
   }
 
+  /**
+   * replace spaces in a string with + signs
+   * @param {String} str string to process
+   * @return {String} fixed string
+   */
+  function removeSpaces(str) {
+      str= str.replace(/\s/g, '+');
+      return str;
+  }
+  
   /**
    * disables all buttons so user can't submit new request until current one finishes
    */
