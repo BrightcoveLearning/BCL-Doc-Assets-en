@@ -67,6 +67,7 @@ var BCLS = (function(window, document) {
     podcast_email,
     podcast_description,
     podcast_summary,
+    podcast_keywords,
     podcast_type = "video/mp4",
     type,
     episode_type,
@@ -106,6 +107,7 @@ var BCLS = (function(window, document) {
     ),
     podcast_summary_input = document.getElementById("podcast_summary_input"),
     language_input = document.getElementById("language_input"),
+    podcast_keywords_input = document.getElementById('podcast_keywords_input'),
     explicit_input = document.getElementById("explicit_input"),
     closed_captioned_input = document.getElementById("closed_captioned_input"),
     complete_input = document.getElementById("complete_input"),
@@ -597,7 +599,12 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           var input,
-            label,
+            seasonSelect,
+            episodeSelect,
+            episodeTypeSelect,
+            option,
+            p,
+            span,
             space,
             text,
             br,
@@ -607,22 +614,6 @@ var BCLS = (function(window, document) {
           all_videos = JSON.parse(response);
           logMessage(videos.length + " videos retrieved");
           apiResponse.textContent = JSON.stringify(all_videos, null, "  ");
-          input = document.createElement("input");
-          space = document.createTextNode(" ");
-          label = document.createElement("label");
-          input.setAttribute("name", "videosChkAll");
-          input.setAttribute("id", "videosChkAll");
-          input.setAttribute("type", "checkbox");
-          input.setAttribute("value", "all");
-          label.setAttribute("for", "videosChkAll");
-          label.setAttribute("style", "color:#F3951D;");
-          text = document.createTextNode("Select All");
-          label.appendChild(text);
-          br = document.createElement("br");
-          fragment.appendChild(input);
-          fragment.appendChild(space);
-          fragment.appendChild(label);
-          fragment.appendChild(br);
           iMax = all_videos.length;
           for (i = 0; i < iMax; i++) {
             input = document.createElement("input");
