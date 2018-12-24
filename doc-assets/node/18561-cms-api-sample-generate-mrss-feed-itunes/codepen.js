@@ -100,7 +100,6 @@ var BCLS = (function(window, document) {
     podcast_owner_input = document.getElementById("podcast_owner_input"),
     podcast_email_input = document.getElementById("podcast_email_input"),
     type_select = document.getElementById('type_select'),
-    episode_type_select = document.getElementById('episode_type_select'),
     podcast_description_input = document.getElementById(
       "podcast_description_input"
     ),
