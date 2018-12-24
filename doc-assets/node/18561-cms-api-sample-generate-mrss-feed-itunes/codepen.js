@@ -233,7 +233,7 @@ var BCLS = (function(window, document) {
       str= str.replace(/\s/g, '+');
       return str;
   }
-  
+
   /**
    * disables all buttons so user can't submit new request until current one finishes
    */
@@ -476,19 +476,6 @@ var BCLS = (function(window, document) {
       alert(
         "One or more required inputs was missing"
       );
-    }
-  }
-
-  function getVideosForFeed() {
-    var checkedBoxes = getCheckedBoxValues(videosCollection),
-      i,
-      iMax,
-      index;
-    iMax = checkedBoxes.length;
-    for (i = 0; i < iMax; i++) {
-      index = findObjectInArray(all_videos, "id", checkedBoxes[i]);
-      videos.push(all_videos[index]);
-      sortArray(videos, "published_at");
     }
   }
 
