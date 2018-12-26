@@ -1,0 +1,41 @@
+<p>Uses the <a href="http://bevacqua.github.io/rome/">Rome Date-Time Picker</a></p>
+
+<p style="float: left; min-height: 150px;margin-right: 40px;">Date picker: <input type="text" class="input" size="17" id="dateInput" /></p>
+
+<p>ISO 8601 date:</p>
+
+<p>UTC date:</p>
+
+<p>Epoch date (milliseconds):</p>
+<script src="//docs.brightcove.com/en/scripts/rome/rome.min.js"></script><script>
+      var BCLS = ( function (rome, document) {
+        var moment = rome.moment,
+          now = new Date(),
+          selectedDate = now,
+          nowUTC,
+          nowISO,
+          nowEpoch,
+          dateInput = document.getElementById("dateInput"),
+          isoDate = document.getElementById("isoDate"),
+          utcDate = document.getElementById("utcDate"),
+          epochDate = document.getElementById("epochDate"),
+          setDates = function () {
+            utcDate.innerHTML = selectedDate.toUTCString();
+            isoDate.innerHTML = selectedDate.toISOString();
+            epochDate.innerHTML = selectedDate.valueOf();
+          };
+
+      rome(dateInput, {initialValue: now.toISOString()});
+
+      rome(dateInput).on("data", function () {
+        selectedDate = rome(dateInput).getDate();
+        setDates();
+      });
+
+      setDates();
+
+        return {
+
+        }
+      })(rome, document);
+      </script>
