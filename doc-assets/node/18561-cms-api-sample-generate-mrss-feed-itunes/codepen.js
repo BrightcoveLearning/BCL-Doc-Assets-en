@@ -1,56 +1,56 @@
 var BCLS = (function(window, document) {
   var mrssStr =
-      '<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">',
+      '<?xml version='1.0' encoding='utf-8'?><rss version='2.0' xmlns:itunes='http://www.itunes.com/dtds/podcast-1.0.dtd'>',
     sCdata = '<![CDATA[',
     eCdata = ']>',
-    sChannel = "<channel>",
-    eChannel = "</channel>",
-    sTitle = "<title>",
-    eTitle = "</title>",
-    sSubTitle = "<itunes:subtitle>",
-    eSubTitle = "</itunes:subtitle>",
-    sAuthor = "<itunes:author>",
-    eAuthor = "</itunes:author>",
-    sOwner = "<itunes:owner>",
-    eOwner = "</itunes:owner>",
-    sName = "<itunes:name>",
-    eName = "</itunes:name>",
-    sEmail = "<itunes:email>",
-    eEmail = "</itunes:email>",
-    sImage = '<itunes:image href="',
-    eImage = '" />',
-    sCategory = '<itunes:category text="',
-    eCategory1 = '">',
-    eCategory2 = '"/>',
-    sSubcategory = '<itunes:category text="',
-    eSubCategory = '"/>',
-    eCategory = "</itunes:category>",
-    sExplicit = "<itunes:explicit>",
-    eExplicit = "</itunes:explicit>",
-    sisClosedCaptioned = "<itunes:isClosedCaptioned>",
-    eisClosedCaptioned = "</itunes:isClosedCaptioned>",
-    sComplete = "<itunes:complete>",
-    eComplete = "</itunes:complete>",
-    sDuration = "<itunes:duration>",
-    eDuration = "</itunes:duration>",
-    sDescription = "<description>",
-    eDescription = "</description>",
-    sSummary = "<itunes:summary><![CDATA[",
-    eSummary = "]]></itunes:summary>",
-    sEnclosure = "<enclosure ",
-    eEnclosure = " />",
-    sItem = "<item>",
-    eItem = "</item>",
-    sLink = "<link>",
-    eLink = "</link>",
-    sGuid = "<guid>",
-    eGuid = "</guid>",
-    sPubDate = "<pubDate>",
-    ePubDate = "</pubDate>",
-    sCopyright = "<copyright>",
-    eCopyright = "</copyright>",
-    sLanguage = "<language>",
-    eLanguage = "</language>",
+    sChannel = '<channel>',
+    eChannel = '</channel>',
+    sTitle = '<title>',
+    eTitle = '</title>',
+    sSubTitle = '<itunes:subtitle>',
+    eSubTitle = '</itunes:subtitle>',
+    sAuthor = '<itunes:author>',
+    eAuthor = '</itunes:author>',
+    sOwner = '<itunes:owner>',
+    eOwner = '</itunes:owner>',
+    sName = '<itunes:name>',
+    eName = '</itunes:name>',
+    sEmail = '<itunes:email>',
+    eEmail = '</itunes:email>',
+    sImage = '<itunes:image href='',
+    eImage = '' />',
+    sCategory = '<itunes:category text='',
+    eCategory1 = ''>',
+    eCategory2 = ''/>',
+    sSubcategory = '<itunes:category text='',
+    eSubCategory = ''/>',
+    eCategory = '</itunes:category>',
+    sExplicit = '<itunes:explicit>',
+    eExplicit = '</itunes:explicit>',
+    sisClosedCaptioned = '<itunes:isClosedCaptioned>',
+    eisClosedCaptioned = '</itunes:isClosedCaptioned>',
+    sComplete = '<itunes:complete>',
+    eComplete = '</itunes:complete>',
+    sDuration = '<itunes:duration>',
+    eDuration = '</itunes:duration>',
+    sDescription = '<description>',
+    eDescription = '</description>',
+    sSummary = '<itunes:summary><![CDATA[',
+    eSummary = ']]></itunes:summary>',
+    sEnclosure = '<enclosure ',
+    eEnclosure = ' />',
+    sItem = '<item>',
+    eItem = '</item>',
+    sLink = '<link>',
+    eLink = '</link>',
+    sGuid = '<guid>',
+    eGuid = '</guid>',
+    sPubDate = '<pubDate>',
+    ePubDate = '</pubDate>',
+    sCopyright = '<copyright>',
+    eCopyright = '</copyright>',
+    sLanguage = '<language>',
+    eLanguage = '</language>',
     // input data
     account_id,
     client_id,
@@ -68,20 +68,20 @@ var BCLS = (function(window, document) {
     podcast_description,
     podcast_summary,
     podcast_keywords,
-    podcast_type = "video/mp4",
+    podcast_type = 'video/mp4',
     type,
     episode_type,
     language,
     category,
     sub_category,
-    explicit = "no",
-    closed_captioned = "no",
-    complete = "no",
+    explicit = 'no',
+    closed_captioned = 'no',
+    complete = 'no',
     year = new Date().getFullYear().toString(),
     // api stuff
     proxyURL =
-      "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
-    baseURL = "https://cms.api.brightcove.com/v1/accounts/",
+      'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
+    baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
     search_string,
     totalVideos = 0,
     totalCalls = 0,
@@ -89,57 +89,57 @@ var BCLS = (function(window, document) {
     videos = [],
     all_videos = [],
     // elements
-    account_id_input = document.getElementById("account_id_input"),
-    client_id_input = document.getElementById("client_id_input"),
-    client_secret_input = document.getElementById("client_secret_input"),
-    guid_input = document.getElementById("guid_input"),
-    site_url_input = document.getElementById("site_url_input"),
-    podcast_url_input = document.getElementById("podcast_url_input"),
-    podcast_title_input = document.getElementById("podcast_title_input"),
-    podcast_subtitle_input = document.getElementById("podcast_subtitle_input"),
-    podcast_image_input = document.getElementById("podcast_image_input"),
-    podcast_author_input = document.getElementById("podcast_author_input"),
-    podcast_owner_input = document.getElementById("podcast_owner_input"),
-    podcast_email_input = document.getElementById("podcast_email_input"),
+    account_id_input = document.getElementById('account_id_input'),
+    client_id_input = document.getElementById('client_id_input'),
+    client_secret_input = document.getElementById('client_secret_input'),
+    guid_input = document.getElementById('guid_input'),
+    site_url_input = document.getElementById('site_url_input'),
+    podcast_url_input = document.getElementById('podcast_url_input'),
+    podcast_title_input = document.getElementById('podcast_title_input'),
+    podcast_subtitle_input = document.getElementById('podcast_subtitle_input'),
+    podcast_image_input = document.getElementById('podcast_image_input'),
+    podcast_author_input = document.getElementById('podcast_author_input'),
+    podcast_owner_input = document.getElementById('podcast_owner_input'),
+    podcast_email_input = document.getElementById('podcast_email_input'),
     type_select = document.getElementById('type_select'),
     podcast_description_input = document.getElementById(
-      "podcast_description_input"
+      'podcast_description_input'
     ),
-    podcast_summary_input = document.getElementById("podcast_summary_input"),
-    language_input = document.getElementById("language_input"),
+    podcast_summary_input = document.getElementById('podcast_summary_input'),
+    language_input = document.getElementById('language_input'),
     podcast_keywords_input = document.getElementById('podcast_keywords_input'),
-    explicit_input = document.getElementById("explicit_input"),
-    closed_captioned_input = document.getElementById("closed_captioned_input"),
-    complete_input = document.getElementById("complete_input"),
-    main_category_input = document.getElementById("main_category_input"),
-    sub_category_input = document.getElementById("sub_category_input"),
-    search_string_input = document.getElementById("search_string_input"),
-    get_videos = document.getElementById("get_videos"),
-    returned_videos = document.getElementById("returned_videos"),
-    makeFeed = document.getElementById("makeFeed"),
-    logger = document.getElementById("logger"),
-    apiRequest = document.getElementById("apiRequest"),
-    apiResponse = document.getElementById("apiResponse"),
-    feedDisplay = document.getElementById("feedDisplay"),
-    allButtons = document.getElementsByName("button"),
+    explicit_input = document.getElementById('explicit_input'),
+    closed_captioned_input = document.getElementById('closed_captioned_input'),
+    complete_input = document.getElementById('complete_input'),
+    main_category_input = document.getElementById('main_category_input'),
+    sub_category_input = document.getElementById('sub_category_input'),
+    search_string_input = document.getElementById('search_string_input'),
+    get_videos = document.getElementById('get_videos'),
+    returned_videos = document.getElementById('returned_videos'),
+    makeFeed = document.getElementById('makeFeed'),
+    logger = document.getElementById('logger'),
+    apiRequest = document.getElementById('apiRequest'),
+    apiResponse = document.getElementById('apiResponse'),
+    feedDisplay = document.getElementById('feedDisplay'),
+    allButtons = document.getElementsByName('button'),
     categories = {
-      Arts: [ "Design", "Fashion & Beauty", "Food", "Literature", "Performing Arts", "Visual Arts" ],
-      Business: [ "Business News", "Careers", "Investing", "Management & Marketing", "Shopping"
+      Arts: [ 'Design', 'Fashion & Beauty', 'Food', 'Literature', 'Performing Arts', 'Visual Arts' ],
+      Business: [ 'Business News', 'Careers', 'Investing', 'Management & Marketing', 'Shopping'
       ],
       Comedy: [],
-      Education: [ "Educational Technology", "Higher Education", "K-12", "Language Courses", "Training" ],
-      "Games & Hobbies": [ "Automotive", "Aviation", "Hobbies", "Other Games", "Video Games" ],
-      "Government & Organizations": [ "Local", "National", "Non-Profit", "Regional" ],
-      Health: [ "Alternative Health", "Fitness & Nutrition", "Self-Help", "Sexuality"
+      Education: [ 'Educational Technology', 'Higher Education', 'K-12', 'Language Courses', 'Training' ],
+      'Games & Hobbies': [ 'Automotive', 'Aviation', 'Hobbies', 'Other Games', 'Video Games' ],
+      'Government & Organizations': [ 'Local', 'National', 'Non-Profit', 'Regional' ],
+      Health: [ 'Alternative Health', 'Fitness & Nutrition', 'Self-Help', 'Sexuality'
       ],
-      "Kids & Family": [],
+      'Kids & Family': [],
       Music: [],
-      "News & Politics": [],
-      "Religion & Spirituality": [ "Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "Spirituality" ],
-      "Science & Medicine": ["Medicine", "Natural Sciences", "Social Sciences"],
-      "Sports & Recreation": [ "Amateur", "College & High School", "Outdoor", "Professional" ],
-      Technology: ["Gadgets", "Tech News", "Podcasting", "Software How-To"],
-      "TV & Film": []
+      'News & Politics': [],
+      'Religion & Spirituality': [ 'Buddhism', 'Christianity', 'Hinduism', 'Islam', 'Judaism', 'Other', 'Spirituality' ],
+      'Science & Medicine': ['Medicine', 'Natural Sciences', 'Social Sciences'],
+      'Sports & Recreation': [ 'Amateur', 'College & High School', 'Outdoor', 'Professional' ],
+      Technology: ['Gadgets', 'Tech News', 'Podcasting', 'Software How-To'],
+      'TV & Film': []
     };
 
   /**
@@ -148,7 +148,7 @@ var BCLS = (function(window, document) {
    * @return {Boolean} true if variable is defined and has a value
    */
   function isDefined(x) {
-    if (x === "" || x === null || x === undefined) {
+    if (x === '' || x === null || x === undefined) {
       return false;
     }
     return true;
@@ -191,7 +191,7 @@ var BCLS = (function(window, document) {
     var i,
       iMax = allButtons.length;
     for (i = 0; i < iMax; i++) {
-      allButtons[i].setAttribute("disabled", "disabled");
+      allButtons[i].setAttribute('disabled', 'disabled');
     }
   }
 
@@ -202,17 +202,17 @@ var BCLS = (function(window, document) {
     var i,
       iMax = allButtons.length;
     for (i = 0; i < iMax; i++) {
-      allButtons[i].removeAttribute("disabled");
+      allButtons[i].removeAttribute('disabled');
     }
   }
 
   /**
    * add a log message to the page
-   * (inside an element with id="logger")
+   * (inside an element with id='logger')
    * @param  {string} message the message to insert
    */
   function logMessage(message) {
-    var p = document.createElement("p"),
+    var p = document.createElement('p'),
       txt = document.createTextNode(message);
     p.appendChild(txt);
     logger.appendChild(p);
@@ -277,26 +277,26 @@ var BCLS = (function(window, document) {
       minutes = Math.floor(divisor_for_minutes / 60),
       divisor_for_seconds = divisor_for_minutes % 60,
       seconds = Math.ceil(divisor_for_seconds),
-      str = "";
+      str = '';
 
     if (hours > 0) {
       if (hours < 10) {
-        hours = "0" + hours.toString();
+        hours = '0' + hours.toString();
       } else {
-        str += hours.toString() + ":";
+        str += hours.toString() + ':';
       }
     }
 
     if (minutes > 0) {
       if (minutes < 10) {
-        minutes = "0" + minutes.toString();
+        minutes = '0' + minutes.toString();
       } else {
-        str += minutes.toString() + ":";
+        str += minutes.toString() + ':';
       }
     }
 
     if (seconds < 10) {
-      seconds = "0" + seconds.toString();
+      seconds = '0' + seconds.toString();
     } else {
       str += seconds.toString();
     }
@@ -313,14 +313,14 @@ var BCLS = (function(window, document) {
     // remove non-MP4 sources
     while (i > 0) {
       i--;
-      if (sources[i].container !== "MP4") {
+      if (sources[i].container !== 'MP4') {
         sources.splice(i, 1);
-      } else if (sources[i].hasOwnProperty("stream_name")) {
+      } else if (sources[i].hasOwnProperty('stream_name')) {
         sources.splice(i, 1);
       }
     }
     // sort sources by encoding rate
-    sortArray(sources, "encoding_rate");
+    sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
     return sources[0];
   }
@@ -330,7 +330,7 @@ var BCLS = (function(window, document) {
     mrssStr += sTitle + podcast_title + eTitle;
     mrssStr += sLink + podcast_url + eLink;
     mrssStr += sLanguage + language + eLanguage;
-    mrssStr += sCopyright + "Copyright " + year + " " + podcast_owner + eCopyright;
+    mrssStr += sCopyright + 'Copyright ' + year + ' ' + podcast_owner + eCopyright;
     mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
     mrssStr += sAuthor + podcast_author + eAuthor;
     mrssStr += sSummary + podcast_summary + eSummary;
@@ -376,7 +376,7 @@ var BCLS = (function(window, document) {
   function getInputData() {
     account_id = isDefined(account_id_input.value)
       ? account_id_input.value
-      : "1752604059001";
+      : '1752604059001';
     client_id = client_id_input.value;
     client_secret = client_secret_input.value;
     site_url = site_url_input.value;
@@ -397,9 +397,9 @@ var BCLS = (function(window, document) {
     language = language_input.value;
     category = getSelectedValue(main_category_input);
     sub_category = getSelectedValue(sub_category_input);
-    explicit = isChecked(explicit_input) ? "yes" : "no";
-    closed_captioned = isChecked(closed_captioned_input) ? "yes" : "no";
-    complete = isChecked(complete_input) ? "yes" : "no";
+    explicit = isChecked(explicit_input) ? 'yes' : 'no';
+    closed_captioned = isChecked(closed_captioned_input) ? 'yes' : 'no';
+    complete = isChecked(complete_input) ? 'yes' : 'no';
 
     if (
       requiredFieldsHaveValues([
@@ -421,10 +421,10 @@ var BCLS = (function(window, document) {
       ])
     ) {
       setPodcastData();
-      createRequest("getVideos");
+      createRequest('getVideos');
     } else {
       alert(
-        "One or more required inputs was missing"
+        'One or more required inputs was missing'
       );
     }
   }
@@ -434,12 +434,12 @@ var BCLS = (function(window, document) {
       prop,
       first = true;
     for (prop in categories) {
-      option = document.createElement("option");
+      option = document.createElement('option');
       if (first) {
-        option.setAttribute("selected", "selected");
+        option.setAttribute('selected', 'selected');
         first = false;
       }
-      option.setAttribute("value", prop);
+      option.setAttribute('value', prop);
       option.appendChild(document.createTextNode(prop));
       main_category_input.appendChild(option);
     }
@@ -453,8 +453,8 @@ var BCLS = (function(window, document) {
     if (isDefined(mainCategory)) {
       iMax = categories[mainCategory].length;
       for (i = 0; i < iMax; i++) {
-        option = document.createElement("option");
-        option.setAttribute("value", categories[mainCategory][i]);
+        option = document.createElement('option');
+        option.setAttribute('value', categories[mainCategory][i]);
         option.appendChild(
           document.createTextNode(categories[mainCategory][i])
         );
@@ -480,9 +480,9 @@ var BCLS = (function(window, document) {
         pubDate = pubDate.toUTCString();
         // video may not have a valid source
         if (isDefined(video.source) && isDefined(video.source.src)) {
-          videoURL = encodeURI(video.source.src.replace(/&/g, "&amp;"));
+          videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
         } else {
-          videoURL = "";
+          videoURL = '';
         }
         mrssStr += sItem;
         mrssStr += sTitle + video.name + eTitle;
@@ -493,17 +493,17 @@ var BCLS = (function(window, document) {
         if (isDefined(video.long_description)) {
           mrssStr += sSummary + video.long_description + eSummary;
         }
-        if (video.images.hasOwnProperty("poster")) {
+        if (video.images.hasOwnProperty('poster')) {
           mrssStr += sImage + video.images.poster.src + eImage;
         }
         mrssStr +=
           sEnclosure +
-          'length="' +
+          'length='' +
           video.source.size +
-          '" type="video/mp4" ' +
-          'url="' +
+          '' type='video/mp4' ' +
+          'url='' +
           video.source.src +
-          '"' +
+          ''' +
           eEnclosure;
         mrssStr += sGuid + video.source.src + eGuid;
         mrssStr += sPubDate + pubDate + ePubDate;
@@ -513,8 +513,8 @@ var BCLS = (function(window, document) {
         mrssStr += eItem;
       }
     }
-    mrssStr += eChannel + "</rss>";
-    logMessage("Finished!");
+    mrssStr += eChannel + '</rss>';
+    logMessage('Finished!');
     feedDisplay.textContent = vkbeautify.xml(mrssStr);
     enableButtons();
   }
@@ -524,7 +524,7 @@ var BCLS = (function(window, document) {
    * @param {String} id the id of the button that was clicked
    */
   function createRequest(id) {
-    var endPoint = "",
+    var endPoint = '',
       options = {},
       parsedData;
     // disable buttons to prevent a new request before current one finishes
@@ -537,13 +537,13 @@ var BCLS = (function(window, document) {
     }
 
     switch (id) {
-      case "getVideos":
-        endPoint = account_id + "/videos?limit=100";
+      case 'getVideos':
+        endPoint = account_id + '/videos?limit=100';
         if (isDefined(search_string)) {
-          endPoint += "&q=" + encodeURI(search_string);
+          endPoint += '&q=' + encodeURI(search_string);
         }
         options.url = baseURL + endPoint;
-        options.requestType = "GET";
+        options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           var input,
@@ -560,34 +560,34 @@ var BCLS = (function(window, document) {
             iMax,
             fragment = document.createDocumentFragment();
           all_videos = JSON.parse(response);
-          logMessage(videos.length + " videos retrieved");
-          apiResponse.textContent = JSON.stringify(all_videos, null, "  ");
+          logMessage(videos.length + ' videos retrieved');
+          apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
           iMax = all_videos.length;
           for (i = 0; i < iMax; i++) {
-            input = document.createElement("input");
-            space = document.createTextNode(" ");
-            label = document.createElement("label");
-            input.setAttribute("name", "videosChk");
-            input.setAttribute("id", "field" + all_videos[i].id);
-            input.setAttribute("type", "checkbox");
-            input.setAttribute("value", all_videos[i].id);
-            label.setAttribute("for", "field" + all_videos[i].id);
+            seasonSelect = document.createElement('select');
+            space = document.createTextNode(' ');
+            label = document.createElement('label');
+            input.setAttribute('name', 'videosChk');
+            input.setAttribute('id', 'field' + all_videos[i].id);
+            input.setAttribute('type', 'checkbox');
+            input.setAttribute('value', all_videos[i].id);
+            label.setAttribute('for', 'field' + all_videos[i].id);
             text = document.createTextNode(all_videos[i].name);
             label.appendChild(text);
-            br = document.createElement("br");
+            br = document.createElement('br');
             fragment.appendChild(input);
             fragment.appendChild(space);
             fragment.appendChild(label);
             fragment.appendChild(br);
           }
           // clear videos videos
-          returned_videos.innerHTML = "";
+          returned_videos.innerHTML = '';
           returned_videos.appendChild(fragment);
           // get references to checkboxes
-          videosCollection = document.getElementsByName("videosChk");
-          videosSelectAll = document.getElementById("videosChkAll");
+          videosCollection = document.getElementsByName('videosChk');
+          videosSelectAll = document.getElementById('videosChkAll');
           // add event listener for select allows
-          videosSelectAll.addEventListener("change", function() {
+          videosSelectAll.addEventListener('change', function() {
             if (this.checked) {
               selectAllCheckboxes(videosCollection);
             } else {
@@ -596,17 +596,17 @@ var BCLS = (function(window, document) {
           });
         });
         break;
-      case "getVideoSources":
+      case 'getVideoSources':
         var i,
           iMax = videos.length;
-        endPoint = account_id + "/videos/" + videos[callNumber].id + "/sources";
+        endPoint = account_id + '/videos/' + videos[callNumber].id + '/sources';
         options.url = baseURL + endPoint;
-        options.requestType = "GET";
+        options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        logMessage("Getting sources for video " + videos[callNumber].name);
+        logMessage('Getting sources for video ' + videos[callNumber].name);
         makeRequest(options, function(response) {
           sources = JSON.parse(response);
-          apiResponse.textContent = JSON.stringify(sources, null, "  ");
+          apiResponse.textContent = JSON.stringify(sources, null, '  ');
           if (sources.length > 0) {
             // get the best MP4 rendition
             var source = processSources(sources);
@@ -617,7 +617,7 @@ var BCLS = (function(window, document) {
           }
           callNumber++;
           if (callNumber < iMax) {
-            createRequest("getVideoSources");
+            createRequest('getVideoSources');
           } else {
             // remove videos with no sources
             i = videos.length;
@@ -638,7 +638,7 @@ var BCLS = (function(window, document) {
    * send API request to the proxy
    * @param  {Object} options for the request
    * @param  {String} options.url the full API request URL
-   * @param  {String="GET","POST","PATCH","PUT","DELETE"} requestData [options.requestType="GET"] HTTP type for the request
+   * @param  {String='GET','POST','PATCH','PUT','DELETE'} requestData [options.requestType='GET'] HTTP type for the request
    * @param  {String} options.proxyURL proxyURL to send the request to
    * @param  {String} options.client_id client id for the account (default is in the proxy)
    * @param  {String} options.client_secret client secret for the account (default is in the proxy)
@@ -658,20 +658,20 @@ var BCLS = (function(window, document) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
               response = httpRequest.responseText;
               // some API requests return '{null}' for empty responses - breaks JSON.parse
-              if (response === "{null}") {
+              if (response === '{null}') {
                 response = null;
               }
               // return the response
               callback(response);
             } else {
               alert(
-                "There was a problem with the request. Request returned " +
+                'There was a problem with the request. Request returned ' +
                   httpRequest.status
               );
             }
           }
         } catch (e) {
-          alert("Caught Exception: " + e);
+          alert('Caught Exception: ' + e);
         }
       };
     /**
@@ -682,7 +682,7 @@ var BCLS = (function(window, document) {
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
-    httpRequest.open("POST", proxyURL);
+    httpRequest.open('POST', proxyURL);
     // set headers if there is a set header line, remove it
     // open and send request
     httpRequest.send(JSON.stringify(options));
@@ -691,20 +691,20 @@ var BCLS = (function(window, document) {
   function init() {
     populateMainCategorySelect();
     // event handlers
-    main_category_input.addEventListener("change", function() {
+    main_category_input.addEventListener('change', function() {
       populateSubCategorySelect();
     });
-    get_videos.addEventListener("click", function() {
+    get_videos.addEventListener('click', function() {
       getInputData();
     });
-    make_feed.addEventListener("click", function() {
+    make_feed.addEventListener('click', function() {
       getVideosForFeed();
       totalVideos = videos.length;
       totalCalls = totalVideos;
-      logMessage("Total videos to retrieve: " + totalVideos);
-      createRequest("getVideoSources");
+      logMessage('Total videos to retrieve: ' + totalVideos);
+      createRequest('getVideoSources');
     });
-    feedDisplay.addEventListener("click", function() {
+    feedDisplay.addEventListener('click', function() {
       feedDisplay.select();
     });
   }
