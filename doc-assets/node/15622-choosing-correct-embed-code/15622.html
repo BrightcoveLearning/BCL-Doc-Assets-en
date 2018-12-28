@@ -1,0 +1,76 @@
+<div class="BCL-concept">
+<p>When publishing videos using the Media module, you can use the player URL to preview the video or copy the iframe or In-Page embed code to paste into your web page or application.</p>
+
+<p class="bcls-info language-editable">Note: Click the <strong>Shorten</strong> button next to the preview URL to generate&nbsp;a shortened preview URL.</p>
+
+<p>The <strong>Standard</strong> link displays the iframe embed code and the <strong>Advanced</strong> link displays the In-Page embed code. From the Player Management API perspective, you will also see the <strong>Advanced</strong> player code referred to as the <strong>embed_in_page</strong> implementation.</p>
+
+<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15622-pub-code-options.png" /></div>
+
+<p class="bcls-info language-editable">Note: For information on working with responsive players, see the <a href="/node/18173">Responsive Sizing for the Brightcove Player</a> developer document.</p>
+
+<div>
+<h2 id="iframe">iframe embed code (Standard)</h2>
+
+<p>Typical iframe embed code will appear as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;iframe src="https://players.brightcove.net/1507807800001/BkTGbgSq_default/index.html?videoId=5076962725001"
+allowfullscreen
+webkitallowfullscreen
+mozallowfullscreen&gt;&lt;/iframe&gt;
+</code>
+</pre>
+
+<p>Some advantages of using the iframe embed code</p>
+
+<ul>
+	<li class="language-editable">No collisions with existing JavaScript and/or CSS</li>
+	<li class="language-editable">Automatically responsive</li>
+	<li class="language-editable">The iframe eases use in social media apps or whenever the video will need to "travel" into other apps</li>
+</ul>
+</div>
+
+<div>
+<h2 id="inpage">In-Page embed code (Advanced)</h2>
+
+<p>Typical in-page embed code will appear as follows:</p>
+
+<pre class="line-numbers">
+<code class="language-html">&lt;video-js data-video-id="5076962725001"
+data-account="1507807800001"
+data-player="BkTGbgSq"
+data-embed="default"
+data-application-id
+class="video-js"
+controls&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/BkTGbgSq_default/index.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Although integrating the In-Page publishing code can be more complex, using the In-Page code is best when the page containing the player needs to communicate with the player. Some examples of when to use the In-Page embed code include:</p>
+
+<ul>
+	<li class="language-editable">The code in the containing page needs to listen for and act on player events</li>
+	<li class="language-editable">The player uses styles from the parent page</li>
+	<li class="language-editable">The iframe code will cause application logic to fail, like a redirect from the parent page</li>
+</ul>
+
+<p>Even if your final implementation does not use the iframe embed&nbsp;code, you can still use the In-Page code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Note: If you selected the iframe implementation when publishing from Studio, you will see the options <code>allowfullscreen webkitallowfullscreen mozallowfullscreen </code> added in the iframe. If you are ever manually placing a Brightcove Player, either the in-page embed or iframe implementation, in an iframe you should also include those options for proper fullscreen functionality. If for some reason you nest a player in multiple iframes, all iframes should have the options added.</aside>
+
+<h3>Chrome and "broken" HTML video icon</h3>
+
+<p>Chrome versions 67+ will display a broken video icon momentarily until the <code>&lt;video ...&gt;</code> tag gets converted into a Brightcove Player. The icon appears as follows:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" width="200" height="109" alt="chrome broken video icon" src="//learning-services-media.brightcove.com/doc-assets/general/chrome-broken-video-icon.png" /></figure>
+
+<p>If you are using Brightcove Player version 6.11+, you change the video tag to <code>&lt;video-js ...&gt;</code> and you will NOT see the icon.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="recommend">Recommendation</h2>
+
+<p>It is considered a best practice to use the iframe implementation unless some application logic requires the use of the In-Page code.</p>
+</div>
+</div>
