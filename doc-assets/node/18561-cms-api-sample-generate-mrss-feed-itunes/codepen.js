@@ -625,6 +625,9 @@ var BCLS = (function(window, document) {
             input = document.createElement('inpu');
             input.setAttribute('name', 'guid');
             input.setAttribute('type', 'text');
+            fragment.appendChild(input);
+            fragment.appendChild(br);
+            fragment.appendChild(br);
           }
           // clear videos videos
           returned_videos.innerHTML = '';
