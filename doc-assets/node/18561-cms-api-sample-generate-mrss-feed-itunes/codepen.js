@@ -51,6 +51,8 @@ var BCLS = (function(window, document) {
     eCopyright = '</copyright>',
     sLanguage = '<language>',
     eLanguage = '</language>',
+    sType = '<itunes:type>',
+    eType = '</itunes:type>',
     // input data
     account_id,
     client_id,
@@ -554,6 +556,7 @@ var BCLS = (function(window, document) {
             space,
             p,
             span,
+            input,
             space,
             text,
             br,
@@ -616,6 +619,12 @@ var BCLS = (function(window, document) {
             episodeSelect.appendChild(option);
             fragment.appendChild(episodeTypeSelect);
             fragment.appendChild(br);
+            fragment.appendChild(document.createTextNode('GUID**'));
+            space =  document.createTextNode(' ');
+            fragment.appendChild(space);
+            input = document.createElement('inpu');
+            input.setAttribute('name', 'guid');
+            input.setAttribute('type', 'text');
           }
           // clear videos videos
           returned_videos.innerHTML = '';
