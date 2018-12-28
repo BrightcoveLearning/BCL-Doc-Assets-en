@@ -1,49 +1,46 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Limitations">Limitations</h2>
+  <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
 
-<p>Although native players such as Windows Media Player, Flash Player and Quicktime support deep linking through different mechanisms, this behavior is not directly exposed through the HTML <code>video</code> or <code>source</code> elements. It is, however, indirectly exposed through the <code>currentTime</code> property of the <code>video</code> element. This effectively allows HTML players like the Brightcove player and YouTube to layer deep linking support on top of native video players.</p>
-</section>
+    <p>You can implement deep linking with both the Standard (iframe) and Advanced (in-page) player implementations. For the Standard implementation you use a <code>t</code> query parameter:</p>
 
-<section class="bcls-section">
-<h2 id="Social_media_use">Social media use</h2>
+    <pre class="line-numbers">
+<code class="language-html">&lt;iframe src="https://players.brightcove.net/1507807800001/
+    SJgrJZnuAz_default/index.html?videoId=5637008067001&amp;<span class="bcls-highlight">t=70</span>"
+  allowfullscreen
+  webkitallowfullscreen
+  mozallowfullscreen&gt;&lt;/iframe&gt;</code></pre>
 
-<p>As mentioned above, HTML players can support deep linking, but this necessitates that the player be either embedded in the page or included as an iframe. Unfortunately, most social services do not follow this practice, and instead, substitute a native player which does not support deep linking. As of July 2014 only one major social network, Twitter, supports direct inclusion of the Brightcove player in the social feed using an iframe, making deep linking possible.</p>
+    <p>For the Standard implementation use the attribute <code>data-start-time</code>:</p>
 
-<p>For details about deep linking with Twitter, see the <a href="/node/18122">Social Media Plugin</a> document.</p>
-</section>
+    <pre class="line-numbers">
+<code class="language-html">&lt;video-js data-video-id="5637008067001"
+  data-account="1507807800001"
+  data-player="SJgrJZnuAz"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  <span class="bcls-highlight">data-start-time="70"</span>&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/SJgrJZnuAz_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+  </section>
 
-<section class="bcls-section">
-<h2 id="Specify_deep_linking">Specify deep linking</h2>
+  <section class="bcls-section">
+    <h2 id="Time_formats">Time formats</h2>
 
-<p>To use a deep link in a Brightcove player, specify an offset using a format popularized by YouTube. It follows the format: <code>00h00m00s</code>, where each of the three parts represents a different unit of time (hours, minutes, seconds). Each of the parts must be present, so to offset 15 seconds you would write: <code>0h0m15s</code>. This is then added to the URL as a query string: <code>?t=0h0m15s</code>. An example of a deep link to a video follows:</p>
+    <p>Two possible time formats can be used for specifying the start time:</p>
 
-<p><a href="https://players.brightcove.net/1752604059001/Sy4QijlIf_default/index.html?videoId=4172255216001#t=00h00m15s">https://players.brightcove.net/1752604059001/Sy4QijlIf_default/index.html?videoId=4172255216001#t=00h00m15s</a></p>
+    <ul>
+      <li>Simple time in seconds: This is what used in the examples above, showing start the video 70 seconds in (translated into 1:10 in the video). You cannot use <strong>min:seconds</strong> format.</li>
+      <li>The <strong>hms</strong> format: Here the time can be indicated in hours/minutes/seconds. For instance, to start the video 1 hour, 1 minute and 1 second in use the <strong>1h1m1s</strong> syntax.</li>
+    </ul>
+  </section>
 
-<h3>Using with videoId</h3>
+  <section class="bcls-section">
+    <h2 id="Social_media_use">Social media use</h2>
 
-<p>When you specify a <code>videoId</code> as a query parameter in the Brightcove player URL, you will use the <code>#</code> character (a fragment identifier) in front of the time parameter. Here is an example of the query string:</p>
+    <p>Unfortunately, most social services do not allow deep linking as shown above. Instead, the services substitute a native player which does not support deep linking. As of July 2014 only one major social network, Twitter, supports direct inclusion of the Brightcove player in the social feed using an iframe, making deep linking possible.</p>
 
-<pre class="line-numbers">
-<code class="language-html">?videoId=4172255216001#t=00h00m15s</code></pre>
-
-<h3>Using with autoplay</h3>
-
-<p>You can even include the <code>autoplay</code> parameter to set the player to start playback automatically. Notice that the <code>&amp;</code> symbol is used between the time and autoplay parameters:</p>
-
-<pre class="line-numbers">
-<code class="language-html">?videoId=4172255216001#t=00h00m15s&amp;autoplay=true</code></pre>
-
-<h3>Using with iframe implementation</h3>
-
-<p>To start playback of a video at a specified time with an iframe implementation, add query parameters to the Brightcove player's <code>src</code> property as follows:</p>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;iframe <span class="bcls-highlight">src=&quot;//players.brightcove.net/1752604059001/Sy4QijlIf_default/index.html?videoId=4172255216001#t=00h00m15s&amp;autoplay=true&quot;</span>
-      allowfullscreen
-      webkitallowfullscreen
-      mozallowfullscreen
-      width=&quot;640&quot;
-      height=&quot;360&quot;&gt;&lt;/iframe&gt;</code></pre>
-</section>
+    <p>For details about deep linking with Twitter, see the <a href="/node/18122">Social Media Plugin</a> document.</p>
+  </section>
 </article>
