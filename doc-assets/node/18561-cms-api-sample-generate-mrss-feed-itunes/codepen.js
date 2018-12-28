@@ -551,6 +551,7 @@ var BCLS = (function(window, document) {
             episodeSelect,
             episodeTypeSelect,
             option,
+            space = document.createTextNode(' '),
             p,
             span,
             space,
@@ -566,6 +567,7 @@ var BCLS = (function(window, document) {
           iMax = all_videos.length;
           for (i = 0; i < iMax; i++) {
             seasonSelect = document.createElement('select');
+            seasonSelect.setAttribute('name', 'season_select');
             option = document.createElement('option');
             option.textContent = 'Season';
             seasonSelect.appendChild(option);
@@ -575,7 +577,21 @@ var BCLS = (function(window, document) {
               option.textContent = j;
               seasonSelect.appendChild(option);
             }
-            space = document.createTextNode(' ');
+            fragment.appendChild(seasonSelect);
+            fragment.appendChild(space);
+            episodeSelect = document.createElement('select');
+            episodeSelect.setAttribute('name', 'episode_select');
+            option = document.createElement('option');
+            option.textContent = 'Episode';
+            episodeSelect.appendChild(option);
+            for (j = 1; j < 11; j++) {
+              option = document.createElement('option');
+              option.setAttribute(value, j);
+              option.textContent = j;
+              episodeSelect.appendChild(option);
+            }
+            fragment.appendChild(episodeSelect);
+            fragment.appendChild(space);
             label = document.createElement('label');
             input.setAttribute('name', 'videosChk');
             input.setAttribute('id', 'field' + all_videos[i].id);
