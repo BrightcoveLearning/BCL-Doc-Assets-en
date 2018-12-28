@@ -566,6 +566,9 @@ var BCLS = (function(window, document) {
           apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
           iMax = all_videos.length;
           for (i = 0; i < iMax; i++) {
+            fragment.appendChild(document.createTextNode(all_videos[i].name));
+            space =  document.createTextNode(' ');
+            fragment.appendChild(space);
             seasonSelect = document.createElement('select');
             seasonSelect.setAttribute('name', 'season_select');
             option = document.createElement('option');
@@ -594,11 +597,24 @@ var BCLS = (function(window, document) {
             fragment.appendChild(episodeSelect);
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
-            episodeSelect = document.createElement('select');
-            episodeSelect.setAttribute('name', 'episode_select');
+            episodeTypeSelect = document.createElement('select');
+            episodeSelect.setAttribute('name', 'episode_type_select');
             option = document.createElement('option');
-            option.textContent = 'Episode';
+            option.textContent = 'Episode Type';
             episodeSelect.appendChild(option);
+            option = document.createElement('option');
+            option.setAttribute('value', 'full');
+            option.textContent = 'Full';
+            episodeSelect.appendChild(option);
+            option = document.createElement('option');
+            option.setAttribute('value', 'trailer');
+            option.textContent = 'Trailer';
+            episodeSelect.appendChild(option);
+            option = document.createElement('option');
+            option.setAttribute('value', 'bonus');
+            option.textContent = 'Bonus';
+            episodeSelect.appendChild(option);
+            fragment.appendChild(episodeTypeSelect);
             fragment.appendChild(br);
           }
           // clear videos videos
