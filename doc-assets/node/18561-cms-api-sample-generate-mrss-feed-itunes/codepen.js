@@ -622,7 +622,7 @@ var BCLS = (function(window, document) {
             fragment.appendChild(document.createTextNode('GUID**'));
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
-            input = document.createElement('inpu');
+            input = document.createElement('input');
             input.setAttribute('name', 'guid');
             input.setAttribute('type', 'text');
             fragment.appendChild(input);
