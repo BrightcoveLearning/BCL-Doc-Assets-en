@@ -49,6 +49,7 @@ var BCLS = (function(window, document) {
     ePubDate = '</pubDate>',
     sCopyright = '<copyright>',
     sLastBuildData = '<lastBuildDate>',
+    eLastBuildData = '</lastBuildDate>',
     eCopyright = '</copyright>',
     sLanguage = '<language>',
     eLanguage = '</language>',
@@ -81,6 +82,7 @@ var BCLS = (function(window, document) {
     closed_captioned = 'no',
     complete = 'no',
     year = new Date().getFullYear().toString(),
+    today = new Date().toUTCString(),
     // api stuff
     proxyURL =
       'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
