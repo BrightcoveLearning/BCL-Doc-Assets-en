@@ -388,14 +388,11 @@ var BCLS = (function(window, document) {
     podcast_url = podcast_url_input.value;
     podcast_title = podcast_title_input.value;
     podcast_subtitle = podcast_subtitle_input.value;
-    podcast_guid = guid_input.value;
     podcast_description = podcast_description_input.value;
     podcast_image = podcast_image_input.value;
     podcast_author = podcast_author_input.value;
-    podcast_owner = podcast_owner_input.value;
+    podcast_owner = isDefined(podcast_owner_input.value) ? podcast_owner_input.value : podcast_author_input.value;
     podcast_email = podcast_email_input.value;
-    episode_type = getSelectedValue(episode_type_select);
-    type = getSelectedValue(type_select);
     podcast_summary = isDefined(podcast_summary_input.value)
       ? podcast_summary_input.value
       : podcast_description;
@@ -627,7 +624,7 @@ var BCLS = (function(window, document) {
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
             input = document.createElement('input');
-            input.setAttribute('name', 'guid');
+            input.setAttribute('name', 'guid_input');
             input.setAttribute('type', 'text');
             fragment.appendChild(input);
             fragment.appendChild(br);
@@ -647,6 +644,7 @@ var BCLS = (function(window, document) {
           seasonSelectors = document.getElementsByName('season_select');
           episodeSelectors = document.getElementsByName('episode_select');
           episodeTypeSelectors = document.getElementsByName('episode_type_select');
+          guidInputs = document.getElementsByName('guid_input');
           // add event listener for select allows
           videosSelectAll.addEventListener('change', function() {
             if (this.checked) {
