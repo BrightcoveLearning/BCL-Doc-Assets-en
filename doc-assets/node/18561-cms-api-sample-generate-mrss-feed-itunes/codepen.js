@@ -124,6 +124,9 @@ var BCLS = (function(window, document) {
     apiResponse = document.getElementById('apiResponse'),
     feedDisplay = document.getElementById('feedDisplay'),
     allButtons = document.getElementsByName('button'),
+    seasonSelectors,
+    episodeSelectors,
+    episodeTypeSelectors,
     categories = {
       Arts: [ 'Design', 'Fashion & Beauty', 'Food', 'Literature', 'Performing Arts', 'Visual Arts' ],
       Business: [ 'Business News', 'Careers', 'Investing', 'Management & Marketing', 'Shopping'
@@ -555,6 +558,7 @@ var BCLS = (function(window, document) {
             option,
             space,
             p,
+            a,
             span,
             input,
             space,
@@ -629,6 +633,13 @@ var BCLS = (function(window, document) {
             fragment.appendChild(br);
             fragment.appendChild(br);
           }
+          p = document.createElement('p');
+          p.appendChild(document.createTextNode(** GUIDs for episodes should remain constant over the life of feed, so save them in case you want to add additional episodes localStorage. If you need to generate GUIDs, you can use ));
+          a = document.createElement('a');
+          a.setAttribute('href', 'https://guidgenerator.com/online-guid-generator.aspx');
+          a.textContent = 'this online tool.';
+          p.appendChild(a);
+          fragment.appendChild(p);
           // clear videos videos
           returned_videos.innerHTML = '';
           returned_videos.appendChild(fragment);
