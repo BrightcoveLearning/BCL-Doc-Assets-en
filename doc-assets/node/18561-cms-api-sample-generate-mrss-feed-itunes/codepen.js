@@ -94,7 +94,6 @@ var BCLS = (function(window, document) {
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
-    guid_input = document.getElementById('guid_input'),
     site_url_input = document.getElementById('site_url_input'),
     podcast_url_input = document.getElementById('podcast_url_input'),
     podcast_title_input = document.getElementById('podcast_title_input'),
@@ -127,6 +126,7 @@ var BCLS = (function(window, document) {
     seasonSelectors,
     episodeSelectors,
     episodeTypeSelectors,
+    guidInputs,
     categories = {
       Arts: [ 'Design', 'Fashion & Beauty', 'Food', 'Literature', 'Performing Arts', 'Visual Arts' ],
       Business: [ 'Business News', 'Careers', 'Investing', 'Management & Marketing', 'Shopping'
@@ -644,8 +644,9 @@ var BCLS = (function(window, document) {
           returned_videos.innerHTML = '';
           returned_videos.appendChild(fragment);
           // get references to checkboxes
-          videosCollection = document.getElementsByName('videosChk');
-          videosSelectAll = document.getElementById('videosChkAll');
+          seasonSelectors = document.getElementsByName('season_select');
+          episodeSelectors = document.getElementsByName('episode_select');
+          episodeTypeSelectors = document.getElementsByName('episode_type_select');
           // add event listener for select allows
           videosSelectAll.addEventListener('change', function() {
             if (this.checked) {
