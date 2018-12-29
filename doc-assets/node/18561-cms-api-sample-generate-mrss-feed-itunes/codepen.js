@@ -48,6 +48,7 @@ var BCLS = (function(window, document) {
     sPubDate = '<pubDate>',
     ePubDate = '</pubDate>',
     sCopyright = '<copyright>',
+    sLastBuildData = '<lastBuildDate>',
     eCopyright = '</copyright>',
     sLanguage = '<language>',
     eLanguage = '</language>',
@@ -335,8 +336,10 @@ var BCLS = (function(window, document) {
     mrssStr += sTitle + podcast_title + eTitle;
     mrssStr += sLink + podcast_url + eLink;
     mrssStr += sLanguage + language + eLanguage;
-    mrssStr += sCopyright + 'Copyright ' + year + ' ' + podcast_owner + eCopyright;
-    mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
+    mrssStr += sCopyright + sCdata + podcast_owner + ' year ' ' + eCdata + eCopyright;
+    if (isDefined(podcast_subtitle)) {
+      mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
+    }
     mrssStr += sAuthor + podcast_author + eAuthor;
     mrssStr += sSummary + podcast_summary + eSummary;
     mrssStr += sDescription + podcast_description + eDescription;
