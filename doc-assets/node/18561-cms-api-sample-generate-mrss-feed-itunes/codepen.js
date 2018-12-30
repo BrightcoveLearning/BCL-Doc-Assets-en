@@ -350,6 +350,8 @@ var BCLS = (function(window, document) {
     mrssStr += sEmail + podcast_email + eEmail;
     mrssStr += eOwner;
     mrssStr += sImage + podcast_image + eImage;
+    mrssStr += sPubDate + today + ePubDate;
+    mrssStr += slastBuildDate + today + elastBuildDate;
     mrssStr += sCategory + category;
     if (isDefined(sub_category)) {
       mrssStr += eCategory1;
