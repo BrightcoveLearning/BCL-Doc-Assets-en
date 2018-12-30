@@ -338,9 +338,9 @@ var BCLS = (function(window, document) {
     mrssStr += sTitle + podcast_title + eTitle;
     mrssStr += sLink + podcast_url + eLink;
     mrssStr += sLanguage + language + eLanguage;
-    mrssStr += sCopyright + sCdata + podcast_owner + ' year ' ' + eCdata + eCopyright;
+    mrssStr += sCopyright + sCdata + podcast_owner + ' year ' + eCdata + eCopyright;
     if (isDefined(podcast_subtitle)) {
-      mrssStr += sSubTitle + podcast_subtitle + eSubTitle;
+      mrssStr += sSubTitle + scData + podcast_subtitle + eCdata + eSubTitle;
     }
     mrssStr += sAuthor + podcast_author + eAuthor;
     mrssStr += sSummary + podcast_summary + eSummary;
