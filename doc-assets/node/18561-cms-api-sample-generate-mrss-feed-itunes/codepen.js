@@ -362,6 +362,7 @@ var BCLS = (function(window, document) {
     }
     mrssStr += sExplicit + explicit + eExplicit;
     mrssStr += sComplete + complete + eComplete;
+    mrssStr += sType + podcast_type + eType;
   }
 
   /**
