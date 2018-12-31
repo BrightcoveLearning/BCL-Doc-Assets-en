@@ -343,8 +343,8 @@ var BCLS = (function(window, document) {
       mrssStr += sSubTitle + scData + podcast_subtitle + eCdata + eSubTitle;
     }
     mrssStr += sAuthor + podcast_author + eAuthor;
-    mrssStr += sSummary + podcast_summary + eSummary;
-    mrssStr += sDescription + podcast_description + eDescription;
+    mrssStr += sSummary + sCdata + podcast_summary + eCdata + eSummary;
+    mrssStr += sDescription + sCdata + podcast_description + eCdata + eDescription;
     mrssStr += sOwner;
     mrssStr += sName + podcast_owner + eName;
     mrssStr += sEmail + podcast_email + eEmail;
