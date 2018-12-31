@@ -1,110 +1,112 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="Overview">Overview</h2>
-
-<p>Zencoder supports processing encrypted media files using the “encryption at rest” paradigm; we retrieve the encrypted files from your server, and only decrypt them while processing. The decrypted version of the file is removed immediately after processing, keeping your data secure.</p>
-
-<p>We support both AES-128 and AES-256 encrypted files in CBC and CTR modes. Decryption parameters must be included with your job request. Decryption is enabled when either a <a href="#decryption-key">decryption_key</a> or <a href="#decryption-key-url">decryption_key_url</a> is specified.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="decryption_method">decryption_method</h2>
-<code>decryption_method:String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
-
-<p><strong>Default:</strong> aes-128-cbc (if <a href="#decryption-key">decryption_key</a> or <a href="#decryption-key-url">decryption_key_url</a> are set)</p>
-
-<p><strong>Valid Values:</strong> "none", "aes-128-cbc", "aes-128-ctr", "aes-256-cbc", or "aes-256-ctr"</p>
-
-<p><strong>Compatible Job Types:</strong> vod</p>
-
-<p><strong>Example:</strong> aes-128-cbc</p>
-
-<p><strong>Description:</strong></p>
-
-<p>Set the decryption algorithm to use for decrypting.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "decryption_method": "aes-128-cbc"
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="decryption_key">decryption_key</h2>
-<code>decryption_key:String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
-
-<p><strong>Valid Values:</strong> A hexadecimal string of 16 octets (32 chars long, optional "0x" prefix)</p>
-
-<p><strong>Compatible Job Types:</strong> vod</p>
-
-<p><strong>Example:</strong> 1234567890abcdef1234567890abcdef</p>
-
-<p><strong>Description:</strong></p>
-
-<p>Set the decryption key to use for an encrypted input.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "decryption_key": "1234567890abcdef1234567890abcdef"
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="decryption_key_url">decryption_key_url</h2>
-<code>decryption_key_url:String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
-
-<p><strong>Valid Values:</strong> A URL to a file containing a 16-byte binary key</p>
-
-<p><strong>Compatible Job Types:</strong> vod</p>
-
-<p><strong>Example:</strong> http://example.com/encryption.key</p>
-
-<p><strong>Description:</strong></p>
-The URL of a decryption key file to use, with a key in binary form (16 bytes total). This is ignored if a decryption_key is specified.
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "decryption_key_url": "http://example.com/encryption.key"
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="decryption_password">decryption_password</h2>
-<code>decryption_password:String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
-
-<p><strong>Valid Values:</strong> A string</p>
-
-<p><strong>Compatible Job Types:</strong> vod</p>
-
-<p><strong>Example:</strong> super-secret-password</p>
-
-<p><strong>Description:</strong></p>
-
-<p>The password used in combination with the key to decrypt the input file.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "decryption_password": "super-secret-password"
-}</code></pre>
-</section>
-</article>
+  <section class="bcls-section">
+  <h2 id="Overview">Overview</h2>
+  
+  <p>Zencoder supports processing encrypted media files using the “encryption at rest” paradigm; we retrieve the encrypted files from your server, and only decrypt them while processing. The decrypted version of the file is removed immediately after processing, keeping your data secure.</p>
+  
+  <p>We support both AES-128 and AES-256 encrypted files in CBC and CTR modes. Decryption parameters must be included with your job request. Decryption is enabled when either a <a href="#decryption-key">decryption_key</a> or <a href="#decryption-key-url">decryption_key_url</a> is specified.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="decryption_method">decryption_method</h2>
+  <code>decryption_method:String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+  
+  <p><strong>Default:</strong> aes-128-cbc (if <a href="#decryption-key">decryption_key</a> or <a href="#decryption-key-url">decryption_key_url</a> are set)</p>
+  
+  <p><strong>Valid Values:</strong> "none", "aes-128-cbc", "aes-128-ctr", "aes-256-cbc", or "aes-256-ctr"</p>
+  
+  <p><strong>Compatible Job Types:</strong> vod</p>
+  
+  <p><strong>Example:</strong> aes-128-cbc</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>Set the decryption algorithm to use for decrypting.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "decryption_method": "aes-128-cbc"
+  }</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="decryption_key">decryption_key</h2>
+  <code>decryption_key:String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+  
+  <p><strong>Valid Values:</strong> A hexadecimal string of 16 octets (32 chars long, optional "0x" prefix)</p>
+  
+  <p><strong>Compatible Job Types:</strong> vod</p>
+  
+  <p><strong>Example:</strong> 1234567890abcdef1234567890abcdef</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>Set the decryption key to use for an encrypted input.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "decryption_key": "1234567890abcdef1234567890abcdef"
+  }</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="decryption_key_url">decryption_key_url</h2>
+  <code>decryption_key_url:String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+  
+  <p><strong>Valid Values:</strong> A URL to a file containing a 16-byte binary key</p>
+  
+  <p><strong>Compatible Job Types:</strong> vod</p>
+  
+  <p><strong>Example:</strong> http://example.com/encryption.key</p>
+  
+  <p><strong>Description:</strong></p>
+  The URL of a decryption key file to use, with a key in binary form (16 bytes total). This is ignored if a decryption_key is specified.
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "decryption_key_url": "http://example.com/encryption.key"
+  }</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="decryption_password">decryption_password</h2>
+  <code>decryption_password:String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#input">input</a></p>
+  
+  <p><strong>Valid Values:</strong> A string</p>
+  
+  <p><strong>Compatible Job Types:</strong> vod</p>
+  
+  <p><strong>Example:</strong> super-secret-password</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>The password used in combination with the key to decrypt the input file.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "decryption_password": "super-secret-password"
+  }</code></pre>
+  </section>
+  </article>
+  
+  
