@@ -200,6 +200,7 @@
       // add listener for loadedalldata
       player.on("loadedalldata", function() {
         var dateTime = new Date();
+        player.controls(true);
         if (settings.showLog) {
           logEvent("player-event", "loadedalldata", "", dateTime.toISOString());
         }
