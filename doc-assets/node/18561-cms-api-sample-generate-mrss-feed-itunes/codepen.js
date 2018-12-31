@@ -35,8 +35,10 @@ var BCLS = (function(window, document) {
     eDuration = '</itunes:duration>',
     sDescription = '<description>',
     eDescription = '</description>',
-    sSummary = '<itunes:summary><![CDATA[',
-    eSummary = ']]></itunes:summary>',
+    sSummary = '<itunes:summary>',
+    eSummary = '</itunes:summary>',
+    sKeywords = '<itunes:keywords>',
+    eKeywords = '</itunes:keywords>',
     sEnclosure = '<enclosure ',
     eEnclosure = ' />',
     sItem = '<item>',
@@ -360,6 +362,9 @@ var BCLS = (function(window, document) {
     } else {
       mrssStr += eCategory2;
     }
+    if (isDefined(podcast_keywords)) {
+      mrssStr +=
+    }
     mrssStr += sExplicit + explicit + eExplicit;
     mrssStr += sComplete + complete + eComplete;
     mrssStr += sType + podcast_type + eType;
@@ -397,6 +402,7 @@ var BCLS = (function(window, document) {
     podcast_title = podcast_title_input.value;
     podcast_subtitle = podcast_subtitle_input.value;
     podcast_description = podcast_description_input.value;
+    podcast_keywords = podcast_keywords_input.value;
     podcast_image = podcast_image_input.value;
     podcast_author = podcast_author_input.value;
     podcast_owner = isDefined(podcast_owner_input.value) ? podcast_owner_input.value : podcast_author_input.value;
