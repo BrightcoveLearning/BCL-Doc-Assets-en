@@ -61,8 +61,8 @@ var BCLS = (function(window, document) {
     eSeason = '</itunes:season>',
     sEpisode = '<itunes:episode>',
     eEpisode = '</itunes:episode>',
-    sEpisodeType = '<itunes:episode>',
-    eEpisodeType = '</itunes:episode>',
+    sEpisodeType = '<itunes:episodeType>',
+    eEpisodeType = '</itunes:episodeType>',
     // input data
     account_id,
     client_id,
@@ -524,7 +524,7 @@ var BCLS = (function(window, document) {
         mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
         mrssStr += sExplicit + explicit + eExplicit;
         mrssStr += sisClosedCaptioned + closed_captioned + eisClosedCaptioned;
-        mrssStr +=
+        mrssStr += sSeason + getSelectedValue(seasonSelectors[i]) * eSeason;
         mrssStr += eItem;
       }
     }
