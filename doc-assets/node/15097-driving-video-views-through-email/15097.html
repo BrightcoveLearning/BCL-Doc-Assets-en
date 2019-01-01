@@ -1,0 +1,96 @@
+<div class="training-video-player-ipx" data-experience="5a73630f7afd7a00101bc1b5" data-video-ids="4032048320001">&nbsp;</div>
+<script src="https://players.brightcove.net/20318290001/experience_5a73630f7afd7a00101bc1b5/live.js"></script>
+
+<div class="BCL-concept">
+<p>We often get asked about the best way to embed video inside of email. On most platforms, embedding videos directly into email isn’t possible. This isn't a Brightcove limitation, nearly every modern email system will strip out video player embed code due to security reasons. We can however, drive awareness and traffic for content by creating an email with some teaser text and a thumbnail image. The thumbnail image will look like a video player and be a clickable link that redirects to our video landing page.</p>
+
+<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15097-sample-email.png" /></p>
+
+<p>To complete this solution, the following steps will be performed:</p>
+
+<ol class="bcls-tasklist">
+	<li><a href="#createplayer">Create a Brightcove Player</a></li>
+	<li><a href="#landingpage">Create a video landing page</a></li>
+	<li><a href="#screenshot">Capture screen shot of player</a></li>
+	<li><a href="#email">Create email message</a></li>
+</ol>
+</div>
+
+<div class="BCL_concept">
+<h2 class="BCL_conceptTitle" id="createplayer">Creating a Brightcove Player</h2>
+
+<p>Start by creating a dedicated Brightcove player for use on a video landing page. Having a dedicated player makes it easier to track video analytics. Also, set the player to autoplay so when the user redirects from email to the landing page, the video will automatically start playing.</p>
+
+<ol class="bcls-tasklist">
+	<li>Login to Video Cloud Studio and open the <strong>Players</strong> module.</li>
+	<li>Click <strong>New Player</strong>.</li>
+	<li>Name the player and click <strong>Save</strong>.</li>
+	<li>Click the link for the player to open the player properties.</li>
+	<li>Locate the <strong>Settings</strong> panel and click <strong>Edit</strong>.</li>
+	<li>Set <strong>Auto-StartVideo on Player Load</strong> to <strong>Yes</strong>.</li>
+	<li><strong>Save</strong> the change and <strong>Publish</strong> the player.</li>
+	<li>Click <strong>Embed Code &amp; URL</strong> and click <strong>Published Player</strong>.</li>
+	<li>Select and copy the <strong>iframe Embed Code</strong>.</li>
+</ol>
+</div>
+
+<div class="BCL_concept">
+<h2 class="BCL_conceptTitle" id="landingpage">Creating a video landing page</h2>
+
+<p>The video landing page is where the user will be redirected to from the email message. Start by adding the iFrame player publishing code. The video ID to display will be passed in as a URL parameter. This allows the landing page to be used to display different videos. An outline of the steps is below.</p>
+
+<ol class="bcls-tasklist">
+	<li>Create a new HTML page to serve as the video landing page.</li>
+	<li>Paste in the iframe embed player publishing code.</li>
+	<li>Add in the JavaScript code to read in the video ID URL parameter. A sample is provided below.
+	<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;iframe src='//players.brightcove.net/1752604059001/d05e49ae-23d2-48fb-97d5-f01484d3f559_default/index.html'
+ allowfullscreen webkitallowfullscreen mozallowfullscreen width="640" height="360"&gt;&lt;/iframe&gt;
+
+&lt;script type="text/javascript"&gt;
+	var queryString = window.location.href.substring( window.location.href.indexOf('?') + 9 );
+    var iframeTag = document.getElementsByTagName("iframe")[0];
+    var  newVideo = "?videoId=" + queryString;
+    iframeTag.src += newVideo;
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+	</li>
+	<li>Save and publish the landing page. Make a note of the page URL.</li>
+</ol>
+</div>
+
+<div class="BCL_concept">
+<h2 class="BCL_conceptTitle" id="screenshot">Capturing a screen shot of the player</h2>
+
+<p>Capture a screen shot of the player with the video playing from the landing page. This image will be used as a clickable link in the body of the email. There are several ways to capture a screen image:</p>
+
+<ul>
+	<li>Mac - Apple has published a doc on <a href="https://support.apple.com/en-us/HT201361">How to take a screenshot on your Mac</a>. There are also third party products such as <a href="https://www.techsmith.com/snagit.html">Snagit</a>, <a href="https://www.ambrosiasw.com/utilities/snapzprox/">Snapz Pro X</a>, <a href="https://www.globaldelight.com/voila/">Voila</a> and others.</li>
+	<li>Windows - Windows provides a <a href="https://windows.microsoft.com/en-us/windows7/products/features/snipping-tool">snipping tool to capture screen shots</a>. There are also third party products such as <a href="https://www.techsmith.com/snagit.html">Snagit</a>, <a href="https://lightscreen.com.ar">Lightscreen</a> and others.</li>
+</ul>
+</div>
+
+<div class="BCL_concept">
+<h2 class="BCL_conceptTitle" id="email">Creating the email message</h2>
+
+<p>Finally, create a new email message. Add the player image to the body of the email and configure it as a clickable link that opens the video landing page. The steps to do this for each email client will be different. The steps below are for Gmail.</p>
+
+<ol class="bcls-tasklist">
+	<li>Open Gmail.</li>
+	<li>Click <strong>Compose</strong>.</li>
+	<li>Click the <strong>Insert Photo</strong> icon at the bottom of the email.</li>
+	<li>Browse and select the player image you created. The image will be embedded in the email.</li>
+	<li>Select the entire image and click the <strong>Insert link</strong> icon at the bottom of the email.</li>
+	<li>Click the <strong>Change</strong> link so the image link can be edited.<br />
+	<img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15097-image-url.png" /></li>
+	<li>Add the URL to the video landing page and click <strong>OK</strong>.<br />
+	<img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15097-url.png" /></li>
+	<li>Send the email.</li>
+</ol>
+</div>
