@@ -57,6 +57,12 @@ var BCLS = (function(window, document) {
     eLanguage = '</language>',
     sType = '<itunes:type>',
     eType = '</itunes:type>',
+    sSeason = '<itunes:season>',
+    eSeason = '</itunes:season>',
+    sEpisode = '<itunes:episode>',
+    eEpisode = '</itunes:episode>',
+    sEpisodeType = '<itunes:episode>',
+    eEpisodeType = '</itunes:episode>',
     // input data
     account_id,
     client_id,
