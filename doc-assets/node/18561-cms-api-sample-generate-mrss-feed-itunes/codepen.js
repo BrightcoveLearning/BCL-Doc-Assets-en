@@ -525,6 +525,8 @@ var BCLS = (function(window, document) {
         mrssStr += sExplicit + explicit + eExplicit;
         mrssStr += sisClosedCaptioned + closed_captioned + eisClosedCaptioned;
         mrssStr += sSeason + getSelectedValue(seasonSelectors[i]) * eSeason;
+        mrssStr += sEpisode + getSelectedValue(episodeSelectors[i]) + eEpisode;
+        mrssStr += sEpisodeType + getSelectedValue(episodeTypeSelectors[i]) + eEpisodeType;
         mrssStr += eItem;
       }
     }
