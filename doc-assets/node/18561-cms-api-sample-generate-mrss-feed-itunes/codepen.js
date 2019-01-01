@@ -512,20 +512,13 @@ var BCLS = (function(window, document) {
         if (video.images.hasOwnProperty('poster')) {
           mrssStr += sImage + video.images.poster.src + eImage;
         }
-        mrssStr +=
-          sEnclosure +
-          'length='' +
-          video.source.size +
-          '' type='video/mp4' ' +
-          'url='' +
-          video.source.src +
-          ''' +
-          eEnclosure;
-        mrssStr += sGuid + video.source.src + eGuid;
+        mrssStr += sEnclosure + 'length=""' + video.source.size + '" type="video/mp4" ' + 'url="' + video.source.src + '"' + eEnclosure;
+        mrssStr += sGuid + guidInputs[i].value + eGuid;
         mrssStr += sPubDate + pubDate + ePubDate;
         mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
         mrssStr += sExplicit + explicit + eExplicit;
         mrssStr += sisClosedCaptioned + closed_captioned + eisClosedCaptioned;
+        mrssStr +=
         mrssStr += eItem;
       }
     }
