@@ -363,7 +363,7 @@ var BCLS = (function(window, document) {
       mrssStr += eCategory2;
     }
     if (isDefined(podcast_keywords)) {
-      mrssStr +=
+      mrssStr += sKeywords + podcast_keywords + eKeywords;
     }
     mrssStr += sExplicit + explicit + eExplicit;
     mrssStr += sComplete + complete + eComplete;
