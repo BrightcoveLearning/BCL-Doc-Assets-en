@@ -1,6 +1,6 @@
 var BCLS = (function(window, document) {
   var mrssStr =
-      '<?xml version='1.0' encoding='utf-8'?><rss version='2.0' xmlns:itunes='http://www.itunes.com/dtds/podcast-1.0.dtd'>',
+      '<?xml version="1.0" encoding="utf-8'""><rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">',
     sCdata = '<![CDATA[',
     eCdata = ']>',
     sChannel = '<channel>',
@@ -518,7 +518,7 @@ var BCLS = (function(window, document) {
         if (video.images.hasOwnProperty('poster')) {
           mrssStr += sImage + video.images.poster.src + eImage;
         }
-        mrssStr += sEnclosure + 'length=""' + video.source.size + '" type="video/mp4" ' + 'url="' + video.source.src + '"' + eEnclosure;
+        mrssStr += sEnclosure + 'length="' + video.source.size + '" type="video/mp4" ' + 'url="' + video.source.src + '"' + eEnclosure;
         mrssStr += sGuid + guidInputs[i].value + eGuid;
         mrssStr += sPubDate + pubDate + ePubDate;
         mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
