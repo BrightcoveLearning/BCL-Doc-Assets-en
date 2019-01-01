@@ -45,7 +45,7 @@ var BCLS = (function(window, document) {
     eItem = '</item>',
     sLink = '<link>',
     eLink = '</link>',
-    sGuid = '<guid>',
+    sGuid = '<guid isPermaLink="false">',
     eGuid = '</guid>',
     sPubDate = '<pubDate>',
     ePubDate = '</pubDate>',
