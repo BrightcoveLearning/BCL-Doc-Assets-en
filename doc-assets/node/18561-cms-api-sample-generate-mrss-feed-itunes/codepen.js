@@ -438,7 +438,6 @@ var BCLS = (function(window, document) {
         account_id,
         podcast_image,
         type,
-        episode_type,
         category
       ])
     ) {
