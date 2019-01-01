@@ -432,7 +432,6 @@ var BCLS = (function(window, document) {
         podcast_description,
         podcast_email,
         language,
-        podcast_guid,
         client_id,
         client_secret,
         account_id,
