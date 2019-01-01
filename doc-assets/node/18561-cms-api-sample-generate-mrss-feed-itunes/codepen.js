@@ -646,7 +646,7 @@ var BCLS = (function(window, document) {
             fragment.appendChild(br);
           }
           p = document.createElement('p');
-          p.appendChild(document.createTextNode(** GUIDs for episodes should remain constant over the life of feed, so save them in case you want to add additional episodes localStorage. If you need to generate GUIDs, you can use ));
+          p.appendChild(document.createTextNode('** GUIDs for episodes should remain constant over the life of feed, so save them in case you want to add additional episodes localStorage. If you need to generate GUIDs, you can use '));
           a = document.createElement('a');
           a.setAttribute('href', 'https://guidgenerator.com/online-guid-generator.aspx');
           a.textContent = 'this online tool.';
