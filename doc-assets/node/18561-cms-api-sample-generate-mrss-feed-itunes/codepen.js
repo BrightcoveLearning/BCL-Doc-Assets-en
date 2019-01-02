@@ -555,7 +555,7 @@ var BCLS = (function(window, document) {
       case 'getVideos':
         endPoint = account_id + '/videos?limit=100';
         if (isDefined(search_string)) {
-          endPoint += '&q=' + encodeURI(search_string);
+          endPoint += '&q=' + replaceSpaces(search_string);
         }
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
