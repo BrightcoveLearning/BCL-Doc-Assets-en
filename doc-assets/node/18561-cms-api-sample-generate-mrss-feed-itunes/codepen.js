@@ -348,7 +348,7 @@ var BCLS = (function(window, document) {
     mrssStr += sLanguage + language + eLanguage;
     mrssStr += sCopyright + sCdata + podcast_owner + ' year ' + eCdata + eCopyright;
     if (isDefined(podcast_subtitle)) {
-      mrssStr += sSubTitle + sCData + podcast_subtitle + eCdata + eSubTitle;
+      mrssStr += sSubTitle + sCdata + podcast_subtitle + eCdata + eSubTitle;
     }
     mrssStr += sAuthor + podcast_author + eAuthor;
     mrssStr += sSummary + sCdata + podcast_summary + eCdata + eSummary;
