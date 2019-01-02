@@ -348,7 +348,7 @@ var BCLS = (function(window, document) {
     mrssStr += sLanguage + language + eLanguage;
     mrssStr += sCopyright + sCdata + podcast_owner + ' year ' + eCdata + eCopyright;
     if (isDefined(podcast_subtitle)) {
-      mrssStr += sSubTitle + scData + podcast_subtitle + eCdata + eSubTitle;
+      mrssStr += sSubTitle + sCData + podcast_subtitle + eCdata + eSubTitle;
     }
     mrssStr += sAuthor + podcast_author + eAuthor;
     mrssStr += sSummary + sCdata + podcast_summary + eCdata + eSummary;
@@ -423,16 +423,6 @@ var BCLS = (function(window, document) {
     closed_captioned = isChecked(closed_captioned_input) ? 'yes' : 'no';
     complete = isChecked(complete_input) ? 'yes' : 'no';
     type = getSelectedValue(type_select);
-    console.log('podcast_title', podcast_title);
-    console.log('site_url', site_url);
-    console.log('podcast_author', podcast_author);
-    console.log('podcast_url', podcast_url);
-    console.log('podcast_description', podcast_description);
-    console.log('podcast_email', podcast_email);
-    console.log('language', language);
-    console.log('podcast_image', podcast_image);
-    console.log('type', type);
-    console.log('category', category);
     if (
       requiredFieldsHaveValues([
         podcast_title,
