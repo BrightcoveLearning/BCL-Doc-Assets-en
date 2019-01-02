@@ -574,7 +574,7 @@ var BCLS = (function(window, document) {
             input,
             space,
             text,
-            br = document.createElement('br'),
+            br,
             i,
             iMax,
             j,
@@ -622,20 +622,21 @@ var BCLS = (function(window, document) {
             episodeSelect.setAttribute('name', 'episode_type_select');
             option = document.createElement('option');
             option.textContent = 'Episode Type';
-            episodeSelect.appendChild(option);
+            episodeTypeSelect.appendChild(option);
             option = document.createElement('option');
             option.setAttribute('value', 'full');
             option.textContent = 'Full';
-            episodeSelect.appendChild(option);
+            episodeTypeSelect.appendChild(option);
             option = document.createElement('option');
             option.setAttribute('value', 'trailer');
             option.textContent = 'Trailer';
-            episodeSelect.appendChild(option);
+            episodeTypeSelect.appendChild(option);
             option = document.createElement('option');
             option.setAttribute('value', 'bonus');
             option.textContent = 'Bonus';
-            episodeSelect.appendChild(option);
+            episodeTypeSelect.appendChild(option);
             fragment.appendChild(episodeTypeSelect);
+            br = document.createElement('br');
             fragment.appendChild(br);
             fragment.appendChild(document.createTextNode('GUID**'));
             space =  document.createTextNode(' ');
@@ -644,7 +645,9 @@ var BCLS = (function(window, document) {
             input.setAttribute('name', 'guid_input');
             input.setAttribute('type', 'text');
             fragment.appendChild(input);
+            br = document.createElement('br');
             fragment.appendChild(br);
+            br = document.createElement('br');
             fragment.appendChild(br);
           }
           p = document.createElement('p');
