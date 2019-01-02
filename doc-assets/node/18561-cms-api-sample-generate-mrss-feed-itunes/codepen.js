@@ -373,7 +373,7 @@ var BCLS = (function(window, document) {
     }
     mrssStr += sExplicit + explicit + eExplicit;
     mrssStr += sComplete + complete + eComplete;
-    mrssStr += sType + podcast_type + eType;
+    mrssStr += sType + type + eType;
   }
 
   /**
@@ -422,7 +422,7 @@ var BCLS = (function(window, document) {
     explicit = isChecked(explicit_input) ? 'yes' : 'no';
     closed_captioned = isChecked(closed_captioned_input) ? 'yes' : 'no';
     complete = isChecked(complete_input) ? 'yes' : 'no';
-
+    type = getSelectedValue(type_select);
     if (
       requiredFieldsHaveValues([
         podcast_title,
