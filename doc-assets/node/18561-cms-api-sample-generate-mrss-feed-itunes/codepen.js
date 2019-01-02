@@ -569,21 +569,24 @@ var BCLS = (function(window, document) {
             space,
             p,
             a,
+            video,
             span,
             input,
             space,
             text,
-            br,
+            br = document.createElement('br'),
             i,
             iMax,
             j,
             fragment = document.createDocumentFragment();
           all_videos = JSON.parse(response);
+          console.log(all_videos);
           logMessage(videos.length + ' videos retrieved');
           apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
           iMax = all_videos.length;
           for (i = 0; i < iMax; i++) {
-            fragment.appendChild(document.createTextNode(all_videos[i].name));
+            video = all_videos[i];
+            fragment.appendChild(document.createTextNode(video.name));
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
             seasonSelect = document.createElement('select');
@@ -597,6 +600,7 @@ var BCLS = (function(window, document) {
               option.textContent = j;
               seasonSelect.appendChild(option);
             }
+            console.log('seasonSelect', seasonSelect);
             fragment.appendChild(seasonSelect);
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
