@@ -657,19 +657,11 @@ var BCLS = (function(window, document) {
           // clear videos videos
           returned_videos.innerHTML = '';
           returned_videos.appendChild(fragment);
-          // get references to checkboxes
+          // get references to selectors
           seasonSelectors = document.getElementsByName('season_select');
           episodeSelectors = document.getElementsByName('episode_select');
           episodeTypeSelectors = document.getElementsByName('episode_type_select');
           guidInputs = document.getElementsByName('guid_input');
-          // add event listener for select allows
-          videosSelectAll.addEventListener('change', function() {
-            if (this.checked) {
-              selectAllCheckboxes(videosCollection);
-            } else {
-              deselectAllCheckboxes(videosCollection);
-            }
-          });
         });
         break;
       case 'getVideoSources':
