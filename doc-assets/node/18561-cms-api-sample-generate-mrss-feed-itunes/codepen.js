@@ -593,7 +593,7 @@ var BCLS = (function(window, document) {
             seasonSelect.appendChild(option);
             for (j = 1; j < 11; j++) {
               option = document.createElement('option');
-              option.setAttribute(value, j);
+              option.setAttribute('value', j);
               option.textContent = j;
               seasonSelect.appendChild(option);
             }
@@ -607,7 +607,7 @@ var BCLS = (function(window, document) {
             episodeSelect.appendChild(option);
             for (j = 1; j < 11; j++) {
               option = document.createElement('option');
-              option.setAttribute(value, j);
+              option.setAttribute('value', j);
               option.textContent = j;
               episodeSelect.appendChild(option);
             }
