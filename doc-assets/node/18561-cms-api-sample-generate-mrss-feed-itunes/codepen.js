@@ -100,7 +100,7 @@ var BCLS = (function(window, document) {
     totalCalls = 0,
     callNumber = 0,
     videos = [],
-    all_videos = [],
+    videos = [],
     // elements
     account_id_input = document.getElementById('account_id_input'),
     client_id_input = document.getElementById('client_id_input'),
@@ -581,13 +581,13 @@ var BCLS = (function(window, document) {
             iMax,
             j,
             fragment = document.createDocumentFragment();
-          all_videos = JSON.parse(response);
-          console.log(all_videos);
+          videos = JSON.parse(response);
+          console.log(videos);
           logMessage(videos.length + ' videos retrieved');
-          apiResponse.textContent = JSON.stringify(all_videos, null, '  ');
-          iMax = all_videos.length;
+          apiResponse.textContent = JSON.stringify(videos, null, '  ');
+          iMax = videos.length;
           for (i = 0; i < iMax; i++) {
-            video = all_videos[i];
+            video = videos[i];
             fragment.appendChild(document.createTextNode(video.name));
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
@@ -771,7 +771,6 @@ var BCLS = (function(window, document) {
       getInputData();
     });
     make_feed.addEventListener('click', function() {
-      getVideosForFeed();
       totalVideos = videos.length;
       totalCalls = totalVideos;
       logMessage('Total videos to retrieve: ' + totalVideos);
