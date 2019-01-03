@@ -623,7 +623,7 @@ var BCLS = (function(window, document) {
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
             episodeTypeSelect = document.createElement('select');
-            episodeSelect.setAttribute('name', 'episode_type_select');
+            episodeTypeSelect.setAttribute('name', 'episode_type_select');
             option = document.createElement('option');
             option.textContent = 'Episode Type';
             episodeTypeSelect.appendChild(option);
