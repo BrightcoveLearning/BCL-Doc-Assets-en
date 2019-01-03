@@ -487,6 +487,10 @@ var BCLS = (function(window, document) {
 
 
   function addItems() {
+    console.log('seasonSelectors', seasonSelectors);
+    console.log('episodeSelectors', episodeSelectors);
+    console.log('episodeTypeSelectors', episodeTypeSelectors);
+    console.log('guidInputs', guidInputs);
     var i,
       iMax,
       video,
@@ -601,7 +605,6 @@ var BCLS = (function(window, document) {
               option.textContent = j;
               seasonSelect.appendChild(option);
             }
-            console.log('seasonSelect', seasonSelect);
             fragment.appendChild(seasonSelect);
             space =  document.createTextNode(' ');
             fragment.appendChild(space);
