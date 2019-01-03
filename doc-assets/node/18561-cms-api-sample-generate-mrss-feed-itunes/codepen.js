@@ -536,6 +536,7 @@ var BCLS = (function(window, document) {
     }
     mrssStr += eChannel + '</rss>';
     logMessage('Finished!');
+    console.log('rss', mrssStr);
     feedDisplay.textContent = vkbeautify.xml(mrssStr);
     enableButtons();
   }
