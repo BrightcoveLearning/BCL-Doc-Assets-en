@@ -366,7 +366,7 @@ var BCLS = (function(window, document) {
       mrssStr += sSubcategory + sub_category + eSubCategory;
       mrssStr += eCategory;
     } else {
-      mrssStr += eCategory2;
+      mrssStr += eCategory1 + eCategory;
     }
     if (isDefined(podcast_keywords)) {
       mrssStr += sKeywords + podcast_keywords + eKeywords;
