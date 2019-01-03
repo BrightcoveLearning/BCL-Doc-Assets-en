@@ -582,7 +582,6 @@ var BCLS = (function(window, document) {
             j,
             fragment = document.createDocumentFragment();
           videos = JSON.parse(response);
-          console.log(videos);
           logMessage(videos.length + ' videos retrieved');
           apiResponse.textContent = JSON.stringify(videos, null, '  ');
           iMax = videos.length;
