@@ -423,6 +423,7 @@ var BCLS = (function(window, document) {
     closed_captioned = isChecked(closed_captioned_input) ? 'yes' : 'no';
     complete = isChecked(complete_input) ? 'yes' : 'no';
     type = getSelectedValue(type_select);
+    search_string = search_string_input.value;
     if (
       requiredFieldsHaveValues([
         podcast_title,
@@ -437,7 +438,8 @@ var BCLS = (function(window, document) {
         account_id,
         podcast_image,
         type,
-        category
+        category,
+        search_string
       ])
     ) {
       setPodcastData();
