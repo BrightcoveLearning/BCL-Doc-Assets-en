@@ -31,10 +31,12 @@ var BCLS = (function(window, document) {
     pLogFinish = document.createElement('p'),
     spanIntro2 = document.createElement('span'),
     spanOf2 = document.createElement('span'),
-    spanRenditionsTotal = document.createElement('span'),
-    spanRenditionsCount = document.createElement('span'),
-    spanRenditionsTotalEl,
-    spanRenditionsCountEl;
+    unknown_csv = document.getElementById('unknown_csv'),
+    remote_csv = document.getElementById('remote_csv'),
+    live_origin_csv = document.getElementById('live_origin_csv'),
+    static_origin_csv = document.getElementById('static_origin_csv'),
+    dynamic_origin_csv = document.getElementById('dynamic_origin_csv'),
+    ;
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -426,6 +428,12 @@ var BCLS = (function(window, document) {
       this.select();
     });
     live_origin_csv.addEventListener('click', function() {
+      this.select();
+    });
+    static_origin_csv.addEventListener('click', function() {
+      this.select();
+    });
+    dynamic_origin_csv.addEventListener('click', function() {
       this.select();
     });
 
