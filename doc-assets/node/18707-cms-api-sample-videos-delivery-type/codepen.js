@@ -36,6 +36,11 @@ var BCLS = (function(window, document) {
     live_origin_csv = document.getElementById('live_origin_csv'),
     static_origin_csv = document.getElementById('static_origin_csv'),
     dynamic_origin_csv = document.getElementById('dynamic_origin_csv'),
+    unknown_table = document.getElementById('unknown_table'),
+    remote_table = document.getElementById('remote_table'),
+    live_origin_table = document.getElementById('live_origin_table'),
+    static_origin_table = document.getElementById('static_origin_table'),
+    dynamic_origin_table = document.getElementById('dynamic_origin_table'),
     ;
 
   /**
@@ -116,33 +121,6 @@ var BCLS = (function(window, document) {
     return targetArray;
   }
 
-  function processRenditions(renditions, callback) {
-    var i,
-      iMax = renditions.length,
-      hlsRenditions = [],
-      mp4Renditions = [],
-      flvRenditions = [],
-      otherRenditions = [],
-      totalSize = 0;
-    // separate renditions by type
-    for (i = 0; i < iMax; i += 1) {
-      if (renditions[i].hasOwnProperty('size')) {
-        totalSize += renditions[i].size;
-      }
-      if (renditions[i].video_container === 'M2TS') {
-        hlsRenditions.push(renditions[i]);
-      } else if (renditions[i].video_container === 'MP4') {
-        mp4Renditions.push(renditions[i]);
-      } else if (renditions[i].video_container === 'FLV') {
-        flvRenditions.push(renditions[i]);
-      } else {
-        otherRenditions.push(renditions[i]);
-      }
-    }
-    // sort renditions by encoding rate
-    callback(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize);
-  }
-
   /**
    * determines whether specified item is in an array
    *
@@ -159,15 +137,6 @@ var BCLS = (function(window, document) {
       }
     }
     return false;
-  }
-
-  function processCustomFields(fields) {
-    var field;
-    for (field in fields) {
-      if (!arrayContains(customFields, field)) {
-        customFields.push(field);
-      }
-    }
   }
 
 
@@ -220,7 +189,7 @@ var BCLS = (function(window, document) {
         resWidth = rendition.frame_width;
         resHeight = rendition.frame_height;
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.state + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + video.updated_at + '",\r\n';
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
@@ -288,80 +257,6 @@ var BCLS = (function(window, document) {
             callNumber = 0;
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
-            createRequest('getDigitalMaster');
-          }
-        });
-        break;
-      case 'getDigitalMaster':
-        videosArray[callNumber].totalSize = 0;
-        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/digital_master';
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          if (isDefined(response)){
-            responseDecoded = JSON.parse(response);
-            if (isDefined(responseDecoded) && !isDefined(responseDecoded.length)) {
-              videosArray[callNumber].totalSize += responseDecoded.size;
-              createRequest('getVideoRenditions');
-            } else {
-              createRequest('getVideoRenditions');
-            }
-          } else {
-            createRequest('getVideoRenditions');
-          }
-        })
-        break;
-      case 'getVideoRenditions':
-        var i,
-          iMax = videosArray.length;
-        videosArray[callNumber].hlsRenditions = [];
-        videosArray[callNumber].mp4Renditions = [];
-        videosArray[callNumber].flvRenditions = [];
-        videosArray[callNumber].otherRenditions = [];
-        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        spanRenditionsCountEl.textContent = callNumber + 1;
-        makeRequest(options, function(response) {
-            var renditions = JSON.parse(response);
-            if (renditions.length > 0) {
-              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
-                if (hlsRenditions.length > 0) {
-                  sortArray(hlsRenditions, 'encoding_rate');
-                }
-
-                videosArray[callNumber].hlsRenditions = hlsRenditions;
-                if (mp4Renditions.length > 0) {
-                  sortArray(mp4Renditions, 'encoding_rate');
-                }
-                videosArray[callNumber].mp4Renditions = mp4Renditions;
-                if (flvRenditions.length > 0) {
-                  sortArray(flvRenditions, 'encoding_rate');
-                }
-                videosArray[callNumber].flvRenditions = flvRenditions;
-                // if (otherRenditions.length > 0) {
-                //     sortArray(otherRenditions, 'encoding_rate');
-                // }
-                // videosArray[callNumber].otherRenditions = otherRenditions;
-                videosArray[callNumber].totalSize += totalSize;
-            });
-          } else {
-              videosArray[callNumber].hlsRenditions = [];
-              videosArray[callNumber].mp4Renditions = [];
-              videosArray[callNumber].flvRenditions = [];
-            }
-          videosCompleted++;
-          logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-          callNumber++;
-          if (callNumber < totalVideos) {
-            createRequest('getDigitalMaster');
-          } else {
-            // create csv headings
-            startCSVStrings();
-            // write the report
-            writeReport();
           }
         });
         break;
