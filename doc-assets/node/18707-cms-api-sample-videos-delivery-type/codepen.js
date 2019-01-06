@@ -25,11 +25,9 @@ var BCLS = (function(window, document) {
     content,
     logger = document.getElementById('logger'),
     logText = document.getElementById('logText'),
-    csvData = document.getElementById('csvData'),
     apiRequest = document.getElementById('apiRequest'),
     allButtons = document.getElementsByName('button'),
     pLogGettingVideos = document.createElement('p'),
-    pLogGettingRenditions = document.createElement('p'),
     pLogFinish = document.createElement('p'),
     spanIntro2 = document.createElement('span'),
     spanOf2 = document.createElement('span'),
@@ -421,24 +419,15 @@ var BCLS = (function(window, document) {
 
   function init() {
     // event listeners
-    csvData.addEventListener('click', function() {
+    unknown_csv.addEventListener('click', function() {
       this.select();
     });
-    // set up the log elements
-    content = document.createTextNode('Getting renditions for video ');
-    spanIntro2.appendChild(content);
-    content = document.createTextNode(' of ');
-    spanOf2.appendChild(content);
-    spanRenditionsCount.setAttribute('id', 'spanRenditionsCount');
-    spanRenditionsTotal.setAttribute('id', 'spanRenditionsTotal');
-    pLogGettingRenditions.appendChild(spanIntro2);
-    pLogGettingRenditions.appendChild(spanRenditionsCount);
-    pLogGettingRenditions.appendChild(spanOf2);
-    pLogGettingRenditions.appendChild(spanRenditionsTotal);
-    logger.appendChild(pLogGettingRenditions);
-    spanRenditionsCountEl = document.getElementById('spanRenditionsCount');
-    spanRenditionsTotalEl = document.getElementById('spanRenditionsTotal');
-    logger.appendChild(pLogFinish);
+    remote_csv.addEventListener('click', function() {
+      this.select();
+    });
+    live_origin_csv.addEventListener('click', function() {
+      this.select();
+    });
 
   }
 
