@@ -143,7 +143,7 @@ var BCLS = (function(window, document) {
   function startCSVStrings() {
     var i = 0,
       iMax;
-    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","State","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",\r\n';
+    csvStr = '"ID","Name","Date Last Modified",\r\n';
   }
 
   function writeReport() {
@@ -151,16 +151,7 @@ var BCLS = (function(window, document) {
       iMax,
       j,
       jMax,
-      video,
-      hlsLowRate,
-      hlsHighRate,
-      mp4LowRate,
-      mp4HighRate,
-      flvLowRate,
-      flvHighRate,
-      resWidth,
-      resHeight,
-      rendition = {};
+      video;
     if (videosArray.length > 0) {
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
