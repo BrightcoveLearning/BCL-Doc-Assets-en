@@ -149,6 +149,9 @@ var BCLS = (function(window, document) {
       j,
       jMax,
       video,
+      tr,
+      td,
+      frag = document.createDocumentFragment(),
       csvStr = '"ID","Name","Date Last Modified","Delivery Type",\r\n';
 
     if (videos.length > 0) {
@@ -156,7 +159,9 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i += 1) {
         video = videosArray[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + video.updated_at + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
+        // add table row
+
       }
       csvEl.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
@@ -166,6 +171,7 @@ var BCLS = (function(window, document) {
     } else {
       csvEl.textContent = 'No videos with this delivery type';
     }
+    return;
   }
 
   function processVideos(videos) {
