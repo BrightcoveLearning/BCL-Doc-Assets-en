@@ -103,45 +103,6 @@ var BCLS = (function(window, document) {
     }
   }
 
-  /**
-   * sort an array of objects based on an object property
-   * @param {array} targetArray - array to be sorted
-   * @param {string|number} objProperty - object property to sort on
-   * @return sorted array
-   */
-  function sortArray(targetArray, objProperty) {
-    targetArray.sort(function(a, b) {
-      var propA = a[objProperty],
-        propB = b[objProperty];
-      // sort ascending; reverse propA and propB to sort descending
-      if (propA < propB) {
-        return -1;
-      } else if (propA > propB) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-    return targetArray;
-  }
-
-  /**
-   * determines whether specified item is in an array
-   *
-   * @param {array} array to check
-   * @param {string} item to check for
-   * @return {boolean} true if item is in the array, else false
-   */
-  function arrayContains(arr, item) {
-    var i,
-      iMax = arr.length;
-    for (i = 0; i < iMax; i++) {
-      if (arr[i] === item) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   function writeReport(videos, tableEl, csvEl) {
     var i,
