@@ -41,7 +41,11 @@ var BCLS = (function(window, document) {
     live_origin_table = document.getElementById('live_origin_table'),
     static_origin_table = document.getElementById('static_origin_table'),
     dynamic_origin_table = document.getElementById('dynamic_origin_table'),
-    ;
+    remoteVideos = [],
+    unknownVideos = [],
+    staticVideos = [],
+    dynamicVideos = [],
+    liveVideos = [];
 
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -164,6 +168,23 @@ var BCLS = (function(window, document) {
       pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
+    }
+  }
+
+  function processVideos(videos) {
+    var i,
+      iMax,
+      obj;
+    iMax = videos.length;
+    for (i = 0; i < iMax; i++) {
+      obj = {};
+      switch (videos[i].delivery_type) {
+        case 'dynamic_origin':
+
+          break;
+        default:
+
+      }
     }
   }
 
