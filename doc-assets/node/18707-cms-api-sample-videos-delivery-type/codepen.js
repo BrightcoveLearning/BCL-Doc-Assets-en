@@ -65,12 +65,12 @@ var BCLS = (function(window, document) {
    * @return {Boolean}
    */
   function isJson(str) {
-      try {
-          JSON.parse(str);
-      } catch (e) {
-          return false;
-      }
-      return true;
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -211,12 +211,12 @@ var BCLS = (function(window, document) {
     var endPoint = '',
       parsedData,
       options = {};
-      options.proxyURL = proxyURL;
-      options.account_id = account_id;
-      if (isDefined(client_id) && isDefined(client_secret)) {
-        options.client_id = client_id;
-        options.client_secret = client_secret;
-      }
+    options.proxyURL = proxyURL;
+    options.account_id = account_id;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
     switch (id) {
@@ -278,42 +278,42 @@ var BCLS = (function(window, document) {
    * @param  {Function} [callback] callback function that will process the response
    */
   function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-          response,
-          requestParams,
-          dataString,
-          proxyURL    = options.proxyURL,
-          // response handler
-          getResponse = function() {
-              try {
-                  if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                          response = httpRequest.responseText;
-                          // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          if (response === '') {
-                              response = null;
-                          }
-                          // return the response
-                          callback(response);
-                      } else {
-                          logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
-                      }
-                  }
-              } catch (e) {
-                  logger.appendChild(document.createTextNode('Caught Exception: ' + e));
+    var httpRequest = new XMLHttpRequest(),
+      response,
+      requestParams,
+      dataString,
+      proxyURL = options.proxyURL,
+      // response handler
+      getResponse = function() {
+        try {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '') {
+                response = null;
               }
-          };
-      /**
-       * set up request data
-       * the proxy used here takes the following request body:
-       * JSON.strinify(options)
-       */
-      // set response handler
-      httpRequest.onreadystatechange = getResponse;
-      // open the request
-      httpRequest.open('POST', proxyURL);
-      // open and send request
-      httpRequest.send(JSON.stringify(options));
+              // return the response
+              callback(response);
+            } else {
+              logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
+            }
+          }
+        } catch (e) {
+          logger.appendChild(document.createTextNode('Caught Exception: ' + e));
+        }
+      };
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.strinify(options)
+     */
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 
 
@@ -349,7 +349,7 @@ var BCLS = (function(window, document) {
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
       logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
-        account_id = '1752604059001';
+      account_id = '1752604059001';
     }
     // get video count
     createRequest('getCount');
