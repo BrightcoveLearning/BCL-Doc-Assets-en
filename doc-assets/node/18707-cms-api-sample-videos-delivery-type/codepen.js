@@ -195,6 +195,9 @@ var BCLS = (function(window, document) {
           console.log('should not be here', videos);
       }
     }
+    console.log('dynamicVideos', dynamicVideos);
+    console.log('staticVideos', staticVideos);
+    console.log('liveVideos', liveVideos);
     writeReport(dynamicVideos, dynamic_origin_table, dynamic_origin_csv);
     writeReport(staticVideos, static_origin_table, static_origin_csv);
     writeReport(liveVideos, live_origin_table, live_origin_csv);
