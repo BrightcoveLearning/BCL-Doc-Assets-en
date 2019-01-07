@@ -147,10 +147,10 @@ var BCLS = (function(window, document) {
   function startCSVStrings() {
     var i = 0,
       iMax;
-    csvStr = '"ID","Name","Date Last Modified",\r\n';
+    csvStr = '"ID","Name","Date Last Modified","Delivery Type",\r\n';
   }
 
-  function writeReport() {
+  function writeReport(videos, tableEl, csvEl) {
     var i,
       iMax,
       j,
