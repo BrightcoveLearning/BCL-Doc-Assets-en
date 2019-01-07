@@ -138,9 +138,7 @@ var BCLS = (function(window, document) {
         frag.appendChild(tr);
       }
       csvEl.textContent += csvStr;
-      // content = document.createTextNode('Finished! See the results or get the CSV data below.');
-      pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
-      // reportDisplay.innerHTML = summaryReportStr + reportStr;
+      tableEl.appendChild(frag);
       enableButtons();
     } else {
       csvEl.textContent = 'No videos with this delivery type';
@@ -194,9 +192,10 @@ var BCLS = (function(window, document) {
           unknownVideos.push(obj);
           break;
         default:
-          console.log('shouldn't be here', videos);
+          console.log('should not be here', videos);
       }
     }
+    writeReport()
   }
 
   /**
@@ -252,10 +251,10 @@ var BCLS = (function(window, document) {
           videosArray = videosArray.concat(parsedData);
           callNumber++;
           if (callNumber < totalCalls) {
+            logText.textContent = 'Getting video ' + (callNumber + 1) + ' of ' + totalVideos;
             createRequest('getVideos');
           } else {
-            callNumber = 0;
-            logText.textContent = 'Getting video ' + (callNumber + 1) + ' of ' + totalVideos;
+            processVideos(videosArray);
           }
         });
         break;
