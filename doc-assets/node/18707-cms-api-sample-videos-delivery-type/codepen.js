@@ -112,11 +112,11 @@ var BCLS = (function(window, document) {
       td,
       frag = document.createDocumentFragment(),
       csvStr = '"ID","Name","Date Last Modified","Delivery Type",\r\n';
-
+console.log('videos', videos);
     if (videos.length > 0) {
-      iMax = videosArray.length;
+      iMax = videos.length;
       for (i = 0; i < iMax; i += 1) {
-        video = videosArray[i];
+        video = videos[i];
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
         // add table row
@@ -137,7 +137,6 @@ var BCLS = (function(window, document) {
       }
       csvEl.textContent += csvStr;
       tableEl.appendChild(frag);
-      enableButtons();
     } else {
       csvEl.textContent = 'No videos with this delivery type';
     }
@@ -193,15 +192,13 @@ var BCLS = (function(window, document) {
           console.log('should not be here', videos);
       }
     }
-    console.log('dynamicVideos', dynamicVideos);
-    console.log('staticVideos', staticVideos);
-    console.log('liveVideos', liveVideos);
     writeReport(dynamicVideos, dynamic_origin_table, dynamic_origin_csv);
     writeReport(staticVideos, static_origin_table, static_origin_csv);
     writeReport(liveVideos, live_origin_table, live_origin_csv);
     writeReport(remoteVideos, remote_table, remote_csv);
     writeReport(unknownVideos, unknown_table, unknown_csv);
     logText.textContent = 'Finished! See the reports below.'
+    enableButtons();
   }
 
   /**
@@ -352,7 +349,7 @@ var BCLS = (function(window, document) {
       // only use entered account id if client id and secret are entered also
       if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
         logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
-        account_id = '1752604059001';
+        account_id = '57838016001';
       }
       // get video count
       createRequest('getCount');
