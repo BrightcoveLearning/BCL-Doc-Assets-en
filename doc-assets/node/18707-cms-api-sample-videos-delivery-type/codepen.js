@@ -174,16 +174,50 @@ var BCLS = (function(window, document) {
   function processVideos(videos) {
     var i,
       iMax,
-      obj;
+      obj,
+      video;
     iMax = videos.length;
     for (i = 0; i < iMax; i++) {
       obj = {};
-      switch (videos[i].delivery_type) {
+      video = videos[i];
+      switch (video.delivery_type) {
         case 'dynamic_origin':
-
+          obj.id = video.id;
+          obj.name = video.name;
+          obj.updated_at = video.updated_at;
+          obj.delivery_type = video.delivery_type;
+          dynamicVideos.push(obj);
+          break;
+        case 'static_origin':
+          obj.id = video.id;
+          obj.name = video.name;
+          obj.updated_at = video.updated_at;
+          obj.delivery_type = video.delivery_type;
+          staticVideos.push(obj);
+          break;
+        case 'live_origin':
+          obj.id = video.id;
+          obj.name = video.name;
+          obj.updated_at = video.updated_at;
+          obj.delivery_type = video.delivery_type;
+          liveVideos.push(obj);
+          break;
+        case 'remote':
+          obj.id = video.id;
+          obj.name = video.name;
+          obj.updated_at = video.updated_at;
+          obj.delivery_type = video.delivery_type;
+          remoteVideos.push(obj);
+          break;
+        case 'unknown':
+          obj.id = video.id;
+          obj.name = video.name;
+          obj.updated_at = video.updated_at;
+          obj.delivery_type = video.delivery_type;
+          unknownVideos.push(obj);
           break;
         default:
-
+          console.log('shouldn't be here', videos);
       }
     }
   }
