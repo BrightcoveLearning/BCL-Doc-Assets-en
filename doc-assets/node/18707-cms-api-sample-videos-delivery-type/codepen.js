@@ -195,7 +195,12 @@ var BCLS = (function(window, document) {
           console.log('should not be here', videos);
       }
     }
-    writeReport()
+    writeReport(dynamicVideos, dynamic_origin_table, dynamic_origin_csv);
+    writeReport(staticVideos, static_origin_table, static_origin_csv);
+    writeReport(liveVideos, live_origin_table, live_origin_csv);
+    writeReport(remoteVideos, remote_table, remote_csv);
+    writeReport(unknownVideos, unknown_table, unknown_csv);
+    logText.textContent = 'Finished! See the reports below.'
   }
 
   /**
