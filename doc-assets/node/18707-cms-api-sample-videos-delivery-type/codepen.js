@@ -143,31 +143,28 @@ var BCLS = (function(window, document) {
     return false;
   }
 
-
-  function startCSVStrings() {
-    var i = 0,
-      iMax;
-    csvStr = '"ID","Name","Date Last Modified","Delivery Type",\r\n';
-  }
-
   function writeReport(videos, tableEl, csvEl) {
     var i,
       iMax,
       j,
       jMax,
-      video;
-    if (videosArray.length > 0) {
+      video,
+      csvStr = '"ID","Name","Date Last Modified","Delivery Type",\r\n';
+
+    if (videos.length > 0) {
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
         video = videosArray[i];
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + video.updated_at + '",\r\n';
       }
-      csvData.textContent += csvStr;
+      csvEl.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
       pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
+    } else {
+      csvEl.textContent = 'No videos with this delivery type';
     }
   }
 
