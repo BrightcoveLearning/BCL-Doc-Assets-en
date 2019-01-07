@@ -107,8 +107,6 @@ var BCLS = (function(window, document) {
   function writeReport(videos, tableEl, csvEl) {
     var i,
       iMax,
-      j,
-      jMax,
       video,
       tr,
       td,
