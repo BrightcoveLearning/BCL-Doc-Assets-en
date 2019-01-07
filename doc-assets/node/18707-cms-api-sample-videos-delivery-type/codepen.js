@@ -161,7 +161,20 @@ var BCLS = (function(window, document) {
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
         // add table row
-
+        tr = document.createElement('tr');
+        td = document.createElement('td');
+        td.textContent = video.id;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = video.name;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = video.updated_at;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = video.delivery_type;
+        tr.appendChild(td);
+        frag.appendChild(tr);
       }
       csvEl.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
