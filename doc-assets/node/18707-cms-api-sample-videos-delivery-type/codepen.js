@@ -112,7 +112,6 @@ var BCLS = (function(window, document) {
       td,
       frag = document.createDocumentFragment(),
       csvStr = '"ID","Name","Date Last Modified","Delivery Type",\r\n';
-console.log('videos', videos);
     if (videos.length > 0) {
       iMax = videos.length;
       for (i = 0; i < iMax; i += 1) {
