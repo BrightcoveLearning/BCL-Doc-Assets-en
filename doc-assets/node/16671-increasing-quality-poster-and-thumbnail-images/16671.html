@@ -1,0 +1,148 @@
+<div class="BCL-concept">
+<p>When a video is uploaded to Video Cloud, poster and thumbnail images are created automatically by taking a snapshot from the source video at the midway point. The size of the poster and thumbnail is based upon the dimensions specified in the ingest profile used when uploading the video.</p>
+
+<p>Poster and thumbnail images can be seen in the following areas:</p>
+
+<ul>
+	<li>In the Media module, the thumbnail image is displayed next to the video; the poster image will appear in the preview player on the video properties page</li>
+	<li>The thumbnail image will appear when publishing a playlist</li>
+	<li>The poster image is displayed in the playback area of the video player after the player loads; the poster will display until the viewer presses the play button</li>
+</ul>
+
+<p class="BCL-aside">Note: If you don't like the default images that were captured, you can <a href="/node/15519">upload a new image</a> or <a href="/node/15620">capture a new image</a> to use as the poster and thumbnail.</p>
+
+<p>Depending on the size of your published player, the poster image may be upscaled to fit the player. Scaling images may make them appear blurry and distorted. Having poster images that are a larger size will eliminate the need for upscaling images.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="sizes">Checking image sizes</h2>
+
+<p>There are a couple of ways that you can check the size of a poster image:</p>
+
+<ul>
+	<li><a href="#mm">Check the image sizes using the Media module</a></li>
+	<li><a href="#ingest">Check the image sizes in the ingest profile</a></li>
+</ul>
+
+<div id="mm" class="BCL-subsection">
+<h3>Checking image sizes in the Media module</h3>
+
+<p>To check the size of the poster and thumbnail images in the Media module, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the Media module.</li>
+	<li>Click on a video to open the video properties.</li>
+	<li>In the <strong>IMAGES</strong> section, right-click on the poster or thumbnail image.</li>
+	<li>Depending on your browser, there should be options to either save the image or copy the image address.</li>
+	<li>By saving the image or using the image address to open it in another tab, you can see the size of the image.</li>
+</ol>
+
+<p>You may wish to use one of the many tools available that can give you the exact dimensions of the image. Remember, if any of your players are larger than the size of the poster, the image will be upscaled.</p>
+</div>
+
+<div id="ingest" class="BCL-subsection">
+<h3>Checking ingest profile image sizes</h3>
+
+<p>Video Cloud Studio does not display the ingest profile that was used when a video was uploaded. You can, however, check the image sizes for ingest profiles:</p>
+
+<ol class="bcls-tasklist">
+	<li>In the Studio header, click the <strong>ADMIN</strong> link. Note that you must be a Video Cloud Studio user with the Administrator role to access the ADMIN menu.</li>
+	<li>Click <strong>Ingest Profiles</strong>.</li>
+	<li>Click on a <strong>Profile Name</strong>. The Profile Editor will display the profile definition.</li>
+	<li>The method to view the image sizes will vary based upon the <strong>Profile Version</strong> (i.e. Legacy, Dynamic Delivery or Context-Aware) that was clicked.
+	<ul>
+		<li>For <strong>Legacy</strong> profiles, scroll to the bottom of the Profile Editor window and search for <strong><code>"media_type": "image"</code></strong>. There should be two entries, one for the poster and one for the thumbnail.</li>
+		<li>For <strong>Dynamic Delivery</strong> and <strong>Context-Aware</strong> profiles, image sizes are listed in the <strong>Images</strong> section of the profile definition.</li>
+	</ul>
+
+	<p>The following example is from a Dynamic Delivery Profile Version.</p>
+
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16671-profile-editor.png" /></div>
+	</li>
+	<li>Check the poster and image sizes. Remember, if any of your players are larger than the size of the poster, the image will be upscaled.</li>
+</ol>
+
+<p>Note: The image sizes for the standard ingest profiles are also documented in one of the following documents:</p>
+
+<ul>
+	<li><a href="/node/18041">Standard Ingest Profiles for Legacy Transcoding</a></li>
+	<li><a href="/node/18386">Standard Ingest Profiles for Dynamic Delivery and Context Aware Encoding</a></li>
+</ul>
+</div>
+</div>
+
+<div class="BCL-concept">
+<h2 id="profile">Creating a custom ingest profile</h2>
+
+<p>In order to change the image sizes, you should create a custom ingest profile and set the sizes to the appropriate values. For information on creating custom ingest profiles, see <a href="/node/15628">Managing Ingest Profiles</a>.</p>
+
+<p class="BCL-aside">Note: Increasing image sizes will cause an increase in managed content and bandwidth usage but this should be negligible.</p>
+
+<p class="BCL-aside">Note: The ability to create and edit ingest profiles is available only to publishers with Enterprise and Professional accounts.</p>
+
+<p>Once a new ingest profile (or profiles) has been created, that profile should be used when uploading videos.</p>
+
+<p class="BCL-aside">Note: The standard set of ingest profiles can't be edited or deleted.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="resize">Automatic resizing</h2>
+
+<p>When you add custom poster and/or thumbnail images via Studio or the Dynamic Ingest API, by default Video Cloud will resize these to match the image sizes defined in the default Ingest Profile for the account.</p>
+
+<h3>Override auto-resizing</h3>
+
+<p class="BCL-aside">Note: This option is only available when using a <strong>Legacy</strong> profile version.</p>
+
+<p>If you want to override this behavior and have Video Cloud retain actual image dimensions, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li><a href="/node/15628">Create a new custom ingest profile</a> for your account (or modify an existing custom profile)</li>
+	<li>Include image renditions for the post and thumbnail that have <strong>exactly</strong> these <code>width</code> and <code>height</code> values:
+	<pre class="line-numbers">
+<code class="language-json">{
+"media_type": "image",
+"format": "jpg",
+"label": "poster",
+<span style="background-color:#FFFFC9;border:1px #ffcc33" solid="">"width": 9999,</span>
+<span style="background-color:#FFFFC9;border:1px #ffcc33" solid="">"height": 9999</span>
+},
+{
+"media_type": "image",
+"format": "jpg",
+"label": "thumbnail",
+<span style="background-color:#FFFFC9;border:1px #ffcc33" solid="">"width": 9999,</span>
+<span style="background-color:#FFFFC9;border:1px #ffcc33" solid="">"height": 9999</span>
+}</code></pre>
+	</li>
+	<li><a href="node/15628#default">Make this the default profile</a> for the account.</li>
+</ol>
+
+<p>Now when you add custom images via Studio or Dynamic Ingest, they will have the original dimensions of the source images.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="existing">What about my existing videos?</h2>
+
+<p>What is the best way to fix the image sizes on existing videos? There are two options:</p>
+
+<ul>
+	<li><a href="#retranscode">Retranscode existing videos</a></li>
+	<li><a href="#uploadnew">Upload a new poster image</a></li>
+</ul>
+
+<div id="retranscode" class="BCL-subsection">
+<h3>Retranscoding existing videos</h3>
+
+<p>Retranscoding an existing video will generate new poster and thumbnail images. The video should be retranscoded using an ingest profile that has larger image sizes. For information on retranscoding existing videos, see <a href="/node/15921">Retranscoding Videos using the Media Module</a>.</p>
+</div>
+
+<div id="uploadnew" class="BCL-subsection">
+<h3>Uploading a new poster image</h3>
+
+<p>A new, properly sized poster image can be uploaded using the Media module. When a new poster image is uploaded, the image will be transcoded using the <strong>default</strong> ingest profile for the account. You should ensure that the default ingest profile has the video thumbnail image sized appropriately.</p>
+
+<p>To view the default ingest profile, when viewing the list of ingest profiles, look for the marked with the <img alt="" src="https://img.brightcove.com/node16671-default.png" /> indicator.</p>
+</div>
+</div>
+<!-- End of Drupal content -->
