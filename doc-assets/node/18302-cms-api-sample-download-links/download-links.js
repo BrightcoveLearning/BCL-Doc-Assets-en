@@ -312,6 +312,7 @@ var BCLS = (function(window, document) {
           if (sources.length > 0) {
             // get the best MP4 rendition
             var source = processSources(sources);
+            console.log('source', source);
             videosArray[callNumber].source = source;
             // if (source === null) {
             //   noDownloadableSources.push(videosArray[callNumber])
