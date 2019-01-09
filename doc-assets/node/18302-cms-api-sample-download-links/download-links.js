@@ -100,6 +100,7 @@ var BCLS = (function(window, document) {
 
   function processSources(sources) {
     var i = sources.length;
+    console.log('sources before: ', sources);
     // remove non-MP4 sources
     while (i > 0) {
       i--;
@@ -116,6 +117,7 @@ var BCLS = (function(window, document) {
         }
       }
     // sort sources by encoding rate
+    console.log('sources after: ', sources);
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
     if (sources.length > 0) {
