@@ -106,11 +106,14 @@ var BCLS = (function(window, document) {
       i--;
       var s = sources[i];
       console.log('s', s);
-      if (s.hasOwnProperty('container')) {
+      console.log('app_name', if ('app_name' in s));
+      if ('container' in s) {
           if (s.container !== 'MP4' && s.container !== 'FLV') {
             sources.splice(i, 1);
           }
-        } else if ('stream_name' in s || 'app_name' in s) {
+        } else if ('stream_name' in s) {
+          sources.splice(i, 1);
+        } else if ('app_name' in s) {
           sources.splice(i, 1);
         } else if (s.hasOwnProperty('src')) {
           if (s.src.indexOf('master.m3u8') > -1 || s.src.indexOf('manifest.mpd') > -1) {
