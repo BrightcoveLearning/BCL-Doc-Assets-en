@@ -108,7 +108,7 @@ var BCLS = (function(window, document) {
           if (sources[i].container !== 'MP4' && sources[i].container !== 'FLV') {
             sources.splice(i, 1);
           }
-        } else if (sources[i].hasOwnProperty('stream_name') || sources[i].hasOwnProperty('app_name')) {
+        } else if ('stream_name' in sources[i] || 'app_name' in sources[i]) {
           sources.splice(i, 1);
         } else if (sources[i].hasOwnProperty('src')) {
           if (sources[i].src.indexOf('master.m3u8') > -1 || sources[i].src.indexOf('manifest.mpd') > -1) {
