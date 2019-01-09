@@ -120,6 +120,7 @@ var BCLS = (function(window, document) {
     console.log('sources after: ', sources);
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
+    console.log('sources sorted', sources);
     if (sources.length > 0) {
       // console.log('processed source', sources[0]);
       return sources[0];
