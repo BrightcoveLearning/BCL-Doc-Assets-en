@@ -106,7 +106,7 @@ var BCLS = (function(window, document) {
       i--;
       var s = sources[i];
       console.log('s', s);
-      if ('container' in s) {
+      if ('src' in s) {
           if (s.container !== 'MP4' && s.container !== 'FLV') {
             sources.splice(i, 1);
           }
@@ -118,6 +118,8 @@ var BCLS = (function(window, document) {
           if (s.src.indexOf('master.m3u8') > -1 || s.src.indexOf('manifest.mpd') > -1) {
             sources.splice(i, 1);
           }
+        } else {
+          sources.splice(i, 1);
         }
       }
     // sort sources by encoding rate
