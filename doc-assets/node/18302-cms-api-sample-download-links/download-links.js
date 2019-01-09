@@ -106,7 +106,6 @@ var BCLS = (function(window, document) {
       i--;
       var s = sources[i];
       console.log('s', s);
-      console.log('app_name', if ('app_name' in s);
       if ('container' in s) {
           if (s.container !== 'MP4' && s.container !== 'FLV') {
             sources.splice(i, 1);
