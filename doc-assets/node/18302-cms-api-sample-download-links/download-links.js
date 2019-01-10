@@ -100,24 +100,33 @@ var BCLS = (function(window, document) {
 
   function processSources(sources) {
     var i = sources.length;
+    // console.log('sources before: ', sources);
     // remove non-MP4 sources
     while (i > 0) {
       i--;
-      if (sources[i].hasOwnProperty('container')) {
-          if (sources[i].container !== 'MP4' && sources[i].container !== 'FLV') {
+      var s = sources[i];
+      console.log('s', s);
+      if ('src' in s) {
+          if (s.container !== 'MP4' && s.container !== 'FLV') {
             sources.splice(i, 1);
           }
-        } else if (sources[i].hasOwnProperty('stream_name')) {
+        } else if ('stream_name' in s) {
           sources.splice(i, 1);
-        } else if (sources[i].hasOwnProperty('src')) {
-          if (sources[i].src.indexOf('master.m3u8') > -1 || sources[i].src.indexOf('manifest.mpd') > -1) {
+        } else if ('app_name' in s) {
+          sources.splice(i, 1);
+        } else if (s.hasOwnProperty('src')) {
+          if (s.src.indexOf('master.m3u8') > -1 || s.src.indexOf('manifest.mpd') > -1) {
             sources.splice(i, 1);
           }
+        } else {
+          sources.splice(i, 1);
         }
       }
     // sort sources by encoding rate
+    // console.log('sources after: ', sources);
     sortArray(sources, 'encoding_rate');
     // return the first item (highest bitrate)
+    // console.log('sources sorted', sources);
     if (sources.length > 0) {
       // console.log('processed source', sources[0]);
       return sources[0];
@@ -309,6 +318,7 @@ var BCLS = (function(window, document) {
           if (sources.length > 0) {
             // get the best MP4 rendition
             var source = processSources(sources);
+            console.log('source', source);
             videosArray[callNumber].source = source;
             // if (source === null) {
             //   noDownloadableSources.push(videosArray[callNumber])
