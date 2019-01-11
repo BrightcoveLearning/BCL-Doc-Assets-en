@@ -1,0 +1,119 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Manage_multiple_tracks">Manage multiple tracks</h2>
+
+<p>By default, no captions files and only one audio track is downloaded. To download additional assets associated with the video, follow these steps:</p>
+
+<ol class="bcls-tasklist">
+	<li>
+    <p>
+      Get a reference to the Video Cloud <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/edge/OfflineCatalog.html">OfflineCatalog</a> client.
+    </p>
+    <pre>
+<code class="notranslate language-java">private OfflineCatalog catalog;
+...
+catalog = new OfflineCatalog(this, eventEmitter, ACCOUNT_ID, POLICY_KEY);
+...</code></pre>
+  </li>
+  <li>
+    <p>
+      Call the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/edge/AbstractOfflineCatalog.html#getMediaFormatTracksAvailable-com.brightcove.player.model.Video-com.brightcove.player.offline.MediaDownloadable.MediaFormatListener-">getMediaFormatTracksAvailable</a> method, passing in the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/model/Video.html">Video</a> object for which you want to get information about, and the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.MediaFormatListener.html">MediaFormatListener</a> to listen for the returned data.
+    </p>
+    <pre>
+<code class="notranslate language-java">OfflineCatalog.getMediaFormatTracksAvailable(
+  @NonNull final Video video,
+  @NonNull final MediaDownloadable.MediaFormatListener mediaFormatListener)</code></pre>
+  </li>
+  <li>
+    <p>
+      The <code>MediaFormatListener</code> calls the following method:
+    </p>
+    <pre>
+<code class="notranslate language-java">void onResult(MediaDownloadable mediaDownloadable, Bundle mediaFormatBundle);</code></pre>
+  <p>
+    The <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.html">MediaDownloadable</a> object contains information, including video renditions, audio languages and captions. The <code>mediaDownloadable</code> object is cached, and used when you call <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/edge/AbstractOfflineCatalog.html#downloadVideo-com.brightcove.player.model.Video-">OfflineCatalog.downloadVideo(Video)</a>.
+  </p>
+  <p>
+    The <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.MediaFormatListener.html">Bundle</a> object contains information about the available Media Format tracks, and has the following properties:
+  </p>
+  <ul>
+    <li>
+      <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.html#VIDEO_RENDITIONS">MediaDownloadable.VIDEO_RENDITIONS</a> - Contains an array list of <code>MediaFormat</code> objects
+    </li>
+    <li>
+      <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.html#AUDIO_LANGUAGES">MediaDownloadable.AUDIO_LANGUAGES</a> - Contains an array list of <code>MediaFormat</code> objects.
+    </li>
+    <li>
+      <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.html#AUDIO_LANGUAGE_ROLES">MediaDownloadable.AUDIO_LANGUAGE_ROLES</a> - Contains an array list of strings. This list provides additional information with respect to the <code>MediaDownloadable.AUDIO_LANGUAGES</code>. The indices match the audio languages list. Example of audio roles can be main and alternative.
+    </li>
+    <li>
+      <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/offline/MediaDownloadable.html#CAPTIONS">MediaDownloadable.CAPTIONS</a> - Contains an array list of <code>MediaFormat</code> objects
+    </li>
+  </ul>
+  </li>
+  <li>
+    <p>
+      Retrieve lists of data from the bundle. Here are examples for retrieving the different lists:
+    </p>
+    <pre>
+<code class="notranslate language-java">ArrayList&lt;MediaFormat&gt; video = bundle.getParcelableArrayList(MediaDownloadable.VIDEO_RENDITIONS);
+
+ArrayList&lt;MediaFormat&gt; audio = bundle.getParcelableArrayList(MediaDownloadable.AUDIO_LANGUAGES);
+
+ArrayList&lt;String&gt; roles = bundle.getStringArrayList(MediaDownloadable.AUDIO_LANGUAGE_ROLES);
+
+ArrayList&lt;MediaFormat&gt; captions = bundle.getParcelableArrayList(MediaDownloadable.CAPTIONS);</code></pre>
+  </li>
+  <li>
+    <p>
+      Create a new <code>Bundle</code> (<code>filteredBundle</code>) to select the audio tracks and closed captions that you want to include in the download.
+    </p>
+    <pre>
+<code class="notranslate language-java">Bundle filteredBundle = new Bundle();</code></pre>
+    <aside class="bcls-aside bcls-aside--information">If you reuse the bundle created earlier, you may download all audio tracks and closed captions.</aside>
+  </li>
+  <li>
+    <p>
+      Filter the tracks that you want from the list that you created earlier, and add it to the new <code>filteredBundle</code>.
+    </p>
+    <pre>
+<code class="notranslate language-java">ArrayList&lt;MediaFormat&gt; captions = bundle.getParcelableArrayList(MediaDownloadable.CAPTIONS);
+if (captions != null &amp;&amp; captions.size() &gt; 0) {
+   ArrayList&lt;MediaFormat&gt; newCaptions = new ArrayList&lt;&gt;();
+   newCaptions.add(captions.get(0));
+
+filteredBundle.putParcelableArrayList(MediaDownloadable.CAPTIONS, newCaptions);
+}</code></pre>
+  </li>
+  <li>
+    <p>
+      Set the <code>filteredBundle</code> to the <code>MediaDownloadable</code> object.
+    </p>
+    <pre>
+<code class="notranslate language-java">mediaDownloadable.setConfigurationBundle(filteredBundle);</code></pre>
+  </li>
+  <li>
+    <p>
+      Download the video.
+    </p>
+    <pre>
+<code class="notranslate language-java">offlineCatalog.downloadVideo(video);</code></pre>
+<p>
+  Internally, the <code>OfflineCatalog</code> will use the cached <code>MediaDownloadable</code> provided by the <code>MediaDownloadable.MediaFormatListener</code> callback.
+</p>
+  </li>
+</ol>
+
+</section>
+
+
+<section class="bcls-section">
+<h2 id="Code_sample">Code sample</h2>
+
+<p>
+  For a complete example of downloading additional audio tracks and captions files, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/OfflinePlaybackSampleApp/src/main/java/com/brightcove/player/samples/offlineplayback">Offline Playback sample app</a>.
+</p>
+
+</section>
+
+</article>
