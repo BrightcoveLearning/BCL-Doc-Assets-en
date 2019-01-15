@@ -1,8 +1,7 @@
 var BCLS = ( function (window, document) {
-  var p = window.location.protocol,
-    h = window.location.href;
+  var h = window.location.href;
 
-  if (p === 'http:') {
+  if (window.location.protocol === 'http:') {
     h = h.replace('http:', 'https:');
     window.location.href = h;
   }
