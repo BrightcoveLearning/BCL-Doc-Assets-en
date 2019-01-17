@@ -102,12 +102,15 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
       iMax,
       li,
       txt,
+      code,
       frag = new DocumentFragment();
     iMax = dimensionObj.fields.length;
     for (i = 0; i < iMax; i++) {
       li = document.createElement('li');
+      code = document.createElement('code')
       txt = document.createTextNode(dimensionObj.fields[i]);
-      li.appendChild(txt);
+      code.appendChild(txt);
+      li.appendChild(code);
       frag.appendChild(li);
     }
     fields.appendChild(frag);
