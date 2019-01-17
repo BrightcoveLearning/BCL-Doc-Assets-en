@@ -56,15 +56,18 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
       tr,
       td,
       txt,
+      code,
       frag = new DocumentFragment();
     for (param in aapi_model.urlparams) {
       if (arrayContains(dimensionObj.urlparams, param)) {
         thisParam = aapi_model.urlparams[param];
         tr = document.createElement('tr');
         td = document.createElement('td');
+        code = document.createElement('code');
         txt = document.createTextNode(param);
         tr.appendChild(td);
-        td.appendChild(txt);
+        code.appendChild(txt);
+        td.appendChild(code);
         td = document.createElement('td');
         txt = document.createTextNode(thisParam.description);
         tr.appendChild(td);
