@@ -1,7 +1,6 @@
 var BCLS_dimensions = (function(window, document, aapi_model) {
-  var header = document.querySelector('h1 span'),
-    headerContent = header.textContent.split(' '),
-    dimension = headerContent[1],
+  var header = document.querySelector('article.bcls-article'),
+    dimension = header.getAttribute('data-dimension'),
     description = document.getElementById('description'),
     paramTableBody = document.getElementById('paramTableBody'),
     fields = document.getElementById('fields'),
