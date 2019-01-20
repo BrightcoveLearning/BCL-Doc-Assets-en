@@ -2,21 +2,19 @@
   <section class="bcls-section">
     <h2 id="introduction">Introduction</h2>
 
-    <p>This document explains how you can track the status of jobs by either making status requests to the CMS API or by using Dynamic Ingest API <a href="/node/17930">notifications</a>. We also provide a sample dashboard app that automates the
-      process</p>
+    <p>This document explains how you can track the status of jobs by either making status requests to the CMS API or by using Dynamic Ingest API <a href="/node/17930">notifications</a>. We also provide a sample dashboard app that automates the process</p>
   </section>
 
   <section class="bcls-section">
     <h2 id="requesting_status">Requesting status</h2>
-    <p>You get the status of dynamic ingest jobs (ingest, replace, or retranscode) using <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/GetStatusOfIngestJob">these CMS API endpoints</a> - note that these endpoints works for
-      <strong>Dynamic Delivery jobs only</strong>:</p>
+    <p>You get the status of dynamic ingest jobs (ingest, replace, or retranscode) using <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/GetStatusOfIngestJob">these CMS API endpoints</a> - note that these endpoints works for <strong>Dynamic Delivery jobs only</strong>:</p>
 
     <h3>Get status for all jobs</h3>
     <pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs</code></pre>
 
     <p>The response will look something like this:</p>
 
-    <pre class="line-numbers"><code class="language-json">[
+  <pre class="line-numbers"><code class="language-json">[
   {
     "id": "ac49b1db-e6e1-477f-a2c1-70b9cd3107cb",
     "state": "finished",
@@ -43,22 +41,22 @@
   }
 ]</code></pre>
     <h3>Get status for a spefific jobs</h3>
-    <pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}</code></pre>
+<pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}</code></pre>
 
     <p>The response will look something like this:</p>
 
-    <pre class="line-numbers"><code class="language-json">{
-    "id": "ac49b1db-e6e1-477f-a2c1-70b9cd3107cb",
-    "state": "finished",
-    "account_id": "57838016001",
-    "video_id": "5636411346001",
-    "error_code": null,
-    "error_message": null,
-    "updated_at": "2017-11-07T13:56:51.505Z",
-    "started_at": "2017-11-07T13:56:12.510Z",
-    "priority": "normal",
-    "submitted_at": "2017-11-07T13:56:12.435Z"
-  }</code></pre>
+<pre class="line-numbers"><code class="language-json">{
+  "id": "ac49b1db-e6e1-477f-a2c1-70b9cd3107cb",
+  "state": "finished",
+  "account_id": "57838016001",
+  "video_id": "5636411346001",
+  "error_code": null,
+  "error_message": null,
+  "updated_at": "2017-11-07T13:56:51.505Z",
+  "started_at": "2017-11-07T13:56:12.510Z",
+  "priority": "normal",
+  "submitted_at": "2017-11-07T13:56:12.435Z"
+}</code></pre>
 
     <p>The possible values for <code>state</code> are:</p>
     <ul>
@@ -73,8 +71,7 @@
   <section class="bcls-section" id="dataSources">
     <h2>Getting notifications</h2>
 
-    <p>While the request status method discussed above works, if you are waiting for a particular state (<code>published</code> or <code>finished</code>), it is better to let Brightcove notify you when these events occur rather than have to keep
-      asking for the status until you get the answer you are looking for. We will now look at how you might build an app around handling notifications.</p>
+    <p>While the request status method discussed above works, if you are waiting for a particular state (<code>published</code> or <code>finished</code>), it is better to let Brightcove notify you when these events occur rather than have to keep asking for the status until you get the answer you are looking for. We will now look at how you might build an app around handling notifications.</p>
 
     <p>The Dynamic Ingest notifications give you all the information you need to know when your video is ready - you just need to know what to look for...and to define what "ready" means for your systems. This diagram summarizes the workflow:</p>
 
@@ -86,8 +83,7 @@
   <section id="Dynamic_Ingest_Notifications" class="bcls-section">
     <h2>Dynamic Ingest Notifications</h2>
 
-    <p>The Dynamic Ingest notification service sends you notifications for several kinds of events. The two that are most useful for figuring out when the video is "ready" are ones indicating that particular renditions have been created and the one
-      that indicates that all processing is complete. Here are examples of each:</p>
+    <p>The Dynamic Ingest notification service sends you notifications for several kinds of events. The two that are most useful for figuring out when the video is "ready" are ones indicating that particular renditions have been created and the one that indicates that all processing is complete. Here are examples of each:</p>
 
     <h3>Dynamic rendition created notification</h3>
 
