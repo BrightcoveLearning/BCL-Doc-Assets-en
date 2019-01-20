@@ -1,20 +1,24 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="introduction">Introduction</h2>
+<section class="bcls-section">
+<h2 id="introduction">Introduction</h2>
 
-    <p>This document explains how you can track the status of jobs by either making status requests to the CMS API or by using Dynamic Ingest API <a href="/node/17930">notifications</a>. We also provide a sample dashboard app that automates the process</p>
-  </section>
+<p>This document explains how you can track the status of jobs by either making status requests to the CMS API or by using Dynamic Ingest API <a href="/node/17930">notifications</a>. We also provide a sample dashboard app that automates the process</p>
+</section>
 
-  <section class="bcls-section">
-    <h2 id="requesting_status">Requesting status</h2>
-    <p>You get the status of dynamic ingest jobs (ingest, replace, or retranscode) using <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/GetStatusOfIngestJob">these CMS API endpoints</a> - note that these endpoints works for <strong>Dynamic Delivery jobs only</strong>:</p>
+<section class="bcls-section">
+<h2 id="requesting_status">Requesting status</h2>
 
-    <h3>Get status for all jobs</h3>
-    <pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs</code></pre>
+<p>You get the status of dynamic ingest jobs (ingest, replace, or retranscode) using <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#operation/GetStatusOfIngestJob">these CMS API endpoints</a> - note that these endpoints works for <strong>Dynamic Delivery jobs only</strong>:</p>
 
-    <p>The response will look something like this:</p>
+<h3>Get status for all jobs</h3>
 
-  <pre class="line-numbers"><code class="language-json">[
+<pre>
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs</code></pre>
+
+<p>The response will look something like this:</p>
+
+<pre class="line-numbers">
+<code class="language-json">[
   {
     "id": "ac49b1db-e6e1-477f-a2c1-70b9cd3107cb",
     "state": "finished",
@@ -40,55 +44,60 @@
     "submitted_at": "2017-11-07T14:06:35.000Z"
   }
 ]</code></pre>
-    <h3>Get status for a spefific jobs</h3>
-<pre><code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}</code></pre>
 
-    <p>The response will look something like this:</p>
+<h3>Get status for a spefific jobs</h3>
 
-<pre class="line-numbers"><code class="language-json">{
-  "id": "ac49b1db-e6e1-477f-a2c1-70b9cd3107cb",
-  "state": "finished",
-  "account_id": "57838016001",
-  "video_id": "5636411346001",
-  "error_code": null,
-  "error_message": null,
-  "updated_at": "2017-11-07T13:56:51.505Z",
-  "started_at": "2017-11-07T13:56:12.510Z",
-  "priority": "normal",
-  "submitted_at": "2017-11-07T13:56:12.435Z"
-}</code></pre>
+<pre>
+<code class="language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/videos/{video_id}/ingest_jobs/{job_id}</code></pre>
 
-    <p>The possible values for <code>state</code> are:</p>
-    <ul>
-      <li><code>processing</code>: processing, video is not playable yet</li>
-      <li><code>publishing</code>: at least one playable rendition has been created, and the video is being readied for playback</li>
-      <li><code>published</code>: at least one rendition is a available for playback</li>
-      <li><code>finished</code>: all processing is complete</li>
-      <li><code>failed</code>: processing failed; if you are not able to figure out what went wrong, contact Support</li>
-    </ul>
-  </section>
+<p>The response will look something like this:</p>
 
-  <section class="bcls-section" id="dataSources">
-    <h2>Getting notifications</h2>
+<pre class="line-numbers">
+<code class="language-json">{
+    "id": "ac49b1db-e6e1-477f-a2c1-70b9cd3107cb",
+    "state": "finished",
+    "account_id": "57838016001",
+    "video_id": "5636411346001",
+    "error_code": null,
+    "error_message": null,
+    "updated_at": "2017-11-07T13:56:51.505Z",
+    "started_at": "2017-11-07T13:56:12.510Z",
+    "priority": "normal",
+    "submitted_at": "2017-11-07T13:56:12.435Z"
+  }</code></pre>
 
-    <p>While the request status method discussed above works, if you are waiting for a particular state (<code>published</code> or <code>finished</code>), it is better to let Brightcove notify you when these events occur rather than have to keep asking for the status until you get the answer you are looking for. We will now look at how you might build an app around handling notifications.</p>
+<p>The possible values for <code>state</code> are:</p>
 
-    <p>The Dynamic Ingest notifications give you all the information you need to know when your video is ready - you just need to know what to look for...and to define what "ready" means for your systems. This diagram summarizes the workflow:</p>
+<ul>
+	<li><code>processing</code>: processing, video is not playable yet</li>
+	<li><code>publishing</code>: at least one playable rendition has been created, and the video is being readied for playback</li>
+	<li><code>published</code>: at least one rendition is a available for playback</li>
+	<li><code>finished</code>: all processing is complete</li>
+	<li><code>failed</code>: processing failed; if you are not able to figure out what went wrong, contact Support</li>
+</ul>
+</section>
 
-    <figure class="bcls-figure"><img class="bcls-image" alt="Ingest Status Workflow" src="//learning-services-media.brightcove.com/doc-assets/node/18501-get-status-dynamic-ingest-requests-dynamic-delivery/18501-ingestion-status-architecture.svg" />
-      <figcaption class="bcls-caption--image">Ingest Status Workflow</figcaption>
-    </figure>
-  </section>
+<section class="bcls-section" id="dataSources">
+<h2>Getting notifications</h2>
 
-  <section id="Dynamic_Ingest_Notifications" class="bcls-section">
-    <h2>Dynamic Ingest Notifications</h2>
+<p>While the request status method discussed above works, if you are waiting for a particular state (<code>published</code> or <code>finished</code>), it is better to let Brightcove notify you when these events occur rather than have to keep asking for the status until you get the answer you are looking for. We will now look at how you might build an app around handling notifications.</p>
 
-    <p>The Dynamic Ingest notification service sends you notifications for several kinds of events. The two that are most useful for figuring out when the video is "ready" are ones indicating that particular renditions have been created and the one that indicates that all processing is complete. Here are examples of each:</p>
+<p>The Dynamic Ingest notifications give you all the information you need to know when your video is ready - you just need to know what to look for...and to define what "ready" means for your systems. This diagram summarizes the workflow:</p>
 
-    <h3>Dynamic rendition created notification</h3>
+<figure class="bcls-figure"><img class="bcls-image" alt="Ingest Status Workflow" src="//learning-services-media.brightcove.com/doc-assets/node/18501-get-status-dynamic-ingest-requests-dynamic-delivery/18501-ingestion-status-architecture.svg" />
+<figcaption class="bcls-caption--image">Ingest Status Workflow</figcaption>
+</figure>
+</section>
 
-    <figure class="bcls-figure">
-      <pre class="line-numbers">
+<section id="Dynamic_Ingest_Notifications" class="bcls-section">
+<h2>Dynamic Ingest Notifications</h2>
+
+<p>The Dynamic Ingest notification service sends you notifications for several kinds of events. The two that are most useful for figuring out when the video is "ready" are ones indicating that particular renditions have been created and the one that indicates that all processing is complete. Here are examples of each:</p>
+
+<h3>Dynamic rendition created notification</h3>
+
+<figure class="bcls-figure">
+<pre class="line-numbers">
 <code class="language-json">{
   <span class="bcls-hightlight">"entity": "default/video3800",</span>
   <span class="bcls-hightlight">"entityType": "DYNAMIC_RENDITION",</span>
@@ -106,21 +115,21 @@
 </code>
 </pre>
 
-      <figcaption class="bcls-caption--image">Notification for Rendition Created</figcaption>
-    </figure>
+<figcaption class="bcls-caption--image">Notification for Rendition Created</figcaption>
+</figure>
 
-    <p>Note in this example:</p>
+<p>Note in this example:</p>
 
-    <ul>
-      <li>The <code>videoId </code> value lets you know which video the rendition is for (in case you have multiple ingest jobs running)</li>
-      <li>The <code>entity </code> value is the dynamic rendition type created</li>
-      <li>if the <code>status </code> value is "SUCCESS", the rendition was created successfully</li>
-    </ul>
+<ul>
+	<li>The <code>videoId </code> value lets you know which video the rendition is for (in case you have multiple ingest jobs running)</li>
+	<li>The <code>entity </code> value is the dynamic rendition type created</li>
+	<li>if the <code>status </code> value is "SUCCESS", the rendition was created successfully</li>
+</ul>
 
-    <h3>Processing complete notification</h3>
+<h3>Processing complete notification</h3>
 
-    <figure class="bcls-figure">
-      <pre class="line-numbers">
+<figure class="bcls-figure">
+<pre class="line-numbers">
 <code class="language-json">{
   "entity": "5660367449001",
   <span class="bcls-hightlight">"entityType": "TITLE",</span>
@@ -134,19 +143,19 @@
 </code>
 </pre>
 
-      <figcaption class="bcls-caption--image">Notification for Processing Complete</figcaption>
-    </figure>
+<figcaption class="bcls-caption--image">Notification for Processing Complete</figcaption>
+</figure>
 
-    <p>Note in this example:</p>
+<p>Note in this example:</p>
 
-    <ul>
-      <li>The <code>videoId </code> and <code>jobId </code> values let you know which video this is for (in case you have multiple ingest jobs running)</li>
-      <li>If the <code>status </code> value is "SUCCESS", the video was processed successfully</li>
-    </ul>
+<ul>
+	<li>The <code>videoId </code> and <code>jobId </code> values let you know which video this is for (in case you have multiple ingest jobs running)</li>
+	<li>If the <code>status </code> value is "SUCCESS", the video was processed successfully</li>
+</ul>
 
-    <p>To receive notifications, you need to include a "callbacks" field in you Dynamic Ingest API requests, pointing to one or more callback addresses:</p>
+<p>To receive notifications, you need to include a "callbacks" field in you Dynamic Ingest API requests, pointing to one or more callback addresses:</p>
 
-    <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-json">{
   "master": {
   "url": "https://s3.amazonaws.com/bucket/mysourcevideo.mp4"
@@ -155,28 +164,25 @@
 }
 </code>
 </pre>
-  </section>
+</section>
 
-  <section class="bcls-section" id="sample">
-    <h2>Sample Dashboard</h2>
+<section class="bcls-section" id="sample">
+<h2>Sample Dashboard</h2>
 
-    <p>This section explains how notifications can be put together to build a simple dashboard for the Dynamic Ingest API. The handler for notifications parses notifications from the Dynamic Ingest API to identify processing complete notifications.
-      It then adds the video notifications into an array of objects for each video in a JSON file. The dashboard itself is an HTML page that imports the JSON file to get the notification data. It uses the ids to makes a request to the <a href="/node/18034">CMS
-        API</a> to get the video metadata.</p>
-    <!-- You can view the dashboard <a href="//solutions.brightcove.com/bcls/di-api/di-log.html">here</a> -->
-    <!-- <p>All the files for this app, along with instructions for setting it up for your account, are in <a href="https://github.com/BrightcoveLearning/dynamic-ingest-dashboard">this repository</a>.</p> -->
+<p>This section explains how notifications can be put together to build a simple dashboard for the Dynamic Ingest API. The handler for notifications parses notifications from the Dynamic Ingest API to identify processing complete notifications. It then adds the video notifications into an array of objects for each video in a JSON file. The dashboard itself is an HTML page that imports the JSON file to get the notification data. It uses the ids to makes a request to the <a href="/node/18034">CMS API</a> to get the video metadata.</p>
+<!-- You can view the dashboard <a href="//solutions.brightcove.com/bcls/di-api/di-log.html">here</a> --><!-- <p>All the files for this app, along with instructions for setting it up for your account, are in <a href="https://github.com/BrightcoveLearning/dynamic-ingest-dashboard">this repository</a>.</p> -->
 
-    <p>Here is the high-level architecture of the app:</p>
+<p>Here is the high-level architecture of the app:</p>
 
-    <figure class="bcls-figure"><img class="bcls-image" alt="Ingest Dashboad Architecture" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/di-status/ingestion-dashboard-architecture.svg" />
-      <figcaption class="bcls-caption--image">Ingest Dashboad Architecture</figcaption>
-    </figure>
+<figure class="bcls-figure"><img class="bcls-image" alt="Ingest Dashboad Architecture" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/general-information/di-status/ingestion-dashboard-architecture.svg" />
+<figcaption class="bcls-caption--image">Ingest Dashboad Architecture</figcaption>
+</figure>
 
-    <h3>The app parts</h3>
+<h3>The app parts</h3>
 
-    <p>The handler for notifications is built in PHP - it looks for processing complete notifications and adds the video id to an array in a separate JavaScript file:</p>
+<p>The handler for notifications is built in PHP - it looks for processing complete notifications and adds the video id to an array in a separate JavaScript file:</p>
 
-    <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-php">&lt;?php
   // POST won't work for JSON data
   $problem = "No errors";
@@ -251,15 +257,15 @@
   </code>
   </pre>
 
-      <h4>JSON file:</h4>
+<h4>JSON file:</h4>
 
-      <p>The JSON file is initially an empty array ( <code>[] </code>) - data is added by the notification handler.</p>
+<p>The JSON file is initially an empty array ( <code>[] </code>) - data is added by the notification handler.</p>
 
-      <h4>Dashboard</h4>
+<h4>Dashboard</h4>
 
-      <p>The dashboard includes the HTML and JavaScript to fetch the notification data and additional video data from the CMS API and write the results into a table:</p>
+<p>The dashboard includes the HTML and JavaScript to fetch the notification data and additional video data from the CMS API and write the results into a table:</p>
 
-      <pre class="line-numbers">
+<pre class="line-numbers">
   <code class="language-html">&lt;!DOCTYPE html&gt;
   &lt;html&gt;
   &lt;head&gt;
@@ -561,13 +567,11 @@
 </code>
 </pre>
 
-    <aside class="bcls-aside bcls-aside--tip">There's a design choice to be made here: you can use the notification handler or the dashboard (or a combination of the two) to process the notifications and extract the useful information. In this kind
-      of app, we prefer to keep the notification handler simple, just using it to pass on the notification data, and let the client app (in this case the dashboard) do the information processing. This requires more processing on the client, but make
-      the notification handler more reusable.</aside>
+<aside class="bcls-aside bcls-aside--tip">There's a design choice to be made here: you can use the notification handler or the dashboard (or a combination of the two) to process the notifications and extract the useful information. In this kind of app, we prefer to keep the notification handler simple, just using it to pass on the notification data, and let the client app (in this case the dashboard) do the information processing. This requires more processing on the client, but make the notification handler more reusable.</aside>
 
-    <h4>Proxy</h4>
+<h4>Proxy</h4>
 
-    <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-php">&lt;?php
 /**
 * brightcove-learning-proxy.php - proxy for Brightcove RESTful APIs
@@ -656,11 +660,11 @@ echo $response;
 </code>
 </pre>
 
-    <h4>Clear the log</h4>
+<h4>Clear the log</h4>
 
-    <p>This simple PHP app just restores the JavaScript file to its original state, clearing out the old video ids:</p>
+<p>This simple PHP app just restores the JavaScript file to its original state, clearing out the old video ids:</p>
 
-    <pre class="line-numbers">
+<pre class="line-numbers">
 <code class="language-php">&lt;?php
 $logFileLocation = "di.json";
 $freshContent = array ();
@@ -670,5 +674,5 @@ echo 'Log file cleared - &lt;a href="di-log.html"&gt;go back to the dashboard&lt
 ?&gt;
 </code>
 </pre>
-  </section>
+</section>
 </article>
