@@ -1,26 +1,38 @@
 <article class="bcls-article">
-	<section class="bcls-section">
-		<h2 id="Stop_unwanted_segment_download">Stop unwanted segment download</h2>
+<section class="bcls-section">
+<h2 id="Stop_unwanted_segment_download">Stop unwanted segment download</h2>
 
-		<p>It is possible that iOS may download unwanted segments causing excessive bandwidth usage. In the situation where <code class="notranslate">autoplay</code> is enabled, segments will be downloaded even if <code class="notranslate">preload</code> is set to <code class="notranslate">none</code>. The only way to prevent this is to not use the <code class="notranslate">autoplay</code> attribute.</p>
+<p>It is possible that iOS may download unwanted segments causing excessive bandwidth usage. In the situation where <code class="notranslate">autoplay</code> is enabled, segments will be downloaded even if <code class="notranslate">preload</code> is set to <code class="notranslate">none</code>. The only way to prevent this is to not use the <code class="notranslate">autoplay</code> attribute.</p>
 
-		<aside class="bcls-aside bcls-aside--warning">Note: There has been some misunderstanding that setting the <code class="notranslate">preload</code> attribute to <code class="notranslate">none</code> will prevent downloading of segments. This is NOT true.</aside>
-	</section>
+<aside class="bcls-aside bcls-aside--warning">
+	<p>
+		Notes:
+	</p>
+	<ul>
+		<li>
+			There has been some misunderstanding that setting the <code class="notranslate">preload</code> attribute to <code class="notranslate">none</code> will prevent downloading of segments. This is NOT true.
+		</li>
+		<li>
+      When using Server-Side Ad Insertion (SSAI), Brightcove recommends setting <code>preload=none</code>. If <code>preload</code> is set to <code>auto</code> or <code>metadata</code>, the first frames of the video stream will be requested, which counts the ad as delivered even if the user does not start playback.
+		</li>
+	</ul>
+	</aside>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="Auto_playing_a_video">Auto playing a video</h2>
+<section class="bcls-section">
+<h2 id="Auto_playing_a_video">Auto playing a video</h2>
 
-		<p>Given that the concern of possible unwanted segments being downloaded is not an issue, you can autoplay a video. For this to occur you must do the following:</p>
+<p>Given that the concern of possible unwanted segments being downloaded is not an issue, you can autoplay a video. For this to occur you must do the the following:</p>
 
-		<ul>
-			<li>Add the <code class="notranslate">autoplay</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>.</li>
-			<li>Add the <code class="notranslate">playsinline</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>.</li>
-			<li>Add the <code class="notranslate">muted</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>. Alternatively, you can use a video with no sound track.</li>
-		</ul>
+<ul>
+	<li>Add the <code class="notranslate">autoplay</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>.</li>
+	<li>Add the <code class="notranslate">playsinline</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>.</li>
+	<li>Add the <code class="notranslate">muted</code> attribute. For the iframe embed code, set this attribute to <code class="notranslate">true</code>. Alternatively, you can use a video with no sound track.</li>
+</ul>
 
-		<p>In-page embed code implementation:</p>
+<p>In-page embed code implementation:</p>
 
-		<pre class="line-numbers" data-start="1">
+<pre class="line-numbers" data-start="1">
 <code class="notranslate language-html">&lt;video-js data-video-id="5045678908001"
 	data-account="1752604059001"
 	data-player="default"
@@ -31,34 +43,40 @@
 	controls&gt;&lt;/video-js&gt;
 &lt;script src="https://players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
 
-		<p>iframe embed code implementation:</p>
+<p>iframe embed code implementation:</p>
 
-		<pre class="line-numbers" data-start="1">
+<pre class="line-numbers" data-start="1">
 <code class="notranslate language-html">&lt;iframe src="https://players.brightcove.net/1752604059001/default_default/index.html?
   videoId=5811862231001<span class="bcls-highlight">&amp;autoplay=true&amp;muted=true&amp;playsinline=true</span>"
 	allowfullscreen
 	webkitallowfullscreen
 	mozallowfullscreen&gt;&lt;/iframe&gt;</code></pre>
 
-		<p>For a full discussion of autoplay, see the <a href="/node/18602">Autoplay Considerations</a> document.</p>
-	</section>
+<p>For a full discussion of autoplay, see the <a href="/node/18602">Autoplay Considerations</a> document.</p>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="Playing_a_video_non_fullscreen">Playing a video non-fullscreen</h2>
+<section class="bcls-section">
+<h2 id="Playing_a_video_non_fullscreen">Playing a video non-fullscreen</h2>
 
-		<p>To play a video non-fullscreen, you must perform the following step:</p>
+<p>To play a video non-fullscreen, you must perform the following step:</p>
 
-		<ul>
-			<li>Set the <code class="notranslate">playsinline</code> attribute to <code class="notranslate">true</code>.</li>
-		</ul>
-	</section>
+<ul>
+	<li>Set the <code class="notranslate">playsinline</code> attribute to <code class="notranslate">true</code>.</li>
+</ul>
+</section>
 
-	<section class="bcls-section">
-		<h2 id="Playing_a_video_fullscreen">Playing a video fullscreen</h2>
+<section class="bcls-section">
+<h2 id="Playing_a_video_fullscreen">Playing a video fullscreen</h2>
 
-		<p>When a user switches from inline playback to fullscreen mode, the iOS native player is used instead of the Brightcove player. This is expected behavior. It allows the player to take advantage of the entire device screen. Obviously, with the Brightcove Player controls removed, some functionality could potentially be lost. If you wish NOT to allow fullscreen, but only for iOS devices, you could use the following code:</p>
+<p>When a user switches from inline playback to fullscreen mode, the iOS native player is used instead of the Brightcove player, with the following one exception:</p>
 
-		<pre class="line-numbers">
+<ul>
+	<li>iPad with Safari 12 running on iOS 12, which will automatically run Brightcove Player.</li>
+</ul>
+
+<p>Using the native player allows the player to take advantage of the entire device screen. Obviously, with the Brightcove Player controls removed, some functionality could potentially be lost. If you wish NOT to allow fullscreen, but only for iOS devices, you could use the following code:</p>
+
+<pre class="line-numbers">
 <code class="notranslate language-html">&lt;script&gt;
   videojs.getPlayer('myPlayerID').ready(function() {
     var myPlayer = this,
@@ -68,5 +86,5 @@
 	}</span>
   });
 &lt;/script&gt;</code></pre>
-	</section>
+</section>
 </article>

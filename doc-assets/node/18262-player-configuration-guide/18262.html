@@ -10,6 +10,25 @@
 <section class="bcls-section">
 <h2 id="View_configuration">View configuration</h2>
 
+<p>There are numerous ways to view the player's configuration, detailed in this section.</p>
+
+<h3>Using Studio</h3>
+
+<p>You can use Studio to view the player's JSON configuration. The following step detail the process:</p>
+
+<ol class="bcls-tasklist">
+	<li>Open the <strong>PLAYERS</strong> module and locate the player of which you wish to view the configuration.</li>
+	<li>Click the link for the player to open the player's properties.</li>
+	<li>Click <strong>JSON Editor</strong> in the left navigation menu.</li>
+	<li>You can view the player's configuration, similar to the following:
+	<figure class="bcls-figure"><img class="bcls-image" alt="JSON editor" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/player-management-api/guides/player-configuration/json-editor.png" /></figure>
+	</li>
+</ol>
+
+<aside class="bcls-aside bcls-aside--warning">Be VERY careful if making changes and saving the configuration.</aside>
+
+<h3>Browsing using <code>config.json</code></h3>
+
 <p>An instance of the new Brightcove player's configuration is stored in a JSON file. You can see this JSON file, or parts of it, in several ways.</p>
 
 <p>One way to view the player configuration is by changing the player's URL from ending with <code class="notranslate">index.html</code> to <code class="notranslate">config.json</code>. For example:</p>
@@ -520,7 +539,9 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 <p>If any of the above fail, the player will display the "Big Play Button" as if autoplay was set to false.</p>
 
 <p>The following shows a curl statement to set the <code class="notranslate">autoplay</code> value:</p>
+
 <h4>Example using boolean values</h4>
+
 <pre class="line-numbers">
 <code class="language-bash notranslate">curl \
   --header "Content-Type: application/json" \
@@ -532,6 +553,7 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 
 <h4>Example using string values</h4>
+
 <pre class="line-numbers">
 <code class="language-bash notranslate">curl \
   --header "Content-Type: application/json" \
@@ -543,6 +565,8 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/configuration</code></pre>
 
 <p>Getting a video to autoplay can be a complex situation. See the <a href="/node/18602">Autoplay Considerations</a> document for further details.</p>
+
+<aside class="bcls-aside bcls-aside--information">Note: When using Chrome on Android, and using <a href="https://support.google.com/chrome/answer/2392284?co=GENIE.Platform%3DAndroid&amp;hl=en-GB">Chrome’s Data Saver</a>, autoplay will not function correctly.</aside>
 </section>
 
 <section class="bcls-section">
@@ -1246,9 +1270,14 @@ if (ifFound.length === 1) {
 </ul>
 
 <pre class="line-numbers">
-<code class="language-html">&lt;video preload ...&gt;
+<code class="language-html">&lt;video-js preload ...&gt;
 or
 { "preload": "auto" }</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">
+	Note: When using Server-Side Ad Insertion (SSAI), Brightcove recommends setting <code>preload=none</code>. If <code>preload</code> is set to <code>auto</code> or <code>metadata</code>, the first frames of the video stream will be requested, which counts the ad as delivered even if the user does not start playback.
+</aside>
+
 </section>
 
 <section class="bcls-section">
@@ -1451,4 +1480,3 @@ https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players/$PLAYER_ID/co
 </section>
 </section>
 </article>
-
