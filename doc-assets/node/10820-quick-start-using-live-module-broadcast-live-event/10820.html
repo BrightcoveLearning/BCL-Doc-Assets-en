@@ -1,22 +1,20 @@
 <div>
-<p>To learn about all of the features and functionality available in the Live module, see <a href="/node/11062">Creating and Managing Live Events using the Video Cloud Live Module</a>. For a series of best practices and recommendations to help ensure a high quality, stable live streaming experience, see <a href="/node/13289">Live Module Guidelines and Best Practices</a>. For a list of all the options available from Brightcove for delivering live streaming video, see <a href="/node/11397">Delivering Live Streams</a>.</p>
+<p>To learn about all of the features and functionality available in the Live module, see <a href="/node/18470">Creating and Managing Live Events using the Live Module</a>. For a series of best practices and recommendations to help ensure a high quality, stable live streaming experience, see <a href="/node/13289">Live Module Guidelines and Best Practices</a>. For a list of all the options available from Brightcove for delivering live streaming video, see <a href="/node/11397">Delivering Live Streams</a>.</p>
 
-<div><!-- Start of Brightcove Player --><iframe class="training-video-player" src="//players.brightcove.net/20318290001/E16-WGGOe_default/index.html?videoId=2403492012001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe><!-- End of Brightcove Player -->
+<p class="BCL-aside language-editable">Note: For a version of this document that uses the OBS encoder, see <a href="/node/18621">Quick Start: Using the Live Module with Open Broadcaster Software (OBS)</a>.</p>
 
 <p class="BCL-aside">Note: Live streaming support is available only for Video Cloud Pro and Enterprise publishers.</p>
-</div>
 
 <div class="BCL-concept">
 <p>After completing this Quick Start, you should be able to:</p>
 
 <ul>
-	<li>Use the Video Cloud Live module to create a live event</li>
-	<li>Configure your encoder for a live event</li>
-	<li>Trim your event and save it as a VOD asset in your Video Cloud account</li>
-	<li>Monitor the health of your live streams</li>
+	<li class="language-editable">Use the Video Cloud Live module to create a live event</li>
+	<li class="language-editable">Configure your encoder for a live event</li>
+	<li class="language-editable">Trim your event and save it as a VOD asset in your Video Cloud account</li>
 </ul>
 
-<p>This Quick Start will help you broadcast a live event to different devices using the free Adobe Flash Media Live Encoder. Other encoders can also be used with the Live module.</p>
+<p>This Quick Start will help you broadcast a live event to different devices using Telestream Wirecast. A free trial is available on the <a href="https://www.telestream.net/controls/wirecast/download-wirecast.htm">Telestream site</a>. Other encoders can also be used with the Live module.</p>
 </div>
 
 <div class="BCL-concept">
@@ -29,9 +27,9 @@
 <h2 id="prereq">Prerequisites</h2>
 
 <ul>
-	<li>A Video Cloud Pro or Enterprise account with access to the Live module; you can sign up for a Live module trial <a href="http://go.brightcove.com/forms/video-cloud-live-module">here</a></li>
-	<li>A camera to broadcast the event</li>
-	<li>You must have your own encoding software; this Quick Start uses <a href="http://www.adobe.com/products/flash-media-encoder.html">Adobe Flash Live Media Encoder</a> which can be downloaded for free (see a list of <a href="https://app.zencoder.com/docs/guides/encoding-settings/using-live-streaming#supported-encoders">supported encoders</a>)</li>
+	<li class="language-editable">A Video Cloud Pro or Enterprise account with access to the Live module</li>
+	<li class="language-editable">A camera to broadcast the event</li>
+	<li class="language-editable">You must have your own encoding software; this Quick Start uses <a href="https://www.telestream.net/controls/wirecast/download-wirecast.htm">Telestream Wirecast</a> which can be downloaded for free (see a list of <a href="https://app.zencoder.com/docs/guides/encoding-settings/using-live-streaming#supported-encoders">supported encoders</a>)</li>
 </ul>
 </div>
 
@@ -39,228 +37,163 @@
 <h2 id="limitations">Limitations</h2>
 
 <ul>
-	<li>Your encoder must output an RTMP stream</li>
-	<li>Live broadcasts will experience a 20-30 second delay</li>
-	<li>Maximum of 26 continuous event hours</li>
-	<li>Streaming must begin within 30 minutes of the event start</li>
-	<li>HD is defined as video with a height of 720 and up; SD is video with a height below 720</li>
-	<li>Akamai HD must be used as the Content Delivery Network (CDN)</li>
-  <li>The "RTMP" URL for Live Module live streams is an Akamai HD Live stream, not a legacy FMS RTMP stream, and is not supported by older versions of Internet Explorer</li>
-	<li>For users using Internet Explorer, version 11 or later is required (Internet Explorer 10 will work with Player version 5.15.0)</li>
+	<li class="language-editable">Your encoder must output an RTMP stream</li>
+	<li class="language-editable">Live broadcasts will experience a 20-30 second delay</li>
+	<li class="language-editable">Streaming must begin within 30 minutes of the event start (default-level account setting)</li>
+	<li class="language-editable">For users using Internet Explorer, version 10 or later is required</li>
 </ul>
 </div>
 
-<div class="BCL-task">
-<h2 id="using">Using the Video Cloud Live module to broadcast a live event</h2>
+<div class="BCL-concept">
+<h2 id="steps">Steps to broadcast a live event</h2>
 
 <p>To stream your live event using the Live module, you will complete the following tasks:</p>
 
 <ul>
-	<li><a href="#liveapp">Enter your event information using the Video Cloud Live module</a></li>
-	<li><a href="#encoder">Configure your encoder</a></li>
-	<li><a href="#view">View the live stream</a></li>
-	<li><a href="#trim">Trim and save the stream to your Video Cloud account</a></li>
+	<li class="language-editable"><a href="#liveapp">Create a new event using the Video Cloud Live module</a></li>
+	<li class="language-editable"><a href="#encoder">Configure your encoder</a></li>
+	<li class="language-editable"><a href="#publish">Publish the live stream</a></li>
+	<li class="language-editable"><a href="#clip">Create a clip from the live event</a></li>
 </ul>
+</div>
 
-<div class="BCL-taskSubsection"><!-- Steps subheading -->
-<h3 id="liveapp">Enter your event information using the Video Cloud Live module</h3>
+<div class="BCL-task">
+<h2 id="steps">Creating a new live event</h2>
 
 <ol class="bcls-tasklist">
-	<li>In a browser window, navigate to <a href="https://studio.brightcove.com">Video Cloud Studio</a>.</li>
-	<li>Enter your Video Cloud login credentials and click<strong> Sign In.</strong></li>
-	<li>The current Video Cloud account name will appear in the upper right corner of the page. If you have multiple accounts, click the account selector drop down and select the account you would like to save the live asset in. If you select an account that has not been enabled for Live, the Live module will open in trial mode.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-account-selector.png" /></div>
+	<li class="language-editable">In a browser window, navigate to <a href="https://studio.brightcove.com">Video Cloud Studio</a>.</li>
+	<li class="language-editable">Enter your Video Cloud login credentials and click<strong> Sign In.</strong></li>
+	<li class="language-editable">The current Video Cloud account name will appear in the upper right corner of the page. If you have multiple accounts, click the account selector drop down and select the account you would like to save the live asset in. If you select an account that has not been enabled for Live, the Live module will open in trial mode.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-account-selector.png" /></div>
 	</li>
-	<li>Click <strong>Live</strong> in the navigation header.</li>
-	<li>Click the <strong>Add An Event</strong> button to create a new event.</li>
-	<li>On the Create Your Event dialog, add details for your live event and click <strong>Save and Continue</strong>. Note that the broadcast name, short description, tags and reference ID will be associated with the live event asset in Video Cloud.
-	<ul>
-		<li><strong>Event Name </strong>- top level name for the event; this name is internal to the Live module</li>
-		<li><strong>Broadcast Name</strong> - name for the broadcast
-		<p class="BCL-aside">Note: It is possible for an event to have multiple broadcasts but using multiple broadcasts is only recommended when using a Smart Player. If you are publishing an event using a Brightcove Player, Brightcove recommends creating new events. In this case, using the reference id in place of the video ID in the publishing code will allow you to use the same publishing code for different events. For information on working with Reference IDs, see <a href="/node/18117">Using Reference IDs</a>.</p>
-
-		<p class="BCL-aside">Note: While it is possible to click New Broadcast after an event has completed to start a new broadcast, Brightcove has seen cases where when using a Brightcove Player, old stream content displays instead of the current stream. Brightcove recommends creating new events vs. creating a new broadcast.</p>
-
-		<p class="BCL-aside">Note: When using the reference ID in the player publishing code, Brightcove recommends that there is at least one hour between events due to the Playback API cache.</p>
-		</li>
-		<li><strong>Short Description</strong> - description of the event</li>
-		<li><strong>Tags</strong> - tags to associate with the event</li>
-		<li><strong>Reference ID</strong> - reference ID associated with the event</li>
-		<li><strong>Event Date</strong> - planned date of the event; for informational purposes only and has no effect on the event</li>
-	</ul>
-
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-create-event.png" /></div>
+	<li class="language-editable">Click <strong> Live</strong> in the navigation header.</li>
+	<li class="language-editable">Click the <strong>Create Event</strong> button to create a new event.</li>
+	<li class="language-editable">Enter an <strong>Event Name</strong>.</li>
+	<li class="language-editable">Enter some <strong>Tags</strong> for the event.</li>
+	<li class="language-editable">If your account has been configured with required custom fields, make sure the custom fields are assigned values.</li>
+	<li class="language-editable">Select a <strong>Live Ingest Profile</strong> from the dropdown list. The live ingest profile controls the number and quality of live renditions that are created.</li>
+	<li class="language-editable">Select <strong>Convert event to video asset when complete</strong>. This will save the event as a video in the Media module.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-create-live-event.png" /></div>
 	</li>
-	<li>On the Select a Player dialog, select the player to use for the event. The drop down list will display the single video players in your Video Cloud account. Both Brightcove Players and Smart Players are supported. Brightcove Players will have <strong>(New Brightcove Player)</strong> following the player name. This quick start will use a Brightcove Player. Click <strong>Save and Continue</strong>.
-	<p class="BCL-aside">Note: The copy to clipboard buttons require that Flash is installed and enabled. These buttons do not work when using the Microsoft Edge browser.</p>
-
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-select-player.png" /></div>
+	<li class="language-editable">Click the <strong>ADVANCED OPTIONS</strong> link to expand the advanced options.</li>
+	<li class="language-editable">Set the <strong>Reconnect Time</strong> to 1 minute.</li>
+	<li class="language-editable">Select the <strong>Region</strong> closest to your location.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-adv-options.png" /></div>
 	</li>
-	<li>The Your Output Options dialog allows you to select a predefined transcoding profile for the event. Each profile has a set of transcode settings associated with it. Select a transcoding profile and then click <strong>View Details</strong> link to see the rendition details.
-	<p class="BCL-aside">Note: The transcoding profiles that appear are based upon your Live module subscription plan.</p>
-
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-output-details.png" /></div>
-
-	<p class="BCL-aside">Note: For information on creating custom ingest profiles including how to adjust the amount of DVR time, see <a href="/node/11973">Creating Transcoding Profiles for the Live Module</a>.</p>
-	</li>
-	<li>The Brightcove Player does not support RTMP renditions. In an earlier step a Brightcove Player was selected so we will create a custom profile with only HLS renditions. Click <strong>Edit Profile</strong>.
-	<p class="BCL-aside">Note: If using a Smart Player, RTMP renditions are supported.</p>
-	</li>
-	<li>Change the RTMP renditions to HLS. If any renditions are similar, you may want to delete them or edit the Video Bitrate. For this quick start, the following renditions will be used.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-custom-output.png" /></div>
-	</li>
-	<li>Change the profile <strong>Name</strong> to <strong>Live - HD Brightcove Player</strong>. Click <strong>Save As New</strong>.</li>
-	<li>Click <strong>Start Streaming</strong>. The Live module will return a <strong>Stream URL</strong> and <strong>Stream Name</strong>. These values will be used in the encoder settings. If you <strong>Show</strong> the Live Event Player information, you will see a <strong>URL</strong> which you can use to access your live stream. In the Live Event Player pane, you can choose to copy the URL or the embed code for the live event player.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-encoder-settings.png" /></div>
-
-	<p class="BCL-aside">Note: After creating a new live event, an asset for the live event will be created inside of the Media module. This asset <strong>SHOULD NOT</strong> be deleted until the event has finished streaming. Deleting the live asset before the event has started streaming will cause errors inside of the Live module.</p>
-
-	<p class="BCL-aside">Note: The copy to clipboard buttons require that Flash is installed and enabled. These buttons do not work when using the Microsoft Edge browser.</p>
+	<li class="language-editable">Click <strong>Start Streaming</strong>. The Live module will return a <strong>Stream Endpoint (RTMP URL) </strong> and <strong>Stream Name</strong>. These values will be used in the encoder settings.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-encoder-settings1.png" /></div>
 	</li>
 </ol>
 </div>
 
-<div class="BCL-taskSubsection"><!-- Steps subheading -->
-<h3 id="encoder">Configure your encoder</h3>
+<div class="BCL-concept">
+<h2 id="encoder">Configuring your encoder</h2>
 
-<p class="BCL-aside">This quick start uses Adobe Flash Media Live Encoder. For a list of other supported encoders, see the <a href="https://app.zencoder.com/docs/guides/encoding-settings/using-live-streaming#supported-encoders">Zencoder documentation</a>.</p>
+<p>In this section, we will configure and use the Telestream Wirecast encoder to support a live streaming event. Telestream Wirecast software is a desktop application that captures input from your camera and produces a stream that can be delivered by a CDN. Note that there are hardware and other software based encoding solutions available that may be better suited for delivering your live streaming event. You can download a trial version of the Wirecast software from the <a href="https://www.telestream.net/controls/wirecast/download-wirecast.htm">Telestream website</a>.</p>
+
+<p class="BCL-aside">Note: You should have the Wirecast software installed and a camera connected to your computer before proceeding</p>
+
+<p class="BCL-aside">Note: This example uses a DSLR connected to a laptop using the Blackmagic Design UltraStudio Mini Recorder.</p>
 
 <ol class="bcls-tasklist">
-	<li>Launch Adobe Flash Media Live Encoder.</li>
-	<li>Configure the Video encoding options. Use the following guidelines when setting the rendition properties. Keep all other values at their default.
-	<p class="BCL-aside">Note: &nbsp;For the best quality, we recommend configuring your encoder to output a 1280 x 720, 2500 Kbps stream.</p>
-
-	<ul>
-		<li><span class="BCL_uiCommand">Device:</span> Select the camera you are using for the live stream. If no cameras appear, make sure your camera is attached to your computer.</li>
-		<li><span class="BCL_uiCommand">Format:</span> <span class="BCL_userInput">H.264</span></li>
-		<li><span class="BCL_uiCommand">Frame Rate:</span> <span class="BCL_userInput">30</span> fps</li>
-		<li><span class="BCL_uiCommand">Input Size:</span> <span class="BCL_userInput">1280 x 720</span></li>
-		<li><span class="BCL_uiCommand">Bit Rate:</span> <span class="BCL_userInput">2500</span> Kbps</li>
-		<li><span class="BCL_uiCommand">Output Size:</span> <span class="BCL_userInput">1280 x 720</span></li>
-		<li><span class="BCL_uiCommand">Audio:</span>
-		<ul>
-			<li><span class="BCL_uiCommand">Format:</span> <span class="BCL_userInput">AAC</span></li>
-			<li><span class="BCL_uiCommand">Channels:</span> <span class="BCL_userInput">Stereo</span></li>
-			<li><span class="BCL_uiCommand">Sample Rate:</span> <span class="BCL_userInput">48000 Hz</span></li>
-			<li><span class="BCL_uiCommand">Bit Rate:</span> <span class="BCL_userInput">128 Kbps</span></li>
-		</ul>
-
-		<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-encoding-input.png" /></div>
-		</li>
-	</ul>
+	<li class="language-editable">Open Wirecast.</li>
+	<li class="language-editable">Click <strong>+</strong> and select <strong>Video Capture</strong>.</li>
+	<li class="language-editable">Select your camera from the list. Click <strong>Add</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-add-camera.png" /></div>
 	</li>
-	<li>Configure the encoding Output options. Use the following guidelines when setting the output properties. Keep all other values at their default.
-	<ul>
-		<li><span class="BCL_uiCommand">Stream to Flash Media Server:</span> checked</li>
-		<li><span class="BCL_uiCommand">FMS URL:</span> Use the <strong>Stream URL</strong> value returned by the Live module</li>
-		<li><span class="BCL_uiCommand">Backup URL:</span> leave blank</li>
-		<li><span class="BCL_uiCommand">Stream: </span>Use the <strong>Stream Name</strong> value returned by the Live module</li>
-		<li><span class="BCL_uiCommand">Save to File:</span> "Check" if you want to save the contents of the live stream to a local file
-		<p class="BCL-aside">Note: While the Live module will keep an archive of the stream and allow you to trim and save it to a video on demand title for 7 days, it is recommended that you save a local copy as a redundant backup.</p>
-
-		<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-encoding-output.png" /></div>
-		</li>
-	</ul>
+	<li class="language-editable">Confirm that the selected video source appears in the preview pane.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-live-shot.png" /></div>
 	</li>
-	<li>Click the <span class="BCL_uiCommand"><strong>Start</strong></span> button to start the live stream. Check the bottom left of the media encoder dialog to verify that you have connected.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-streaming.png" /></div>
+	<li class="language-editable">Click the arrow button (<img alt="" src="https://img.brightcove.com/node10820-arrow-button.png" />) to make the camera shot the live shot.</li>
+	<li class="language-editable">Click the stream button (<img alt="" src="https://img.brightcove.com/node10820-stream-button.png" />). You will be prompted to enter the Output Settings.</li>
+	<li class="language-editable">Set the <strong>Output Destination</strong> to <strong>RTMP Server</strong>. Click <strong>OK</strong>.</li>
+	<li class="language-editable">For the <strong>Address</strong>, use the <strong>Stream URL</strong> provided by the Live module.</li>
+	<li class="language-editable">For the <strong>Stream</strong>, use <strong>alive</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-output-settings.png" /></div>
 	</li>
+	<li class="language-editable">Click the stream button (<img alt="" src="https://img.brightcove.com/node10820-stream-button.png" />). The live stream should begin.</li>
 </ol>
 
 <p class="BCL-aside">Note: It will take about a minute to process your streams.</p>
 </div>
 
-<div class="BCL-taskSubsection"><!-- Steps subheading -->
-<h3 id="view">View the live stream</h3>
+<div class="BCL-concept">
+<h2 id="publish">Publishing the live event</h2>
+
+<p>To generate the embed code for the live event, follow these steps:</p>
 
 <ol class="bcls-tasklist">
-	<li>To view the live stream, you can:
-	<ul>
-		<li>Scan the QR code and preview the stream on a mobile device</li>
-		<li>Copy the link next to the QR code and open it in a browser</li>
-		<li>Expand the Live Event player section , copy the URL to the player and open it in a browser
-		<p class="BCL-aside">Note: If RTMP outputs are available a preview player will appear in the page.</p>
-
-		<p class="BCL-aside">Note: The Flash plugin must be enabled for the preview player to display the live stream. If Flash is not enabled, a <strong>Processing Stream</strong> message will appear and the live preview will not display. When using Google Chrome, the <strong>Processing Stream</strong> message may appear instead of the live stream preview.</p>
-		</li>
-	</ul>
+	<li class="language-editable">Return to the Live module.</li>
+	<li class="language-editable">If the Control Room page for the event is not displayed, click the <strong>Live</strong> tab to display a list of live events. Click on the event name to open the Control Room page.</li>
+	<li class="language-editable">Confirm that you can see the live stream. Note that after starting the encoder, it may take a minute for the live stream to appear.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-control-room.png" /></div>
 	</li>
-	<li>Confirm that you can see the live stream.</li>
-	<li>When you are done with the live stream, click the <strong>Stop Streaming</strong> button in the Live module. Also, return to the Flash Media Live Encoder dialog and click <span class="BCL_uiCommand"><strong>Stop</strong></span> to stop the encoder from streaming.
+	<li class="language-editable">Click <strong>Publish and Embed</strong>.</li>
+	<li class="language-editable">Select a <strong>Player</strong> and then click the <strong>Player URL</strong> to view the live stream.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-embed-code.png" /></div>
+	</li>
+	<li class="language-editable">When you are done with the live stream, click the <strong>Stop Stream</strong> button in the Live module. Also, return to Wirecast and click the stream button to stop the encoder from streaming.
 	<p class="BCL-aside">Note: It is important to make sure you close/stop your encoder when the live stream is complete. Leaving a connection open between any encoder and Brightcove, even when no data is being sent, may result in unexpected connection charges.</p>
 	</li>
 </ol>
 </div>
 
-<div class="BCL-taskSubsection"><!-- Steps subheading -->
-<h3 id="trim">Trim and save the stream to your Video Cloud account</h3>
+<div class="BCL-concept">
+<h2 id="clip">Creating a clip</h2>
+
+<p>The Live module provides the ability to create video clips from completed events. Clips can also be created while a live event is in progress. There are several reasons you might want to create a clip:</p>
+
+<ul>
+	<li class="language-editable">To create a short, teaser clip that can be posted to social media</li>
+	<li class="language-editable">To limit the length of a video that you want to post (most platforms limit the length of videos)</li>
+	<li class="language-editable">You have found that shorter videos perform better on social media</li>
+</ul>
+
+<p>Clips can only be created within 24 hours of the event end. Afterwards, the <strong>Create Clip</strong> button will be disabled. If the event is longer than 24 hours, only the last 24 hours are clippable.</p>
+
+<p class="BCL-aside language-editable">Note: For complete details on using the clipping interface, see <a href="/node/18551">Creating a Video Clip Using the Live Module</a>.</p>
+
+<p>To create a clip, follow these steps:</p>
 
 <ol class="bcls-tasklist">
-	<li>When you have stopped streaming your event, the Live module offers the ability to trim and save your live event to your Video Cloud account. Click the <strong>Create Clip</strong> button in the Broadcasts section of the page. The <strong>Download Archive</strong> link allows you to download an archive of the event.
-
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-save-vod.png" /></div>
-
-	<p class="BCL-aside">Note: The option to trim and save the live event to a separate video is only available for 7 days. After that, the Create Clip button will not be available and there will be no way to archive the live event.</p>
-
-	<p class="BCL-aside">Note: Archived live streams will be removed from the CDN after 7 days. If you want to keep your live content for longer than a week, we recommend that you save the event as a video-on-demand asset in your Video Cloud account.</p>
+	<li class="language-editable">Return to the Live module.</li>
+	<li class="language-editable">Click the <strong>Completed</strong> tab.</li>
+	<li class="language-editable">Locate the event and click the event name to open the Control Room.</li>
+	<li class="language-editable">Click <strong>Create Clip</strong>. The clipping editor will open.</li>
+	<li class="language-editable">Click and drag the clipping handles (<img alt="" src="https://img.brightcove.com/node10820-clip-handle.png" />)on the focus timeline to set the start and end points for the clip.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-clip-start-end.png" /></div>
 	</li>
-	<li>On the trimming dialog, drag the handles that appear on the timeline to trim the beginning and end of your event. You can also enter specific In and Out times using the edit boxes. When you are done, click <strong>Next</strong>.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-trim.png" /></div>
+	<li class="language-editable">Click <strong>Preview Clip</strong> to preview the clip. The start and end points can be adjusted as needed.</li>
+	<li class="language-editable">Click <strong>Save Clip</strong>.</li>
+	<li class="language-editable">Enter a <strong>Clip Name</strong> and other metadata values. Any required fields for the account will also appear and should be assigned values.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-clip-metadata.png" /></div>
 	</li>
-	<li>Enter a<strong> Video Name</strong>, <strong>Short Description</strong>, <strong>Tags</strong> and <strong>Reference ID</strong> and then click <strong>Save</strong>. These values will be associated with the trimmed asset in Video Cloud Studio. Click <strong>Save</strong>.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-trim-metadata.png" /></div>
+	<li class="language-editable">Click <strong>Create Clip</strong>. The ingestion process will begin and the clip will be saved to your Video Cloud account.</li>
+	<li class="language-editable">Clips will appear below the clip editor. Click <strong>Publish to Social</strong> to publish the clip to one of your social destinations using Brightcove Social. For information on publishing videos using the Social module, see <a href="/node/16344">Publishing Videos to Social Media Platforms</a>.</li>
+	<li class="language-editable">Click the <strong>Back to Control Room: Completed</strong> breadcrumb. All clips will also appear in the Control Room for the event.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node10820-clips-section.png" /></div>
+	&nbsp;
 
-	<p class="BCL-aside">Note: Clips are not processed if the video title contains double-byte characters.</p>
-	</li>
-	<li>The video will be transcoded and saved into your Video Cloud account. When the transcoding is complete, expand the broadcast details and click on the <strong>Preview Video</strong> button to preview your live event in a player.<br />
-	<img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-preview-video.png" />
 	<p class="BCL-aside">Note: You can click the Create Clip button multiple times to create multiple clips of your broadcast. This allows you to trim and save as many times as you want for each broadcast, saving the clips as separate VOD assets in your media library.</p>
 	</li>
 </ol>
 </div>
 </div>
 
-<div class="BCL-task">
-<h2 id="troubleshoot">Troubleshooting live stream issues</h2>
-
-<p>If you are having issues with your encoder, for example, if you receive a "Failure to connect to primary server" error, make sure that port 1935 is open on your network. Zencoder uses RTMP to accept the input stream and it uses this port.</p>
-
-<p>The Video Cloud Live module can be used to view stream information and can be helpful when troubleshooting live stream errors. Brightcove Support is also available to help you troubleshoot live stream issues.</p>
-
-<div class="BCL-taskSubsection"><!-- Steps subheading -->
-<h3>View a live stream preview using the Live module</h3>
-
-<p>You can view a preview of the live stream using the Live module.</p>
-
-<ol class="bcls-tasklist">
-	<li>All on air events will display a thumbnail at the top of the Live module page.
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-onair-thumbnail.png" /></div>
-	</li>
-	<li>Click a thumbnail to view the live event status and a preview of the event. If RTMP renditions are available, a preview of the stream will appear.
-	<p class="BCL-aside">Note: The Flash plugin must be enabled for the preview player to display the live stream. If Flash is not enabled, a <strong>Processing Stream</strong> message will appear and the live preview will not display.</p>
-
-	<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node10820-onair-status.png" /></div>
-	</li>
-</ol>
-</div>
-</div>
-
 <div class="BCL-concept">
-<h3>For further help</h3>
+<h2 id="troubleshoot">Troubleshooting live stream issues</h2>
 
 <p>If you need further help getting your live event to work, you can <a href="https://support.brightcove.com/en/contact/create">contact us</a>. To make sure you get the fastest response possible, below is a list of what support will need to solve the problem.</p>
 
 <ul>
-	<li>The specific symptoms the stream is having. For example, does it not play at all or does it stutter or freeze?</li>
-	<li>Whether this stream worked correctly in the past</li>
-	<li>The entry point URL you are using in your encoder</li>
-	<li>The stream name and Zencoder Job ID</li>
-	<li>The encoding software and hardware are you using</li>
-	<li>The URL to the player to which you have published the live event</li>
-	<li>The video ID of your live asset in Video Cloud Studio</li>
-	<li>The results of a trace-route from your encoder to the publishing point host</li>
+	<li class="language-editable">The specific symptoms the stream is having. For example, does it not play at all or does it stutter or freeze?</li>
+	<li class="language-editable">Whether this stream worked correctly in the past</li>
+	<li class="language-editable">The entry point URL you are using in your encoder</li>
+	<li class="language-editable">The stream name and Zencoder Job ID</li>
+	<li class="language-editable">The encoding software and hardware are you using</li>
+	<li class="language-editable">The URL to the player to which you have published the live event</li>
+	<li class="language-editable">The video ID of your live asset in Video Cloud Studio</li>
+	<li class="language-editable">The results of a trace-route from your encoder to the publishing point host</li>
 </ul>
 </div>
-</div>
-
-<section id="" class="bcls-section"><!-- End of Drupal content --></section>
+<!-- End of Drupal content -->
