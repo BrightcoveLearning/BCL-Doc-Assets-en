@@ -3,7 +3,7 @@
 <h2 id="Introduction">Introduction</h2>
 
 <div class="BCL-concept">
-<p>The <strong>Advanced (in-page) embed</strong>&nbsp;code permits you to have the player exist in the HTML page directly, not in an iframe. This offers the benefits of ease of accessing the player and associated properties and events. By using the non-iframe player, you lose the ease of use of the player as a single, contained unit in social media applications and sharing.</p>
+<p>The <strong>Advanced (in-page) embed</strong>&nbsp;code permits you to have the player exist in the HTML page directly, not in an iframe. This offers the benefits of ease of accessing the player and associated properties and events. By using the non-iframe player, you lose the ease of use of the player as a single, contained unit in social media applications and sharing. See the <a href="/node/15622">Choosing the Correct Embed Code</a> document for further information.</p>
 </div>
 </section>
 
@@ -44,28 +44,6 @@
 <p class="BCL-aside">Note: For information on working with responsive players, see the <a href="/node/18173">Responsive Sizing for the Brightcove Player</a> developer document.</p>
 
 <div>
-<h2 id="iframe">iframe embed code (Standard)</h2>
-
-<p>Typical iframe embed code will appear as follows:</p>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;iframe src="//players.brightcove.net/1507807800001/BkTGbgSq_default/index.html?videoId=5076962725001"
-allowfullscreen
-webkitallowfullscreen
-mozallowfullscreen&gt;&lt;/iframe&gt;
-</code>
-</pre>
-
-<p>Some advantages of using the iframe embed code</p>
-
-<ul>
-	<li>No collisions with existing JavaScript and/or CSS</li>
-	<li>Automatically responsive</li>
-	<li>The iframe eases use in social media apps or whenever the video will need to "travel" into other apps</li>
-</ul>
-</div>
-
-<div>
 <h2 id="inpage">In-Page embed code (Advanced)</h2>
 
 <p>Typical in-page embed code will appear as follows:</p>
@@ -90,8 +68,6 @@ controls&gt;&lt;/video-js&gt;
 </ul>
 
 <p>Even if your final implementation does not use the iframe embed&nbsp;code, you can still use the In-Page code with a plugin for your JavaScript and a separate file for your CSS. This encapsulates your logic so that you can easily use it in multiple players.</p>
-
-<aside class="bcls-aside bcls-aside--information">Note: If you selected the iframe implementation when publishing from Studio, you will see the options <code>allowfullscreen webkitallowfullscreen mozallowfullscreen </code> added in the iframe. If you are ever manually placing a Brightcove Player, either the in-page embed or iframe implementation, in an iframe you should also include those options for proper fullscreen functionality. If for some reason you nest a player in multiple iframes, all iframes should have the options added.</aside>
 
 <h3>Chrome and "broken" HTML video icon</h3>
 
@@ -136,12 +112,18 @@ controls&gt;&lt;/video-js&gt;
 	<tbody class="bcls-table__body">
 		<tr>
 			<td>autoplay</td>
-			<td>Causes the video to start playing as soon as page is loaded (without any interaction from the user). Supported on APPLE iOS devices only if muted used concurrently.<br />
+			<td>Indicates that the player should start playing immediately, on platforms where this is allowed.<br />
 			<br />
-			The <code>autoplay</code> attribute may not behave as you intend. It is possible that the player will issue a play command before the video is loaded, and when the video does finish loading it will not autoplay. For safety's sake, it is best to set <code>autoplay</code> as part of the player configuration. This can be done either in Studio's <strong>PLAYER &gt; PROPERTIES</strong> or via the <a href="/node/18262#autoplay">Player Management API</a>.
-			<p>Getting a video to autoplay can be a complex situation. See the <a href="/node/18602">Autoplay Considerations</a> document for further details.</p>
-			</td>
-			<td>Boolean</td>
+			If <code class="notranslate">autoplay</code> is set to a Boolean value the browser's native autoplay behavior is used. If it is set to one of the following three valid string values, the following occurs:
+			<ul>
+				<li><code class="notranslate">play</code>: The player will manually try to call play.</li>
+				<li><code class="notranslate">muted</code>: The player will manually mute the player and call play.</li>
+				<li><code class="notranslate">any</code>: The player will first try to call play. If that fails, mute the player and call play.</li>
+			</ul>
+			If any of the above fail, the player will display the "Big Play Button" as if autoplay was set to false.<br />
+			<br />
+			Getting a video to autoplay can be a complex situation. See the <a href="/node/18602">Autoplay Considerations</a> document for further details.</td>
+			<td>Boolean or String</td>
 		</tr>
 		<tr>
 			<td>class</td>
@@ -276,6 +258,19 @@ controls&gt;&lt;/video-js&gt;
 or
 { "preload": "auto" }</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">Note: Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.</aside>
+<aside class="bcls-aside bcls-aside--information">
+	<p>
+		Notes:
+	</p>
+	<ul>
+		<li>
+      When using Server-Side Ad Insertion (SSAI), Brightcove recommends setting <code>preload=none</code>. If <code>preload</code> is set to <code>auto</code> or <code>metadata</code>, the first frames of the video stream will be requested, which counts the ad as delivered even if the user does not start playback.
+		</li>
+		<li>
+			Due to a bug in Internet Explorer, the preload setting may be ignored when using IE.
+		</li>
+	</ul>
+</aside>
+
 </section>
 </article>
