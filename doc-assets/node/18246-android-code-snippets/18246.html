@@ -43,7 +43,7 @@
 
 <ul class="bcls-answer">
 	<li><a href="#Getting_the_ExoPlayer_instance">Getting the ExoPlayer instance</a></li>
-  <li><a href="#Offline_playback_with_DRM">Offline playback with DRM</a></li>
+	<li><a href="#Offline_playback_with_DRM">Offline playback with DRM</a></li>
 	<li><a href="#Paging_with_the_Playback_API">Paging with the Playback API</a></li>
 	<li><a href="#Playing_local_videos">Playing local videos</a></li>
 	<li><a href="#Setting_the_buffer_size">Setting the buffer size</a></li>
@@ -56,9 +56,10 @@
 <h5 class="bcls-question">Player controls</h5>
 
 <ul class="bcls-answer">
+  <li><a href="#Customizing_controls_for_Android_TV">Customizing controls for Android TV</a></li>
 	<li><a href="#Fullscreen_mode">Fullscreen mode</a></li>
-	<li><a href="#Working_with_volume_control">Working with volume control</a></li>
-	<li><a href="#Customizing_controls_for_Android_TV">Customizing controls for Android TV</a></li>
+  <li><a href="#Showing_player_controls">Showing player controls</a></li>
+  <li><a href="#Working_with_volume_control">Working with volume control</a></li>
 	<!--				  <li><a href="#singleline">Showing single line controls</a></li>-->
 </ul>
 
@@ -174,6 +175,7 @@ android:layout_gravity="bottom"
 <p>There may be times when you need to get the ExoPlayer object to modify properties which are not exposed through the Brightcove Native SDK. An instance of this object is created after the video is set. So, you need to wait for the <code>DID_SET_VIDEO</code> event.</p>
 
 <p>You can get the ExoPlayer instance by doing the following:</p>
+
 <pre class="line-numbers">
 <code class="notranslate language-java">// Get the ExoPlayer instance
 eventEmitter.on(EventType.DID_SET_VIDEO, new EventListener() {
@@ -186,16 +188,13 @@ eventEmitter.on(EventType.DID_SET_VIDEO, new EventListener() {
       if (exoPlayer instanceof SimpleExoPlayer) {
         // Get SimpleExoPlayer
         SimpleExoPlayer simpleExoPlayer = (SimpleExoPlayer) exoPlayer;
-        Log.v(TAG, &quot;onDID_SET_VIDEO: ExoPlayer = &quot; + simpleExoPlayer);
+        Log.v(TAG, "onDID_SET_VIDEO: ExoPlayer = " + simpleExoPlayer);
       }
     }
   }
 });</code></pre>
 
-<p>
-  For an example of modifying the <code>AudioAttribute</code> property for the ExoPlayer, see the <a href="https://groups.google.com/forum/#!topic/brightcove-native-player-sdks/-bbFKw3fOtk">Setting AudioAttributes on Exoplayer Instance</a> forum post.
-</p>
-
+<p>For an example of modifying the <code>AudioAttribute</code> property for the ExoPlayer, see the <a href="https://groups.google.com/forum/#!topic/brightcove-native-player-sdks/-bbFKw3fOtk">Setting AudioAttributes on Exoplayer Instance</a> forum post.</p>
 </section>
 
 <section class="bcls-section">
@@ -608,6 +607,12 @@ android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
 
 <p>The default behavior when retrieving videos from your Video Cloud library is to display the video still image until playback begins.</p>
 
+<h3>Showing the video still image</h3>
+
+<p>You can show the video still at any time by emitting a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VIDEO_STILL"><code class="notranslate">SET_VIDEO_STILL</code></a> event with a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/Event.html#VIDEO_STILL"><code class="notranslate">VIDEO_STILL</code></a> property set to the URI of the video still.</p>
+<!-- <p>Hiding should happen automatically whenever a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#CUE_POINT"><code class="notranslate">CUE_POINT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_PLAY"><code class="notranslate">DID_PLAY</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_SEEK_TO"><code class="notranslate">DID_SEEK_TO</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#WILL_INTERRUPT_CONTENT"><code class="notranslate">WILL_INTERRUPT_CONTENT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ACTIVITY_STOPPED"><code class="notranslate">ACTIVITY_STOPPED</code></a>, or <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#FRAGMENT_STOPPED"><code class="notranslate">FRAGMENT_STOPPED</code></a> event occurs.</p> -->
+<!-- <p>In general, we try to promote doing things via events, rather than direct method calls.</p>  -->
+
 <h3>Hiding the video still image</h3>
 
 <p>If you are autoplaying the video, you may want to hide the video still image. To do this, you can listen for the <code class="notranslate">SET_VIDEO_STILL</code> event and prevent the default behavior as follows:</p>
@@ -620,13 +625,31 @@ android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
     event.stopPropagation();
   }
 });</a></code></pre>
+</section>
 
-<h3>Showing the video still image</h3>
+<section class="bcls-section">
+<h2 id="Showing_player_controls">Showing player controls</h2>
 
-<p>You can show the video still at any time by emitting a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VIDEO_STILL"><code class="notranslate">SET_VIDEO_STILL</code></a> event with a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/Event.html#VIDEO_STILL"><code class="notranslate">VIDEO_STILL</code></a> property set to the URI of the video still.</p>
-<!-- <p>Hiding should happen automatically whenever a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#CUE_POINT"><code class="notranslate">CUE_POINT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_PLAY"><code class="notranslate">DID_PLAY</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_SEEK_TO"><code class="notranslate">DID_SEEK_TO</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#WILL_INTERRUPT_CONTENT"><code class="notranslate">WILL_INTERRUPT_CONTENT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ACTIVITY_STOPPED"><code class="notranslate">ACTIVITY_STOPPED</code></a>, or <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#FRAGMENT_STOPPED"><code class="notranslate">FRAGMENT_STOPPED</code></a> event occurs.</p>
+<p>By default, the player controls will disappear after a few seconds. The user can show the controls by tapping on the video.</p>
+<p>
+  If you want player controls to remain showing until the user taps on the video, you can disable the automatic hiding function as follows: (the code needed is highlighted)
+</p>
 
-<p>In general, we try to promote doing things via events, rather than direct method calls.</p> --></section>
+<pre class="line-numbers">
+<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/mediacontroller/BrightcoveMediaController.html">public class MainActivity extends BrightcovePlayer {
+  <span class="bcls-highlight">private BrightcoveMediaController controller;</span>
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    setContentView(R.layout.activity_main);
+    brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
+
+<span class="bcls-highlight">    controller = new BrightcoveMediaController(brightcoveVideoView);
+    controller.setShowHideTimeout(0);</span>
+
+    super.onCreate(savedInstanceState);</a></code></pre>
+
+</section>
 
 <section class="bcls-section">
 <h2 id="Starting_playback_in_the_middle_of_a_video">Starting playback in the middle of a video</h2>
