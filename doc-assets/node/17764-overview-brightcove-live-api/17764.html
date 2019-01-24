@@ -219,19 +219,27 @@ Content-Type: application/json
 <p>This endpoint is used to create live streams via a <code class="”notranslate”">POST </code> request. In addition to specifying properties of the live stream itself, the request can also specify VOD clips to be generated from the live stream (this can also be done later via the <a class="”notranslate”" href="#vod">endpoint</a>). Details of the fields that can be included in the request body are given in the <a class="”notranslate”" href="https://docs.brightcove.com/live-api/v1/doc/index.html#operation/CreateALiveJob">API Reference</a>.</p>
 
 <section class="bcls-subsection">
-  <h4 id="input_protocol">Input protocol</h4>
-  <p>Brightcove Live supports muliple input protocols. Use the <code>protocol</code> field in the request body when you create the job to specify the one you will use. Supported values are:</p>
-  <ul>
-    <li><code>rtmp</code> (the default)</li>
-    <li><code>rtp</code></li>
-    <li><code>rtp-fec</code></li>
-    <li><code>srt</code></li>
-  </ul>
-  <p>If you use <code>rtp</code>, <code>rtp-fec</code> or <code>srt</code>, you must also specify a <code>cidr_whitelist</code> (see <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>).</p>
-  <p>If you use <code>rtmp</code>, you can specify an <code>ip_whitelist</code> for the input instead, but this is not required.</p>
+<h4 id="input_protocol">Input protocol</h4>
 
-  <p>Example request body for RTP+FEC job:</p>
-<pre class="line-numbers"><code class="language-json">{
+<p>Brightcove Live supports muliple input protocols. Use the <code>protocol</code> field in the request body when you create the job to specify the one you will use. Supported values are:</p>
+
+<ul>
+	<li><code>rtmp</code> (the default)</li>
+	<li><code>rtp</code></li>
+	<li><code>rtp-fec</code></li>
+	<li><code>srt</code></li>
+</ul>
+
+<p>The RTMP protocol is for delivery a stream in FLV format. The other protocols are for delivering MPEG2-TS.</p>
+
+<p>If you use <code>rtp</code>, <code>rtp-fec</code> or <code>srt</code>, you must also specify a <code>cidr_whitelist</code> (see <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>).</p>
+
+<p>If you use <code>rtmp</code>, you can specify an <code>ip_whitelist</code> for the input instead, but this is not required.</p>
+
+<p>Example request body for RTP+FEC job:</p>
+
+<pre class="line-numbers">
+<code class="language-json">{
    "live_stream":true,
    "region":"us-west-2",
    "reconnect_time":300,
