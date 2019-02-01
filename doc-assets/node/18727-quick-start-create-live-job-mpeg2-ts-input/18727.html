@@ -11,7 +11,8 @@
       <li><code>srt</code></li>
     </ul>
     <p>One of these protocols must be specified explicitly to use TS input, because the default input protocol is <code>rtmp</code>.</p>
-    <p>Remember that these protocols use UDP (User Datagram Protocol ) rather than TCP for communication between the encoder and Live, so </p>
+    <p>Remember that these protocols use UDP (User Datagram Protocol ) rather than TCP for communication between the encoder and Live, so your firewall / router needs to be configured properly and allow UDP outputs to the internet from the encoder's IP.</p>
+    <p>If you are using <code>rpt-fec</code>, FEC information is sent on a different port than the media, so, for example, if you are using port 2000, you would also need to open ports 2002 and 2004 (if you are using 2D FEC).</p>
     <p>This tutorial will use <a href="/node/17908" class="notranslate">curl</a> to make the API requests, but you can easily make them in <a href="/node/18462" class="notranslate">Insomnia</a>, <a href="/node/17919" class="notranslate">Postman</a> or other REST clients instead.</p>
   </section>
   <section class="bcls-section">
@@ -23,72 +24,88 @@
 <pre class="line-numbers"><code class="language-bash">curl -X POST \
   https://api.bcovlive.io/v1/jobs \
   -H 'Content-Type: application/json' \
-  -H 'x-api-key: {{bcov-live-api-key}}' \
+  -H 'x-api-key: <span class="bcls-input">{{bcov-live-api-key}}</span>' \
   -d '{
     "live_stream": true,
-    "region": "{{closest-region-encoder}}",
+    "region": "<span class="bcls-input">{{closest_aws_region}}</span>",
+    "protocol": "<span class="bcls-input">{{your_protocol}}</span>",
+    "cidr_whitelist": ["<span class="bcls-input">{{your_encoder_IPrange}}</span>", "<span class="bcls-input">{{your_backup_encoder_IPrange}}</span>"],
     "outputs": [{
-      "label": "hls360p",
-      "live_stream": true,
-      "height": 360,
-      "video_bitrate": 365,
-      "segment_seconds": 6,
-      "keyframe_interval": 60
-    },
-    {
-      "label": "hls432p",
-      "live_stream": true,
-      "height": 432,
-      "video_bitrate": 730,
-      "segment_seconds": 6,
-      "keyframe_interval": 60
-    },
-    {
-      "label": "hls540p",
-      "live_stream": true,
-      "height": 540,
-      "video_bitrate": 2000,
-      "segment_seconds": 6,
-      "keyframe_interval": 60
-    },
-    {
-      "label": "hls720p3M",
-      "live_stream": true,
-      "height": 540,
-      "video_bitrate": 2000,
-      "segment_seconds": 6,
-      "keyframe_interval": 60
-    },
-    {
-      "label": "hls720p4.5M",
-      "live_stream": true,
-      "height": 540,
-      "video_bitrate": 4500,
-      "segment_seconds": 6,
-      "keyframe_interval": 60
-    }]
-  }'
-</code></pre>
+        "label": "hls360p",
+        "live_stream": true,
+        "height": 360,
+        "video_bitrate": 365,
+        "segment_seconds": 6,
+        "keyframe_interval": 60
+   },
+   {
+        "label": "hls432p",
+        "live_stream": true,
+        "height": 432,
+        "video_bitrate": 730,
+        "segment_seconds": 6,
+        "keyframe_interval": 60
+   },
+   {
+        "label": "hls540p",
+        "live_stream": true,
+        "height": 540,
+        "video_bitrate": 2000,
+        "segment_seconds": 6,
+        "keyframe_interval": 60
+   },
+   {
+        "label": "hls720p3M",
+        "live_stream": true,
+        "height": 540,
+        "video_bitrate": 2000,
+        "segment_seconds": 6,
+        "keyframe_interval": 60
+   },
+   {
+        "label": "hls720p4.5M",
+        "live_stream": true,
+        "height": 720,
+        "video_bitrate": 4500,
+        "segment_seconds": 6,
+        "keyframe_interval": 60
+   }]
+}'</code></pre>
       </li>
       <li>
-        <p><strong>Replace:</strong></p>
+        <p><strong>Make the following replacements:</strong></p>
         <ul>
-          <li><code>{{closest-region-encoder}}</code> with the closest available region to your encoder, see <a href="/node/17764#Support_aws_regions">closest available regions</a> to your encoder. For instance: <code>us-west-2</code></li>
           <li><code>{{bcov-live-api-key}}</code> with your Brightcove live API key. For example: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+          <li><code>{{closest_aws_region}}</code> with the closest available region to your encoder, see <a href="/node/17764#Support_aws_regions">closest available regions</a> to your encoder. For instance: <code>us-west-2</code></li>
+          <li><code>{{your_protocol}}</code> with the input protocol your encoder will be delivering: <code>rpt</code>, <code>rtp-fec</code>, or <code>srt</code></li>
+          <li><code>{{your_encoder_IPrange}}</code> with the IP range your encoder will be using, in the form of <code>1.2.3.4/32</code></li>
+          <li><code>{{your_backup_encoder_IPrange}}</code> (if any) with the IP range your backup encoder will be using, in the form of <code>1.2.3.4/32</code></li>
         </ul>
       </li>
       <li>After making those changes, copy and paste the code into Terminal or whatever command-line app you use and run it.</li>
       <li>
-        <p>The response should be something like this:</p>
+        <p>The response should be something like this if you are using the <code>rtp-fec</code> protocol:</p>
 <pre class="line-numbers"><code class="language-json">{
-    "id": "3b6871bf2f344acaa6b397d09b476018",
+    "id": "42c913e5373844a99a6285367f2704ec",
     "outputs": [... removed for simplicity ...],
-    "stream_url": "rtmp://ep1-usw2.bcovlive.io:1935/3b6871bf2f344acaa6b397d09b476018",
-    "stream_name": "alive",
+    "stream_url": "<span class="bcls-highlight">rtp:</span>//ec2-34-212-0-224.us-west-2.compute.amazonaws.com:12675",
+    "stream_name": "42c913e5373844a99a6285367f2704ec.stream",
     "static": false,
     "encryption": {},
-    "playback_url": "https://bcovlive-a.akamaihd.net/3b6871bf2f344acaa6b397d09b476018/us-west-2/NA/playlist.m3u8",
-    "playback_url_dvr": "https://bcovlive-a.akamaihd.net/3b6871bf2f344acaa6b397d09b476018/us-west-2/NA/playlist_dvr.m3u8"
+    "playback_url": "https://bcovlive-a.akamaihd.net/42c913e5373844a99a6285367f2704ec/us-west-2/NA/playlist.m3u8",
+    "playback_url_dvr": "https://bcovlive-a.akamaihd.net/42c913e5373844a99a6285367f2704ec/us-west-2/NA/playlist_dvr.m3u8"
+}</code></pre>
+
+<p>Or like this for <code>srt</code>:</p>
+<pre class="line-numbers"><code class="language-json">{
+    "id": "cdb820f2d7764b91a79536dac799fb77",
+    "outputs": [... removed for simplicity ...],
+    "stream_url": "srt://ec2-34-212-0-224.us-west-2.compute.amazonaws.com:13820",
+    "stream_name": "cdb820f2d7764b91a79536dac799fb77.stream",
+    "static": false,
+    "encryption": {},
+    "playback_url": "https://bcovlive-a.akamaihd.net/cdb820f2d7764b91a79536dac799fb77/us-west-2/NA/playlist.m3u8",
+    "playback_url_dvr": "https://bcovlive-a.akamaihd.net/cdb820f2d7764b91a79536dac799fb77/us-west-2/NA/playlist_dvr.m3u8"
 }</code></pre>
       </li>
     </ol>
@@ -97,10 +114,16 @@
   <section class="bcls-section">
     <h2 id="Configure_your_encoder">Configure your encoder</h2>
     <p>The steps shown here will assume an <a href="https://www.elemental.com/products/aws-elemental-live">Elemental live box</a> encoder, which was used in testing the steps for this tutorial. If you have a different encoder, the settings should be similar.</p>
-    <p>The most important settings for this case are:</p>
+    <p>The most important settings for this <code>rtp-fec</code> input are:</p>
     <ul>
       <li>Configure timecode source as "system clock"</li>
-      <li>Set "OnFi timecode frequency" to 1</li>
+      <li>Set "Forward error correction" to "Column and Row" and set "Column Depth" and "Row length" values:
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </li>
       <li>Check "time code insertion" inside video</li>
       <li>Strongly recommended: Framerate = follow source</li>
     </ul>
