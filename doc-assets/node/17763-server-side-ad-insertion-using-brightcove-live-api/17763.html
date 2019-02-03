@@ -191,6 +191,40 @@ Content-Type: application/json
 	<pre>
 <code class="language-http notranslate">http://playback.bcovlive.io/e058d9f2737e18/us-west-2/NA/playlist.m3u8<span class="bcls-highlight">?deviceid=123456&amp;sitesection=services</span>"
 </code>
+
+<p>You can also add URLs dynamically, using Javascript and the Brightcove Player API:</p>
+
+<pre class="line-numbers"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;body&gt;
+  &lt;video
+  id="myPlayerID"
+  data-video-id="5975635167001"
+  data-account="3737230870001"
+  data-player="tIG7lVKBm"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  width="640"
+  height="360"&gt;&lt;/video&gt;
+  &lt;script src="//players.brightcove.net/3737230870001/tIG7lVKBm_default/index.min.js"&gt;&lt;/script&gt;
+
+  &lt;script type="text/javascript"&gt;
+  var player = videojs("myPlayerID");
+
+  player.one("loadstart", function(){
+    var sourceUrl = player.currentSource();
+    console.log(sourceUrl);
+    var liveUrlWithParams = sourceUrl.src + "?player_width={width}&player_height={height}&deviceid={deviceid}";
+
+    player.src([{
+      "type": "application/vnd.apple.mpegurl",
+      "src": liveUrlWithParams
+    }]);
+  });
+&lt;/script&gt;
+
+&lt;/body&gt;</code></pre>
 </pre>
 
 	<p>Note that the key names in this example correspond to the variable names in the ad tag shown above.</p>
@@ -1116,7 +1150,7 @@ duration: 12.0}}
 <h2 id="Known_issues">Known issues</h2>
 
 <ul>
-  <li>SSAI requires that the live streaming video have an audio track.</li>
+	<li>SSAI requires that the live streaming video have an audio track.</li>
 	<li>If the VAST returned has the same ad ID, then the server will not request the ad content, even though the ad URL uses dynamic variables to make it a unique URL. This does <strong>not</strong> apply if you are using DFP for ads.</li>
 	<li>
 	<p>If an ad break has a duration less than the MAX duration of the ad URL (min_ad_duration=0&amp;max_ad_duration=30000), if ad is returned longer than the ad break, the ad will not be played.</p>
