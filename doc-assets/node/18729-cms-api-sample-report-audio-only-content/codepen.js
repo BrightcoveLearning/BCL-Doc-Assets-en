@@ -22,6 +22,7 @@ var BCLS = (function(window, document) {
     tag = document.getElementById('tag'),
     videoCount = document.getElementById('videoCount'),
     makeReport = document.getElementById('makeReport'),
+    tableBody = document.getElementById('tableBody'),
     content,
     logger = document.getElementById('logger'),
     logText = document.getElementById('logText'),
@@ -62,6 +63,18 @@ var BCLS = (function(window, document) {
           return false;
       }
       return true;
+  }
+
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isAudio(frame_height) {
+    if (frame_height === null || frame_height === 0) {
+      return true;
+    }
+    return false;
   }
 
   /**
