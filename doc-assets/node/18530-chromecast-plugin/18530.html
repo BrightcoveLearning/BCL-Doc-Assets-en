@@ -60,73 +60,58 @@
 
 <ol class="bcls-tasklist">
 	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
-	<li>Click the link for the player to open the player's properties.</li>
-	<li>Click <strong>Plugins</strong> in the left navigation menu.</li>
-	<li>Next, click <strong>Add a Plugin</strong>.</li>
-	<li>For the <strong>Plugin Name</strong> enter <code>chromecastReceiver</code>.</li>
+	<li>Select the link for the player to open the player's properties.</li>
+	<li>Select <strong>Plugins</strong> in the left navigation menu.</li>
 	<li>
-	<p>Include the plugin URLs.</p>
-
-	<aside class="bcls-aside bcls-aside--information">When using the Brightcove Player v6.26.0+, you will need to use the Chromecast Plugin v1.1.1+. For the URLs listed below, simply replace <code>1</code> with <code>1.1.1</code>, or the latest version of the plugin.</aside>
-
-	<p>For the <strong>JavaScript</strong> URL, enter:</p>
-
-	<pre>
-<code class="notranslate language-json">https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.min.js</code></pre>
-
-	<p>For the <strong>CSS</strong> URL, enter:</p>
-
-	<pre>
-<code class="notranslate language-json">https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.css</code></pre>
-	</li>
-	<li>Enter the configuration options in the <strong>Options(JSON)</strong> text box. An example for the default player in the <strong>1507807800001</strong> account is shown. You, of course, need to enter information for your player.
-	<pre class="line-numbers">
-<code class="language-json notranslate">{
-  "playerUrl" : "https://players.brightcove.net/1507807800001/default_default/index.min.js"
-}</code></pre>
+    <p>
+    Next, select the <strong>Add a Plugin</strong> button, and then select <strong>Brightcove Plugin</strong>.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/add-a-plugin.png" alt="Add a Plugin button">
+      <figcaption class="bcls-caption--image">Add a Plugin button</figcaption>
+    </figure>
+  </li>
+  <li>
+    <p>
+    Expand the <strong>Brightcove Plugin</strong> dropdown and select <strong>chromecast-receiver</strong>.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/cast-receiver.png" alt="chromcast-receiver">
+      <figcaption class="bcls-caption--image">chromcast-receiver</figcaption>
+    </figure>
+  </li>
+	<li>
+    <p>
+      <strong>Optional</strong>: Enter the configuration options in the <strong>Options(JSON)</strong> text box. An example for the default player in the <strong>1752604059001</strong> account is shown. You, of course, need to enter information for your player.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/options.png" alt="Plugin options">
+      <figcaption class="bcls-caption--image">Plugin options</figcaption>
+    </figure>
 
 	<p>See below for details on the options.</p>
 	</li>
-	<li>Click <strong>Save</strong>.</li>
-	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
-	<li>To close the open dialog, click <strong>Close</strong>.</li>
+	<li>
+    <p>
+      Select the <strong>Save</strong> button. You will now see the <strong>chromecast-receiver</strong> plugin added to the list of plugins for your player.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/plugin-added.png" alt="Plugin added">
+      <figcaption class="bcls-caption--image">Plugin added</figcaption>
+    </figure>
+  </li>
+	<li>To publish the player, select <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
+	<li>To close the open dialog, select <strong>Close</strong>.</li>
+  <li>
+    <p>
+      Return to the <strong>MEDIA</strong> and publish your video or playlist using the player you just updated for Chromecast.
+    </p>
+    <p>Once the plugin is loaded and the video has started playing, the cast button will appear in the player as shown here in this screenshot of a player:</p>
+
+    <figure class="bcls-figure"><img class="bcls-image" alt="Cast button" width="800" height="402" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/cast-button.png" /></figure>
+  </li>
 </ol>
 
-<h3>Code implementation</h3>
-
-<p>In code, the implementation would look like:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-html">&lt;!doctype html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;title&gt;Untitled Document&lt;/title&gt;
-  <span class="bcls-highlight">&lt;link href="https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.css" rel="stylesheet"&gt;</span>
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;video-js id="myPlayerID"
-  data-video-id="5622718636001"
-  data-account="1507807800001"
-  data-player="default"
-  data-embed="default"
-  data-application-id
-  class="video-js"
-  controls&gt;&lt;/video-js&gt;
-  &lt;script src="https://players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
-  <span class="bcls-highlight">&lt;script src="https://players.brightcove.net/videojs-chromecast-receiver/1/videojs-chromecast-receiver.min.js"&gt;&lt;/script&gt;</span>
-  &lt;script&gt;
-  videojs.getPlayer('myPlayerID').ready(function() {
-    var myPlayer = this;
-    <span class="bcls-highlight">myPlayer.chromecastReceiver();</span>
-  });
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-
-<p>Once the plugin is loaded and the video has started playing, the cast button will appear in the player as shown here in this screenshot of a player:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Cast button" width="800" height="402" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/cast-button.png" /></figure>
 </section>
 
 <section class="bcls-section">
@@ -156,7 +141,7 @@
 <code class="notranslate language-javascript">videojs.getPlayer('myPlayerID').ready(function() {
   var myPlayer = this;
   options = {};
-  options.playerUrl = '//players.brightcove.net/1507807800001/default_default/index.min.js';
+  options.playerUrl = '//players.brightcove.net/1752604059001/default_default/index.min.js';
   myPlayer.chromecastReceiver(options);
 });</code></pre>
 </section>
