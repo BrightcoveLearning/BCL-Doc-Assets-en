@@ -11,6 +11,7 @@ var BCLS = (function(window, document) {
     callNumber = 0,
     videosCompleted = 0,
     videosArray = [],
+    audiosArray = [],
     summaryData = {},
     csvStr,
     summaryCsvStr,
@@ -129,31 +130,22 @@ var BCLS = (function(window, document) {
     return targetArray;
   }
 
-  function processRenditions(renditions, callback) {
+  function processRenditions(video, renditions, callback) {
     var i,
       iMax = renditions.length,
-      hlsRenditions = [],
-      mp4Renditions = [],
-      flvRenditions = [],
-      otherRenditions = [],
-      totalSize = 0;
     // separate renditions by type
     for (i = 0; i < iMax; i += 1) {
-      if (renditions[i].hasOwnProperty('size')) {
-        totalSize += renditions[i].size;
-      }
-      if (renditions[i].video_container === 'M2TS') {
-        hlsRenditions.push(renditions[i]);
-      } else if (renditions[i].video_container === 'MP4') {
-        mp4Renditions.push(renditions[i]);
-      } else if (renditions[i].video_container === 'FLV') {
-        flvRenditions.push(renditions[i]);
-      } else {
-        otherRenditions.push(renditions[i]);
+      if (renditions[i].hasOwnProperty('frame_height')) {
+        if (!isAudio(renditions[i].frame_height)) {
+          // not an audio-only item
+          return;
+        }
       }
     }
-    // sort renditions by encoding rate
-    callback(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize);
+    // if we got this far, it's an audio-only item
+    video.renditions = iMax;
+    audiosArray.push(video)
+    return;
   }
 
   /**
@@ -174,20 +166,10 @@ var BCLS = (function(window, document) {
     return false;
   }
 
-  function processCustomFields(fields) {
-    var field;
-    for (field in fields) {
-      if (!arrayContains(customFields, field)) {
-        customFields.push(field);
-      }
-    }
-  }
-
-
   function startCSVStrings() {
     var i = 0,
       iMax;
-    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","State","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",\r\n';
+    csvStr = '"ID","Name","Description","Number of Renditions""Date Added","Date Last Modified",\r\n';
   }
 
   function writeReport() {
@@ -195,43 +177,16 @@ var BCLS = (function(window, document) {
       iMax,
       j,
       jMax,
-      video,
-      hlsLowRate,
-      hlsHighRate,
-      mp4LowRate,
-      mp4HighRate,
-      flvLowRate,
-      flvHighRate,
-      resWidth,
-      resHeight,
-      rendition = {};
+      item,
     if (videosArray.length > 0) {
-      iMax = videosArray.length;
+      iMax = audiosArray.length;
       for (i = 0; i < iMax; i += 1) {
-        video = videosArray[i];
+        item = audiosArray[i];
         // replace any line breaks in description, as that will break the CSV
-        if (video.description) {
-          video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
+        if (item.description) {
+          item.description = item.description.replace(/(?:\r\n|\r|\n)/g, ' ');
         }
         // generate the video detail row
-        hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
-        hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
-        mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
-        mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
-        flvLowRate = (video.flvRenditions.length > 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
-        flvHighRate = (video.flvRenditions.length > 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
-        if (video.flvRenditions.length > 0) {
-          rendition = video.flvRenditions[video.flvRenditions.length - 1];
-        } else if (video.mp4Renditions.length > 0) {
-          rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
-        } else if (video.hlsRenditions.length > 0) {
-          rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
-        } else {
-          rendition.frame_width = "unknown";
-          rendition.frame_height = "unknown";
-        }
-        resWidth = rendition.frame_width;
-        resHeight = rendition.frame_height;
         // add csv row
         csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.state + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",\r\n';
       }
