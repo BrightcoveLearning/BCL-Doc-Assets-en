@@ -119,6 +119,7 @@ var BCLS = (function(window, document) {
         if (isAudio(renditions[i])) {
           audioRenditions++;
         } else {
+          console.log('video rendition', video.id);
           // if any non-audio renditions, stop
           return;
         }
