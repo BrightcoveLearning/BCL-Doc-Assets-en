@@ -121,7 +121,7 @@ var BCLS = (function(window, document) {
         } else {
           console.log('video rendition', video.id);
           // if any non-audio renditions, stop
-          return;
+          break;
         }
     }
     // check to see if all renditions are audio
