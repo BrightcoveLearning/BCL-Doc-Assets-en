@@ -130,7 +130,7 @@ var BCLS = (function(window, document) {
     return targetArray;
   }
 
-  function processRenditions(video, renditions, callback) {
+  function processRenditions(video, renditions) {
     var i,
       iMax = renditions.length,
     // separate renditions by type
@@ -291,7 +291,7 @@ var BCLS = (function(window, document) {
             endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/dynamic_renditions';
             break;
           default:
-
+            console.log('should not be here - unknown delivery_type');
         }
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
@@ -300,36 +300,13 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
             var renditions = JSON.parse(response);
             if (renditions.length > 0) {
-              processRenditions(renditions, function(hlsRenditions, mp4Renditions, flvRenditions, otherRenditions, totalSize) {
-                if (hlsRenditions.length > 0) {
-                  sortArray(hlsRenditions, 'encoding_rate');
-                }
-
-                videosArray[callNumber].hlsRenditions = hlsRenditions;
-                if (mp4Renditions.length > 0) {
-                  sortArray(mp4Renditions, 'encoding_rate');
-                }
-                videosArray[callNumber].mp4Renditions = mp4Renditions;
-                if (flvRenditions.length > 0) {
-                  sortArray(flvRenditions, 'encoding_rate');
-                }
-                videosArray[callNumber].flvRenditions = flvRenditions;
-                // if (otherRenditions.length > 0) {
-                //     sortArray(otherRenditions, 'encoding_rate');
-                // }
-                // videosArray[callNumber].otherRenditions = otherRenditions;
-                videosArray[callNumber].totalSize += totalSize;
-            });
-          } else {
-              videosArray[callNumber].hlsRenditions = [];
-              videosArray[callNumber].mp4Renditions = [];
-              videosArray[callNumber].flvRenditions = [];
+              processRenditions(videosArray[callNumber], renditions);
             }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
           if (callNumber < totalVideos) {
-            createRequest('getDigitalMaster');
+            createRequest('getVideoRenditions');
           } else {
             // create csv headings
             startCSVStrings();
