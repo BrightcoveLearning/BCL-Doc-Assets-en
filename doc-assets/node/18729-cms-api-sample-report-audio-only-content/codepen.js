@@ -112,10 +112,8 @@ var BCLS = (function(window, document) {
     var i,
       iMax = renditions.length,
       audioRenditions = 0;
-      console.log('renditions count', iMax);
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
-      console.log('frame_height', renditions[i].frame_height);
         if (isAudio(renditions[i].frame_height)) {
           audioRenditions++;
         } else {
@@ -127,7 +125,7 @@ var BCLS = (function(window, document) {
 console.log('audioRenditions', audioRenditions);
     if (audioRenditions === renditions.length) {
       video.renditions = audioRenditions;
-      audiosArray.push(video)
+      audiosArray.push(video);
     }
     return;
   }
@@ -300,6 +298,7 @@ console.log('audioRenditions', audioRenditions);
           if (callNumber < totalVideos) {
             createRequest('getVideoRenditions');
           } else {
+            console.log('audiosArray', audiosArray);
             // create csv headings
             startCSVStrings();
             // write the report
