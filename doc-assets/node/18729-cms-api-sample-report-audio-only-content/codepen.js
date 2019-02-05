@@ -258,19 +258,43 @@ console.log('audioRenditions', audioRenditions);
             // won't be any renditions
             videosArray[callNumber].renditions = null;
             callNumber++;
-            createRequest('getVideoRenditions');
+            if (callNumber < totalVideos) {
+              createRequest('getVideoRenditions');
+            } else {
+              console.log('audiosArray', audiosArray);
+              // create csv headings
+              startCSVStrings();
+              // write the report
+              writeReport();
+            }
             break;
           case 'unknown':
             // won't be any renditions
             videosArray[callNumber].renditions = null;
             callNumber++;
-            createRequest('getVideoRenditions');
+            if (callNumber < totalVideos) {
+              createRequest('getVideoRenditions');
+            } else {
+              console.log('audiosArray', audiosArray);
+              // create csv headings
+              startCSVStrings();
+              // write the report
+              writeReport();
+            }
             break;
           case 'live_origin':
             // live stream; don't process
             videosArray[callNumber].renditions = null;
             callNumber++;
-            createRequest('getVideoRenditions');
+            if (callNumber < totalVideos) {
+              createRequest('getVideoRenditions');
+            } else {
+              console.log('audiosArray', audiosArray);
+              // create csv headings
+              startCSVStrings();
+              // write the report
+              writeReport();
+            }
             break;
           case 'static_origin':
             // legacy ingest
