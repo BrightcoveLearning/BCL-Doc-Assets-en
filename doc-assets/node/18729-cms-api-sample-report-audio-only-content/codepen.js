@@ -124,6 +124,7 @@ var BCLS = (function(window, document) {
       }
     }
     // check to see if all renditions are audio
+console.log('audioRenditions', audioRenditions);
     if (audioRenditions === rendition.length) {
       video.renditions = audioRenditions;
       audiosArray.push(video)
@@ -289,11 +290,11 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
-            var renditions = JSON.parse(response);
+          var renditions = JSON.parse(response);
 console.log('renditions', renditions);
-            if (renditions.length > 0) {
-              processRenditions(videosArray[callNumber], renditions);
-            }
+          if (renditions.length > 0) {
+            processRenditions(videosArray[callNumber], renditions);
+          }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
