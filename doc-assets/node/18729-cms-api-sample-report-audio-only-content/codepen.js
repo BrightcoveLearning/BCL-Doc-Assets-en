@@ -130,8 +130,10 @@ var BCLS = (function(window, document) {
       console.log('renditions length', renditions.length);
       video.renditions = audioRenditions;
       audiosArray.push(video);
+      return;
+    } else {
+      return;
     }
-    return;
   }
 
   function writeReport() {
