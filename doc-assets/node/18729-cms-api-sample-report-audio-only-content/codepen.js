@@ -131,24 +131,6 @@ var BCLS = (function(window, document) {
     return;
   }
 
-  /**
-   * determines whether specified item is in an array
-   *
-   * @param {array} array to check
-   * @param {string} item to check for
-   * @return {boolean} true if item is in the array, else false
-   */
-  function arrayContains(arr, item) {
-    var i,
-      iMax = arr.length;
-    for (i = 0; i < iMax; i++) {
-      if (arr[i] === item) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   function startCSVStrings() {
     var i = 0,
       iMax;
@@ -158,15 +140,13 @@ var BCLS = (function(window, document) {
   function writeReport() {
     var i,
       iMax,
-      j,
-      jMax,
       item,
       tr,
       td,
       frag = document.createDocumentFragment();
     if (audiosArray.length > 0) {
       iMax = audiosArray.length;
-      for (i = 0; i < iMax; i += 1) {
+      for (i = 0; i < iMax; i++) {
         item = audiosArray[i];
         // replace any line breaks in description, as that will break the CSV
         if (item.description) {
@@ -175,36 +155,39 @@ var BCLS = (function(window, document) {
         // generate the video detail row
         // add csv row
         csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' + item.renditions + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
+        // create the table row
+        tr = document.createElement('tr');
+        td = document.createElement('td');
+        td.textContent = item.id;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = item.name;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = item.description;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = item.duration / 1000;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = item.renditions;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = item.created_at;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = item.updated_at;
+        tr.appendChild(td);
+        frag.appendChild(tr);
       }
       csvData.textContent += csvStr;
-      // create the table row
-      tr = document.createElement('tr');
-      td = document.createElement('td');
-      td.textContent = item.id;
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.textContent = item.name;
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.textContent = item.description;
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.textContent = item.duration / 1000;
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.textContent = item.renditions;
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.textContent = item.created_at;
-      tr.appendChild(td);
-      td = document.createElement('td');
-      td.textContent = item.updated_at;
-      tr.appendChild(td);
-      frag.appendChild(tr);
       tableBody.appendChild(frag);
       pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
+    } else {
+      csvData.textContent = 'No audio-only content was found';
+      pLogFinish.textContent = 'Finished! No audio-only content was found'
     }
   }
 
