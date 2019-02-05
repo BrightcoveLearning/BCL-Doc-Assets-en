@@ -129,12 +129,6 @@ var BCLS = (function(window, document) {
     return;
   }
 
-  function startCSVStrings() {
-    var i = 0,
-      iMax;
-    csvStr = '"ID","Name","Description","Number of Renditions""Date Added","Date Last Modified",\r\n';
-  }
-
   function writeReport() {
     var i,
       iMax,
@@ -142,6 +136,7 @@ var BCLS = (function(window, document) {
       tr,
       td,
       frag = document.createDocumentFragment();
+    csvStr = '"ID","Name","Description","Number of Renditions""Date Added","Date Last Modified",\r\n';
     if (audiosArray.length > 0) {
       iMax = audiosArray.length;
       for (i = 0; i < iMax; i++) {
@@ -262,8 +257,6 @@ var BCLS = (function(window, document) {
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              // create csv headings
-              startCSVStrings();
               // write the report
               writeReport();
             }
@@ -276,8 +269,6 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // create csv headings
-              startCSVStrings();
-              // write the report
               writeReport();
             }
             break;
@@ -288,8 +279,6 @@ var BCLS = (function(window, document) {
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              // create csv headings
-              startCSVStrings();
               // write the report
               writeReport();
             }
@@ -321,8 +310,6 @@ var BCLS = (function(window, document) {
             createRequest('getVideoRenditions');
           } else {
             console.log('audiosArray', audiosArray);
-            // create csv headings
-            startCSVStrings();
             // write the report
             writeReport();
           }
