@@ -254,8 +254,6 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideoRenditions':
-        var i,
-          iMax = videosArray.length;
         switch (videosArray[callNumber].delivery_type) {
           case 'remote':
             // won't be any renditions
