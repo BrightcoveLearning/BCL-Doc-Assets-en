@@ -116,9 +116,6 @@ var BCLS = (function(window, document) {
     for (i = 0; i < iMax; i++) {
         if (isAudio(renditions[i].frame_height)) {
           audioRenditions++;
-        } else {
-          // not an audio-only item
-          break;
         }
     }
     // check to see if all renditions are audio
