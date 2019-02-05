@@ -125,7 +125,7 @@ var BCLS = (function(window, document) {
     }
     // check to see if all renditions are audio
 console.log('audioRenditions', audioRenditions);
-    if (audioRenditions === rendition.length) {
+    if (audioRenditions === renditions.length) {
       video.renditions = audioRenditions;
       audiosArray.push(video)
     }
