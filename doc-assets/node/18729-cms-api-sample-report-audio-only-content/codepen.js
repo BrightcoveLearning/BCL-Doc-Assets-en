@@ -282,10 +282,17 @@ var BCLS = (function(window, document) {
             callNumber++;
             createRequest('getVideoRenditions');
             break;
+          case 'static_origin':
+            // legacy ingest
+            endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+            break;
+          case 'dynamic_origin':
+            // dynamic delivery
+            endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/dynamic_renditions';
+            break;
           default:
 
         }
-        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
