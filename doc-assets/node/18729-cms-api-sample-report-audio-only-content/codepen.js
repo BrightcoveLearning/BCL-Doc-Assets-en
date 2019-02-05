@@ -112,8 +112,10 @@ var BCLS = (function(window, document) {
     var i,
       iMax = renditions.length,
       audioRenditions = 0;
+      console.log('renditions count', iMax);
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
+      console.log('frame_height', renditions[i].frame_height);
         if (isAudio(renditions[i].frame_height)) {
           audioRenditions++;
         }
@@ -124,7 +126,6 @@ console.log('audioRenditions', audioRenditions);
       video.renditions = audioRenditions;
       audiosArray.push(video)
     }
-    console.log('returning');
     return;
   }
 
@@ -287,7 +288,6 @@ console.log('audioRenditions', audioRenditions);
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
           var renditions = JSON.parse(response);
-console.log('renditions', renditions);
           if (renditions.length > 0) {
             processRenditions(videosArray[callNumber], renditions);
           }
