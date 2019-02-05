@@ -122,7 +122,6 @@ var BCLS = (function(window, document) {
         }
     }
     // check to see if all renditions are audio
-console.log('audioRenditions', audioRenditions);
     if (audioRenditions === renditions.length) {
       video.renditions = audioRenditions;
       audiosArray.push(video);
@@ -224,7 +223,6 @@ console.log('audioRenditions', audioRenditions);
           } else {
             totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
           }
-          console.log('totalVideos', totalVideos);
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
           createRequest('getVideos');
@@ -254,6 +252,8 @@ console.log('audioRenditions', audioRenditions);
         });
         break;
       case 'getVideoRenditions':
+      console.log('callNumber', callNumber);
+      console.log('delivery_type', videosArray[callNumber].delivery_type);
         switch (videosArray[callNumber].delivery_type) {
           case 'remote':
             // won't be any renditions
@@ -262,7 +262,6 @@ console.log('audioRenditions', audioRenditions);
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              console.log('audiosArray1', audiosArray);
               // create csv headings
               startCSVStrings();
               // write the report
@@ -276,7 +275,6 @@ console.log('audioRenditions', audioRenditions);
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              console.log('audiosArray2', audiosArray);
               // create csv headings
               startCSVStrings();
               // write the report
@@ -290,7 +288,6 @@ console.log('audioRenditions', audioRenditions);
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              console.log('audiosArray3', audiosArray);
               // create csv headings
               startCSVStrings();
               // write the report
@@ -320,7 +317,6 @@ console.log('audioRenditions', audioRenditions);
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
-          console.log('callNumber', callNumber);
           if (callNumber < totalVideos) {
             createRequest('getVideoRenditions');
           } else {
