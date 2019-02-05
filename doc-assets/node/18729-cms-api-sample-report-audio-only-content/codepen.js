@@ -108,28 +108,6 @@ var BCLS = (function(window, document) {
     }
   }
 
-  /**
-   * sort an array of objects based on an object property
-   * @param {array} targetArray - array to be sorted
-   * @param {string|number} objProperty - object property to sort on
-   * @return sorted array
-   */
-  function sortArray(targetArray, objProperty) {
-    targetArray.sort(function(a, b) {
-      var propA = a[objProperty],
-        propB = b[objProperty];
-      // sort ascending; reverse propA and propB to sort descending
-      if (propA < propB) {
-        return -1;
-      } else if (propA > propB) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-    return targetArray;
-  }
-
   function processRenditions(video, renditions) {
     var i,
       iMax = renditions.length,
@@ -145,9 +123,11 @@ var BCLS = (function(window, document) {
         }
       }
     }
-    // if we got this far, it's an audio-only item
-    video.renditions = iMax;
-    audiosArray.push(video)
+    // check to see if all renditions are audio
+    if (audioRenditions === rendition.length) {
+      video.renditions = audioRenditions;
+      audiosArray.push(video)
+    }
     return;
   }
 
