@@ -132,7 +132,7 @@ var BCLS = (function(window, document) {
 
   function processRenditions(video, renditions) {
     var i,
-      iMax = renditions.length,
+      iMax = renditions.length;
     // separate renditions by type
     for (i = 0; i < iMax; i += 1) {
       if (renditions[i].hasOwnProperty('frame_height')) {
