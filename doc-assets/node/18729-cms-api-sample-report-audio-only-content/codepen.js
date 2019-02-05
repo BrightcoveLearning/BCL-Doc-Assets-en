@@ -132,13 +132,16 @@ var BCLS = (function(window, document) {
 
   function processRenditions(video, renditions) {
     var i,
-      iMax = renditions.length;
+      iMax = renditions.length,
+      audioRenditions = 0;
     // separate renditions by type
-    for (i = 0; i < iMax; i += 1) {
+    for (i = 0; i < iMax; i++) {
       if (renditions[i].hasOwnProperty('frame_height')) {
         if (!isAudio(renditions[i].frame_height)) {
           // not an audio-only item
-          return;
+          break;
+        } else {
+          audioRenditions++;
         }
       }
     }
