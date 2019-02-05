@@ -71,8 +71,10 @@ var BCLS = (function(window, document) {
    * @param {String} str string to test
    * @return {Boolean}
    */
-  function isAudio(frame_height) {
-    if (frame_height === null || frame_height === 0) {
+  function isAudio(rendition) {
+    if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === true) {
+      return true;
+    } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'audio') {
       return true;
     }
     return false;
@@ -114,7 +116,7 @@ var BCLS = (function(window, document) {
       audioRenditions = 0;
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
-        if (isAudio(renditions[i].frame_height)) {
+        if (isAudio(renditions[i])) {
           audioRenditions++;
         } else {
           // if any non-audio renditions, stop
