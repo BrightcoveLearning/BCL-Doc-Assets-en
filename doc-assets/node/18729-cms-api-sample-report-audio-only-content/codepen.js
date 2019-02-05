@@ -118,6 +118,9 @@ var BCLS = (function(window, document) {
       console.log('frame_height', renditions[i].frame_height);
         if (isAudio(renditions[i].frame_height)) {
           audioRenditions++;
+        } else {
+          // if any non-audio renditions, stop
+          return;
         }
     }
     // check to see if all renditions are audio
