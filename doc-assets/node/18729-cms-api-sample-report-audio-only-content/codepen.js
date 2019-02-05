@@ -224,6 +224,7 @@ console.log('audioRenditions', audioRenditions);
           } else {
             totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
           }
+          console.log('totalVideos', totalVideos);
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
           createRequest('getVideos');
