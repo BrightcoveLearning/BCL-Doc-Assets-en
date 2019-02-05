@@ -178,6 +178,8 @@ var BCLS = (function(window, document) {
       j,
       jMax,
       item,
+      tr,
+      td,
       frag = document.createDocumentFragment();
     if (audiosArray.length > 0) {
       iMax = audiosArray.length;
@@ -189,10 +191,11 @@ var BCLS = (function(window, document) {
         }
         // generate the video detail row
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.description + '","' + video.duration / 1000 + '","' video.renditions + '","' + video.created_at + '","' + video.updated_at + '",\r\n';
+        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + item.duration / 1000 + '","' item.renditions + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
       }
       csvData.textContent += csvStr;
-      // content = document.createTextNode('Finished! See the results or get the CSV data below.');
+      // create the table row
+
       pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
