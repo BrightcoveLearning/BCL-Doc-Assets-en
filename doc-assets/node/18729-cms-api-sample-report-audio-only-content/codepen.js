@@ -129,6 +129,7 @@ console.log('audioRenditions', audioRenditions);
       video.renditions = audioRenditions;
       audiosArray.push(video)
     }
+    console.log('returning');
     return;
   }
 
