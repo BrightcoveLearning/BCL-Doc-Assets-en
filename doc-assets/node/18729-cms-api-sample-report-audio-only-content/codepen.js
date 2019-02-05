@@ -256,37 +256,35 @@ var BCLS = (function(window, document) {
             callNumber = 0;
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
-            createRequest('getDigitalMaster');
-          }
-        });
-        break;
-      case 'getDigitalMaster':
-        videosArray[callNumber].totalSize = 0;
-        endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/digital_master';
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        makeRequest(options, function(response) {
-          if (isDefined(response)){
-            responseDecoded = JSON.parse(response);
-            if (isDefined(responseDecoded) && !isDefined(responseDecoded.length)) {
-              videosArray[callNumber].totalSize += responseDecoded.size;
-              createRequest('getVideoRenditions');
-            } else {
-              createRequest('getVideoRenditions');
-            }
-          } else {
             createRequest('getVideoRenditions');
           }
-        })
+        });
         break;
       case 'getVideoRenditions':
         var i,
           iMax = videosArray.length;
-        videosArray[callNumber].hlsRenditions = [];
-        videosArray[callNumber].mp4Renditions = [];
-        videosArray[callNumber].flvRenditions = [];
-        videosArray[callNumber].otherRenditions = [];
+        switch (videosArray[callNumber].delivery_type) {
+          case 'remote':
+            // won't be any renditions
+            videosArray[callNumber].renditions = null;
+            callNumber++;
+            createRequest('getVideoRenditions');
+            break;
+          case 'unknown':
+            // won't be any renditions
+            videosArray[callNumber].renditions = null;
+            callNumber++;
+            createRequest('getVideoRenditions');
+            break;
+          case 'live_origin':
+            // live stream; don't process
+            videosArray[callNumber].renditions = null;
+            callNumber++;
+            createRequest('getVideoRenditions');
+            break;
+          default:
+
+        }
         endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
