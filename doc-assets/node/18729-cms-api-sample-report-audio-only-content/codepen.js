@@ -210,7 +210,7 @@ console.log('audioRenditions', audioRenditions);
     disableButtons();
     switch (id) {
       case 'getCount':
-        endPoint = account_id + '/counts/videos?sort=created_at';
+        endPoint = account_id + '/counts/videos';
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
         }
