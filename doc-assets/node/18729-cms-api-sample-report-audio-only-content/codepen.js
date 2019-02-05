@@ -191,7 +191,7 @@ var BCLS = (function(window, document) {
         }
         // generate the video detail row
         // add csv row
-        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' item.renditions + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
+        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' + item.renditions + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
       }
       csvData.textContent += csvStr;
       // create the table row
