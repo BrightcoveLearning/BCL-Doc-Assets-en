@@ -290,6 +290,7 @@ var BCLS = (function(window, document) {
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
             var renditions = JSON.parse(response);
+console.log('renditions', renditions);
             if (renditions.length > 0) {
               processRenditions(videosArray[callNumber], renditions);
             }
