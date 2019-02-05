@@ -178,7 +178,8 @@ var BCLS = (function(window, document) {
       j,
       jMax,
       item,
-    if (videosArray.length > 0) {
+      frag = document.createDocumentFragment();
+    if (audiosArray.length > 0) {
       iMax = audiosArray.length;
       for (i = 0; i < iMax; i += 1) {
         item = audiosArray[i];
@@ -188,7 +189,7 @@ var BCLS = (function(window, document) {
         }
         // generate the video detail row
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.state + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.description + '","' + video.duration / 1000 + '","' video.renditions + '","' + video.created_at + '","' + video.updated_at + '",\r\n';
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
