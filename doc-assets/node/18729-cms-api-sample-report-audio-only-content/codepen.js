@@ -295,6 +295,7 @@ console.log('audioRenditions', audioRenditions);
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
+          console.log('callNumber', callNumber);
           if (callNumber < totalVideos) {
             createRequest('getVideoRenditions');
           } else {
