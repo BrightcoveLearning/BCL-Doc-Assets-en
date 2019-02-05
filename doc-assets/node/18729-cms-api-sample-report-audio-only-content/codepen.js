@@ -195,7 +195,30 @@ var BCLS = (function(window, document) {
       }
       csvData.textContent += csvStr;
       // create the table row
-
+      tr = document.createElement('tr');
+      td = document.createElement('td');
+      td.textContent = item.id;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = item.name;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = item.description;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = item.duration / 1000;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = item.renditions;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = item.created_at;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.textContent = item.updated_at;
+      tr.appendChild(td);
+      frag.appendChild(tr);
+      tableBody.appendChild(frag);
       pLogFinish.textContent = 'Finished! See the results or get the CSV data below.';
       // reportDisplay.innerHTML = summaryReportStr + reportStr;
       enableButtons();
