@@ -114,14 +114,12 @@ var BCLS = (function(window, document) {
       audioRenditions = 0;
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
-      if (renditions[i].hasOwnProperty('frame_height')) {
-        if (!isAudio(renditions[i].frame_height)) {
+        if (isAudio(renditions[i].frame_height)) {
+          audioRenditions++;
+        } else {
           // not an audio-only item
           break;
-        } else {
-          audioRenditions++;
         }
-      }
     }
     // check to see if all renditions are audio
 console.log('audioRenditions', audioRenditions);
@@ -234,7 +232,7 @@ console.log('audioRenditions', audioRenditions);
         break;
       case 'getVideos':
         var offset = (limit * callNumber);
-        endPoint = account_id + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
+        endPoint = account_id + '/videos?limit=' + limit + '&offset=' + offset;
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
         }
