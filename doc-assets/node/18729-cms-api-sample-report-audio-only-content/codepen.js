@@ -262,7 +262,7 @@ console.log('audioRenditions', audioRenditions);
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              console.log('audiosArray', audiosArray);
+              console.log('audiosArray1', audiosArray);
               // create csv headings
               startCSVStrings();
               // write the report
@@ -276,7 +276,7 @@ console.log('audioRenditions', audioRenditions);
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              console.log('audiosArray', audiosArray);
+              console.log('audiosArray2', audiosArray);
               // create csv headings
               startCSVStrings();
               // write the report
@@ -290,7 +290,7 @@ console.log('audioRenditions', audioRenditions);
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
-              console.log('audiosArray', audiosArray);
+              console.log('audiosArray3', audiosArray);
               // create csv headings
               startCSVStrings();
               // write the report
