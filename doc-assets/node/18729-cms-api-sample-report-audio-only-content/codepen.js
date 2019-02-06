@@ -350,6 +350,7 @@ var BCLS = (function(window, document) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           response = httpRequest.responseText;
                           // some API requests return '{null}' for empty responses - breaks JSON.parse
+                          console.log('response', response);
                           if (response === '') {
                               response = null;
                           }
