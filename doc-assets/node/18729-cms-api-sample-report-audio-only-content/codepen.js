@@ -307,7 +307,7 @@ var BCLS = (function(window, document) {
         spanRenditionsCountEl.textContent = callNumber + 1;
         makeRequest(options, function(response) {
           var renditions = JSON.parse(response);
-          if (renditions.length > 0) {
+          if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
             processRenditions(videosArray[callNumber], renditions);
           }
           videosCompleted++;
