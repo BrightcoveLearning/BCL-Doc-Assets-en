@@ -312,11 +312,11 @@ var BCLS = (function(window, document) {
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
-          if (callNumber < totalVideos) {
+          if (callNumber === totalVideos) {
             // write the report
-            createRequest('getVideoRenditions');
-          } else {
             writeReport();
+          } else {
+            createRequest('getVideoRenditions');
           }
         });
         break;
