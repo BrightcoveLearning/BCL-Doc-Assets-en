@@ -223,7 +223,6 @@ var BCLS = (function(window, document) {
           } else {
             totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
           }
-          console.log('totalVideos', totalVideos);
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
           createRequest('getVideos');
@@ -249,7 +248,6 @@ var BCLS = (function(window, document) {
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
             totalCalls = totalVideos;
-            console.log('totalCalls', totalCalls);
             createRequest('getVideoRenditions');
           }
         });
