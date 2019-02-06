@@ -308,6 +308,9 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           var renditions = JSON.parse(response);
           if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
+            console.log('video', videosArray[callNumber].id);
+            console.log('renditions', renditions);
+
             processRenditions(videosArray[callNumber], renditions);
           }
           videosCompleted++;
