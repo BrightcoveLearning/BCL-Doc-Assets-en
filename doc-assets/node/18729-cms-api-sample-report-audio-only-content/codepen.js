@@ -128,7 +128,7 @@ var BCLS = (function(window, document) {
     if (audioRenditions === renditions.length) {
       console.log('audioRenditions', audioRenditions);
       console.log('renditions length', renditions.length);
-      video.renditions = audioRenditions;
+      video.renditionCount = audioRenditions;
       audiosArray.push(video);
       return;
     } else {
@@ -154,7 +154,7 @@ var BCLS = (function(window, document) {
         }
         // generate the video detail row
         // add csv row
-        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' + item.renditions + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
+        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' + item.renditionCount + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
         // create the table row
         tr = document.createElement('tr');
         td = document.createElement('td');
@@ -170,7 +170,7 @@ var BCLS = (function(window, document) {
         td.textContent = item.duration / 1000;
         tr.appendChild(td);
         td = document.createElement('td');
-        td.textContent = item.renditions;
+        td.textContent = item.renditionCount;
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = item.created_at;
