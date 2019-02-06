@@ -7,6 +7,15 @@
       <li>For legacy ingest videos, each rendition will have an <code>audio_only</code> property that is a boolean</li>
       <li>For Dynamic Delivery videos, each rendition will have a <code>media_type</code> property that will be set to <code>audio</code> or <code>video</code></li>
     </ul>
+    <p>In the sample app here, we use a function that checks for either case:</p>
+<pre class="line-numbers"><code class="language-json">function isAudio(rendition) {
+  if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === false) {
+    return false;
+  } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'video') {
+    return false;
+  }
+  return true;
+}</code></pre>
     <h3>Notes on this sample</h3>
     <ul>
       <li>Any video in Video Cloud may have audio-only renditions. This sample identifies content that has <strong>only</strong> audio renditions, and therefore checks every rendition. It would be straightforward to modify the code to produce a report on content that has at least one audio-only rendition.</li>
