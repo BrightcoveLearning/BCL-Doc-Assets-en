@@ -103,6 +103,46 @@ var BCLS = (function(window, document) {
     }
   }
 
+  /**
+ * utility to extract h/m/s from seconds
+ * @param {number} ms - milliseconds to convert to hh:mm:ss
+ * @returns {object} object with members h (hours), m (minutes), s (seconds)
+ */
+    function msToTime(ms) {
+        var secs = ms / 1000,
+            hours = Math.floor(secs / (60 * 60)),
+            divisor_for_minutes = secs % (60 * 60),
+            minutes = Math.floor(divisor_for_minutes / 60),
+            divisor_for_seconds = divisor_for_minutes % 60,
+            seconds = Math.ceil(divisor_for_seconds),
+            obj = {};
+
+        if (hours < 10) {
+            hours = "0" + hours.toString();
+        } else {
+            hours = hours.toString();
+        }
+
+        if (minutes < 10) {
+            minutes = "0" + minutes.toString();
+        } else {
+            minutes = minutes.toString();
+        }
+
+        if (seconds < 10) {
+            seconds = "0" + seconds.toString();
+        } else {
+            seconds = seconds.toString();
+        }
+
+        obj = {
+            'h': hours,
+            'm': minutes,
+            's': seconds
+        };
+
+        return obj.h + ':' + obj.m + ':' + obj.s;
+    }
 
   function writeReport(videos, tableEl, csvEl) {
     var i,
@@ -117,7 +157,7 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i += 1) {
         video = videos[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + '","' + msToTime(video.duration) + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
         // add table row
         tr = document.createElement('tr');
         td = document.createElement('td');
@@ -125,6 +165,9 @@ var BCLS = (function(window, document) {
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = video.name;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = msToTime(video.duration);
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = video.updated_at;
