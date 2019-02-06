@@ -321,9 +321,8 @@ var BCLS = (function(window, document) {
             } else {
               createRequest('getVideoRenditions');
             }
-          }
-        });
-      }
+          });
+        }
       break;
     default:
       console.log('default case - should not be here');
