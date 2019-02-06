@@ -256,69 +256,71 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideoRenditions':
-      var video = videosArray[callNumber];
-        switch (videosArray[callNumber].delivery_type) {
-          case 'remote':
-            // won't be any renditions
-            video.renditions = null;
-            callNumber++;
-            if (callNumber < totalCalls) {
-              createRequest('getVideoRenditions');
-            } else {
-              // write the report
-              writeReport();
-            }
-            break;
-          case 'unknown':
-            // won't be any renditions
-            video.renditions = null;
-            callNumber++;
-            if (callNumber < totalCalls) {
-              createRequest('getVideoRenditions');
-            } else {
-              // create csv headings
-              writeReport();
-            }
-            break;
-          case 'live_origin':
-            // live stream; don't process
-            video.renditions = null;
-            callNumber++;
-            if (callNumber < totalCalls) {
-              createRequest('getVideoRenditions');
-            } else {
-              // write the report
-              writeReport();
-            }
-            break;
-          case 'static_origin':
-            // legacy ingest
-            endPoint = account_id + '/videos/' + video.id + '/assets/renditions';
-            break;
-          case 'dynamic_origin':
-            // dynamic delivery
-            endPoint = account_id + '/videos/' + video.id + '/assets/dynamic_renditions';
-            break;
-          default:
-            console.log('should not be here - unknown delivery_type');
-        }
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        spanRenditionsCountEl.textContent = callNumber + 1;
-        makeRequest(options, function(response) {
-          var renditions = JSON.parse(response);
-          if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
-            processRenditions(video, renditions);
+        if (callNumber < totalCalls) {      
+          var video = videosArray[callNumber];
+          switch (videosArray[callNumber].delivery_type) {
+            case 'remote':
+              // won't be any renditions
+              video.renditions = null;
+              callNumber++;
+              if (callNumber < totalCalls) {
+                createRequest('getVideoRenditions');
+              } else {
+                // write the report
+                writeReport();
+              }
+              break;
+            case 'unknown':
+              // won't be any renditions
+              video.renditions = null;
+              callNumber++;
+              if (callNumber < totalCalls) {
+                createRequest('getVideoRenditions');
+              } else {
+                // create csv headings
+                writeReport();
+              }
+              break;
+            case 'live_origin':
+              // live stream; don't process
+              video.renditions = null;
+              callNumber++;
+              if (callNumber < totalCalls) {
+                createRequest('getVideoRenditions');
+              } else {
+                // write the report
+                writeReport();
+              }
+              break;
+            case 'static_origin':
+              // legacy ingest
+              endPoint = account_id + '/videos/' + video.id + '/assets/renditions';
+              break;
+            case 'dynamic_origin':
+              // dynamic delivery
+              endPoint = account_id + '/videos/' + video.id + '/assets/dynamic_renditions';
+              break;
+            default:
+              console.log('should not be here - unknown delivery_type');
           }
-          videosCompleted++;
-          logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-          callNumber++;
-          if (callNumber === totalCalls) {
-            // write the report
-            writeReport();
-          } else {
-            createRequest('getVideoRenditions');
+          options.url = baseURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          spanRenditionsCountEl.textContent = callNumber + 1;
+          makeRequest(options, function(response) {
+            var renditions = JSON.parse(response);
+            if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
+              processRenditions(video, renditions);
+            }
+            videosCompleted++;
+            logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
+            callNumber++;
+            if (callNumber === totalCalls) {
+              // write the report
+              writeReport();
+            } else {
+              createRequest('getVideoRenditions');
+            }
           }
         });
         break;
