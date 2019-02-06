@@ -114,6 +114,7 @@ var BCLS = (function(window, document) {
     var i,
       iMax = renditions.length,
       audioRenditions = 0;
+      console.log('video', video.id);
       console.log('renditions', renditions);
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
