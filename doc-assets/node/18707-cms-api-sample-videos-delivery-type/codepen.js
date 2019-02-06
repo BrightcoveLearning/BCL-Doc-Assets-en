@@ -109,6 +109,7 @@ var BCLS = (function(window, document) {
  * @returns {object} object with members h (hours), m (minutes), s (seconds)
  */
     function msToTime(ms) {
+      console.log('ms'. ms);
         var secs = ms / 1000,
             hours = Math.floor(secs / (60 * 60)),
             divisor_for_minutes = secs % (60 * 60),
