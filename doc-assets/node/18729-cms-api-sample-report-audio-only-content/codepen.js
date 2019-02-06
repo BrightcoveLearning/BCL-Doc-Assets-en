@@ -320,7 +320,7 @@ var BCLS = (function(window, document) {
         });
         break;
       default:
-        console.log('default case - should not be here);
+        console.log('default case - should not be here');
     }
   }
 
