@@ -72,12 +72,12 @@ var BCLS = (function(window, document) {
    * @return {Boolean}
    */
   function isAudio(rendition) {
-    if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === true) {
-      return true;
-    } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'audio') {
-      return true;
+    if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === false) {
+      return false;
+    } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'video') {
+      return false;
     }
-    return false;
+    return true;
   }
 
   /**
