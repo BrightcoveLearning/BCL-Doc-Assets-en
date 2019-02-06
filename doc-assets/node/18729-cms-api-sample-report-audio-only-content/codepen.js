@@ -114,12 +114,15 @@ var BCLS = (function(window, document) {
     var i,
       iMax = renditions.length,
       audioRenditions = 0;
+      if (video.id === '5831706803001') {
+        console.log('dolphin', renditions);
+      }
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
         if (isAudio(renditions[i])) {
           audioRenditions++;
         } else {
-          console.log('video rendition', video.id);
+          // console.log('video rendition', video.id);
           // if any non-audio renditions, stop
           break;
         }
@@ -144,6 +147,7 @@ var BCLS = (function(window, document) {
     csvStr = '"ID","Name","Description","Number of Renditions""Date Added","Date Last Modified",\r\n';
     if (audiosArray.length > 0) {
       iMax = audiosArray.length;
+      console.log('array length', iMax);
       for (i = 0; i < iMax; i++) {
         item = audiosArray[i];
         // replace any line breaks in description, as that will break the CSV
@@ -252,49 +256,52 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideoRenditions':
-      console.log('callNumber', callNumber);
-      console.log('delivery_type', videosArray[callNumber].delivery_type);
+      var video = videosArray[callNumber];
+      // console.log('delivery_type', videosArray[callNumber].delivery_type);
         switch (videosArray[callNumber].delivery_type) {
           case 'remote':
             // won't be any renditions
-            videosArray[callNumber].renditions = null;
+            video.renditions = null;
             callNumber++;
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
+              console.log('x');
               writeReport();
             }
             break;
           case 'unknown':
             // won't be any renditions
-            videosArray[callNumber].renditions = null;
+            video.renditions = null;
             callNumber++;
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
               // create csv headings
+              console.log('y');
               writeReport();
             }
             break;
           case 'live_origin':
             // live stream; don't process
-            videosArray[callNumber].renditions = null;
+            video.renditions = null;
             callNumber++;
             if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
+              console.log('z');
               writeReport();
             }
             break;
           case 'static_origin':
             // legacy ingest
-            endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
+            endPoint = account_id + '/videos/' + video.id + '/assets/renditions';
             break;
           case 'dynamic_origin':
             // dynamic delivery
-            endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/dynamic_renditions';
+            endPoint = account_id + '/videos/' + video.id + '/assets/dynamic_renditions';
             break;
           default:
             console.log('should not be here - unknown delivery_type');
@@ -306,20 +313,21 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           var renditions = JSON.parse(response);
           if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
-            console.log('video', videosArray[callNumber].id);
+            console.log('video', video.id);
             console.log('renditions', renditions);
 
-            processRenditions(videosArray[callNumber], renditions);
+            processRenditions(video, renditions);
           }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
-          if (callNumber < totalVideos) {
-            createRequest('getVideoRenditions');
-          } else {
-            console.log('audiosArray', audiosArray);
+          console.log('totalVideos', totalVideos);
+          console.log('callNumber', callNumber);
+          if (callNumber === totalVideos) {
             // write the report
             writeReport();
+          } else {
+            createRequest('getVideoRenditions');
           }
         });
         break;
@@ -350,7 +358,7 @@ var BCLS = (function(window, document) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           response = httpRequest.responseText;
                           // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          console.log('response', response);
+                          // console.log('response', response);
                           if (response === '') {
                               response = null;
                           }
