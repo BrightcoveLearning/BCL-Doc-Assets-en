@@ -250,6 +250,7 @@ var BCLS = (function(window, document) {
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
             totalCalls = totalVideos;
+            console.log('totalCalls', totalCalls);
             createRequest('getVideoRenditions');
           }
         });
