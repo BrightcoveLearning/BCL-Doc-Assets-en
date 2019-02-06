@@ -208,7 +208,7 @@ var BCLS = (function(window, document) {
     disableButtons();
     switch (id) {
       case 'getCount':
-      console.log('totalVideos', totalVideos);
+      console.log('totalVideos', typeof totalVideos);
         endPoint = account_id + '/counts/videos';
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
