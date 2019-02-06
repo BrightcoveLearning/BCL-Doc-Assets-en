@@ -256,7 +256,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideoRenditions':
-        if (callNumber < totalCalls) {      
+        if (callNumber < totalCalls) {
           var video = videosArray[callNumber];
           switch (videosArray[callNumber].delivery_type) {
             case 'remote':
@@ -323,10 +323,10 @@ var BCLS = (function(window, document) {
             }
           }
         });
-        break;
-      default:
-        console.log('default case - should not be here');
-    }
+      }
+      break;
+    default:
+      console.log('default case - should not be here');
   }
 
   /**
