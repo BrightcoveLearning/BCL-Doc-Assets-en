@@ -386,12 +386,12 @@ var BCLS = (function(window, document) {
       // get the inputs
       client_id = client_id_element.value;
       client_secret = client_secret_element.value;
-      account_id = account_id_element.value
+      account_id = (isDefined(account_id_element.value)) ? account_id_element.value : '1752604059001'
       totalVideos = getSelectedValue(videoCount);
       // only use entered account id if client id and secret are entered also
       if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
         logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
-        account_id = '57838016001';
+        account_id = '1752604059001';
       }
       // get video count
       createRequest('getCount');
