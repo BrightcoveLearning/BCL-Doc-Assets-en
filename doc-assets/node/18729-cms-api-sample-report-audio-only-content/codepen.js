@@ -208,7 +208,6 @@ var BCLS = (function(window, document) {
     disableButtons();
     switch (id) {
       case 'getCount':
-      console.log('totalVideos', typeof totalVideos);
         endPoint = account_id + '/counts/videos';
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
@@ -225,6 +224,7 @@ var BCLS = (function(window, document) {
           } else {
             totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
           }
+          console.log('totalVideos', totalVideos);
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
           createRequest('getVideos');
