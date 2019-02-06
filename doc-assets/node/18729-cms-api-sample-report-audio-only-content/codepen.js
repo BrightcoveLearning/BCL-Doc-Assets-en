@@ -114,6 +114,7 @@ var BCLS = (function(window, document) {
     var i,
       iMax = renditions.length,
       audioRenditions = 0;
+      console.log('renditions', renditions);
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
         if (isAudio(renditions[i])) {
@@ -126,8 +127,6 @@ var BCLS = (function(window, document) {
     }
     // check to see if all renditions are audio
     if (audioRenditions === renditions.length) {
-      console.log('audioRenditions', audioRenditions);
-      console.log('renditions length', renditions.length);
       video.renditionCount = audioRenditions;
       audiosArray.push(video);
       return;
