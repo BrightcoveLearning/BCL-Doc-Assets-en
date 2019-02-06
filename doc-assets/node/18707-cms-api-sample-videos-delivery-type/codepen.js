@@ -158,7 +158,7 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i += 1) {
         video = videos[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + msToTime(video.duration) + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.duration + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
         // add table row
         tr = document.createElement('tr');
         td = document.createElement('td');
@@ -168,7 +168,7 @@ var BCLS = (function(window, document) {
         td.textContent = video.name;
         tr.appendChild(td);
         td = document.createElement('td');
-        td.textContent = msToTime(video.duration);
+        td.textContent = video.duration;
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = video.updated_at;
@@ -199,6 +199,7 @@ var BCLS = (function(window, document) {
         case 'dynamic_origin':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           dynamicVideos.push(obj);
@@ -206,6 +207,7 @@ var BCLS = (function(window, document) {
         case 'static_origin':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           staticVideos.push(obj);
@@ -213,6 +215,7 @@ var BCLS = (function(window, document) {
         case 'live_origin':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           liveVideos.push(obj);
@@ -220,6 +223,7 @@ var BCLS = (function(window, document) {
         case 'remote':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           remoteVideos.push(obj);
@@ -227,6 +231,7 @@ var BCLS = (function(window, document) {
         case 'unknown':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           unknownVideos.push(obj);
