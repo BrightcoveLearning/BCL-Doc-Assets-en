@@ -267,7 +267,7 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
-              console.log('x');
+              console.log('xxxxxx');
               writeReport();
             }
             break;
@@ -279,7 +279,7 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // create csv headings
-              console.log('y');
+              console.log('yyyyyy');
               writeReport();
             }
             break;
@@ -291,7 +291,7 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
-              console.log('z');
+              console.log('z zz zz');
               writeReport();
             }
             break;
@@ -321,16 +321,19 @@ var BCLS = (function(window, document) {
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
-          console.log('totalVideos', totalVideos);
-          console.log('callNumber', callNumber);
-          if (callNumber === totalVideos) {
+          console.log('**totalVideos', typeof totalVideos);
+          console.log('callNumber', typeof callNumber);
+          if (callNumber === Number.parseInt(totalVideos)) {
             // write the report
+            console.log('writing report');
             writeReport();
           } else {
             createRequest('getVideoRenditions');
           }
         });
         break;
+      default:
+        console.log('default');
     }
   }
 
