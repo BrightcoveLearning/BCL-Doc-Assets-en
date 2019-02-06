@@ -249,6 +249,7 @@ var BCLS = (function(window, document) {
             callNumber = 0;
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
+            totalCalls = totalVideos;
             createRequest('getVideoRenditions');
           }
         });
@@ -260,7 +261,7 @@ var BCLS = (function(window, document) {
             // won't be any renditions
             video.renditions = null;
             callNumber++;
-            if (callNumber < totalVideos) {
+            if (callNumber < totalCalls) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
@@ -271,7 +272,7 @@ var BCLS = (function(window, document) {
             // won't be any renditions
             video.renditions = null;
             callNumber++;
-            if (callNumber < totalVideos) {
+            if (callNumber < totalCalls) {
               createRequest('getVideoRenditions');
             } else {
               // create csv headings
@@ -282,7 +283,7 @@ var BCLS = (function(window, document) {
             // live stream; don't process
             video.renditions = null;
             callNumber++;
-            if (callNumber < totalVideos) {
+            if (callNumber < totalCalls) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
@@ -312,7 +313,7 @@ var BCLS = (function(window, document) {
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
-          if (callNumber === totalVideos) {
+          if (callNumber === totalCalls) {
             // write the report
             writeReport();
           } else {
