@@ -109,7 +109,6 @@ var BCLS = (function(window, document) {
  * @returns {object} object with members h (hours), m (minutes), s (seconds)
  */
     function msToTime(ms) {
-      console.log('ms'. ms);
         var secs = ms / 1000,
             hours = Math.floor(secs / (60 * 60)),
             divisor_for_minutes = secs % (60 * 60),
@@ -215,7 +214,7 @@ var BCLS = (function(window, document) {
         case 'live_origin':
           obj.id = video.id;
           obj.name = video.name;
-          obj.duration = msToTime(video.duration);
+          obj.duration = msToTime(0);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           liveVideos.push(obj);
@@ -223,7 +222,7 @@ var BCLS = (function(window, document) {
         case 'remote':
           obj.id = video.id;
           obj.name = video.name;
-          obj.duration = msToTime(video.duration);
+          obj.duration = msToTime(0);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           remoteVideos.push(obj);
@@ -231,7 +230,7 @@ var BCLS = (function(window, document) {
         case 'unknown':
           obj.id = video.id;
           obj.name = video.name;
-          obj.duration = msToTime(video.duration);
+          obj.duration = msToTime(0);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           unknownVideos.push(obj);
