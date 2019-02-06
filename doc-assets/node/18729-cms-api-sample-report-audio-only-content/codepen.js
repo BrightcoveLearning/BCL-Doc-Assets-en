@@ -115,14 +115,12 @@ var BCLS = (function(window, document) {
       iMax = renditions.length,
       audioRenditions = 0;
       if (video.id === '5831706803001') {
-        console.log('dolphin', renditions);
       }
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
         if (isAudio(renditions[i])) {
           audioRenditions++;
         } else {
-          // console.log('video rendition', video.id);
           // if any non-audio renditions, stop
           break;
         }
@@ -147,7 +145,6 @@ var BCLS = (function(window, document) {
     csvStr = '"ID","Name","Description","Number of Renditions""Date Added","Date Last Modified",\r\n';
     if (audiosArray.length > 0) {
       iMax = audiosArray.length;
-      console.log('array length', iMax);
       for (i = 0; i < iMax; i++) {
         item = audiosArray[i];
         // replace any line breaks in description, as that will break the CSV
@@ -257,7 +254,6 @@ var BCLS = (function(window, document) {
         break;
       case 'getVideoRenditions':
       var video = videosArray[callNumber];
-      // console.log('delivery_type', videosArray[callNumber].delivery_type);
         switch (videosArray[callNumber].delivery_type) {
           case 'remote':
             // won't be any renditions
@@ -267,7 +263,6 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
-              console.log('xxxxxx');
               writeReport();
             }
             break;
@@ -279,7 +274,6 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // create csv headings
-              console.log('yyyyyy');
               writeReport();
             }
             break;
@@ -291,7 +285,6 @@ var BCLS = (function(window, document) {
               createRequest('getVideoRenditions');
             } else {
               // write the report
-              console.log('z zz zz');
               writeReport();
             }
             break;
@@ -313,27 +306,21 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           var renditions = JSON.parse(response);
           if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
-            console.log('video', video.id);
-            console.log('renditions', renditions);
-
             processRenditions(video, renditions);
           }
           videosCompleted++;
           logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
           callNumber++;
-          console.log('**totalVideos', typeof totalVideos);
-          console.log('callNumber', typeof callNumber);
-          if (callNumber === Number.parseInt(totalVideos)) {
+          if (callNumber < totalVideos) {
             // write the report
-            console.log('writing report');
-            writeReport();
-          } else {
             createRequest('getVideoRenditions');
+          } else {
+            writeReport();
           }
         });
         break;
       default:
-        console.log('default');
+        console.log('default case - should not be here);
     }
   }
 
@@ -361,7 +348,6 @@ var BCLS = (function(window, document) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           response = httpRequest.responseText;
                           // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          // console.log('response', response);
                           if (response === '') {
                               response = null;
                           }
@@ -421,6 +407,9 @@ var BCLS = (function(window, document) {
     client_secret = client_secret_element.value;
     account_id = (isDefined(account_id_element.value)) ? account_id_element.value : '1752604059001';
     totalVideos = getSelectedValue(videoCount);
+    if (totalVideos !== 'All') {
+      totalVideos = Number.parseInt(totalVideos, 10)
+    }
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
       logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
