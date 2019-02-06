@@ -26,23 +26,54 @@
 
 <ol class="bcls-tasklist">
 	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
-	<li>Click the link for the player to open the player's properties.</li>
-	<li>Click <strong>Plugins</strong> in the left navigation menu.</li>
-	<li>Next, click <strong>Add a Plugin</strong>.</li>
-	<li>For the <strong>Plugin Name</strong> enter <code>pip</code>.</li>
-	<li>For the <strong>JavaScript</strong> URL, enter:
-	<pre>
-<code class="notranslate language-json">https://players.brightcove.net/videojs-pip/1/videojs-pip.min.js</code></pre>
+	<li>Select the link for the player to open the player's properties.</li>
+	<li>Select <strong>Plugins</strong> in the left navigation menu.</li>
+	<li>
+    <p>
+    Next, select the <strong>Add a Plugin</strong> button, and then select <strong>Brightcove Plugin</strong>.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/chromecast/add-a-plugin.png" alt="Add a Plugin button">
+      <figcaption class="bcls-caption--image">Add a Plugin button</figcaption>
+    </figure>
+  </li>
+  <li>
+    <p>
+    Expand the <strong>Brightcove Plugin</strong> dropdown and select <strong>pip</strong>.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/pip/pip.png" alt="pip">
+      <figcaption class="bcls-caption--image">picture-in-picture</figcaption>
+    </figure>
+  </li>
+	<li>
+    <p>
+      <strong>Optional</strong>: Enter the configuration options in the <strong>Options(JSON)</strong> text box. An example for setting the horizontal alignment of the player when it is in picture-in-picture mode is shown here:
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/pip/options.png" alt="Plugin options">
+      <figcaption class="bcls-caption--image">Plugin options</figcaption>
+    </figure>
+
+	<p>See the <a href="#Options">options</a> section for more details.</p>
 	</li>
-	<li>For the <strong>CSS</strong> URL, enter:
-	<pre>
-<code class="notranslate language-json">https://players.brightcove.net/videojs-pip/1/videojs-pip.css</code></pre>
-	</li>
-	<li>You do not have to enter any options for this plugin.</li>
-	<li>Click <strong>Save</strong>.</li>
-	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
-	<li>To close the open dialog, click <strong>Close</strong>.</li>
-	<li>In an editor, open the HTML code for your web page with the player in it.</li>
+	<li>
+    <p>
+      Select the <strong>Save</strong> button. You will now see the <strong>pip</strong> plugin added to the list of plugins for your player.
+    </p>
+    <figure class="bcls-figure">
+      <img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/pip/plugin-added.png" alt="Plugin added">
+      <figcaption class="bcls-caption--image">Plugin added</figcaption>
+    </figure>
+  </li>
+	<li>To publish the player, select <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
+	<li>To close the open dialog, select <strong>Close</strong>.</li>
+  <li>
+    <p>
+      Return to the <strong>MEDIA</strong> module and publish your video using the player you just updated for picture-in-picture.
+    </p>
+  </li>
+  <li>In an editor, copy the player embed code into your web page.</li>
 	<li>
 	<p>The picture-in-picture plugin requires that your player is wrapped by a container element with the class set to <code>vjs-pip-container</code>. Your code should look similar to this:</p>
 
@@ -62,9 +93,13 @@
 	<p>If the <code>&lt;div&gt;</code> element above is not found as the parent of the player, the plugin will fail to initialize and you will get the following log warning:</p>
 
 	<pre>
-<code class="language-html">expected player to be a child of a "vjs-pip-container" element, cannot continue with picture-in-picture plugin</code></pre>
+<code class="language-html">VIDEOJS: WARN: expected player to be a child of a "vjs-pip-container" element, cannot continue with picture-in-picture plugin</code></pre>
 	</li>
+  <li>
+    When the video has starts playing, scroll down to see the picture-in-picture player pinned to the bottom of the page.
+  </li>
 </ol>
+
 </section>
 
 <section class="bcls-section">
@@ -165,7 +200,7 @@
 		<ul>
 			<li>The integrator is willing to take on the responsibility of managing positioning for picture-in-picture player mode.</li>
 			<li>The website using the player is unlikely to be zoomed.</li>
-			<li>Zooming has been disabled using a <code>user-scalable=no</code> directive. Using this directive will make <code>position: fixed</code> behave as it does not desktops, but it is not specifically recommended because it can be an accessibility concern.
+			<li>Zooming has been disabled using a <code>user-scalable=no</code> directive. Using this directive will make <code>position: fixed</code> behave as it does on desktops, but it is not specifically recommended because it can be an accessibility concern.
 			<pre>
 <code class="language-html">&lt;meta name="viewport" content="width=device-width, user-scalable=no"&gt;</code></pre>
 			</li>
@@ -176,11 +211,13 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// Allow mobile (iOS and Android) devices to enter PIP mode.
-      player.pip({allowOnMobile: true});</code></pre>
+player.pip({allowOnMobile: true});</code></pre>
 		</li>
 	</ul>
 	</li>
 </ul>
+
+<aside class="bcls-aside bcls-aside--warning">On mobile devices, once the player has moved to its new location it will not pop back into the original player location, even when the original player location is fully visible in the browser.</aside>
 
 <h3>closeable</h3>
 
@@ -196,7 +233,7 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// Do not allow the user to close the PIP mode player.
-      player.pip({closeable: false});</code></pre>
+player.pip({closeable: false});</code></pre>
 		</li>
 	</ul>
 	</li>
@@ -216,14 +253,14 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// Detach the player, but do not change its size.
-      player.pip({scale: 1});</code></pre>
+player.pip({scale: 1});</code></pre>
 		</li>
 		<li>
 		<p>Example 2:</p>
 
 		<pre class="line-numbers">
 <code class="language-javascript">// Detach the player, and change its size to 1/2.
-      player.pip({scale: 0.5});</code></pre>
+player.pip({scale: 0.5});</code></pre>
 		</li>
 	</ul>
 	</li>
@@ -247,8 +284,8 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// Detach the player and set its width to 300 pixels. Scale its height to
-      // maintain its current aspect ratio.
-      player.pip({width: 300});</code></pre>
+// maintain its current aspect ratio.
+player.pip({width: 300});</code></pre>
 		</li>
 	</ul>
 	</li>
@@ -270,7 +307,7 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// When the player is in PIP mode, align it to the left side of the viewport.
-      player.pip({posX: 'left'});</code></pre>
+player.pip({posX: 'left'});</code></pre>
 		</li>
 	</ul>
 	</li>
@@ -292,7 +329,7 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// When the player is in PIP mode, align it to the top of the viewport.
-      player.pip({posX: 'top'});</code></pre>
+player.pip({posY: 'top'});</code></pre>
 		</li>
 	</ul>
 	</li>
@@ -316,7 +353,7 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// If more than half the player is outside of the viewport, activate PIP mode.
-      player.pip({viewable: 0.5});</code></pre>
+player.pip({viewable: 0.5});</code></pre>
 		</li>
 	</ul>
 	</li>
@@ -342,7 +379,7 @@
 
 		<pre class="line-numbers">
 <code class="language-javascript">// Implementation will handle sizing the container.
-      player.pip({manualContainerSize: true});</code></pre>
+player.pip({manualContainerSize: true});</code></pre>
 		</li>
 		<li>
 		<p>Example using the <code>data-manual-container-size</code> attribute on the container:</p>
@@ -370,10 +407,10 @@
 
 <h3>Using Studio</h3>
 
-<p>In Studio, edit the player to which you wish to supply options and return to the <strong>Plugins</strong> section. Click on <strong>pip</strong> in the name list. Now, using proper JSON format, list the option (in quotation marks), followed by the appropriate value. If the values are string, they must be in quotes. If they are numeric or boolean, quotes cannot be included:</p>
+<p>In Studio, edit the player and return to the <strong>Plugins</strong> section. Click on <strong>pip</strong> in the name list. Using proper JSON format, list the option (in quotation marks), followed by the appropriate value. If the values are string, they must be in quotes. If they are numeric or boolean, quotes cannot be included:</p>
 
-<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Players module plugin" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/pip/plugin-options.png" />
-<figcaption class="bcls-caption--image">Players module plugin</figcaption>
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Plugin options" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/pip/plugin-options.png" />
+<figcaption class="bcls-caption--image">Plugin options</figcaption>
 </figure>
 
 <h3>Using JavaScript</h3>
@@ -481,6 +518,17 @@
 
 <section class="bcls-section">
 <h2 id="Changelog">Changelog</h2>
+
+<h4>4 Dec 2018</h4>
+
+<p>v1.0.4</p>
+
+<ul>
+	<li>Bug fix: Do not include loscore in the bundles</li>
+	<li>Bug fix: Fixed an issue where allowOnMobile was not respected</li>
+	<li>Bug fix: Remove the postinstall script to prevent install issues</li>
+	<li>Update using plugin generator v7.2.0</li>
+</ul>
 
 <h4>3 Aug 2018</h4>
 
