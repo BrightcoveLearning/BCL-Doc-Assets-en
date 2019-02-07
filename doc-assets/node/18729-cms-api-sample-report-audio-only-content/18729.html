@@ -8,7 +8,7 @@
       <li>For Dynamic Delivery videos, each rendition will have a <code>media_type</code> property that will be set to <code>audio</code> or <code>video</code></li>
     </ul>
     <p>In the sample app here, we use a function that checks for either case:</p>
-<pre class="line-numbers"><code class="language-json">function isAudio(rendition) {
+<pre class="line-numbers"><code class="language-javascript">function isAudio(rendition) {
   if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === false) {
     return false;
   } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'video') {
@@ -18,7 +18,53 @@
 }</code></pre>
     <h3>Notes on this sample</h3>
     <ul>
-      <li>Any video in Video Cloud may have audio-only renditions. This sample identifies content that has <strong>only</strong> audio renditions, and therefore checks every rendition. It would be straightforward to modify the code to produce a report on content that has at least one audio-only rendition.</li>
+      <li>Any video in Video Cloud may have audio-only renditions. This sample identifies content that has <strong>only</strong> audio renditions, and therefore checks every rendition. It would be straightforward to modify the code to produce a report on content that has at least one audio-only rendition. This is the only change you should need to make to the sample code:
+        <p>Existing code (to find on audio-only content):</p>
+<pre class="line-numbers"><code class="language-javascript">function processRenditions(video, renditions) {
+    var i,
+      iMax = renditions.length,
+      audioRenditions = 0;
+    if (video.id === '5831706803001') {}
+    // separate renditions by type
+    for (i = 0; i < iMax; i++) {
+      if (isAudio(renditions[i])) {
+        audioRenditions++;
+      } else {
+        // if any non-audio renditions, stop
+        break;
+      }
+    }
+    // check to see if all renditions are audio
+    if (audioRenditions === renditions.length) {
+      video.renditionCount = audioRenditions;
+      audiosArray.push(video);
+      return;
+    } else {
+      return;
+    }
+  }</code></pre>
+  <p>Version of the function to identify any content that has audio-only renditions:</p>
+<pre class="line-numbers"><code class="language-javascript">function processRenditions(video, renditions) {
+    var i,
+      iMax = renditions.length,
+      audioRenditions = 0;
+    if (video.id === '5831706803001') {}
+    // separate renditions by type
+    for (i = 0; i < iMax; i++) {
+      if (isAudio(renditions[i])) {
+        audioRenditions++;
+      }
+    }
+    // check to see if any renditions are audio
+    if (audioRenditions &gt; renditions.length) {
+      video.renditionCount = audioRenditions;
+      audiosArray.push(video);
+      return;
+    } else {
+      return;
+    }
+  }</code></pre>
+      </li>
       <li>Remote asset content is <strong>not</strong> checked to see if it is audio-only.</li>
     </ul>
   </section>
@@ -52,11 +98,17 @@
 </section>
 
 <section class="bcls-section" id="workingSample">
-<h2>Video report generator</h2>
-Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18032-video-report-generator">GitHub repository</a>.
+<h2>Audio content report</h2>
+Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18729-cms-api-sample-report-audio-only-content">GitHub repository</a>.
 
-<p data-height="1000" data-theme-id="34967" data-slug-hash="mxYYMR" data-default-tab="result" data-user="rcrooks1969" data-pen-title="CMS API Sample: Video Report Generator" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/mxYYMR/">CMS API Sample: Video Report Generator</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script></section>
+<p class="codepen" data-height="1200" data-theme-id="34967" data-default-tab="result" data-user="rcrooks1969" data-slug-hash="ZwyVJL" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid black; margin: 1em 0; padding: 1em;" data-pen-title="CMS API Sample: Audio Content Report">
+  <span>See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/ZwyVJL/">
+  CMS API Sample: Audio Content Report</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+</section>
 
 <section class="bcls-section">
 <h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
@@ -68,7 +120,7 @@ Find all the code associated with this sample in this <a href="https://github.co
 	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
 	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
 	<li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-	<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18032-video-report-generator">GitHub repository</a>.</li>
+	<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18729-cms-api-sample-report-audio-only-content">GitHub repository</a>.</li>
 </ul>
 </div>
 </section>
