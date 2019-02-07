@@ -58,12 +58,12 @@ var BCLS = (function(window, document) {
    * @return {Boolean}
    */
   function isJson(str) {
-      try {
-          JSON.parse(str);
-      } catch (e) {
-          return false;
-      }
-      return true;
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   /*
@@ -72,12 +72,12 @@ var BCLS = (function(window, document) {
    * @return {Boolean}
    */
   function isAudio(rendition) {
-    if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === true) {
-      return true;
-    } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'audio') {
-      return true;
+    if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === false) {
+      return false;
+    } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'video') {
+      return false;
     }
-    return false;
+    return true;
   }
 
   /**
@@ -114,21 +114,19 @@ var BCLS = (function(window, document) {
     var i,
       iMax = renditions.length,
       audioRenditions = 0;
+    if (video.id === '5831706803001') {}
     // separate renditions by type
     for (i = 0; i < iMax; i++) {
-        if (isAudio(renditions[i])) {
-          audioRenditions++;
-        } else {
-          console.log('video rendition', video.id);
-          // if any non-audio renditions, stop
-          break;
-        }
+      if (isAudio(renditions[i])) {
+        audioRenditions++;
+      } else {
+        // if any non-audio renditions, stop
+        break;
+      }
     }
     // check to see if all renditions are audio
     if (audioRenditions === renditions.length) {
-      console.log('audioRenditions', audioRenditions);
-      console.log('renditions length', renditions.length);
-      video.renditions = audioRenditions;
+      video.renditionCount = audioRenditions;
       audiosArray.push(video);
       return;
     } else {
@@ -154,7 +152,7 @@ var BCLS = (function(window, document) {
         }
         // generate the video detail row
         // add csv row
-        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' + item.renditions + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
+        csvStr += '"' + item.id + '","' + item.name + '","' + item.description + '","' + (item.duration / 1000) + '","' + item.renditionCount + '","' + item.created_at + '","' + item.updated_at + '",\r\n';
         // create the table row
         tr = document.createElement('tr');
         td = document.createElement('td');
@@ -170,7 +168,7 @@ var BCLS = (function(window, document) {
         td.textContent = item.duration / 1000;
         tr.appendChild(td);
         td = document.createElement('td');
-        td.textContent = item.renditions;
+        td.textContent = item.renditionCount;
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = item.created_at;
@@ -199,12 +197,12 @@ var BCLS = (function(window, document) {
     var endPoint = '',
       parsedData,
       options = {};
-      options.proxyURL = proxyURL;
-      options.account_id = account_id;
-      if (isDefined(client_id) && isDefined(client_secret)) {
-        options.client_id = client_id;
-        options.client_secret = client_secret;
-      }
+    options.proxyURL = proxyURL;
+    options.account_id = account_id;
+    if (isDefined(client_id) && isDefined(client_secret)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
     switch (id) {
@@ -249,79 +247,82 @@ var BCLS = (function(window, document) {
             callNumber = 0;
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
+            totalCalls = totalVideos;
             createRequest('getVideoRenditions');
           }
         });
         break;
       case 'getVideoRenditions':
-      console.log('callNumber', callNumber);
-      console.log('delivery_type', videosArray[callNumber].delivery_type);
-        switch (videosArray[callNumber].delivery_type) {
-          case 'remote':
-            // won't be any renditions
-            videosArray[callNumber].renditions = null;
+        if (callNumber < totalCalls) {
+          var video = videosArray[callNumber];
+          switch (videosArray[callNumber].delivery_type) {
+            case 'remote':
+              // won't be any renditions
+              video.renditions = null;
+              callNumber++;
+              if (callNumber < totalCalls) {
+                createRequest('getVideoRenditions');
+              } else {
+                // write the report
+                writeReport();
+              }
+              break;
+            case 'unknown':
+              // won't be any renditions
+              video.renditions = null;
+              callNumber++;
+              if (callNumber < totalCalls) {
+                createRequest('getVideoRenditions');
+              } else {
+                // create csv headings
+                writeReport();
+              }
+              break;
+            case 'live_origin':
+              // live stream; don't process
+              video.renditions = null;
+              callNumber++;
+              if (callNumber < totalCalls) {
+                createRequest('getVideoRenditions');
+              } else {
+                // write the report
+                writeReport();
+              }
+              break;
+            case 'static_origin':
+              // legacy ingest
+              endPoint = account_id + '/videos/' + video.id + '/assets/renditions';
+              break;
+            case 'dynamic_origin':
+              // dynamic delivery
+              endPoint = account_id + '/videos/' + video.id + '/assets/dynamic_renditions';
+              break;
+            default:
+              console.log('should not be here - unknown delivery_type');
+          }
+          options.url = baseURL + endPoint;
+          options.requestType = 'GET';
+          apiRequest.textContent = options.url;
+          spanRenditionsCountEl.textContent = callNumber + 1;
+          makeRequest(options, function(response) {
+            var renditions = JSON.parse(response);
+            if (renditions.length > 0 && !renditions[0].hasOwnProperty('error_code')) {
+              processRenditions(video, renditions);
+            }
+            videosCompleted++;
+            logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
             callNumber++;
-            if (callNumber < totalVideos) {
-              createRequest('getVideoRenditions');
-            } else {
+            if (callNumber === totalCalls) {
               // write the report
               writeReport();
-            }
-            break;
-          case 'unknown':
-            // won't be any renditions
-            videosArray[callNumber].renditions = null;
-            callNumber++;
-            if (callNumber < totalVideos) {
-              createRequest('getVideoRenditions');
             } else {
-              // create csv headings
-              writeReport();
-            }
-            break;
-          case 'live_origin':
-            // live stream; don't process
-            videosArray[callNumber].renditions = null;
-            callNumber++;
-            if (callNumber < totalVideos) {
               createRequest('getVideoRenditions');
-            } else {
-              // write the report
-              writeReport();
             }
-            break;
-          case 'static_origin':
-            // legacy ingest
-            endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/renditions';
-            break;
-          case 'dynamic_origin':
-            // dynamic delivery
-            endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/assets/dynamic_renditions';
-            break;
-          default:
-            console.log('should not be here - unknown delivery_type');
+          });
         }
-        options.url = baseURL + endPoint;
-        options.requestType = 'GET';
-        apiRequest.textContent = options.url;
-        spanRenditionsCountEl.textContent = callNumber + 1;
-        makeRequest(options, function(response) {
-          var renditions = JSON.parse(response);
-          if (renditions.length > 0) {
-            processRenditions(videosArray[callNumber], renditions);
-          }
-          videosCompleted++;
-          logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-          callNumber++;
-          if (callNumber < totalVideos) {
-            createRequest('getVideoRenditions');
-          } else {
-            console.log('audiosArray', audiosArray);
-            // write the report
-            writeReport();
-          }
-        });
         break;
+      default:
+        console.log('default case - should not be here');
     }
   }
 
@@ -337,42 +338,42 @@ var BCLS = (function(window, document) {
    * @param  {Function} [callback] callback function that will process the response
    */
   function makeRequest(options, callback) {
-      var httpRequest = new XMLHttpRequest(),
-          response,
-          requestParams,
-          dataString,
-          proxyURL    = options.proxyURL,
-          // response handler
-          getResponse = function() {
-              try {
-                  if (httpRequest.readyState === 4) {
-                      if (httpRequest.status >= 200 && httpRequest.status < 300) {
-                          response = httpRequest.responseText;
-                          // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          if (response === '') {
-                              response = null;
-                          }
-                          // return the response
-                          callback(response);
-                      } else {
-                          logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
-                      }
-                  }
-              } catch (e) {
-                  logger.appendChild(document.createTextNode('Caught Exception: ' + e));
+    var httpRequest = new XMLHttpRequest(),
+      response,
+      requestParams,
+      dataString,
+      proxyURL = options.proxyURL,
+      // response handler
+      getResponse = function() {
+        try {
+          if (httpRequest.readyState === 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+              response = httpRequest.responseText;
+              // some API requests return '{null}' for empty responses - breaks JSON.parse
+              if (response === '') {
+                response = null;
               }
-          };
-      /**
-       * set up request data
-       * the proxy used here takes the following request body:
-       * JSON.strinify(options)
-       */
-      // set response handler
-      httpRequest.onreadystatechange = getResponse;
-      // open the request
-      httpRequest.open('POST', proxyURL);
-      // open and send request
-      httpRequest.send(JSON.stringify(options));
+              // return the response
+              callback(response);
+            } else {
+              logger.appendChild(document.createTextNode('There was a problem with the request. Request returned ' + httpRequest.status));
+            }
+          }
+        } catch (e) {
+          logger.appendChild(document.createTextNode('Caught Exception: ' + e));
+        }
+      };
+    /**
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.strinify(options)
+     */
+    // set response handler
+    httpRequest.onreadystatechange = getResponse;
+    // open the request
+    httpRequest.open('POST', proxyURL);
+    // open and send request
+    httpRequest.send(JSON.stringify(options));
   }
 
 
@@ -408,10 +409,13 @@ var BCLS = (function(window, document) {
     client_secret = client_secret_element.value;
     account_id = (isDefined(account_id_element.value)) ? account_id_element.value : '1752604059001';
     totalVideos = getSelectedValue(videoCount);
+    if (totalVideos !== 'All') {
+      totalVideos = Number.parseInt(totalVideos, 10)
+    }
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
       logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
-        account_id = '1752604059001';
+      account_id = '1752604059001';
     }
     // get video count
     createRequest('getCount');

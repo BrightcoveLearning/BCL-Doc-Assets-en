@@ -103,6 +103,46 @@ var BCLS = (function(window, document) {
     }
   }
 
+  /**
+ * utility to extract h/m/s from seconds
+ * @param {number} ms - milliseconds to convert to hh:mm:ss
+ * @returns {object} object with members h (hours), m (minutes), s (seconds)
+ */
+    function msToTime(ms) {
+        var secs = ms / 1000,
+            hours = Math.floor(secs / (60 * 60)),
+            divisor_for_minutes = secs % (60 * 60),
+            minutes = Math.floor(divisor_for_minutes / 60),
+            divisor_for_seconds = divisor_for_minutes % 60,
+            seconds = Math.ceil(divisor_for_seconds),
+            obj = {};
+
+        if (hours < 10) {
+            hours = "0" + hours.toString();
+        } else {
+            hours = hours.toString();
+        }
+
+        if (minutes < 10) {
+            minutes = "0" + minutes.toString();
+        } else {
+            minutes = minutes.toString();
+        }
+
+        if (seconds < 10) {
+            seconds = "0" + seconds.toString();
+        } else {
+            seconds = seconds.toString();
+        }
+
+        obj = {
+            'h': hours,
+            'm': minutes,
+            's': seconds
+        };
+
+        return obj.h + ':' + obj.m + ':' + obj.s;
+    }
 
   function writeReport(videos, tableEl, csvEl) {
     var i,
@@ -117,7 +157,7 @@ var BCLS = (function(window, document) {
       for (i = 0; i < iMax; i += 1) {
         video = videos[i];
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.duration + '","' + video.updated_at + '","' + video.delivery_type + '",\r\n';
         // add table row
         tr = document.createElement('tr');
         td = document.createElement('td');
@@ -125,6 +165,9 @@ var BCLS = (function(window, document) {
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = video.name;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = video.duration;
         tr.appendChild(td);
         td = document.createElement('td');
         td.textContent = video.updated_at;
@@ -155,6 +198,7 @@ var BCLS = (function(window, document) {
         case 'dynamic_origin':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           dynamicVideos.push(obj);
@@ -162,6 +206,7 @@ var BCLS = (function(window, document) {
         case 'static_origin':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(video.duration);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           staticVideos.push(obj);
@@ -169,6 +214,7 @@ var BCLS = (function(window, document) {
         case 'live_origin':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(0);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           liveVideos.push(obj);
@@ -176,6 +222,7 @@ var BCLS = (function(window, document) {
         case 'remote':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(0);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           remoteVideos.push(obj);
@@ -183,6 +230,7 @@ var BCLS = (function(window, document) {
         case 'unknown':
           obj.id = video.id;
           obj.name = video.name;
+          obj.duration = msToTime(0);
           obj.updated_at = video.updated_at;
           obj.delivery_type = video.delivery_type;
           unknownVideos.push(obj);
@@ -343,12 +391,12 @@ var BCLS = (function(window, document) {
       // get the inputs
       client_id = client_id_element.value;
       client_secret = client_secret_element.value;
-      account_id = account_id_element.value
+      account_id = (isDefined(account_id_element.value)) ? account_id_element.value : '1752604059001'
       totalVideos = getSelectedValue(videoCount);
       // only use entered account id if client id and secret are entered also
       if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
         logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
-        account_id = '57838016001';
+        account_id = '1752604059001';
       }
       // get video count
       createRequest('getCount');

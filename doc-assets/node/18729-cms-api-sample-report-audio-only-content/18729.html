@@ -2,7 +2,20 @@
   <section class="bcls-section">
     <h2 id="Introduction">Introduction</h2>
     <p>Video Cloud allows you to use audio-only content in the form of videos with no video track. However, it doesn't flag these videos as "audio-only" in any way, so if you have a large library of mixed audio and video content, it may not be obvious how to create a report on your audio-only content.</p>
-    <p>The key is that, since audio renditions have no video track, the <code>frame_height</code> and <code>frame_width</code> will be <code>null</code> (for MP4 renditions) or <code>0</code> (for HLS renditions created using the legacy ingest system - for content ingested using the Dynamic Delivery system, the values will always be <code>null</code>).</p>
+    <p>There are properties in the renditions that will tell you if if it is audio-only, but the properties are different for videos that were ingested using the legacy ingest system or using the Dynamic Delivery system:</p>
+    <ul>
+      <li>For legacy ingest videos, each rendition will have an <code>audio_only</code> property that is a boolean</li>
+      <li>For Dynamic Delivery videos, each rendition will have a <code>media_type</code> property that will be set to <code>audio</code> or <code>video</code></li>
+    </ul>
+    <p>In the sample app here, we use a function that checks for either case:</p>
+<pre class="line-numbers"><code class="language-json">function isAudio(rendition) {
+  if (rendition.hasOwnProperty('audio_only') && rendition.audio_only === false) {
+    return false;
+  } else if (rendition.hasOwnProperty('media_type') && rendition.media_type === 'video') {
+    return false;
+  }
+  return true;
+}</code></pre>
     <h3>Notes on this sample</h3>
     <ul>
       <li>Any video in Video Cloud may have audio-only renditions. This sample identifies content that has <strong>only</strong> audio renditions, and therefore checks every rendition. It would be straightforward to modify the code to produce a report on content that has at least one audio-only rendition.</li>
