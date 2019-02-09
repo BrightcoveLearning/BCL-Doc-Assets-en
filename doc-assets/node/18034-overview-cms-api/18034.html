@@ -75,6 +75,9 @@
 <p>If multiple applications will be integrating to the <span class="”notranslate”">CMS API</span> for an account, then these applications should have back-off and retry logic to handle instances where concurrency limits or rate limits are reached.</p>
 
 <p>If either the rate or concurrency limit is exceeded, a <code class="notranslate">429 - TOO_MANY_REQUESTS</code> error will be returned.</p>
+
+<h3>Reference id conflicts</h3>
+<p>To insure the uniqueness of reference ids, the CMS API locks the id for up to 3 minutes after any operation on the video it is assigned to. This can result in 409 errors being returned when you attempt to retry a request that fail too quickly, or when you try to reuse a reference id too soon after deleting the video it was previously assigned to. See the <a href="/node/18022#409_conflict">Error Message Reference</a> for more details.</p>
 </section>
 
 <section class="bcls-section">
