@@ -114,11 +114,12 @@
 					<td><code>Update failed because of another update at the same time. Please try again.</code></td>
 					<td>Either a separate API request, a Studio user, or some system process is currently updating the video. This can also occur if you are making API update requests on the same video asynchronously, in rapid succession.</td>
 				</tr>
-				<tr>
+				<tr id="409_conflict">
 					<td>409</td>
 					<td><code>CONFLICT</code></td>
 					<td><code>Reference id is already in use.</code></td>
-					<td>To insure uniqueness of reference ids, operations involving reference ids will lock the id for up to 30 seconds. That means that if you remove a reference id from a video (or delete that video) and then try to use the reference id for another video immediately, the operation will fail with a 409 error. Please wait at least 30 seconds after getting this error before retrying the operation. Note also that if you attempt the create a video with a reference id, and the attempt fails (for reasons unrelated to the reference id), that reference id will be locked for 30 seconds, and repeated attempts to create the video will fail until you wait long enough for the reference id to be unlocked.</td>
+					<td>To insure uniqueness of reference ids, operations involving reference ids will lock the id for up to 3 minutes. That means that if you make a request that creates or changes a reference id and then make any other request that uses that reference id immediately, the operation will fail with a 409 error. This would include: 1) deleting a video and then trying to assign its reference id to another video; 2) attempting to create a new video that fails with a 503 (service unavailable) error and trying the same request again.
+          <p>Please wait at least 3 minutes after getting this error before retrying the operation. Note also that if you attempt the create a video with a reference id, and the attempt fails (for reasons unrelated to the reference id), that reference id will be locked for 30 seconds, and repeated attempts to create the video will fail until you wait long enough for the reference id to be unlocked.</p></td>
 				</tr>
 				<tr>
 					<td>409</td>
