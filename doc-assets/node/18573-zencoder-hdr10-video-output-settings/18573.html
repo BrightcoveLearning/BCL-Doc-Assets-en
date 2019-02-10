@@ -28,6 +28,12 @@
 <section class="bcls-section">
 <h2 id="api_options">API options</h2>
 
+<p>There are two ways to communicate HDR10 output settings to Zencoder:</p>
+<ol>
+  <li>If all the requirerd HDR10 metadata is in the source video, set <code>preserve_hdr_metadata</code> to <code>true</code>. The HDR10 metadata will be passed through to the encoder, and you will not need to include <code>master_display</code> and <code>light_level</code> settings.</li>
+  <li>You can also specify the <code>master_display</code> and <code>light_level</code> settings in the request body, as detailed below.</li>
+</ol>
+
 <p>There are a number of options that are new or otherwise relevant to creating HDR10 outputs. The most important are those related to the SMPTE ST-2086 mastering display color volume, white point, and luminance.</p>
 
 <aside class="bcls-aside bcls-aside--information">Note that Zencoder will enable HDR encoding when master_display options are specified for an output.</aside>
@@ -164,134 +170,6 @@
 	</ul>
 	</li>
 </ol>
-</section>
-</section>
-<section class="bcls-section">
-<h2 id="api_options">API options</h2>
-
-<p>There are two ways to communicate HDR10 output settings to Zencoder:</p>
-<ol>
-  <li>If all the requirerd HDR10 metadata is in the source video, set <code>preserve_hdr_metadata</code> to <code>true</code>. The HDR10 metadata will be passed through to the encoder, and you will not need to include <code>master_display</code> and <code>light_level</code> settings.</li>
-  <li>You can also specify the <code>master_display</code> and <code>light_level</code> settings in the request body, as detailed below.</li>
-</ol>
-
-<p>There are a number of options that are new or otherwise relevant to creating HDR10 outputs. The most important are those related to the SMPTE ST-2086 mastering display color volume, white point, and luminance.</p>
-
-<aside class="bcls-aside bcls-aside--information">Note that Zencoder will enable HDR encoding when master_display options are specified for an output.</aside>
-
-<section class="bcls-subsection">
-<h3>Color volume and white point settings</h3>
-
-<p>The following options are specified in <span class="”notranslate”">CIE 1931 x/y chromaticity units</span>, as floating point values:</p>
-
-<ul>
-	<li><code><a href="/node/18575#master_display">master_display</a></code>
-
-	<ul>
-		<li><code><a href="/node/18575#master_display_red">red</a></code>
-
-		<ul>
-			<li><code><a href="/node/18575#master_display_red_x">x</a></code></li>
-			<li><code><a href="/node/18575#master_display_red_y">y</a></code></li>
-		</ul>
-		</li>
-		<li><code><a href="/node/18575#master_display_green">green</a></code>
-		<ul>
-			<li><code><a href="/node/18575#master_display_green_x">x</a></code></li>
-			<li><code><a href="/node/18575#master_display_green_x">y</a></code></li>
-		</ul>
-		</li>
-		<li><code><a href="/node/18575#master_display_blue">blue</a></code>
-		<ul>
-			<li><code><a href="/node/18575#master_display_blue_x">x</a></code></li>
-			<li><code><a href="/node/18575#master_display_blue_x">y</a></code></li>
-		</ul>
-		</li>
-		<li><code><a href="/node/18575#master_display_white_point">white_point</a></code>
-		<ul>
-			<li><code><a href="/node/18575#master_display_white_point_x">x</a></code></li>
-			<li><code><a href="/node/18575#master_display_white_point_x">y</a></code></li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
-
-<p>The x coordinates shall be in the range <code>[0.0001-0.7400]</code> and the y coordinates shall be in the range <code>[0.0001-0.8400]</code>.</p>
-</section>
-
-<section class="bcls-subsection">
-<h3>Luminance</h3>
-
-<p>The following options are specified in <code>nits</code> or <span class="”notranslate”">candelas per square meter (cd/m2)</span> as floating point values:</p>
-
-<ul>
-	<li><code><a href="/node/18575#master_display">master_display</a></code>
-
-	<ul>
-		<li><code><a href="/node/18575#master_display_luminance">luminance</a></code>
-
-		<ul>
-			<li><code><a href="/node/18575#master_display_luminance_min">min</a></code></li>
-			<li><code><a href="/node/18575#master_display_luminance_max">max</a></code></li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
-
-<p>The <code>master_display:luminance:max</code> value should be in the range <code>[5.0-10000.0]</code>, and <code>master_display:luminance:min</code> value should be in the range <code>[0.0001-5.0]</code>.</p>
-</section>
-
-<section class="bcls-subsection">
-<h3>Light level</h3>
-
-<p>Light level metadata is also specified in <code>nits</code>, though as integers rather than floats. These parameters are defined in CEA 861.3, as well as ITU-T Rec. H.265, Annex 3.35.</p>
-
-<ul>
-	<li><code><a href="/node/18575#max_content_light_level">max_content_light_level</a></code></li>
-	<li><code><a href="/node/18575#max_frame_average_light_level">max_frame_average_light_level</a></code></li>
-</ul>
-
-<p>The <code>max_content_light_level</code> and <code>max_frame_average_light_level</code> value should be in the range <code>[0-10000]</code>. Values of <code>max_frame_average_light_level</code> around 100 generally produce the best results, however.</p>
-</section>
-
-<section class="bcls-subsection">
-<h3>Other output settings with specific values/ranges for HDR</h3>
-
-<p>There are some other general video output settings that must specific values or a specific range of values for HDR10.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Video Settings for HDR10</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Setting</th>
-			<th>Value(s) for HDR10</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>video_codec</code></td>
-			<td><code>hevc</code></td>
-		</tr>
-		<tr>
-			<td><code>video_codec_profile</code></td>
-			<td><code>main10</code></td>
-		</tr>
-		<tr>
-			<td><code>video_codec_level</code></td>
-			<td>up to <code>5.1</code></td>
-		</tr>
-		<tr>
-			<td><code>video_codec_tier</code></td>
-			<td><code>high</code></td>
-		</tr>
-		<tr>
-			<td><code>video_bit_depth</code></td>
-			<td>automatically set to <code>10</code> by using the profile <code>main10</code></td>
-		</tr>
-	</tbody>
-</table>
 </section>
 </section>
 
