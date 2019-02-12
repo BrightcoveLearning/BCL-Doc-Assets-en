@@ -140,17 +140,22 @@
 </table>
 
 <p>Sample Body:</p>
+
 <pre class="line-numbers">
 <code class="notranslate language-json">{
-	"name": "VMAP Ad Server",
-	"vmap_response_namespace": "bc",
-	"ad_config": {
-		"expected_ad_response": "vast_3_0",
-		"disable_server_beacons": false,
-		"template_url": {
-			"template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
-		}
-	}
+  &quot;name&quot;: &quot;VMAP Ad Server&quot;,
+  &quot;vmap_response_namespace&quot;: &quot;bc&quot;,
+  &quot;ad_config&quot;: {
+  	&quot;expected_ad_response&quot;: &quot;vast_3_0&quot;,
+  	&quot;disable_server_beacons&quot;: false,
+    &quot;round_up_cue_points&quot;: false,
+  	&quot;template_url&quot;: {
+  		&quot;template&quot;: &quot;http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot;
+  	}
+  },
+  &quot;discontinuities&quot;: {
+    &quot;hls&quot;: [ &quot;*&quot; ]
+  }
 }</code></pre>
 
 <h3 id="Get_ad_configuration_details">Get ad configuration details</h3>
@@ -181,18 +186,54 @@
 
 <pre class="line-numbers">
 <code class="notranslate language-json">{
-  "name": "VMAP Ad Server",
-  "vmap_response_namespace": "bc",
-  "config_id": "2ecc6beb-d6a4-4deb-a78e-37ac27e0f883",
-  "account_id": "57838016001",
-  "created_timestamp": "2017-07-24T19:28:34.976878586Z",
-  "updated_timestamp": "2017-07-24T19:28:34.976878586Z",
-  "ad_config": {
-    "expected_ad_response": "dfp_ad_rules",
-    "disable_server_beacons": false,
-    "template_url": {
-        "template": "http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}"
+  &quot;name&quot;: &quot;VMAP Ad Server&quot;,
+  &quot;vmap_response_namespace&quot;: &quot;bc&quot;,
+  &quot;config_id&quot;: &quot;2ecc6beb-d6a4-4deb-a78e-37ac27e0f883&quot;,
+  &quot;account_id&quot;: &quot;57838016001&quot;,
+  &quot;created_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
+  &quot;updated_timestamp&quot;: &quot;2017-07-24T19:28:34.976878586Z&quot;,
+  &quot;ad_config&quot;: {
+    &quot;expected_ad_response&quot;: &quot;dfp_ad_rules&quot;,
+    &quot;disable_server_beacons&quot;: false,
+    &quot;template_url&quot;: {
+        &quot;template&quot;: &quot;http://solutions.brightcove.com/bcls/ads/simple-ad-rules?ip={{ system.ip_address }}&amp;vid={{ metadata.video_id }}&amp;ppid={{ system.unique_user_id }}&amp;p_vmap={{ url.p_vmap }}&quot;
     }
+  },
+  &quot;beacon_templates&quot;: [
+      {
+        &quot;type&quot;: &quot;content_start&quot;,
+        &quot;template_url&quot;: {
+          &quot;template&quot;: &quot;https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}&quot;
+        }
+      },
+      {
+        &quot;type&quot;: &quot;content_midpoint&quot;,
+        &quot;template_url&quot;: {
+          &quot;template&quot;: &quot;https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}&quot;
+        }
+      },
+      {
+        &quot;type&quot;: &quot;ad_start&quot;,
+        &quot;template_url&quot;: {
+          &quot;template&quot;: &quot;https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}&quot;
+        }
+      },
+      {
+        &quot;type&quot;: &quot;content_complete&quot;,
+        &quot;template_url&quot;: {
+          &quot;template&quot;: &quot;https://myserver.com/beaconRX/{{metadata.video_id}}/load?position=load&amp;sid={{system.xfp.unique_user_id}}&amp;jid={{metadata.video_id}}&amp;rnd32={{sytem.random_number_32}}&amp;bid={{system.uuid}}&amp;t={{system.timestamp_utc}}&amp;ua={{system.user_agent}}&amp;ip={{system.ip_address}}&amp;ref={{system.referer}}&quot;
+        }
+      }
+    ],
+    &quot;discontinuities&quot;: {
+      &quot;dash&quot;: [
+        &quot;*&quot;
+      ],
+      &quot;hls&quot;: [
+        &quot;*&quot;
+      ]
+    },
+    &quot;extend_beacon_guard_ttl&quot;: true
   }
 }</code></pre>
 
@@ -281,28 +322,6 @@
 			<td>Human readable description</td>
 		</tr>
 		<tr>
-			<td><code class="notranslate">discontinuities.dash</code></td>
-			<td>[]String</td>
-			<td>Controls which versions of dash to deliver Multi Period Dash manifests.<br />
-			<br />
-			Set to <code class="notranslate">["*"]</code> to deliver multi-period dash for all versions<br />
-			<br />
-			Empty list for never<br />
-			<br />
-			Example: <code class="notranslate">["live-timeline"]</code> to deliver for live-timeline but not for hbbtv</td>
-		</tr>
-		<tr>
-			<td><code class="notranslate">discontinuities.hls</code></td>
-			<td>[]String</td>
-			<td>Controls which versions of hls to deliver with discontinuities.<br />
-			<br />
-			Set to <code class="notranslate">["*"]</code> to delivery with discontinuities in all versions of HLS<br />
-			<br />
-			Empty list for never<br />
-			<br />
-			Example: <code class="notranslate">["v4","v5"]</code> to deliver for v4 &amp; v5 but not for v3</td>
-		</tr>
-		<tr>
 			<td><code class="notranslate">ad_config.expected_ad_response</code></td>
 			<td>String</td>
 			<td>Which tech to use to parse the response. <sup><a href="#n1"> [1]</a></sup><br />
@@ -325,6 +344,13 @@
 			<br />
 			When set to <code class="notranslate">false</code>, SSAI will fire the beacons it is able to server-side and include any it is not able to in the VMAP output</td>
 		</tr>
+    <tr>
+			<td><code class="notranslate">ad_config.round_up_cue_points</code></td>
+			<td>Boolean</td>
+			<td>Flags whether to round up to the next keyframe when choosing a nearby position for inserting ads.<br />
+			<br />
+			Default: <code>false</code>, which chooses the closest keyframe to the desired ad position.</td>
+		</tr>
 		<tr>
 			<td><code class="notranslate">ad_config.template_url.template</code></td>
 			<td>String</td>
@@ -338,6 +364,28 @@
 			Can be a literal <code class="notranslate">{ "url.foo": "SomeString" }</code><br />
 			<br />
 			Or reference another variable <code class="notranslate">{ "url.foo": "{{ metadata.title_id }}" }</code></td>
+		</tr>
+    <tr>
+			<td><code class="notranslate">discontinuities.dash</code> <sup><a href="#n2"> [2]</a></sup></td>
+			<td>[]String</td>
+			<td>Controls which versions of dash to deliver Multi Period Dash manifests.<br />
+			<br />
+			Set to <code class="notranslate">["*"]</code> to deliver multi-period dash for all versions<br />
+			<br />
+			Empty list for never<br />
+			<br />
+			Example: <code class="notranslate">["live-timeline"]</code> to deliver for live-timeline but not for hbbtv</td>
+		</tr>
+		<tr>
+			<td><code class="notranslate">discontinuities.hls</code> <sup><a href="#n2"> [2]</a></sup></td>
+			<td>[]String</td>
+			<td>Controls which versions of hls to deliver with discontinuities.<br />
+			<br />
+			Set to <code class="notranslate">["*"]</code> to delivery with discontinuities in all versions of HLS<br />
+			<br />
+			Empty list for never<br />
+			<br />
+			Example: <code class="notranslate">["v4","v5"]</code> to deliver for v4 &amp; v5 but not for v3</td>
 		</tr>
 		<tr>
 			<td><code class="notranslate">beacon_templates</code></td>
@@ -389,6 +437,7 @@
 <p>The following notes refer to the fields in the table above.</p>
 
 <p id="n1"><sup>[1]</sup> When the <code class="notranslate">expected_ad_response</code> is set to <code class="notranslate">vast_3_0</code>, SSAI makes one VAST call for each ad cue point defined in Video Cloud. For VMAP and ad rules, SSAI makes requests based on the defined ad breaks in the initial ad response.</p>
+<p id="n2"><sup>[2]</sup> Discontinuity tags indicate a change in frame rate encoding between content video and ad segments. They tell the system to reconstruct the rendering chain. For scalable SSAI, the video player needs to be able to play HLS with Discontinuity tags and MPEG DASH containing multiple periods.</p>
 </aside>
 </section>
 
