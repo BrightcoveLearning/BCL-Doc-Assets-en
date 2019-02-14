@@ -1,27 +1,37 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-    <h2 id="Overview">Overview</h2>
-    <figure class="bcls-figure">
-      <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/block-diagram-small.png" alt="general-block-diagram"<caption class="bcls-caption--image">Block Diagram</caption>
-    </figure>
-    <p>This tutorial explains at the API level how to create a live streaming job in <a href="/node/19642">Brightcove live</a> that will accept MPEG2-TS input. The key to using MPEG2-TS input is to select a <code>protocol</code> that supports MPEG2-TS and that your encoder can deliver. The TS-capable protocols supported by the Live API are:</p>
-    <ul>
-      <li><code>rtp</code></li>
-      <li><code>rtp-fec</code></li>
-      <li><code>srt</code></li>
-    </ul>
-    <p>One of these protocols must be specified explicitly to use TS input, because the default input protocol is <code>rtmp</code>.</p>
-    <p>Remember that these protocols use UDP (User Datagram Protocol ) rather than TCP for communication between the encoder and Live, so your firewall / router needs to be configured properly and allow UDP outputs to the internet from the encoder's IP.</p>
-    <p>If you are using <code>rpt-fec</code>, FEC information is sent on a different port than the media, so, for example, if you are using port 2000, you would also need to open ports 2002 and 2004 (if you are using 2D FEC).</p>
-    <p>This tutorial will use <a href="/node/17908" class="notranslate">curl</a> to make the API requests, but you can easily make them in <a href="/node/18462" class="notranslate">Insomnia</a>, <a href="/node/17919" class="notranslate">Postman</a> or other REST clients instead.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="create_a_live_job">Create a live job</h2>
-    <p>First, we will create a live job. You will need an <code>API-KEY</code> for the Live API. If you do not, and are interested in obtaining access, please contact your account manager.</p>
-    <ol class="bcls-tasklist">
-      <li>
-        <p>Copy and paste the following <span class="notranslate">curl</span> command into a text editor:</p>
-<pre class="line-numbers"><code class="language-bash">curl -X POST \
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<figure class="bcls-figure"><img alt="general-block-diagram" src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/block-diagram-small.png" />Block Diagram</figure>
+
+<p>This tutorial explains at the API level how to create a live streaming job in <a href="/node/19642">Brightcove live</a> that will accept MPEG2-TS input. The key to using MPEG2-TS input is to select a <code>protocol</code> that supports MPEG2-TS and that your encoder can deliver. The TS-capable protocols supported by the Live API are:</p>
+
+<ul>
+	<li><code>rtp</code></li>
+	<li><code>rtp-fec</code></li>
+	<li><code>srt</code></li>
+</ul>
+
+<p>One of these protocols must be specified explicitly to use TS input, because the default input protocol is <code>rtmp</code>.</p>
+
+<p>Remember that these protocols use UDP (User Datagram Protocol) rather than TCP for communication between the encoder and Live, so your firewall / router needs to be configured properly and allow UDP outputs to the internet from the encoder's IP.</p>
+
+<p>If you are using <code>rpt-fec</code>, FEC information is sent on a different port than the media, so, for example, if you are using port 2000, you would also need to open ports 2002 and 2004 (if you are using 2D FEC).</p>
+
+<p>This tutorial will use <a class="notranslate" href="/node/17908">curl</a> to make the API requests, but you can easily make them in <a class="notranslate" href="/node/18462">Insomnia</a>, <a class="notranslate" href="/node/17919">Postman</a> or other REST clients instead.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="create_a_live_job">Create a live job</h2>
+
+<p>First, we will create a live job. You will need an <code>API-KEY</code> for the Live API. If you do not, and are interested in obtaining access, please contact your account manager.</p>
+
+<ol class="bcls-tasklist">
+	<li>
+	<p>Copy and paste the following <span class="notranslate">curl</span> command into a text editor:</p>
+
+	<pre class="line-numbers">
+<code class="language-bash">curl -X POST \
   https://api.bcovlive.io/v1/jobs \
   -H 'Content-Type: application/json' \
   -H 'x-api-key: <span class="bcls-input">{{bcov-live-api-key}}</span>' \
@@ -71,21 +81,24 @@
         "keyframe_interval": 60
    }]
 }'</code></pre>
-      </li>
-      <li>
-        <p><strong>Make the following replacements:</strong></p>
-        <ul>
-          <li><code>{{bcov-live-api-key}}</code> with your Brightcove live API key. For example: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
-          <li><code>{{closest_aws_region}}</code> with the closest available region to your encoder, see <a href="/node/17764#Support_aws_regions">closest available regions</a> to your encoder. For instance: <code>us-west-2</code></li>
-          <li><code>{{your_protocol}}</code> with the input protocol your encoder will be delivering: <code>rpt</code>, <code>rtp-fec</code>, or <code>srt</code></li>
-          <li><code>{{your_encoder_IPrange}}</code> with the IP range your encoder will be using, in the form of <code>1.2.3.4/32</code></li>
-          <li><code>{{your_backup_encoder_IPrange}}</code> (if any) with the IP range your backup encoder will be using, in the form of <code>1.2.3.4/32</code></li>
-        </ul>
-      </li>
-      <li>After making those changes, copy and paste the code into Terminal or whatever command-line app you use and run it.</li>
-      <li>
-        <p>The response should be something like this if you are using the <code>rtp-fec</code> protocol:</p>
-<pre class="line-numbers"><code class="language-json">{
+	</li>
+	<li>
+	<p><strong>Make the following replacements:</strong></p>
+
+	<ul>
+		<li><code>{{bcov-live-api-key}}</code> with your Brightcove live API key. For example: <code>abcdfeg-this-is-a-fake-api-key-FgJajjasd12hJHsZ</code></li>
+		<li><code>{{closest_aws_region}}</code> with the closest available region to your encoder, see <a href="/node/17764#Support_aws_regions">closest available regions</a> to your encoder. For instance: <code>us-west-2</code></li>
+		<li><code>{{your_protocol}}</code> with the input protocol your encoder will be delivering: <code>rpt</code>, <code>rtp-fec</code>, or <code>srt</code></li>
+		<li><code>{{your_encoder_IPrange}}</code> with the IP range your encoder will be using, in the form of <code>1.2.3.4/32</code></li>
+		<li><code>{{your_backup_encoder_IPrange}}</code> (if any) with the IP range your backup encoder will be using, in the form of <code>1.2.3.4/32</code></li>
+	</ul>
+	</li>
+	<li>After making those changes, copy and paste the code into Terminal or whatever command-line app you use and run it.</li>
+	<li>
+	<p>The response should be something like this if you are using the <code>rtp-fec</code> protocol:</p>
+
+	<pre class="line-numbers">
+<code class="language-json">{
     "id": "42c913e5373844a99a6285367f2704ec",
     "outputs": [... removed for simplicity ...],
     "stream_url": "<span class="bcls-highlight">rtp:</span>//ec2-34-212-0-224.us-west-2.compute.amazonaws.com:12675",
@@ -96,8 +109,10 @@
     "playback_url_dvr": "https://bcovlive-a.akamaihd.net/42c913e5373844a99a6285367f2704ec/us-west-2/NA/playlist_dvr.m3u8"
 }</code></pre>
 
-<p>Or like this for <code>srt</code>:</p>
-<pre class="line-numbers"><code class="language-json">{
+	<p>Or like this for <code>srt</code>:</p>
+
+	<pre class="line-numbers">
+<code class="language-json">{
     "id": "cdb820f2d7764b91a79536dac799fb77",
     "outputs": [... removed for simplicity ...],
     "stream_url": "srt://ec2-34-212-0-224.us-west-2.compute.amazonaws.com:13820",
@@ -107,47 +122,58 @@
     "playback_url": "https://bcovlive-a.akamaihd.net/cdb820f2d7764b91a79536dac799fb77/us-west-2/NA/playlist.m3u8",
     "playback_url_dvr": "https://bcovlive-a.akamaihd.net/cdb820f2d7764b91a79536dac799fb77/us-west-2/NA/playlist_dvr.m3u8"
 }</code></pre>
-      </li>
-    </ol>
-    <p>This jobs will create 5 renditions <strong>based</strong> on <a href="https://developer.apple.com/documentation/http_live_streaming/hls_authoring_specification_for_apple_devices">Apple recommendations</a>.</p>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Configure_your_encoder">Configure your encoder (TS+FEC)</h2>
-    <p>The steps shown here will assume an <a href="https://www.elemental.com/products/aws-elemental-live">Elemental live box</a> encoder, which was used in testing the steps for this tutorial. If you have a different encoder, the settings should be similar.</p>
-    <p>The most important settings for this <code>rtp-fec</code> input are:</p>
-    <ul>
-      <li>Configure timecode source as "system clock"</li>
-      <li>Set "Forward error correction" to "Column and Row" and set "Column Depth" and "Row length" values:
-        <ul>
-          <li><strong>Colunm depth:</strong> 4 (1 extra FEC packet will be added every "Column Depth" TS packets)</li>
-          <li><strong>Row length:</strong> 10 (1 extra FEC packet will be added every "Row length" TS packets)</li>
-          <li>Additional data added can be calculated: TotalBitrate = MediaBitrate * (1/(ColumnDepth + 1) + 1/(RowLength + 1)</li>
-        </ul>
-      </li>
-      <li>Check "time code insertion" inside video</li>
-      <li>Strongly recommended: Framerate = follow source</li>
-    </ul>
-    <p>This is the config we used for this TS+FEC sample:</p>
-    <figure class="bcls-figure">
-      <img src="https://learning-services-media.brightcove.com/doc-assets/node/18727-quick-start-create-live-job-mpeg2-ts-input/elemental-live-job-config-fec-v1.png" alt="elemental-live-job-config" title="Elemental live config">
-      <figcaption class="bcls-caption--image">Elemental live config</figcaption>
-    </figure>
-  </section>
-  <section class="bcls-section">
-    <h2 id="Configure_your_encoder">Configure your encoder (SRT)</h2>
-    <p>The setup shown here is based on a <a href="https://www.haivision.com/products/kb-series/">Haivision KB</a> encoder, which was used in testing the steps for this tutorial. If you have a different encoder, the settings should be similar.</p>
-    <p>This is the config we used for this SRT sample:</p>
-    <figure class="bcls-figure">
-      <img src="https://learning-services-media.brightcove.com/doc-assets/node/18727-quick-start-create-live-job-mpeg2-ts-input/haivision-kb-srt-config.png" alt="Haivision-live-job-config" title="Haivision live config">
-      <figcaption class="bcls-caption--image">Haivision live config</figcaption>
-    </figure>
-  </section>
-  <section class="bcls-section">
-    <h2 id="test_playback">Test playback</h2>
-    <p>You can use this <a href="https://videojs.github.io/videojs-contrib-hls/">VideoJS HLS demo page</a> to test playback, just paste the value <code>playback_url</code> returned in the creation job response:</p>
-    <figure class="bcls-figure">
-      <img src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/videojs-hls-playback-small.png" alt="videojs-hls-playback" title="VideoJS HLS playback demo page">
-      <figcaption class="bcls-caption--image">VideoJS HLS playback demo page</figcaption>
-    </figure>
-  </section>
+	</li>
+</ol>
+
+<p>This jobs will create 5 renditions <strong>based</strong> on <a href="https://developer.apple.com/documentation/http_live_streaming/hls_authoring_specification_for_apple_devices">Apple recommendations</a>.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configure_your_encoder">Configure your encoder (TS+FEC)</h2>
+
+<p>The steps shown here will assume an <a href="https://www.elemental.com/products/aws-elemental-live">Elemental live box</a> encoder, which was used in testing the steps for this tutorial. If you have a different encoder, the settings should be similar.</p>
+
+<p>The most important settings for this <code>rtp-fec</code> input are:</p>
+
+<ul>
+	<li>Configure timecode source as "system clock"</li>
+	<li>Set "Forward error correction" to "Column and Row" and set "Column Depth" and "Row length" values:
+	<ul>
+		<li><strong>Colunm depth:</strong> 4 (1 extra FEC packet will be added every "Column Depth" TS packets)</li>
+		<li><strong>Row length:</strong> 10 (1 extra FEC packet will be added every "Row length" TS packets)</li>
+		<li>Additional data added can be calculated: TotalBitrate = MediaBitrate * (1/(ColumnDepth + 1) + 1/(RowLength + 1)</li>
+	</ul>
+	</li>
+	<li>Check "time code insertion" inside video</li>
+	<li>Strongly recommended: Framerate = follow source</li>
+</ul>
+
+<p>This is the config we used for this TS+FEC sample:</p>
+
+<figure class="bcls-figure"><img alt="elemental-live-job-config" title="Elemental live config" src="https://learning-services-media.brightcove.com/doc-assets/node/18727-quick-start-create-live-job-mpeg2-ts-input/elemental-live-job-config-fec-v1a.png" />
+<figcaption class="bcls-caption--image">Elemental live config</figcaption>
+</figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configure_your_encoder">Configure your encoder (SRT)</h2>
+
+<p>The setup shown here is based on a <a href="https://www.haivision.com/products/kb-series/">Haivision KB</a> encoder, which was used in testing the steps for this tutorial. If you have a different encoder, the settings should be similar.</p>
+
+<p>This is the config we used for this SRT sample:</p>
+
+<figure class="bcls-figure"><img alt="Haivision-live-job-config" title="Haivision live config" src="https://learning-services-media.brightcove.com/doc-assets/node/18727-quick-start-create-live-job-mpeg2-ts-input/haivision-kb-srt-config.png" />
+<figcaption class="bcls-caption--image">Haivision live config</figcaption>
+</figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="test_playback">Test playback</h2>
+
+<p>You can use this <a href="https://videojs.github.io/videojs-contrib-hls/">VideoJS HLS demo page</a> to test playback, just paste the value <code>playback_url</code> returned in the creation job response:</p>
+
+<figure class="bcls-figure"><img alt="videojs-hls-playback" title="VideoJS HLS playback demo page" src="https://learning-services-media.brightcove.com/doc-assets/node/18697-quick-start-using-rtmp-outputs-live-events/videojs-hls-playback-small.png" />
+<figcaption class="bcls-caption--image">VideoJS HLS playback demo page</figcaption>
+</figure>
+</section>
 </article>
