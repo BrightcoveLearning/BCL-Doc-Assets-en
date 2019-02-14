@@ -15,9 +15,10 @@ var BCLS = (function(window, document) {
     responseData = document.getElementById('responseData');
 
   /**
-   * disables all buttons so user can't submit new request until current one finishes
+   * disables a button so user can't submit new request until current one finishes
+   * @param {htmlElement} button
    */
-  function disableButtons() {
+  function disableButton(button) {
     var i,
       iMax = allButtons.length;
     for (i = 0; i < iMax; i++) {
@@ -26,9 +27,9 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * re-enables all buttons
+   * re-enables a button
    */
-  function enableButtons() {
+  function enableButton(button) {
     var i,
       iMax = allButtons.length;
     for (i = 0; i < iMax; i++) {
