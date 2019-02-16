@@ -22,7 +22,7 @@ var BCLS = (function(window, document) {
    */
   function disableButton(button) {
       button.setAttribute('disabled', 'disabled');
-      button.setAttribute('class', 'bcls-button disabled');
+      button.classList.add('disabled');
   }
 
   /**
@@ -30,7 +30,7 @@ var BCLS = (function(window, document) {
    */
   function enableButton(button) {
       button.removeAttribute('disabled');
-      button.setAttribute('class', 'bcls-button');
+      button.classList.remove('disabled');
   }
 
   /**
