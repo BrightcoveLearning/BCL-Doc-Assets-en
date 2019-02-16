@@ -87,7 +87,7 @@ var BCLS = (function(window, document) {
   }
 
   function getInfo() {
-
+    account_id = (isDefined(account_id_input.value) ? account_id_input.value : account_id_default);
   }
 
   /**
