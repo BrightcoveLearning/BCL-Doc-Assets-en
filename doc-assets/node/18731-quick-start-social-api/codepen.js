@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var baseURL = 'https://social.api.brightcove.com/v1/57838016001',
+  var baseURL = 'https://social.api.brightcove.com/v1/',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     video_id,
     account_id_input = document.getElementById('account_id_input'),
@@ -12,7 +12,9 @@ var BCLS = (function(window, document) {
     videoForHistory = document.getElementById('videoForHistory'),
     apiRequest = document.getElementById('apiRequest'),
     apiMethod = document.getElementById('apiMethod'),
-    responseData = document.getElementById('responseData');
+    responseData = document.getElementById('responseData'),
+    selectorData = [],
+    selectedVideo;
 
   /**
    * disables a button so user can't submit new request until current one finishes
@@ -70,8 +72,8 @@ var BCLS = (function(window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setoptions(id) {
-    var endPoint = '',
+  function setoptions(id, video_id, callback) {
+    var endPoint,
       options = {},
       requestBody = {},
       parsedData,
@@ -79,12 +81,12 @@ var BCLS = (function(window, document) {
       iMax;
     // disable buttons to prevent a new request before current one finishes
     disableButtons();
-    options.account_id = '57838016001';
+    options.account_id = '1486906377';
     options.proxyURL = proxyURL;
     switch (id) {
-      case 'get5videos':
-        endPoint = '/videos?limit=5';
-        options.url = baseURL + endPoint;
+      case 'getStatusAll':
+        endPoint = '/videos/status';
+        options.url = baseURL + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
@@ -97,12 +99,13 @@ var BCLS = (function(window, document) {
           for (i = 0; i < iMax; i++) {
             playlist_videos.push(parsedData[i].id);
           }
-          enableButtons();
+          enableButton('getStatusOne);
+          enableButton('getHistory');
         });
         break;
-      case 'get5more':
-        endPoint = '/videos?limit=5&offset=5';
-        options.url = baseURL + endPoint;
+      case 'getVideoName':
+        endPoint = '/videos/' + video_id;
+        options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         apiMethod.textContent = options.requestType;
