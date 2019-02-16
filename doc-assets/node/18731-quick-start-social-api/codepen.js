@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var baseURL = 'https://cms.api.brightcove.com/v1/accounts/57838016001',
+  var baseURL = 'https://social.api.brightcove.com/v1/57838016001',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     video_id,
     account_id_input = document.getElementById('account_id_input'),
@@ -19,22 +19,16 @@ var BCLS = (function(window, document) {
    * @param {htmlElement} button
    */
   function disableButton(button) {
-    var i,
-      iMax = allButtons.length;
-    for (i = 0; i < iMax; i++) {
-      allButtons[i].setAttribute('disabled', 'disabled');
-    }
+      button.setAttribute('disabled', 'disabled');
+      button.setAttribute('class', 'bcls-button disabled');
   }
 
   /**
    * re-enables a button
    */
   function enableButton(button) {
-    var i,
-      iMax = allButtons.length;
-    for (i = 0; i < iMax; i++) {
-      allButtons[i].removeAttribute('disabled');
-    }
+      button.removeAttribute('disabled');
+      button.setAttribute('class', 'bcls-button');
   }
 
   /**
@@ -43,7 +37,7 @@ var BCLS = (function(window, document) {
    */
   function displayResponse(response) {
     var parsedData = JSON.parse(response);
-    responseData.textContent = JSON.stringify(parsedData, null, '  ');
+    responseData.textContent = JSON.stringify(parsedData, null, 2);
     return;
   }
 
