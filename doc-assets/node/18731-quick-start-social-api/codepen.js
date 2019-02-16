@@ -20,6 +20,20 @@ var BCLS = (function(window, document) {
     selectorData = [],
     selectedVideo;
 
+
+
+  /**
+   * tests for all the ways a variable might be undefined or not have a value
+   * @param {*} x the variable to test
+   * @return {Boolean} true if variable is defined and has a value
+   */
+  function isDefined(x) {
+      if ( x === '' || x === null || x === undefined) {
+          return false;
+      }
+      return true;
+  }
+
   /**
    * disables a button so user can't submit new request until current one finishes
    * @param {htmlElement} button
