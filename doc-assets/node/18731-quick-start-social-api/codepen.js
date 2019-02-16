@@ -41,12 +41,29 @@ var BCLS = (function(window, document) {
     return;
   }
 
+  /**
+   * populate a selector element from an array of objects
+   * @param {htmlElement} selector reference to the selector element
+   * @param {array} dataArray an array of objects
+   * @param {string} valueField name of the object field to use for option values
+   * @param {string} textField name of the object field to be use for the option text (can be the same as the valueField)
+   */
   function populateSelector(selector, dataArray, valueField, textField) {
     var i,
       iMax,
       option,
+      item,
       frag = document.createDocumentFragment();
     iMax = dataArray.length;
+    for (i = 0; i < iMax; i++) {
+      item = dataArray[i];
+      option = document.createElement('option');
+      option.setAttribute('value', item[valueField]);
+      option.textContent = item[textField];
+      frag.appendChild(option);
+    }
+    selector.appendChild(frag);
+    return;
   }
 
   /**
