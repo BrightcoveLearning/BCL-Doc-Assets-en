@@ -41,6 +41,14 @@ var BCLS = (function(window, document) {
     return;
   }
 
+  function populateSelector(selector, dataArray, valueField, textField) {
+    var i,
+      iMax,
+      option,
+      frag = document.createDocumentFragment();
+    iMax = dataArray.length;
+  }
+
   /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
