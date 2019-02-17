@@ -131,11 +131,29 @@ var BCLS = (function(window, document) {
     }
   }
 
+  function getVideoName(video_id, callback) {
+    var endPoint,
+      options = {};
+    // disable buttons to prevent a new request before current one finishes
+    options.proxyURL = proxyURL;
+    if (isDefined(client_id)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
+    endPoint = '/videos/' + video_id;
+    options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
+    options.requestType = 'GET';
+    makeRequest(options, function(response) {
+      parsedData = JSON.parse(response);
+      callback(parsedData.id, parsedData.name);
+    });
+  }
+
   /**
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setoptions(id, video_id, callback) {
+  function setoptions(id) {
     var endPoint,
       options = {},
       requestBody = {},
@@ -161,31 +179,22 @@ var BCLS = (function(window, document) {
           console.log('status data ', parsedData);
           iMax = parsedData.videos.length;
           for (i = 0; i < iMax; i++) {
-            setoptions('getVideoName', parsedData.videos[i].id, function(id, name) {
+            getVideoName(parsedData.videos[i].id, function(id, name) {
               var idx = findObjectInArray(selectorData,
               'id', id);
               if (idx < 0) {
                 selectorData.push({id: id, name: name});
               }
               if (i === iMax) {
+                populateSelector(videoForStatus, selectorData, 'id', 'name');
+                populateSelector(videoForHistory, selectorData, 'id', 'name');
               }
             });
           }
-          populateSelector(videoForStatus, selectorData, 'id', 'name');
-          populateSelector(videoForHistory, selectorData, 'id', 'name');
           enableElement(getStatusOne);
           enableElement(getHistory);
           enableElement(videoForStatus);
           enableElement(videoForHistory);
-        });
-        break;
-      case 'getVideoName':
-        endPoint = '/videos/' + video_id;
-        options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
-        options.requestType = 'GET';
-        makeRequest(options, function(response) {
-          parsedData = JSON.parse(response);
-          callback(parsedData.id, parsedData.name);
         });
         break;
       case 'getStatusOne':
