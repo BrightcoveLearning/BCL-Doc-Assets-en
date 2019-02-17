@@ -141,6 +141,7 @@ var BCLS = (function(window, document) {
           for (i = 0; i < iMax; i++) {
             setoptions('getVideoName', parsedData.videos[i].id, function(id, name) {
               selectorData.push({id: id, name: name});
+              console.log('i', i);
               console.log('selectorData', selectorData);
             });
           }
