@@ -99,9 +99,9 @@ var BCLS = (function(window, document) {
   }
 
   function getInfo() {
-    account_id = (isDefined(account_id_input.value) ? account_id_input.value : account_id_default);
-    client_id = (isDefined(client_id_input.value) ? client_id_input.value : null;
-    client_secret = (isDefined(client_secret_input.value) ? client_secret_input.value : null;
+    account_id = (isDefined(account_id_input.value)) ? account_id_input.value : account_id_default);
+    client_id = (isDefined(client_id_input.value)) ? client_id_input.value : null;
+    client_secret = (isDefined(client_secret_input.value)) ? client_secret_input.value : null;
     if (account_id !== account_id_default) {
       if (!isDefined(client_secret) || !isDefined(client_id)) {
         window.alert('If you are using your own account, you must provide a client id and client secret');
