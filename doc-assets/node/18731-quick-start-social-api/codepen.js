@@ -158,12 +158,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           displayResponse(response);
           parsedData = JSON.parse(response);
-          // add ids to array to add to playlist later
-          iMax = parsedData.length;
-          for (i = 0; i < iMax; i++) {
-            playlist_videos.push(parsedData[i].id);
-          }
-          enableElements();
+          callback(parsedData.name);
         });
         break;
       case 'getStatusOne':
