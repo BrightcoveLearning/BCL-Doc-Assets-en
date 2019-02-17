@@ -121,7 +121,6 @@ var BCLS = (function(window, document) {
       i,
       iMax;
     // disable buttons to prevent a new request before current one finishes
-    disableElements();
     options.proxyURL = proxyURL;
     if (isDefined(client_id)) {
       options.client_id = client_id;
