@@ -41,7 +41,6 @@ var BCLS = (function(window, document) {
    *
    @return {Object} object containing the `value`
    */
-
    function getSelectedValue(e) {
      var selected = e.options[e.selectedIndex];
       return selected.value;
