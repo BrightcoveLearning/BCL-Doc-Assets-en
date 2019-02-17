@@ -139,8 +139,8 @@ var BCLS = (function(window, document) {
           console.log('status data ', parsedData);
           iMax = parsedData.videos.length;
           for (i = 0; i < iMax; i++) {
-            setoptions('getVideoName', parsedData.videos[i].id, function(name) {
-              selectorData.push({'id': parsedData.videos[i].id, 'name': name});
+            setoptions('getVideoName', parsedData.videos[i].id, function(id, name) {
+              selectorData.push({'id': id, 'name': name});
             });
           }
           populateSelector(videoForStatus, selectorData, 'id', 'name');
@@ -155,11 +155,9 @@ var BCLS = (function(window, document) {
         endPoint = '/videos/' + video_id;
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
         options.requestType = 'GET';
-        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          displayResponse(response);
           parsedData = JSON.parse(response);
-          callback(parsedData.name);
+          callback(parsedData.id, parsedData.name);
         });
         break;
       case 'getStatusOne':
