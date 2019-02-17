@@ -139,8 +139,8 @@ var BCLS = (function(window, document) {
           console.log('status data ', parsedData);
           iMax = parsedData.videos.length;
           for (i = 0; i < iMax; i++) {
-            setoptions('getVideoName', parsedData[i].id, function(name) {
-              selectorData.push({'id': parsedData[i].id, 'name': name});
+            setoptions('getVideoName', parsedData.videos[i].id, function(name) {
+              selectorData.push({'id': parsedData.videos[i].id, 'name': name});
             });
           }
           populateSelector(videoForStatus, selectorData, 'id', 'name');
