@@ -35,6 +35,23 @@ var BCLS = (function(window, document) {
   }
 
   /**
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   * @return {Object} object containing the `value`, text, and selected `index`
+   */
+  function getSelectedValue(e) {
+      var selected = e.options[e.selectedIndex],
+          val = selected.value,
+          txt = selected.textContent,
+          idx = e.selectedIndex;
+      return {
+          value: val,
+          text: txt,
+          index: idx
+      };
+  }
+
+    /**
    * disables a button so user can't submit new request until current one finishes
    * @param {htmlElement} button
    */
@@ -88,6 +105,8 @@ var BCLS = (function(window, document) {
 
   function getInfo() {
     account_id = (isDefined(account_id_input.value) ? account_id_input.value : account_id_default);
+    client_id = (isDefined(client_id_input.value) ? client_id_input.value : client_id_default);
+
   }
 
   /**
