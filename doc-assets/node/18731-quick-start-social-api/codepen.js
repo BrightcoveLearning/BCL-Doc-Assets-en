@@ -141,12 +141,12 @@ var BCLS = (function(window, document) {
           for (i = 0; i < iMax; i++) {
             setoptions('getVideoName', parsedData.videos[i].id, function(id, name) {
               selectorData.push({id: id, name: name});
-              console.log('i', i);
-              console.log('selectorData', selectorData);
+              if (i === iMax) {
+                populateSelector(videoForStatus, selectorData, 'id', 'name');
+                populateSelector(videoForHistory, selectorData, 'id', 'name');
+              }
             });
           }
-          populateSelector(videoForStatus, selectorData, 'id', 'name');
-          populateSelector(videoForHistory, selectorData, 'id', 'name');
           enableElement(getStatusOne);
           enableElement(getHistory);
           enableElement(videoForStatus);
