@@ -136,6 +136,7 @@ var BCLS = (function(window, document) {
           displayResponse(response);
           parsedData = JSON.parse(response);
           // add ids to array to add to playlist later
+          console.log('status data ', parsedData);
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
             setoptions('getVideoName', parsedData[i].id, function(name) {
