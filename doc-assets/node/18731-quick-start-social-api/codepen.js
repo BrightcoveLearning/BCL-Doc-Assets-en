@@ -132,7 +132,6 @@ var BCLS = (function(window, document) {
         options.url = baseURL + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
         apiData.textContent = '';
         makeRequest(options, function(response) {
           displayResponse(response);
@@ -157,7 +156,6 @@ var BCLS = (function(window, document) {
         options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
         apiData.textContent = '';
         makeRequest(options, function(response) {
           displayResponse(response);
@@ -175,7 +173,6 @@ var BCLS = (function(window, document) {
         options.url = baseURL + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
         apiData.textContent = '';
         makeRequest(options, function(response) {
           displayResponse(response);
@@ -186,7 +183,6 @@ var BCLS = (function(window, document) {
         options.url = baseURL + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
         apiData.textContent = '';
         makeRequest(options, function(response) {
           displayResponse(response);
