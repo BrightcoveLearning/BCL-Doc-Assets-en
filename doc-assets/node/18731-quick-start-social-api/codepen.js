@@ -29,30 +29,39 @@ var BCLS = (function(window, document) {
    */
   function isDefined(x) {
       if ( x === '' || x === null || x === undefined) {
-          return false;
+        return false;
       }
       return true;
   }
 
   /**
-   * get selected value for single select element
-   * @param {htmlElement} e the select element
-   * @return {Object} object containing the `value`, text, and selected `index`
-   */
-  function getSelectedValue(e) {
-      var selected = e.options[e.selectedIndex],
-          val = selected.value,
-          txt = selected.textContent,
-          idx = e.selectedIndex;
-      return {
-          value: val,
-          text: txt,
-          index: idx
-      };
-  }
+   * get selected value
+   for single select element
+     *
+     @param {
+       htmlElement
+     }
+   e the select element
+     *
+     @return {
+       Object
+     }
+   object containing the `value`, text, and selected `index` *
+     /
 
-    /**
-   * disables a button so user can't submit new request until current one finishes
+   function getSelectedValue(e) {
+     var selected = e.options[e.selectedIndex],
+       val = selected.value,
+       txt = selected.textContent,
+       idx = e.selectedIndex;
+     return {
+       value: val,
+       text: txt,
+       index: idx
+     };
+   }
+
+   /**   * disables a button so user can't submit new request until current one finishes
    * @param {htmlElement} button
    */
   function disableElement(button) {
