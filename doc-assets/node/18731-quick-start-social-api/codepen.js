@@ -143,6 +143,7 @@ var BCLS = (function(window, document) {
               selectorData.push({'id': id, 'name': name});
             });
           }
+          console.log('selectorData', selectorData);
           populateSelector(videoForStatus, selectorData, 'id', 'name');
           populateSelector(videoForHistory, selectorData, 'id', 'name');
           enableElement(getStatusOne);
