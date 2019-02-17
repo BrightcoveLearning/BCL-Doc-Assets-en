@@ -44,7 +44,7 @@ var BCLS = (function(window, document) {
 
    function getSelectedValue(e) {
      var selected = e.options[e.selectedIndex];
-      return selected.value,
+      return selected.value;
    }
 
    /**
