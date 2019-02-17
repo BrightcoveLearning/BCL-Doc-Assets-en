@@ -130,6 +130,7 @@ var BCLS = (function(window, document) {
       case 'getStatusAll':
         endPoint = '/videos/status';
         options.url = baseURL + account_id + endPoint;
+        console.log('status url', options.url);
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
