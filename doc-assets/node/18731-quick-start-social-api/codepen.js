@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var baseURL = 'https://social.api.brightcove.com/v1/',
+  var baseURL = 'https://social.api.brightcove.com/v1/accounts/',
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     video_id,
     account_id,
