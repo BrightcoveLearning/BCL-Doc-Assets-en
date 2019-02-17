@@ -140,10 +140,10 @@ var BCLS = (function(window, document) {
           iMax = parsedData.videos.length;
           for (i = 0; i < iMax; i++) {
             setoptions('getVideoName', parsedData.videos[i].id, function(id, name) {
-              selectorData.push({'id': id, 'name': name});
+              selectorData.push({id: id, name: name});
+              console.log('selectorData', selectorData);
             });
           }
-          console.log('selectorData', selectorData);
           populateSelector(videoForStatus, selectorData, 'id', 'name');
           populateSelector(videoForHistory, selectorData, 'id', 'name');
           enableElement(getStatusOne);
