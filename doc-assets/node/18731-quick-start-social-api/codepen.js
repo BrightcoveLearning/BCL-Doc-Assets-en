@@ -35,33 +35,20 @@ var BCLS = (function(window, document) {
   }
 
   /**
-   * get selected value
-   for single select element
-     *
-     @param {
-       htmlElement
-     }
-   e the select element
-     *
-     @return {
-       Object
-     }
-   object containing the `value`, text, and selected `index` *
-     /
+   * get selected value for single select element
+   *
+   @param {htmlElement} e the select element
+   *
+   @return {Object} object containing the `value`
+   */
 
    function getSelectedValue(e) {
-     var selected = e.options[e.selectedIndex],
-       val = selected.value,
-       txt = selected.textContent,
-       idx = e.selectedIndex;
-     return {
-       value: val,
-       text: txt,
-       index: idx
-     };
+     var selected = e.options[e.selectedIndex];
+      return selected.value,
    }
 
-   /**   * disables a button so user can't submit new request until current one finishes
+   /**
+    * disables a button so user can't submit new request until current one finishes
    * @param {htmlElement} button
    */
   function disableElement(button) {
@@ -114,8 +101,13 @@ var BCLS = (function(window, document) {
 
   function getInfo() {
     account_id = (isDefined(account_id_input.value) ? account_id_input.value : account_id_default);
-    client_id = (isDefined(client_id_input.value) ? client_id_input.value : client_id_default);
-
+    client_id = (isDefined(client_id_input.value) ? client_id_input.value : null;
+    client_secret = (isDefined(client_secret_input.value) ? client_secret_input.value : null;
+    if (account_id !== account_id_default) {
+      if (!isDefined(client_secret) || !isDefined(client_id)) {
+        window.alert('If you are using your own account, you must provide a client id and client secret');
+      }
+    }
   }
 
   /**
@@ -131,8 +123,11 @@ var BCLS = (function(window, document) {
       iMax;
     // disable buttons to prevent a new request before current one finishes
     disableElements();
-    options.account_id = '1486906377';
     options.proxyURL = proxyURL;
+    if (isDefined(client_id)) {
+      options.client_id = client_id;
+      options.client_secret = client_secret;
+    }
     switch (id) {
       case 'getStatusAll':
         endPoint = '/videos/status';
