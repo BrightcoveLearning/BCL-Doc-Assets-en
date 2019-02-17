@@ -168,11 +168,11 @@ var BCLS = (function(window, document) {
                 selectorData.push({id: id, name: name});
               }
               if (i === iMax) {
-                populateSelector(videoForStatus, selectorData, 'id', 'name');
-                populateSelector(videoForHistory, selectorData, 'id', 'name');
               }
             });
           }
+          populateSelector(videoForStatus, selectorData, 'id', 'name');
+          populateSelector(videoForHistory, selectorData, 'id', 'name');
           enableElement(getStatusOne);
           enableElement(getHistory);
           enableElement(videoForStatus);
