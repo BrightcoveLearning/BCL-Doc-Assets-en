@@ -198,7 +198,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getStatusOne':
-        endPoint = '/videos?limit=5&sort=name';
+        endPoint = '/videos/' + selectedVideo + '/status';
         options.url = baseURL + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -207,7 +207,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getHistory':
-        endPoint = '/videos/' +  video_id + '/status'
+        endPoint = '/videos/' +  selectedVideo + '/history'
         options.url = baseURL + account_id + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
@@ -275,11 +275,11 @@ var BCLS = (function(window, document) {
     setoptions('getStatusAll');
   });
   getStatusOne.addEventListener('click', function() {
-    getSelectedValue(videoForStatus);
+    selectedVideo = getSelectedValue(videoForStatus);
     setoptions('getStatusOne');
   });
   getHistory.addEventListener('click', function() {
-    getSelectedValue(videoForHistory);
+    selectedVideo = getSelectedValue(videoForHistory);
     setoptions('getHistory');
   });
 })(window, document);
