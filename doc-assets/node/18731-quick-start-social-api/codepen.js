@@ -135,7 +135,6 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           displayResponse(response);
           parsedData = JSON.parse(response);
-          // add ids to array to add to playlist later
           console.log('status data ', parsedData);
           iMax = parsedData.length;
           for (i = 0; i < iMax; i++) {
