@@ -146,8 +146,10 @@ var BCLS = (function(window, document) {
     endPoint = '/videos/' + videoData[callNumber];
     options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
     options.requestType = 'GET';
+    console.log('options', options);
     makeRequest(options, function(response) {
       var obj = {};
+      console.log('name reponse', response);
       parsedData = JSON.parse(response);
       if (findObjectInArray(selectorData, 'id', parsedData.id) === -1) {
         obj.id = parsedData.id;
