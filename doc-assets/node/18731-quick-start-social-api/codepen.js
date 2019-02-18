@@ -194,6 +194,7 @@ var BCLS = (function(window, document) {
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           displayResponse(response);
+          console.log('reponse', response);
           parsedData = JSON.parse(response);
           videoData = parsedData.videos;
           console.log('status data ', videoData);
