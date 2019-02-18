@@ -18,7 +18,10 @@ var BCLS = (function(window, document) {
     apiMethod = document.getElementById('apiMethod'),
     responseData = document.getElementById('responseData'),
     selectorData = [],
-    selectedVideo;
+    selectedVideo,
+    callNumber = 0,
+    maxCalls,
+    videoData;
 
 
 
@@ -131,7 +134,7 @@ var BCLS = (function(window, document) {
     }
   }
 
-  function getVideoName(video_id, callback) {
+  function getVideoName() {
     var endPoint,
       options = {};
     // disable buttons to prevent a new request before current one finishes
@@ -140,12 +143,28 @@ var BCLS = (function(window, document) {
       options.client_id = client_id;
       options.client_secret = client_secret;
     }
-    endPoint = '/videos/' + video_id;
+    endPoint = '/videos/' + videoData[callNumber];
     options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
     options.requestType = 'GET';
     makeRequest(options, function(response) {
+      var obj = {};
       parsedData = JSON.parse(response);
-      callback(parsedData.id, parsedData.name);
+      if (findObjectInArray(selectorData, 'id', parsedData.id) === -1) {
+        obj.id = parsedData.id;
+        obj.name = parsedData.name;
+        selectorData.push(obj);
+      }
+      callNumber++;
+      if (callNumber < maxCalls) {
+        getVideoName();
+      } else {
+        populateSelector(videoForStatus, selectorData, 'id', 'name');
+        populateSelector(videoForHistory, selectorData, 'id', 'name');
+        enableElement(getStatusOne);
+        enableElement(getHistory);
+        enableElement(videoForStatus);
+        enableElement(videoForHistory);
+      }
     });
   }
 
@@ -177,25 +196,10 @@ var BCLS = (function(window, document) {
           displayResponse(response);
           parsedData = JSON.parse(response);
           console.log('status data ', parsedData);
-          iMax = parsedData.videos.length;
-          for (i = 0; i < iMax; i++) {
-            console.log('i', i);
-            getVideoName(parsedData.videos[i].id, function(id, name) {
-              var idx = findObjectInArray(selectorData,
-              'id', id);
-              if (idx < 0) {
-                selectorData.push({id: id, name: name});
-              }
-              if (i === iMax) {
-                populateSelector(videoForStatus, selectorData, 'id', 'name');
-                populateSelector(videoForHistory, selectorData, 'id', 'name');
-              }
-            });
-          }
-          enableElement(getStatusOne);
-          enableElement(getHistory);
-          enableElement(videoForStatus);
-          enableElement(videoForHistory);
+          videoData = parsedData.videos;
+          maxCalls = videoData.length;
+          callNumber = 0;
+          getVideoName();
         });
         break;
       case 'getStatusOne':
