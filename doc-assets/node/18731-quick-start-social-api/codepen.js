@@ -143,7 +143,7 @@ var BCLS = (function(window, document) {
       options.client_id = client_id;
       options.client_secret = client_secret;
     }
-    endPoint = '/videos/' + videoData[callNumber];
+    endPoint = '/videos/' + videoData[callNumber].id;
     options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
     options.requestType = 'GET';
     console.log('options', options);
