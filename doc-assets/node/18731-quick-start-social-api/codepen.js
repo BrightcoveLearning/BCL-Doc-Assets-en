@@ -179,6 +179,7 @@ var BCLS = (function(window, document) {
           console.log('status data ', parsedData);
           iMax = parsedData.videos.length;
           for (i = 0; i < iMax; i++) {
+            console.log('i', i);
             getVideoName(parsedData.videos[i].id, function(id, name) {
               var idx = findObjectInArray(selectorData,
               'id', id);
