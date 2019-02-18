@@ -146,10 +146,8 @@ var BCLS = (function(window, document) {
     endPoint = '/videos/' + videoData[callNumber].id;
     options.url = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + endPoint;
     options.requestType = 'GET';
-    console.log('options', options);
     makeRequest(options, function(response) {
       var obj = {};
-      console.log('name reponse', response);
       parsedData = JSON.parse(response);
       if (findObjectInArray(selectorData, 'id', parsedData.id) === -1) {
         obj.id = parsedData.id;
@@ -191,15 +189,12 @@ var BCLS = (function(window, document) {
       case 'getStatusAll':
         endPoint = '/videos/status';
         options.url = baseURL + account_id + endPoint;
-        console.log('status url', options.url);
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           displayResponse(response);
-          console.log('reponse', response);
           parsedData = JSON.parse(response);
           videoData = parsedData.videos;
-          console.log('status data ', videoData);
           maxCalls = videoData.length;
           callNumber = 0;
           getVideoName();
