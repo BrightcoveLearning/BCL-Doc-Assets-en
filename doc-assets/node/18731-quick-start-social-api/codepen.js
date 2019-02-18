@@ -195,8 +195,8 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           displayResponse(response);
           parsedData = JSON.parse(response);
-          console.log('status data ', parsedData);
           videoData = parsedData.videos;
+          console.log('status data ', videoData);
           maxCalls = videoData.length;
           callNumber = 0;
           getVideoName();
