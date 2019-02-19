@@ -1,0 +1,138 @@
+<p>Internet search engines provide end-users a quick and easy to use way to get access to information available on the Internet. As more and more Internet content is multimedia, you need to ensure that your content is properly indexed by the search engines so that users can discover it. This article will provide an overview of how to enable your video content to be SEO enabled and indexed by the various search engines (Google, Yahoo, Microsoft).</p>
+
+<p>There is a standard document, called a sitemap, that search engine indexers look for when examining your site. This document concisely tells the search engines what content is exposed on your site, the metadata for that content, and where that content is located on your site. A sitemap is an XML file that follows a standard specification.</p>
+
+<p class="BCL-objective">There are two different flavors of sitemaps that you can (and should) create:</p>
+
+<ul>
+	<li><strong><a href="#sitemap">Sitemap</a></strong> - A sitemap that will index your content in the standard text based search engines such as www.google.com or search.yahoo.com</li>
+	<li><strong><a href="#videositemap">Video Sitemap</a></strong> - A sitemap that will index your content in media-centric search engines such as video.google.com</li>
+</ul>
+
+<p>Note that both of these sitemaps index the metadata about your video content and provide links to end-users. The difference is <i>where</i> the metadata that is indexed is obtained from and <i>how</i> the content is surfaced in search results.</p>
+
+<p>A proper SEO strategy for your video content will include creating <b>both</b> a standard sitemap as well as a video sitemap. From a priority perspective, you want to create <a href="#sitemap">a standard sitemap</a> first and then a <a href="#videositemap">video sitemap</a>. Using the Video Cloud <a href="/node/18034">CMS API</a>, you write a script to generate your sitemaps automatically, rather than compiling them by hand.</p>
+
+<div class="BCL-concept">
+<h2 id="sitemap">Standard Sitemaps</h2>
+
+<p>Sitemaps follow the sitemap specification that is defined here: <a href="http://www.sitemaps.org/">www.sitemaps.org</a>. The purpose of the sitemap file is to provide a list of URLs on your site to the search engines. The only other information associated with a URL is when the page was last modified and how frequently the page changes. Note that there is no metadata about your content in this index. Because the sitemap is page-centric, we need to create a model where <i>each</i> video in your library will have a unique page, or URL, associated with it. This can be accomplished by having a single page whose behavior and content can be dynamically changed by passing in different query parameters to the page. For example, if you have a URL like <code>http://www.example.com/video.html?videoId=123</code>, you would have the <code>video.html</code> page look for the <code>videoId</code> query parameter (<code>videoId=123</code>) and modify the contents of the page returned to the browser to contain information about the video with id 123. This would be done on the server-side of your application where the page would look for the ID and then use the Video Cloud Media API to fetch metadata about the video and write it into the page.</p>
+
+<p>For the purposes of this article, we assume that there is a single landing page on your site which can be used to play back all video content for your site. Different query parameters will be passed to the page to tell the page what video to play back and what video to surface metadata for. For example, let's say you have a page that displays the contents of an entire playlist and queues up a specific video in a player. You tell the page what playlist to display metadata for via a <code>bcpid</code> query parameter and what video to surface in a player via the <code>bcvid</code> parameter. Thus, what we want to do is create a URL for every unique playlist and video id combination.</p>
+
+<p>Here is an example of sitemap that would be created:</p>
+
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+ &lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+   &lt;url&gt;
+     &lt;loc&gt;http://www.example.com/video?bclid=345&amp;bctid=123&lt;/loc&gt;
+     &lt;lastmod&gt;2015-01-01&lt;/lastmod&gt;
+     &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+   &lt;/url&gt;
+   &lt;url&gt;
+     &lt;loc&gt;http://www.example.com/video?bclid=12&amp;bctid=544&lt;/loc&gt;
+     &lt;lastmod&gt;2015-03-01&lt;/lastmod&gt;
+     &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+   &lt;/url&gt;
+ &lt;/urlset&gt;</pre>
+
+<p>To create a sitemap file, you can create a script that uses CMS API requests to walk through the playlists in the Video Cloud account and, for each playlist, walks through its contained videos. For each playlist and video combination, the script creates an entry in the sitemap supplying a unique URL to the playlist/video combination. Once you've created a sitemap file for your site, place the resulting <code>sitemap.xml</code> file in the root directory of your webserver. For example, if your domain is <code>www.example.com</code>, the sitemap file would be available at <code>http://www.example.com/sitemap.xml</code>. Even better would be to automatically generate this file with a server-side application and update the file on your live site.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="videositemap">Video Sitemaps</h2>
+
+<p>A video sitemap is similar in concept to the standard sitemap file. The video sitemap file will have an entry per video in your account. In fact, a video sitemap uses the sitemap schema as its base and adds additional tags specific to video metadata.</p>
+
+<p>The table below outlines the tags that Google requires for video sitemaps.</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th width="170">Tag</th>
+			<th width="82">Required</th>
+			<th width="551">Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>&lt;loc&gt;</code></td>
+			<td>Y</td>
+			<td>Specifies the landing page (aka play page, referrer page) for the video.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;video:video&gt;</code></td>
+			<td>Y</td>
+			<td>Encloses all information about the video.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;video:thumbnail_loc&gt;</code></td>
+			<td>Y</td>
+			<td>A URL pointing to the video thumbnail image file.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;video:title&gt;</code></td>
+			<td>Y</td>
+			<td>The title of the video.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;video:description&gt;</code></td>
+			<td>Y</td>
+			<td>The description of the video.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;video:content_loc&gt;</code></td>
+			<td>Depends</td>
+			<td>A URL pointing to the actual video media file. Note: You must specify at least one of <code>&lt;video:player_loc&gt;</code> or <code>&lt;video:content_loc&gt;</code>.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;video:player_loc&gt;</code></td>
+			<td>Depends</td>
+			<td>A URL pointing to a player for a specific video. Usually this is the information in the src element of an &lt;embed&gt; tag and should not be the same as the content of the &lt;loc&gt; tag. Note: You must specify at least one of <code>&lt;video:player_loc&gt;</code> or <code>&lt;video:content_loc&gt;</code>.</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>For a list of all the supported tags and a more detailed explanation of tags, see the <a href="https://developers.google.com/webmasters/videosearch/sitemaps#video-sitemap-tag-definitions">Google documentation</a>.</p>
+
+<p>Below is a sample video sitemap.</p>
+
+<pre>
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"&gt;
+   &lt;url&gt;
+     &lt;loc&gt;http://www.example.com/videos/video_landing_page.html&lt;/loc&gt;
+     &lt;video:video&gt;
+       &lt;video:thumbnail_loc&gt;http://www.example.com/thumbs/123.jpg&lt;/video:thumbnail_loc&gt;
+       &lt;video:title&gt;Grilling steaks for summer&lt;/video:title&gt;
+       &lt;video:description&gt;Get perfectly done steaks every time&lt;/video:description&gt;
+       &lt;video:content_loc&gt;http://brightcove04.brightcove.com/22/20318290001/201510/2249/20318290001_4582301804001_4582289844001.mp4?pubId=20318290001&amp;videoId=4582289844001&lt;/video:content_loc&gt;
+       &lt;video:player_loc&gt;http://players.brightcove.net/20318290001/default_default/index.html?videoId=4582289844001&lt;/video:player_loc&gt;
+       &lt;video:duration&gt;600&lt;/video:duration&gt;
+       &lt;video:publication_date&gt;2014-11-05T19:20:30+08:00.&lt;/video:publication_date&gt;
+       &lt;video:tag&gt;steak&lt;/video:tag&gt;
+       &lt;video:tag&gt;meat&lt;/video:tag&gt;
+       &lt;video:tag&gt;summer&lt;/video:tag&gt;
+       &lt;video:family_friendly&gt;yes&lt;/video:family_friendly&gt;
+     &lt;/video:video&gt;
+   &lt;/url&gt;
+ &lt;/urlset&gt;
+</pre>
+
+<p>Once you've created your video sitemap, you can submit it to Google following the instructions <a href="https://support.google.com/webmasters/answer/183668#addsitemap">here</a>.</p>
+
+<p class="BCL-aside">Note: Based on your preference, you can either create separate files for standard and video sitemaps or add information about your video content to an existing sitemap document. However, take into consideration that sitemap files cannot contain more than 50,000 URLs and cannot be larger than 50MB. For more information on sitemap guidelines, review Google's <a href="https://support.google.com/webmasters/answer/183668#1">Sitemap formats and guidelines</a> support article.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="gallery">Brightcove Gallery</h2>
+
+<p>Brightcove Gallery allows you to create engaging video experiences without the need of any technical resources. Sites built using Brightcove Gallery will automatically compile the video metadata into a video sitemap for you. For more information, visit the <a href="/node/13725">Customizing the Discovery Settings for a Video Site</a> article.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="conclusion">Conclusion</h2>
+
+<p>A complete SEO strategy for your video content should include creating both a standard sitemap as well as a video sitemap. This will ensure that your content is indexed across the widest swath of search engines. Additionally, your content will be surfaced in the most aesthetically pleasing manner for the point of discovery. This article has outlined an approach for providing a unique URL per video in your account and sample code for generating the sitemap files that the engines will index.</p>
+</div>
+<!-- End of Drupal content -->
