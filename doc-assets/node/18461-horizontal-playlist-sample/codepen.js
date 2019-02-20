@@ -81,8 +81,8 @@ videojs.getPlayer('myPlayerID').ready(function() {
     left.setAttribute('id', 'left-arrow');
     right.setAttribute('id', 'right-arrow');
     var parentElement = document.getElementsByClassName("bcls-playlist-wrapper");
-    parentElement[0].appendChild(left);
-    parentElement[0].appendChild(right);
+    parentElement[0].insertAdjacentElement('afterbegin', left);
+    parentElement[0].insertAdjacentElement('afterbegin', right);
     document.getElementById('left-arrow').innerHTML = '<';
     document.getElementById('right-arrow').innerHTML = '>';
     $(".bcls-playlist-item").wrapAll("<div class='list-container'></div>");
