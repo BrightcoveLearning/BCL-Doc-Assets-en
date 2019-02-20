@@ -7,7 +7,7 @@
 <p>A significant piece of the Brightcove Player 5 was the compatibility plugin, triggered by the player configuration value:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">"compatibility": true</code></pre>
+<code class="language-javascript notranslate">"compatibility": true</code></pre>
 
 <p>This configuration is on by default for 5.x players. Its effect is to include a plugin that will “shim” the Video.js 4 API, which allowed more customer plugins and integrations to work seamlessly in the automatic update to Brightcove Player 5.</p>
 
@@ -17,27 +17,70 @@
 <section class="bcls-section">
 <h2 id="player-tech">player.tech</h2>
 
-<p>In version 6 of Brightcove Player, <code>player.tech</code> is a function that returns the current playback technology, not a property of the player as in version 5. The shim mapped some properties from the tech object onto the tech function so code expecting <code>player.tech</code> to be the tech object wouldn’t throw errors.</p>
+<p>In version 6 of Brightcove Player, <code class="notranslate">player.tech</code> is a function that returns the current playback technology, not a property of the player as in version 5. The shim mapped some properties from the tech object onto the tech function so code expecting <code class="notranslate">player.tech</code> to be the tech object wouldn’t throw errors.</p>
 </section>
 
 <section class="bcls-section">
 <h2 id="Player_sizing">Player sizing</h2>
 
-<p>In Video.js 4, the player was sized via JavaScript. Video.js 5 introduced a new CSS based sizing scheme that caused some issues with player dimensions. The shim rolled these changes back, such that they behaved more like they did in version 4. You will now have to use CSS based sizing.</p>
+<p>In Video.js 4, the player was sized via JavaScript. Video.js 5 introduced a new CSS based sizing scheme that caused some issues with player dimensions. The shim rolled these changes back, such that they behaved more like they did in version 4.</p>
+
+<p>In practice, when using Brightcove Player v6 the <code class="notranslate">height</code> and <code class="notranslate">width</code> on the video tag are measured in pixels <strong>only</strong>. In fact, you do not enter any units at all for the <code class="notranslate">height</code> and <code class="notranslate">width</code> attributes:</p>
+
+<pre class="line-numbers">
+<code class="language-html notranslate">width="480"</code></pre>
+
+<p>You could set the width and height to <strong>100%</strong> in version 5, this no longer works in version 6. You can accomplish this using CSS in two different ways:</p>
+
+<ul>
+	<li>Using a <code class="notranslate">style</code> attribute in the <code class="notranslate">video</code> tag.
+
+	<pre class="line-numbers">
+<code class="language-html notranslate">&lt;video-js data-video-id="5622718636001"
+  data-account="1507807800001"
+  data-player="default"
+  data-embed="default"
+  data-application-id
+  class="video-js"
+  controls
+  <span class="bcls-highlight">style="width: 100%;height: 100%"</span>&gt;&lt;/video-js&gt;
+&lt;script src="https://players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+	</li>
+	<li>Using a <code class="notranslate">style</code> tag.
+	<pre class="line-numbers">
+  <code class="language-html" notranslate="">...
+  <span class="bcls-highlight">&lt;style&gt;
+      .video-js {
+        height: 100%;
+        width: 100%;
+      }
+  &lt;/style&gt;</span>
+  ...
+  &lt;video-js data-account="1752604059001"
+    data-player="H1xW7NWcz"
+    data-embed="default"
+    data-application-id
+    class="video-js"
+    controls&gt;&lt;/video-js&gt;
+  &lt;script src="https://players.brightcove.net/1752604059001/H1xW7NWcz_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+	</li>
+</ul>
+
+<aside class="bcls-aside bcls-aside--tip">If you are using percentages alone, and the player is not in a container that has a height set, it is possible you are not seeing the player because the height is zero. Be sure the parent container of the player has a height set.</aside>
 </section>
 
 <section class="bcls-section">
 <h2 id="Component_constructors">Component constructors</h2>
 
-<p>In Video.js 4, and version 5 via the shim, component constructors (such as <code>Player</code> and <code>ControlBar</code>) were available as properties of the <code>videojs</code> function:</p>
+<p>In Video.js 4, and version 5 via the shim, component constructors (such as <code class="notranslate">Player</code> and <code class="notranslate">ControlBar</code>) were available as properties of the <code class="notranslate">videojs</code> function:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript"> videojs.${ComponentName}</code></pre>
+<code class="language-javascript notranslate"> videojs.${ComponentName}</code></pre>
 
-<p>This is no longer the case. The <code>videojs.getComponent</code> function should be used instead:</p>
+<p>This is no longer the case. The <code class="notranslate">videojs.getComponent</code> function should be used instead:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">var ControlBar = videojs.getComponent('ControlBar');</code></pre>
+<code class="language-javascript notranslate">var ControlBar = videojs.getComponent('ControlBar');</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -98,26 +141,26 @@
 <section class="bcls-section">
 <h2 id="Creating_a_custom_plugin">Creating a custom plugin</h2>
 
-<p>In version 5 of Brightcove Player when you created a custom plugin the first line of the plugin used the <code>videojs.plugin()</code> method. For example:</p>
+<p>In version 5 of Brightcove Player when you created a custom plugin the first line of the plugin used the <code class="notranslate">videojs.plugin()</code> method. For example:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">videojs.plugin('scrollIntoView', function() {
+<code class="language-javascript notranslate">videojs.plugin('scrollIntoView', function() {
   var myPlayer = this,
     isAdPlaying = false;
   ...</code></pre>
 
-<p>You should now use the <code>videojs.registerPlugin()</code> method instead. For example:</p>
+<p>You should now use the <code class="notranslate">videojs.registerPlugin()</code> method instead. For example:</p>
 
 <pre class="line-numbers">
-<code class="language-javascript">videojs.registerPlugin('scrollIntoView', function() {
+<code class="language-javascript notranslate">videojs.registerPlugin('scrollIntoView', function() {
   var myPlayer = this,
     isAdPlaying = false;</code></pre>
 
-<p>Although <code>videojs.plugin()</code> is deprecated in version 6, if used it will not error but you will see a warning in the console. You cannot use <code>videojs.registerPlugin()</code> with version 5 players.</p>
+<p>Although <code class="notranslate">videojs.plugin()</code> is deprecated in version 6, if used it will not error but you will see a warning in the console. You cannot use <code class="notranslate">videojs.registerPlugin()</code> with version 5 players.</p>
 
 <aside class="bcls-aside bcls-aside--tip">If you find you need to use a plugin with both versions of the player, you can use this technique to provide Video.js 5/6 cross-compatibility:
 <pre class="line-numbers">
-<code class="language-javascript">var registerPlugin =   videojs.registerPlugin || videojs.plugin;
+<code class="language-javascript notranslate">var registerPlugin =   videojs.registerPlugin || videojs.plugin;
 registerPlugin('pluginName', function(){
   ...
 });</code></pre>
@@ -138,32 +181,31 @@ registerPlugin('pluginName', function(){
 <p>If these criteria are met, you will have to use a <strong>crossdomain.xml</strong> file at the root domain from where the media is being served. For example, if you are serving content from</p>
 
 <pre class="line-numbers">
-<code class="language-html">https://www.domain.com/media/video.m3u8</code></pre>
+<code class="language-html notranslate">https://www.domain.com/media/video.m3u8</code></pre>
 
 <p>then a <strong>crossdomain.xml</strong> file must exist on</p>
 
 <pre class="line-numbers">
-<code class="language-html">https://www.domain.com/crossdomain.xml</code></pre>
+<code class="language-html notranslate">https://www.domain.com/crossdomain.xml</code></pre>
 
-<p>Since the player swf is hosted on <code>players.brightcove.net</code>, it is recommended to use <code>*.brightcove.net</code>. An example <strong>crossdomain.xml</strong> appears as follows:</p>
-
+<p>Since the player swf is hosted on <code class="notranslate">players.brightcove.net</code>, it is recommended to use <code class="notranslate">*.brightcove.net</code>. An example <strong>crossdomain.xml</strong> appears as follows:</p>
 
 <pre class="line-numbers">
-<code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+<code class="language-xml notranslate">&lt;?xml version="1.0"?&gt;
 &lt;cross-domain-policy&gt;
-&lt;allow-access-from domain=&quot;*.brightcove.net&quot; /&gt;
+&lt;allow-access-from domain="*.brightcove.net" /&gt;
 &lt;/cross-domain-policy&gt;</code></pre>
 
 <p>You will need to supply the proper domain(s). For more details, see <a href="https://code.tutsplus.com/tutorials/quick-tip-a-guide-to-cross-domain-policy-files--active-3832">Quick Tip: A Guide to Cross Domain Policy Files</a>.</p>
 
 <h3>Working with HTTPS</h3>
-<p>
-  When you are loading an HTTPS asset from an HTTP page or vice versa, you need to include the <code>secure</code> attribute with a value of <code>false</code> as follows:
-</p>
+
+<p>When you are loading an HTTPS asset from an HTTP page or vice versa, you need to include the <code class="notranslate">secure</code> attribute with a value of <code class="notranslate">false</code> as follows:</p>
+
 <pre class="line-numbers">
-<code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+<code class="language-xml notranslate">&lt;?xml version="1.0"?&gt;
 &lt;cross-domain-policy&gt;
-&lt;allow-access-from domain=&quot;*.brightcove.net&quot; secure=&quot;false&quot;/&gt;
+&lt;allow-access-from domain="*.brightcove.net" secure="false"/&gt;
 &lt;/cross-domain-policy&gt;</code></pre>
 </section>
 </article>
