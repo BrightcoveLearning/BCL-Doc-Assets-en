@@ -16,7 +16,8 @@ var BCLS = (function (window, document) {
     defaultAccounts = ['1485884786001'],
     profilesArray = ['smart-player-transition', 'videocloud-default-v1', 'high-resolution', 'screencast-1280', 'single-bitrate-high', 'single-bitrate-standard'],
     // elements
-    account_ids = document.getElementById('account_ids'),
+    account_id_input = document.getElementById('account_id_input'),
+    account_ids_input = document.getElementById('account_ids_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
     profileSelect = document.getElementById('profileSelect'),
