@@ -301,6 +301,8 @@ var BCLS = (function(window, document) {
       } else {
         str += hours.toString() + ':';
       }
+    } else {
+      str += '00:'
     }
 
     if (minutes > 0) {
@@ -309,12 +311,16 @@ var BCLS = (function(window, document) {
       } else {
         str += minutes.toString() + ':';
       }
+    } else {
+      str += '00:'
     }
 
     if (seconds < 10) {
       seconds = '0' + seconds.toString();
     } else {
       str += seconds.toString();
+    } else {
+      str += '00'
     }
     return str;
   }
