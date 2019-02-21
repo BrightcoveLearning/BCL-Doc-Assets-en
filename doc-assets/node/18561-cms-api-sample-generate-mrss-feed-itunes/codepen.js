@@ -319,9 +319,8 @@ var BCLS = (function(window, document) {
       seconds = '0' + seconds.toString();
     } else {
       str += seconds.toString();
-    } else {
-      str += '00'
     }
+    
     return str;
   }
 
