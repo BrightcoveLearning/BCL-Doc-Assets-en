@@ -1,0 +1,178 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+
+<p>The Native SDK for tvOS supports Digital rights management (DRM) protection using HLS with FairPlay Streaming. When your account is DRM-enabled and configured for Dynamic Delivery, your videos will automatically be packaged for DRM when you ingest them.</p>
+<p>
+  Because support for FairPlay-protected videos is integrated into the core framework of the Brightcove Native SDK, you won't need to load an application certificate. For details, see the <a href="/node/18213">Content Security (DRM) with the Native Player SDKs</a> document.
+</p>
+<aside class="bcls-aside bcls-aside--information">This example uses FairPlay-protected content with Dynamic Delivery. If you are using legacy ingestion, see the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/FairPlay/BasicFairPlayPlayer/swift">Basic FairPlay</a> sample.</aside>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Code_sample">Code sample</h2>
+
+<p>To add FairPlay content protection to your Apple TV app, follow these steps:</p>
+<ol class="bcls-tasklist">
+    <li>Start with the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/AppleTV/swift">Basic Apple TV</a> sample app.</li>
+    <li>
+      Add FairPlay license code to your app. This can be found in the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/FairPlay/BasicFairPlayPlayer/swift">Basic FairPlay</a> sample.
+    </li>
+</ol>
+
+<p>Your code for the <strong>ViewController.swift</strong> file should look similar to this:</p>
+
+<pre class="line-numbers"><code class="language-swift">//
+//  ViewController.swift
+//  Fairplay-Video-Playback
+//
+//  Copyright &copy; 2019 Brightcove. All rights reserved.
+//
+
+import UIKit
+import BrightcovePlayerSDK
+
+// This example is for content using Dynamic Delivery. Because of this, you do NOT need to specify your FairPlay Application ID or the FairPlay Publisher ID.
+fileprivate struct playbackConfig {
+    static let policyKey = &quot;<span class="bcls-input">your policy key</span>&quot;
+    static let accountID = &quot;<span class="bcls-input">your account ID</span>&quot;
+    static let videoID = &quot;<span class="bcls-input">your video ID</span>&quot;
+}
+
+class ViewController: UIViewController {
+    @IBOutlet weak var videoContainerView: UIView!
+
+    var playbackController: BCOVPlaybackController = BCOVPlayerSDKManager.shared().createPlaybackController()
+    var fairPlayAuthProxy: BCOVFPSBrightcoveAuthProxy?
+
+    lazy var playerView: BCOVTVPlayerView? = {
+        // Set ourself as the presenting view controller
+        // so that tab bar panels can present other view controllers
+        let options = BCOVTVPlayerViewOptions()
+        options.presentingViewController = self
+
+        // Create and add to the video container view
+        guard let _playerView = BCOVTVPlayerView(options: options) else {
+            return nil
+        }
+
+        // Link the playback controller to the Player View
+        _playerView.playbackController = playbackController
+
+        videoContainerView.addSubview(_playerView)
+
+        _playerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            _playerView.topAnchor.constraint(equalTo: videoContainerView.topAnchor),
+            _playerView.rightAnchor.constraint(equalTo: videoContainerView.rightAnchor),
+            _playerView.leftAnchor.constraint(equalTo: videoContainerView.leftAnchor),
+            _playerView.bottomAnchor.constraint(equalTo: videoContainerView.bottomAnchor)
+            ])
+
+        return _playerView
+    }()
+
+    lazy var playbackService: BCOVPlaybackService = {
+        return BCOVPlaybackService(accountId: playbackConfig.accountID, policyKey: playbackConfig.policyKey)
+    }()
+
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+
+        // With Dynamic Delivery, you don't need to load
+        // an application certificate. The FairPlay session will load an
+        // application certificate for you if needed.
+        // You can just load and play your FairPlay videos.
+
+        // With Dynamic Delivery, you can pass nil for the publisherId and applicationId
+        self.fairPlayAuthProxy = BCOVFPSBrightcoveAuthProxy(publisherId: nil,
+                                                            applicationId: nil)
+
+        let sdkManager = BCOVPlayerSDKManager.sharedManager()
+
+        // Create chain of session providers
+        let psp = sdkManager?.createBasicSessionProvider(with:nil)
+        let fps = sdkManager?.createFairPlaySessionProvider(withApplicationCertificate:nil,
+                                                            authorizationProxy:self.fairPlayAuthProxy!,
+                                                            upstreamSessionProvider:psp)
+
+        createSampleTabBarItemView()
+
+        // Create the playback controller
+        playbackController = (sdkManager?.createPlaybackController(with:fps, viewStrategy:nil))!
+        // Configure the playback controller
+        playbackController.isAutoAdvance = false
+        playbackController.isAutoPlay = true
+        playbackController.delegate = self
+
+        // Link the playback controller to the Player View
+        playerView?.playbackController = playbackController
+
+        requestContentFromPlaybackService()
+    }
+
+    private func createSampleTabBarItemView() {
+
+        guard let playerView = playerView, var topTabBarItemViews = playerView.settingsView.topTabBarItemViews else {
+            return
+        }
+
+        let sampleTabBarItemView = SampleTabBarItemView(size: CGSize.init(width: 620, height: 200), playerView: playerView)
+
+        // Insert our new tab bar item view at the end of the top tab bar
+        topTabBarItemViews.append(sampleTabBarItemView)
+        playerView.settingsView.topTabBarItemViews = topTabBarItemViews
+    }
+
+    private func requestContentFromPlaybackService() {
+        playbackService.findVideo(withVideoID: playbackConfig.videoID, parameters: nil) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+
+            if let _video = video {
+                //  since &quot;isAutoPlay&quot; is true, setVideos will begin playing the content
+                self?.playbackController.setVideos([_video] as NSArray)
+            } else {
+                print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
+            }
+
+        }
+    }
+}
+
+// MARK: - UIFocusEnvironment overrides
+extension ViewController {
+
+    // Focus Environment override for tvOS 9
+    override var preferredFocusedView: UIView? {
+        return playerView
+    }
+
+    // Focus Environment override for tvOS 10+
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        return (playerView != nil ? [ playerView! ] : [])
+    }
+
+}
+
+// MARK: - BCOVPlaybackControllerDelegate
+extension ViewController: BCOVPlaybackControllerDelegate {
+
+    func playbackController(_ controller: BCOVPlaybackController!, didAdvanceTo session: BCOVPlaybackSession!) {
+        NSLog(&quot;ViewController Debug - Advanced to new session.&quot;)
+    }
+
+    func playbackController(_ controller: BCOVPlaybackController!, playbackSession session: BCOVPlaybackSession!, didReceive lifecycleEvent: BCOVPlaybackSessionLifecycleEvent!) {
+        NSLog(&quot;Event: %@&quot;, lifecycleEvent.eventType)
+    }
+
+}</code></pre>
+
+
+</section>
+</article>
