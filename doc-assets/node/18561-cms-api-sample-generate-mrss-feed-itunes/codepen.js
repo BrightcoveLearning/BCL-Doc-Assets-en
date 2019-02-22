@@ -295,9 +295,18 @@ var BCLS = (function(window, document) {
       seconds = Math.ceil(divisor_for_seconds),
       str = '';
 
+    if (seconds === 60) {
+      minutes++;
+      seconds = 0;
+    }
+    if (minutes === 60) {
+      hours++;
+      minutes = 0;
+    }
+
     if (hours > 0) {
       if (hours < 10) {
-        hours = '0' + hours.toString();
+        hours = '0' + hours.toString() + ':';
       } else {
         str += hours.toString() + ':';
       }
@@ -307,7 +316,7 @@ var BCLS = (function(window, document) {
 
     if (minutes > 0) {
       if (minutes < 10) {
-        minutes = '0' + minutes.toString();
+        minutes = '0' + minutes.toString() + ':';
       } else {
         str += minutes.toString() + ':';
       }
