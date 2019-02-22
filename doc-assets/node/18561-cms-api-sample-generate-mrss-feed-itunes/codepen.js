@@ -287,7 +287,7 @@ var BCLS = (function(window, document) {
    * @returns {String} date string in HH:MM:SS format
    */
   function millisecondsToTime(msecs) {
-    var milliseconds = (isDefined(msecs)) ? msecs : 0;
+    var milliseconds = (isDefined(msecs)) ? msecs : 0,
       secs = msecs / 1000,
       hours = Math.floor(secs / (60 * 60)),
       divisor_for_minutes = secs % (60 * 60),
