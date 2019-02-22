@@ -8,13 +8,14 @@ var BCLS = (function (window, document) {
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
-    ipURLsuffix = '/configuration',
+    ipAccountSuffix = '/configuration',
+    ipProfilesSuffix = '/profiles'
     totalCalls = 0,
     callNumber = 0,
     responseArray = [],
     accountsArray = [],
-    defaultAccounts = ['1485884786001'],
-    profilesArray = ['smart-player-transition', 'videocloud-default-v1', 'high-resolution', 'screencast-1280', 'single-bitrate-high', 'single-bitrate-standard'],
+    defaultAccounts = ['1485884786001', '1937897674001'],
+    profilesArray = [],
     // elements
     account_id_input = document.getElementById('account_id_input'),
     account_ids_input = document.getElementById('account_ids_input'),
@@ -56,6 +57,17 @@ var BCLS = (function (window, document) {
     return e.options[e.selectedIndex].value;
   }
 
+  /**
+   * determines if checkbox is checked
+   * @param  {htmlElement}  e the checkbox to check
+   * @return {Boolean}  true if box is checked
+   */
+  function isChecked(e) {
+    if (e.checked) {
+      return true;
+    }
+    return false;
+  }
 
   /**
    * disables a button so user can't submit new request until current one finishes
