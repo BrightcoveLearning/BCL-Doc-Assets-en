@@ -301,6 +301,8 @@ var BCLS = (function(window, document) {
       } else {
         str += hours.toString() + ':';
       }
+    } else {
+      str += '00:'
     }
 
     if (minutes > 0) {
@@ -309,6 +311,8 @@ var BCLS = (function(window, document) {
       } else {
         str += minutes.toString() + ':';
       }
+    } else {
+      str += '00:'
     }
 
     if (seconds < 10) {
@@ -316,6 +320,7 @@ var BCLS = (function(window, document) {
     } else {
       str += seconds.toString();
     }
+
     return str;
   }
 
@@ -521,6 +526,7 @@ var BCLS = (function(window, document) {
         mrssStr += sEnclosure + 'length="' + video.source.size + '" type="video/mp4" ' + 'url="' + video.source.src + '"' + eEnclosure;
         mrssStr += sGuid + guidInputs[i].value + eGuid;
         mrssStr += sPubDate + pubDate + ePubDate;
+        console.log('duration', millisecondsToTime(video.duration) );
         mrssStr += sDuration + millisecondsToTime(video.duration) + eDuration;
         mrssStr += sExplicit + explicit + eExplicit;
         mrssStr += sisClosedCaptioned + closed_captioned + eisClosedCaptioned;
