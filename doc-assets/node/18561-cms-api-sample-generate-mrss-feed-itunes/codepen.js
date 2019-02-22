@@ -287,7 +287,8 @@ var BCLS = (function(window, document) {
    * @returns {String} date string in HH:MM:SS format
    */
   function millisecondsToTime(msecs) {
-    var secs = msecs / 1000,
+    var milliseconds = (isDefined(msecs)) ? msecs : 0;
+      secs = msecs / 1000,
       hours = Math.floor(secs / (60 * 60)),
       divisor_for_minutes = secs % (60 * 60),
       minutes = Math.floor(divisor_for_minutes / 60),
@@ -316,7 +317,7 @@ var BCLS = (function(window, document) {
 
     if (minutes > 0) {
       if (minutes < 10) {
-        minutes = '0' + minutes.toString() + ':';
+        str += '0' + minutes.toString() + ':';
       } else {
         str += minutes.toString() + ':';
       }
@@ -325,7 +326,7 @@ var BCLS = (function(window, document) {
     }
 
     if (seconds < 10) {
-      seconds = '0' + seconds.toString();
+      str += '0' + seconds.toString();
     } else {
       str += seconds.toString();
     }
