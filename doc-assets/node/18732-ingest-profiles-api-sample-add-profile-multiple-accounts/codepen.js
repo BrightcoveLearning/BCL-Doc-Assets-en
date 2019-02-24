@@ -1,26 +1,27 @@
 var BCLS = (function (window, document) {
   var // account stuff
-    accountId,
+    account_id,
     bcToken,
-    clientId,
-    clientSecret,
-    newProfile,
+    client_id,
+    client_secret,
+    selectedProfile,
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
     ipAccountSuffix = '/configuration',
-    ipProfilesSuffix = '/profiles'
+    ipProfileSuffix = '/profiles'
     totalCalls = 0,
     callNumber = 0,
     responseArray = [],
     accountsArray = [],
     defaultAccounts = ['1485884786001', '1937897674001'],
     profilesArray = [],
-    // elements
+    // element references
     account_id_input = document.getElementById('account_id_input'),
     account_ids_input = document.getElementById('account_ids_input'),
     client_id_input = document.getElementById('client_id_input'),
     client_secret_input = document.getElementById('client_secret_input'),
+    getProfiles = document.getElementById('getProfiles'),
     profileSelect = document.getElementById('profileSelect'),
     setDefaults = document.getElementById('setDefaults'),
     logger = document.getElementById('logger'),
