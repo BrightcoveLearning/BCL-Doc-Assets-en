@@ -100,6 +100,8 @@ var BCLS = (function (window, document) {
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = clientId;
       options.client_secret = clientSecret;
+      options.url = ipURL + endPoint + ipProfileSuffix;
+      options.requestType = type;
     }
     switch (id) {
       case 'getProfiles':
@@ -109,9 +111,8 @@ var BCLS = (function (window, document) {
           now;
         logger.textContent = 'Processing account: ' + accountsArray[callNumber];
         endPoint = accountsArray[callNumber];
-        options.url = ipURL + endPoint + ipURLsuffix;
+        options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
-        reqBody.account_id = parseInt(accountsArray[callNumber]);
         reqBody.default_profile_id = newProfile;
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
@@ -199,7 +200,7 @@ var BCLS = (function (window, document) {
       profileSelect.add(opt, null);
     }
     // event handlers
-    setDefaults.addEventListener('click', function () {
+    getProfiles.addEventListener('click', function () {
       var accountIds;
       // get the inputs
       clientId = client_id.value;
