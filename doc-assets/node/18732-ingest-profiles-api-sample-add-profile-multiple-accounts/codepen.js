@@ -101,6 +101,8 @@ var BCLS = (function (window, document) {
       options.client_secret = clientSecret;
     }
     switch (id) {
+      case 'getProfiles':
+       endpoint = accountsArray[callNumber];
       case 'setDefaults':
         var reqBody = {},
           now;
@@ -117,7 +119,7 @@ var BCLS = (function (window, document) {
           parsedData = JSON.parse(response);
           responseArray.push(parsedData);
           if (Array.isArray(parsedData)) {
-            // we have an error, most likely a conflict
+            // we have an error, most likely a conflict because default has already been set - try update instead
             setoptions('setDefaults', 'PUT');
           } else {
             callNumber++;
