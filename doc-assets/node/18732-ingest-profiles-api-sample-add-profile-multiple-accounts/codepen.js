@@ -1,6 +1,7 @@
 var BCLS = (function (window, document) {
   var // account stuff
     account_id,
+    account_ids,
     bcToken,
     client_id,
     client_secret,
@@ -98,8 +99,8 @@ var BCLS = (function (window, document) {
     options.account_id = accountsArray[callNumber];
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
-      options.client_id = clientId;
-      options.client_secret = clientSecret;
+      options.client_id = client_id;
+      options.client_secret = client_secret;
       options.url = ipURL + endPoint + ipProfileSuffix;
       options.requestType = type;
     }
@@ -203,18 +204,19 @@ var BCLS = (function (window, document) {
     getProfiles.addEventListener('click', function () {
       var accountIds;
       // get the inputs
-      clientId = client_id.value;
-      clientSecret = client_secret.value;
+      client_id = client_id_input.value;
+      client_secret = client_secret_input.value;
       newProfile = getSelectedValue(profileSelect);
       // only use entered account id if client id and secret are entered also
-      if (isDefined(clientId) && isDefined(clientSecret)) {
-        if (isDefined(account_ids.value)) {
-          accountIds = removeSpaces(account_ids.value);
+      if (isDefined(client_id) && isDefined(client_secret)) {
+        if (isDefined(account_id_input.value) && isDefined(account_ids_input.value)) {
+          account_id = account_id_input.value;
+          accountIds = removeSpaces(account_ids_input.value);
           accountsArray = accountIds.split(',');
         } else {
           window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
-          clientId = '';
-          clientSecret = '';
+          client_id = '';
+          client_secret = '';
           accountsArray = defaultAccounts;
         }
       } else {
