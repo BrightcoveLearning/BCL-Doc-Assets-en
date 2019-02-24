@@ -24,6 +24,7 @@ var BCLS = (function (window, document) {
     client_secret_input = document.getElementById('client_secret_input'),
     getProfiles = document.getElementById('getProfiles'),
     profileSelect = document.getElementById('profileSelect'),
+    addProfile = document.getElementById('addProfile'),
     setDefaults = document.getElementById('setDefaults'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
@@ -223,12 +224,9 @@ var BCLS = (function (window, document) {
         accountsArray = defaultAccounts;
       }
       totalCalls = accountsArray.length;
-      setoptions('setDefaults', 'POST');
+      setoptions('getProfiles', 'GET');
     });
 
-    apiResponse.addEventListener('click', function () {
-      apiResponse.select();
-    });
   }
   // kick things off
   init();
