@@ -214,6 +214,7 @@ var BCLS = (function (window, document) {
     switch (id) {
       case 'getProfiles':
         var profile;
+        console.log('account', account_id);
         endpoint = account_id;
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
@@ -374,8 +375,6 @@ var BCLS = (function (window, document) {
         account_id = defaultAccount;
         accountsArray = defaultAccounts;
       }
-      console.log('account', account_id);
-      console.log('account array', accountsArray);
       totalCalls = accountsArray.length;
       setOptions('getProfiles', 'GET');
     });
