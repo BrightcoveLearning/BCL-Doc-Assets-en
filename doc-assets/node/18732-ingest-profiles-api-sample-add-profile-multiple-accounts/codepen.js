@@ -16,6 +16,7 @@ var BCLS = (function (window, document) {
     responseArray = [],
     accountsArray = [],
     defaultAccounts = ['1485884786001', '1937897674001'],
+    defaultAccount - '1752604059001'.
     profilesArray = [],
     // element references
     account_id_input = document.getElementById('account_id_input'),
@@ -351,6 +352,7 @@ var BCLS = (function (window, document) {
           accountsArray = accountIds.split(',');
         } else {
           window.alert('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used');
+          account_id = defaultAccount;
           client_id = '';
           client_secret = '';
           accountsArray = defaultAccounts;
