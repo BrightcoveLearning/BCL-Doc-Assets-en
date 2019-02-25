@@ -88,6 +88,15 @@ var BCLS = (function (window, document) {
   }
 
   /**
+   * get a copy of (rather than reference to) an object
+   * @param  {object} obj - the object you want a copy
+   * @return {object}     the copy
+   */
+  function copyObj(obj) {
+      return JSON.parse(JSON.stringify(obj));
+  }
+  
+  /**
    * find index of an object in array of objects
    * based on some property value
    *
@@ -217,6 +226,8 @@ var BCLS = (function (window, document) {
         });
         break;
       case 'addProfile':
+        var requestBody = selectedProfile;
+        delete requestBody.id;
         endpoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
@@ -363,6 +374,8 @@ var BCLS = (function (window, document) {
     profileSelect.addEventListener('change', function() {
       var selected = getSelectedValue(profileSelect),
         idx = findObjectInArray(profilesArray, 'id', selected);
+      selectedProfile = profilesArray[idx];
+      enableElement(addProfile);
     });
 
   }
