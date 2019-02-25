@@ -43,6 +43,19 @@ var BCLS = (function (window, document) {
   }
 
   /**
+   * determines whether an object has a certain property
+   * @param {object} obj the object
+   * @param {string} prop the property name
+   * @returns {boolean}
+   */
+  function hasProperty(obj, prop) {
+    if (prop in obj) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * tests for all the ways a variable might be undefined or not have a value
    * @param {String|Number} x the variable to test
    * @return {Boolean} true if variable is defined and has a value
@@ -167,8 +180,16 @@ var BCLS = (function (window, document) {
             // amd remove fields that can't be used when adding the profile to another account
             iMax = profilesArray.length;
             for (i = 0; i < iMax; i++) {
-
+              profile = profilesArray[i];
+              if (!hasProperty(profile, 'display_name')) {
+                profile.display_name = profile.name;
+              }
+              delete profile.date_created;
+              delete profile.date_last_modified;
+              delete profile.version;
             }
+            // populate the profile selector
+            populateSelector(profileSelect, profilesArray, 'name', 'display_name');
           }
         });
       case 'setDefaults':
