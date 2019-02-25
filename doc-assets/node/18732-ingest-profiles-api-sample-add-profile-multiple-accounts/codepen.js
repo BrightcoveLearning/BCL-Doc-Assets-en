@@ -191,6 +191,7 @@ var BCLS = (function (window, document) {
   function setOptions(id, type) {
     var i,
       iMax,
+      endPoint.
       options = {};
     logger.textContent = 'Getting profiles for source account'
     options.proxyURL = proxyURL;
