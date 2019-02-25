@@ -375,6 +375,8 @@ var BCLS = (function (window, document) {
         account_id = defaultAccount;
         accountsArray = defaultAccounts;
       }
+      console.log('account', account_id);
+      console.log('account array', accountsArray);
       totalCalls = accountsArray.length;
       setOptions('getProfiles', 'GET');
     });
