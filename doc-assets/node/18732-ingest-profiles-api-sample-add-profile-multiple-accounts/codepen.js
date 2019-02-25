@@ -13,10 +13,9 @@ var BCLS = (function (window, document) {
     ipProfileSuffix = '/profiles'
     totalCalls = 0,
     callNumber = 0,
-    profilesArray = [],
     accountsArray = [],
     defaultAccounts = ['1485884786001', '1937897674001'],
-    defaultAccount = '1752604059001'.
+    defaultAccount = '1752604059001',
     profilesArray = [],
     // element references
     account_id_input = document.getElementById('account_id_input'),
