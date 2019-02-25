@@ -88,6 +88,28 @@ var BCLS = (function (window, document) {
   }
 
   /**
+   * find index of an object in array of objects
+   * based on some property value
+   *
+   * @param {array} targetArray array to search
+   * @param {string} objProperty object property to search
+   * @param {string} value of the property to search for
+   * @return {integer} index of first instance if found, otherwise returns -1
+  */
+  function findObjectInArray(targetArray, objProperty, value) {
+      var i, totalItems = targetArray.length, objFound = false;
+      for (i = 0; i < totalItems; i++) {
+          if (targetArray[i][objProperty] === value) {
+              objFound = true;
+              return i;
+          }
+      }
+      if (objFound === false) {
+          return -1;
+      }
+  }
+
+  /**
    * disables an element so user can't click on it
   * @param {htmlElement} el the element
   */
@@ -160,7 +182,6 @@ var BCLS = (function (window, document) {
     var i,
       iMax,
       options = {};
-    options.account_id = accountsArray[callNumber];
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = client_id;
@@ -169,8 +190,35 @@ var BCLS = (function (window, document) {
     switch (id) {
       case 'getProfiles':
         var profile;
+        endpoint = account_id;
+        options.url = ipURL + endPoint + ipProfileSuffix;
+        options.requestType = type;
+        makeRequest(options, function(response) {
+          if (isJson(response)) {
+            profilesArray = JSON.parse(response);
+            // filter out non-custom profiles
+            filterProfiles();
+            // check for display_name and if none, use name
+            // amd remove fields that can't be used when adding the profile to another account
+            iMax = profilesArray.length;
+            for (i = 0; i < iMax; i++) {
+              profile = profilesArray[i];
+              if (!hasProperty(profile, 'display_name')) {
+                profile.display_name = profile.name;
+              }
+              delete profile.date_created;
+              delete profile.date_last_modified;
+              delete profile.version;
+            }
+            // populate the profile selector
+            populateSelector(profileSelect, profilesArray, 'id', 'display_name');
+          }
+          enableElement(profileSelect);
+        });
+        break;
+      case 'addProfile':
         endpoint = accountsArray[callNumber];
-        options.url = ipURL + endPoint + ipAccountSuffix;
+        options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
         makeRequest(options, function(response) {
           if (isJson(response)) {
@@ -193,6 +241,7 @@ var BCLS = (function (window, document) {
             populateSelector(profileSelect, profilesArray, 'name', 'display_name');
           }
         });
+        break;
       case 'setDefaults':
         var reqBody = {},
           now;
@@ -310,6 +359,10 @@ var BCLS = (function (window, document) {
       }
       totalCalls = accountsArray.length;
       setoptions('getProfiles', 'GET');
+    });
+    profileSelect.addEventListener('change', function() {
+      var selected = getSelectedValue(profileSelect),
+        idx = findObjectInArray(profilesArray, 'id', selected);
     });
 
   }
