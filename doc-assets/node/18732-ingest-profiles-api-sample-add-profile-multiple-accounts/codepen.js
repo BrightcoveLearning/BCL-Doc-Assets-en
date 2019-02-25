@@ -154,17 +154,23 @@ var BCLS = (function (window, document) {
     }
     switch (id) {
       case 'getProfiles':
-       endpoint = accountsArray[callNumber];
-       options.url = ipURL + endPoint + ipAccountSuffix;
-       options.requestType = type;
-       makeRequest(options, function(response) {
-         if (isJson(response)) {
-           profilesArray = JSON.parse(response);
-           // filter out non-custom profiles
-           filterProfiles();
-           // check for display_name and if none, use name
-         }
-       })
+        var profile;
+        endpoint = accountsArray[callNumber];
+        options.url = ipURL + endPoint + ipAccountSuffix;
+        options.requestType = type;
+        makeRequest(options, function(response) {
+          if (isJson(response)) {
+            profilesArray = JSON.parse(response);
+            // filter out non-custom profiles
+            filterProfiles();
+            // check for display_name and if none, use name
+            // amd remove fields that can't be used when adding the profile to another account
+            iMax = profilesArray.length;
+            for (i = 0; i < iMax; i++) {
+
+            }
+          }
+        });
       case 'setDefaults':
         var reqBody = {},
           now;
