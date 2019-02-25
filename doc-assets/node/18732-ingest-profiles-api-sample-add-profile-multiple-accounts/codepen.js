@@ -95,7 +95,7 @@ var BCLS = (function (window, document) {
   function copyObj(obj) {
       return JSON.parse(JSON.stringify(obj));
   }
-  
+
   /**
    * find index of an object in array of objects
    * based on some property value
@@ -187,10 +187,11 @@ var BCLS = (function (window, document) {
    * sets up the data for the API request
    * @param {String} id the id of the button that was clicked
    */
-  function setoptions(id, type) {
+  function setOptions(id, type) {
     var i,
       iMax,
       options = {};
+    logger.textContent = 'Getting profiles for source account'
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = client_id;
@@ -202,6 +203,7 @@ var BCLS = (function (window, document) {
         endpoint = account_id;
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
+        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           if (isJson(response)) {
             profilesArray = JSON.parse(response);
@@ -222,60 +224,59 @@ var BCLS = (function (window, document) {
             // populate the profile selector
             populateSelector(profileSelect, profilesArray, 'id', 'display_name');
           }
+          apiResponse.textContent = JSON.stringify(profilesArray, null, 2);
           enableElement(profileSelect);
         });
         break;
       case 'addProfile':
-        var requestBody = selectedProfile;
+        var requestBody = copyObj(selectedProfile),
+          responseObj;
+        logger.textContent = 'Adding profile to target account ' + accountsArray[callnumber];
         delete requestBody.id;
         endpoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
+        options.requestBody = JSON.stringify(requestBody);
+        apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           if (isJson(response)) {
-            profilesArray = JSON.parse(response);
-            // filter out non-custom profiles
-            filterProfiles();
-            // check for display_name and if none, use name
-            // amd remove fields that can't be used when adding the profile to another account
-            iMax = profilesArray.length;
-            for (i = 0; i < iMax; i++) {
-              profile = profilesArray[i];
-              if (!hasProperty(profile, 'display_name')) {
-                profile.display_name = profile.name;
+            responseObj = JSON.parse(response);
+            apiResponse = JSON.stringify(responseObj, null, 2);
+            if (isChecked(setDefaults)) {
+              setOptions('setDefault', 'POST');
+            } else {
+              callNumber++;
+              if (callNumber < totalCalls) {
+                setOptions('addProfile', 'POST');
+              } else {
+                logger.textContent = 'All finished!'
               }
-              delete profile.date_created;
-              delete profile.date_last_modified;
-              delete profile.version;
             }
-            // populate the profile selector
-            populateSelector(profileSelect, profilesArray, 'name', 'display_name');
           }
         });
         break;
-      case 'setDefaults':
+      case 'setDefault':
         var reqBody = {},
           now;
         logger.textContent = 'Processing account: ' + accountsArray[callNumber];
         endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
-        reqBody.default_profile_id = newProfile;
+        reqBody.default_profile_id = selectedProfile.id;
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
         makeRequest(options, function (response) {
-          var now = new Date().toISOString();
           parsedData = JSON.parse(response);
           responseArray.push(parsedData);
           if (Array.isArray(parsedData)) {
             // we have an error, most likely a conflict because default has already been set - try update instead
-            setoptions('setDefaults', 'PUT');
+            setOptions('setDefaults', 'PUT');
           } else {
             callNumber++;
             if (callNumber < totalCalls) {
-              setoptions('setDefaults', 'POST');
+              setOptions('setDefaults', 'POST');
             } else {
-              logger.textContent = 'Finished at ' + now;
+              logger.textContent = 'All finished!'
               apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
             }
           }
@@ -335,17 +336,6 @@ var BCLS = (function (window, document) {
   }
 
   function init() {
-    var i,
-      iMax,
-      opt;
-    // set up profiles selector
-    iMax = profilesArray.length;
-    for (i = 0; i < iMax; i++) {
-      opt = document.createElement('option');
-      opt.value = profilesArray[i];
-      opt.text = profilesArray[i];
-      profileSelect.add(opt, null);
-    }
     // event handlers
     getProfiles.addEventListener('click', function () {
       var accountIds;
@@ -369,7 +359,7 @@ var BCLS = (function (window, document) {
         accountsArray = defaultAccounts;
       }
       totalCalls = accountsArray.length;
-      setoptions('getProfiles', 'GET');
+      setOptions('getProfiles', 'GET');
     });
     profileSelect.addEventListener('change', function() {
       var selected = getSelectedValue(profileSelect),
@@ -377,6 +367,9 @@ var BCLS = (function (window, document) {
       selectedProfile = profilesArray[idx];
       enableElement(addProfile);
     });
+    addProfile.addEventListener('click', function() {
+      setOptions('addProfile', 'POST');
+    })
 
   }
   // kick things off
