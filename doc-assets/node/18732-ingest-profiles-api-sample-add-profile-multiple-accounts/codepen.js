@@ -180,7 +180,7 @@ var BCLS = (function (window, document) {
     function filterProfiles() {
       // below are the obsolete profiles - you just have to know their names
       var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'],
-        live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'].
+        live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
         i = profilesArray.length;
       while (i > 0) {
         i--;
