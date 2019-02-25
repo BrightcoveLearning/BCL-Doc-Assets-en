@@ -215,7 +215,7 @@ var BCLS = (function (window, document) {
       case 'getProfiles':
         var profile;
         console.log('account', account_id);
-        endpoint = account_id;
+        endPoint = account_id;
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
         apiRequest.textContent = options.url;
@@ -248,7 +248,7 @@ var BCLS = (function (window, document) {
           responseObj;
         logger.textContent = 'Adding profile to target account ' + accountsArray[callnumber];
         delete requestBody.id;
-        endpoint = accountsArray[callNumber];
+        endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
         options.requestBody = JSON.stringify(requestBody);
