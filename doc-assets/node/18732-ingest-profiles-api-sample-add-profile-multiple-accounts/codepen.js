@@ -102,12 +102,12 @@ var BCLS = (function (window, document) {
     if (isDefined(client_id) && isDefined(client_secret)) {
       options.client_id = client_id;
       options.client_secret = client_secret;
-      options.url = ipURL + endPoint + ipProfileSuffix;
-      options.requestType = type;
     }
     switch (id) {
       case 'getProfiles':
        endpoint = accountsArray[callNumber];
+       options.url = ipURL + endPoint + ipAccountSuffix;
+       options.requestType = type;
       case 'setDefaults':
         var reqBody = {},
           now;
