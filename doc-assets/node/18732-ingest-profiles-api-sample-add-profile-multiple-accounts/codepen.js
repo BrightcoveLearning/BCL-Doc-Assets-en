@@ -88,21 +88,22 @@ var BCLS = (function (window, document) {
   }
 
   /**
-   * disables a button so user can't submit new request until current one finishes
-   */
-  function disableButton(button) {
-    button.setAttribute('disabled', 'disabled');
-    button.setAttribute('style', 'opacity:.5,cursor:not-allowed;');
-  }
+   * disables an element so user can't click on it
+  * @param {htmlElement} el the element
+  */
+ function disableElement(el) {
+     el.setAttribute('disabled', 'disabled');
+     el.classList.add('disabled');
+ }
 
-  /**
-   * enables a button
-   * @param {htmlElement} button - the button to enable
-   */
-  function enableButton(button) {
-    button.removeAttribute('disabled');
-    button.setAttribute('style', 'opacity:1;cursor:pointer;');
-  }
+ /**
+  * re-enables an element to make it clickable
+  * @param {htmlElement} el the element
+  */
+ function enableElement(el) {
+     el.removeAttribute('disabled');
+     el.classList.remove('disabled');
+ }
 
   /**
    * populate a selector element from an array of objects
