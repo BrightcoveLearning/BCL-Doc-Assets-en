@@ -28,7 +28,9 @@ var BCLS = (function (window, document) {
     setDefaults = document.getElementById('setDefaults'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
-    apiResponse = document.getElementById('apiResponse');
+    apiResponse = document.getElementById('apiResponse'),
+    // for filtering ingest profiles list
+    live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'];
 
 
   /**
@@ -113,6 +115,23 @@ var BCLS = (function (window, document) {
     selector.appendChild(frag);
     return;
   }
+
+  /**
+   * remove or add obsolete profiles from the current profiles list
+   */
+    function toggleObsoleteProfiles() {
+      // below are the obsolete profiles - you just have to know their names
+      var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'],
+        i = profilesArray.length;
+      while (i > 0) {
+        i--;
+        if (arrayContains(deprecated_profiles, profilesArray[i].name)) {
+          profilesArray.splice(i, 1);
+        }
+      }
+      return;
+    }
+
 
   /**
    * sets up the data for the API request
