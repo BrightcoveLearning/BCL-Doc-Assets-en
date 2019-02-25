@@ -354,7 +354,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseDecoded = JSON.parse(response);
-            api_response.textContent = JSON.stringify(responseDecoded, null, '  ');
+            api_response.textContent = JSON.stringify(responseDecoded, null, 2);
             all_profiles = responseDecoded;
             resetAllCurrentProfiles();
             toggleObsoleteProfiles();
