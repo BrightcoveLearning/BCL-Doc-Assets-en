@@ -133,8 +133,6 @@ var BCLS = (function (window, document) {
         } else if (arrayContains(live_profiles, profilesArray[i].name)) {
           profilesArray.splice(i, 1);
         }
-
-
       }
       return;
     }
@@ -160,7 +158,12 @@ var BCLS = (function (window, document) {
        options.url = ipURL + endPoint + ipAccountSuffix;
        options.requestType = type;
        makeRequest(options, function(response) {
-
+         if (isJson(response)) {
+           profilesArray = JSON.parse(response);
+           // filter out non-custom profiles
+           filterProfiles();
+           // check for display_name and if none, use name
+         }
        })
       case 'setDefaults':
         var reqBody = {},
