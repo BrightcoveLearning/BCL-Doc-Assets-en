@@ -56,6 +56,19 @@ var BCLS = (function (window, document) {
     return false;
   }
 
+  /*
+   * tests to see if a string is json
+   * @param {String} str string to test
+   * @return {Boolean}
+   */
+  function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+  }
   /**
    * tests for all the ways a variable might be undefined or not have a value
    * @param {String|Number} x the variable to test
