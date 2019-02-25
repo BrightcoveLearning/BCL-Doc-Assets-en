@@ -117,19 +117,23 @@ var BCLS = (function (window, document) {
   }
 
   /**
-   * remove or add obsolete profiles from the current profiles list
+   * remove or add obsolete, standard and live profiles from the profiles list
    */
     function filterProfiles() {
       // below are the obsolete profiles - you just have to know their names
       var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'],
+        live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'].
         i = profilesArray.length;
       while (i > 0) {
         i--;
         if (arrayContains(deprecated_profiles, profilesArray[i].name)) {
           profilesArray.splice(i, 1);
         } else if (profilesArray[i].brightcove_standard === true) {
-          all_current_profiles.splice(i, 1);
+          profilesArray.splice(i, 1);
+        } else if (arrayContains(live_profiles, profilesArray[i].name)) {
+          profilesArray.splice(i, 1);
         }
+
 
       }
       return;
