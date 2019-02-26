@@ -282,6 +282,7 @@ var BCLS = (function(window, document) {
             responseObj = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseObj, null, 2);
             newProfileId = responseObj.id;
+            console.log('new profile id', newProfileId);
             if (isChecked(setDefaults)) {
               setOptions('getDefault', 'GET');
             } else {
