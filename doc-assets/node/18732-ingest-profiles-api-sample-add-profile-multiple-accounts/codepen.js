@@ -275,7 +275,7 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseObj = JSON.parse(response);
-            apiResponse = JSON.stringify(responseObj, null, 2);
+            apiResponse.textContent = JSON.stringify(responseObj, null, 2);
             if (isChecked(setDefaults)) {
               setOptions('setDefault', 'POST');
             } else {
@@ -314,7 +314,6 @@ var BCLS = (function(window, document) {
               apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
             }
           }
-
         });
         break;
     }
@@ -400,9 +399,7 @@ var BCLS = (function(window, document) {
     profileSelect.addEventListener('change', function() {
       var selected = getSelectedValue(profileSelect),
         idx = findObjectInArray(profilesArray, 'id', selected);
-        console.log('selected id', selected);
       selectedProfile = profilesArray[idx];
-      console.log('selected profile', selectedProfile);
       enableElement(addProfile);
     });
     addProfile.addEventListener('click', function() {
