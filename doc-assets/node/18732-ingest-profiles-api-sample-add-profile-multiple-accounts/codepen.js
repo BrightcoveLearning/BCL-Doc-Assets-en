@@ -305,11 +305,11 @@ var BCLS = (function(window, document) {
           responseArray.push(parsedData);
           if (Array.isArray(parsedData)) {
             // we have an error, most likely a conflict because default has already been set - try update instead
-            setOptions('setDefaults', 'PUT');
+            setOptions('setDefault', 'PUT');
           } else {
             callNumber++;
             if (callNumber < totalCalls) {
-              setOptions('setDefaults', 'POST');
+              setOptions('setDefault', 'POST');
             } else {
               logger.textContent = 'All finished!'
               apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
