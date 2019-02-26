@@ -267,6 +267,7 @@ var BCLS = (function(window, document) {
           responseObj;
         logger.textContent = 'Adding profile to target account ' + accountsArray[callNumber];
         delete requestBody.id;
+        requestBody.account_id = accountsArray[callNumber];
         endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
