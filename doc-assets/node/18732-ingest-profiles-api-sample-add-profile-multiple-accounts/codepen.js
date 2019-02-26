@@ -339,7 +339,7 @@ var BCLS = (function(window, document) {
           } else {
             callNumber++;
             if (callNumber < totalCalls) {
-              setOptions('setDefault', 'POST');
+              setOptions('addProfile', 'POST');
             } else {
               logger.textContent = 'All finished!'
             }
