@@ -233,7 +233,6 @@ var BCLS = (function(window, document) {
     switch (id) {
       case 'getProfiles':
         var profile;
-        console.log('account', account_id);
         endPoint = account_id;
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
