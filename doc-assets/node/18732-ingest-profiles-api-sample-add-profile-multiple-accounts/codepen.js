@@ -313,7 +313,9 @@ var BCLS = (function(window, document) {
         options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
         reqBody.default_profile_id = selectedProfile.id;
-        reqBody.id = configurationId;
+        if (type === 'PUT') {
+          reqBody.id = configurationId;
+        }
         reqBody.account_id = accountsArray[callNumber];
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
