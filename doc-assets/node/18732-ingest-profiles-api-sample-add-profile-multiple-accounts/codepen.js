@@ -29,6 +29,7 @@ var BCLS = (function(window, document) {
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
     apiResponse = document.getElementById('apiResponse'),
+    apiRequestType = document.getElementById('apiRequestType'),
     // for filtering ingest profiles list
     live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'];
 
@@ -238,6 +239,7 @@ var BCLS = (function(window, document) {
         options.url = ipURL + endPoint + ipProfileSuffix;
         options.requestType = type;
         apiRequest.textContent = options.url;
+        apiRequestType.textContent = options.type;
         makeRequest(options, function(response) {
           if (isJson(response)) {
             profilesArray = JSON.parse(response);
@@ -273,6 +275,7 @@ var BCLS = (function(window, document) {
         options.requestType = type;
         options.requestBody = JSON.stringify(requestBody);
         apiRequest.textContent = options.url;
+        apiRequestType.textContent = options.type;
         makeRequest(options, function(response) {
           if (isJson(response)) {
             responseObj = JSON.parse(response);
@@ -297,6 +300,7 @@ var BCLS = (function(window, document) {
         options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
         apiRequest.textContent = options.url;
+        apiRequestType.textContent = options.type;
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
@@ -319,6 +323,7 @@ var BCLS = (function(window, document) {
         reqBody.account_id = accountsArray[callNumber];
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
+        apiRequestType.textContent = options.type;
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           responseArray.push(parsedData);
