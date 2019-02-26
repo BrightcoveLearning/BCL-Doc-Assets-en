@@ -301,6 +301,7 @@ var BCLS = (function(window, document) {
           parsedData = JSON.parse(response);
           apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           configurationId = parsedData.id;
+          setOptions('setDefault', 'POST')
         });
         break;
       case 'setDefault':
