@@ -291,7 +291,8 @@ var BCLS = (function(window, document) {
         break;
       case 'setDefault':
         var reqBody = {},
-          now;
+          now,
+          responseArray = [];
         logger.textContent = 'Processing account: ' + accountsArray[callNumber];
         endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipAccountSuffix;
