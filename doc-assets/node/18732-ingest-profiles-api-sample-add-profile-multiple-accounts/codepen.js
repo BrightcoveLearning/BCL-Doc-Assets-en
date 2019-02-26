@@ -399,8 +399,8 @@ var BCLS = (function(window, document) {
     });
     profileSelect.addEventListener('change', function() {
       var selected = getSelectedValue(profileSelect),
-      console.log('selected id', selected);
         idx = findObjectInArray(profilesArray, 'id', selected);
+        console.log('selected id', selected);
       selectedProfile = profilesArray[idx];
       console.log('selected profile', selectedProfile);
       enableElement(addProfile);
