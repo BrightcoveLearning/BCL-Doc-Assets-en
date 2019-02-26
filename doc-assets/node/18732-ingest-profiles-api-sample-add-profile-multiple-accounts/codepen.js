@@ -223,7 +223,8 @@ var BCLS = (function(window, document) {
     var i,
       iMax,
       endPoint,
-      options = {};
+      options = {},
+      configurationId;
     logger.textContent = 'Getting profiles for source account'
     options.proxyURL = proxyURL;
     if (isDefined(client_id) && isDefined(client_secret)) {
@@ -277,7 +278,7 @@ var BCLS = (function(window, document) {
             responseObj = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseObj, null, 2);
             if (isChecked(setDefaults)) {
-              setOptions('setDefault', 'POST');
+              setOptions('getDefault', 'GET');
             } else {
               callNumber++;
               if (callNumber < totalCalls) {
@@ -289,6 +290,19 @@ var BCLS = (function(window, document) {
           }
         });
         break;
+      case 'getDefault':
+        var parsedData;
+        logger.textContent = 'Getting account configuration: ' + accountsArray[callNumber];
+        endPoint = accountsArray[callNumber];
+        options.url = ipURL + endPoint + ipAccountSuffix;
+        options.requestType = type;
+        apiRequest.textContent = options.url;
+        makeRequest(options, function(response) {
+          parsedData = JSON.parse(response);
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
+          configurationId = parsedData.id;
+        });
+        break;
       case 'setDefault':
         var reqBody = {},
           now,
@@ -298,6 +312,8 @@ var BCLS = (function(window, document) {
         options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
         reqBody.default_profile_id = selectedProfile.id;
+        reqBody.id = configurationId;
+        reqBody.account_id = accountsArray[callNumber];
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
