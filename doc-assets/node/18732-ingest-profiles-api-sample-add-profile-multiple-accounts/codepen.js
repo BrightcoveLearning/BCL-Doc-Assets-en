@@ -1,4 +1,4 @@
-var BCLS = (function (window, document) {
+var BCLS = (function(window, document) {
   var // account stuff
     account_id,
     account_ids,
@@ -11,7 +11,7 @@ var BCLS = (function (window, document) {
     ipURL = 'https://ingestion.api.brightcove.com/v1/accounts/',
     ipAccountSuffix = '/configuration',
     ipProfileSuffix = '/profiles'
-    totalCalls = 0,
+  totalCalls = 0,
     callNumber = 0,
     accountsArray = [],
     defaultAccounts = ['1485884786001', '1937897674001'],
@@ -55,18 +55,36 @@ var BCLS = (function (window, document) {
     return false;
   }
 
+  /**
+   * determines whether specified item is in an array
+   *
+   * @param {array} array to check
+   * @param {string} item to check for
+   * @return {boolean} true if item is in the array, else false
+   */
+  function arrayContains(arr, item) {
+    var i,
+      iMax = arr.length;
+    for (i = 0; i < iMax; i++) {
+      if (arr[i] === item) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /*
    * tests to see if a string is json
    * @param {String} str string to test
    * @return {Boolean}
    */
   function isJson(str) {
-      try {
-          JSON.parse(str);
-      } catch (e) {
-          return false;
-      }
-      return true;
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
   /**
    * tests for all the ways a variable might be undefined or not have a value
@@ -106,7 +124,7 @@ var BCLS = (function (window, document) {
    * @return {object}     the copy
    */
   function copyObj(obj) {
-      return JSON.parse(JSON.stringify(obj));
+    return JSON.parse(JSON.stringify(obj));
   }
 
   /**
@@ -117,37 +135,38 @@ var BCLS = (function (window, document) {
    * @param {string} objProperty object property to search
    * @param {string} value of the property to search for
    * @return {integer} index of first instance if found, otherwise returns -1
-  */
+   */
   function findObjectInArray(targetArray, objProperty, value) {
-      var i, totalItems = targetArray.length, objFound = false;
-      for (i = 0; i < totalItems; i++) {
-          if (targetArray[i][objProperty] === value) {
-              objFound = true;
-              return i;
-          }
+    var i, totalItems = targetArray.length,
+      objFound = false;
+    for (i = 0; i < totalItems; i++) {
+      if (targetArray[i][objProperty] === value) {
+        objFound = true;
+        return i;
       }
-      if (objFound === false) {
-          return -1;
-      }
+    }
+    if (objFound === false) {
+      return -1;
+    }
   }
 
   /**
    * disables an element so user can't click on it
-  * @param {htmlElement} el the element
-  */
- function disableElement(el) {
-     el.setAttribute('disabled', 'disabled');
-     el.classList.add('disabled');
- }
+   * @param {htmlElement} el the element
+   */
+  function disableElement(el) {
+    el.setAttribute('disabled', 'disabled');
+    el.classList.add('disabled');
+  }
 
- /**
-  * re-enables an element to make it clickable
-  * @param {htmlElement} el the element
-  */
- function enableElement(el) {
-     el.removeAttribute('disabled');
-     el.classList.remove('disabled');
- }
+  /**
+   * re-enables an element to make it clickable
+   * @param {htmlElement} el the element
+   */
+  function enableElement(el) {
+    el.removeAttribute('disabled');
+    el.classList.remove('disabled');
+  }
 
   /**
    * populate a selector element from an array of objects
@@ -177,23 +196,23 @@ var BCLS = (function (window, document) {
   /**
    * remove or add obsolete, standard and live profiles from the profiles list
    */
-    function filterProfiles() {
-      // below are the obsolete profiles - you just have to know their names
-      var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'],
-        live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
-        i = profilesArray.length;
-      while (i > 0) {
-        i--;
-        if (arrayContains(deprecated_profiles, profilesArray[i].name)) {
-          profilesArray.splice(i, 1);
-        } else if (profilesArray[i].brightcove_standard === true) {
-          profilesArray.splice(i, 1);
-        } else if (arrayContains(live_profiles, profilesArray[i].name)) {
-          profilesArray.splice(i, 1);
-        }
+  function filterProfiles() {
+    // below are the obsolete profiles - you just have to know their names
+    var deprecated_profiles = ['balanced-nextgen-player', 'Express Standard', 'mp4-only', 'balanced-high-definition', 'low-bandwidth-devices', 'balanced-standard-definition', 'single-rendition', 'Live - Standard', 'high-bandwidth-devices', 'Live - Premium HD', 'Live - HD', 'videocloud-default-trial', 'screencast'],
+      live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
+      i = profilesArray.length;
+    while (i > 0) {
+      i--;
+      if (arrayContains(deprecated_profiles, profilesArray[i].name)) {
+        profilesArray.splice(i, 1);
+      } else if (profilesArray[i].brightcove_standard === true) {
+        profilesArray.splice(i, 1);
+      } else if (arrayContains(live_profiles, profilesArray[i].name)) {
+        profilesArray.splice(i, 1);
       }
-      return;
     }
+    return;
+  }
 
 
   /**
@@ -280,7 +299,7 @@ var BCLS = (function (window, document) {
         reqBody.default_profile_id = selectedProfile.id;
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           responseArray.push(parsedData);
           if (Array.isArray(parsedData)) {
@@ -317,7 +336,7 @@ var BCLS = (function (window, document) {
       response,
       proxyURL = options.proxyURL,
       // response handler
-      getResponse = function () {
+      getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -352,7 +371,7 @@ var BCLS = (function (window, document) {
 
   function init() {
     // event handlers
-    getProfiles.addEventListener('click', function () {
+    getProfiles.addEventListener('click', function() {
       var accountIds;
       // get the inputs
       client_id = client_id_input.value;
