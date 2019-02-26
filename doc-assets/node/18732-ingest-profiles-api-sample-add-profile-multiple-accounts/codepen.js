@@ -282,7 +282,6 @@ var BCLS = (function(window, document) {
             responseObj = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseObj, null, 2);
             newProfileId = responseObj.id;
-            console.log('new profile id', newProfileId);
             if (isChecked(setDefaults)) {
               if (isDefined(newProfileId)) {
                 // if new profile id does not exist, there was an error, probably a conflict because a profile with that name already existed - so don't attempt to set default profile for this account
@@ -326,7 +325,6 @@ var BCLS = (function(window, document) {
           reqBody.id = configurationId;
         }
         reqBody.account_id = accountsArray[callNumber];
-        console.log('req body', reqBody);
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
         apiRequestType.textContent = options.type;
