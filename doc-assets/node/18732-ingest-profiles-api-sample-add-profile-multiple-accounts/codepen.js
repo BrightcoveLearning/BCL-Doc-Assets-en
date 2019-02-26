@@ -310,8 +310,7 @@ var BCLS = (function(window, document) {
         break;
       case 'setDefault':
         var reqBody = {},
-          now,
-          responseArray = [];
+          now;
         logger.textContent = 'Processing account: ' + accountsArray[callNumber];
         endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipAccountSuffix;
@@ -326,7 +325,7 @@ var BCLS = (function(window, document) {
         apiRequestType.textContent = options.type;
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
-          responseArray.push(parsedData);
+          apiResponse.textContent = JSON.stringify(parsedData, null, 2);
           if (Array.isArray(parsedData)) {
             // we have an error, most likely a conflict because default has already been set - try update instead
             setOptions('setDefault', 'PUT');
@@ -336,7 +335,6 @@ var BCLS = (function(window, document) {
               setOptions('setDefault', 'POST');
             } else {
               logger.textContent = 'All finished!'
-              apiResponse.textContent = JSON.stringify(responseArray, null, '  ');
             }
           }
         });
