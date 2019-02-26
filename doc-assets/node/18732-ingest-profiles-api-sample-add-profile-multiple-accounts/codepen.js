@@ -283,16 +283,16 @@ var BCLS = (function(window, document) {
             apiResponse.textContent = JSON.stringify(responseObj, null, 2);
             newProfileId = responseObj.id;
             console.log('new profile id', newProfileId);
-            if (isChecked(setDefaults)) {
-              setOptions('getDefault', 'GET');
-            } else {
-              callNumber++;
-              if (callNumber < totalCalls) {
-                setOptions('addProfile', 'POST');
-              } else {
-                logger.textContent = 'All finished!'
-              }
-            }
+            // if (isChecked(setDefaults)) {
+            //   setOptions('getDefault', 'GET');
+            // } else {
+            //   callNumber++;
+            //   if (callNumber < totalCalls) {
+            //     setOptions('addProfile', 'POST');
+            //   } else {
+            //     logger.textContent = 'All finished!'
+            //   }
+            // }
           }
         });
         break;
