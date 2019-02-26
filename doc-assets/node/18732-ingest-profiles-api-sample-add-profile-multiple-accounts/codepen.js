@@ -326,6 +326,7 @@ var BCLS = (function(window, document) {
           reqBody.id = configurationId;
         }
         reqBody.account_id = accountsArray[callNumber];
+        console.log('req body', reqBody);
         options.requestBody = JSON.stringify(reqBody);
         apiRequest.textContent = options.url;
         apiRequestType.textContent = options.type;
