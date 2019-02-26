@@ -17,6 +17,7 @@ var BCLS = (function(window, document) {
     defaultAccounts = ['1485884786001', '1937897674001'],
     defaultAccount = '1752604059001',
     profilesArray = [],
+    newProfileId,
     // element references
     account_id_input = document.getElementById('account_id_input'),
     account_ids_input = document.getElementById('account_ids_input'),
@@ -280,6 +281,7 @@ var BCLS = (function(window, document) {
           if (isJson(response)) {
             responseObj = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseObj, null, 2);
+            newProfileId = responseObj.id;
             if (isChecked(setDefaults)) {
               setOptions('getDefault', 'GET');
             } else {
@@ -315,7 +317,7 @@ var BCLS = (function(window, document) {
         endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
-        reqBody.default_profile_id = selectedProfile.id;
+        reqBody.default_profile_id = newProfileId;
         if (type === 'PUT') {
           reqBody.id = configurationId;
         }
