@@ -11,18 +11,18 @@
 
 <p>Note that both of these sitemaps index the metadata about your video content and provide links to end-users. The difference is <i>where</i> the metadata that is indexed is obtained from and <i>how</i> the content is surfaced in search results.</p>
 
-<p>A proper SEO strategy for your video content will include creating <b>both</b> a standard sitemap as well as a video sitemap. From a priority perspective, you want to create <a href="#sitemap">a standard sitemap</a> first and then a <a href="#videositemap">video sitemap</a>. Using the Video Cloud <a href="/node/18034">CMS API</a>, you write a script to generate your sitemaps automatically, rather than compiling them by hand.</p>
+<p>A proper SEO strategy for your video content will include creating <b>both</b> a standard sitemap as well as a video sitemap. From a priority perspective, you want to create <a href="#sitemap">a standard sitemap</a> first and then a <a href="#videositemap">video sitemap</a>. Using the Video Cloud <a href="/node/18034">CMS API</a>, you write a script to generate your video sitemap automatically, rather than compiling it by hand.</p>
 
 <div class="BCL-concept">
 <h2 id="sitemap">Standard Sitemaps</h2>
 
-<p>Sitemaps follow the sitemap specification that is defined here: <a href="http://www.sitemaps.org/">www.sitemaps.org</a>. The purpose of the sitemap file is to provide a list of URLs on your site to the search engines. The only other information associated with a URL is when the page was last modified and how frequently the page changes. Note that there is no metadata about your content in this index. Because the sitemap is page-centric, we need to create a model where <i>each</i> video in your library will have a unique page, or URL, associated with it. This can be accomplished by having a single page whose behavior and content can be dynamically changed by passing in different query parameters to the page. For example, if you have a URL like <code>http://www.example.com/video.html?videoId=123</code>, you would have the <code>video.html</code> page look for the <code>videoId</code> query parameter (<code>videoId=123</code>) and modify the contents of the page returned to the browser to contain information about the video with id 123. This would be done on the server-side of your application where the page would look for the ID and then use the Video Cloud Media API to fetch metadata about the video and write it into the page.</p>
+<p>Sitemaps follow the sitemap specification that is defined here: <a href="http://www.sitemaps.org/">www.sitemaps.org</a>. The purpose of the sitemap file is to provide a list of URLs on your site to the search engines. The only other information associated with a URL is when the page was last modified and how frequently the page changes. Note that there is no metadata about your content in this index. Because the sitemap is page-centric, we need to create a model where <i>each</i> video in your library will have a unique page, or URL, associated with it. This can be accomplished by having a single page whose behavior and content can be dynamically changed by passing in different query parameters to the page. For example, if you have a URL like <code>http://www.example.com/video.html?videoId=123</code>, you would have the <code>video.html</code> page look for the <code>videoId</code> query parameter (<code>videoId=123</code>) and modify the contents of the page returned to the browser to contain information about the video with id 123. This would be done on the server-side of your application where the page would look for the ID and then use the Video Cloud CMS API to fetch metadata about the video and write it into the page. Alternatively, you could store the URL where the video is published in a custom field, so that the CMS API could retrieve it.</p>
 
 <p>For the purposes of this article, we assume that there is a single landing page on your site which can be used to play back all video content for your site. Different query parameters will be passed to the page to tell the page what video to play back and what video to surface metadata for. For example, let's say you have a page that displays the contents of an entire playlist and queues up a specific video in a player. You tell the page what playlist to display metadata for via a <code>bcpid</code> query parameter and what video to surface in a player via the <code>bcvid</code> parameter. Thus, what we want to do is create a URL for every unique playlist and video id combination.</p>
 
 <p>Here is an example of sitemap that would be created:</p>
 
-<pre>
+<pre><code class="language-xml">
 &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
  &lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
    &lt;url&gt;
@@ -35,7 +35,7 @@
      &lt;lastmod&gt;2015-03-01&lt;/lastmod&gt;
      &lt;changefreq&gt;weekly&lt;/changefreq&gt;
    &lt;/url&gt;
- &lt;/urlset&gt;</pre>
+ &lt;/urlset&gt;</code></pre>
 
 <p>To create a sitemap file, you can create a script that uses CMS API requests to walk through the playlists in the Video Cloud account and, for each playlist, walks through its contained videos. For each playlist and video combination, the script creates an entry in the sitemap supplying a unique URL to the playlist/video combination. Once you've created a sitemap file for your site, place the resulting <code>sitemap.xml</code> file in the root directory of your webserver. For example, if your domain is <code>www.example.com</code>, the sitemap file would be available at <code>http://www.example.com/sitemap.xml</code>. Even better would be to automatically generate this file with a server-side application and update the file on your live site.</p>
 </div>
