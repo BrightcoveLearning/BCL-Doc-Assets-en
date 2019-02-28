@@ -26,7 +26,8 @@ var BCLS = (function(window, document) {
     getProfiles = document.getElementById('getProfiles'),
     profileSelect = document.getElementById('profileSelect'),
     addProfile = document.getElementById('addProfile'),
-    setDefaults = document.getElementById('setDefaults'),
+    setIngestionDefault = document.getElementById('setIngestionDefault'),
+    setClippingDefault = document.getElementById('setClippingDefault'),
     logger = document.getElementById('logger'),
     apiRequest = document.getElementById('apiRequest'),
     apiResponse = document.getElementById('apiResponse'),
@@ -282,7 +283,7 @@ var BCLS = (function(window, document) {
             responseObj = JSON.parse(response);
             apiResponse.textContent = JSON.stringify(responseObj, null, 2);
             newProfileId = responseObj.id;
-            if (isChecked(setDefaults)) {
+            if (isChecked(setIngestionDefault) || isChecked(setClippingDefault)) {
               if (isDefined(newProfileId)) {
                 // if new profile id does not exist, there was an error, probably a conflict because a profile with that name already existed - so don't attempt to set default profile for this account
                 setOptions('getDefault', 'GET');
@@ -320,7 +321,12 @@ var BCLS = (function(window, document) {
         endPoint = accountsArray[callNumber];
         options.url = ipURL + endPoint + ipAccountSuffix;
         options.requestType = type;
-        reqBody.default_profile_id = newProfileId;
+        if (isChecked(setIngestionDefault)) {
+          reqBody.default_profile_id = newProfileId;
+        }
+        if (isChecked(setClippingDefault)) {
+          reqBody.default_social_clipping_profile_id = newProfileId;
+        }
         if (type === 'PUT') {
           reqBody.id = configurationId;
         }
