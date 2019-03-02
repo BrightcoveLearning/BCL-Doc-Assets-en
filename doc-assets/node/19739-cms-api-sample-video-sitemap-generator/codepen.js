@@ -1,7 +1,9 @@
 var BCLS = ( function (window, document) {
-    var mrssStr = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
-    sChannel = '<channel>',
-    eChannel = '</channel>',
+    var // strings for XML tags
+    mapStr = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">',
+    sUrl = '<url>',
+    eUrl = '</url>',
     sTitle = '<title>',
     eTitle = '</title>',
     sDescription = '<description>',
@@ -39,7 +41,7 @@ var BCLS = ( function (window, document) {
     totalCalls = 0,
     callNumber = 0,
     videosArray = [],
-    // elements
+    // element references
     account_id_input = document.getElementById('account_id'),
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
@@ -158,33 +160,33 @@ var BCLS = ( function (window, document) {
                 }
 
                 pubdate = new Date(video.created_at).toGMTString();
-                mrssStr += sItem;
-                mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
-                mrssStr += sPubDate + pubdate + ePubDate;
-                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
-                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
-                mrssStr += sMediaTitle + video.name + eMediaTitle;
-                mrssStr += sMediaDescription + video.description + eMediaDescription;
+                mapStr += sItem;
+                mapStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
+                mapStr += sPubDate + pubdate + ePubDate;
+                mapStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
+                mapStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
+                mapStr += sMediaTitle + video.name + eMediaTitle;
+                mapStr += sMediaDescription + video.description + eMediaDescription;
                 if (doThumbnail) {
-                    mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
+                    mapStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
                     if (isDefined(video.images)) {
-                        mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
+                        mapStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
                     } else {
-                        mrssStr += eMediaThumbnail;
+                        mapStr += eMediaThumbnail;
                     }
                 }
-                mrssStr += eMediaContent;
+                mapStr += eMediaContent;
                 if (isDefined(video.schedule) && video.schedule.ends_at) {
                     eItem = eItemStart + video.schedule.ends_at + eItemEnd;
                 } else {
                     eItem = eItemStart + defaultEndDate + eItemEnd;
                 }
-                mrssStr += eItem;
+                mapStr += eItem;
             }
         }
-        mrssStr += eChannel + '</rss>';
+        mapStr += eChannel + '</rss>';
         logger.textContent = 'Finished!';
-        feedDisplay.textContent = vkbeautify.xml(mrssStr);
+        feedDisplay.textContent = vkbeautify.xml(mapStr);
         enableButtons();
     }
 
@@ -363,7 +365,7 @@ var BCLS = ( function (window, document) {
             search = searchStr.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
-            mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
+            mapStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
             // if all videos wanted, get count; otherwise get videos
             if (numVideos === 'all') {
                 // we need to get the count
