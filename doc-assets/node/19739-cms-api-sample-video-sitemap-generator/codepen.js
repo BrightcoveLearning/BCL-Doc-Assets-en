@@ -25,6 +25,8 @@ var BCLS = ( function (window, document) {
       eViewcount = '</video:view_count>',
       sPublicationdate =  '<video:publication_date>',
       ePublicationdate = '</video:publication_date>',
+      sRestriction =  '<video:restriction relationship="',
+      eRestriction = '</video:restriction>',
       // account stuff
       account_id,
       account_id_default = '1485884786001';
