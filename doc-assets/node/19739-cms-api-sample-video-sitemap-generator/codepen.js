@@ -17,6 +17,14 @@ var BCLS = ( function (window, document) {
       eDescription = '</video:description>',
       sContent_loc =  '<video:content_loc>',
       eContent_loc = '</video:content_loc>',
+      sDuration =  '<video:duration>',
+      eDuration = '</video:duration>',
+      sExpiration =  '<video:expiration>',
+      eExpiration = '</video:expiration>',
+      sViewcount =  '<video:view_count>',
+      eViewcount = '</video:view_count>',
+      sPublicationdate =  '<video:publication_date>',
+      ePublicationdate = '</video:publication_date>',
       // account stuff
       account_id,
       account_id_default = '1485884786001';
