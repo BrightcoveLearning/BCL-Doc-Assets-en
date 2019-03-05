@@ -351,7 +351,7 @@ var aapi_model = {
             from: '2012-10-01',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'referrer_domain', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
-            incompatible_dimensions: ['city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'region'],
+            incompatible_dimensions: ['city', 'country', 'device_os', 'device_type', 'region'],
             filter_values: ['A comma-delimited list of domains; e.g. brightcove.com,docs.brightcove.com'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=referrer_domain'
@@ -367,7 +367,7 @@ var aapi_model = {
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'region', 'region_name', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['comma-delimited list of the ISO-3611-2 region code - e.g. US-WA'],
-            incompatible_dimensions: ['date', 'date_hour', 'destination_path', 'player', 'referrer_domain', 'search_terms'],
+            incompatible_dimensions: ['destination_path', 'player', 'referrer_domain', 'search_terms'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=region'
             }, {
@@ -382,7 +382,7 @@ var aapi_model = {
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'search_terms', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['URI-encoded, comma-delimited list of search terms - e.g. players,videos'],
-            incompatible_dimensions: ['date', 'date_hour', 'destination_domain', 'destination_path', 'device_os', 'device_type', 'video'],
+            incompatible_dimensions: ['destination_domain', 'destination_path', 'device_os', 'device_type', 'video'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=search_terms'
             }, {
