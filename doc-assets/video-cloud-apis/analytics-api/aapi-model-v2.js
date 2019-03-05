@@ -279,7 +279,7 @@ var aapi_model = {
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_os', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['android', 'bada', 'ios', 'rim', 'symbian', 'web_os', 'windows', 'os_x', 'mac', 'linux', 'other'],
-            incompatible_dimensions: ['city', 'date', 'date_hour', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
+            incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_os',
             }, {
