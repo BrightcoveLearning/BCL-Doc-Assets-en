@@ -264,7 +264,7 @@ var aapi_model = {
             from: '2011-01-01',
             fields: ['ad_mode_begin', 'ad_mode_complete', 'destination_path', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['The destination_path dimension is not used as a filter.'],
-            incompatible_dimensions: ['city', 'country', 'date', 'date_hour', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
+            incompatible_dimensions: ['city', 'country', 'device_os', 'device_type', 'player', 'referrer_domain', 'region', 'search_terms', 'source_type', 'video'],
             samples: [{
                 dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=destination_path'
             }, {
