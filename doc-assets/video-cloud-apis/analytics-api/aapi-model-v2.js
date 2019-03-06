@@ -178,8 +178,8 @@ var aapi_model = {
             filter_values: ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari', 'other'],
             incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
             samples: [
-                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'},
-                {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'}
+                { dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type' },
+                { filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari' }
             ]
         },
         city: {
@@ -296,8 +296,8 @@ var aapi_model = {
             filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
             incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
             samples: [
-                {dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'},
-                {filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'}
+                { dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer' },
+                { filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple' }
             ]
         },
         device_type: {
@@ -424,7 +424,7 @@ var aapi_model = {
             description: 'In this topic, you will learn about the Analytics API videos dimension. The video dimension provides analytics by video. NOTE: if you wish to include an "video." fields (such as video.name) in the response, your client credentials must include the CMS: Video read permission. Also note that while you cannot return "video.custom_fields", you can return "video.custom_fields.{field_name}".',
             from: '2011-01-01',
             urlparams: ['account', 'dimensions', 'where', 'limit', 'offset', 'sort', 'fields', 'format', 'reconciled', 'from', 'to'],
-            fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}', 'video_download_request', 'video_download_complete','video_download_cancellation','video_download_error'],
+            fields: ['ad_mode_begin', 'ad_mode_complete', 'bytes_delivered', 'engagement_score', 'play_request', 'play_rate', 'video', 'video_duration', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_name', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video.reference_id', 'video.name', 'video.description', 'video.complete', 'video.created_at', 'video.duration', 'video.economics', 'video.long_description', 'video.state', 'video.tags', 'video.updated_at', 'video.custom_fields.{field_name}', 'video_download_request', 'video_download_complete', 'video_download_cancellation', 'video_download_error'],
             filter_values: ['video ids as a comma-delimited list or video.q=={video field}:{value}'],
             incompatible_dimensions: ['city', 'destination_path', 'region', 'search_terms'],
             samples: [{
