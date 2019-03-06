@@ -786,6 +786,11 @@ var aapi_model = {
       from: '2015-10-19',
       fields: ['country', 'country_name', 'ad_mode_begin', 'ad_mode_complete', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'device_os']
     },
+    date__live_stream: {
+        dimensions: ['date', 'live_stream'],
+        from: '2015-10-19',
+        fields: ['date', 'bytes_delivered', 'origin_bytes_delivered', 'live_stream']
+      },
     device_os__region: {
       dimensions: ['device_os', 'region'],
       from: '2015-10-19',
