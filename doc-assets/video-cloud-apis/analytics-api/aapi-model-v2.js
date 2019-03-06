@@ -177,9 +177,12 @@ var aapi_model = {
             fields: ['ad_mode_begin', 'ad_mode_complete', 'browser_type', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view'],
             filter_values: ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari', 'other'],
             incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
-            samples: [
-                { dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type' },
-                { filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari' }
+            samples: [{
+                    dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=browser_type'
+                },
+                {
+                    filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=player&where=browser_type==safari'
+                }
             ]
         },
         city: {
@@ -295,9 +298,12 @@ var aapi_model = {
             fields: ['ad_mode_begin', 'ad_mode_complete', 'device_manufacturer', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view', 'video_seconds_viewed'],
             filter_values: ['amazon', 'apple', 'asus', 'blackberry', 'fujitsu', 'google', 'htc', 'huawei', 'kyocera', 'lenovo', 'lg', 'micromax', 'microsoft', 'nintendo', 'panasonic', 'roku', 'samsung', 'sharp', 'sony', 'vizio', 'zte', 'other'],
             incompatible_dimensions: ['city', 'destination_domain', 'destination_path', 'referrer_domain', 'search_terms', 'source_type'],
-            samples: [
-                { dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer' },
-                { filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple' }
+            samples: [{
+                    dimension: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_manufacturer'
+                },
+                {
+                    filter: 'https://analytics.api.brightcove.com/v1/data?accounts=1752604059001&dimensions=device_type&where=device_manufacturer==apple'
+                }
             ]
         },
         device_type: {
