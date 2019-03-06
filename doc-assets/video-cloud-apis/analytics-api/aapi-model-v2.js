@@ -825,21 +825,41 @@ var aapi_model = {
       dimensions: ['region', 'date'],
       from: '2011-01-01',
       fields: ['region', 'region_name', 'ad_mode_begin', 'ad_mode_complete', 'active_media', 'bytes_delivered', 'daily_unique_viewers', 'date', 'drm_bytes_packaged', 'engagement_score', 'licenses_served', 'live_seconds_streamed', 'play_request', 'play_rate', 'player_load', 'video_engagement_1', 'video_engagement_100', 'video_engagement_25', 'video_engagement_50', 'video_engagement_75', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+    region__date_hour: {
+      dimensions: ['region', 'date_hour'],
+      from: '2011-01-01',
+      fields: ['region', 'region_name', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+    },
     },
     search_terms__date: {
       dimensions: ['search_terms', 'date'],
       from: '2012-10-01',
       fields: ['search_terms', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load','video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
+    search_terms__date_hour: {
+      dimensions: ['search_terms', 'date_hour'],
+      from: '2012-10-01',
+      fields: ['search_terms', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+    },
     source_type__date: {
       dimensions: ['source_type', 'date'],
       from: '2012-10-01',
       fields: ['source_type', 'ad_mode_begin', 'ad_mode_complete', 'date', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
     },
+    source_type__date_hour: {
+      dimensions: ['source_type', 'date_hour'],
+      from: '2012-10-01',
+      fields: ['source_type', 'ad_mode_begin', 'ad_mode_complete', 'date_hour', 'engagement_score', 'play_request', 'play_rate', 'player_load', 'video_impression', 'video_percent_viewed', 'video_seconds_viewed', 'video_view']
+    },
     social_platform__date: {
       dimensions: ['social_platform', 'date'],
       from: '2016-11-01',
       fields: ['date', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_platform', 'social_seconds_viewed', 'social_views']
+    },
+    social_platform__date_hour: {
+      dimensions: ['social_platform', 'date_hour'],
+      from: '2016-11-01',
+      fields: ['date_hour', 'social_lifetime_seconds_viewed', 'social_lifetime_views', 'social_platform', 'social_seconds_viewed', 'social_views']
     },
     destination_domain__date: {
       dimensions: ['destination_domain', 'date'],
