@@ -109,42 +109,6 @@ var BCLS = ( function (window, document) {
         b.removeAttribute('disabled');
     }
 
-    /**
-     * sort an array of objects based on an object property
-     * @param {array} targetArray - array to be sorted
-     * @param {string|number} objProperty - object property to sort on
-     * @return sorted array
-     */
-    function sortArray(targetArray, objProperty) {
-        targetArray.sort(function (b, a) {
-            var propA = a[objProperty], propB = b[objProperty];
-            // sort ascending; reverse propA and propB to sort descending
-            if (propA < propB) {
-                 return -1;
-            } else if (propA > propB) {
-                 return 1;
-            } else {
-                 return 0;
-            }
-        });
-        return targetArray;
-    }
-
-    function processSources(sources) {
-        var i = sources.length;
-        // remove non-MP4 sources
-        while (i > 0) {
-            i--;
-            if (sources[i].container !== 'MP4') {
-                sources.splice(i, 1);
-            } else if (sources[i].hasOwnProperty('stream_name')) {
-                sources.splice(i, 1);
-            }
-        }
-        // sort sources by encoding rate
-        sortArray(sources, 'encoding_rate');
-        // return the first item (highest bitrate)
-        return sources[0];
     }
 
     function addItems() {
