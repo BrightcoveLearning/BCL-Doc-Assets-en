@@ -214,48 +214,11 @@ var BCLS = ( function (window, document) {
                   logger.textContent = 'Getting video set ' + callNumber;
                   createRequest('getVideos');
               } else {
-                  logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources...';
-                  callNumber = 0;
-                  createRequest('getVideoSources');
+                  logger.textContent = 'Video data for ' + totalVideos + ' retrieved; generating the video sitemap';
+                  addItems();
                 }
             });
             break;
-            case 'getVideoSources':
-                var i,
-                    iMax = videosArray.length;
-                endPoint = account_id + '/videos/' + videosArray[callNumber].id + '/sources';
-                options.url = baseURL + endPoint;
-                options.requestType = 'GET';
-                apiRequest.textContent = options.url;
-                logger.textContent = 'Getting sources for video ' + videosArray[callNumber].name;
-                makeRequest(options, function(response) {
-                  sources = JSON.parse(response);
-                  if (sources.length > 0) {
-                      // get the best MP4 rendition
-                      var source = processSources(sources);
-                      videosArray[callNumber].source = source;
-                  } else {
-                      // video has no sources
-                      videosArray[callNumber].source = null;
-                  }
-                  callNumber++;
-                  if (callNumber < iMax) {
-                      createRequest('getVideoSources');
-                  } else {
-                      // remove videos with no sources
-                      i = videosArray.length;
-                      while (i > 0) {
-                          i--;
-                          console.log('videosArray[i]', videosArray[i]);
-                          if (!isDefined(videosArray[i].source)) {
-                              console.log('i', i);
-                              videosArray.splice(i, 1);
-                          }
-                      }
-                      addItems();
-                  }
-                });
-                break;
         }
     }
 
