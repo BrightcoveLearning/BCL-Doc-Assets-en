@@ -29,7 +29,7 @@ var BCLS = ( function (window, document) {
       eRestriction = '</video:restriction>',
       // account stuff
       account_id,
-      account_id_default = '1485884786001';
+      account_id_default = '1485884786001',
       client_id,
       client_secret,
       // api stuff
@@ -72,7 +72,7 @@ var BCLS = ( function (window, document) {
      * @return {Boolean} true if variable is defined and has a value
      */
     function isDefined(x){
-        if ( x === "" || x === null || x === undefined || x === NaN) {
+        if ( x === "" || x === null || x === undefined) {
             return false;
         }
         return true;
