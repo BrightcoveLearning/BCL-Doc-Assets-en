@@ -104,7 +104,6 @@ var BCLS = ( function (window, document) {
 
     /**
      * disables all buttons so user can't submit new request until current one finishes
-     *
      * @param {htmlElement} b reference to the button
      */
 
@@ -115,13 +114,49 @@ var BCLS = ( function (window, document) {
 
     /**
      * enable  a button
-     *
      * @param   {htmlElement}  b  reference to the button
      */
     function enableButton(b) {
         b.classList.remove('disabled');
         b.removeAttribute('disabled');
     }
+
+    /**
+     * utility to extract ISO8601 duration from milliseconds
+     * @param {number} ms - millisections to convert to hh:mm:ss
+     * @returns {String} date string in HH:MM:SS format
+     */
+    function msToISO8601Duration(ms) {
+      var secs = ms / 1000,
+        hours = Math.floor(secs / (60 * 60)),
+        divisor_for_minutes = secs % (60 * 60),
+        minutes = Math.floor(divisor_for_minutes / 60),
+        divisor_for_seconds = divisor_for_minutes % 60,
+        seconds = Math.ceil(divisor_for_seconds),
+        str ='PT';
+
+    if (seconds === 60) {
+      minutes++;
+      seconds = 0;
+    }
+    if (minutes === 60) {
+      hours++;
+      minutes = 0;
+    }
+
+    if (hours > 0) {
+      str += hours.toString() + 'H';
+    }
+
+    if (minutes > 0) {
+      str += minutes.toString() + 'M';
+    }
+
+    str += seconds.toString() + 'S';
+
+    return str;
+  }
+
 
     function addItems() {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
