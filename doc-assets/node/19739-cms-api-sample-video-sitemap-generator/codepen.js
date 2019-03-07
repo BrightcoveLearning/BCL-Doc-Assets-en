@@ -87,6 +87,20 @@ var BCLS = ( function (window, document) {
         return e.options[e.selectedIndex].value;
     }
 
+    /**
+     * get value of a selected radio buttom
+     * @param {htmlElementCollection} rgroup the collection of radio buttom elements
+     * @returns {string} value of the selected element
+     */
+    function getRadioValue(rgroup) {
+      var i = 0,
+        iMax = rgroup.length;
+      for (i; i < iMax; i++) {
+        if (rgroup[i].checked) {
+          return rgroup[i].value;
+        }
+      }
+    }
 
     /**
      * disables all buttons so user can't submit new request until current one finishes
@@ -107,8 +121,6 @@ var BCLS = ( function (window, document) {
     function enableButton(b) {
         b.classList.remove('disabled');
         b.removeAttribute('disabled');
-    }
-
     }
 
     function addItems() {
