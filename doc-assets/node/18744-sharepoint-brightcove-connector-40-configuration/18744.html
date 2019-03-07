@@ -1,0 +1,170 @@
+<article class="bcls-article">
+
+  <section class="bcls-section">
+    <h2 id="introduction">Introduction</h2>
+    <p>SharePoint Brightcove Video Connector allows you to manage Brightcove Video Cloud videos and players within SharePoint,
+      and easily embed videos in SharePoint pages. This guide assumes both SharePoint and the Brightcove Connector are installed.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="launching">Launching Brightcove Video Connect for SharePoint</h2>
+
+    <p>To launch the application, the user can click on the Brightcove Video Connector App within the Site Contents listing, or click on a menu link if so configured by the SharePoint administrator. Site Contents can be found in the far left menu in both Classic and Modern view.</p>
+
+    <figure class="bcls-figure">
+      <img class="bcls-image" alt="Classic" width="700" src="//learning-services-media.brightcove.com/doc-assets/node/18744-sharepoint-brightcove-connector-40-configuration/classicsitecontents.jpg"
+      />
+    </figure>
+
+    <figure class="bcls-figure">
+      <img class="bcls-image" alt="Modern" width="700" src="//learning-services-media.brightcove.com/doc-assets/node/18744-sharepoint-brightcove-connector-40-configuration/modernsitecontents.jpg"
+      />
+    </figure>
+
+    <p>In either case, the user will be brought to the Home Page of the Connector App. This page could be further configured by the client to include additional company specific messaging, additional links, etc. The main navigation in the left column of the Connector is always present and allows the user to navigate all of the sections they have access to (see the section above regarding permissions). Below is a brief description of the purpose of each component of the Connector:</p>
+
+    <figure class="bcls-figure">
+      <img class="bcls-image" alt="Menu" src="//learning-services-media.brightcove.com/doc-assets/node/18744-sharepoint-brightcove-connector-40-configuration/landingpage.jpg"
+      />
+    </figure>
+
+    <ol>
+      <li><strong>Home</strong> - The landing page when first entering the Connector.</li>
+      <li><strong>Account Management</strong> - Provides the interface for entering the Brightcove Video Cloud account(s) information into SharePoint.</li>
+      <li><strong>Add Videos</strong> - Upload new videos into Video Cloud. A video object is also created in SharePoint (except for the actual video file).</li>
+      <li><strong>Manage Videos</strong> - Browse and edit existing videos as well as import videos from Video Cloud into SharePoint.</li>
+      <li><strong>Manage Playlists</strong> - Create new playlists as well as browse and manage existing playlists.</li>
+      <li><strong>Manage Experiences</strong> - Browse and manage existing experiences.</li>
+    </ol>
+
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="linking">Linking to Video Cloud Accounts</h2>
+
+    <p>The Account Management section of Connector is used to enter the information for each of the linked Brightcove Video Cloud accounts that will be accessed in the Site. <strong>Brightcove accounts cannot be created from SharePoint, they must be created in Video Cloud first.</strong> The Brightcove account information must be entered into SharePoint as it is used when accessing the Brightcove API to communicate with Video Cloud. It also provides the means to assign access permissions specific to an account. For multi-account enterprise clients, it provides control over which users can access each account, and whether they can just browse or upload videos.</p>
+
+
+    <h3 id="landing-page">Account Management Landing Page</h3>
+
+    <p>The Account Management Landing Page displays the current list of configured accounts, along with the assigned groups for Authors and Viewers.</p>
+    <figure class="bcls-figure">
+      <img class="bcls-image" alt="manage accounts landing page" width="700" src="//learning-services-media.brightcove.com/doc-assets/node/18744-sharepoint-brightcove-connector-40-configuration/manageaccounts.jpg"
+      />
+    </figure>
+    <ol>
+      <li><strong>Account Title</strong> - Accounts currently configured (or at least created).</li>
+      <li><strong>Authors Group</strong> - SharePoint group assigned "Author" rights for the account.</li>
+      <li><strong>Viewers Group</strong> - SharePoint group assigned "Viewer" rights for the account.</li>
+      <li><strong>Add new account</strong> - Open the account creation screen to setup a new account.</li>
+    </ol>
+
+    <h3 id="adding-editing">Adding/Editing a Brightcove Studio Account</h3>
+
+    <p>Whether adding a new account, or editing an existing account, the process and the options are the same. All of the account properties (except for the Author and Viewers groups) needs to be obtained from the Brightcove account first. The following are the properties required for each account.</p>
+
+    <figure class="bcls-figure">
+      <img class="bcls-image" alt="add or edit an account" width="700" src="//learning-services-media.brightcove.com/doc-assets/node/18744-sharepoint-brightcove-connector-40-configuration/addeditaccount.jpg"
+      />
+    </figure>
+    <ol class="bcls-tasklist">
+      <li><strong>Account Name</strong> - Name of the account. This name is only used in SharePoint so does not need to be the same as in Video Cloud.</li>
+      <li><strong>DefaultVideoPlayerId</strong> - Sets the default player for videos.</li>
+      <li><strong>DefaultPlaylistPlayerId</strong> - Sets the default playlist player.</li>
+      <li><strong>Account ID</strong> - The Brightcove Account ID from Video Cloud.</li>
+      <li><strong>ClientID</strong> - The Brightcove API Authentication Client ID.</li>
+      <li><strong>Client Secret</strong> - The Brightcove API Authentication Client Secret.</li>
+      <li><strong>Author's Group, Viewer's Group</strong> - SharePoint side permissions definition groups for the account.
+        <ol type="a">
+          <li>Members of the Author's Group (in this case the SharePoint "Owners" Group) have the ability to perform functions in the account that require a write token such as adding a video, editing and updating an existing video, creating/editing a playlist, etc. They can also do all read type functions such as browsing and searching for videos and playlists.</li>
+          <li>Members of the Viewer's Group (in this case the SharePoint "Visitors" Group) are only authorized for read type functions such as browsing and searching for videos and playlists.</li>
+        </ol>
+      </li>
+    </ol>
+
+    <p>To edit any of the properties in the above account list, the user can either click on the property name or its value (if present) to open the property popup dialog box:</p>
+
+    <h4>Enter Account Credentials from Brightcove into SharePoint</h4>
+
+    <p>In order for SharePoint to connect to Brightcove Video Cloud, the account credentials from Brightcove must be added to SharePoint. This section describes how to locate the account credentials in Brightcove. The following section describes how to add those credentials to the SharePoint connector.</p>
+
+    <ol class="bcls-tasklist">
+      <li>Log into Brightcove Video Cloud. Note the Publisher ID value.<br />
+        <img class="bcls-image--no-border" alt="" width="900" src="https://img.brightcove.com/node16612-accounts-publisher-id.png" /></li>
+      <li>Navigate to Admin.<br />
+        <img class="bcls-image--no-border" alt="" width="900" src="https://img.brightcove.com/node16612-accounts-admin.png" /></li>
+      <li>Navigate to API Authentication.<br />
+        <img class="bcls-image--no-border" alt="" width="900" src="https://img.brightcove.com/node16612-accounts-admin-api-authentication.png" /></li>
+      <li>Register a new application.<br />
+        <img class="bcls-image--no-border" alt="" width="900" src="https://img.brightcove.com/node16612-accounts-admin-register-button.png" /></li>
+      <li>Name the application, set account access, and enable APIs.<br />
+        <img class="bcls-image--no-border" alt="" width="900" src="https://img.brightcove.com/node16612-accounts-admin-auth-form.png" /></li>
+      <li>Note the Client ID and the Client Secret. You will need to enter them into SharePoint in the following section.<br />
+        <img class="bcls-image--no-border" alt="" width="500" src="https://img.brightcove.com/node16612-accounts-admin-auth-credentials.png" /></li>
+    </ol>
+
+    <p>To set the Brightcove Account ID, select "Account ID" button and enter the Brightcove Publisher ID that you saved from the previous step on the following modal:</p>
+
+    <figure><img class="bcls-image--no-border" alt="" width="623" src="https://img.brightcove.com/node16612-account-mgmt-account-id.png" /></figure>
+
+    <p>To set the Brightcove Client ID, select "Client ID" button and enter the Client ID that you saved from the previous step on the following modal:</p>
+
+    <figure><img class="bcls-image--no-border" alt="" width="623" src="https://img.brightcove.com/node16612-account-mgmt-client-id.png" /></figure>
+
+    <p>To set the Brightcove Client Secret, select "Client Secret" button and enter the Client Secret that you saved from the previous step on the following modal:</p>
+
+    <figure><img class="bcls-image--no-border" alt="" width="623" src="https://img.brightcove.com/node16612-account-mgmt-client-secret.png" /></figure>
+
+    <ol class="bcls-tasklist">
+      <li><strong>Value</strong> - Enter the value for the property. The value can be entered using cut and paste from the Video Cloud data, if available.</li>
+      <li><strong>Close</strong> - Close the property dialog box without making any changes.</li>
+      <li><strong>OK</strong> - Record the value in the property list and close the dialog.</li>
+    </ol>
+  </section>
+
+  <section class="bcls-section">
+    <h3 id="players">Defining Video Cloud Players</h3>
+
+    <p>To set the Player ID that should be used as the default single-video player in SharePoint, select the "DefaultVideoPlayerId" button enter the Player ID from Brightcove on the following modal. The Player must have <a href="https://support.brightcove.com/creating-and-publishing-players-using-players-module">already been created</a> on Brightcove Studio.</p>
+
+    <figure><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16612-account-mgmt-player-id.png" /></figure>
+
+    <ol class="bcls-section">
+      <li><strong>Value</strong> - Enter the value for the property. The value can be entered using cut and paste from the Video Cloud data if available.</li>
+      <li><strong>Close</strong> - Close the property dialog box without making any changes.</li>
+      <li><strong>OK</strong> - Record the value in the property list and close the dialog.</li>
+    </ol>
+
+    <p>To set the Player ID that should be used as the default playlist video player in SharePoint, select the "DefaultPlaylistPlayerId" button and enter the Player ID from Brightcove. You must have created a <a href="https://support.brightcove.com/implementing-playlists#enableplayer">Playlist-enabled Player</a> on Brightcove Studio for this to function.</p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="permissions">Setting SharePoint Permissions</h2>
+
+    <p>To set the SharePoint group that should be authorized as the Author's group, select the "Author's Group" button and select a group from the pulldown as demonstrated in the following modal.</p>
+
+    <h4>Group Property Popup</h4>
+
+    <figure><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16612-account-mgmt-group-property.png" /></figure>
+
+    <ol class="bcls-tasklist">
+      <li><strong>Select a group</strong> - Display all of the SharePoint groups that are available in the Site in which the Connector is installed.</li>
+      <li><strong>OK</strong> - Record the value in the property list and close the dialog.</li>
+    </ol>
+
+    <p>To set the SharePoint group that should be authorized as the Viewer's group, select the "Viewer's Group" button and select a group from the pulldown.</p>
+
+    <p><strong>IMPORTANT - The values for an account are not saved until the account "Save" button is clicked. Entering values in the property dialog boxes does not immediately save them in the account.</strong></p>
+
+    <figure><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16612-account-mgmt-save-delete.png" /></figure>
+
+    <ol>
+      <li><strong>Save Account</strong> - Commits all of the values set on the account properties into SharePoint.</li>
+      <li><strong>Delete Account</strong> - Removes the account from SharePoint. Warning - when this action is taken, all videos that have been imported to SharePoint under the account will no longer be accessible in SharePoint. It does not, however, delete the videos from Video Cloud.</li>
+      <li><strong>Cancel</strong> - Closes the account setup window without recording any of the changes.</li>
+    </ol>
+  </section>
+
+  <p>Your Brightcove Connector is now set up. To learn how to use it, continue on to Sharepoint-Brightcove Connector 4.0: Usage.</p>
+
+</article>
