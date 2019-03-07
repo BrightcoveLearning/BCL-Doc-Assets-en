@@ -49,8 +49,8 @@ var BCLS = ( function (window, document) {
       account_id_input = document.getElementById('account_id'),
       client_id_input = document.getElementById('client_id'),
       client_secret_input = document.getElementById('client_secret'),
-      hostingRadioButtons = document.getElementsByTagName('hosting'),
-      idTypeRadioButtons = document.querySelectorAll('idType'),
+      hostingRadioButtons = document.querySelectorAll('.hosting'),
+      idTypeRadioButtons = document.querySelectorAll('.idType'),
       customField = document.querySelector('#customField'),
       customFieldName = document.querySelector('#customFieldName'),
       singlePage = document.querySelector('#singlePage'),
@@ -62,11 +62,10 @@ var BCLS = ( function (window, document) {
       searchStr = document.getElementById('searchStr'),
       sortSelect = document.getElementById('sortSelect'),
       directionSelect = document.getElementById('directionSelect'),
-      makeFeed = document.getElementById('makeFeed'),
+      makeMap = document.getElementById('makeMap'),
       logger = document.getElementById('logger'),
       apiRequest = document.getElementById('apiRequest'),
-      feedDisplay = document.getElementById('feedDisplay'),
-      allButtons = document.querySelectorAll('button');
+      feedDisplay = document.getElementById('feedDisplay');
 
     /**
      * tests for all the ways a variable might be undefined or not have a value
@@ -91,24 +90,23 @@ var BCLS = ( function (window, document) {
 
     /**
      * disables all buttons so user can't submit new request until current one finishes
+     *
+     * @param {htmlElement} b reference to the button
      */
-    function disableButtons() {
-        var i,
-            iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].setAttribute('disabled', 'disabled');
-        }
+
+    function disableButton(b) {
+        b.classList.add('disabled');
+        b.setAttribute('disabled', 'disabled');
     }
 
     /**
-    * re-enables all buttons
-    */
-    function enableButtons() {
-        var i,
-        iMax = allButtons.length;
-        for (i = 0; i < iMax; i++) {
-            allButtons[i].removeAttribute('disabled');
-        }
+     * enable  a button
+     *
+     * @param   {htmlElement}  b  reference to the button
+     */
+    function enableButton(b) {
+        b.classList.remove('disabled');
+        b.removeAttribute('disabled');
     }
 
     /**
@@ -198,7 +196,7 @@ var BCLS = ( function (window, document) {
         mapStr += eChannel + '</rss>';
         logger.textContent = 'Finished!';
         feedDisplay.textContent = vkbeautify.xml(mapStr);
-        enableButtons();
+        enableButton();
     }
 
     /**
@@ -210,7 +208,7 @@ var BCLS = ( function (window, document) {
             options = {},
             parsedData;
         // disable buttons to prevent a new request before current one finishes
-        disableButtons();
+        disableButton();
         options.proxyURL = proxyURL;
         options.account_id = account_id;
         if (isDefined(client_id) && isDefined(client_secret)) {
@@ -350,7 +348,7 @@ var BCLS = ( function (window, document) {
 
     function init() {
         // event handlers
-        makeFeed.addEventListener('click', function() {
+        makeMap.addEventListener('click', function() {
             var numVideos;
             // get the inputs
             client_id = client_id_input.value;
