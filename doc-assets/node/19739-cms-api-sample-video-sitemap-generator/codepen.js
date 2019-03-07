@@ -159,7 +159,7 @@ var BCLS = ( function (window, document) {
 
 
     function addItems() {
-        var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
+        var i, iMax, video;
         if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
@@ -176,7 +176,8 @@ var BCLS = ( function (window, document) {
                 } else if (isDefined(video.thumbnail)) {
                     thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
                 } else {
-                    doThumbnail = false;
+                    // no thumbnail, skip video
+                    break;
                 }
 
                 pubdate = new Date(video.created_at).toGMTString();
