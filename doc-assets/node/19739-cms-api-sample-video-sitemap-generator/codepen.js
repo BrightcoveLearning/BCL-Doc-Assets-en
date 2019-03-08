@@ -172,7 +172,7 @@ var BCLS = ( function (window, document) {
 
 
     function addItems() {
-        var i, iMax, video;
+        var i, iMax, video, fieldName;
         if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
@@ -196,7 +196,13 @@ var BCLS = ( function (window, document) {
                 }
               } else {
                 // URL stored in custom field
-                if
+                fieldName = customFieldName.value;
+                if (hasProperty(video.custom_fields, fieldName)) {
+                  video.content_loc = video.custom_fields[fieldName];
+                } else {
+                  // video is missing custom field; skip it
+                  break;
+                }
               }
 
                 if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
