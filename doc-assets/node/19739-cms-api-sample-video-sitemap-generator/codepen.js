@@ -80,6 +80,19 @@ var BCLS = ( function (window, document) {
     }
 
     /**
+     * determines whether an object has a certain property
+     * @param {object} obj the object
+     * @param {string} prop the property name
+     * @returns {boolean}
+     */
+    function hasProperty(obj, prop) {
+      if (prop in obj) {
+        return true;
+      }
+      return false;
+    }
+
+    /**
      * get selected value for single select element
      * @param {htmlElement} e the select element
      */
@@ -183,7 +196,7 @@ var BCLS = ( function (window, document) {
                 }
               } else {
                 // URL stored in custom field
-                
+                if
               }
 
                 if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
