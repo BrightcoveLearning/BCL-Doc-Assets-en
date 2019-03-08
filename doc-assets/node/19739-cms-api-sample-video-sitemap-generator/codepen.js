@@ -181,6 +181,9 @@ var BCLS = ( function (window, document) {
                   // no reference id; skip video
                   break;
                 }
+              } else {
+                // URL stored in custom field
+                
               }
 
                 if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
