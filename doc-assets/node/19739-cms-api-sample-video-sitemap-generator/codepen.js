@@ -214,6 +214,8 @@ var BCLS = ( function (window, document) {
                     break;
                 }
 
+              video.freqSelect = (getSelectedValue(freqSelect) !== 'null') ? getSelectedValue(freqSelect) : null;
+
                 pubdate = new Date(video.created_at).toGMTString();
                 mapStr += sItem;
                 mapStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
