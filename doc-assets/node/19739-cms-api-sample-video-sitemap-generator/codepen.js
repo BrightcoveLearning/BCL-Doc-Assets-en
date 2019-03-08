@@ -206,7 +206,7 @@ var BCLS = ( function (window, document) {
               }
 
                 if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
-                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
+                    video.thumbnailURL = video.images.thumbnail.sources[0].src;
                 } else if (isDefined(video.thumbnail)) {
                     thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
                 } else {
