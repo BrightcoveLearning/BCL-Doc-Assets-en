@@ -215,9 +215,7 @@ var BCLS = (function (window, document) { // strings for XML tags
           break;
         }
 
-        video.freqSelect = getSelectedValue(freqSelect) !== "null"
-          ? getSelectedValue(freqSelect)
-          : null;
+        video.freqSelect = getSelectedValue(freqSelect) !== "null" ? getSelectedValue(freqSelect) : null;
 
         pubdate = new Date(video.created_at).toGMTString();
         mapStr += sItem;
