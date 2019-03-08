@@ -168,6 +168,29 @@ var BCLS = (function (window, document) { // strings for XML tags
 
     return str;
   }
+  /**
+   * find the best MP4 source 
+   *
+   * @param   {array}  sources  array of source objects for a video
+   *
+   * @return  {string}  the src for best MP4 or null if none
+   */
+  function processSources(sources) {
+    var i = sources.length;
+    // remove non-MP4 sources
+    while (i > 0) {
+      i--;
+      if (sources[i].container !== "MP4") {
+        sources.splice(i, 1);
+      } else if (sources[i].hasOwnProperty("stream_name")) {
+        sources.splice(i, 1);
+      }
+    }
+    // sort sources by encoding rate
+    sortArray(sources, "encoding_rate");
+    // return the first item (highest bitrate)
+    return sources[0];
+  }
 
   function addItems() {
     var i,
@@ -178,7 +201,14 @@ var BCLS = (function (window, document) { // strings for XML tags
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
         video = videosArray[i];
-        // video may not have a valid source
+
+        // check for break conditions
+
+        // only active videos
+        if (video.state !== 'ACTIVE') {
+          break;
+        }
+        // must have a valid URL
         if (getRadioValue(hostingRadioButtons) === "singlePage") {
           // single page hosting
           video.content_loc = pageURL.value;
