@@ -163,14 +163,18 @@ var BCLS = ( function (window, document) {
         if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
-                video = videosArray[i];
+              video = videosArray[i];
                 // video may not have a valid source
-                if (isDefined(video.source) && isDefined(video.source.src)) {
-                    videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
+              if (getRadioValue(hostingRadioButtons) === 'singlePage') {
+                // single page hosting
+                video.content_loc = pageURL.value;
+                if (video.content_loc.indexOf('?') > -1) {
+                  video.content_loc += '&' + urlParam.value + '=';
                 } else {
-                    videoURL = "";
+                  video.content_loc += '?' + urlParam.value + '=';
                 }
-                // depending on when/how the video was created, it may have different thumbnail properties or none at all
+              }
+
                 if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
                     thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
                 } else if (isDefined(video.thumbnail)) {
