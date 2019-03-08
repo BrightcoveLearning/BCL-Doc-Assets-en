@@ -173,6 +173,14 @@ var BCLS = ( function (window, document) {
                 } else {
                   video.content_loc += '?' + urlParam.value + '=';
                 }
+                if (getRadioValue(idTypeRadioButtons) === id) {
+                  video.content_loc += video.id;
+                } else if (isDefined(video.reference_id)) {
+                  video.content_loc += video.reference_id;
+                } else {
+                  // no reference id; skip video
+                  break;
+                }
               }
 
                 if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
