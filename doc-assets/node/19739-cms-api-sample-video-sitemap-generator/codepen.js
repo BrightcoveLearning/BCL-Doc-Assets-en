@@ -384,7 +384,7 @@ var BCLS = (function (window, document) { // strings for XML tags
             while (i > 0) {
               i--;
               console.log('videosArray[i]', videosArray[i]);
-              if (!isDefined(videosArray[i].content_loc;
+              if (!isDefined(videosArray[i].content_loc) {
 
                 videosArray.splice(i, 1);
               }
