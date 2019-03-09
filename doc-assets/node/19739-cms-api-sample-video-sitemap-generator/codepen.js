@@ -393,7 +393,7 @@ var BCLS = (function(window, document, vkbeautify) {
             i = videosArray.length;
             while (i > 0) {
               i--;
-              console.log('videosArray[i]', videosArray[i]);
+              // console.log('videosArray[i]', videosArray[i]);
               if (!isDefined(videosArray[i].content_loc)) {
                 videosArray.splice(i, 1);
               }
