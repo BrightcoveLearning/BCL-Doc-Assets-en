@@ -271,10 +271,10 @@ var BCLS = (function(window, document, vkbeautify) {
         } else {
           mapStr += sFamilyfriendly + 'no' + eFamilyfriendly;
         }
-        mapStr += eVideo
+        mapStr += eVideo;
       }
     }
-    mapStr += e;
+    mapStr += eUrl + '</urlset>';
     logger.textContent = 'Finished!';
     feedDisplay.textContent = vkbeautify.xml(mapStr);
     enableButton(makeMap);
@@ -464,8 +464,6 @@ var BCLS = (function(window, document, vkbeautify) {
       }
       search = searchStr.value;
       numVideos = getSelectedValue(numberSelect);
-      // add title and description
-      mapStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
       // if all videos wanted, get count; otherwise get videos
       if (numVideos === 'all') {
         // we need to get the count
@@ -483,4 +481,4 @@ var BCLS = (function(window, document, vkbeautify) {
   }
 
   init();
-})(window, document, vkbeautify)
+})(window, document, vkbeautify);
