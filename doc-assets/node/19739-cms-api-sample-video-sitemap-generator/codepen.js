@@ -319,7 +319,7 @@ var BCLS = (function(window, document, vkbeautify) {
             logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting views and sources';
             callNumber = 0;
             totalCalls = videosArray.length;
-            createRequest('getVideoViews')
+            createRequest('getVideoViews');
           }
         });
         break;
@@ -328,7 +328,8 @@ var BCLS = (function(window, document, vkbeautify) {
         options.requestType = 'GET';
         logger.textContent = 'Getting alltime views for video ' + (callNumber + 1) + ' of ' + totalCalls;
         makeRequest(options, function(response) {
-          
+          videosArray[callNumber].view_count = JSON.parse(response).alltime_video_views;
+          createRequest('getVideoSources');
         });
         break;
       case 'getVideoSources':
@@ -350,7 +351,7 @@ var BCLS = (function(window, document, vkbeautify) {
             videosArray[callNumber].content_loc = null;
           }
           callNumber++;
-          if (callNumber < iMax) {
+          if (callNumber < totalCalls) {
             createRequest('getVideoSources');
           } else {
             // remove videos with no sources
@@ -467,4 +468,4 @@ var BCLS = (function(window, document, vkbeautify) {
   }
 
   init();
-})(window, document, vkbeautify);
+})(window, document, vkbeautify)
