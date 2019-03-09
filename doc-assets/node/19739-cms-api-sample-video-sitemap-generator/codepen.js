@@ -291,9 +291,10 @@ var BCLS = (function(window, document, vkbeautify) {
           mapStr += sFamilyfriendly + 'no' + eFamilyfriendly;
         }
         mapStr += eVideo;
+        mapStr += eUrl;
       }
     }
-    mapStr += eUrl + '</urlset>';
+    mapStr += '</urlset>';
     logger.textContent = 'Finished!';
     feedDisplay.textContent = vkbeautify.xml(mapStr);
     enableButton(makeMap);
