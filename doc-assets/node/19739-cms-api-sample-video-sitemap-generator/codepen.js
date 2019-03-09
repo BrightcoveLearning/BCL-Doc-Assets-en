@@ -501,11 +501,11 @@ var BCLS = (function(window, document, vkbeautify) {
       var rb = hostingRadioButtons[i];
       rb.addEventListener('change', function() {
         if (getRadioValue(hostingRadioButtons) === 'singlePage') {
-          showBlock(onePage);
-          hideBlock(metadata);
+          showBlock(singlePage);
+          hideBlock(customField);
         } else {
-          showBlock(metadata);
-          hideBlock(onePage);
+          showBlock(customField);
+          hideBlock(singlePage);
         }
       });
     }
