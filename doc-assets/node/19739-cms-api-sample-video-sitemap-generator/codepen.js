@@ -1,4 +1,4 @@
-var BCLS = (function (window, document, vkbeautify) {
+var BCLS = (function(window, document, vkbeautify) {
   var mapStr = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">',
     sCdata = '<![CDATA[',
     eCdata = ']]>',
@@ -67,10 +67,10 @@ var BCLS = (function (window, document, vkbeautify) {
     feedDisplay = document.getElementById('feedDisplay');
 
   /**
-     * tests for all the ways a variable might be undefined or not have a value
-     * @param {String|Number} x the variable to test
-     * @return {Boolean} true if variable is defined and has a value
-     */
+   * tests for all the ways a variable might be undefined or not have a value
+   * @param {String|Number} x the variable to test
+   * @return {Boolean} true if variable is defined and has a value
+   */
   function isDefined(x) {
     if (x === '' || x === null || x === undefined) {
       return false;
@@ -79,11 +79,11 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-     * determines whether an object has a certain property
-     * @param {object} obj the object
-     * @param {string} prop the property name
-     * @returns {boolean}
-     */
+   * determines whether an object has a certain property
+   * @param {object} obj the object
+   * @param {string} prop the property name
+   * @returns {boolean}
+   */
   function hasProperty(obj, prop) {
     if (prop in obj) {
       return true;
@@ -92,18 +92,18 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-     * get selected value for single select element
-     * @param {htmlElement} e the select element
-     */
+   * get selected value for single select element
+   * @param {htmlElement} e the select element
+   */
   function getSelectedValue(e) {
     return e.options[e.selectedIndex].value;
   }
 
   /**
-     * get value of a selected radio buttom
-     * @param {htmlElementCollection} rgroup the collection of radio buttom elements
-     * @returns {string} value of the selected element
-     */
+   * get value of a selected radio buttom
+   * @param {htmlElementCollection} rgroup the collection of radio buttom elements
+   * @returns {string} value of the selected element
+   */
   function getRadioValue(rgroup) {
     var i = 0,
       iMax = rgroup.length;
@@ -115,9 +115,9 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-     * disables all buttons so user can't submit new request until current one finishes
-     * @param {htmlElement} b reference to the button
-     */
+   * disables all buttons so user can't submit new request until current one finishes
+   * @param {htmlElement} b reference to the button
+   */
 
   function disableButton(b) {
     b.classList.add('disabled');
@@ -125,9 +125,9 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-     * enable  a button
-     * @param   {htmlElement}  b  reference to the button
-     */
+   * enable  a button
+   * @param   {htmlElement}  b  reference to the button
+   */
   function enableButton(b) {
     b.classList.remove('disabled');
     b.removeAttribute('disabled');
@@ -140,7 +140,7 @@ var BCLS = (function (window, document, vkbeautify) {
    * @return sorted array
    */
   function sortArray(targetArray, objProperty) {
-    targetArray.sort(function (b, a) {
+    targetArray.sort(function(b, a) {
       var propA = a[objProperty],
         propB = b[objProperty];
       // sort ascending; reverse propA and propB to sort descending
@@ -156,7 +156,7 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-   * find the best MP4 source 
+   * find the best MP4 source
    *
    * @param   {array}  sources  array of source objects for a video
    *
@@ -178,7 +178,7 @@ var BCLS = (function (window, document, vkbeautify) {
     // return the first item (highest bitrate)
     return sources[0].src;
   }
-  
+
   function addItems() {
     var i,
       iMax,
@@ -237,7 +237,7 @@ var BCLS = (function (window, document, vkbeautify) {
         mapStr += sUrl;
         mapStr += sLoc + video.loc + eLoc;
         mapStr += sVideo;
-        mapStr += sThumbnail + video
+        mapStr += sThumbnail + video;
       }
     }
     mapStr += eChannel + '</rss>';
@@ -247,9 +247,9 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-     * sets up the data for the API request
-     * @param {String} id the id of the button that was clicked
-     */
+   * sets up the data for the API request
+   * @param {String} id the id of the button that was clicked
+   */
   function createRequest(id) {
     var endPoint = '',
       options = {},
@@ -272,7 +272,7 @@ var BCLS = (function (window, document, vkbeautify) {
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           // set total videos
           totalVideos = parsedData.count;
@@ -289,7 +289,7 @@ var BCLS = (function (window, document, vkbeautify) {
         options.url = baseURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           videosArray = videosArray.concat(parsedData);
           callNumber++;
@@ -310,7 +310,7 @@ var BCLS = (function (window, document, vkbeautify) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         logger.textContent = 'Getting sources for video ' + videosArray[callNumber].name;
-        makeRequest(options, function (response) {
+        makeRequest(options, function(response) {
           sources = JSON.parse(response);
           if (sources.length > 0) {
             // get the best MP4 rendition
@@ -333,7 +333,7 @@ var BCLS = (function (window, document, vkbeautify) {
                 videosArray.splice(i, 1);
               }
             }
-            logger.textContent = 'Sources retrieved. Generating sitemap...'
+            logger.textContent = 'Sources retrieved. Generating sitemap...';
             addItems();
           }
         });
@@ -342,16 +342,16 @@ var BCLS = (function (window, document, vkbeautify) {
   }
 
   /**
-     * send API request to the proxy
-     * @param  {Object} options for the request
-     * @param  {String} options.url the full API request URL
-     * @param  {String='GET','POST','PATCH','PUT','DELETE'} requestData [options.requestType='GET'] HTTP type for the request
-     * @param  {String} options.proxyURL proxyURL to send the request to
-     * @param  {String} options.client_id client id for the account (default is in the proxy)
-     * @param  {String} options.client_secret client secret for the account (default is in the proxy)
-     * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
-     * @param  {Function} [callback] callback function that will process the response
-     */
+   * send API request to the proxy
+   * @param  {Object} options for the request
+   * @param  {String} options.url the full API request URL
+   * @param  {String='GET','POST','PATCH','PUT','DELETE'} requestData [options.requestType='GET'] HTTP type for the request
+   * @param  {String} options.proxyURL proxyURL to send the request to
+   * @param  {String} options.client_id client id for the account (default is in the proxy)
+   * @param  {String} options.client_secret client secret for the account (default is in the proxy)
+   * @param  {JSON} [options.requestBody] Data to be sent in the request body in the form of a JSON string
+   * @param  {Function} [callback] callback function that will process the response
+   */
   function makeRequest(options, callback) {
     var httpRequest = new XMLHttpRequest(),
       response,
@@ -359,7 +359,7 @@ var BCLS = (function (window, document, vkbeautify) {
       dataString,
       proxyURL = options.proxyURL,
       // response handler
-      getResponse = function () {
+      getResponse = function() {
         try {
           if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
@@ -379,10 +379,10 @@ var BCLS = (function (window, document, vkbeautify) {
         }
       };
     /**
-         * set up request data
-         * the proxy used here takes the following request body:
-         * JSON.stringify(options)
-         */
+     * set up request data
+     * the proxy used here takes the following request body:
+     * JSON.stringify(options)
+     */
     // set response handler
     httpRequest.onreadystatechange = getResponse;
     // open the request
@@ -394,7 +394,7 @@ var BCLS = (function (window, document, vkbeautify) {
 
   function init() {
     // event handlers
-    makeMap.addEventListener('click', function () {
+    makeMap.addEventListener('click', function() {
       var numVideos;
       // get the inputs
       client_id = client_id_input.value;
@@ -432,10 +432,10 @@ var BCLS = (function (window, document, vkbeautify) {
         createRequest('getVideos');
       }
     });
-    feedDisplay.addEventListener('click', function () {
+    feedDisplay.addEventListener('click', function() {
       feedDisplay.select();
     });
   }
 
   init();
-})(window, document, vkbeautify)
+})(window, document, vkbeautify);
