@@ -45,9 +45,9 @@ var BCLS = (function(window, document, vkbeautify) {
     callNumber = 0,
     videosArray = [],
     // element references
-    account_id_input = document.getElementById('account_id'),
-    client_id_input = document.getElementById('client_id'),
-    client_secret_input = document.getElementById('client_secret'),
+    account_id_input = document.getElementById('account_id_input'),
+    client_id_input = document.getElementById('client_id_input'),
+    client_secret_input = document.getElementById('client_secret_input'),
     hostingRadioButtons = document.querySelectorAll('.hosting'),
     idTypeRadioButtons = document.querySelectorAll('.idType'),
     customField = document.querySelector('#customField'),
@@ -115,10 +115,27 @@ var BCLS = (function(window, document, vkbeautify) {
   }
 
   /**
+   * hide an HTML element and its children
+   *
+   * @param   {[type]}  block  the element to hide
+   */
+  function hideBlock(block) {
+    block.setAttribute('style', 'display:none;');
+  }
+
+  /**
+   * show a hidden HTML element and its children
+   *
+   * @param   {[type]}  block  the element to show
+   */
+  function showBlock(block) {
+    block.removeAttribute('style');
+  }
+
+  /**
    * disables all buttons so user can't submit new request until current one finishes
    * @param {htmlElement} b reference to the button
    */
-
   function disableButton(b) {
     b.classList.add('disabled');
     b.setAttribute('disabled', 'disabled');
@@ -438,6 +455,7 @@ var BCLS = (function(window, document, vkbeautify) {
   }
 
   function init() {
+    var i, iMax;
     // event handlers
     makeMap.addEventListener('click', function() {
       var numVideos;
@@ -475,6 +493,10 @@ var BCLS = (function(window, document, vkbeautify) {
         createRequest('getVideos');
       }
     });
+    iMax = hostingRadioButtons.length;
+    for (i = 0; i < iMax; i++) {
+
+    }
     feedDisplay.addEventListener('click', function() {
       feedDisplay.select();
     });
