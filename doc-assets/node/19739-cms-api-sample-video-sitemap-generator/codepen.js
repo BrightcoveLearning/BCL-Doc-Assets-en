@@ -50,6 +50,8 @@ var BCLS = (function(window, document, vkbeautify) {
     client_secret_input = document.getElementById('client_secret_input'),
     hostingRadioButtons = document.querySelectorAll('.hosting'),
     idTypeRadioButtons = document.querySelectorAll('.idType'),
+    onePage = document.getElementById('onePage'),
+    metadata = document.getElementById('metadata'),
     customField = document.querySelector('#customField'),
     customFieldName = document.querySelector('#customFieldName'),
     singlePage = document.querySelector('#singlePage'),
@@ -495,7 +497,16 @@ var BCLS = (function(window, document, vkbeautify) {
     });
     iMax = hostingRadioButtons.length;
     for (i = 0; i < iMax; i++) {
-
+      var rb = hostingRadioButtons[i];
+      rb.addEventListener('change', function() {
+        if (getRadioValue(hostingRadioButtons) === 'singlePage') {
+          showBlock(onePage);
+          hideBlock(metadata);
+        } else {
+          showBlock(metadata);
+          hideBlock(onePage);
+        }
+      });
     }
     feedDisplay.addEventListener('click', function() {
       feedDisplay.select();
