@@ -125,7 +125,7 @@ var BCLS = (function(window, document, vkbeautify) {
   }
 
   /**
-   * enable  a button
+   * enable a button
    * @param   {htmlElement}  b  reference to the button
    */
   function enableButton(b) {
