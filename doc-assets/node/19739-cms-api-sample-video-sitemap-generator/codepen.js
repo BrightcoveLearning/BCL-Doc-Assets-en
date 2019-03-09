@@ -308,7 +308,7 @@ var BCLS = (function(window, document, vkbeautify) {
       options = {},
       parsedData;
     // disable buttons to prevent a new request before current one finishes
-    disableButton();
+    disableButton(makeMap);
     options.proxyURL = proxyURL;
     options.account_id = account_id;
     if (isDefined(client_id) && isDefined(client_secret)) {
