@@ -214,6 +214,7 @@ var BCLS = (function(window, document, vkbeautify) {
               video.expiration_date = video.schedule.ends_at;
           }
         }
+      }
         // must have a valid URL
         if (getRadioValue(hostingRadioButtons) === 'singlePage') {
           // single page hosting
@@ -258,7 +259,7 @@ var BCLS = (function(window, document, vkbeautify) {
         mapStr += sVideo;
         mapStr += sThumbnail + video.thumbnailURL + eThumbnail;
         mapStr += sTitle + video.name + eTitle;
-        mapStr += sDescription + video.description + eDescription;
+        mapStr += sDescription + sCdata + video.description + eCdata + eDescription;
         mapStr += sContent_loc + video.content_loc + eContent_loc;
         mapStr += sDuration + video.duration + eDuration;
         if (isDefined(video.expiration_date)) {
@@ -270,14 +271,14 @@ var BCLS = (function(window, document, vkbeautify) {
         } else {
           mapStr += sFamilyfriendly + 'no' + eFamilyfriendly;
         }
+        mapStr += eVideo
       }
     }
-    mapStr += eChannel + '</rss>';
+    mapStr += e;
     logger.textContent = 'Finished!';
     feedDisplay.textContent = vkbeautify.xml(mapStr);
     enableButton(makeMap);
   }
-}
 
   /**
    * sets up the data for the API request
