@@ -183,7 +183,10 @@ var BCLS = (function(window, document, vkbeautify) {
     var i,
       iMax,
       video,
-      fieldName;
+      fieldName,
+      now = new Date(),
+      endAt,
+      startsAt;
     if (videosArray.length > 0) {
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
@@ -194,6 +197,10 @@ var BCLS = (function(window, document, vkbeautify) {
         // only active videos
         if (video.state !== 'ACTIVE') {
           break;
+        }
+        // if schedule starts after or end before now, skip
+        if (isDefined(video.schedule)) {
+
         }
         // must have a valid URL
         if (getRadioValue(hostingRadioButtons) === 'singlePage') {
