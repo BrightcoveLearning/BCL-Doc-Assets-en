@@ -511,6 +511,7 @@ var BCLS = (function(window, document, vkbeautify) {
     feedDisplay.addEventListener('click', function() {
       feedDisplay.select();
     });
+    hideBlock(singlePage);
   }
 
   init();
