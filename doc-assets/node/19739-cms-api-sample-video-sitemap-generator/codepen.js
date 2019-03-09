@@ -258,9 +258,18 @@ var BCLS = (function(window, document, vkbeautify) {
         mapStr += sVideo;
         mapStr += sThumbnail + video.thumbnailURL + eThumbnail;
         mapStr += sTitle + video.name + eTitle;
-        mapStr += sDescription + video.eDescription + eDescription;
+        mapStr += sDescription + video.description + eDescription;
+        mapStr += sContent_loc + video.content_loc + eContent_loc;
         mapStr += sDuration + video.duration + eDuration;
+        if (isDefined(video.expiration_date)) {
+          mapStr += sExpiration + video.expiration_date + eExpiration;
+        }
         mapStr += sPublicationdate + video.published_at + ePublicationdate;
+        if (familyFriendly.checked) {
+          mapStr += sFamilyfriendly + 'yes' + eFamilyfriendly;
+        } else {
+          mapStr += sFamilyfriendly + 'no' + eFamilyfriendly;
+        }
       }
     }
     mapStr += eChannel + '</rss>';
