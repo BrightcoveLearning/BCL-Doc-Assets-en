@@ -214,7 +214,7 @@ var BCLS = (function (window, document) { // strings for XML tags
     // return the first item (highest bitrate)
     return sources[0].src;
   }
-
+  
   function addItems() {
     var i,
       iMax,
@@ -234,16 +234,16 @@ var BCLS = (function (window, document) { // strings for XML tags
         // must have a valid URL
         if (getRadioValue(hostingRadioButtons) === "singlePage") {
           // single page hosting
-          video.content_loc = pageURL.value;
-          if (video.content_loc.indexOf("?") > -1) {
-            video.content_loc += "&" + urlParam.value + "=";
+          video.loc = pageURL.value;
+          if (video.loc.indexOf("?") > -1) {
+            video.loc += "&" + urlParam.value + "=";
           } else {
-            video.content_loc += "?" + urlParam.value + "=";
+            video.loc += "?" + urlParam.value + "=";
           }
           if (getRadioValue(idTypeRadioButtons) === id) {
-            video.content_loc += video.id;
+            video.loc += video.id;
           } else if (isDefined(video.reference_id)) {
-            video.content_loc += video.reference_id;
+            video.loc += video.reference_id;
           } else {
             // no reference id; skip video
             break;
@@ -252,7 +252,7 @@ var BCLS = (function (window, document) { // strings for XML tags
           // URL stored in custom field
           fieldName = customFieldName.value;
           if (hasProperty(video.custom_fields, fieldName)) {
-            video.content_loc = video.custom_fields[fieldName];
+            video.loc = video.custom_fields[fieldName];
           } else {
             // video is missing custom field; skip it
             break;
@@ -270,8 +270,7 @@ var BCLS = (function (window, document) { // strings for XML tags
 
         video.freqSelect = getSelectedValue(freqSelect) !== "null" ? getSelectedValue(freqSelect) : null;
 
-        pubdate = new Date(video.created_at).toGMTString();
-        mapStr += sItem;
+        mapStr += sUrl;
         mapStr += sLink + "https://players.brightcove.net/" + account_id + "/default_default/index.html?videoId=" + video.id + eLink;
         mapStr += sPubDate + pubdate + ePubDate;
         mapStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
@@ -385,7 +384,6 @@ var BCLS = (function (window, document) { // strings for XML tags
               i--;
               console.log('videosArray[i]', videosArray[i]);
               if (!isDefined(videosArray[i].content_loc) {
-
                 videosArray.splice(i, 1);
               }
             }
