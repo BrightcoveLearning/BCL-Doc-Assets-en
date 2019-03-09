@@ -185,7 +185,7 @@ var BCLS = (function(window, document, vkbeautify) {
       video,
       fieldName,
       now = new Date(),
-      endAt,
+      endsAt,
       startsAt;
     if (videosArray.length > 0) {
       iMax = videosArray.length;
@@ -200,7 +200,19 @@ var BCLS = (function(window, document, vkbeautify) {
         }
         // if schedule starts after or end before now, skip
         if (isDefined(video.schedule)) {
-
+          if (isDefined(video.schedule.starts_at)) {
+            startsAt = new Date(video.schedule.starts_at);
+            if (startsAt > now) {
+              break;
+            }
+          }
+          if (isDefined(video.schedule.ends_at)) {
+            endsAt = new Date(video.schedule.ends_at);
+            if (endsAt < now) {
+              break;
+            } else {
+              video.expiration_date = video.schedule.ends_at;
+          }
         }
         // must have a valid URL
         if (getRadioValue(hostingRadioButtons) === 'singlePage') {
@@ -244,7 +256,7 @@ var BCLS = (function(window, document, vkbeautify) {
         mapStr += sUrl;
         mapStr += sLoc + video.loc + eLoc;
         mapStr += sVideo;
-        mapStr += sThumbnail + video;
+        mapStr += sThumbnail + video.thumbnailURL + eThumbnail;
       }
     }
     mapStr += eChannel + '</rss>';
@@ -304,9 +316,19 @@ var BCLS = (function(window, document, vkbeautify) {
             logger.textContent = 'Getting video set ' + callNumber;
             createRequest('getVideos');
           } else {
-            logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting sources';
+            logger.textContent = 'Video data for ' + totalVideos + ' retrieved; getting views and sources';
             callNumber = 0;
+            totalCalls = videosArray.length;
+            createRequest('getVideoViews')
           }
+        });
+        break;
+      case 'getVideoViews':
+        options.url = 'https://analytics.api.brightcove.com/v1/alltime/accounts/' + account_id + '/videos/' + videosArray[callNumber];
+        options.requestType = 'GET';
+        logger.textContent = 'Getting alltime views for video ' + (callNumber + 1) + ' of ' + totalCalls;
+        makeRequest(options, function(response) {
+          
         });
         break;
       case 'getVideoSources':
