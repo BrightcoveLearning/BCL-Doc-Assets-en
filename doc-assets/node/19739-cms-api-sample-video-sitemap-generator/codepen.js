@@ -257,6 +257,10 @@ var BCLS = (function(window, document, vkbeautify) {
         mapStr += sLoc + video.loc + eLoc;
         mapStr += sVideo;
         mapStr += sThumbnail + video.thumbnailURL + eThumbnail;
+        mapStr += sTitle + video.name + eTitle;
+        mapStr += sDescription + video.eDescription + eDescription;
+        mapStr += sDuration + video.duration + eDuration;
+        mapStr += sPublicationdate + video.published_at + ePublicationdate;
       }
     }
     mapStr += eChannel + '</rss>';
@@ -264,6 +268,7 @@ var BCLS = (function(window, document, vkbeautify) {
     feedDisplay.textContent = vkbeautify.xml(mapStr);
     enableButton(makeMap);
   }
+}
 
   /**
    * sets up the data for the API request
