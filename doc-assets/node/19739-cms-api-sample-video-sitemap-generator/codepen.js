@@ -243,7 +243,7 @@ var BCLS = (function(window, document, vkbeautify) {
           } else {
             video.loc += '?' + urlParam.value + '=';
           }
-          if (getRadioValue(idTypeRadioButtons) === id) {
+          if (getRadioValue(idTypeRadioButtons) === 'id') {
             video.loc += video.id;
           } else if (isDefined(video.reference_id)) {
             video.loc += video.reference_id;
