@@ -309,9 +309,14 @@ var BCLS = (function(window, document, vkbeautify) {
         }
         if (video.geo !== null) {
           if (video.geo.exclude_countries) {
-
+            mapStr += sRestriction + 'deny">'
+          } else {
+            mapStr += sRestriction + 'allow">';
           }
-
+          video.geo.countries = toUpperCase(video.geo.countries);
+          mapStr += video.geo.countries.join(' ');
+          mapStr += eRestriction;
+        }
         mapStr += eVideo;
         mapStr += eUrl;
       }
