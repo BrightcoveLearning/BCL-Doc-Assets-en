@@ -241,14 +241,14 @@ var BCLS = (function(window, document, vkbeautify) {
             startsAt = new Date(video.schedule.starts_at);
             if (startsAt > now) {
               console.log('schedule start skip', video.id);
-              break;
+              continue;
             }
           }
           if (isDefined(video.schedule.ends_at)) {
             endsAt = new Date(video.schedule.ends_at);
             if (endsAt < now) {
 console.log('schedule end skip', video.id);
-              break;
+              continue;
             } else {
               video.expiration_date = video.schedule.ends_at;
           }
@@ -270,7 +270,7 @@ console.log('schedule end skip', video.id);
           } else {
             // no reference id; skip video
             console.log('no ref id skip', video.id);
-            break;
+            continue;
           }
         } else {
           // URL stored in custom field
@@ -280,7 +280,7 @@ console.log('schedule end skip', video.id);
           } else {
             // video is missing custom field; skip it
             console.log('custom field skip', video.id);
-            break;
+            continue;
           }
         }
 
@@ -291,7 +291,7 @@ console.log('schedule end skip', video.id);
         } else {
           // no thumbnail, skip video
           console.log('thumbnail skip', video.id);
-          break;
+          continue;
         }
 
         video.freqSelect = getSelectedValue(freqSelect) !== 'null' ? getSelectedValue(freqSelect) : null;
