@@ -355,8 +355,12 @@ var BCLS = (function(window, document, vkbeautify) {
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
-          // set total videos
-          totalVideos = parsedData.count;
+          // set total videos to get
+          if (parsedData.count < numVideos) {
+            totalVideos = parsedData.count;
+          } else {
+            totalVideos = numVideos;
+          }
           totalCalls = Math.ceil(totalVideos / limit);
           logger.textContent = 'Total videos: ' + totalVideos;
           createRequest('getVideos');
@@ -512,16 +516,8 @@ var BCLS = (function(window, document, vkbeautify) {
       }
       search = searchStr.value;
       numVideos = getSelectedValue(numberSelect);
-      // if all videos wanted, get count; otherwise get videos
-      if (numVideos === 'all') {
-        // we need to get the count
-        createRequest('getCount');
-      } else {
-        totalVideos = parseInt(numVideos);
-        totalCalls = Math.ceil(numVideos / limit);
-        logger.textContent = 'Total videos to retrieve: ' + totalVideos;
-        createRequest('getVideos');
-      }
+      // get count of videos, then we'll adjust to see how many we need to get
+      createRequest('getCount');
     });
     iMax = hostingRadioButtons.length;
     for (i = 0; i < iMax; i++) {
