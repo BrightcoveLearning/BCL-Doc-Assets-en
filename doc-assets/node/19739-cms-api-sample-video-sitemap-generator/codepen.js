@@ -42,6 +42,7 @@ var BCLS = (function(window, document, vkbeautify) {
     limit = 25,
     totalVideos = 0,
     totalCalls = 0,
+    numVideos,
     callNumber = 0,
     videosArray = [],
     // element references
@@ -492,7 +493,6 @@ var BCLS = (function(window, document, vkbeautify) {
     var i, iMax;
     // event handlers
     makeMap.addEventListener('click', function() {
-      var numVideos;
       // get the inputs
       client_id = client_id_input.value;
       client_secret = client_secret_input.value;
