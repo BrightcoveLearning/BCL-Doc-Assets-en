@@ -428,17 +428,15 @@ var BCLS = (function(window, document, vkbeautify) {
             createRequest('getVideoSources');
           } else {
             // remove videos with no sources
-            console.log('all videos', videosArray);
             
             i = videosArray.length;
             while (i > 0) {
               i--;
-              // console.log('videosArray[i]', videosArray[i]);
               if (!isDefined(videosArray[i].content_loc)) {
+                console.log('no mp4 skip' videosArray[i].video_id);
                 videosArray.splice(i, 1);
               }
             }
-            console.log('after no MP4 source removed', videosArray);
             
             logger.textContent = 'Sources retrieved. Generating sitemap...';
             addItems();
