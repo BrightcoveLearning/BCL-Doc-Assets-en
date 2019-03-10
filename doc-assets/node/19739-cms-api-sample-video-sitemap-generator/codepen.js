@@ -422,6 +422,8 @@ var BCLS = (function(window, document, vkbeautify) {
             createRequest('getVideoSources');
           } else {
             // remove videos with no sources
+            console.log('before', videosArray);
+            
             i = videosArray.length;
             while (i > 0) {
               i--;
@@ -430,6 +432,8 @@ var BCLS = (function(window, document, vkbeautify) {
                 videosArray.splice(i, 1);
               }
             }
+            console.log('after', videosArray);
+            
             logger.textContent = 'Sources retrieved. Generating sitemap...';
             addItems();
           }
