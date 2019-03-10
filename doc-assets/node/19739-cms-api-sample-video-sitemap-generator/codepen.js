@@ -433,7 +433,7 @@ var BCLS = (function(window, document, vkbeautify) {
             while (i > 0) {
               i--;
               if (!isDefined(videosArray[i].content_loc)) {
-                console.log('no mp4 skip' videosArray[i].video_id);
+                console.log('no mp4 skip', videosArray[i].video_id);
                 videosArray.splice(i, 1);
               }
             }
