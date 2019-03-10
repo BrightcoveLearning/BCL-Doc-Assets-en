@@ -233,7 +233,8 @@ var BCLS = (function(window, document, vkbeautify) {
 
         // only active videos
         if (video.state !== 'ACTIVE') {
-          break;
+          console.log(inactive skip), video.id;
+          continue;
         }
         // if schedule starts after or end before now, skip
         if (isDefined(video.schedule)) {
