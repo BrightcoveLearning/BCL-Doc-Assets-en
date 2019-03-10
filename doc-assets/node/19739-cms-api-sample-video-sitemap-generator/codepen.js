@@ -240,12 +240,14 @@ var BCLS = (function(window, document, vkbeautify) {
           if (isDefined(video.schedule.starts_at)) {
             startsAt = new Date(video.schedule.starts_at);
             if (startsAt > now) {
+              console.log('schedule start skip', video.id);
               break;
             }
           }
           if (isDefined(video.schedule.ends_at)) {
             endsAt = new Date(video.schedule.ends_at);
             if (endsAt < now) {
+console.log('schedule end skip', video.id);
               break;
             } else {
               video.expiration_date = video.schedule.ends_at;
@@ -267,6 +269,7 @@ var BCLS = (function(window, document, vkbeautify) {
             video.loc += video.reference_id;
           } else {
             // no reference id; skip video
+            console.log('no ref id skip', video.id);
             break;
           }
         } else {
@@ -276,6 +279,7 @@ var BCLS = (function(window, document, vkbeautify) {
             video.loc = video.custom_fields[fieldName];
           } else {
             // video is missing custom field; skip it
+            console.log('custom field skip', video.id);
             break;
           }
         }
@@ -286,6 +290,7 @@ var BCLS = (function(window, document, vkbeautify) {
           video.thumbnailURL = video.thumbnail;
         } else {
           // no thumbnail, skip video
+          console.log('thumbnail skip', video.id);
           break;
         }
 
