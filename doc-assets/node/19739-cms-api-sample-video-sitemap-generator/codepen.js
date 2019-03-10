@@ -248,7 +248,7 @@ var BCLS = (function(window, document, vkbeautify) {
           if (isDefined(video.schedule.ends_at)) {
             endsAt = new Date(video.schedule.ends_at);
             if (endsAt < now) {
-console.log('schedule end skip', video.id);
+              console.log('schedule end skip', video.id);
               continue;
             } else {
               video.expiration_date = video.schedule.ends_at;
@@ -428,7 +428,7 @@ console.log('schedule end skip', video.id);
             createRequest('getVideoSources');
           } else {
             // remove videos with no sources
-            console.log('before', videosArray);
+            console.log('all videos', videosArray);
             
             i = videosArray.length;
             while (i > 0) {
@@ -438,7 +438,7 @@ console.log('schedule end skip', video.id);
                 videosArray.splice(i, 1);
               }
             }
-            console.log('after', videosArray);
+            console.log('after no MP4 source removed', videosArray);
             
             logger.textContent = 'Sources retrieved. Generating sitemap...';
             addItems();
