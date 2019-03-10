@@ -117,6 +117,23 @@ var BCLS = (function(window, document, vkbeautify) {
   }
 
   /**
+   * converts each item in an array of strings to upper case
+   *
+   * @param   {array}  arr  an array of strings
+   *
+   * @return  {array}  the converted array
+   */
+  function toUpperCase(arr) {
+    var i,
+      iMax;
+    iMax = arr.length;
+    for (i = 0; i < iMax; i++) {
+      arr[i] = arr[i].toUpperCase();
+    }
+    return arr;
+  }
+
+  /**
    * hide an HTML element and its children
    *
    * @param   {[type]}  block  the element to hide
@@ -290,6 +307,11 @@ var BCLS = (function(window, document, vkbeautify) {
         } else {
           mapStr += sFamilyfriendly + 'no' + eFamilyfriendly;
         }
+        if (video.geo !== null) {
+          if (video.geo.exclude_countries) {
+
+          }
+
         mapStr += eVideo;
         mapStr += eUrl;
       }
