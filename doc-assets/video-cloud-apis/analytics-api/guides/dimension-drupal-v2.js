@@ -125,15 +125,5 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
     buildRequest('filter');
   });
 
-  function init() {
-    addDescription();
-    addURLParams();
-    addFieldValues();
-    addFilterValues();
-    addSampleRequests();
-  }
-
-  init();
-
 
 })(window, document, aapi_model);
