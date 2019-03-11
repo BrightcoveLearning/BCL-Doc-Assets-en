@@ -296,6 +296,8 @@ var BCLS = (function(window, document, vkbeautify) {
           continue;
         }
 
+        // at this point, the video should be ok to include
+        video.player_loc = 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id;
         video.freqSelect = getSelectedValue(freqSelect) !== 'null' ? getSelectedValue(freqSelect) : null;
 
         mapStr += sUrl;
