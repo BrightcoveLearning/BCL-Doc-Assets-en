@@ -221,7 +221,7 @@ var BCLS = (function(window, document, vkbeautify) {
             video.loc += '&' + url_param;
 
             video.loc += '?' + url_param;
-
+          }
           if (getRadioValue(idTypeRadioButtons) === 'id') {
             video.loc += video.id;
           } else if (isDefined(video.reference_id)) {
