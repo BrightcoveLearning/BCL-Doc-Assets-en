@@ -306,7 +306,7 @@ var BCLS = (function(window, document, vkbeautify) {
         mapStr += sThumbnail + sCdata + video.thumbnailURL + eCdata + eThumbnail;
         mapStr += sTitle + sCdata + video.name + eCdata + eTitle;
         mapStr += sDescription + sCdata + video.description + eCdata + eDescription;
-        mapStr += sContent_loc + sCdata + video.content_loc + eCdata + eContent_loc;
+        mapStr += sPlayer_loc + sCdata + video.player_loc + eCdata + ePlayer_loc;
         mapStr += sDuration + Math.round((video.duration / 1000)) + eDuration;
         if (isDefined(video.expiration_date)) {
           mapStr += sExpiration + video.expiration_date + eExpiration;
