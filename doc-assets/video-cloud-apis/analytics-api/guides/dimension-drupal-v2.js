@@ -1,10 +1,6 @@
 var BCLS_dimensions = (function(window, document, aapi_model) {
   var header = document.querySelector('article.bcls-article'),
     dimension = header.getAttribute('data-dimension'),
-    description = document.getElementById('description'),
-    paramTableBody = document.getElementById('paramTableBody'),
-    fields = document.getElementById('fields'),
-    filters = document.getElementById('filters'),
     dimensionRequest = document.getElementById('dimensionRequest'),
     filterRequest = document.getElementById('filterRequest'),
     responseEl = document.getElementById('response'),
@@ -40,102 +36,6 @@ var BCLS_dimensions = (function(window, document, aapi_model) {
     e.setAttribute('style', 'opacity:.5;cursor:not-allowed;');
   }
 
-  /**
-   * add the dimension description
-   */
-  function addDescription() {
-    description.textContent = dimensionObj.description;
-  }
-
-  /**
-   * inject the url param table
-   */
-  function addURLParams() {
-    var param,
-      thisParam,
-      tr,
-      td,
-      txt,
-      code,
-      frag = new DocumentFragment();
-    for (param in aapi_model.urlparams) {
-      if (arrayContains(dimensionObj.urlparams, param)) {
-        thisParam = aapi_model.urlparams[param];
-        tr = document.createElement('tr');
-        td = document.createElement('td');
-        code = document.createElement('code');
-        txt = document.createTextNode(param);
-        tr.appendChild(td);
-        code.appendChild(txt);
-        td.appendChild(code);
-        td = document.createElement('td');
-        txt = document.createTextNode(thisParam.description);
-        tr.appendChild(td);
-        td.appendChild(txt);
-        td = document.createElement('td');
-        if (thisParam.required) {
-          txt = document.createTextNode('yes');
-        } else {
-          txt = document.createTextNode('no');
-        }
-        tr.appendChild(td);
-        td.appendChild(txt);
-        td = document.createElement('td');
-        txt = document.createTextNode(thisParam.values);
-        tr.appendChild(td);
-        td.appendChild(txt);
-        td = document.createElement('td');
-        txt = document.createTextNode(thisParam.default);
-        tr.appendChild(td);
-        td.appendChild(txt);
-        frag.appendChild(tr);
-      }
-    }
-    paramTableBody.appendChild(frag);
-  }
-
-  /**
-   * inject the field values
-   */
-  function addFieldValues() {
-    var i,
-      iMax,
-      li,
-      txt,
-      code,
-      frag = new DocumentFragment();
-    iMax = dimensionObj.fields.length;
-    for (i = 0; i < iMax; i++) {
-      li = document.createElement('li');
-      code = document.createElement('code')
-      txt = document.createTextNode(dimensionObj.fields[i]);
-      code.appendChild(txt);
-      li.appendChild(code);
-      frag.appendChild(li);
-    }
-    fields.appendChild(frag);
-  }
-
-  /**
-   * inject the filter values
-   */
-  function addFilterValues() {
-    filters.textContent = 'Filter values: ' + dimensionObj.filter_values.join(', ');
-  }
-
-  /**
-   * inject the sample requests
-   */
-  function addSampleRequests() {
-    dimensionRequest.textContent = dimensionObj.samples[0].dimension;
-    filterRequest.textContent = dimensionObj.samples[1].filter;
-    if (dimensionObj.samples[1].filter == 'Not applicable') {
-      disable(sendFilterRequest);
-      sendFilterRequest.removeEventListener('click', function() {
-        buildRequest('filter');
-      });
-    }
-  }
 
   /**
    * handler for API request responses
