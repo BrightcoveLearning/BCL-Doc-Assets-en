@@ -33,6 +33,7 @@ var BCLS = (function(window, document, vkbeautify) {
     account_id_default = '1485884786001',
     client_id,
     client_secret,
+    custom_field_default = 'page_url',
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -275,7 +276,7 @@ var BCLS = (function(window, document, vkbeautify) {
           }
         } else {
           // URL stored in custom field
-          fieldName = customFieldName.value;
+          fieldName = (isDefined(customFieldName.value) ) ? customFieldName.value : custom_field_default;
           if (hasProperty(video.custom_fields, fieldName)) {
             video.loc = video.custom_fields[fieldName];
           } else {
