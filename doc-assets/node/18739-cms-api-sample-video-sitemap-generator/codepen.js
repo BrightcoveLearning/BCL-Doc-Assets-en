@@ -34,6 +34,7 @@ var BCLS = (function(window, document, vkbeautify) {
     client_id,
     client_secret,
     custom_field_default = 'page_url',
+    urlParam_default = 'videoId',
     // api stuff
     proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
@@ -179,7 +180,8 @@ var BCLS = (function(window, document, vkbeautify) {
       fieldName,
       now = new Date(),
       endsAt,
-      startsAt;
+      startsAt,
+      url_param = (isDefined(urlParam.value)) ? urlParam.value : urlParam_default;
     if (videosArray.length > 0) {
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
@@ -216,10 +218,10 @@ var BCLS = (function(window, document, vkbeautify) {
           // single page hosting
           video.loc = pageURL.value;
           if (video.loc.indexOf('?') > -1) {
-            video.loc += '&' + urlParam.value + '=';
-          } else {
-            video.loc += '?' + urlParam.value + '=';
-          }
+            video.loc += '&' + url_param;
+
+            video.loc += '?' + url_param;
+
           if (getRadioValue(idTypeRadioButtons) === 'id') {
             video.loc += video.id;
           } else if (isDefined(video.reference_id)) {
