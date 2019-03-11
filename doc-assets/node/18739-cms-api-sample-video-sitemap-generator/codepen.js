@@ -299,12 +299,12 @@ var BCLS = (function(window, document, vkbeautify) {
         video.freqSelect = getSelectedValue(freqSelect) !== 'null' ? getSelectedValue(freqSelect) : null;
 
         mapStr += sUrl;
-        mapStr += sLoc + video.loc + eLoc;
+        mapStr += sLoc + sCdata + video.loc + eCdata + eLoc;
         mapStr += sVideo;
-        mapStr += sThumbnail + video.thumbnailURL + eThumbnail;
-        mapStr += sTitle + video.name + eTitle;
+        mapStr += sThumbnail + sCdata + video.thumbnailURL + eCdata + eThumbnail;
+        mapStr += sTitle + sCdata + video.name + eCdata + eTitle;
         mapStr += sDescription + sCdata + video.description + eCdata + eDescription;
-        mapStr += sContent_loc + video.content_loc + eContent_loc;
+        mapStr += sContent_loc + sCdata + video.content_loc + eCdata + eContent_loc;
         mapStr += sDuration + Math.round((video.duration / 1000)) + eDuration;
         if (isDefined(video.expiration_date)) {
           mapStr += sExpiration + video.expiration_date + eExpiration;
