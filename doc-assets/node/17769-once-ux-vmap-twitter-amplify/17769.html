@@ -1,247 +1,155 @@
-<article class="bcls-article">
-<section class="bcls-section" id="features">
-<h2>Features</h2>
+<article class="bcls-article" data-dimension="referrer_domain">
+<section class="bcls-section">
+<h2 id="urlParams">URL parameters</h2>
 
-<ul>
-	<li>Utilize new or existing Once VOD content when distributing via Twitter Amplify.</li>
-	<li>No need to change ad decisioning systems to work with Amplify and non-Amplify distribution.</li>
-	<li>Flexible usage based on per-request, pre-configured, or ad server-derived Amplify required parameters.</li>
-	<li>All ad and beacon tracking will be exposed to the Twitter client which will fire all impressions, tracking events and other callbacks presented via the Once UX VMAP response.</li>
-</ul>
-</section>
-
-<section class="bcls-section" id="architecture">
-<h2>Architecture</h2>
-
-<p>As an extension of the Once UX service, the VMAP XML presented to Twitter Amplify is based upon Internet Advertising Bureau (IAB) specifications for VMAP 1.0 and VAST 3.0. All video session metadata - both publisher and ad creative content - is formatted to adhere to the Twitter Amplify specification for consumption by the Twitter client application. Once UX contains built-in functionality capable of determining the requesting device and application, dynamically generating a Twitter Amplify VMAP response which includes advertising data, 3rd party audience measurement data and the video content stream URI.</p>
-</section>
-
-<section class="bcls-section" id="requirements">
-<h2>Requirements</h2>
-
-<ul>
-	<li>You must use an Ad Partner that can adhere to the unique response requirements to fulfill Twitter requirements for the <code>brandId</code> (the Twitter <code>ownerId</code> of the advertiser)</li>
-	<li>You must provide your Twitter <code>ownerId</code> (the id for your Twitter account) to be associated with all content delivered through Twitter Amplify</li>
-	<li>Only a single pre-roll is supported by Twitter Amplify - any additional ad configuration could result in ad beacons never being requested by the Amplify Player</li>
-</ul>
-</section>
-
-<section class="bcls-section" id="apiRequest">
-<h2>Once UX API request</h2>
-
-<p>All requests will be type <code>GET</code> and <strong>must</strong> be made via SSL (this is a Twitter requirement):</p>
-<textarea class="bcls-code">https://Once UX.unicornmedia.com/now/ads/vmap/od/auto/{domainGUID}/{applicationGUID}/{mediaItemGUID}/[?forcetav=true][&amp;param1=value]]</textarea>
+<p>Analytics API reports support the following URL parameters.</p>
 
 <table class="bcls-table">
+	<caption class="bcls-caption--table">URL Parameters</caption>
 	<thead class="bcls-table__head">
 		<tr>
-			<th>Argument</th>
+			<th>Parameter</th>
 			<th>Description</th>
+			<th>Required</th>
+			<th>Values</th>
+			<th>Default</th>
 		</tr>
 	</thead>
-	<tbody class="bcls-table__body">
+	<tbody class="bcls-table__body" id="paramTableBody">
 		<tr>
-			<td><code>domainGUID</code></td>
-			<td>Unique identifier for the domain</td>
+			<td><code>account</code></td>
+			<td>The accounts you want to report on</td>
+			<td>yes</td>
+			<td>one or more account ids as a comma-delimited list</td>
+			<td>none</td>
 		</tr>
 		<tr>
-			<td><code>applicationGUID</code></td>
-			<td>Unique identifier for the application</td>
+			<td><code>dimensions</code></td>
+			<td>The dimension(s) to report on</td>
+			<td>yes</td>
+			<td>one or more dimensions as a comma-delimited list (some combinations are not valid)</td>
+			<td>none</td>
 		</tr>
 		<tr>
-			<td><code>mediaitemGUID</code> or <code>foreignKey</code></td>
-			<td>Unique identifier for the media item</td>
+			<td><code>where</code></td>
+			<td>Used to specify filters for reports</td>
+			<td>no</td>
+			<td>{dimension}=={value} - one or more as a semi-colon-delimited list</td>
+			<td>none</td>
 		</tr>
 		<tr>
-			<td><code>Forcetav=true</code></td>
-			<td>Explicit parameter to generate a VMAP with Twitter extensions (required)</td>
+			<td><code>limit</code></td>
+			<td>Number of items to return</td>
+			<td>no</td>
+			<td>positive integer</td>
+			<td>10</td>
 		</tr>
 		<tr>
-			<td>Parameter values</td>
-			<td>Dynamic or static key/value pairs used to pass information to the ad server (optional)</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>For a forced rendition:</p>
-<textarea class="bcls-code">https://Once UX.unicornmedia.com/now/ads/vmap/{deliveryType}/{requestedFileType}/{domainGUID}/{applicationGUID}/{mediaItemGUID}/[?forcetav=true][&amp;param1=value]</textarea>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Argument</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>deliveryType</code></td>
-			<td>Method of delivery type (adaptive|stitched)</td>
+			<td><code>offset</code></td>
+			<td>Number of items to skip</td>
+			<td>no</td>
+			<td>positive integer</td>
+			<td>0</td>
 		</tr>
 		<tr>
-			<td><code>requestedFileType</code></td>
-			<td>Type of file being returned (m3u8|mp4)</td>
+			<td><code>sort</code></td>
+			<td>Field to sort items on</td>
+			<td>no</td>
+			<td>a valid field for the request</td>
+			<td>video_view</td>
 		</tr>
 		<tr>
-			<td><code>domainGUID</code></td>
-			<td>Unique identifier for the domain</td>
+			<td><code>fields</code></td>
+			<td>Fields to return</td>
+			<td>no</td>
+			<td>varies according to the dimension you are reporting on</td>
+			<td>video_view</td>
 		</tr>
 		<tr>
-			<td><code>applicationGUID</code></td>
-			<td>Unique identifier for the application</td>
+			<td><code>format</code></td>
+			<td>Format to return results in</td>
+			<td>no</td>
+			<td>json | csv | xlxs</td>
+			<td>json</td>
 		</tr>
 		<tr>
-			<td><code>mediaitemGUID</code> or <code>foreignKey</code></td>
-			<td>Unique identifier for the media item</td>
+			<td><code>reconciled</code></td>
+			<td>If included, will limit results to either historical or realtime data</td>
+			<td>no</td>
+			<td>true | false</td>
+			<td>true</td>
 		</tr>
 		<tr>
-			<td><code>Forcetav=true</code></td>
-			<td>Explicit parameter to generate a VMAP with Twitter extensions (required)</td>
+			<td><code>from</code></td>
+			<td>The beginning of the date range for the request</td>
+			<td>no</td>
+			<td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
+			<td>30 days prior to now</td>
 		</tr>
 		<tr>
-			<td>Parameter values</td>
-			<td>Dynamic or static key/value pairs used to pass information to the ad server (optional)</td>
+			<td><code>to</code></td>
+			<td>The end of the date range for the request</td>
+			<td>no</td>
+			<td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
+			<td>now</td>
 		</tr>
 	</tbody>
 </table>
 </section>
 
-<section class="bcls-section" id="configuration">
-<h2>Configuration</h2>
+<section class="bcls-section">
+<h2 id="fieldValues">Fields available</h2>
 
-<p>Twitter card excerpt:</p>
-<textarea class="bcls-code">&lt;meta name="twitter:amplify:vmap" content="https://Once UX.unicornmedia.com/now/ads/vmap/od/auto/a2df377d-7f81-4be2-92c2-f07dc272064a/d92617d4-b9bb-4df2-935f-d75a009bd4fd/d482b365-1a4f-4464-af2a-43d0b322211a?forcetav=true"&gt;</textarea></section>
+<p>The following fields can be returned for the dimension.</p>
 
-<section class="bcls-section" id="onceTAV">
-<h2>Twitter Amplify Metadata Requirements</h2>
-
-<h3>Publisher <code>ownerId</code> (required)</h3>
-
-<p>The Publisher's Twitter <code>ownerId</code> is required and <strong>must</strong> be a numeric ID associated with the Twitter account where the content will be served. The ID can be retrieved from Twitter. This value SHOULD be passed as extended metadata on ingest for the video content into the Once system.</p>
-
-<h4>Example of adding extended metadata within ingest request (see the guide to the <a href="../guides/getting-started-once.html#ingest">API Content Ingest</a> for more details):</h4>
-
-<pre class="line-numbers">
-<code class="language-xml">&lt;ExtendedMetadata&gt;
-    &lt;twownerId&gt;123&lt;/twownerId&gt;
-&lt;/ExtendedMetadata&gt;</code></pre>
-
-<h4>Options for <code>ownerId</code> retrieval</h4>
-
-<ul>
-	<li>Configured for the entire domain
-	<ul>
-		<li>Should only be done if multiple Twitter accounts are not associated to the same domain.</li>
-	</ul>
-	</li>
-	<li>Configured for the application
-	<ul>
-		<li>Can be used for existing customers with content already in the Once system.</li>
-		<li>Provides granularity in case a single domain delivers to multiple Twitter accounts.</li>
-		<li>An application configuration will overwrite any existing domain configuration.</li>
-	</ul>
-	</li>
-	<li>Set via Query String
-	<ul>
-		<li>Can be set explicity on the query string of the Once UX request.
-		<ul>
-			<li>Example: <code>?twownerId=ownerId</code> or <code>&amp;twownerId=ownerId</code></li>
-		</ul>
-		</li>
-		<li>A query string value will overwrite any application and domain configurations.</li>
-	</ul>
-	</li>
+<ul id="fields">
+	<li><code>ad_mode_begin</code></li>
+	<li><code>ad_mode_complete</code></li>
+	<li><code>engagement_score</code></li>
+	<li><code>play_request</code></li>
+	<li><code>play_rate</code></li>
+	<li><code>player_load</code></li>
+	<li><code>referrer_domain</code></li>
+	<li><code>video_impression</code></li>
+	<li><code>video_percent_viewed</code></li>
+	<li><code>video_seconds_viewed</code></li>
+	<li><code>video_view</code></li>
 </ul>
+</section>
 
-<h3>Publisher <code>contentId</code> (required)</h3>
+<section class="bcls-section">
+<h2 id="filterValues">Filter values</h2>
 
-<p>The <code>contentId</code> is used by Twitter to uniquely identify the content being viewed. The "Foreign Key" within the Once system is used to pass into the Twitter Amplify VMAP response. Items within the Once system should be configured with foreign keys otherwise it could impact metrics gathered by Twitter for accurate reporting.</p>
+<p>Used as a filter, a dimension allows you to narrow the results.</p>
 
-<h3>Advertiser <code>brandId</code> (required)</h3>
+<p id="filters">Filter values: A comma-delimited list of domains; e.g. brightcove.com,docs.brightcove.com</p>
+</section>
 
-<p>The <code>brandid</code> should be included in the ad server response and adhere to Twitter Amplify requirements, where <code>brandid</code> must be numeric and represents the advertiser’s Twitter <code>ownerId</code>. The <code>brandid</code> from the customer ADS must follow the same xpath to ensure proper parsing by the Once system for visibility in the VMAP object.</p>
+<section class="bcls-section">
+<h2 id="combinations">Combining dimensions</h2>
 
-<p>Notify Brightcove Support of any changes to the ADS.</p>
+<p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/overview-analytics-api-v1#metrics">Dimension and Fields</a>.</p>
+</section>
 
-<h4>Options for <code>brandId</code> (if not supported by ADS)</h4>
+<section class="bcls-section">
+<h2 id="examples">Request Examples</h2>
 
-<ul>
-	<li>Set via Query String
-	<ul>
-		<li>In the case that the ADS does not respond with a <code>brandId</code> , the appropriate <code>brandId</code> can be retrieved from Twitter and passed on the Once UX request
+<h3>Dimension request</h3>
 
-		<ul>
-			<li>Example: <code>?twbrandId=brandId</code> or <code>&amp;twbrandId=brandId</code></li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
+<pre class="line-numbers language-http code-toolbar">
+<code class="language-http" id="dimensionRequest"><span class="token header-name keyword"><span class="token header-name keyword">https:</span></span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=referrer_domain</code></pre>
+<button class="bcls-button" id="sendDimensionRequest">Test This Request</button>
 
-<h3>Content and Ad Tracking Events</h3>
+<h3>Filter request</h3>
 
-<p>Content and Ad tracking are both configurable within the Once system to expose impressions and tracking events to the Twitter Amplify client, which in-turn will fire events at appropriate playhead intervals. These supported beacons include:</p>
+<pre class="line-numbers language-http">
+<code class="language-http" id="filterRequest"><span class="token header-name keyword">https:</span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=video&amp;where=referrer_domain==brightcove.com,docs.brightcove.com</code></pre>
+<button class="bcls-button" id="sendFilterRequest">Test This Request</button>
 
-<ul>
-	<li>start</li>
-	<li>firstQuartile</li>
-	<li>midpoint</li>
-	<li>thirdQuartile</li>
-	<li>complete</li>
-	<li>pause</li>
-	<li>rewind</li>
-	<li>resume</li>
-</ul>
+<h3>Response</h3>
 
-<p>Content tracking MUST be preconfigured by Brightcove with the appropriate third party tracking tag URLs. These beacons are configurable per application, and can further be configured to pass dynamic or static metadata values.</p>
-
-<h3>Video Ad Creatives</h3>
-
-<p>Video ad creatives do not need to be pre-loaded into Once, as the system will automatically ingest any new ad creatives utilizing the Ad Cache service and prepare them for server-side insertion and delivery.</p>
-
-<div class="bcls-section" id="samples">
-<h2>Samples</h2>
-
-<p>Below is a sample Twitter Card html.</p>
-
-<p>For help on creating the Twitter Amplify VMAP XML, contact <a href="mailto:oncesupport@brightcove.com">Once Support</a>.</p>
-
-<h3>Twitter Card html</h3>
-
-<pre class="line-numbers">
-<code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-    &lt;head&gt;
-        &lt;meta charset="utf-8"&gt;
-
-        &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
-
-        &lt;title&gt;HTML&lt;/title&gt;
-
-    &lt;meta name="twitter:card" content="amplify"/&gt;
-    &lt;meta name="twitter:description" content="Video Description"&gt;
-    &lt;meta name="twitter:domain" content="https://twitter.com/DomainName"&gt;
-    &lt;meta name="twitter:site" content="@DomainName"&gt;
-    &lt;meta name="twitter:player:width" content="320"&gt;
-    &lt;meta name="twitter:player:height" content="240"&gt;
-    &lt;meta name="twitter:image:src" content="https://brightcove.com/image.jpg"&gt;
-    &lt;meta name="twitter:player:stream:content_type" content="video/mp4"&gt;
-    &lt;meta name="twitter:creator" content="@OnceTesting"&gt;
-    &lt;meta name="twitter:amplify:vmap" content="https://Once UX.unicornmedia.com/now/ads/vmap/od/auto/b2df377d-7f81-4be2-92c2-f07dc272064a/c92617d4-b9bb-4df2-935f-d75a009bd4fd/d482b365-1a4f-4464-af2a-43d0b322211e/content.once?forcetav=true" /&gt;
-     &lt;style&gt;
-         .noText{
-             color: #FFFFFF;
-         }
-     &lt;/style&gt;
-    &lt;/head&gt;
-
-    &lt;body&gt;
-        &lt;div&gt;
-            &lt;div class="noText"&gt;Some place holder text&lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-</div>
+<pre class="line-numbers language-json">
+<code class="language-json" id="response">Response will appear here when you test a request</code></pre>
 </section>
 </article>
+<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/guides/dimension-drupal-v2.js"></script>
