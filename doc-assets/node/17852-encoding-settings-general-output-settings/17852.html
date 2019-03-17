@@ -649,7 +649,9 @@
 
 <p><strong>Description:</strong></p>
 
-<p>The maximum number of simultaneous uploads made when uploading multipart outputs, primarily HLS segments.</p>
+<p>The maximum number of simultaneous uploads made when uploading multipart outputs, primarily HLS segments.</p
+
+<p><code>parallel_upload_limit</code> <strong>must be set for individual outputs, not the entire job.</strong></p>
 
 <p>This may speed up transfer times, depending on the bandwidth at your remote server. Be aware that more connections can place a heavier load on the server. If you have trouble with upload timeouts, or want to prevent Zencoder from using too much bandwidth when uploading files, set this to 1.</p>
 
@@ -658,7 +660,15 @@
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
-      "parallel_upload_limit": 5
+      <span class="bcls-highlight">"parallel_upload_limit": 5,</span>
+      "url": "s3://my-output-bucket/final.mp4",
+      "credentials": "s3_production"
+    },
+    {
+      <span class="bcls-highlight">"parallel_upload_limit": 5,</span>
+      "device_profile": "mobile/advanced",
+      "url": "s3://my-output-bucket/mobile.mp4",
+      "credentials": "s3_production"
     }
   ]
 }</code></pre>
