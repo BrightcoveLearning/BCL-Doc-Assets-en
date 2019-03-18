@@ -102,31 +102,25 @@
 				<td>Select one of the license options. For your private plugins, you can select <strong>Unlicensed</strong>.</td>
 				<td>Unlicensed</td>
 			</tr>
-			<!-- <tr>
-  				<td>Plugin type</td>
-  				<td>This allows you to choose between a basic, function-based plugin or an advanced, class-based plugin (only supported in Video.js 6). This changes the default contents of the src/js/index.js file.</td>
-  				<td>Basic</td>
-  			</tr> --><!-- <tr>
-            <td>Changelog</td>
-            <td>
-                Select yes if you would like the tool to manage the changelog.
-            </td>
-            <td>
-              No
-            </td>
-        </tr> -->
+      <tr>
+				<td>Basic or Advanced Plugin</td>
+				<td>The basic, function-based plugin is a plain JavaScript function. If you've written a Video.js plugin in the past, then you should be familiar with the basic plugin concept. <br/></br/>
+          The advanced, class-based plugin was introduced with Video.js 6. This plugin type starts with a JavaScript class, which is a constructor function. <br/></br/>
+        For details, see the <a href="https://github.com/videojs/Video.js/blob/master/docs/guides/plugins.md">Video.js Plugins</a> readme documentation.</td>
+				<td>Basic plugin (function-based)</td>
+			</tr>
 			<tr>
-				<td>SASS styling</td>
+				<td>CSS tooling</td>
 				<td>Select yes, if you want to include CSS styling. This will generate a CSS file.</td>
 				<td>Yes</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td>IE8 support</td>
 				<td>If yes, then the generator pulls in pre-processing tools to polyfill missing features that IE 8 does not have, but that most modern browsers do have.</td>
 				<td>No</td>
-			</tr>
+			</tr> -->
 			<tr>
-				<td>Documentation support</td>
+				<td>Documentation tooling</td>
 				<td>If yes, the generator includes JSDoc and provides a command to generate documentation.</td>
 				<td>No</td>
 			</tr>
@@ -135,19 +129,19 @@
 				<td>This is helpful if you have text that you want translated into different languages. The tool doesn't offer automatic translation, but it converts files from video.js JSON format to JavaScript. Then, you can create languages as you would for video.js and have them compiled into your plugin's output.</td>
 				<td>No</td>
 			</tr>
-			<!-- <tr>
-            <td>Bower support</td>
-            <td>
-                This is relevant for open source projects. It changes the way it tags projects in git. For details, see the <a href="https://www.npmjs.com/package/bower">bower: The browser package manager</a> document.
-            </td>
-            <td>
-              No
-            </td>
-        </tr> -->
+			<tr>
+        <td>Lint changed files</td>
+        <td>
+            Include a Linting tool called videojs standard. This process checks your code for some common errors.
+        </td>
+        <td>
+          Yes
+        </td>
+        </tr>
 			<tr>
 				<td>Before Git push</td>
-				<td>This gives you the option to prevent pushing to a git repository if the selected checks fail, including a linting tool called videojs standard. This is a good way to prevent pushing code that is not up to standards.</td>
-				<td>Check code quality</td>
+				<td>This gives you the option to prevent pushing to a git repository if the selected checks fail. Checking code quality is a good way to prevent pushing code that is not up to standards.</td>
+				<td>No</td>
 			</tr>
 		</tbody>
 	</table>
@@ -180,34 +174,53 @@
 	<p>In an editor, open the top folder where you put your plugin project. Open the <strong>src</strong> folder. Here you will find the following:</p>
 
 	<ul>
-		<li>A <strong>js</strong> folder with an <strong>plugin.js</strong> file. This file contains the code for your plugin.</li>
-		<li>A <strong>css</strong> folder with an <strong>plugin.scss</strong> file, if you selected <strong>Yes</strong> to the styling option.</li>
+		<li>A <strong>plugin.js</strong> file. This file contains the code for your plugin.</li>
+		<li>A <strong>plugin.css</strong> file, if you selected <strong>Yes</strong> to the CSS tooling option.</li>
 	</ul>
 	</li>
 	<li>
-	<p>If you did not select <strong>Yes</strong> to the styling option, you can skip this step. Open the <strong>src &gt; css &gt; plugin.scss</strong> file.</p>
+	<p>(If you did not select <strong>Yes</strong> to the CSS tooling option, you can skip this step.) Open the <strong>src &gt; plugin.css</strong> file.</p>
 
-	<aside class="bcls-aside bcls-aside--tip">You will make your coding changes in this SASS file, but a CSS file will be created for distribution. If you are not familiar with SASS, don't worry. Since CSS is a subset of SASS, you can also use CSS in this file.</aside>
+	<!-- <aside class="bcls-aside bcls-aside--tip">You will make your coding changes in this SASS file, but a CSS file will be created for distribution. If you are not familiar with SASS, don't worry. Since CSS is a subset of SASS, you can also use CSS in this file.</aside> -->
 
 	<p>Your code should look similar to the following:</p>
 
-	<ul>
+	<!-- <ul>
 		<li>Lines 6-8: add the <code>vjs-demo</code> class to the player.</li>
-	</ul>
+	</ul> -->
 
 	<pre class="line-numbers">
-<code class="language-javascript">// Sass for videojs-demo
-
-.video-js {
-
-  // This class is added to the video.js element by the plugin by default.
-  &amp;.vjs-demo {
-    display: block;
+<code class="language-javascript">/* Note: all vars must be defined here, there are no "local" vars */
+  :root {
+    --main-color: red;
+    --base-font-size: 9;
+    --font-size: 7;
   }
-}</code></pre>
+
+  .video-js {
+
+    &amp;.vjs-demo {
+      /* This class is added to the video.js element by the plugin by default. */
+      display: block;
+
+      &amp; .remove-me, &amp; .remove-me-too, &amp;.finally-remove-me {
+        /* examples of postcss syntax, you probably want to remove this */
+
+        color: var(--main-color);
+
+        /**
+         * Note that you have to use calc and multiply by a value with a unit
+         * prepending the unit like `var(--base-font-size)px` or
+         * `calc(10 * var(--base-font-size)em` will NOT work!
+         */
+        font-size: calc(var(--font-size) * 8 * var(--base-font-size) * 1px);
+
+      }
+    }
+  }</code></pre>
 	</li>
 	<li>
-	<p>Open the <strong>src &gt; js &gt; plugin.js</strong> file.</p>
+	<p>Open the <strong>src &gt; plugin.js</strong> file.</p>
 
 	<aside class="bcls-aside bcls-aside--tip">The generator uses ES6, which is the latest JavaScript version. Learn more about the new features in <a href="http://es6-features.org/#Constants">ECMAScript 6</a>. The generator translates your ES6 code into ES5 code so that your distribution code will run on a majority of browsers.</aside>
 
@@ -310,7 +323,7 @@ export default demo;</code></pre>
 	</figure>
 	</li>
 	<li>
-	<p>Now, let's try adding code to the plugin to automatically start playing the video when the player loads. Return to the <strong>src &gt; js &gt; plugin.js</strong> file in your editor.</p>
+	<p>Now, let's try adding code to the plugin to automatically start playing the video when the player loads. Return to the <strong>src &gt; plugin.js</strong> file in your editor.</p>
 	</li>
 	<li>
 	<p>In the <code>onPlayerReady()</code> method, add code to start playback of the video.</p>
@@ -343,7 +356,7 @@ export default demo;</code></pre>
 <p>In this section, you will add code to the JavaScript source file to add a paragraph element with custom text to the player.</p>
 
 <ol class="bcls-tasklist">
-	<li>In your editor, return to the <strong>src &gt; js &gt; plugin.js</strong> file.</li>
+	<li>In your editor, return to the <strong>src &gt; plugin.js</strong> file.</li>
 	<li>
 	<p>In the <code>onPlayerReady()</code> function, add code to add a <code>&lt;p&gt;</code> element with custom text to the player.</p>
 
@@ -377,19 +390,18 @@ export default demo;</code></pre>
 <p>In this section, you will add code to the CSS source file to display text over the player.</p>
 
 <ol class="bcls-tasklist">
-	<li>In your editor, return to the <strong>src &gt; css &gt; plugin.scss</strong> file.</li>
+	<li>In your editor, return to the <strong>src &gt; plugin.css</strong> file.</li>
 	<li>
 	<p>Add the <code>.vjs-text</code> selector with styles to display the custom text in the player.</p>
 
 	<pre class="line-numbers">
-<code class="language-css">// Sass for videojs-demo
-
-.video-js {
-
-  // This class is added to the video.js element by the plugin by default.
-  &amp;.vjs-demo {
-    display: block;
+<code class="language-css">/* Note: all vars must be defined here, there are no "local" vars */
+  :root {
+    --main-color: red;
+    --base-font-size: 9;
+    --font-size: 7;
   }
+
 <span class="bcls-highlight">  .vjs-text {
     background-color: #333333;
     color: white;
@@ -398,8 +410,7 @@ export default demo;</code></pre>
     text-align: center;
     width: 100%;
     margin-top: 10%;
-  }</span>
-}</code></pre>
+  }</span></code></pre>
 	</li>
 	<li>Save the file. Remember that your changes will be automatically updated in the testing browser.</li>
 	<li>
@@ -429,18 +440,37 @@ export default demo;</code></pre>
 	<pre>
 <code class="language-javascript">$ npm run build</code></pre>
 
-	<p>The build takes your ES6 source code and converts it into ES5 JavaScript code. It also takes your SASS styles and converts it into CSS.</p>
+	<p>The build takes your ES6 source code and converts it into ES5 JavaScript code.</p>
 	</li>
 	<li>
-	<p>In your project folder, expand the <strong>dist</strong> folder. Here, you should find the following files (assuming you selected <strong>Yes</strong> for styling):</p>
+	<p>In your project folder, expand the <strong>dist</strong> folder. This is where you will find a distributable version of your plugin. Here, you should find the following files (assuming you selected <strong>Yes</strong> for CSS tooling):</p>
 
 	<ul>
 		<li><strong>videojs-demo.css</strong></li>
 		<li><strong>videojs-demo.js</strong></li>
 		<li><strong>videojs-demo.min.js</strong></li>
 	</ul>
+  <br />
+  <p>
+    You will also find these less commonly used files:
+  </p>
+  <ul>
+		<li><strong>videojs-demo.cjs.js</strong>
+    <ul>
+      <li>
+        This is a <a href="http://www.commonjs.org/">CommonJS</a> module to be used when your project is required in Node, or if you are using Browserify to bundle JavaScript.
+      </li>
+    </ul>
+    </li>
+		<li><strong>videojs-demo.es.js</strong>
+      <ul>
+        <li>
+          This is an <a href="http://es6-features.org/#Constants">ES6</a> module for modern projects that use WebPack or Rollup to bundle their dependencies.
+        </li>
+      </ul>
+    </li>
+	</ul>
 
-	<p>The <strong>dist</strong> folder is where you will find a distributable version of your plugin.</p>
 	</li>
 	<li>
 	<p>In the <strong>dist</strong> folder, open the <strong>videojs-demo.js</strong> file.</p>
@@ -454,7 +484,6 @@ export default demo;</code></pre>
 	<ul>
 		<li>A license banner has been added to the top of the file.</li>
 		<li>Your plugin has been wrapped in a <a href="http://browserify.org/">browserify</a> namespace. This means that there are no global variables that might conflict with your page code.</li>
-		<li>There are no global variables that might conflict with your page code.</li>
 		<li>The plugin internally registers itself with videojs. This means that you can create multiple plugins, each working independently, for a player.</li>
 	</ul>
 	</li>
@@ -471,33 +500,40 @@ export default demo;</code></pre>
 	<p>We'll use the <code>options</code> property to pass data from our HTML page into the plugin. For details on using this property, see the <a href="/node/18059">Pass Data to the Plugin</a> document.</p>
 	</li>
 	<li>
-	<p>In your editor, return to the <strong>src &gt; js &gt; plugin.js</strong> file.</p>
+	<p>In your editor, return to the <strong>src &gt; plugin.js</strong> file.</p>
 	</li>
 	<li>
 	<p>In the <code>onPlayerReady()</code> function, add code to use the text value in the <code>options</code> property if it exists, otherwise use a default text value.</p>
 
 	<ul>
-		<li>Line 6: checks if the <code>displayText</code> object exists in the <code>options</code> property.</li>
-		<li>Line 7: uses the <code>displayText</code> value to populate the text display.</li>
-		<li>Line 9: uses the default text display value.</li>
+    <li>Line 4: creates a paragraph element</li>
+    <li>Line 5: assigns the text class type</li>
+		<li>Line 6: checks if the <code>displayText</code> object exists in the <code>options</code> property</li>
+		<li>Line 7: uses the <code>displayText</code> value to populate the text display</li>
+		<li>Line 9: uses the default text display value</li>
+    <li>Line 13: adds the display text element to the DOM</li>
 	</ul>
 
 	<pre class="line-numbers">
 <code class="language-javascript">const onPlayerReady = (player, options) =&gt; {
   player.addClass('vjs-demo');
-  var textDisplay = document.createElement('p');
+
+<span class="bcls-highlight">  var textDisplay = document.createElement('p');
   textDisplay.className = 'vjs-text';
 
-<span class="bcls-highlight">  if ('displayText' in options) {
+  if ('displayText' in options) {
     textDisplay.innerHTML = options.displayText;
   } else {
-    textDisplay.innerHTML = "Becoming a plugin developer";
-  }</span>
+    textDisplay.innerHTML = &quot;Becoming a plugin developer&quot;;
+  }
 
-  player.el().appendChild(textDisplay);
+  player.el().appendChild(textDisplay);</span>
 };</code></pre>
 	</li>
 	<li>Save the file and return to the testing browser. You should not see any change to the text display.</li>
+  <li>
+    If you haven't already done so, add the css for the <code>.vjs-text</code> selector from the <a href="#Edit_the_CSS_file">Edit the CSS file</a> section.
+  </li>
 	<li>Build your plugin. We'll use the files in the <strong>dist</strong> folder in a test web page.</li>
 	<li>In your local testing server, like MAMP, create a folder named <strong>plugin-generator</strong>.</li>
 	<li>In this folder, copy the <strong>videojs-demo.css</strong> and <strong>videojs-demo.js</strong> files from the <strong>dist</strong> folder and paste them into your testing server folder, <strong>plugin-generator</strong>.</li>
@@ -529,15 +565,15 @@ export default demo;</code></pre>
 &lt;body&gt;
 
   &lt;video-js id="myPlayerID"
-    data-video-id="4784463159001"
-    data-account="1507807800001"
+    data-video-id="5977793284001"
+    data-account="1752604059001"
     data-player="default"
     data-embed="default"
     data-application-id
     class="video-js"
     width="640px" height="360px"
     controls&gt;&lt;/video-js&gt;
-  &lt;script src="//players.brightcove.net/1507807800001/default_default/index.min.js"&gt;&lt;/script&gt;
+  &lt;script src="//players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;
 
 &lt;script type="text/javascript" src="videojs-demo.js"&gt;&lt;/script&gt;
 
@@ -565,7 +601,7 @@ export default demo;</code></pre>
 <section class="bcls-section">
 <h2 id="Recommendations">Recommendations</h2>
 
-<p>It is recommended to use this generator for all of your plugins, even the simple ones. This way, you will always have the same setup for all of your plugins. It also frees you from the task of having to create scripts for perform certain functions, like linting or minifying.</p>
+<p>It is recommended to use this generator for all of your plugins, even the simple ones. This way, you will always have the same setup for all of your plugins. It also frees you from the task of having to create scripts to perform certain functions, like linting or minifying.</p>
 
 <p>With this generator, you can focus on developing and testing your plugin without having to worry about the underlying tools.</p>
 
