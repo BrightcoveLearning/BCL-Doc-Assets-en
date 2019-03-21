@@ -1,0 +1,45 @@
+<article class="bcls-article">
+<section id="sourceassignment" class="bcls-section">
+<h2>Source assignment</h2>
+
+<p>Implementation follows normal procedures. You create a player and specify the live HLS URL as a source, as the following sample shows. Note: the source has a <code>.m3u8</code>, and the type is <code>application/x-mpegURL</code>.</p>
+
+<pre class="line-numbers">
+<code class="language-json">curl \
+  --header "Content-Type: application/json" \
+  --user $EMAIL \
+  --request POST \
+  --data '{
+      "name": "MySamplePlayer",
+      "configuration": {
+        "media": {
+          "sources": [{
+            "src":"http://bcoveliveios-i.akamaihd.net/hls/live/215102/master_english/398/master.m3u8?playerId=1111&amp;lineupId=&amp;affiliateId=&amp;pubId=3333&amp;videoId=2222",
+            "type":"application/x-mpegURL"
+          }]
+        }
+      }
+    }' \
+    https://players.api.brightcove.com/v2/accounts/$ACCOUNT_ID/players</code></pre>
+</section>
+
+<section id="liveui" class="bcls-section">
+<h2>Live UI</h2>
+
+<p>The Live UI hides the progress bar and current time, but does show a <em>LIVE</em> badge in the control bar.</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="hls live playing" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/live-hls/hls-live-playing.png" /></figure>
+</section>
+
+<section id="knownissues" class="bcls-section">
+<h2>Known issues</h2>
+
+<p>The following are know issues with live HLS and the new player:</p>
+
+<ul>
+	<li>iOS uses its native player to stream live HLS.</li>
+	<li>On iOS, when you hit play on the live stream it goes into fullscreen. The new player cannot control that.</li>
+	<li>Currently the new player does not detect if an HLS stream is live or not, hence the Live UI will not be applied on Android.</li>
+</ul>
+</section>
+</article>
