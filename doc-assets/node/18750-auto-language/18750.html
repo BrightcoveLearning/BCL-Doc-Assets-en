@@ -22,7 +22,7 @@
   If your browser is set for one of these languages, the default caption should be set for that language. You can take this example and add more caption files for different languages.
 </p>
 
-<aside class="bcls-aside bcls-aside--information language-editable">This solution will not work in the Safari browser, since it uses native captions.</aside>
+<aside class="bcls-aside bcls-aside--information language-editable">Since the Safari browser uses native captions, you will need additional code to handle Safari's specific mechanism for setting user preferred language.</aside>
 <!-- UPDATE codepen here -->
 
 <p class="codepen" data-height="485" data-theme-id="34967" data-default-tab="result" data-user="rcrooks1969" data-slug-hash="VRvdzW" style="height: 501px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid black; margin: 1em 0; padding: 1em;" data-pen-title="Auto Caption Language">
@@ -112,7 +112,7 @@
 			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#event:loadedmetadata">loadedmetadata</a></td>
 		</tr>
 		<tr>
-			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/SubsCapsButton.html">player.controlBar.subsCapsButton.menu.children()</a></td>
+			<td><a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#textTracks">myPlayer.textTracks()</a></td>
 			<td></td>
 		</tr>
 	</tbody>
@@ -141,29 +141,15 @@
 <p>The basic logic behind this application is:</p>
 
 <ul>
-	<li>Retrieve the menu options for the captions/subtitles button</li>
   <li>
     Get the browser language
   </li>
+  <li>Retrieve the caption tracks</li>
 	<li>Loop over the captions</li>
 	<li>Set the default caption language</li>
 </ul>
+
 <!-- UPDATE task 1 -->
-
-<h3>Retrieve the menu options</h3>
-
-<p>Find the code which is labeled:</p>
-
-<pre>
-<code class="language-javascript">// +++ Retrieve the menu options +++</code></pre>
-
-<p>Use the <code>myPlayer.controlBar.subsCapsButton.menu.children()</code> method to retrieve all the options that are displayed in the captions menu. An example of one of the captions is shown here:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="console menu option object" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/auto-language/caption_options.png" /></figure>
-
-<p>Notice that the object contains both the country label and country code (language). In the JavaScript code, we are searching for the <code>item.track.language</code> since it is possible that the <code>item.track.label</code> could be translated by the browser.</p>
-
-<!-- UPDATE task 2 -->
 
 <h3>Get the browser language</h3>
 
@@ -173,6 +159,23 @@
 <code class="language-javascript">// +++ Get the browser language +++</code></pre>
 
 <p>Use <code>navigator.language</code> to determine the language being used in the browser. Check for <code>navigator.userLanguage</code> with IE browsers earlier than 10.</p>
+
+<!-- UPDATE task 2 -->
+
+<h3>Retrieve the caption tracks</h3>
+
+<p>Find the code which is labeled:</p>
+
+<pre>
+<code class="language-javascript">// +++ Get the captions +++</code></pre>
+
+<p>Use the <code>myPlayer.textTracks()</code> method to retrieve all the tracks that are displayed in the captions menu. An example of one of the captions is shown here:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="console menu option object" src="//learning-services-media.brightcove.com/doc-assets/player-development/samples/auto-language/caption_options.png" /></figure>
+
+<p>Notice that the object contains both the country label and country code (language). In the JavaScript code, we are searching for the <code>item.track.language</code> since it is possible that the <code>item.track.label</code> could be translated by the browser.</p>
+
+
 
 <!-- UPDATE task 3 -->
 
