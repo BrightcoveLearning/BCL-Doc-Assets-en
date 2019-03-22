@@ -358,23 +358,23 @@ var BCLS = (function(window, document) {
 
   function setPodcastData() {
     mrssStr += sChannel;
-    mrssStr += sTitle + podcast_title + eTitle;
-    mrssStr += sLink + podcast_url + eLink;
+    mrssStr += sTitle + sCdata + podcast_title = eCdata + eTitle;
+    mrssStr += sLink + sCdata + podcast_url + eCdata + eLink;
     mrssStr += sLanguage + language + eLanguage;
     mrssStr += sCopyright + sCdata + podcast_owner + ' year ' + eCdata + eCopyright;
     if (isDefined(podcast_subtitle)) {
       mrssStr += sSubTitle + sCdata + podcast_subtitle + eCdata + eSubTitle;
     }
-    mrssStr += sAuthor + podcast_author + eAuthor;
+    mrssStr += sAuthor + sCdata + podcast_author + eCdata + eAuthor;
     mrssStr += sSummary + sCdata + podcast_summary + eCdata + eSummary;
     mrssStr += sDescription + sCdata + podcast_description + eCdata + eDescription;
     mrssStr += sOwner;
-    mrssStr += sName + podcast_owner + eName;
-    mrssStr += sEmail + podcast_email + eEmail;
+    mrssStr += sName + sCdata + podcast_owner + eCdata + eName;
+    mrssStr += sEmail + sCdata + podcast_email+ eCdata + eEmail;
     mrssStr += eOwner;
-    mrssStr += sImage + podcast_image + eImage;
-    mrssStr += sPubDate + today + ePubDate;
-    mrssStr += sLastBuildDate + today + eLastBuildDate;
+    mrssStr += sImage + sCdata + podcast_image + eCdata + eImage;
+    mrssStr += sPubDate + sCdata + today + eCdata + ePubDate;
+    mrssStr += sLastBuildDate + sCdata + today + eCdata + eLastBuildDate;
     mrssStr += sCategory + category;
     if (isDefined(sub_category)) {
       mrssStr += eCategory1;
@@ -384,7 +384,7 @@ var BCLS = (function(window, document) {
       mrssStr += eCategory1 + eCategory;
     }
     if (isDefined(podcast_keywords)) {
-      mrssStr += sKeywords + podcast_keywords + eKeywords;
+      mrssStr += sKeywords + sCdata + podcast_keywords + eCdata + eKeywords;
     }
     mrssStr += sExplicit + explicit + eExplicit;
     mrssStr += sComplete + complete + eComplete;
