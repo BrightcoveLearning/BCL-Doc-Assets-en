@@ -178,7 +178,7 @@ var BCLS = ( function (window, document) {
                 }
                 mrssStr += '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" ';
                 if (isDefined(video.source.width)) {
-                  mrssStr += height="' + video.source.height + '" width="' + video.source.width + '">';
+                  mrssStr += height="' + video.source.height + ' width="' + video.source.width + '">';
                 } else {
                   mrssStr += '">';
                 }
