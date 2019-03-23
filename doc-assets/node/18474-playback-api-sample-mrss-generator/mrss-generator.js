@@ -149,6 +149,7 @@ var BCLS = ( function (window, document) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
                 video = videosArray[i];
+                video.location = 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id;
                 // video may not have a valid source; if not, don't include it
                 console.log('video', video);
                 if (video.hasOwnProperty('source') && isDefined(video.source)) {
@@ -168,9 +169,9 @@ var BCLS = ( function (window, document) {
 
                 pubdate = new Date(video.created_at).toGMTString();
                 mrssStr += sItem;
-                mrssStr += sGuid + video.id + eGuid;
                 mrssStr += sLink + sCdata + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eCdata + eLink;
                 mrssStr += sPubDate + sCdata + pubdate + eCdata + ePubDate;
+                mrssStr += sGuid + video.id + eGuid;
                 mrssStr += sMediaContent + ' url="' + videoURL;
                 if (video.source.hasOwnProperty('size')) {
                   mrssStr += '" fileSize="' + video.source.size;
