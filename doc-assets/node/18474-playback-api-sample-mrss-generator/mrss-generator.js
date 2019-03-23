@@ -10,6 +10,8 @@ var BCLS = ( function (window, document) {
     defaultEndDate = '2020-10-15T00:00+01:00',
     eItemStart = '<dcterms:valid xmlns:dcterms="http://purl.org/dc/terms/">end=',
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
+    sGuid = '<guid>',
+    eGuid = '<guid>',
     sLink = '<link>',
     eLink = '</link>',
     sPubDate = '<pubDate>',
@@ -166,6 +168,9 @@ var BCLS = ( function (window, document) {
 
                 pubdate = new Date(video.created_at).toGMTString();
                 mrssStr += sItem;
+                mrssStr += sGuid;
+                mrssStr += video.id;
+                mrssStr += eGuid;
                 mrssStr += sLink + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
                 mrssStr += sMediaContent + ' url="' + videoURL;
