@@ -10,6 +10,8 @@ var BCLS = ( function (window, document) {
     defaultEndDate = '2020-10-15T00:00+01:00',
     eItemStart = '<dcterms:valid xmlns:dcterms="http://purl.org/dc/terms/">end=',
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
+    sCdata = '<![CDATA[',
+    eCdata = ']]>',
     sGuid = '<guid>',
     eGuid = '<guid>',
     sLink = '<link>',
@@ -168,19 +170,17 @@ var BCLS = ( function (window, document) {
 
                 pubdate = new Date(video.created_at).toGMTString();
                 mrssStr += sItem;
-                mrssStr += sGuid;
-                mrssStr += video.id;
-                mrssStr += eGuid;
-                mrssStr += sLink + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eLink;
-                mrssStr += sPubDate + pubdate + ePubDate;
+                mrssStr += sGuid + video.id + eGuid;
+                mrssStr += sLink + sCdata + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eCdata + eLink;
+                mrssStr += sPubDate + sCdata + pubdate + eCdata + ePubDate;
                 mrssStr += sMediaContent + ' url="' + videoURL;
                 if (video.source.hasOwnProperty('size')) {
                   mrssStr += '" fileSize="' + video.source.size;
                 }
                 mrssStr += '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
-                mrssStr += sMediaTitle + video.name + eMediaTitle;
-                mrssStr += sMediaDescription + video.description + eMediaDescription;
+                mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
+                mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
                 if (doThumbnail) {
                     mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
                     if (video.hasOwnProperty('images')) {
