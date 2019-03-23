@@ -167,7 +167,7 @@ var BCLS = ( function (window, document) {
                     doThumbnail = false;
                 }
 
-                pubdate = new Date(video.created_at).toGMTString();
+                pubdate = new Date(video.published_at).toGMTString();
                 mrssStr += sItem;
                 mrssStr += sLink + sCdata + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eCdata + eLink;
                 mrssStr += sPubDate + sCdata + pubdate + eCdata + ePubDate;
@@ -176,7 +176,12 @@ var BCLS = ( function (window, document) {
                 if (video.source.hasOwnProperty('size')) {
                   mrssStr += '" fileSize="' + video.source.size;
                 }
-                mrssStr += '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
+                mrssStr += '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" ';
+                if (isDefined(video.source.width)) {
+                  mrssStr += height="' + video.source.height + '" width="' + video.source.width + '">';
+                } else {
+                  mrssStr += '">';
+                }
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
                 mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
@@ -224,9 +229,10 @@ var BCLS = ( function (window, document) {
                     parsedData = JSON.parse(response);
                     videosArray = parsedData.videos;
                     // for each video, get the best source and set that as source
-                    iMax = videosArray.length;
-                    for (i = 0; i < iMax; i++) {
-                        videosArray[i].source = processSources(videosArray[i].sources);
+                    i = videosArray.length;
+                    while (i > 0;) {
+                      i--;
+                      videosArray[i].source = processSources(videosArray[i].sources);
                     }
                     addItems();
                 };
