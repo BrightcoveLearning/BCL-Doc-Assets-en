@@ -12,7 +12,7 @@ var BCLS = ( function (window, document) {
     eItemEnd = '; scheme=W3C-DTF</dcterms:valid><dcterms:type>live-video</dcterms:type></item>',
     sCdata = '<![CDATA[',
     eCdata = ']]>',
-    sGuid = '<guid>',
+    sGuid = '<guid  isPermaLink="false">',
     eGuid = '</guid>',
     sLink = '<link>',
     eLink = '</link>',
