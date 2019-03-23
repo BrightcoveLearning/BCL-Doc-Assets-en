@@ -229,9 +229,8 @@ var BCLS = ( function (window, document) {
                     parsedData = JSON.parse(response);
                     videosArray = parsedData.videos;
                     // for each video, get the best source and set that as source
-                    i = videosArray.length;
-                    while (i > 0;) {
-                      i--;
+                    iMax = videosArray.length;
+                    for (i > 0; i < iMax; i++) {
                       videosArray[i].source = processSources(videosArray[i].sources);
                     }
                     addItems();
