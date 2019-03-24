@@ -155,12 +155,12 @@ var BCLS = (function(window, document) {
       // console.log('video', video);
       if (video.hasOwnProperty('source') && isDefined(video.source)) {
         if (video.source.hasOwnProperty('src')) {
-          videoURL = video.source.src;
+          videoURL = video.source.src.replace(/&/g, '&amp;');
         }
       }
       // depending on when/how the video was created, it may have different thumbnail properties or none at all
       if (video.hasOwnProperty('thumbnail')) {
-        thumbnailURL = video.thumbnail;
+        thumbnailURL = video.thumbnail.replace(/&/g, '&amp;');
       } else {
         doThumbnail = false;
       }
