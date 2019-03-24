@@ -1,5 +1,5 @@
 var BCLS = (function(window, document) {
-  var mrssStr = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml">',
+  var mrssStr = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:atom="http://www.w3.org/2005/Atom">',
     sChannel = '<channel>',
     eChannel = '</channel>',
     sTitle = '<title>',
