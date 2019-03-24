@@ -145,7 +145,6 @@ var BCLS = ( function (window, document) {
 
     function addItems() {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
-        if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i++) {
                 video = videosArray[i];
@@ -177,7 +176,7 @@ var BCLS = ( function (window, document) {
                 if (video.source.hasOwnProperty('size')) {
                   mrssStr += '" fileSize="' + video.source.size;
                 }
-                mrssStr += '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" ';
+                mrssStr += '" type="video/quicktime" medium="video" duration="' + (video.duration / 1000) + '" isDefault="true" ';
                 if (isDefined(video.source.width)) {
                   mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '">';
                 } else {
@@ -204,8 +203,6 @@ var BCLS = ( function (window, document) {
                 }
                 mrssStr += eItem;
               }
-            }
-        }
         mrssStr += eChannel + '</rss>';
         logger.textContent = 'Finished!';
         feedDisplay.textContent = vkbeautify.xml(mrssStr);
