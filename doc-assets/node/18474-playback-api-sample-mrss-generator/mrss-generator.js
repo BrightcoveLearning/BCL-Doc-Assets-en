@@ -197,13 +197,6 @@ var BCLS = ( function (window, document) {
                     }
                 }
                 mrssStr += eMediaContent;
-                if (video.hasOwnProperty('schedule')) {
-                  if (video.schedule.hasOwnProperty('ends_at')) {
-                      eItem = eItemStart + video.schedule.ends_at + eItemEnd;
-                  }
-                } else {
-                    eItem = eItemStart + defaultEndDate + eItemEnd;
-                }
                 mrssStr += eItem;
               }
         mrssStr += eChannel + '</rss>';
