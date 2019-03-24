@@ -171,7 +171,6 @@ var BCLS = (function(window, document) {
       mrssStr += sPubDate + sCdata + pubdate + eCdata + ePubDate;
       mrssStr += sGuid + video.id + eGuid;
       mrssStr += sMediaContent;
-      console.log('videoURL', videoURL);
       if (isDefined(videoURL)) {
         mrssStr += ' url="' + videoURL + '"';
       }
