@@ -10,7 +10,7 @@ var BCLS = (function(window, document) {
     eItem = '</item>',
     sCdata = '<![CDATA[',
     eCdata = ']]>',
-    sGuid = '<guid  isPermaLink="false">',
+    sGuid = '<guid isPermaLink="false">',
     eGuid = '</guid>',
     sLink = '<link>',
     eLink = '</link>',
@@ -154,7 +154,7 @@ var BCLS = (function(window, document) {
       console.log('video', video);
       if (video.hasOwnProperty('source') && isDefined(video.source)) {
         if (video.source.hasOwnProperty('src')) {
-          videoURL = encodeURI(video.source.src);
+          videoURL = video.source.src;
         }
       }
       // depending on when/how the video was created, it may have different thumbnail properties or none at all
@@ -180,11 +180,11 @@ var BCLS = (function(window, document) {
       if (isDefined(video.source) && video.source.hasOwnProperty('size')) {
         mrssStr += ' fileSize="' + video.source.size;
       }
-      mrssStr += '" type="video/quicktime" medium="video" duration="' + (video.duration / 1000) + '" isDefault="true" ';
+      mrssStr += '" type="video/quicktime" medium="video" duration="' + (video.duration / 1000) + '" isDefault="true"';
       if (isDefined(video.source) && video.source.hasOwnProperty('width')) {
-        mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '">';
+        mrssStr += ' height="' + video.source.height + '" width="' + video.source.width + '"' + eMediaContent;
       } else {
-        mrssStr += '>';
+        mrssStr += eMediaContent;
       }
       mrssStr += sMediaPlayer + video.location + eMediaPlayer;
       mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
