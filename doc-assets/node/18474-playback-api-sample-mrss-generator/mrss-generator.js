@@ -140,7 +140,7 @@ var BCLS = ( function (window, document) {
         // sort sources by encoding rate
         sortArray(sources, 'encoding_rate');
         // return the first item (highest bitrate)
-        return sources[0];
+        return (sources.length > 0) ? sources[0] : null;
     }
 
     function addItems() {
@@ -172,12 +172,15 @@ var BCLS = ( function (window, document) {
                 mrssStr += sLink + video.location + eLink;
                 mrssStr += sPubDate + sCdata + pubdate + eCdata + ePubDate;
                 mrssStr += sGuid + video.id + eGuid;
-                mrssStr += sMediaContent + ' url="' + videoURL;
-                if (video.source.hasOwnProperty('size')) {
-                  mrssStr += '" fileSize="' + video.source.size;
+                mrssStr += sMediaContent;
+                if (isDefined(videoURL)) {
+                  mrssStr += ' url="' + videoURL + '"';
+                }
+                if (isDefined(video.source) && video.source.hasOwnProperty('size')) {
+                  mrssStr += ' fileSize="' + video.source.size;
                 }
                 mrssStr += '" type="video/quicktime" medium="video" duration="' + (video.duration / 1000) + '" isDefault="true" ';
-                if (isDefined(video.source.width)) {
+                if (isDefined(video.source) && video.source.hasOwnProperty('width')) {
                   mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '">';
                 } else {
                   mrssStr += '>';
