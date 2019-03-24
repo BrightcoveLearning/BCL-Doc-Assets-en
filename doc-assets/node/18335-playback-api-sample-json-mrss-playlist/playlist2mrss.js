@@ -7,6 +7,8 @@ var BCLS = (function(window, document) {
     videoData,
     policy_key_input = document.getElementById("policy_key_input"),
     playlist_id_input = document.getElementById("playlist_id_input"),
+    siteURL = document.getElementById('siteURL'),
+    feedURL = document.getElementById('feedURL'),
     account_id,
     policyKey,
     playlist_id,
@@ -203,7 +205,7 @@ var BCLS = (function(window, document) {
       doThumbnail = true;
     if (videoData.length > 0) {
       mrssStr += sChannel;
-      mrssStr += "<title>" + feedname + "</title>";
+      mrssStr += sTitle + feedname + eTitle;
       iMax = videoData.length;
       for (i = 0; i < iMax; i += 1) {
         doThumbnail = true;
