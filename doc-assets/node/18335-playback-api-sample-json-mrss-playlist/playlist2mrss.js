@@ -14,11 +14,13 @@ var BCLS = (function(window, document) {
     // the next three lines are the ones that need to be changed
     account_id_default = "1752604059001",
     policyKey_default =
-      "BCpkADawqM3_9ax216PJYuUTLApMLkLJ3apjFlTRKHHS4q0DE33J0XsiDWmc6SfKwrwRAhejCZpTbwljz4-OlUwyqKi64L25Dwy4yhY1eSZ9ZduI-dO0mjSNVcR9C8nz0jtkimOOtzQgswCr",
+    "BCpkADawqM3_9ax216PJYuUTLApMLkLJ3apjFlTRKHHS4q0DE33J0XsiDWmc6SfKwrwRAhejCZpTbwljz4-OlUwyqKi64L25Dwy4yhY1eSZ9ZduI-dO0mjSNVcR9C8nz0jtkimOOtzQgswCr",
     playlist_id_default = "5492280057001",
     // vars for MRSS generation
     mrssStr =
-      '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:atom="http://www.w3.org/2005/Atom">',
+    '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:atom="http://www.w3.org/2005/Atom">',
+    sCdata = '<![CDATA[',
+    eCdata = ']]>',
     sChannel = "<channel>",
     eChannel = "</channel>",
     sTitle = "<title>",
@@ -78,9 +80,7 @@ var BCLS = (function(window, document) {
     if (!isDefined(videoData)) {
       // check inputs to see if we use those or default values
       if (
-        isDefined(account_id_input.value) &&
-        isDefined(policy_key_input.value) &&
-        isDefined(playlist_id_input.value)
+        isDefined(account_id_input.value) && isDefined(policy_key_input.value) && isDefined(playlist_id_input.value)
       ) {
         account_id = removeSpaces(account_id_input.value);
         policyKey = removeSpaces(policy_key_input.value);
@@ -217,11 +217,7 @@ var BCLS = (function(window, document) {
           continue;
         }
         // depending on when/how the video was created, it may have different thumbnail properties or none at all
-        if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
-          thumbnailURL = encodeURI(
-            video.images.thumbnail.sources[0].src.replace(/&/g, "&amp;")
-          );
-        } else if (isDefined(video.thumbnail)) {
+        if (isDefined(video.thumbnail)) {
           thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, "&amp;"));
         } else {
           doThumbnail = false;
@@ -295,11 +291,11 @@ var BCLS = (function(window, document) {
       responseData,
       parsedData,
       requestURL =
-        "https://edge.api.brightcove.com/playback/v1/accounts/" +
-        account_id +
-        "/playlists/" +
-        playlist_id +
-        "?limit=100";
+      "https://edge.api.brightcove.com/playback/v1/accounts/" +
+      account_id +
+      "/playlists/" +
+      playlist_id +
+      "?limit=100";
     // response handler
     getResponse = function() {
       try {
@@ -317,7 +313,7 @@ var BCLS = (function(window, document) {
           } else {
             alert(
               "There was a problem with the request. Request returned " +
-                httpRequest.status
+              httpRequest.status
             );
           }
         }
