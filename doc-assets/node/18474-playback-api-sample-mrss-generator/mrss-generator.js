@@ -235,9 +235,6 @@ var BCLS = ( function (window, document) {
                   while (i > 0) {
                     i--;
                     videosArray[i].source = processSources(videosArray[i].sources);
-                    if (!isDefined(videosArray[i].source)) {
-                      videosArray.splice(i, 1);
-                    }
                   }
                   addItems();
               };
