@@ -204,8 +204,8 @@ var BCLS = (function(window, document) {
       thumbnailURL,
       doThumbnail = true;
     if (videoData.length > 0) {
-      mrssStr += sChannel;
       mrssStr += '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
+      mrssStr += sChannel;
       mrssStr += sTitle + feedname + eTitle;
       mrssStr += sLink + siteURL.value.replace(/&/g, "&amp;") + eLink;
       iMax = videoData.length;
