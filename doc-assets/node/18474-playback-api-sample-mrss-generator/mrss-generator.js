@@ -223,27 +223,27 @@ var BCLS = ( function (window, document) {
         disableButtons();
         switch (id) {
             case 'getVideos':
-                var callback = function(response) {
-                    var i,
-                        iMax,
-                        parsedData;
-                    parsedData = JSON.parse(response);
-                    videosArray = parsedData.videos;
-                    // for each video, get the best source and set that as source
-                    iMax = videosArray.length;
-                    for (i > 0; i < iMax; i++) {
-                      videosArray[i].source = processSources(videosArray[i].sources);
-                    }
-                    addItems();
-                };
-            endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit;
-            if (isDefined(search)) {
-                endPoint += '&q=' + search;
-            }
-            requesturl = baseURL + endPoint;
-            apiRequest.textContent = requesturl;
-            getMediaData(requesturl, id, callback);
-                break;
+              var callback = function(response) {
+                  var i,
+                      iMax,
+                      parsedData;
+                  parsedData = JSON.parse(response);
+                  videosArray = parsedData.videos;
+                  // for each video, get the best source and set that as source
+                  iMax = videosArray.length;
+                  for (i > 0; i < iMax; i++) {
+                    videosArray[i].source = processSources(videosArray[i].sources);
+                  }
+                  addItems();
+              };
+              endPoint = accountId + '/videos?sort=' + sort + '&limit=' + limit;
+              if (isDefined(search)) {
+                  endPoint += '&q=' + search;
+              }
+              requesturl = baseURL + endPoint;
+              apiRequest.textContent = requesturl;
+              getMediaData(requesturl, id, callback);
+            break;
         }
     }
 
