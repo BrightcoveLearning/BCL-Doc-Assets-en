@@ -163,14 +163,14 @@ var BCLS = ( function (window, document) {
                     thumbnailURL = encodeURI(video.images.thumbnail.sources[0]);
                   }
                 } else if (video.hasOwnProperty('thumbnail')) {
-                    thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
+                    thumbnailURL = encodeURI(video.thumbnail);
                 } else {
                     doThumbnail = false;
                 }
 
                 pubdate = new Date(video.published_at).toGMTString();
                 mrssStr += sItem;
-                mrssStr += sLink + sCdata + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + eCdata + eLink;
+                mrssStr += sLink + video.location + eLink;
                 mrssStr += sPubDate + sCdata + pubdate + eCdata + ePubDate;
                 mrssStr += sGuid + video.id + eGuid;
                 mrssStr += sMediaContent + ' url="' + videoURL;
@@ -183,7 +183,7 @@ var BCLS = ( function (window, document) {
                 } else {
                   mrssStr += '>';
                 }
-                mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
+                mrssStr += sMediaPlayer + video.location + eMediaPlayer;
                 mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
                 mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
                 if (doThumbnail) {
