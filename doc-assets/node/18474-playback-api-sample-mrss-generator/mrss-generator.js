@@ -151,7 +151,7 @@ var BCLS = (function(window, document) {
       video = videosArray[i];
       video.location = 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id;
       // video may not have a valid source; if not, don't include it
-      console.log('video', video);
+      // console.log('video', video);
       if (video.hasOwnProperty('source') && isDefined(video.source)) {
         if (video.source.hasOwnProperty('src')) {
           videoURL = video.source.src;
