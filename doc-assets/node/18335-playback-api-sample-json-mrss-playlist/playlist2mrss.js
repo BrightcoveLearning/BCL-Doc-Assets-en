@@ -249,7 +249,7 @@ var BCLS = (function(window, document) {
           video.source.height +
           '" width="' +
           video.source.width +
-          '">';
+          '"' + eMediaContent;
         mrssStr +=
           sMediaPlayer +
           ' url="' +
@@ -275,7 +275,6 @@ var BCLS = (function(window, document) {
             mrssStr += eMediaThumbnail;
           }
         }
-        mrssStr += eMediaContent;
         mrssStr += eItem;
       }
       mrssStr += eChannel + "</rss>";
