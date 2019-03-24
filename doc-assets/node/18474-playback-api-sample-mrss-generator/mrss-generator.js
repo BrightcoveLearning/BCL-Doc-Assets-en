@@ -46,6 +46,7 @@ var BCLS = (function(window, document) {
     policy_key = document.getElementById('policy_key'),
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
+    siteURL = document.getElementById('siteURL'),
     numberSelect = document.getElementById('numberSelect'),
     searchStr = document.getElementById('searchStr'),
     sortSelect = document.getElementById('sortSelect'),
@@ -325,7 +326,7 @@ var BCLS = (function(window, document) {
       search = encodeURI(search);
       numVideos = getSelectedValue(numberSelect);
       // add title and description
-      mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
+      mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + slink + siteURL.value.replace(/&/g, '&amp;') + eLink;
       totalVideos = parseInt(numVideos);
       totalCalls = numVideos;
       logger.textContent = 'Total videos to retrieve: ' + totalVideos;
