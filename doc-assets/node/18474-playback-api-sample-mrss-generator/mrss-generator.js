@@ -176,9 +176,9 @@ var BCLS = (function(window, document) {
         mrssStr += ' url="' + videoURL + '"';
       }
       if (isDefined(video.source) && video.source.hasOwnProperty('size')) {
-        mrssStr += ' fileSize="' + video.source.size;
+        mrssStr += ' fileSize="' + video.source.size + '"';
       }
-      mrssStr += '" type="video/quicktime" medium="video" duration="' + (video.duration / 1000) + '" isDefault="true"';
+      mrssStr += ' type="video/quicktime" medium="video" duration="' + (video.duration / 1000) + '" isDefault="true"';
       if (isDefined(video.source) && video.source.hasOwnProperty('width')) {
         mrssStr += ' height="' + video.source.height + '" width="' + video.source.width + '"' + eMediaContent;
       } else {
