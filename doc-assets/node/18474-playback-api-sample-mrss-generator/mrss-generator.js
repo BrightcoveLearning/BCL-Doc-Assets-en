@@ -225,8 +225,8 @@ var BCLS = ( function (window, document) {
             case 'getVideos':
               var callback = function(response) {
                   var i,
-                      iMax,
-                      parsedData;
+                    iMax,
+                    parsedData;
                   parsedData = JSON.parse(response);
                   videosArray = parsedData.videos;
                   // for each video, get the best source and set that as source
