@@ -180,7 +180,7 @@ var BCLS = ( function (window, document) {
                 if (isDefined(video.source.width)) {
                   mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '">';
                 } else {
-                  mrssStr += '">';
+                  mrssStr += '>';
                 }
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
