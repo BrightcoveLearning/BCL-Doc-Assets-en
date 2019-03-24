@@ -147,20 +147,20 @@ var BCLS = ( function (window, document) {
         var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
         if (videosArray.length > 0) {
             iMax = videosArray.length;
-            for (i = 0; i < iMax; i += 1) {
+            for (i = 0; i < iMax; i++) {
                 video = videosArray[i];
                 video.location = 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id;
                 // video may not have a valid source; if not, don't include it
                 console.log('video', video);
                 if (video.hasOwnProperty('source') && isDefined(video.source)) {
                   if (video.source.hasOwnProperty('src')) {
-                    videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
+                    videoURL = encodeURI(video.source.src);
                   }
                 }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
                 if (video.hasOwnProperty('images')) {
                   if (video.images.hasOwnProperty('thumbnail')) {
-                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0].src.replace(/&/g, '&amp;'));
+                    thumbnailURL = encodeURI(video.images.thumbnail.sources[0]);
                   }
                 } else if (video.hasOwnProperty('thumbnail')) {
                     thumbnailURL = encodeURI(video.thumbnail.replace(/&/g, '&amp;'));
