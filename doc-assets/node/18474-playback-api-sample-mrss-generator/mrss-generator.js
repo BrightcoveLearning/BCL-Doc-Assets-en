@@ -145,7 +145,7 @@ var BCLS = (function(window, document) {
   }
 
   function addItems() {
-    var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail;
+    var i, iMax, video, pubdate, videoURL, thumbnailURL, doThumbnail;
     iMax = videosArray.length;
     for (i = 0; i < iMax; i++) {
       doThumbnail = true;
