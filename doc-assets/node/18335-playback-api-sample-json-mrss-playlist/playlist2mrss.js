@@ -18,7 +18,7 @@ var BCLS = (function(window, document) {
     playlist_id_default = "5492280057001",
     // vars for MRSS generation
     mrssStr =
-      '<rss version="2.0"  xmlns:media="http://search.yahoo.com/mrss/">',
+      '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:atom="http://www.w3.org/2005/Atom">',
     sChannel = "<channel>",
     eChannel = "</channel>",
     sTitle = "<title>",
@@ -31,16 +31,18 @@ var BCLS = (function(window, document) {
     eLink = "</link>",
     sPubDate = "<pubDate>",
     ePubDate = "</pubDate>",
+    sGuid = '<guid isPermaLink="false">',
+    eGuid = '</guid>',
     sMediaContent = "<media:content",
-    eMediaContent = "</media:content>",
+    eMediaContent = " />",
     sMediaPlayer = "<media:player",
-    eMediaPlayer = "/>",
-    sMediaDescription = "<media:description>",
-    eMediaDescription = "</media:description>",
+    eMediaPlayer = " />",
+    sMediaDescription = "<description>",
+    eMediaDescription = "</description>",
     sMediaThumbnail = "<media:thumbnail",
     eMediaThumbnail = "/>",
-    sMediaTitle = "<media:title>",
-    eMediaTitle = "</media:title>";
+    sMediaTitle = "<title>",
+    eMediaTitle = "</itle>";
 
   // event listeners for the buttons
   showJSON.addEventListener("click", function() {
@@ -204,13 +206,15 @@ var BCLS = (function(window, document) {
       mrssStr += "<title>" + feedname + "</title>";
       iMax = videoData.length;
       for (i = 0; i < iMax; i += 1) {
+        doThumbnail = true;
         video = videoData[i];
 
         // video may not have a valid source
         if (isDefined(video.source) && isDefined(video.source.src)) {
           videoURL = encodeURI(video.source.src.replace(/&/g, "&amp;"));
         } else {
-          videoURL = "";
+          // no source; skip this videos
+          continue;
         }
         // depending on when/how the video was created, it may have different thumbnail properties or none at all
         if (isDefined(video.images) && isDefined(video.images.thumbnail)) {
