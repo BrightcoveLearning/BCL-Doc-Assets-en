@@ -189,6 +189,8 @@ var BCLS = (function(window, document) {
       mrssStr += sMediaPlayer + video.location + eMediaPlayer;
       mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
       mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
+      console.log('doThumbnail', doThumbnail);
+      console.log('thumbnailURL', thumbnailURL);
       if (doThumbnail) {
         mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
         if (video.hasOwnProperty('images')) {
