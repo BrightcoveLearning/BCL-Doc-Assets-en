@@ -205,7 +205,9 @@ var BCLS = (function(window, document) {
       doThumbnail = true;
     if (videoData.length > 0) {
       mrssStr += sChannel;
+      mrssStr += '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
       mrssStr += sTitle + feedname + eTitle;
+      mrssStr += sLink + siteURL.value.replace(/&/g, "&amp;") + eLink;
       iMax = videoData.length;
       for (i = 0; i < iMax; i += 1) {
         doThumbnail = true;
@@ -213,7 +215,7 @@ var BCLS = (function(window, document) {
 
         // video may not have a valid source
         if (isDefined(video.source) && isDefined(video.source.src)) {
-          videoURL = encodeURI(video.source.src.replace(/&/g, "&amp;"));
+          videoURL = video.source.src.replace(/&/g, "&amp;");
         } else {
           // no source; skip this videos
           continue;
@@ -258,7 +260,7 @@ var BCLS = (function(window, document) {
           '"' +
           eMediaPlayer;
         mrssStr += sMediaTitle + video.name + eMediaTitle;
-        mrssStr += sMediaDescription + video.description + eMediaDescription;
+        mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
         if (doThumbnail) {
           mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
           if (isDefined(video.images)) {
