@@ -227,9 +227,14 @@ var BCLS = ( function (window, document) {
                   parsedData = JSON.parse(response);
                   videosArray = parsedData.videos;
                   // for each video, get the best source and set that as source
-                  iMax = videosArray.length;
-                  for (i > 0; i < iMax; i++) {
+                  // if video has no source, remove it
+                  i = videosArray.length;
+                  while (i > 0) {
+                    i--;
                     videosArray[i].source = processSources(videosArray[i].sources);
+                    if (!isDefined(videosArray[i].source)) {
+                      videosArray.splice(i, 1);
+                    }
                   }
                   addItems();
               };
