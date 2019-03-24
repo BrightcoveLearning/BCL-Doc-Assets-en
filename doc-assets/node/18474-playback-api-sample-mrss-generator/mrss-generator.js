@@ -145,9 +145,10 @@ var BCLS = (function(window, document) {
   }
 
   function addItems() {
-    var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
+    var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail;
     iMax = videosArray.length;
     for (i = 0; i < iMax; i++) {
+      doThumbnail = true;
       video = videosArray[i];
       video.location = 'https://players.brightcove.net/' + accountId + '/default_default/index.html?videoId=' + video.id;
       // video may not have a valid source; if not, don't include it
