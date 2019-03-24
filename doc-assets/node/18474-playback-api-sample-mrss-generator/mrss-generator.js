@@ -190,7 +190,6 @@ var BCLS = (function(window, document) {
       if (doThumbnail) {
         mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"' + eMediaThumbnail;
       }
-      mrssStr += eMediaContent;
       mrssStr += eItem;
     }
     mrssStr += eChannel + '</rss>';
