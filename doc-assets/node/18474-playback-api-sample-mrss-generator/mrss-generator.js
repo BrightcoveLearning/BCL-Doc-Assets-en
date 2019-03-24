@@ -47,6 +47,7 @@ var BCLS = (function(window, document) {
     feedTitle = document.getElementById('feedTitle'),
     feedDescription = document.getElementById('feedDescription'),
     siteURL = document.getElementById('siteURL'),
+    feedURL = document.getElementById('feedURL'),
     numberSelect = document.getElementById('numberSelect'),
     searchStr = document.getElementById('searchStr'),
     sortSelect = document.getElementById('sortSelect'),
@@ -326,7 +327,7 @@ var BCLS = (function(window, document) {
       search = encodeURI(search);
       numVideos = getSelectedValue(numberSelect);
       // add title and description
-      mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + sLink + siteURL.value.replace(/&/g, '&amp;') + eLink;
+      mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + sLink + siteURL.value.replace(/&/g, '&amp;') + eLink + '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
       totalVideos = parseInt(numVideos);
       totalCalls = numVideos;
       logger.textContent = 'Total videos to retrieve: ' + totalVideos;
