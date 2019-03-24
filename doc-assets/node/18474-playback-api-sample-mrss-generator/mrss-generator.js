@@ -156,6 +156,7 @@ var BCLS = ( function (window, document) {
                   if (video.source.hasOwnProperty('src')) {
                     videoURL = encodeURI(video.source.src.replace(/&/g, '&amp;'));
                   }
+                }
                 // depending on when/how the video was created, it may have different thumbnail properties or none at all
                 if (video.hasOwnProperty('images')) {
                   if (video.images.hasOwnProperty('thumbnail')) {
