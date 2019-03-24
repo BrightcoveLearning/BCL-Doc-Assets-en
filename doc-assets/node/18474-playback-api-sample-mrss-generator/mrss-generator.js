@@ -158,12 +158,8 @@ var BCLS = (function(window, document) {
         }
       }
       // depending on when/how the video was created, it may have different thumbnail properties or none at all
-      if (video.hasOwnProperty('images')) {
-        if (video.images.hasOwnProperty('thumbnail')) {
-          thumbnailURL = encodeURI(video.images.thumbnail.sources[0]);
-        }
-      } else if (video.hasOwnProperty('thumbnail')) {
-        thumbnailURL = encodeURI(video.thumbnail);
+      if (video.hasOwnProperty('thumbnail')) {
+        thumbnailURL = video.thumbnail;
       } else {
         doThumbnail = false;
       }
