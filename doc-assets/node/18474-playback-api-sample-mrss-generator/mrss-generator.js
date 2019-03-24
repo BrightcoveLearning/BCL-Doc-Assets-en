@@ -184,7 +184,7 @@ var BCLS = (function(window, document) {
       } else {
         mrssStr += eMediaContent;
       }
-      mrssStr += sMediaPlayer + video.location + eMediaPlayer;
+      mrssStr += sMediaPlayer + ' url="' + video.location + '"' + eMediaPlayer;
       mrssStr += sMediaTitle + sCdata + video.name + eCdata + eMediaTitle;
       mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
       if (doThumbnail) {
