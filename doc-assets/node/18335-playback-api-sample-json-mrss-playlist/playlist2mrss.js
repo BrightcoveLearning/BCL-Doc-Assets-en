@@ -44,7 +44,7 @@ var BCLS = (function(window, document) {
     sMediaThumbnail = "<media:thumbnail",
     eMediaThumbnail = "/>",
     sMediaTitle = "<title>",
-    eMediaTitle = "</itle>";
+    eMediaTitle = "</title>";
 
   // event listeners for the buttons
   showJSON.addEventListener("click", function() {
