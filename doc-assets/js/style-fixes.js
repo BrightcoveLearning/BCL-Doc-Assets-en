@@ -7,6 +7,7 @@ var BCLS_style_fixes = ( function (window, document) {
     chevrons = document.querySelectorAll('.icon__chevron--down'),
     menu_items = document.querySelectorAll('.dropdown-menu>li.expanded'),
     menu_headers = document.querySelectorAll('#block-mainnavigation>ul>li>a'),
+    training_headers = document.querySelectorAll('#block-mainnavigation>ul>li>a.dropdown-toggle'),
     code = document.getElementsByTagName('code'),
     bod = document.querySelector('body'),
     nav_menu_items = document.querySelectorAll('.region-navigation-collapsible .nav li a'),
@@ -38,6 +39,13 @@ var BCLS_style_fixes = ( function (window, document) {
       iMax = menu_headers.length;
       for (i; i < iMax; i++) {
         menu_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108);font-weight:normal;');
+      }
+  }
+  if (training_headers) {
+    var i = 0,
+      iMax = training_headers.length;
+      for (i; i < iMax; i++) {
+        training_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108);font-weight:normal;');
       }
   }
   if (menu_items) {
