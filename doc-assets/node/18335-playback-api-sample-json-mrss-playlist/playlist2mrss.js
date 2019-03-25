@@ -237,6 +237,7 @@ var BCLS = (function(window, document) {
           video.id +
           eLink;
         mrssStr += sPubDate + pubdate + ePubDate;
+        mrssStr += sGuid + video.id + eGuid;
         mrssStr +=
           sMediaContent +
           ' url="' +
