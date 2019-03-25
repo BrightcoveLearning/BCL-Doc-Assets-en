@@ -15,7 +15,7 @@
 
 <p>Note that Brightcove Learning Services has a <a href="/node/18739">sample app for generating video sitemaps</a> using the CMS API.</p>
 
-<div class="BCL-concept">
+<section class="bcls-section">
 <h2 id="sitemap">Standard Sitemaps</h2>
 
 <p>Sitemaps follow the sitemap specification that is defined here: <a href="http://www.sitemaps.org/">www.sitemaps.org</a>. The purpose of the sitemap file is to provide a list of URLs on your site to the search engines. The only other information associated with a URL is when the page was last modified and how frequently the page changes. Note that there is no metadata about your content in this index. Because the sitemap is page-centric, we need to create a model where <i>each</i> video in your library will have a unique page, or URL, associated with it. This can be accomplished by having a single page whose behavior and content can be dynamically changed by passing in different query parameters to the page. For example, if you have a URL like <code>http://www.example.com/video.html?videoId=123</code>, you would have the <code>video.html</code> page look for the <code>videoId</code> query parameter (<code>videoId=123</code>) and modify the contents of the page returned to the browser to contain information about the video with id 123. This would be done on the server-side of your application where the page would look for the ID and then use the Video Cloud CMS API to fetch metadata about the video and write it into the page. Alternatively, you could store the URL where the video is published in a custom field, so that the CMS API could retrieve it.</p>
@@ -42,9 +42,9 @@
  &lt;/urlset&gt;</code></pre>
 
 <p>To create a sitemap file, you can create a script that uses CMS API requests to walk through the playlists in the Video Cloud account and, for each playlist, walks through its contained videos. For each playlist and video combination, the script creates an entry in the sitemap supplying a unique URL to the playlist/video combination. Once you've created a sitemap file for your site, place the resulting <code>sitemap.xml</code> file in the root directory of your webserver. For example, if your domain is <code>www.example.com</code>, the sitemap file would be available at <code>http://www.example.com/sitemap.xml</code>. Even better would be to automatically generate this file with a server-side application and update the file on your live site.</p>
-</div>
+</section>
 
-<div class="BCL-concept">
+<section class="bcls-section">
 <h2 id="videositemap">Video Sitemaps</h2>
 
 <p>A video sitemap is similar in concept to the standard sitemap file. The video sitemap file will have an entry per video in your account. In fact, a video sitemap uses the sitemap schema as its base and adds additional tags specific to video metadata.</p>
@@ -126,33 +126,40 @@
 <p>Once you've created your video sitemap, you can submit it to Google following the instructions <a href="https://support.google.com/webmasters/answer/183668#addsitemap">here</a>.</p>
 
 <p class="BCL-aside">Note: Based on your preference, you can either create separate files for standard and video sitemaps or add information about your video content to an existing sitemap document. However, take into consideration that sitemap files cannot contain more than 50,000 URLs and cannot be larger than 50MB. For more information on sitemap guidelines, review Google's <a href="https://support.google.com/webmasters/answer/183668#1">Sitemap formats and guidelines</a> support article.</p>
-</div>
+</section>
 
-<div class="BCL-concept">
+<section class="bcls-section">
 <h2 id="gallery">Brightcove Gallery</h2>
 
 <p>Brightcove Gallery allows you to create engaging video experiences without the need of any technical resources. Sites built using Brightcove Gallery will automatically compile the video metadata into a video sitemap for you. For more information, see <a href="/node/18673">Configuring Search Engine Optimization Settings for a Portal Experience</a>.</p>
-</div>
+</section>
 
-<div class="BCL-concept">
-<h2 id="micro">Adding context using microformats</h2>
+<section class="bcls-section">
+  <h2 id="seo_schema_plugin">SEO Schema Generator Plugin</h2>
+  <p>Another good way to increase SEO for your video content is to use the <a href="/node/18746">SEO Schema Generator Plugin</a>. The plugin automatically generates a video schema <a href="micro">micro-format</a> that provides information to search engines about video content embedded in your HTML.</p>
 
-<p>In addition to video sitemaps, you can increase the visibility of video content on your site by using microformats.</p>
+  <p>For more on micro-formats, and ways to create video schemas if you cannot for some reason use the plugin, see the following section.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="micro">Adding context using micro-formats</h2>
+
+<p>In addition to video sitemaps, you can increase the visibility of video content on your site by using micro-formats.</p>
 
 <p>While HTML tags tell the browser how to display your content, it doesn't provide any information about what the content means. Your site may be generated from structured data, probably stored in databases, but the structure is lost when it is formatted in HTML. Search engines can benefit from knowing about the structure of the data on your site.</p>
 
 <p>A collection of schemas (i.e. HTML tags) has been created to identify the type of content on your web pages. Search engines including Bing, Google and Yahoo rely on this markup to improve search results.</p>
 
-<p>These schemas, or microformats, provide you with a collection of shared vocabularies to add to your markup that will define the content on your web page. You can find details about these tags at <a href="http://schema.org/"> schema.org</a>.</p>
+<p>These schemas, or micro-formats, provide you with a collection of shared vocabularies to add to your markup that will define the content on your web page. You can find details about these tags at <a href="http://schema.org/"> schema.org</a>.</p>
 
 <p>For your media player, Brightcove recommends using the <a href="http://schema.org/VideoObject"> VideoObject</a> schema.</p>
 
-<p>Brightcove has created a tool to generate your player publishing code with the microformat data included. Check out the <a href="/node/18027"> Video Schema Builder.</a></p>
-</div>
+<p>Brightcove has created a tool to generate your player publishing code with the micro-format data included. Check out the <a href="/node/18027"> Video Schema Builder.</a></p>
+</section>
 
-<div class="BCL-concept">
+<section class="bcls-section">
 <h2 id="conclusion">Conclusion</h2>
 
 <p>A complete SEO strategy for your video content should include creating both a standard sitemap as well as a video sitemap. This will ensure that your content is indexed across the widest swath of search engines. Additionally, your content will be surfaced in the most aesthetically pleasing manner for the point of discovery. This article has outlined an approach for providing a unique URL per video in your account and sample code for generating the sitemap files that the engines will index.</p>
-</div>
+</section>
 <!-- End of Drupal content -->
