@@ -9,6 +9,7 @@ var BCLS = (function(window, document) {
     playlist_id_input = document.getElementById("playlist_id_input"),
     siteURL = document.getElementById('siteURL'),
     feedURL = document.getElementById('feedURL'),
+    feedDescription = document.getElementById('feedDescription'),
     account_id,
     policyKey,
     playlist_id,
@@ -207,6 +208,7 @@ var BCLS = (function(window, document) {
       mrssStr += sChannel;
       mrssStr += '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
       mrssStr += sTitle + feedname + eTitle;
+      mrssStr += sDescription + sCdata + feedDescription.value + eCdata + eDescription;
       mrssStr += sLink + siteURL.value.replace(/&/g, "&amp;") + eLink;
       iMax = videoData.length;
       for (i = 0; i < iMax; i += 1) {
