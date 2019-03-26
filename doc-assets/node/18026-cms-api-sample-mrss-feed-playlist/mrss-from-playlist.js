@@ -165,7 +165,6 @@ var BCLS = (function(window, document) {
           } else {
             mrssStr += eMediaThumbnail;
           }
-        }
         mrssStr += eItem;
       }
     }
