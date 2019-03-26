@@ -9,7 +9,6 @@ var BCLS = ( function (window, document) {
     sDescription = '<description>',
     eDescription = '</description>',
     sItem = '<item xmlns:media="http://search.yahoo.com/mrss/" xmlns:dcterms="http://purl.org/dc/terms/">',
-    defaultEndDate = '2020-10-15T00:00+01:00',
     eItemStart = '<item>',
     eItemEnd = '</item>',
     sLink = '<link>',
@@ -145,6 +144,7 @@ var BCLS = ( function (window, document) {
         if (videosArray.length > 0) {
             iMax = videosArray.length;
             for (i = 0; i < iMax; i += 1) {
+              doThumbnail = true;
                 video = videosArray[i];
                 // video may not have a valid source
                 if (isDefined(video.source) && isDefined(video.source.src)) {
