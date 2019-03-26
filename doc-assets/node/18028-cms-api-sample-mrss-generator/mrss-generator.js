@@ -167,7 +167,7 @@ var BCLS = ( function (window, document) {
                 mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
                 mrssStr += sGuid + video.id + eGuid;
-                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" '
+                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" ';
                 if (isDefined(video.source.height)) {
                   mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '"';
                 }
