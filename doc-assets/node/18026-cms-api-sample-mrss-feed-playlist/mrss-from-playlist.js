@@ -161,10 +161,7 @@ var BCLS = (function(window, document) {
         mrssStr += sMediaTitle + video.name + eMediaTitle;
         mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
         if (doThumbnail) {
-          mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
-          console.log('image height', isDefined(video.images.thumbnail.sources[0].height));
-          if (isDefined(video.images && isDefined(video.images.thumbnail.sources[0].height))) {
-            mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
+          mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '" ' + eMediaThumbnail;
           } else {
             mrssStr += eMediaThumbnail;
           }
