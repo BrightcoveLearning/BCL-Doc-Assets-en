@@ -36,9 +36,6 @@ var BCLS = (function(window, document) {
     sort,
     sortDirection = "",
     playlist,
-    limit = 25,
-    totalVideos = 0,
-    totalCalls = 0,
     callNumber = 0,
     videosArray = [],
     // elements
@@ -46,6 +43,8 @@ var BCLS = (function(window, document) {
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
     feedTitle = document.getElementById('feedTitle'),
+    siteURL = document.getElementById('siteURL'),
+    feedURL = document.getElementById('feedURL'),
     feedDescription = document.getElementById('feedDescription'),
     playlist_id = document.getElementById('playlist_id'),
     makeFeed = document.getElementById('makeFeed'),
@@ -128,7 +127,7 @@ var BCLS = (function(window, document) {
   }
 
   function addItems() {
-    var i, iMax, video, pubdate, eItem, videoURL, thumbnailURL, doThumbnail = true;
+    var i, iMax, video, pubdate, videoURL, thumbnailURL, doThumbnail = true;
     if (videosArray.length > 0) {
       iMax = videosArray.length;
       for (i = 0; i < iMax; i += 1) {
@@ -152,27 +151,26 @@ var BCLS = (function(window, document) {
         mrssStr += sItem;
         mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
         mrssStr += sPubDate + pubdate + ePubDate;
-        mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
-        mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
-        mrssStr += sMediaTitle + video.name + eMediaTitle;
-        mrssStr += sMediaDescription + video.description + eMediaDescription;
-        if (doThumbnail) {
-          mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
-          if (isDefined(video.images)) {
-            mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
-          } else {
-            mrssStr += eMediaThumbnail;
-          }
+        mrssStr += sGuid + video.id + eGuid;
+        mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" ';
+        if (isDefined(video.source.height)) {
+          mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '"';
         }
         mrssStr += eMediaContent;
-        if (isDefined(video.schedule) && video.schedule.ends_at) {
-          eItem = eItemStart + video.schedule.ends_at + eItemEnd;
-        } else {
-          eItem = eItemStart + defaultEndDate + eItemEnd;
+        mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
+        mrssStr += sMediaTitle + video.name + eMediaTitle;
+        mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
+        if (doThumbnail) {
+            mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
+            if (isDefined(video.images)) {
+                mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
+            } else {
+                mrssStr += eMediaThumbnail;
+            }
         }
         mrssStr += eItem;
-      }
     }
+}
     mrssStr += eChannel + '</rss>';
     logger.textContent = 'Finished!';
     feedDisplay.textContent = vkbeautify.xml(mrssStr);
@@ -322,7 +320,7 @@ var BCLS = (function(window, document) {
       }
       playlist = (playlist_id.value) ? playlist_id.value : 2764931906001;
       // add title and description
-      mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
+      mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + sLink + siteURL.value.replace(/&/g, '&amp;') + eLink + '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
       createRequest('getVideos');
     });
     feedDisplay.addEventListener('click', function() {
