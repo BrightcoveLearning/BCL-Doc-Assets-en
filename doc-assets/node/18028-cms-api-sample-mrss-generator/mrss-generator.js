@@ -47,6 +47,8 @@ var BCLS = ( function (window, document) {
     client_id_input = document.getElementById('client_id'),
     client_secret_input = document.getElementById('client_secret'),
     feedTitle = document.getElementById('feedTitle'),
+    siteURL = document.getElementById('siteURL'),
+    feedURL = document.getElementById('feedURL'),
     feedDescription = document.getElementById('feedDescription'),
     numberSelect = document.getElementById('numberSelect'),
     searchStr = document.getElementById('searchStr'),
@@ -366,7 +368,7 @@ var BCLS = ( function (window, document) {
             search = searchStr.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
-            mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
+            mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + sLink + siteURL.value.replace(/&/g, '&amp;') + eLink + '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
             // if all videos wanted, get count; otherwise get videos
             if (numVideos === 'all') {
                 // we need to get the count
