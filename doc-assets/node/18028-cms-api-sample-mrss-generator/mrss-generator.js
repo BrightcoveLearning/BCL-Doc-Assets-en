@@ -15,7 +15,7 @@ var BCLS = ( function (window, document) {
     eLink = '</link>',
     sPubDate = '<pubDate>',
     ePubDate = '</pubDate>',
-    sGuid = '<guid>',
+    sGuid = '<guid isPermaLink="false">',
     eGuid = '</guid>',
     sMediaContent = '<media:content',
     eMediaContent = ' />',
