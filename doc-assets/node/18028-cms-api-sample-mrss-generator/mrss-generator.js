@@ -367,7 +367,7 @@ var BCLS = ( function (window, document) {
             search = searchStr.value;
             numVideos = getSelectedValue(numberSelect);
             // add title and description
-            mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription;
+            mrssStr += sChannel + sTitle + feedTitle.value + eTitle + sDescription + feedDescription.value + eDescription + '<atom:link href="' + feedURL.value.replace(/&/g, '&amp;') + '" rel="self" type="application/rss+xml" />';
             // if all videos wanted, get count; otherwise get videos
             if (numVideos === 'all') {
                 // we need to get the count
