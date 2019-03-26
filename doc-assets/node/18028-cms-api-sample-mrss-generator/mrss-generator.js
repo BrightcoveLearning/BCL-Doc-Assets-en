@@ -165,10 +165,15 @@ var BCLS = ( function (window, document) {
                 mrssStr += sItem;
                 mrssStr += sLink + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + eLink;
                 mrssStr += sPubDate + pubdate + ePubDate;
-                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" height="' + video.source.height + '" width="' + video.source.width + '">';
+                mrssStr += sGuid + video.id + eGuid;
+                mrssStr += sMediaContent + ' url="' + videoURL + '" fileSize="' + video.source.size + '" type="video/quicktime" medium="video" duration="' + video.duration / 1000 + '" isDefault="true" '
+                if (isDefined(video.source.height)) {
+                  mrssStr += 'height="' + video.source.height + '" width="' + video.source.width + '"';
+                }
+                mrssStr += eMediaContent;
                 mrssStr += sMediaPlayer + ' url="' + 'https://players.brightcove.net/' + account_id + '/default_default/index.html?videoId=' + video.id + '"' + eMediaPlayer;
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
-                mrssStr += sMediaDescription + video.description + eMediaDescription;
+                mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
                 if (doThumbnail) {
                     mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
                     if (isDefined(video.images)) {
@@ -176,12 +181,6 @@ var BCLS = ( function (window, document) {
                     } else {
                         mrssStr += eMediaThumbnail;
                     }
-                }
-                mrssStr += eMediaContent;
-                if (isDefined(video.schedule) && video.schedule.ends_at) {
-                    eItem = eItemStart + video.schedule.ends_at + eItemEnd;
-                } else {
-                    eItem = eItemStart + defaultEndDate + eItemEnd;
                 }
                 mrssStr += eItem;
             }
