@@ -176,12 +176,7 @@ var BCLS = ( function (window, document) {
                 mrssStr += sMediaTitle + video.name + eMediaTitle;
                 mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
                 if (doThumbnail) {
-                    mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
-                    if (isDefined(video.images)) {
-                        mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
-                    } else {
-                        mrssStr += eMediaThumbnail;
-                    }
+                    mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '" ' + eMediaThumbnail;
                 }
                 mrssStr += eItem;
             }
