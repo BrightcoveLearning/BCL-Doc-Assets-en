@@ -162,7 +162,7 @@ var BCLS = (function(window, document) {
         mrssStr += sMediaDescription + sCdata + video.description + eCdata + eMediaDescription;
         if (doThumbnail) {
           mrssStr += sMediaThumbnail + ' url="' + thumbnailURL + '"';
-          if (isDefined(video.images)) {
+          if (isDefined(video.images && isDefined(video.images.thumbnail.sources[0].height))) {
             mrssStr += ' height="' + video.images.thumbnail.sources[0].height + '" width="' + video.images.thumbnail.sources[0].width + '"' + eMediaThumbnail;
           } else {
             mrssStr += eMediaThumbnail;
