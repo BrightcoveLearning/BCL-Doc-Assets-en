@@ -12,68 +12,74 @@
 
 <p>Our recommended bucket policy:</p>
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-                      "Version": "2012-10-17",
-                      "Id": "ZencoderBucketPolicy",
-                      "Statement": [
-                      {
-                          "Sid": "Stmt1295042087538",
-                          "Effect": "Allow",
-                          "Principal": {
-                              "AWS": "arn:aws:iam::395540211253:root"
-                          },
-                          "Action": [
-                          "s3:GetObjectAcl",
-                          "s3:GetObject",
-                          "s3:PutObjectAcl",
-                          "s3:PutObject",
-                          "s3:ListMultipartUploadParts"
-                          ],
-                          "Resource": "arn:aws:s3:::MY-BUCKET/*"
-                      },
-                      {
-                          "Sid": "Stmt1295042087538",
-                          "Effect": "Allow",
-                          "Principal": {
-                              "AWS": "arn:aws:iam::395540211253:root"
-                          },
-                          "Action": [
-                          "s3:ListBucketMultipartUploads",
-                          "s3:GetBucketLocation"
-                          ],
-                          "Resource": "arn:aws:s3:::MY-BUCKET"
-                      }
-                      ]
+<pre class="line-numbers"> <code class="language-json notranslate">{
+"Version": "2012-10-17",
+"Id": "ZencoderBucketPolicy",
+"Statement": [
+  {
+      "Sid": "Stmt1295042087538",
+      "Effect": "Allow",
+      "Principal": {
+          "AWS": "arn:aws:iam::395540211253:root"
+      },
+      "Action": [
+      "s3:GetObjectAcl",
+      "s3:GetObject",
+      "s3:PutObjectAcl",
+      "s3:PutObject",
+      "s3:ListMultipartUploadParts"
+      ],
+      "Resource": "arn:aws:s3:::MY-BUCKET/*"
+  },
+  {
+      "Sid": "Stmt1295042087538",
+      "Effect": "Allow",
+      "Principal": {
+          "AWS": "arn:aws:iam::395540211253:root"
+      },
+      "Action": [
+      "s3:ListBucketMultipartUploads",
+      "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::MY-BUCKET"
+  }
+]
                   }</code></pre>
 
 <p>There is only <strong>one change you will have to make</strong> to this bucket policy before it's ready to go.</p>
 
+<aside class="bcls-aside bcls-aside--warning language-editable">Note that even when you use this policy, uploads will fail if the bucket is set to block public ACLs:
+  <figure class="bcls-figure">
+    <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/17890-using-zencoder-s3/acl-policy.png" alt="S3 ACL Permissions">
+    <figcaption class="bcls-caption--image">S3 ACL Permissions</figcaption>
+  </figure>
+</aside>
+
 <ol>
-  <li>Replace MY-BUCKET with the name of your bucket. Leave the /* at the end of the line, as that will apply the policy to every file within the bucket.</li>
-  <li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Zencoder may need are:
-  <h4>Object Permissions - first action array in the example above</h4>
+	<li>Replace MY-BUCKET with the name of your bucket. Leave the /* at the end of the line, as that will apply the policy to every file within the bucket.</li>
+	<li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Zencoder may need are:
+	<h4>Object Permissions - first action array in the example above</h4>
 
-  <ul>
-    <li><code class="notranslate">s3:PutObject</code> - allow Zencoder to upload files to the bucket</li>
-    <li><code class="notranslate">s3:GetObject</code> - allow Zencoder to download files from the bucket</li>
-    <li><code class="notranslate">s3:GetObjectAcl</code> - allow Zencoder to get ACL permissions for files</li>
-    <li><code class="notranslate">s3:PutObjectAcl</code> - allow Zencoder to set ACL permissions for other users on files</li>
-    <li><code class="notranslate">s3:ListMultipartUploadParts</code> - allow Zencoder to list which parts of a multipart file have been uploaded to the bucket</li>
-  </ul>
+	<ul>
+		<li><code class="notranslate">s3:PutObject</code> - allow Zencoder to upload files to the bucket</li>
+		<li><code class="notranslate">s3:GetObject</code> - allow Zencoder to download files from the bucket</li>
+		<li><code class="notranslate">s3:GetObjectAcl</code> - allow Zencoder to get ACL permissions for files</li>
+		<li><code class="notranslate">s3:PutObjectAcl</code> - allow Zencoder to set ACL permissions for other users on files</li>
+		<li><code class="notranslate">s3:ListMultipartUploadParts</code> - allow Zencoder to list which parts of a multipart file have been uploaded to the bucket</li>
+	</ul>
 
-  <h4>Bucket Permissions - second action array in the example above</h4>
+	<h4>Bucket Permissions - second action array in the example above</h4>
 
-  <ul>
-    <li><code class="notranslate">s3:GetBucketLocation</code> - allow Zencoder to get the location of the bucket (US, EU, Asia, etc.)</li>
-    <li><code class="notranslate">s3:ListBucketMultipartUploads</code> - allow Zencoder to view any multipart uploads currently happening on the bucket
-    <p><code class="notranslate">ex:</code> If you want Zencoder to be able to download and upload files, replace the first Action array with:</p>
+	<ul>
+		<li><code class="notranslate">s3:GetBucketLocation</code> - allow Zencoder to get the location of the bucket (US, EU, Asia, etc.)</li>
+		<li><code class="notranslate">s3:ListBucketMultipartUploads</code> - allow Zencoder to view any multipart uploads currently happening on the bucket
+		<p><code class="notranslate">ex:</code> If you want Zencoder to be able to download and upload files, replace the first Action array with:</p>
 
-    <pre class="line-numbers">
+		<pre class="line-numbers">
 <code class="language-json notranslate">["s3:PutObject", "s3:GetObject"]</code></pre>
-    </li>
-  </ul>
-  </li>
+		</li>
+	</ul>
+	</li>
 </ol>
 
 <p>Note that there are two statements in the policy. The first statement affects keys within the bucket, while the second part affects the bucket itself.</p>
