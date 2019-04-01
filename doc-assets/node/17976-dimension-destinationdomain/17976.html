@@ -1,177 +1,156 @@
-<p>To view and edit the properties for a video, open the Media module and click the video title link. The video properties page will open.</p>
+<article class="bcls-article" data-dimension="destination_domain">
+<section class="bcls-section">
+<h2 id="urlParams">URL parameters</h2>
 
-<p class="BCL-aside">Note: To edit video properties for multiple videos at the same time, use the <a href="/node/15923">Quick Edit</a> feature.</p>
+<p>Analytics API reports support the following URL parameters.</p>
 
-<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-video-properties.png" /></p>
+<table class="bcls-table">
+	<caption class="bcls-caption--table">URL Parameters</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Parameter</th>
+			<th>Description</th>
+			<th>Required</th>
+			<th>Values</th>
+			<th>Default</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body" id="paramTableBody">
+		<tr>
+			<td><code>account</code></td>
+			<td>The accounts you want to report on</td>
+			<td>yes</td>
+			<td>one or more account ids as a comma-delimited list</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td><code>dimensions</code></td>
+			<td>The dimension(s) to report on</td>
+			<td>yes</td>
+			<td>one or more dimensions as a comma-delimited list (some combinations are not valid)</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td><code>where</code></td>
+			<td>Used to specify filters for reports</td>
+			<td>no</td>
+			<td>{dimension}=={value} - one or more as a semi-colon-delimited list</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td><code>limit</code></td>
+			<td>Number of items to return</td>
+			<td>no</td>
+			<td>positive integer</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td><code>offset</code></td>
+			<td>Number of items to skip</td>
+			<td>no</td>
+			<td>positive integer</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><code>sort</code></td>
+			<td>Field to sort items on</td>
+			<td>no</td>
+			<td>a valid field for the request</td>
+			<td>video_view</td>
+		</tr>
+		<tr>
+			<td><code>fields</code></td>
+			<td>Fields to return</td>
+			<td>no</td>
+			<td>varies according to the dimension you are reporting on</td>
+			<td>video_view</td>
+		</tr>
+		<tr>
+			<td><code>format</code></td>
+			<td>Format to return results in</td>
+			<td>no</td>
+			<td>json | csv | xlxs</td>
+			<td>json</td>
+		</tr>
+		<tr>
+			<td><code>reconciled</code></td>
+			<td>If included, will limit results to either historical or realtime data</td>
+			<td>no</td>
+			<td>true | false</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td><code>from</code></td>
+			<td>The beginning of the date range for the request</td>
+			<td>no</td>
+			<td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string alltime, or relative date (-1m); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
+			<td>30 days prior to now</td>
+		</tr>
+		<tr>
+			<td><code>to</code></td>
+			<td>The end of the date range for the request</td>
+			<td>no</td>
+			<td>An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.</td>
+			<td>now</td>
+		</tr>
+	</tbody>
+</table>
+</section>
 
-<p>Buttons at the top of the video properties page provide the ability to:</p>
+<section class="bcls-section">
+<h2 id="fieldValues">Fields available</h2>
 
-<ul>
-	<li><a href="/node/15620">Capture new poster and thumbnail images</a></li>
-	<li><a href="/node/15095">Move the video to a folder</a> or <a href="/node/15152">add it to a playlist</a></li>
-	<li>Deactivate/activate videos</li>
-	<li><a href="/node/15473">Publish a video</a></li>
+<p>The following fields can be returned for the dimension.</p>
+
+<ul id="fields">
+  <li class="language-editable"><code>ad_mode_begin</code> - the number of times the player entered ad mode</li>
+	<li class="language-editable"><code>ad_mode_complete</code> - the number of times the player completed ad mode</li>
+	<li class="language-editable"><code>destination_domain</code> - the domain where video impressions occurred (note - just the domain, not the full path)</li>
+  <li class="language-editable"><code>engagement_score</code> - the average engagement score for a videos played in a player</li>
+	<li class="language-editable"><code>play_request</code> - total number of times video playback was requested</li>
+	<li class="language-editable"><code>play_rate</code> - the average play rate (video views divided by impressions) for a video</li>
+	<li class="language-editable"><code>player</code> - the player id</li>
+	<li class="language-editable"><code>player_load</code> - the number of times a player was loaded</li>
+  <li class="language-editable"><code>video_impression</code> - the total number of videos loaded into the player</li>
+	<li class="language-editable"><code>video_percent_viewed</code> - the sum of percent viewed of videos in the player</li>
+	<li class="language-editable"><code>video_seconds_viewed</code> - total seconds of videos viewed in the player</li>
+	<li class="language-editable"><code>video_view</code> - total times video playback started in the player</li>
 </ul>
+</section>
 
-<p>If the video is activated, the <strong>Deactivate</strong> button can be used to deactivate the video. If the video is deactivated, the <strong>Activate</strong> button can be used to activate the video. Videos that are deactivated cannot be played in a Brightcove Player.</p>
+<section class="bcls-section">
+<h2 id="filterValues">Filter values</h2>
 
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-deactivate-publish.png" /></div>
+<p>Used as a filter, a dimension allows you to narrow the results.</p>
 
-<p>The preview player at the top of the page can be used to view the video.</p>
+<p id="filters">Filter values: The destination_domain dimension is not used as a filter.</p>
+</section>
 
-<p>The video properties are organized into the following sections:</p>
+<section class="bcls-section">
+<h2 id="combinations">Combining dimensions</h2>
 
-<ul>
-	<li><a href="#videoinfo">Video Information</a></li>
-	<li><a href="#videofiles">Video Files</a></li>
-	<li><a href="#mediasharing">Media Sharing</a></li>
-	<li><a href="#audiotracks">Audio Tracks</a></li>
-	<li><a href="#images">Images</a></li>
-	<li><a href="#videoviews">Video Views</a></li>
-	<li><a href="#customfields">Custom Fields</a></li>
-	<li><a href="#availability">Availability</a></li>
-	<li><a href="#texttracks">Text Tracks</a></li>
-</ul>
+<p>To see what dimensions this on can be combined with, and what fields are available for the combination, see <a href="/overview-analytics-api-v1#metrics">Dimension and Fields</a>.</p>
+</section>
 
-<p>To edit the video properties, click the <strong>Edit</strong> button in the section or double-click in the section.</p>
+<section class="bcls-section">
+<h2 id="examples">Request Examples</h2>
 
-<div class="BCL-concept">
-<h2 id="required">Required fields</h2>
+<h3>Dimension request</h3>
 
-<p>Your Video Cloud account may be configured with required metadata fields. If a video is inactive, you can freely edit and save its metadata without supplying all required metadata. Also, videos can't be activated until all required metadata has been entered. If a video is already active, you cannot save any edits in the section you are editing unless you supply all required metadata in that section or deactivate the video. For more information on working with required fields, see <a href="/node/15531">Setting Required Fields for Videos</a>.</p>
-</div>
+<pre class="line-numbers language-http code-toolbar">
+<code class="language-http" id="dimensionRequest"><span class="token header-name keyword"><span class="token header-name keyword">https:</span></span>//analytics.api.brightcove.com/v1/data?accounts=1752604059001&amp;dimensions=destination_domain</code></pre>
+<button class="bcls-button" id="sendDimensionRequest">Test This Request</button>
 
-<div class="BCL-concept">
-<h2 id="videoinfo">Video Information</h2>
+<h3>Filter request</h3>
 
-<p>The Video Information section can be used to view and edit basic video properties.</p>
+<pre class="line-numbers language-http">
+<code class="language-http" id="filterRequest">Not applicable</code></pre>
+<button class="bcls-button" id="sendFilterRequest" style="opacity:.5;cursor:not-allowed;">Test This Request</button>
 
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-video-information.png" /></div>
+<h3>Response</h3>
 
-<p>To edit the properties, click the <strong>Edit</strong> button or double-click in the section. The following properties can be edited:</p>
-
-<ul>
-	<li><strong>Name</strong> - No more than 255 characters.</li>
-	<li><strong>ID</strong> - System assigned video ID (unique across all Video Cloud accounts).</li>
-	<li><strong>Short description</strong> - No more than 250 characters.</li>
-	<li><strong>Tags</strong> - One or more tags, separated by commas. You can use tags to add videos to smart playlists or to find videos using the CMS API.
-	<ul>
-		<li>Tags can be up to 128 characters. If any tags have more than 128 characters, an error will be displayed when you attempt to save changes.</li>
-		<li>Tags can't contain commas. For example, a tag of "roof, attic + front yard" is not supported.</li>
-		<li>A video can have no more than a total of 1200 tags.</li>
-		<li>A tag differing only in case (lowercase, uppercase) is handled as an identical tag and the case will automatically match those of the original tag.</li>
-		<li>Issues with case sensitivity need to be handled externally to Video Cloud, for example, using JavaScript methods to modify the strings.</li>
-		<li>After entering a tag, press the <strong>comma</strong> key or <strong>enter</strong>. Tags that have been added will display in a colored box.
-		<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-tags-added.png" /></div>
-		</li>
-	</ul>
-	</li>
-	<li><strong>Reference ID</strong> - A unique ID assigned by a publisher to a video or playlist. Limited to no more than 150 characters. The reference ID is distinct from the video ID or playlist ID which are unique IDs generated by Video Cloud. The reference ID enables coordination between Video Cloud and other services such as a publisher's content management system. Note that you can't batch edit the reference ID as two videos can't have the same reference ID. &nbsp;Reference IDs must always be unique. Deleting a video will allow a previously assigned reference ID to be reused.</li>
-	<li><strong>Video Projection</strong> - Indicates how the video was recorded.
-	<ul>
-		<li><strong>Standard</strong> - Default. Regular video recording.</li>
-		<li><strong>360 Degree</strong> - Check to indicate the video is a 360 degree video. A 360 badge will appear in the video thumbnail in the Media module. For more information on working with 360 degree videos, see <a href="/node/16784">Working with 360-Degree Videos</a>.</li>
-	</ul>
-	</li>
-	<li><strong>Enable offline playback</strong> - When checked, enables the video to be saved locally and viewed offline when using applications created using the device SDKs. This option will only appear if the account is enabled for offline playback.</li>
-	<li><strong>Related Link URL</strong> - A standard web URL beginning with http:// or https:// limited to 255 characters.</li>
-	<li><strong>Related Link Text</strong> - Related link text limited to 255 characters.</li>
-	<li><strong>Long Description</strong> - No more than 5000 characters.</li>
-	<li><strong>Advertising</strong>
-	<ul>
-		<li><strong>Free</strong> - Ads will not be shown when the video plays.</li>
-		<li><strong>Ad Supported</strong> - Ads may be shown when video plays.
-		<p class="BCL-aside">Note: If your account is not enabled for advertising and you set the Advertising property to Ad Supported, you will receive an error when saving changes.</p>
-		</li>
-	</ul>
-	</li>
-	<li><strong>Ad Keys</strong> - Passed as part of the ad server URL. For example, to pass <code>section=blog</code> and <code>anotherKey=value1</code>, you would enter <code>section=blog&amp;anotherKey=value1</code>. See the <a href="https://support.google.com/dfp_premium/answer/1080597">DoubleClick for Publishers Help</a> for information on adding key-value pairs. When using ad keys, ad macros should be added to the ad server URL (configured as part of the <a href="/node/15897">player advertising properties</a>). Ad macros support variables in the server URL for which the IMA3 plugin will substitute appropriate values. For more information, see the <a href="/node/18080#adMacros">IMA3 developer documentation</a>.</li>
-	<li><strong>Folder</strong> - Folder the video is assigned to. See <a href="/node/15095">Organizing Videos Using Folders</a> for more information.</li>
-	<li><strong>Manual Playlists</strong> - Playlists that this video belongs to. For more information, see <a href="/node/15152">Creating and Managing Playlists</a>.</li>
-	<li><strong>Sharing</strong> - Indicates if the video has been shared to another account. For more information, see <a href="/node/18465">Media Sharing using the Media Module</a>.</li>
-</ul>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-video-information-edit.png" /></div>
-
-<p>Click <strong>Save</strong> to save changes.</p>
-</div>
-
-<div class="BCL-concept">
-<h2 id="videofiles">Video Files</h2>
-
-<p>The Video Files section displays the source file name, the transcoding technology that was used and details on the video renditions that were created. It also provides the ability to:</p>
-
-<ul>
-	<li><a href="/node/15322">Replace the Video Source File</a></li>
-	<li><a href="/node/15921">Retranscode the Video</a></li>
-</ul>
-
-<p>In this example, Legacy transcoding was used (when the video was uploaded, a Legacy ingest profile was used). To download a rendition, right-click on the format link for the rendition.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-video-files.png" /></div>
-
-<p>In this example, <a href="/node/18476">Dynamic Delivery</a> transcoding was used (when the video was uploaded, a Dynamic Delivery or Context Aware Encoding ingest profile was used).</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-video-files-dd.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="mediasharing">Media Sharing</h2>
-
-<p>If the video has been shared to an affiliate account, the Media Sharing section will be displayed and list the affiliates the video has been shared to. For more information on media sharing, see <a href="/node/18465">Media Sharing using the Media Module</a>.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-media-sharing.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="audiotracks">Audio Tracks</h2>
-
-<p>If the video was uploaded and transcoded using a Dynamic Delivery or Context Aware Encoding ingest profile, the Audio Tracks section will be displayed and contain information on the audio renditions that are available. For information on adding additional audio tracks to a video, see <a href="/node/18591">Adding Audio Tracks to Videos using the Media Module</a>.</p>
-
-<p class="BCL-aside">Note: The Audio Tracks section will not be displayed if the video was transcoded using a Legacy ingest profile.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-audio-tracks.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="images">Images</h2>
-
-<p>The Images section displays the poster and thumbnail images for the video. Poster and thumbnail images are created automatically by taking a snapshot from the source video at the midway point. If you don't like the default images that were captured, you can <a href="/node/15620">capture new images</a> or <a href="/node/15519">upload other images</a> to use as the poster and thumbnail.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-images.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="videoviews">Video Views</h2>
-
-<p>The Video Views section displays the number of video views for the past 30 days. Click the links to open the Performance or Engagement Reports for more information.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-video-views.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="customfields">Custom Fields</h2>
-
-<p>The Custom Fields section can be used to view and edit the custom field for the video. To edit custom field values, click the <strong>Edit</strong> button or double-click in the section. An asterick (*) next to the field name indicates that the field is required.</p>
-
-<p class="BCL-aside">Note: For information on adding custom fields to an account, see <a href="/node/1050">Creating Custom Metadata Fields</a>.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-custom-fields.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="availability">Availability</h2>
-
-<p>The Availability section displays the video availability settings. For more information on configuring the availability settings, see <a href="/node/15476">Configuring Video Availability</a>.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-availability.png" /></div>
-</div>
-
-<div class="BCL-concept">
-<h2 id="texttracks">Text Tracks</h2>
-
-<p>The text track section can be used to add text tracks to the video. For more information on configuring text tracks, see <a href="/node/15481">Adding Captions to Videos using the Media Module</a>.</p>
-
-<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node15482-text-tracks.png" /></div>
-</div>
-<!-- End of Drupal content -->
+<pre class="line-numbers language-json">
+<code class="language-json" id="response">Response will appear here when you test a request</code></pre>
+</section>
+</article>
+<script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/aapi-model-v2.min.js"></script><script src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/analytics-api/guides/dimension-drupal-v2.js"></script>
