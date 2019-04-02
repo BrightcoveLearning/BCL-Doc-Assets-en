@@ -111,7 +111,7 @@
         </tbody>
       </table>
 
-      <p>The quotation marks insure that videos returned will match ALL of the terms, but NOT necessarily the exact terms. <a href="#Stemming">Stemming</a> still applies - for example, a search on <code>"new house"</code> will also return videos with a <code>name</code> or <code>description</code> like <code>news about housing</code>.</p>
+      <p>The quotation marks ensure that videos returned will match ALL of the terms, but NOT necessarily the exact terms. <a href="#Stemming">Stemming</a> still applies - for example, a search on <code>"new house"</code> will also return videos with a <code>name</code> or <code>description</code> like <code>news about housing</code>.</p>
     </aside>
 
     <p>For one-off requests, you can use Brightcove Learning's <a href="/node/18290">string encoder</a> to encode your search strings. For apps, you'll need to find a URI encoding function in the language you are using.</p>
@@ -129,27 +129,26 @@
 
   <p>Search can be combined with other parameters such a <code>sort</code>, <code>limit</code> and <code>offset</code>. All URL parameters are separated by <code>&amp;</code>, and the order does not matter.</p>
 
+  <aside class="bcls-aside bcls-aside--warning">Search param <code>limit</code> has a maximum value of <strong>100</strong> per request.  Please see <a href="https://support.brightcove.com/using-cms-api-page-search-results">Page Search Results</a> regarding video pagination.</aside>
+
   <h3>Examples</h3>
 
-  <pre class="line-numbers">
-<code class="language-http">.../videos?q=name:foo%2Btags:bar&amp;sort=updated_at
-</code>
-</pre>
+  <pre class="line-numbers"><code class="language-http">.../videos?q=name:foo%2Btags:bar&amp;sort=updated_at</code></pre>
 
-  <pre class="line-numbers">
-<code class="language-http">.../videos?sort=updated_at&amp;q=name:foo%2Btags:bar&amp;limit=10
-</code>
-</pre>
+  In this example, returned videos must have a <code>tag</code> with value <code>"bar"</code> and may have a <code>name</code> containing <code>"foo"</code>
+
+  <pre class="line-numbers"><code class="language-http">.../videos?sort=updated_at&amp;q=name:foo%2Btags:bar&amp;limit=10</code></pre>
+
+  This example used the same query as the example above, but additionally limits the results to just 10 videos and sorts those results by the field <code>updated_at</code>.
 
   <section class="bcls-section">
     <h2 id="specificVideos">Search specific videos</h2>
 
     <p>If you want to limit your search to a specific set of videos, you can do so searching on <code>id</code>:</p>
 
-    <pre class="line-numbers">
-<code class="language-http">q=id:123456789+id:987654321+id:48376387
-</code>
-</pre>
+    <pre class="line-numbers"><code class="language-http">q=id:123456789+id:987654321+id:48376387</code></pre>
+
+    This example will return videos with ids <code>123456789</code>, <code>987654321</code> and <code>48376387</code>
   </section>
 
   <section class="bcls-section">
