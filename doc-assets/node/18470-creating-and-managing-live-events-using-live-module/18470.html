@@ -29,11 +29,9 @@
 <ul>
 	<li>SSAI Live streams currently cannot be published via the Media module. If you wish to publish an SSAI Live stream, you must do it from the Live Module.</li>
 	<li>DVR Live streams currently cannot be published via the Media module. If you wish to publish a DVR Live stream, you must do it from the Live Module.</li>
-	<li>Your encoder must output an RTMP stream.</li>
 	<li>Live broadcasts will experience a 20-30 second delay.</li>
 	<li>Streaming must begin within 30 minutes of the event start (default-level account setting).</li>
 	<li>For users using Internet Explorer, version 10 or later is required.</li>
-	<li>For recurring events, the Elapsed Time counter shown in the Standby Tab will continue run when the job has been deactivated.</li>
 </ul>
 </section>
 
@@ -48,17 +46,15 @@
 	<li><strong>Completed</strong> - Lists completed events</li>
 </ul>
 
-<div><img class="bcls-image--no-border" alt="" src="https://learning-services-media.brightcove.com/doc-assets/node/18470-creating-and-managing-live-events-using-live-module/18470-events-statue.png" /></div>
+<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-homepage.png" /></div>
 
 <p class="BCL-aside">Note: The ability to create live channels is based upon your Live subscription.</p>
+
+<p>The <strong>Show</strong> dropdown can be used to filter the events that appear on the <strong>Completed</strong> tab.</p>
 
 <p>The body of the page will display a list of live events with related information:</p>
 
 <ul>
-	<li>Total live job run time</li>
-	<li>Created date and time (for recurring events, this will be the last time the event was activated)</li>
-	<li>Event name and ID</li>
-	<li>Total views</li>
 	<li>Job Status - Status of the live stream
 	<ul>
 		<li><strong>Processing</strong> - Stream is live</li>
@@ -76,6 +72,11 @@
 		<li><strong>Abandoned</strong> - The event finished without an encoder being connected</li>
 	</ul>
 	</li>
+	<li>Completed date and time</li>
+	<li>Event name and ID</li>
+	<li>Total views</li>
+	<li>Duration</li>
+	<li>Created date and time (for recurring events only)</li>
 </ul>
 
 <p>To view the live event video properties, click on the event name to open the <a href="#controlroom">Control Room</a>.</p>
@@ -89,7 +90,7 @@
 <p>To create a new event, follow these steps.</p>
 
 <ol class="bcls-tasklist">
-	<li>From the Manage Live Events page click the <strong>Create Event</strong> button or click <strong>Create Live Event</strong> or <strong>Create Live Channel</strong> in the left navigation. The Create Live Event or Create Live Channel page will open. The properties when creating events and channels are the same. The screen shots in this document cover creating an event.
+	<li>From the Manage Events page click <strong>Create Event</strong>. The Create Live Event or Create Live Channel page will open. The properties when creating events and channels are the same. The screen shots in this document cover creating an event.
 
 	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-new-event.png" /></div>
 	</li>
@@ -103,14 +104,13 @@
 	</li>
 	<li>Any required custom fields for the account will be displayed. Assign values to the custom fields.</li>
 	<li>Select a <strong>Live Ingest Profile</strong>. The dropdown list will list all Live ingest profiles. The ingest profile will control the quality and number of live renditions that are created. Clicking the <strong>Manage Profiles</strong> link will open the ingest profile editor in another browser tab. Note that you must be an account administrator to access the ingest profile editor. Click the <strong>RENDITIONS</strong> link to view the renditions that will be created using the selected ingest profile.
-<aside class="bcls-aside bcls-aside--information language-editable">
-  The bitrate and billing details of the three tiers are as follows:
-  <ul>
-    <li>Tier 1 allows up to 5,500 Kbps and is charged at 1.0x hours</li>
-    <li>Tier 2 allows up to 10,000 Kbps and is charged at 1.5x hours</li>
-    <li>Tier 3 allows up to 20,000 Kbps and is charged at 2.0x hours</li>
-  </ul>
-</aside>
+	<aside class="bcls-aside bcls-aside--information language-editable">The bitrate and billing details of the three tiers are as follows:
+	<ul>
+		<li>Tier 1 allows up to 5,500 Kbps and is charged at 1.0x hours</li>
+		<li>Tier 2 allows up to 10,000 Kbps and is charged at 1.5x hours</li>
+		<li>Tier 3 allows up to 20,000 Kbps and is charged at 2.0x hours</li>
+	</ul>
+	</aside>
 
 	<p class="BCL-aside">Note: For information on creating Live ingest profiles, see <a href="/node/18471">Creating Custom Live Ingest Profiles</a>.</p>
 	</li>
@@ -118,8 +118,7 @@
 	<p class="BCL-aside">Note: This option is not supported when using a recurring event.</p>
 	</li>
 	<li>Click <strong>ADVANCED OPTIONS</strong> and <a href="#advanced">configure the advanced options</a>.</li>
-	<li>Still in <strong>ADVANCED OPTIONS</strong>, if you are outside North America, you <strong>must</strong> select an appropriate region. By default, the region is set to Oregon (US West), which will produce bad results if you are streaming from another continent.</li>
-	<li>Click <strong>Start Streaming</strong> to start the live event. The <a href="#controlroom">Control Room page</a> will open with details about the live event including the <strong>Streaming Endpoint (RTMP URL)</strong> and <strong>Stream Name</strong> which will be used by your encoder.
+	<li>Click<strong> Create Event </strong>to start the live event. The <a href="#controlroom">Control Room page</a> will open with details about the live event including the <strong>Streaming Endpoint (RTMP URL)</strong> and <strong>Stream Name</strong> which will be used by your encoder.
 	<p class="BCL-aside">Note: It will take about a minute to process your streams.</p>
 
 	<p class="BCL-aside">Note: By default, the encoder must be started within 30 minutes from when a new event is created.</p>
@@ -142,9 +141,10 @@
 
 <ul>
 	<li><strong>Reconnect Time</strong> - If the encoder is disconnected, this is the amount of time that the live stream will be kept available. This setting has no effect on how soon the encoder must be started when a new event is created.</li>
-	<li><strong>Enable Server Side Ad Insertion (SSAI)</strong> - Enables server side ad insertion. Ads are configured as part of the <a href="/node/18588">live settings</a>.
+	<li><strong>Enable Server Side Ad Insertion (SSAI)</strong> - Enables server side ad insertion. Ads are configured as part of the <a href="/node/18748">server-side ad settings</a>. For information on working with server-side ads in the Live module, see <a href="/node/18753">Implementing Server-Side Ads in the Live Module</a>.
 	<ul>
 		<li><strong>Fill Slate</strong> - Select a fill slate. The fill slate will be displayed when there are gaps in a live stream ad break that cannot be filled with a dynamically-served ad. Create fill slates as part of the <a href="/node/18588">live settings</a>.</li>
+		<li><strong>Ad Audio</strong> - When checked, normalizes the audio levels on ads based on the adjustment that is set. This can be used as a way to help make sure ads aren’t significantly louder than the content.</li>
 	</ul>
 	</li>
 	<li><strong>Create Cloud DVR</strong> - Enables DVR capability. You must also use a player with the <a href="/node/18089">Live DVRUX Plugin</a>.
@@ -159,11 +159,12 @@
 		<li><strong>Secure Reliable Transport (SRT)</strong></li>
 	</ul>
 	</li>
-	<li><strong>RTMP Credential</strong> - Select the RTMP credential used to secure the Streaming Endpoint. Note this option will only appear if at least one RTMP credential was created as part of the <a href="/node/18588">Live settings</a>.</li>
-	<li><strong>RTMP IP whitelist</strong> - Enter a set of IP addresses that are allowed to connect to the RTMP endpoint. This controls who can connect to the RTMP endpoint.</li>
-	<li><strong>Region</strong> - The Amazon Web Services (AWS) region to use. To reduce latency, you should select the region that is closest to where your encoder is located. The following regions are supported:
+	<li><strong>RTMP credentials to use</strong> - Select the RTMP credential used to secure the Streaming Endpoint. Note this option will only appear if the Input Format is RTMP and at least one RTMP credential was created as part of the <a href="/node/18588">Live settings</a>.</li>
+	<li><strong>RTMP IP whitelist</strong> - Enter a set of IP addresses that are allowed to connect to the RTMP endpoint. This controls who can connect to the RTMP endpoint. Note this option will only appear if the Input Format is RTMP.</li>
+	<li><strong>CIDR Whitelist</strong>&nbsp; - Enter a set of IP addresses that are allowed to connect to the RTP or SRT endpoint. This controls who can connect to the RTP or SRT endpoints. Note this option will only appear if the Input Format is RTP or SRT.</li>
+	<li><strong>Region</strong> - The Amazon Web Services (AWS) region to use. To reduce latency, you should select the region that is closest to where your encoder is located. <strong>By default, the region is set to Oregon (US West) which will produce bad results if you are streaming from another continent.</strong> The following regions are supported:
 	<ul>
-		<li>Oregon (US West)</li>
+		<li>Oregon (US West) (default)</li>
 		<li>Virginia (US East)</li>
 		<li>Tokyo (Asia Pacific)</li>
 		<li>Singapore (Asia Pacific)</li>
@@ -183,7 +184,7 @@
 	</li>
 	<li><strong>Enable stream status notifications</strong> - When checked, enter a <strong>Notification URL</strong>. An http request will be made to the <strong>Notification URL</strong> when there is a change in the job status. This can be used to update a server in response to changes in the job status.</li>
 	<li><strong>+ Add multi CDN configuration</strong> - Enter a <strong>label</strong> and <strong>URL</strong> for additional CDNs. This is a whitelist of CDNs that are allowed to ask our primary CDN for the video segments. You are responsible for configuring the secondary CDN correctly.</li>
-	<li><strong>Create this as a recurring event</strong> - Allows a single live stream to be created and then activated/deactivated when needed. For information, see the <a href="#intro_recurring">Introduction to recurring events</a> section of this document.</li>
+	<li><strong>Create this as a recurring event using a Static Entry Point (SEP)</strong> - Allows a single live stream to be created and then activated/deactivated when needed. For information, see the <a href="#intro_recurring">Introduction to recurring events</a> section of this document.</li>
 </ul>
 
 <p>Click <strong>Edit Configuration </strong> to view/edit the API request that will be made to create the live stream. Caution should be used when editing the API call directly.</p>
@@ -192,58 +193,7 @@
 <section class="bcls-section">
 <h2 id="intro_recurring">Introduction to recurring events</h2>
 
-<p>Selecting the <strong>Create this as a recurring event</strong> option allows for a long-running live stream that can be activated and deactivated while keeping the same entry point URL and playback URL. When using recurring events, the streaming endpoint URL and video ID will not change.</p>
-
-<p>All accounts have the following limits by default:</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th width="183">Region</th>
-			<th width="263">Maximum # of recurring events that can be created</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Oregon</td>
-			<td align="center">10</td>
-		</tr>
-		<tr>
-			<td>Virginia</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>Tokyo</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>Singapore</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>Sydney</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>Mumbai</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>Frankfurt</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>Ireland</td>
-			<td align="center">3</td>
-		</tr>
-		<tr>
-			<td>São Paulo</td>
-			<td align="center">3</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>Contact your account manager if you need to increase the number of recurring events for your account.</p>
+<p>Selecting the <strong>Create this as a recurring event using a Static Entry Point (SEP)</strong> option allows for a long-running live stream that can be activated and deactivated while keeping the same entry point URL and playback URL. When using recurring events, the streaming endpoint URL and video ID will not change.</p>
 
 <h3>Limitations</h3>
 
@@ -261,22 +211,24 @@
 <section class="bcls-section">
 <h2 id="work_recurring">Working with recurring events</h2>
 
-<p>To create a recurring event, select the <strong>Create this as a recurring event</strong> option when creating a live event and then click <strong>Start Streaming</strong>.</p>
+<p>To create a recurring event, select the <strong>Create this as a recurring event using a Static Entry Point (SEP)</strong> option when creating a live event and then click <strong>Create Event</strong>.</p>
 
 <div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-recurring-event-selected.png" /></div>
 
 <p>When the recurring event is created, it will appear in the <strong>Standby</strong> tab on the Manage Events page.</p>
 
-<div>
-<p><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-standby-tab.png" />Recurring events also have a Static Entry Point status:</p>
+<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-standby-tab.png" /></div>
+
+<p>The recurring event status can be one of:</p>
 
 <ul>
-	<li><strong>WAITING</strong> - Recurring event is deactivated</li>
-	<li><strong>READY</strong> - Recurring event is activated and waiting for RTMP stream</li>
-	<li><strong>PENDING_DEACTIVATION</strong> - Recurring event in the process of being deactivated</li>
-	<li><strong>ARCHIVED</strong> - Recurring event has been archived</li>
+	<li><strong>Not Activated</strong> - Recurring event has been created and streaming has never started</li>
+	<li><strong>Waiting</strong> - Recurring event is activated and waiting for stream</li>
+	<li><strong>Streaming</strong> - Recurring event in progress</li>
+	<li><strong>Disconnected</strong> - Recurring event is in the process of being stopped</li>
+	<li><strong>Deactivated</strong> - Recurring event is deactivated</li>
+	<li><strong>Archived</strong> - Recurring event has been archived</li>
 </ul>
-</div>
 
 <h3>Activating a recurring event</h3>
 
@@ -318,18 +270,9 @@
 <section class="bcls-section">
 <h2 id="controlroom">Viewing live event info using the Control Room</h2>
 
-<p>The Control Room page is used to view information about a live event. When you create a new live event and click <strong>Start Streaming</strong>, the Control Room page will open. A preview of the event will appear in the player. The Control Room page is also displayed when you click on an event on the Manage Live Events page.</p>
+<p>The Control Room page is used to view information about a live event. When you create a new live event and streaming begins, the Control Room page will open. A preview of the event will appear in the player. The Control Room page is also displayed when you click on an event on the Manage Live Events page.</p>
 
 <div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-control-room.png" /></div>
-
-<p>The buttons on the page can be used to:</p>
-
-<ul>
-	<li><a href="#duplicate">Duplicate an event</a></li>
-	<li><a href="#publish">Publish and embed a live event</a></li>
-	<li><a href="#clip">Create a clip</a></li>
-	<li><a href="#ad">Request an ad</a></li>
-</ul>
 
 <p>The Control Room page is organized with the following sections:</p>
 
@@ -339,6 +282,7 @@
 	<li><a href="#renditions">Renditions</a></li>
 	<li><a href="#clips">Clips</a></li>
 	<li><a href="#analytics">Real-Time Analytics</a></li>
+	<li><a href="#rtmp">RTMP</a></li>
 </ul>
 
 <div>
@@ -406,6 +350,18 @@
 
 <p>Input drift displays the input drift graph and is only displayed when an event is in progress. Input drift measures the healthiness of the input stream. Input drift is defined as the difference from the input timestamp and the real time clock.</p>
 </div>
+
+<div>
+<h3 id="rtmp">RTMP</h3>
+
+<p>The RTMP section can be used to add RTMP Outputs. This allows the live stream to be sent to other RTMP entry points. This can be used to send the live to stream to Facebook or YouTube for example.</p>
+
+<p class="BCL-aside">Note: RTMP Outputs are not available in the Live UI when using recurring events (static entry points).</p>
+
+<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-rtmp.png" /></div>
+
+<p>Enter the <strong>RTMP Output URL</strong> and the <strong>Rendition</strong> to send. Note that the format of the output URL may change depending on where the RTMP stream is being used. For more information, see <a href="/node/18726">Using Live RTMP Outputs to Stream to Facebook and YouTube</a>.</p>
+</div>
 </section>
 
 <section class="bcls-section">
@@ -415,15 +371,15 @@
 
 <ol class="bcls-tasklist">
 	<li>Click on an event to open the Control Room page.</li>
-	<li>Click <strong>Duplicate Event</strong>. A new live event will be created using the settings from the prior live event. Make changes to the event properties as needed.</li>
-	<li>Click <strong>Start Streaming</strong>.</li>
+	<li>Click <strong>Duplicate Event</strong> at the top of the page. A new live event will be created using the settings from the prior live event. Make changes to the event properties as needed.</li>
+	<li>Click <strong>Create Event</strong>.</li>
 </ol>
 </section>
 
 <section class="bcls-section">
 <h2 id="publish">Generating the embed code for a live event</h2>
 
-<p>Two types of embed code are available:</p>
+<p>To generate the embed code for an event, click <strong>Publish and Embed</strong> in the left navigation. Two types of embed code are available:</p>
 
 <ul>
 	<li><strong>Standard</strong> - iframe embed code. Recommended for most cases. This type places the player inside an &lt;iframe&gt; tag.</li>
@@ -436,7 +392,7 @@
 
 <ol class="bcls-tasklist">
 	<li>Click on an event to open the Control Room page.</li>
-	<li>Click<strong> Publish and Embed</strong>.</li>
+	<li>Click<strong> Publish and Embed</strong> in the left navigation.</li>
 	<li>Select a <strong>Player</strong>.
 	<p class="BCL-aside">Note: If the event is configured to enable server-side ads (SSAI), DVR or multi-CDN, Brightcove Player version 6.18.3 and above must be used. Only version 6.18.3 and above players will appear in the dropdown list.</p>
 	</li>
@@ -450,7 +406,7 @@
 <section class="bcls-section">
 <h2 id="clip">Creating a clip</h2>
 
-<p>Clips can be created while the event is in progress or after the event has ended. If clips can't be created, the <strong>Create Clip</strong> button will be disabled. For information on creating a clip, see <a href="/node/18551">Creating a Video Clip Using the Live Module</a>.</p>
+<p>Clips can be created while the event is in progress or after the event has ended. If clips can't be created, a message will appear when hovering over <strong>Create Clip</strong> in the left navigation. For information on creating a clip, see <a href="/node/18551">Creating a Video Clip Using the Live Module</a>.</p>
 
 <aside class="bcls-aside bcls-aside--information">Note:
 <ul>
@@ -471,7 +427,7 @@
 
 <div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18470-goto-ad.png" /></div>
 
-<p>Click <strong>Insert</strong> to insert an ad break into the live stream. If the ad doesn't fill the entire ad break time, the fill slate will be displayed. Ad tag URLs and fill slates are configured as part of the Live settings. For information, see <a href="/node/18588">Managing Live Settings</a>.</p>
+<p>Click <strong>Insert</strong> to insert an ad break into the live stream. If the ad doesn't fill the entire ad break time, the fill slate will be displayed. For information on working with server-side ads in the Live module, see <a href="/node/18753">Implementing Server-Side Ads in the Live Module</a>.</p>
 </section>
 
 <section class="bcls-section">
