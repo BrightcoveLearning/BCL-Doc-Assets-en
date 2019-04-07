@@ -1,0 +1,201 @@
+<article class="bcls-article">
+<section class="bcls-section" id="Scope_conflicts">
+<h2>Scope conflicts</h2>
+
+<p>In JavaScript, when you define a variable using the <code>var</code> element, it is scoped within the function that it is defined. If you define a variable without using <code>var</code>, then it is assigned the global scope. This means that global variables are vulnerable to collisions with other scripts on your page.</p>
+
+<p>Let's look at a code example. In the following code, the function and the variables exist within the scope of the page.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">// script 1
+var incrementCount = function() {
+    count++;
+}
+
+var myButton = document.getElementById('buttonId');
+var count = 0;
+
+myButton.onclick = incrementCount;</code></pre>
+
+<p>Now, let's say there is a function outside of your script that also modifies the global <code>count</code> variable. This collision of scripts can cause unexpected results.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">// script 2
+var countVideos = function(videoList) {
+    count = videoList.length;
+}</code></pre>
+
+<p>Results:</p>
+
+<ol>
+	<li>User selects the <code>myButton</code> button two times, incrementing the <code>count</code> variable in <code>script 1</code>.
+
+	<ul>
+		<li><code>count</code> = <strong>2</strong></li>
+	</ul>
+	</li>
+	<li>The <code>countvideos</code> function is called which exists in <code>Script 2</code>, but also on your web page. Let's say that the <code>videoList</code> contains 10 items. Now, the <code>count</code> global variable has a value of <strong>10</strong>.
+	<ul>
+		<li><code>count</code> = <strong>10</strong></li>
+	</ul>
+	</li>
+	<li>The next time the user selects the <code>myButton</code> button, the <code>count</code> variable will return unexpected results.
+	<ul>
+		<li>Expected: <code>count</code> = <strong>3</strong></li>
+		<li>Actual: <code>count</code> = <strong>11</strong></li>
+	</ul>
+	</li>
+</ol>
+
+<p>You may try to avoid conflicts in your scripts, but there is no guarantee that third-party scripts included in your page will not use similar function and variable names.</p>
+</section>
+
+<section class="bcls-section" id="Anonymous_functions">
+<h2>Anonymous functions</h2>
+
+<p>One solution is to wrap your code in an anonymous function (also called a closure), that gets executed immediately. Your code within a closure is not accessible by other scripts. So, this gives you a way to create private functions and variables.</p>
+
+<p>Here is the syntax for an anonymous function:</p>
+
+<ul>
+	<li>Line 3: includes an additional set of parentheses, which tells JavaScript to execute the function immediately after it has been parsed, instead of waiting for some other code to call the function.</li>
+</ul>
+
+<pre class="line-numbers">
+<code class="language-javascript">(function () {
+    // your code
+}<span class="bcls-highlight">()</span>);</code></pre>
+
+<p>Closures can be powerful, as they provide privacy and state throughout the lifetime of the application. For the code inside the closure, all variables and functions are in the closure scope only. But, your code inside the closure can still access any global variables or functions.</p>
+</section>
+
+<section class="bcls-section" id="Globals">
+<h2>Globals</h2>
+
+<p>Although JavaScript has a feature known as implied globals, it may make your code hard to manage, as it is not easy to determine which variables are global. To determine if a variable is global, the interpreter has to walk backwards through the scope chain looking for a <code>var</code> statement that matches in name. If none is found, the variable is assumed to be global.</p>
+
+<h3>Pass in globals</h3>
+
+<p>With the anonymous function, you can explicitly pass in global parameters. This is called importing parameters into your code.</p>
+
+<p>Here is an example:</p>
+
+<ul>
+	<li>Line 1: defines the name of the parameters being passed into the function. Notice that they do not have to match the names in line 3. Here, the <code>window</code> object is passed into a parameter named <code>window1</code>.</li>
+	<li>Line 3: passes the <code>window</code> object into the function.</li>
+</ul>
+
+<pre class="line-numbers">
+<code class="language-javascript">(function( window1, undefined ) {
+    ...
+})(window);</code></pre>
+
+<p>Since there is only 1 object being passed in, but there are two parameters, the value of <code>undefined</code> will be undefined.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">typeof undefined == "undefined"</code></pre>
+
+<p>This can be handy if you want an easy way to check if other variables are defined.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">if(variable1 === undefined)</code></pre>
+
+<h3>Export globals</h3>
+
+<p>You may also want to pass variables and functions outside of your anonymous function. You can do this by using the <code>return</code> value.</p>
+
+<p>Here is an example:</p>
+
+<ul>
+	<li>Line 1: assigns our anonymous function to <code>BCLS</code>. This value can be anything you choose. In this example, we are using BCLS (Brightcove Learning Services).</li>
+</ul>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function( window1, undefined ) {
+    var object1 = {};
+    object1.count = 1;
+    object1.method = function () {
+        ...
+    }
+    <span class="bcls-highlight">return object1;</span>
+})(window);</code></pre>
+
+<p>The <code>object1</code> object is now available globally with two public properties, a variable named <code>count</code> and a function named <code>method</code>. They can be accessed outside of our anonymous function as:</p>
+
+<ul>
+	<li><code>BCLS.object1.count</code></li>
+	<li><code>BCLS.object1.method</code></li>
+</ul>
+</section>
+
+<section class="bcls-section" id="Complete_example">
+<h2>Complete examples</h2>
+
+<p>Here are some complete examples of the JavaScript Module Design Pattern.</p>
+
+<h3>Example 1</h3>
+
+<p>This example shows how to create private and public variables and functions using the Module Pattern.</p>
+
+<ul>
+	<li>Private variables: <code>myvar</code>, <code>myvar2</code></li>
+	<li>Private functions: <code>fname</code>, <code>fname2</code></li>
+	<li>Public variable: <code>myvar3</code></li>
+	<li>Public function: <code>fname3</code></li>
+</ul>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = ( function() {
+   var myvar = value,
+       myvar2 = value;
+
+   fname = function() {
+        ...
+   };
+   fname2 = function() {
+        ...
+   };
+
+   return {
+        fname3 : function() {
+             ...
+        },
+        myvar3 = value;
+   };
+}());</code></pre>
+
+<h3>Example 2</h3>
+
+<p>This example passes in global objects and exposes a public function.</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">var BCLS = (function( window, document, videojs ) {
+    var myvar = value;
+
+    // use a global object passed into the anonymous function
+    videojs.registerPlugin('overlay');
+
+    fname = function() {
+        ...
+    }
+    return {
+      fname2 : function() {
+            ...
+        }
+    }
+})(window, document, videojs);
+
+// call the public function fname2
+var newvar = BCLS.fname2();</code></pre>
+</section>
+
+<section class="bcls-section" id="Code_samples">
+<h2>Code samples</h2>
+
+<p>Some of our code examples use the JavaScript Module Design Pattern, and you can review them for ideas on how to implement this pattern.</p>
+
+<ul>
+	<li><a href="/node/18195">Floating Player</a></li>
+</ul>
+</section>
+</article>
