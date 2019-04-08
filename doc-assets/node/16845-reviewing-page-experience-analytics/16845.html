@@ -1,0 +1,35 @@
+<div class="BCL-concept">
+<p>Regardless of your specific goals for online video, understanding your audience is a key to developing a successful video strategy. The better you understand your viewers, the easier it is to create content that will engage them in formats they can easily consume. As you publish in-page experiences, Gallery will gather analytics on those experiences and make them available in different reports.</p>
+
+<p>To access the in-page experience analytics, edit the experience and then click <strong>EXPERIENCE ANALYTICS</strong> in the left navigation. Select the type of report to view:</p>
+
+<ul>
+	<li><a href="node/18306">Dashboard</a> - Displays the in-page experience analytics dashboard. This includes number of social shares, device types used to view the experience and top trending videos in the experience.</li>
+	<li><a href="node/16847">Calls-to-Action</a> - Provides analytics on the number of clickthroughs on link and card interactions and image components that have been configured on the experience. Also provides analytics on the number of form submissions from any custom HTML components on the experience.</li>
+	<li><a href="node/16846">Videos</a> - Provides analytics performance and engagement for videos within an in-page experience. This includes metrics such as number of video views, video impressions, average percent viewed, engagement score and the number of social shares.</li>
+</ul>
+</div>
+
+<div class="BCL-concept">
+<h2 id="aem">In-Page experiences with Adobe Experience Manager</h2>
+
+<p>The following workaround can be used if you're having issues tracking events and analytics through In-Page experiences and Adobe Experience Manager. This workaround only works with the <strong>Recommended</strong> embed code, the <strong>No JavaScript</strong> (iframe) embed code requires the full AEM data object instead of being able to use the parent frame's one.</p>
+
+<ol class="bcls-tasklist">
+	<li>Edit the experience.</li>
+	<li>Click <strong>SETTINGS &gt; Advanced</strong> in the navigation menu.</li>
+	<li>Set the JavaScript URL to:<br />
+	<code>https://assets.adobedtm.com/7bd378b63ae642286f5e272876265df98dfca74c/satelliteLib-1d02f12db30b42acb280ec9ed879409399977b30.js</code></li>
+	<li>Add the following JavaScript to the Code box:
+	<pre>
+window.digitalData = window.top.digitalData;
+window.addEventListener('load', function () {
+    _satellite.pageBottom();
+});
+    </pre>
+	</li>
+	<li>Republish the experience.</li>
+</ol>
+
+<p>This will load the Adobe Analytics Omniture plugin into the In-Page experience, pull in the configuration data from the outer page, and then initialize it once the experience has finished loading.</p>
+</div>
