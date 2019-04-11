@@ -56,10 +56,10 @@
 <h5 class="bcls-question">Player controls</h5>
 
 <ul class="bcls-answer">
-  <li><a href="#Customizing_controls_for_Android_TV">Customizing controls for Android TV</a></li>
+	<li><a href="#Customizing_controls_for_Android_TV">Customizing controls for Android TV</a></li>
 	<li><a href="#Fullscreen_mode">Fullscreen mode</a></li>
-  <li><a href="#Showing_player_controls">Showing player controls</a></li>
-  <li><a href="#Working_with_volume_control">Working with volume control</a></li>
+	<li><a href="#Showing_player_controls">Showing player controls</a></li>
+	<li><a href="#Mute_unmute_the_player">Mute/unmute the player</a></li>
 	<!--				  <li><a href="#singleline">Showing single line controls</a></li>-->
 </ul>
 
@@ -86,7 +86,7 @@
 <ol class="bcls-tasklist">
 	<li>Open the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-player-controls/CustomizedControlsSampleApp">Customized Controls</a> sample app. We'll use this as a starting point. Review the sample app's <a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/brightcove-player-controls/CustomizedControlsSampleApp/README.md">README</a> file for details about customizing player controls.</li>
 	<li>Open the <strong>res/layout/land/my_media_controller.xml</strong> file in Android Studio.</li>
-	<li>Copy the <copy>Button</copy> element for the <code class="notranslate">full_screen</code> button. The code should look similar to this:
+	<li>Copy the <code>Button</code> element for the <code class="notranslate">full_screen</code> button. The code should look similar to this:
 	<pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://github.com/BrightcoveOS/android-player-samples/blob/master/brightcove-player-controls/CustomizedControlsSampleApp/src/main/res/layout-land/my_media_controller.xml">&lt;Button
 style="@style/BorderlessButton"
@@ -99,7 +99,7 @@ android:visibility="visible"
 android:text="@string/brightcove_controls_enter_full_screen"/&gt;</a></code></pre>
 	</li>
 	<li>Open the <strong>res/layout/my_tv_media_controller.xml</strong> file in Android Studio.</li>
-	<li>Paste the copied <copy>Button</copy> element into this layout file. The position of the elements determines their position in the control bar.</li>
+	<li>Paste the copied <code>Button</code> element into this layout file. The position of the elements determines their position in the control bar.</li>
 	<li>Scroll to the top of the <strong>res/layout/my_tv_media_controller.xml</strong> file. Make sure the style property is set to <code class="notranslate">@style/BrightcoveControlBar.TV.Custom</code>. The code should look like this:
 	<pre class="line-numbers">
 <code class="notranslate language-java">&lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -329,6 +329,61 @@ brightcoveVideoView.start();</a></code></pre>
 </section>
 
 <section class="bcls-section">
+<h2 id="Mute_unmute_the_player">Mute/unmute the player</h2>
+
+<p>You can programmatically mute or unmute the player. Brightcove recommends using the BrightcoveExoPlayerVideoView whenever possible.</p>
+
+<aside class="bcls-aside bcls-aside--information">You need to wait for either the <code class="notranslate">DID_SET_VIDEO</code> or the <code class="notranslate">DID_PLAY</code> event before executing the code to mute the player. Otherwise, muting will not take effect. The reason to wait for these events is that the player is created when the video is loaded.</aside>
+
+<h3 id="BrightcoveExoPlayerVideoView">BrightcoveExoPlayerVideoView</h3>
+
+<p>When using the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a>, you can programmatically mute or unmute the player by doing the following:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VOLUME">float volume = 100F;
+...
+brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
+  @Override
+  public void processEvent(Event event) {
+    setMute(true);
+    brightcoveVideoView.start();
+  }
+});
+...
+private void setMute(boolean mute) {
+  volume = mute ? 0F : 100F;
+  Map&lt;string, Object&gt; properties = new HashMap&lt;&gt;();
+  properties.put(Event.VOLUME, volume);
+  brightcoveVideoView.getEventEmitter().emit(EventType.SET_VOLUME, properties);
+}</a></code></pre>
+
+<h3 id="BrightcoveVideoView">BrightcoveVideoView</h3>
+
+<aside class="bcls-aside bcls-aside--warning">Brightcove recommends using the BrightcoveExoPlayerVideoView.</aside>
+
+<p>If you need to use the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html">BrightcoveVideoView</a>, which uses Android's <a href="https://developer.android.com/reference/android/media/MediaPlayer.html">MediaPlayer</a>, you can programmatically mute or unmute the player with the following code:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VOLUME">float volume = 1F;
+...
+brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
+  @Override
+  public void processEvent(Event event) {
+    setMute(true);
+    brightcoveVideoView.start();
+  }
+});
+...
+private void setMute(boolean mute) {
+  volume = mute ? 0F : 1F;
+  Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
+  properties.put(Event.LEFT_VOLUME, volume);
+  properties.put(Event.RIGHT_VOLUME, volume);
+  brightcoveVideoView.getEventEmitter().emit(EventType.SET_VOLUME, properties);
+}</a></code></pre>
+</section>
+
+<section class="bcls-section">
 <h2 id="Offline_playback_with_DRM">Offline playback with DRM</h2>
 
 <p>For videos downloaded for offline playback, the download status can also be shown in the Notification Area. The notification title is set to the video title. The notification is removed if the download is paused or cancelled.</p>
@@ -396,7 +451,7 @@ brightcoveVideoView.start();</a></code></pre>
 	<li><code class="notranslate"><a href="/node/17906#playlistRequests">offset</a></code> - sets the number of videos to skip in a playlist from the Playback API</li>
 </ul>
 
-<p>The query parameters will be passed to the Catalog method as a Map<string, string=""> object, as key-value pairs. This example returns 6 videos starting with the 10th video in the playlist:</string,></p>
+<p>The query parameters will be passed to the Catalog method as a <code>Map</code> object, as key-value pairs. This example returns 6 videos starting with the 10th video in the playlist:</p>
 
 <pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/edge/Catalog.html">Map&lt;String, String&gt; queryParameters = new HashMap&lt;&gt;();
@@ -610,8 +665,7 @@ android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
 <h3>Showing the video still image</h3>
 
 <p>You can show the video still at any time by emitting a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VIDEO_STILL"><code class="notranslate">SET_VIDEO_STILL</code></a> event with a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/Event.html#VIDEO_STILL"><code class="notranslate">VIDEO_STILL</code></a> property set to the URI of the video still.</p>
-<!-- <p>Hiding should happen automatically whenever a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#CUE_POINT"><code class="notranslate">CUE_POINT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_PLAY"><code class="notranslate">DID_PLAY</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_SEEK_TO"><code class="notranslate">DID_SEEK_TO</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#WILL_INTERRUPT_CONTENT"><code class="notranslate">WILL_INTERRUPT_CONTENT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ACTIVITY_STOPPED"><code class="notranslate">ACTIVITY_STOPPED</code></a>, or <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#FRAGMENT_STOPPED"><code class="notranslate">FRAGMENT_STOPPED</code></a> event occurs.</p> -->
-<!-- <p>In general, we try to promote doing things via events, rather than direct method calls.</p>  -->
+<!-- <p>Hiding should happen automatically whenever a <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#CUE_POINT"><code class="notranslate">CUE_POINT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_PLAY"><code class="notranslate">DID_PLAY</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#DID_SEEK_TO"><code class="notranslate">DID_SEEK_TO</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#WILL_INTERRUPT_CONTENT"><code class="notranslate">WILL_INTERRUPT_CONTENT</code></a>, <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#ACTIVITY_STOPPED"><code class="notranslate">ACTIVITY_STOPPED</code></a>, or <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#FRAGMENT_STOPPED"><code class="notranslate">FRAGMENT_STOPPED</code></a> event occurs.</p> --><!-- <p>In general, we try to promote doing things via events, rather than direct method calls.</p>  -->
 
 <h3>Hiding the video still image</h3>
 
@@ -631,9 +685,8 @@ android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
 <h2 id="Showing_player_controls">Showing player controls</h2>
 
 <p>By default, the player controls will disappear after a few seconds. The user can show the controls by tapping on the video.</p>
-<p>
-  If you want player controls to remain showing until the user taps on the video, you can disable the automatic hiding function as follows: (the code needed is highlighted)
-</p>
+
+<p>If you want player controls to remain showing until the user taps on the video, you can disable the automatic hiding function as follows: (the code needed is highlighted)</p>
 
 <pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/mediacontroller/BrightcoveMediaController.html">public class MainActivity extends BrightcovePlayer {
@@ -648,7 +701,6 @@ android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
     controller.setShowHideTimeout(0);</span>
 
     super.onCreate(savedInstanceState);</a></code></pre>
-
 </section>
 
 <section class="bcls-section">
@@ -784,58 +836,4 @@ nextVideoButton.setOnClickListener(new View.OnClickListener() {
 }</a></code></pre>
 </section>
 
-<section class="bcls-section">
-<h2 id="Working_with_volume_control">Working with volume control</h2>
-
-<p>You can programmatically mute or unmute the player. Brightcove recommends using the BrightcoveExoPlayerVideoView whenever possible.</p>
-
-<aside class="bcls-aside bcls-aside--information">You need to wait for either the <code class="notranslate">DID_SET_VIDEO</code> or the <code class="notranslate">DID_PLAY</code> event before executing the code to mute the player. Otherwise, muting will not take effect. The reason to wait for these events is that the player is created when the video is loaded.</aside>
-
-<h3 id="BrightcoveExoPlayerVideoView">BrightcoveExoPlayerVideoView</h3>
-
-<p>When using the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a>, you can programmatically mute or unmute the player by doing the following:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VOLUME">float volume = 100;
-...
-brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
-  @Override
-  public void processEvent(Event event) {
-    setMute(true);
-    brightcoveVideoView.start();
-  }
-});
-...
-private void setMute(boolean mute) {
-  volume = mute ? 0 : 100;
-  Map<string, object=""> properties = new HashMap&lt;&gt;();
-  properties.put(Event.VOLUME, volume);
-  brightcoveVideoView.getEventEmitter().emit(EventType.SET_VOLUME, properties);
-}</string,></a></code></pre>
-
-<h3 id="BrightcoveVideoView">BrightcoveVideoView</h3>
-
-<aside class="bcls-aside bcls-aside--warning">Brightcove recommends using the BrightcoveExoPlayerVideoView.</aside>
-
-<p>If you need to use the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveVideoView.html">BrightcoveVideoView</a>, which uses Android's <a href="https://developer.android.com/reference/android/media/MediaPlayer.html">MediaPlayer</a>, you can programmatically mute or unmute the player with the following code:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html#SET_VOLUME">float volume = 100;
-...
-brightcoveVideoView.getEventEmitter().on(EventType.DID_SET_VIDEO, new EventListener() {
-  @Override
-  public void processEvent(Event event) {
-    setMute(true);
-    brightcoveVideoView.start();
-  }
-});
-...
-private void setMute(boolean mute) {
-  volume = mute ? 0 : 1;
-  Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
-  properties.put(Event.LEFT_VOLUME, volume);
-  properties.put(Event.RIGHT_VOLUME, volume);
-  brightcoveVideoView.getEventEmitter().emit(EventType.SET_VOLUME, properties);
-}</a></code></pre>
-</section>
 </article>
