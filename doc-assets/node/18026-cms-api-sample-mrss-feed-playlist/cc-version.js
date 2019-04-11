@@ -199,6 +199,7 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
+console.log('response', response);
           videosArray = JSON.parse(response);
           console.log('videosArray', videosArray);
           createRequest('getVideoSources');
