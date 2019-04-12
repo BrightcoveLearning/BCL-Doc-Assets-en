@@ -63,7 +63,7 @@
 <ol>
 	<li><a href="#Create_an_ad_configuration">Create an ad configuration</a></li>
 	<li><a href="#Create_a_Brightcove_player">Create a Brightcove player</a></li>
-  <li><a href="#Implementing_SSAI_using_Studio">Implement SSAI using Studio </a></li>
+	<li><a href="#Implementing_SSAI_using_Studio">Implement SSAI using Studio </a></li>
 </ol>
 
 <p>That's it. Your Brightcove Player is now configured for Server-side ads. If you prefer, you can add SSAI programmatically, as shown in the <a href="#Implementing_SSAI_programmatically">Implement SSAI programmatically </a> section.</p>
@@ -73,24 +73,20 @@
 <p>The ad configuration defines various aspects of SSAI playback, including ad calls, beacons, and other configuration options. Your ad response can be VAST, VMAP or DFP Ad Rules. To create an ad configuration, follow these steps:</p>
 
 <ol class="bcls-tasklist__restart">
-  <li>
-    <p>
-      In Video Cloud Studio, expand the <strong>ADMIN</strong> menu and select <strong>Server-Side Ad Settings</strong>.
-    </p>
-    <figure class="bcls-figure">
-      <img class="bcls-image--no-border" alt="Ad configuration admin" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/ssai/ad-config-admin.png" />
-  	<figcaption class="bcls-caption--image">Ad configuration admin</figcaption>
-  	</figure>
-  </li>
-  <li>
-    <p>
-      Add information for you ad configuration and select <strong>Save</strong>.
-    </p>
-    <figure class="bcls-figure">
-      <img class="bcls-image--no-border" alt="Ad settings" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/ssai/ad-settings.png" />
-  	<figcaption class="bcls-caption--image">Ad settings</figcaption>
-  	</figure>
-  </li>
+	<li>
+	<p>In Video Cloud Studio, expand the <strong>ADMIN</strong> menu and select <strong>Server-Side Ad Settings</strong>.</p>
+
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Ad configuration admin" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/ssai/ad-config-admin.png" />
+	<figcaption class="bcls-caption--image">Ad configuration admin</figcaption>
+	</figure>
+	</li>
+	<li>
+	<p>Add information for you ad configuration and select <strong>Save</strong>.</p>
+
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Ad settings" src="//learning-services-media.brightcove.com/doc-assets/player-development/plugins/ssai/ad-settings.png" />
+	<figcaption class="bcls-caption--image">Ad settings</figcaption>
+	</figure>
+	</li>
 </ol>
 
 <p>For details, see the <a href="/node/18748">Configuring Server-Side Ad Settings</a> document.</p>
@@ -171,22 +167,6 @@
 	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
 	<li>To close the open dialog, click <strong>Close</strong>.</li>
 </ol>
-<!-- <h3>Initialize options</h3>
-
-          <p>When you add the OnceUX plugin to your player, as shown above, you must pass an <code class="notranslate">options</code> object to the plugin to initialize it. This object must contain a <code class="notranslate">metadataUri</code> string or a VMAP object, along with any of the other optional properties:</p>
-
-          <ul>
-          	<li><code class="notranslate">metadataUri</code>
-
-          	<ul>
-          		<li>Required</li>
-          		<li>Type: String</li>
-          		<li>Default: undefined</li>
-          		<li>Description: The URI to call for the VMAP data.</li>
-          		<li>Example: "http://onceux.unicornmedia.com/now/ads/vmap/od/auto/1234"</li>
-          	</ul>
-          	</li>
-          </ul> -->
 
 <h3 id="Associate_ads_with_your_player">Associate ads with your player</h3>
 
@@ -331,52 +311,6 @@ myPlayer.catalog.getVideo("<span class="bcls-input">your video id</span>", funct
 }</code></pre>
 	</li>
 </ol>
-<!-- <h4 id="Using_the_src_method">Using the src method</h4>
-
-<p>To associate ads, you can also use the <a href="https://docs.brightcove.com/brightcove-player/current-release/Player.html#src">player src()</a> method. The SSAI plugin differentiates between being initialized and being enabled. Once you initialize the plugin, then the plugin will manage the enabled/disabled state, depending on whether an SSAI source is being played.</p>
-
-<aside class="bcls-aside bcls-aside--information">When you do NOT use the Players module to add the SSAI plugin, then you must initialize it before a source is set. If not, the plugin will ignore any matching sources.</aside>
-
-<p>Here is an example of using a VMAP element:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-javascript">var myPlayer = videojs.getPlayer('myPlayerID');
-
-// initialize the ssai plugin
-myPlayer.ssai();
-
-var mime_type_value = videojs.getPlugin('ssai').MIME_TYPE;
-...
-myPlayer.src({
-  type: mime_type_value,
-  src: <span class="bcls-input">your vmap element</span>
-});</code></pre>
-
-<p>where:</p>
-
-<ul>
-	<li>The <code class="notranslate">src</code> value should be an XMLDocument containing a VMAP element (i.e. a valid VMAP).</li>
-	<li>
-	<p>The <code class="notranslate">MIME_TYPE</code> value will always be <code class="notranslate">video/vnd.bcov.ssai</code>.</p>
-	</li>
-</ul>
-
-<p>You can also use a VMAP URL with the SSAI plugin like this:</p>
-
-<pre class="line-numbers">
-<code class="notranslate language-javascript">var myPlayer = videojs.getPlayer('myPlayerID');
-
-// initialize the ssai plugin
-myPlayer.ssai();
-
-var mime_type_value = videojs.getPlugin('ssai').MIME_TYPE;
-...
-myPlayer.src({
-  type: mime_type_value,
-  src: '<span class="bcls-input">https://path/to/vmap.xml</span>'
-});</code></pre>
-
-<p>The plugin will attempt to fetch a VMAP from the given URL via XMLHttpRequest and re-set the source using the resulting responseXML data.</p> -->
 
 <h4 id="Play_a_video_with_ads1">Playing a video with ads</h4>
 
@@ -467,35 +401,164 @@ myPlayer.src({
 </section>
 
 <section class="bcls-section">
+<h2 id="Methods_properties">Methods/properties</h2>
+
+<p>Several public methods that are available when using the SSAI plugin. Remember, you can also use the standard player methods.</p>
+<p>
+  To use the SSAI methods, your JavaScript code will need to wait for the plugin to be loaded, as shown here:
+</p>
+<pre class="line-numbers"><code class="language-javascript">&lt;script&gt;
+	videojs.getPlayer('myPlayerID').ready(function () {
+		var myPlayer = this;
+		myPlayer.on(&quot;loadedmetadata&quot;, function () {
+			console.log(myPlayer.ssai().currentTimelineState());
+		});
+	});
+&lt;/script&gt;</code></pre>
+
+<h3>Timeline state methods</h3>
+<p>
+  The <code>*TimelineState</code> methods return a <code>TimelineState</code> object. A timeline state object is a plain object with a specific interface that details the playback state of an SSAI stream at any point in the absolute timeline.
+</p>
+<p>
+  The "absolute time" refers to a point in the complete timeline of a stream (with both ads and content included). The term "relative time" refers to the time relative to the current content (either ad or content).
+</p>
+<p>
+  <code>contentTimelineState()</code>
+</p>
+<ul>
+  <li>
+    Argument: single numeric <code>time</code>
+  </li>
+  <li>
+    Get the timeline state at the specified content time <strong>(content, not counting ads)</strong>. For example, if your content is 100 seconds long, you can get the timeline state at halfway through the content using:
+    <pre><code class="language-javascript">contentTimelineState(50)</code></pre>
+  </li>
+</ul>
+<p>
+  <code>absoluteTimelineState()</code>
+</p>
+<ul>
+  <li>
+    Argument: single numeric <code>time</code>
+  </li>
+  <li>
+    Get the timeline state at the specified absolute time <strong>(content + ads)</strong>. For example, if your content includes a 30 second pre-roll ad, you can get the timeline state at 30 seconds into your content using:
+    <pre><code class="language-javascript">absoluteTimelineState(50)</code></pre>
+  </li>
+</ul>
+<p>
+  Here is a list of additional timeline state methods:
+</p>
+<p>
+  <code>currentTimelineState()</code><br>
+  <code>relativeTimelineState()</code><br>
+  <code>seekInAbsoluteTime()</code><br>
+  <code>seekInRelativeTime()</code><br>
+  <code>seekInContentTime()</code>
+</p>
+
+<h3>Timeline state properties</h3>
+<p>
+  To get the value of a timeline state property, you can use the following syntax:
+</p>
+<pre><code class="language-javascript">myPlayer.ssai().absoluteTimelineState().absoluteDuration;
+</code></pre>
+<br>
+<p>
+  Here is a list of properties associated with the <code>TimelineState</code> object:
+</p>
+<p>
+  <code>absoluteTime</code>
+</p>
+<ul>
+  <li>
+     Type: Number
+  </li>
+  <li>
+    The absolute time in the stream.
+  </li>
+</ul>
+
+<p>
+  <code>absoluteDuration</code>
+</p>
+<ul>
+  <li>
+     Type: Number
+  </li>
+  <li>
+    The absolute duration of the stream.
+  </li>
+</ul>
+
+<p>
+  <code>relativeTime</code>
+</p>
+<ul>
+  <li>
+     Type: Number
+  </li>
+  <li>
+    The time in the stream relative either to the current linear ad or to the content itself.
+  </li>
+</ul>
+
+<p>
+  <code>relativeDuration</code>
+</p>
+<ul>
+  <li>
+     Type: Number
+  </li>
+  <li>
+    The duration of the current linear ad or the content itself.
+  </li>
+</ul>
+
+<p>
+  <code>linearAdRoll</code>
+</p>
+<ul>
+  <li>
+     Type: LinearAdRoll
+  </li>
+  <li>
+    An object representing the current linear ad for the absolute time.
+  </li>
+</ul>
+
+<p>
+  <code>linearAd</code>
+</p>
+<ul>
+  <li>
+     Type: LinearAd
+  </li>
+  <li>
+    An object representing the current linear ad for the absolute time.
+  </li>
+</ul>
+
+
+</section>
+
+<section class="bcls-section">
 <h2 id="Events">Events</h2>
 
-<p>At the current time there is one SSAI-specific event dispatched by this plugin. It is prefixed with <code class="notranslate">bcov-ssai-</code>.</p>
+<p>At the current time there is one SSAI-specific event dispatched by this plugin.</p>
+<aside class="bcls-aside bcls-aside--tip">SSAI ads dispatch the standard Brightcove ad events, and provide access to ad objects. Details are detailed in the <a href="/node/18072">Ad Events and Ad Objects</a> document.</aside>
 
+<p>
+  <code>bcov-ssai-click-through</code>
+</p>
 <ul>
-	<li><code class="notranslate">bcov-ssai-click-through</code>
-
-	<ul>
-		<li>This event is dispatched internally by the plugin to indicate that an ad click-through was requested.</li>
-	</ul>
+	<li>
+    This event is dispatched internally by the plugin to indicate that an ad click-through was requested.
 	</li>
 </ul>
 
-<aside class="bcls-aside bcls-aside--tip">SSAI ads dispatch the standard Brightcove ad events, and provide access to ad objects. Details are detailed in the <a href="/node/18072">Ad Events and Ad Objects</a> document.</aside>
 </section>
-<!-- <section class="bcls-section">
-        <h2 id="player">The player</h2>
-
-        <p>This example enforces the playback of an advertisement before the main subject video. For this example, a skippable pre-roll is used.</p>
-
-        <div class="player-block"><iframe src="https://players.brightcove.net/1752604059001/Hy1btkKDb_default/index.html" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div>
-
-        <aside class="bcls-aside bcls-aside--information">Note: The skippable functionality in this example is done as part of the VMAP definition. This functionality is available in both in-page embeds and iframe player implementations. The applicable fragment from the VMAP XML is shown here:
-        <pre class="line-numbers">
-              <code class="notranslate language-json">&lt;Creatives&gt;
-                &lt;Creative id="57860459056"&gt;
-                  <span class="bcls-highlight">&lt;Linear skipoffset="00:00:05"&gt;</span></code></pre>
-        </aside>
-        </section> --><!-- id="player" -->
 
 <section class="bcls-section">
 <h2 id="Configuration_notes">Configuration notes</h2>
@@ -509,7 +572,7 @@ myPlayer.src({
 <section class="bcls-section">
 <h2 id="Glossary">Glossary</h2>
 
-<p>This plugin distinguishes the concepts of <strong>absolute</strong> and <strong>content</strong> time within a Once UX stream. Traditional video players only have a concept of <strong>content</strong> time; times between start and end of the URI it is currently playing. Because a Once UX stream is essentially a number of <strong>content</strong> streams stitched together we've introduced the concept of <strong>absolute</strong> time which takes into account the complete stitched stream including the video advertisements.</p>
+<p>This plugin distinguishes the concepts of <strong>absolute</strong> and <strong>content</strong> time within an SSAI stream. Traditional video players only have a concept of <strong>content</strong> time; times between start and end of the URI it is currently playing. Because an SSAI stream is essentially a number of <strong>content</strong> streams stitched together we've introduced the concept of <strong>absolute</strong> time which takes into account the complete stitched stream including the video advertisements.</p>
 
 <p>When you see the prefix <strong>absolute</strong> on a property or method, the times expected/returned are relative to the entire stitched stream. When you see the prefix <strong>content</strong>, the times expected/returned are relative only to a particular piece of content that was stitched into the stream (the main content or single linear advertisement).</p>
 
@@ -522,6 +585,11 @@ myPlayer.src({
 
 	<p>Generally, relative time is what you see in the player UI and much of the job of this plugin and associated middleware is translating from absolute time to relative time.</p>
 	</li>
+  <li>
+    <p>
+      <strong>Content time</strong> refers to a point in time within the content timeline of an SSAI stream - ignoring all ads. For example, a 2:00 video with a 0:30 pre-roll ad has a content time of 2:00. The content time of 0:15 is equivalent to an absolute time of 0:45 (pre-roll plus 15 seconds).
+    </p>
+  </li>
 </ul>
 </section>
 
