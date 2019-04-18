@@ -1,560 +1,495 @@
-<article class="bcls-article">
-<section class="bcls-section">
-<h2 class="notranslate" id="type">type</h2>
-<code class="notranslate">type:String</code>
+type
 
-<p><strong>API Versions:</strong> V1, V2</p>
+type:String
+API Versions: V1, V2
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Parent: outputs
 
-<p><strong>Default:</strong> standard</p>
+Default: standard
 
-<p><strong>Valid Values:</strong> <code>standard</code>, <code>segmented</code>, <code>captions</code>, <code>playlist</code>, and <code>transfer-only</code></p>
+Valid Values: standard, segmented, captions, playlist, and transfer-only
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Compatible Job Types: All
 
-<p><strong>Example:</strong> <code>segmented</code></p>
+Example: segmented
 
-<p><strong>Description:</strong></p>
+Description:
 
-<p>By default Zencoder will consider outputs to be standard audio or video files. Currently, there are two special types of outputs: <code>segmented</code> and <code>playlist</code>.</p>
+By default Zencoder will consider outputs to be standard audio or video files. Currently, there are two special types of outputs: segmented and playlist.
 
-<ul>
-	<li><code>segmented</code>: The typical use-case for segmentation is for Apple's Live HTTP Streaming (see <a href="/node/17863">Segmented Streaming</a>). For segmented outputs the default format will be changed to ts instead of mp4.</li>
-	<li><code>captions</code>: <em><strong><a href="/node/17894">API V2 Only</a></strong></em><br />
-	The captions output type creates a file containing just the captions from the source video, rather than a video with captions added to it. <em>Note: captions type outputs may not be the only outputs for a job.</em><br />
-	Captions may be provided to Zencoder as a separate file (using the <a href="/node/17862#caption_url">caption_url</a> option), or will be extracted from the source video by default.<br />
-	Supported formats for extracting captions from the source video are MP4 and TS. In an MP4 file, the captions may be located in a separate track (in CEA-608 format); otherwise captions in an MP4 or TS file must be embedded in an MPEG2 or AVC video stream, compliant to A/53 or SCTE-128 (CC1 and CC3) standards.<br />
-	Supported output formats for captions type outputs: '<code>mp4</code>', '<code>scc</code>', '<code>webvtt</code>', '<code>vtt</code>', '<code>m3u8</code>', '<code>dfxp</code>'.</li>
-	<li><strong>playlist</strong>: The playlist output type is used in multi-bitrate output streams to generate the master M3U8 playlist file. <em>Note: playlist type outputs may not be the only outputs for a job.</em></li>
-	<li><code>transfer-only</code>: <em><strong><a href="/node/17894">API V2 Only</a></strong></em><br />
-	A <code>transfer-only</code> output skips encoding and sends the original video to a <a class="notranslate" href="#url">url</a>.<br />
-	A <code>transfer-only</code> output can also use <a class="notranslate" href="#source">source</a> to transfer the video from another output to the specified <a class="notranslate" href="#url">url</a>, rather than using the input.</li>
-</ul>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+segmented: The typical use-case for segmentation is for Apple's Live HTTP Streaming (see Segmented Streaming). For segmented outputs the default format will be changed to ts instead of mp4.
+captions: API V2 Only
+The captions output type creates a file containing just the captions from the source video, rather than a video with captions added to it. Note: captions type outputs may not be the only outputs for a job.
+Captions may be provided to Zencoder as a separate file (using the caption_url option), or will be extracted from the source video by default.
+Supported formats for extracting captions from the source video are MP4 and TS. In an MP4 file, the captions may be located in a separate track (in CEA-608 format); otherwise captions in an MP4 or TS file must be embedded in an MPEG2 or AVC video stream, compliant to A/53 or SCTE-128 (CC1 and CC3) standards.
+Supported output formats for captions type outputs: 'mp4', 'scc', 'webvtt', 'vtt', 'm3u8', 'dfxp'.
+playlist: The playlist output type is used in multi-bitrate output streams to generate the master M3U8 playlist file. Note: playlist type outputs may not be the only outputs for a job.
+transfer-only: API V2 Only
+A transfer-only output skips encoding and sends the original video to a url.
+A transfer-only output can also use source to transfer the video from another output to the specified url, rather than using the input.
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "type": "segmented"
     }
   ]
-}</code></pre>
+}
+See Also: source and caption_url
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#source">source</a> and <a class="notranslate" href="/node/17862#caption_url">caption_url</a></p>
-</section>
+label
 
-<section class="bcls-section">
-<h2 class="notranslate" id="label">label</h2>
-<code class="notranslate">label:String</code>
+label:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: A string
 
-<p><strong>Valid Values:</strong> A string</p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: iphone4
 
-<p><strong>Example:</strong> <code>iphone4</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+An optional label for the output. As of API v2, labels must be unique (case insensitive) per job when used on multiple outputs.
 
-<p>An optional label for the output. As of API v2, labels must be unique (case insensitive) per job when used on multiple outputs.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "label": "iphone4"
     }
   ]
-}</code></pre>
+}
+See Also: source
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#source">source</a></p>
-</section>
+dynamic_profile_rendition
 
-<section class="bcls-section">
-<h2 class="notranslate" id="dynamic_profile_rendition">dynamic_profile_rendition</h2>
-<code class="notranslate">dynamic_profile_rendition:Integer</code>
+dynamic_profile_rendition:Integer
+API Versions: V2
 
-<p><strong>API Versions:</strong> V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Description:
 
-<p><strong>Description:</strong></p>
+The dynamic_profile_rendition setting specifies that this Output should use settings from the dynamically generated CAE profile, and specifically which rendition of the profile to use settings from. When dynamic_profile_rendition is set, there is no need to specify encoding settings such as resolution, bitrate, etc. (See the CAE Guide for the full list of settings that are automatically set by CAE.)
 
-<p>The <code class="notranslate">dynamic_profile_rendition</code> setting specifies that this Output should use settings from the dynamically generated CAE profile, and specifically which rendition of the profile to use settings from. When <code>dynamic_profile_rendition</code> is set, there is no need to specify encoding settings such as <code class="notranslate">resolution</code>, <code class="notranslate">bitrate</code>, etc. (See the <a href="/node/18611">CAE Guide</a> for the full list of settings that are automatically set by CAE.)</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "generate_dynamic_profile": true,
   "dynamic_profile_options":{ "max_renditions": 6 },
   "outputs" :[
-  <span class="bcls-highlight">{"dynamic_profile_rendition": 1},
+  {"dynamic_profile_rendition": 1},
   {"dynamic_profile_rendition": 2},
   {"dynamic_profile_rendition": 3},
   {"dynamic_profile_rendition": 4},
   {"dynamic_profile_rendition": 5},
-  {"dynamic_profile_rendition": 6}</span>
+  {"dynamic_profile_rendition": 6}
   ]
-}</code></pre>
+}
+See Also: source
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#source">source</a></p>
-</section>
+url
 
-<section class="bcls-section">
-<h2 class="notranslate" id="url">url</h2>
-<code class="notranslate">url:String</code>
+url:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: A valid S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, or HTTP address.
 
-<p><strong>Valid Values:</strong> A valid S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, or HTTP address.</p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example:
 
-<p><strong>Example:</strong></p>
+s3://my-output-bucket/final.mp4
+cf://username:api_key@container/object
+cf+uk://username:api_key@container/object
+gcs://access_key:secret_key@gcs-bucket/object
+ftp://user:password@ftp.example.com/final.mp4
+sftp://user:password@sftp.example.com/final.mp4
+aspera://user:password@host:ssh-port/path/to/file.mp4
+Description:
 
-<ul>
-	<li class="notranslate">s3://my-output-bucket/final.mp4</li>
-	<li class="notranslate">cf://username:api_key@container/object</li>
-	<li class="notranslate">cf+uk://username:api_key@container/object</li>
-	<li class="notranslate">gcs://access_key:secret_key@gcs-bucket/object</li>
-	<li class="notranslate">ftp://user:password@ftp.example.com/final.mp4</li>
-	<li class="notranslate">sftp://user:password@sftp.example.com/final.mp4</li>
-	<li class="notranslate">aspera://user:password@host:ssh-port/path/to/file.mp4</li>
-</ul>
+A full URL, including a filename, to which the output file will be uploaded. Please see base_url for more information about providers.
 
-<p><strong>Description:</strong></p>
+We officially support HTTP upload to S3, GCS, Cloud Files, and Akamai.
 
-<p>A full URL, including a filename, to which the output file will be uploaded. Please see <a class="notranslate" href="#base-url">base_url</a> for more information about providers.</p>
+Notes on S3:
 
-<p>We officially support HTTP upload to S3, GCS, Cloud Files, and Akamai.</p>
+You must grant write permissions to Zencoder on the output bucket before submitting a job to Zencoder. Please note that it is the S3 bucket, and not the S3 "path" which needs write permission. For example, an asset at http://s3.amazonaws.com/my_files/0000/video.mp4 needs write access added to "my_files" (the bucket name), not "my_files/0000" (the path).
 
-<p><strong>Notes on S3:</strong></p>
+To create keys containing special characters that are not valid in URLs (? or #), you must URL encode them (%3F and %23, respectively). All other characters must not be URL encoded.
 
-<p>You must <a href="/node/17890">grant <strong>write</strong> permissions to Zencoder on the output bucket</a> before submitting a job to Zencoder. Please note that it is the S3 bucket, and not the S3 "path" which needs write permission. For example, an asset at <code class="notranslate">http://s3.amazonaws.com/my_files/0000/video.mp4</code> needs write access added to "my_files" (the bucket name), not "my_files/0000" (the path).</p>
+You may provide the region of the S3 bucket by setting the URL's protocol to s3+region-name, where "region-name" is defined by this document. For example, to access a file from a bucket in the Asia Pacific (Singapore) region, set the URL to s3+ap-southeast-1://my-bucket/file.mp4.
 
-<p>To create keys containing special characters that are not valid in URLs (? or #), you must URL encode them (%3F and %23, respectively). All other characters must not be URL encoded.</p>
+Notes on Cloud Files:
 
-<p>You may provide the region of the S3 bucket by setting the URL's protocol to <code class="notranslate">s3+region-name</code>, where "region-name" is defined by <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region">this document</a>. For example, to access a file from a bucket in the Asia Pacific (Singapore) region, set the URL to <code class="notranslate">s3+ap-southeast-1://my-bucket/file.mp4</code>.</p>
+You can specify the region to use (DFW, ORD, or UK) by adding it to the protocol, like cf+ord://username:api_key@container/object. Currently the only Cloud Files regions supported are DFW, ORD and UK. The DFW region will be used by default.
 
-<p><strong>Notes on Cloud Files:</strong></p>
+Any special characters in the container name must be URL encoded.
 
-<p>You can specify the region to use (DFW, ORD, or UK) by adding it to the protocol, like <code class="notranslate">cf+ord://username:api_key@container/object</code>. Currently the only Cloud Files regions supported are DFW, ORD and UK. The DFW region will be used by default.</p>
+Notes on Google Cloud Storage:
 
-<p>Any special characters in the container name must be URL encoded.</p>
+GCS access keys can be found under the "Interoperable Access" section in the Google APIs console. Access keys must be properly escaped.
 
-<p><strong>Notes on Google Cloud Storage:</strong></p>
+GCS bucket names that include dots are not supported.
 
-<p>GCS access keys can be found under the "Interoperable Access" section in the <a href="https://storage.cloud.google.com/m">Google APIs console</a>. Access keys must be <a href="/node/17895">properly escaped</a>.</p>
+Notes on Azure:
 
-<p>GCS bucket names that include dots are not supported.</p>
+If the URL contains authentication with special characters, make sure that they are properly escaped.
 
-<p><strong>Notes on Azure:</strong></p>
+Notes on FTP:
 
-<p>If the URL contains authentication with special characters, <a href="/node/17895">make sure that they are properly escaped</a>.</p>
+If the URL contains authentication with special characters, make sure that they are properly escaped.
 
-<p><strong>Notes on FTP:</strong></p>
+We try to write from the root of your server, so use an absolute path for your URL to ensure that we can write to your server successfully.
 
-<p>If the URL contains authentication with special characters, <a href="/node/17895">make sure that they are properly escaped</a>.</p>
+Notes on Aspera:
 
-<p>We try to write from the root of your server, so use an absolute path for your URL to ensure that we can write to your server successfully.</p>
+The ssh-port portion of the URL is not required, and will default to 22.
 
-<p><strong>Notes on Aspera:</strong></p>
+Zencoder runs an Aspera Client on the video encoding servers, which connects to your Aspera Enterprise or Connect Server, which hosts the files.
 
-<p>The ssh-port portion of the URL is not required, and will default to 22.</p>
+This is a similar situation to you running an FTP server to make your files available and Zencoder using an FTP client for file transfer.
 
-<p>Zencoder runs an Aspera Client on the video encoding servers, which connects to your <a href="http://www.asperasoft.com/en/products/server_software_1">Aspera Enterprise or Connect Server</a>, which hosts the files.</p>
+Notes on Akamai NetStorage via HTTPS:
 
-<p>This is a similar situation to you running an FTP server to make your files available and Zencoder using an FTP client for file transfer.</p>
+Zencoder can upload content to Akamai NetStorage either via FTP or HTTPS. To upload content via HTTPS, construct an output url like https://[Host]-nsu.akamaihd.net/[CPCode]/[path]/[file.ext].
 
-<p><strong>Notes on Akamai NetStorage via HTTPS:</strong></p>
+You can reference your Akamai NetStorage Keyname and Key as External Server credentials by setting the External Server User field to the Akamai NetStorage Keyname and the External Server Password to the Akamai NetStorage Key.
 
-<p>Zencoder can upload content to Akamai NetStorage either via FTP or HTTPS. To upload content via HTTPS, construct an output url like <code class="notranslate">https://[Host]-nsu.akamaihd.net/[CPCode]/[path]/[file.ext]</code>.</p>
-
-<p>You can reference your Akamai NetStorage Keyname and Key as <strong>External Server</strong> <a href="#credentials">credentials</a> by setting the <strong>External Server User</strong> field to the Akamai NetStorage Keyname and the <strong>External Server Password</strong> to the Akamai NetStorage Key.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "url": "s3://my-output-bucket/final.mp4"
     }
   ]
-}</code></pre>
+}
+See Also: secondary_url
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#secondary-url">secondary_url</a></p>
-</section>
+secondary_url
 
-<section class="bcls-section">
-<h2 class="notranslate" id="secondary_url">secondary_url</h2>
-<code class="notranslate">secondary_url:String</code>
+secondary_url:String
+API Versions: V2
 
-<p><strong>API Versions:</strong> V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: A valid S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, or HTTP URL.
 
-<p><strong>Valid Values:</strong> A valid S3, Cloud Files, GCS, FTP, FTPS, SFTP, Aspera, Azure, or HTTP URL.</p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: See URL documentation
 
-<p><strong>Example:</strong> See URL documentation</p>
+Description:
 
-<p><strong>Description:</strong></p>
+For VOD Jobs
 
-<h4>For VOD Jobs</h4>
+A full URL, including a filename, to which the output file will be uploaded if transfer to url fails.
 
-<p>A full URL, including a filename, to which the output file will be uploaded if transfer to <a class="notranslate" href="#url">url</a> fails.</p>
+See Also: url
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#url">url</a></p>
-</section>
+base_url
 
-<section class="bcls-section">
-<h2 class="notranslate" id="base_url">base_url</h2>
-<code class="notranslate">base_url:String</code>
+base_url:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: A valid S3, Cloud Files, GCS, Aspera, FTP, FTPS, or SFTP URL, without a filename.
 
-<p><strong>Valid Values:</strong> A valid S3, Cloud Files, GCS, Aspera, FTP, FTPS, or SFTP URL, without a filename.</p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example:
 
-<p><strong>Example:</strong></p>
+s3://my-output-bucket/
+cf://username:api_key@container/
+gcs://access_key:secret_key@gcs-bucket/
+ftp://user:password@ftp.example.com/path/to
+http://s3.amazonaws.com/my-output-bucket/
+aspera://user:password@host:ssh-port/path/to/
+Description:
 
-<ul>
-	<li class="notranslate">s3://my-output-bucket/</li>
-	<li class="notranslate">cf://username:api_key@container/</li>
-	<li class="notranslate">gcs://access_key:secret_key@gcs-bucket/</li>
-	<li class="notranslate">ftp://user:password@ftp.example.com/path/to</li>
-	<li class="notranslate">http://s3.amazonaws.com/my-output-bucket/</li>
-	<li class="notranslate">aspera://user:password@host:ssh-port/path/to/</li>
-</ul>
+A base S3, Cloud Files, GCS, FTP, FTPS, or SFTP directory URL where the transcoded file will be uploaded, without a filename. If filename is not specified, a random filename plus an appropriate extension will be generated.
 
-<p><strong>Description:</strong></p>
+Notes on S3:
 
-<p>A base S3, Cloud Files, GCS, FTP, FTPS, or SFTP directory URL where the transcoded file will be uploaded, without a filename. If <a href="#filename">filename</a> is not specified, a random filename plus an appropriate extension will be generated.</p>
+You must grant write permissions to Zencoder on the output bucket before submitting a job to Zencoder. Please note that it is the S3 bucket, and not the S3 "path" which needs write permission. For example, an asset at http://s3.amazonaws.com/my_files/0000/video.mp4 needs write access added to "my_files" (the bucket name), not "my_files/0000" (the path).
 
-<p><strong>Notes on S3:</strong></p>
+You may provide the region of the S3 bucket by setting the URL's protocol to s3+region-name, where "region-name" is defined by this document. For example, to access a file from a bucket in the Asia Pacific (Singapore) region, set the URL to s3+ap-southeast-1://my-bucket/.
 
-<p>You must <a href="/node/17890">grant <strong>write</strong> permissions to Zencoder on the output bucket</a> before submitting a job to Zencoder. Please note that it is the S3 bucket, and not the S3 "path" which needs write permission. For example, an asset at <code class="notranslate">http://s3.amazonaws.com/my_files/0000/video.mp4</code> needs write access added to "my_files" (the bucket name), not "my_files/0000" (the path).</p>
+Notes on Cloud Files:
 
-<p>You may provide the region of the S3 bucket by setting the URL's protocol to <code class="notranslate">s3+region-name</code>, where "region-name" is defined by <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region">this document</a>. For example, to access a file from a bucket in the Asia Pacific (Singapore) region, set the URL to <code class="notranslate">s3+ap-southeast-1://my-bucket/</code>.</p>
+You can specify the region to use (DFW, ORD, or UK) by adding it to the protocol, like cf+ord://username:api_key@container/object. Currently the only Cloud Files regions supported are DFW, ORD and UK. The DFW region will be used by default.
 
-<p><strong>Notes on Cloud Files:</strong></p>
+Any special characters in the container name must be URL encoded.
 
-<p>You can specify the region to use (DFW, ORD, or UK) by adding it to the protocol, like <code class="notranslate">cf+ord://username:api_key@container/object</code>. Currently the only Cloud Files regions supported are DFW, ORD and UK. The DFW region will be used by default.</p>
+Notes on Google Cloud Storage:
 
-<p>Any special characters in the container name must be URL encoded.</p>
+GCS access keys can be found under the "Interoperable Access" section in the Google APIs console. Access keys must be properly escaped.
 
-<p><strong>Notes on Google Cloud Storage:</strong></p>
+GCS bucket names that include dots are not supported.
 
-<p>GCS access keys can be found under the "Interoperable Access" section in the <a href="https://storage.cloud.google.com/m">Google APIs console</a>. Access keys must be <a href="/node/17895">properly escaped</a>.</p>
+Notes on Azure:
 
-<p>GCS bucket names that include dots are not supported.</p>
+If the URL contains authentication with special characters, make sure that they are properly escaped.
 
-<p><strong>Notes on Azure:</strong></p>
+Notes on FTP:
 
-<p>If the URL contains authentication with special characters, <a href="/node/17895">make sure that they are properly escaped</a>.</p>
+If the URL contains authentication with special characters, make sure that they are properly escaped.
 
-<p><strong>Notes on FTP:</strong></p>
+We try to write from the root of your server, so use an absolute path for your URL to ensure that we can write to your server successfully.
 
-<p>If the URL contains authentication with special characters, <a href="/node/17895">make sure that they are properly escaped</a>.</p>
+Notes on Aspera:
 
-<p>We try to write from the root of your server, so use an absolute path for your URL to ensure that we can write to your server successfully.</p>
+The ssh-port portion of the URL is not required, and will default to 22.
 
-<p><strong>Notes on Aspera:</strong></p>
+Notes on HTTP:
 
-<p>The ssh-port portion of the URL is not required, and will default to 22.</p>
+We officially support HTTP upload to S3, GCS, Cloud Files, and Akamai.
 
-<p><strong>Notes on HTTP:</strong></p>
-
-<p>We officially support HTTP upload to S3, GCS, Cloud Files, and Akamai.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "base_url": "s3://my-output-bucket/"
     }
   ]
-}</code></pre>
+}
+See Also: filename
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#filename">filename</a></p>
-</section>
+filename
 
-<section class="bcls-section">
-<h2 class="notranslate" id="filename">filename</h2>
-<code class="notranslate">filename:String</code>
+filename:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: A valid video or audio filename.
 
-<p><strong>Valid Values:</strong> A valid video or audio filename.</p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: final.mp4
 
-<p><strong>Example:</strong> final.mp4</p>
+Description:
 
-<p><strong>Description:</strong></p>
+The filename of a finished file. If you supply a filename but not a base_url, we will store the file with this filename in a S3 bucket temporarily for you to download.
 
-<p>The <code>filename</code> of a finished file. If you supply a <code>filename</code> but not a <code>base_url</code>, we will store the file with this filename in a S3 bucket temporarily for you to download.</p>
+Notes on S3:
 
-<p><strong>Notes on S3:</strong></p>
+To create keys containing special characters that are not valid in URLs (? or #), you must URL encode them (%3F and %23, respectively). All other characters must not be URL encoded.
 
-<p>To create keys containing special characters that are not valid in URLs (? or #), you must URL encode them (%3F and %23, respectively). All other characters must not be URL encoded.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "filename": "final.mp4"
     }
   ]
-}</code></pre>
+}
+See Also: base_url
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#base-url">base_url</a></p>
-</section>
+package_filename
 
-<section class="bcls-section">
-<h2 class="notranslate" id="package_filename">package_filename</h2>
-<code class="notranslate">package_filename:String</code>
+package_filename:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: A valid package filename.
 
-<p><strong>Valid Values:</strong> A valid package filename.</p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: final.zip
 
-<p><strong>Example:</strong> final.zip</p>
+Description:
 
-<p><strong>Description:</strong></p>
+The filename of a packaged output. If the extension matches a valid package_format, this will set the default value for package_format as well. When specified, this value is used in combination with base_url to generate an output URL, rather than filename. If filename is not specified, it will default to the same as package_filename, but with the correct file extension for the media type.
 
-<p>The filename of a packaged output. If the extension matches a valid <a class="notranslate" href="#package-format">package_format</a>, this will set the default value for package_format as well. When specified, this value is used in combination with <a class="notranslate" href="#base-url">base_url</a> to generate an output URL, rather than <a class="notranslate" href="#filename">filename</a>. If <a class="notranslate" href="#filename">filename</a> is not specified, it will default to the same as <code>package_filename</code>, but with the correct file extension for the media type.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "package_filename": "final.zip"
     }
   ]
-}</code></pre>
+}
+See Also: base_url and filename
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#base-url">base_url</a> and <a href="#filename">filename</a></p>
-</section>
+package_format
 
-<section class="bcls-section">
-<h2 class="notranslate" id="package_format">package_format</h2>
-<code class="notranslate">package_format:String</code>
+package_format:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Valid Values: zip and tar
 
-<p><strong>Valid Values:</strong> <code>zip</code> and <code>tar</code></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: zip
 
-<p><strong>Example:</strong> <code>zip</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+Creates a zip or tar file containing all the media files of an output, and uploads this single package rather than all the individual files. Thumbnails without a separate base_url will be included in sub-directories inside the package file as well.
 
-<p>Creates a <code>zip</code> or <code>tar</code> file containing all the media files of an output, and uploads this single package rather than all the individual files. Thumbnails without a separate <a class="notranslate" href="#base-url">base_url</a> will be included in sub-directories inside the package file as well.</p>
+If package_filename not specified, the package filename will be generated based on filename (but with the package format as an extension). See package_filename for details on URL handling.
 
-<p>If <a class="notranslate" href="#package_filename">package_filename</a> not specified, the package filename will be generated based on <a href="#filename">filename</a> (but with the package format as an extension). See <a class="notranslate" href="#package_filename">package_filename</a> for details on URL handling.</p>
+Note: When thumbnails are included in the package file, the paths within the package will be returned through the API as their URL, rather than a full URL.
 
-<p><strong>Note:</strong> When thumbnails are included in the package file, the paths within the package will be returned through the API as their URL, rather than a full URL.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "package_format": "zip"
     }
   ]
-}</code></pre>
+}
+See Also: package_filename
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#package_filename">package_filename</a></p>
-</section>
+device_profile
 
-<section class="bcls-section">
-<h2 class="notranslate" id="device_profile">device_profile</h2>
-<code class="notranslate">device_profile:String</code>
+device_profile:String
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Valid Values: mobile/advanced, mobile/baseline, mobile/legacy, v1/mobile/advanced, v1/mobile/baseline, v1/mobile/legacy, v2/mobile/advanced, v2/mobile/baseline, and v2/mobile/legacy
 
-<p><strong>Valid Values:</strong> <code>mobile/advanced</code>, <code>mobile/baseline</code>, <code>mobile/legacy</code>, <code>v1/mobile/advanced</code>, <code>v1/mobile/baseline</code>, <code>v1/mobile/legacy</code>, <code>v2/mobile/advanced</code>, <code>v2/mobile/baseline</code>, and <code>v2/mobile/legacy</code></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: mobile/advanced
 
-<p><strong>Example:</strong> <code>mobile/advanced</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+Zencoder's device profiles are shortcuts to a set of options that target the playback capability of a particular device or set of devices. Setting a device profile will do nothing more than change the default values used in the API call. That means you can completely override individual settings of a profile to suit your particular needs very easily.
 
-<p>Zencoder's device profiles are shortcuts to a set of options that target the playback capability of a particular device or set of devices. Setting a device profile will do nothing more than change the default values used in the API call. That means you can completely override individual settings of a profile to suit your particular needs very easily.</p>
+Versioned device profiles are available and listed below. Specifying a version (v1/mobile/baseline) will ensure that you'll always get the same profile, while non-version specific profiles (mobile/baseline) may be changed over time as better options become available.
 
-<p>Versioned device profiles are available and listed below. Specifying a version (<code>v1/mobile/baseline</code>) will ensure that you'll always get the same profile, while non-version specific profiles (<code>mobile/baseline</code>) may be changed over time as better options become available.</p>
+Profiles and their default values:
 
-<p>Profiles and their default values:</p>
-
-<ul>
-	<li><code>mobile/advanced</code>: <code class="notranslate">{"size": "1280x720", "audio_bitrate": 56, "max_audio_sample_rate": 48000, "max_frame_rate": 30, "max_video_bitrate": 5000, "video_codec_level": 3.1, "videoe_codec_profile": "main"}</code></li>
-	<li><code>mobile/baseline</code>: <code class="notranslate">{"size": "480x320", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 1500, "video_reference_frames": 1}</code></li>
-	<li><code>mobile/legacy</code>: <code class="notranslate">{"size": "320x240", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 768, "video_codec_level": 1.3, "video_reference_frames": 1}</code></li>
-	<li><code>v1/mobile/advanced</code>: <code class="notranslate">{"size": "1280x720", "audio_bitrate": 128, "max_audio_sample_rate": 48000, "max_frame_rate": 30, "max_video_bitrate": 5000, "video_codec_level": 3.1, "videoe_codec_profile": "main"}</code></li>
-	<li><code>v1/mobile/baseline</code>: <code class="notranslate">{"size": "480x320", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 1500}</code></li>
-	<li><code>v1/mobile/legacy</code>: <code class="notranslate">{"size": "320x240", "audio_bitrate": 24, "max_audio_sample_rate": 16000, "max_frame_rate": 15, "max_video_bitrate": 192, "video_bitrate": 192, "bitrate_cap": 192, "upscale": true, "aspect_mode": "pad", "format": "3gp", "video_codec": "mpeg4"}</code></li>
-	<li><strong>v2/mobile/advanced</strong>: <code class="notranslate">{"size": "1280x720", "audio_bitrate": 56, "max_audio_sample_rate": 48000, "max_frame_rate": 30, "max_video_bitrate": 5000, "video_codec_level": 3.1, "videoe_codec_profile": "main"}</code></li>
-	<li><code>v2/mobile/baseline</code>: <code class="notranslate">{"size": "480x320", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 1500, "video_reference_frames": 1}</code></li>
-	<li><code>v2/mobile/legacy</code>: <code class="notranslate">{"size": "320x240", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 768, "video_codec_level": 1.3, "video_reference_frames": 1}</code></li>
-</ul>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+mobile/advanced: {"size": "1280x720", "audio_bitrate": 56, "max_audio_sample_rate": 48000, "max_frame_rate": 30, "max_video_bitrate": 5000, "video_codec_level": 3.1, "videoe_codec_profile": "main"}
+mobile/baseline: {"size": "480x320", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 1500, "video_reference_frames": 1}
+mobile/legacy: {"size": "320x240", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 768, "video_codec_level": 1.3, "video_reference_frames": 1}
+v1/mobile/advanced: {"size": "1280x720", "audio_bitrate": 128, "max_audio_sample_rate": 48000, "max_frame_rate": 30, "max_video_bitrate": 5000, "video_codec_level": 3.1, "videoe_codec_profile": "main"}
+v1/mobile/baseline: {"size": "480x320", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 1500}
+v1/mobile/legacy: {"size": "320x240", "audio_bitrate": 24, "max_audio_sample_rate": 16000, "max_frame_rate": 15, "max_video_bitrate": 192, "video_bitrate": 192, "bitrate_cap": 192, "upscale": true, "aspect_mode": "pad", "format": "3gp", "video_codec": "mpeg4"}
+v2/mobile/advanced: {"size": "1280x720", "audio_bitrate": 56, "max_audio_sample_rate": 48000, "max_frame_rate": 30, "max_video_bitrate": 5000, "video_codec_level": 3.1, "videoe_codec_profile": "main"}
+v2/mobile/baseline: {"size": "480x320", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 1500, "video_reference_frames": 1}
+v2/mobile/legacy: {"size": "320x240", "audio_bitrate": 96, "max_audio_sample_rate": 44100, "max_frame_rate": 30, "max_video_bitrate": 768, "video_codec_level": 1.3, "video_reference_frames": 1}
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "device_profile": "mobile/advanced"
     }
   ]
-}</code></pre>
+}
+See Also: format
 
-<p><strong>See Also:</strong> <a class="notranslate" href="/node/17856#format">format</a></p>
-</section>
+strict
 
-<section class="bcls-section">
-<h2 class="notranslate" id="strict">strict</h2>
-<code class="notranslate">strict:Boolean</code>
+strict:Boolean
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Default: false
 
-<p><strong>Default:</strong> <code>false</code></p>
+Valid Values: true or false
 
-<p><strong>Valid Values:</strong> <code>true</code> or <code>false</code></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: true
 
-<p><strong>Example:</strong> <code>true</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+Enable "strict" mode. By default, we will try to correct encoding problems for you. This is called "compatible" mode. For example, if you set a video bitrate that is too low for our encoder, we will automatically correct and use the lowest possible bitrate. So if you ask for a bitrate of 150kbps, but the encoder can't do anything lower than 200kbps, we will automatically encode the video at 200kbps for you.
 
-<p>Enable "<code>strict</code>" mode. By default, we will try to correct encoding problems for you. This is called "<code>compatible</code>" mode. For example, if you set a video bitrate that is too low for our encoder, we will automatically correct and use the lowest possible bitrate. So if you ask for a bitrate of 150kbps, but the encoder can't do anything lower than 200kbps, we will automatically encode the video at 200kbps for you.</p>
+If you enable "strict" mode, we will not correct encoding settings like these. Instead, we will fail the job, because we cannot meet your target spec.
 
-<p>If you enable "<code>strict</code>" mode, we will not correct encoding settings like these. Instead, we will fail the job, because we cannot meet your target spec.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "strict": true
     }
   ]
-}</code></pre>
-</section>
+}
+skip_video
 
-<section class="bcls-section">
-<h2 class="notranslate" id="skip_video">skip_video</h2>
-<code class="notranslate">skip_video:Boolean</code>
+skip_video:Boolean
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Default: false
 
-<p><strong>Default:</strong> <code>false</code></p>
+Valid Values: true or false
 
-<p><strong>Valid Values:</strong> <code>true</code> or <code>false</code></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: true
 
-<p><strong>Example:</strong> true</p>
+Description:
 
-<p><strong>Description:</strong></p>
+Passing skip_video will strip or remove the video track from the input and the resulting file will only contain audio.
 
-<p>Passing <code>skip_video</code> will strip or remove the video track from the input and the resulting file will only contain audio.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "skip_video": true
     }
   ]
-}</code></pre>
-</section>
+}
+skip_audio
 
-<section class="bcls-section">
-<h2 class="notranslate" id="skip_audio">skip_audio</h2>
-<code class="notranslate">skip_audio:Boolean</code>
+skip_audio:Boolean
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Default: false
 
-<p><strong>Default:</strong> <code>false</code></p>
+Valid Values: true or false
 
-<p><strong>Valid Values:</strong> <code>true</code> or <code>false</code></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: true
 
-<p><strong>Example:</strong> true</p>
+Description:
 
-<p><strong>Description:</strong></p>
+Passing skip_audio will strip or remove the audio track from the input and the resulting file will only contain video.
 
-<p>Passing <code>skip_audio</code> will strip or remove the audio track from the input and the resulting file will only contain video.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "skip_audio": true
     }
   ]
-}</code></pre>
-</section>
+}
+source
 
-<section class="bcls-section">
-<h2 class="notranslate" id="source">source</h2>
-<code class="notranslate">source:String</code>
+source:String
+API Versions: V2
 
-<p><strong>API Versions:</strong> V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: parent
 
-<p><strong>Example:</strong> <code>parent</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+References a label on another output and uses the video created by that output for processing instead of the input file.
 
-<p>References a label on another output and uses the video created by that output for processing instead of the input file.</p>
+Using source in conjunction with a type of "transfer-only" allows transferring a single output video to a second url. Useful for sending a single video to multiple destinations.
 
-<p>Using source in conjunction with a <a class="notranslate" href="#type">type</a> of "transfer-only" allows transferring a single output video to a second <a class="notranslate" href="#url">url</a>. Useful for sending a single video to multiple destinations.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "output": [
     {
@@ -567,33 +502,29 @@
       "type": "transfer-only"
     }
   ]
-}</code></pre>
+}
+See Also: label and type
 
-<p><strong>See Also:</strong> <a href="#label">label</a> and <a class="notranslate" href="#type">type</a></p>
-</section>
+credentials
 
-<section class="bcls-section">
-<h2 class="notranslate" id="credentials">credentials</h2>
-<code class="notranslate">credentials:String</code>
+credentials:String
+API Versions: V2
 
-<p><strong>API Versions:</strong> V2</p>
+Parent: outputs
 
-<p><strong>Parent:</strong> <a class="notranslate" href="/node/17878#outputs">outputs</a></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: s3_production
 
-<p><strong>Example:</strong> <code>s3_production</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+References the nickname of saved credentials to use for transfer.
 
-<p>References the nickname of <a class="notranslate" href="https://app.zencoder.com/account/credentials">saved credentials</a> to use for transfer.</p>
+Credentials can only be used with URLs that match their type; for example, S3 credentials paired with an FTP URL will be rejected.
 
-<p>Credentials can only be used with URLs that match their type; for example, S3 credentials paired with an FTP URL will be rejected.</p>
+Note: The most "precise" credentials specified take precedence. For instance, credentials passed in the URL will take precedence over the credentials parameter, just as the credentials parameter takes precedence over default credentials.
 
-<p><strong>Note:</strong> The most "precise" credentials specified take precedence. For instance, credentials passed in the URL will take precedence over the credentials parameter, just as the credentials parameter takes precedence over default credentials.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
@@ -601,108 +532,93 @@
       "credentials": "s3_production"
     }
   ]
-}</code></pre>
+}
+See Also: url and base_url
 
-<p><strong>See Also:</strong> <a class="notranslate" href="#url">url</a> and <a class="notranslate" href="#base-url">base_url</a></p>
-</section>
+generate_md5_checksum
 
-<section class="bcls-section">
-<h2 class="notranslate" id="generate_md5_checksum">generate_md5_checksum</h2>
-<code class="notranslate">generate_md5_checksum:Boolean</code>
+generate_md5_checksum:Boolean
+API Versions: V2
 
-<p><strong>API Versions:</strong> V2</p>
+Default: false
 
-<p><strong>Default:</strong> <code>false</code></p>
+Valid Values: true or false
 
-<p><strong>Valid Values:</strong> <code>true</code> or <code>false</code></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Description:
 
-<p><strong>Description:</strong></p>
+Generates an MD5 checksum for the generated output file.
 
-<p>Generates an MD5 checksum for the generated output file.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
       "generate_md5_checksum": true
     }
   ]
-}</code></pre>
-</section>
+}
+parallel_upload_limit
 
-<section class="bcls-section">
-<h2 class="notranslate" id="parallel_upload_limit">parallel_upload_limit</h2>
-<code class="notranslate">parallel_upload_limit:Integer</code>
+parallel_upload_limit:Integer
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Default: 30 for S3, 10 for all other destinations.
 
-<p><strong>Default:</strong> 30 for S3, 10 for all other destinations.</p>
+Valid Values: An integer between 1 and 30
 
-<p><strong>Valid Values:</strong> An integer between 1 and 30</p>
+Compatible Job Types: vod
 
-<p><strong>Compatible Job Types:</strong> vod</p>
+Example: 5
 
-<p><strong>Example:</strong> 5</p>
+Description:
 
-<p><strong>Description:</strong></p>
+The maximum number of simultaneous uploads made when uploading multipart outputs, primarily HLS segments.
 
-<p>The maximum number of simultaneous uploads made when uploading multipart outputs, primarily HLS segments.</p
+parallel_upload_limit must be set for individual outputs, not the entire job.
 
-<p><code>parallel_upload_limit</code> <strong>must be set for individual outputs, not the entire job.</strong></p>
 
-<p>This may speed up transfer times, depending on the bandwidth at your remote server. Be aware that more connections can place a heavier load on the server. If you have trouble with upload timeouts, or want to prevent Zencoder from using too much bandwidth when uploading files, set this to 1.</p>
+This may speed up transfer times, depending on the bandwidth at your remote server. Be aware that more connections can place a heavier load on the server. If you have trouble with upload timeouts, or want to prevent Zencoder from using too much bandwidth when uploading files, set this to 1.
 
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
-      <span class="bcls-highlight">"parallel_upload_limit": 5,</span>
+      "parallel_upload_limit": 5,
       "url": "s3://my-output-bucket/final.mp4",
       "credentials": "s3_production"
     },
     {
-      <span class="bcls-highlight">"parallel_upload_limit": 5,</span>
+      "parallel_upload_limit": 5,
       "device_profile": "mobile/advanced",
       "url": "s3://my-output-bucket/mobile.mp4",
       "credentials": "s3_production"
     }
   ]
-}</code></pre>
-</section>
+}
+headers
 
-<section class="bcls-section">
-<h2 class="notranslate" id="headers">headers</h2>
-<code class="notranslate">headers:Hash</code>
+headers:Hash
+API Versions: V1, V2
 
-<p><strong>API Versions:</strong> V1, V2</p>
+Parents: outputs OR thumbnails
 
-<p><strong>Parents:</strong> <a href="/node/17878#outputs">outputs</a> OR <a href="/node/17873#thumbnails">thumbnails</a></p>
+Compatible Job Types: All
 
-<p><strong>Compatible Job Types:</strong> All</p>
+Example: { "Content-Type": "binary/octet-stream" }
 
-<p><strong>Example:</strong> <code>{ "Content-Type": "binary/octet-stream" }</code></p>
+Description:
 
-<p><strong>Description:</strong></p>
+HTTP headers to send with your file when we upload it. This feature is currently supported when using S3, GCS and Cloud Files.
 
-<p>HTTP headers to send with your file when we upload it. This feature is currently supported when using S3, GCS and Cloud Files.</p>
+Zencoder supports setting a limited subset of these headers: Cache-Control, Content-Disposition, Content-Encoding, Content-Type, Expires, x-amz-acl, x-amz-storage-class, x-amz-server-side-encryption, x-amz-meta-*, x-goog-acl and x-goog-meta-*.
 
-<p>Zencoder supports setting a limited subset of these headers: <code>Cache-Control</code>, <code>Content-Disposition</code>, <code>Content-Encoding</code>, <code>Content-Type</code>, <code>Expires</code>, <code>x-amz-acl</code>, <code>x-amz-storage-class</code>, <code>x-amz-server-side-encryption</code>, <code>x-amz-meta-*</code>, x-goog-acl and <code>x-goog-meta-*</code>.</p>
+Notes:
+To use S3's Standard_IA feature, you will need to set the x-amz-storage-class header to the appropriate value. These values change and are controlled by AWS and Google, so you will need to get correct values from them.
+The "goog" headers are supported for GCS output URLs, but not for URLs on S3.
+Headers will be ignored when an output location is not specified.
 
-<aside class="bcls-aside bcls-aside--information">Notes:
-<ul>
-	<li>To use <a href="https://aws.amazon.com/blogs/aws/aws-storage-update-new-lower-cost-s3-storage-option-glacier-price-reduction/">S3's Standard_IA feature</a>, you will need to set the <code class="notranslate">x-amz-storage-class</code> header to the appropriate value. These values change and are controlled by AWS and Google, so you will need to get correct values from them.</li>
-	<li>The "goog" headers are supported for GCS output URLs, but not for URLs on S3.</li>
-</ul>
-</aside>
-
-<p>Headers will be ignored when an output location is not specified.</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
+{
   "input": "s3://zencodertesting/test.mov",
   "outputs": [
     {
@@ -713,6 +629,4 @@
       }
     }
   ]
-}</code></pre>
-</section>
-</article>
+}
