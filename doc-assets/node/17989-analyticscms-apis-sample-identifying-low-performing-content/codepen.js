@@ -316,7 +316,7 @@ var BCLS = (function(window, document) {
         video.engagement_score,
         video.video_percent_viewed
       ];
-      textRows += '"' tmpArray.join('","') + '"\n';
+      textRows += '"' + tmpArray.join('","') + '"\n';
     }
     str = headersRow + textRows;
     $responseFrame.textContent = str;
