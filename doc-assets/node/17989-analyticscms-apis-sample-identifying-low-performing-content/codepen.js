@@ -186,9 +186,9 @@ var BCLS = (function(window, document) {
         // add where filter
         options.url += "&where=video==" + tmpArray.join(",");
         // add from date
-        requestURL += "&from=" + from;
+        options.url += "&from=" + from;
         // add fields
-        requestURL +=
+        options.url +=
           "&fields=video,engagement_score,video_view,video_percent_viewed";
         $request.textContent = options.url;
         $request.setAttribute("value", requestURL);
