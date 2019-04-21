@@ -145,7 +145,9 @@ var BCLS = (function(window, document) {
           "&offset=" +
           limit * callNumber +
           "&sort=published_at";
-        makeRequest(options, function(response) {
+          $request.textContent = options.url;
+          $request.setAttribute("value", requestURL);
+          makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           // add the current item array to overall one
           parsedData.forEach(function(video, index, response) {
