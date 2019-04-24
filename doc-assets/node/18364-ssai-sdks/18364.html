@@ -68,182 +68,66 @@
   <h2 id="Android_implementation">Android implementation</h2>
 
   <p>Follow these steps within your app to get your ad configuration and play your video:</p>
-  <aside class="bcls-aside bcls-aside--tip">The OnceUX plugin has been deprecated, and there is a new SSAI plugin that you can use. For details, see <a href="/node/18759">The SSAI Plugin for the Native SDK for Android</a></aside>
 
   <ol class="bcls-tasklist__restart">
-  	<li>Include the Once UX plugin in your app, as shown in the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicOnceUxSampleApp">Basic Once UX Player</a> sample. This will be the starting point for your app. Notice that the plugin uses a companion ad container.</li>
   	<li>In Android Studio, open your <strong>MainActivity.java</strong> file.</li>
-  	<li>Comment out or delete the following code:
-  	<pre class="line-numbers">
-<code class="notranslate language-java">private String onceUxAdDataUrl = "http://once.unicornmedia.com/now/ads/vmap/od/auto/c501c3ee-7f1c-4020-aa6d-0b1ef0bbd4a9/202ef8bb-0d9d-4f6f-bd18-f45aa3010fe6/8a146f45-9fac-462e-a111-de60ec96198b/content.once";
-      ...
-      plugin.processVideo(onceUxAdDataUrl);</code></pre>
-  	</li>
+    <li>
+      Import the SSAI plugin for Android.
+      <pre><code class="language-java">import com.brightcove.ssai.SSAIComponent;</code></pre>
+    </li>
   	<li>Define constants for your account id, policy key, video id, and your ad configuration id.
   	<pre class="line-numbers">
 <code class="notranslate language-java">private String accountId = "<span class="bcls-input">your account id</span>";
-      private String policyKey = "<span class="bcls-input">your policy key</span>";
-      private String videoId = "<span class="bcls-input">your video id</span>";
-      private String adConfigId = "<span class="bcls-input">your ad configuration id</span>";</code></pre>
+private String policyKey = "<span class="bcls-input">your policy key</span>";
+private String videoId = "<span class="bcls-input">your video id</span>";
+private String adConfigId = "<span class="bcls-input">your ad configuration id</span>";</code></pre>
 
   	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="/node/18125">Policy Keys</a> document.</aside>
   	</li>
-  	<li>In the <code class="notranslate">onCreate</code> method, set the query parameter value to your ad configuration id.
+  	<!-- <li>In the <code class="notranslate">onCreate</code> method, set the query parameter value to your ad configuration id.
   	<pre class="line-numbers">
 <code class="notranslate language-java">Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
       parameters.put("ad_config_id", adConfigId);
       </code></pre>
-  	</li>
-  	<li>Create an instance of the catalog service, which provides asynchronous methods for retrieving data from the Playback API.
+  	</li> -->
+  	<li>Create an instance of the catalog service, which provides asynchronous methods for retrieving data from the Playback API. Create an instance of the SSAI component.
   	<pre class="line-numbers">
-<code class="notranslate language-java">Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
+<code class="notranslate language-java">Catalog catalog = new Catalog(eventEmitter, myAccountId, myPolicyKey);
+SSAIComponent plugin = new SSAIComponent(appContext, getBrightcoveVideoView());
 </code></pre>
   	</li>
+    <li>
+      Set the adConfigId as a URL parameter.
+      <pre class="line-numbers"><code class="language-java">HttpRequestConfig httpRequestConfig = new HttpRequestConfig.Builder()
+  .addQueryParameter(&quot;ad_config_id&quot;, myAdConfig)
+  .build();</code></pre>
+    </li>
   	<li>Call the catalog service to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
   	<pre class="line-numbers">
-<code class="notranslate language-java">catalog.findVideoByID(videoId, null, parameters, new VideoListener() {
-  @Override
-  public void onVideo(Video video) {
-    try {
-      // The OnceUX plugin will look for a VMAP URL in the video object properties.
-      // If valid, it will play the video.
-      plugin.processVideo(video);
-    } catch (NoSourceFoundException e) {
-      // If NoSourceFoundException is thrown it means a suitable VMAP URL was not found.
-      // You can try to play it on a regular view,
-      brightcoveVideoView.add(video);
-    }
+<code class="notranslate language-java">catalog.findVideoByID(myVideoId, httpRequestConfig, new VideoListener() {
+    @Override
+    public void onVideo(Video video) {
+
+    // Process the Video
+    plugin.processVideo(video);
   }
 });</code></pre>
   	</li>
   </ol>
 
-  <h3 id="Android_MainActivity_file" class="bcls-expander-head">Android MainActivity file</h3>
+  <p>For more details and a complete code sample, see the following:</p>
 
-  <div class="bcls-expander-content">
-  <p>Your <strong>MainActivity.java</strong> file should look similar to this:</p>
-
-  <pre class="line-numbers">
-<code class="notranslate language-java">package com.brightcove.player.samples.onceux.basic;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.brightcove.onceux.OnceUxComponent;
-import com.brightcove.onceux.event.OnceUxEventType;
-import com.brightcove.player.controller.NoSourceFoundException;
-import com.brightcove.player.edge.Catalog;
-import com.brightcove.player.edge.VideoListener;
-import com.brightcove.player.event.Event;
-import com.brightcove.player.event.EventEmitter;
-import com.brightcove.player.event.EventListener;
-import com.brightcove.player.model.Video;
-import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
-import com.brightcove.player.view.BrightcovePlayer;
-
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * This app illustrates how to use the Once UX plugin to ensure that:
- *
- * - player controls are hidden during ad playback,
- *
- * - tracking beacons are fired from the client side,
- *
- * - videos are clickable during ad playback and visit the appropriate website,
- *
- * - the companion banner is shown on page switched appropriately as new ads are played
- */
-public class MainActivity extends BrightcovePlayer {
-
-    // Private class constants
-
-    private final String TAG = this.getClass().getSimpleName();
-
-    private String accountId = "<span class="bcls-input">your account Id</span>";
-    private String policyKey = "<span class="bcls-input">your policy key</span>";
-    private String videoId = "<span class="bcls-input">your video Id</span>";
-    private String adConfigId = "<span class="bcls-input">your ad configuration Id</span>";
-
-    // Private instance variables
-
-    private OnceUxComponent plugin;
-    public OnceUxComponent getOnceUxPlugin() {
-        return plugin;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // When extending the BrightcovePlayer, we must assign brightcoveVideoView before
-        // entering the superclass.  This allows for some stock video player lifecycle
-        // management.
-        setContentView(R.layout.onceux_activity_main);
-        brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);
-        brightcoveVideoView.getAnalytics().setAccount("1752604059001");
-        super.onCreate(savedInstanceState);
-
-        // Setup the event handlers for the OnceUX plugin, set the companion ad container,
-        // register the VMAP data URL inside the plugin and start the video.  The plugin will
-        // detect that the video has been started and pause it until the ad data is ready or an
-        // error condition is detected.  On either event the plugin will continue playing the
-        // video.
-        registerEventHandlers();
-        plugin = new OnceUxComponent(this, brightcoveVideoView);
-        View view = findViewById(R.id.ad_frame);
-        if (view != null &amp;&amp; view instanceof ViewGroup) {
-            plugin.addCompanionContainer((ViewGroup) view);
-        }
-
-        Map&lt;String, String&gt; parameters = new HashMap&lt;&gt;();
-        parameters.put("ad_config_id", adConfigId);
-
-        Catalog catalog = new Catalog(brightcoveVideoView.getEventEmitter(), accountId, policyKey);
-
-        catalog.findVideoByID(videoId, null, parameters, new VideoListener() {
-            @Override
-            public void onVideo(Video video) {
-                try {
-                    // The OnceUX plugin will look for a VMAP URL in the video object properties.
-                    // If valid, it will play the video.
-                    plugin.processVideo(video);
-                } catch (NoSourceFoundException e) {
-                    // If NoSourceFoundException is thrown it means a suitable VMAP URL was not found.
-                    // You can try to play it on a regular view,
-                    brightcoveVideoView.add(video);
-                }
-            }
-        });
-   }
-
-    // Private instance methods
-
-    /**
-     * Procedural abstraction used to setup event handlers for the OnceUX plugin.
-     */
-    private void registerEventHandlers() {
-        // Handle the case where the ad data URL has not been supplied to the plugin.
-        EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();
-        eventEmitter.on(OnceUxEventType.NO_AD_DATA_URL, new EventListener() {
-            @Override
-            public void processEvent(Event event) {
-                // Log the event and display a warning message (later)
-                Log.e(TAG, event.getType());
-                // TODO: throw up a stock Android warning widget.
-            }
-        });
-    }
-}</code></pre>
-  </div>
+  <ul>
+    <li><a href="/node/18759">The SSAI Plugin for the Native SDK for Android</a></li>
+    <li><a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicSsaiSampleApp">Basic SSAI Player using the Native SDK for Android</a></li>
+  </ul>
   &nbsp;
 
   <aside class="bcls-aside bcls-aside--tip">
   <p>Events associated with Server-side ad insertion include the following:</p>
 
   <ul>
-  	<li><a href="https://docs.brightcove.com/android-sdk/javadoc/index.html?com/brightcove/onceux/event/package-summary.html">Lifecycle events that are specific to Once UX</a></li>
+  	<li><a href="https://docs.brightcove.com/android-sdk/javadoc/index.html?com/brightcove/ssai/event/package-summary.html">Lifecycle events that are specific to SSAI</a></li>
   	<li><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/event/EventType.html">Lifecycle events associated with ads</a></li>
   </ul>
   </aside>
@@ -262,8 +146,7 @@ public class MainActivity extends BrightcovePlayer {
     </li>
   	<li>Define constants for your account id, policy key, video id, and your ad configuration id.
   	<pre class="line-numbers">
-<code class="language-swift">
-struct Constants {
+<code class="language-swift">struct Constants {
   static let AccountID = &quot;<span class="bcls-input">your account id</span>&quot;
   static let PlaybackServicePolicyKey = &quot;<span class="bcls-input">your policy key</span>&quot;
   static let VideoId = &quot;<span class="bcls-input">your video id</span>&quot;
@@ -272,30 +155,33 @@ struct Constants {
 
   	<aside class="bcls-aside bcls-aside--information">Learn how to get or generate a policy key in the <a href="/node/18125">Policy Keys</a> document.</aside>
   	</li>
-    <li>
+    <!-- <li>
       Define the view along with the companion view for ads.
       <pre class="line-numbers"><code class="language-swift">class ViewController: UIViewController {
     @IBOutlet weak var videoContainerView: UIView!
     @IBOutlet weak var companionSlotContainerView: UIView!</code></pre>
-    </li>
+    </li> -->
   	<li>Define the <code class="notranslate">BCOVPlaybackService</code> class, which provides asynchronous methods for retrieving data from the Playback API.
       <pre class="line-numbers"><code class="language-swift">private lazy var playbackService: BCOVPlaybackService = {
-    let factory = BCOVPlaybackServiceRequestFactory(accountId: Constants.AccountID, policyKey: Constants.PlaybackServicePolicyKey, baseURLStr: &quot;https://edge.api.brightcove.com/playback/v1&quot;)
-    return BCOVPlaybackService(requestFactory: factory)
+  let factory = BCOVPlaybackServiceRequestFactory(accountId: Constants.AccountID, policyKey: Constants.PlaybackServicePolicyKey, baseURLStr: &quot;https://edge.api.brightcove.com/playback/v1&quot;)
+  return BCOVPlaybackService(requestFactory: factory)
 }()</code></pre>
   	</li>
   	<li>Set the query parameter value to your ad configuration id.
       <pre><code class="language-swift">let queryParameters = [kBCOVPlaybackServiceParamaterKeyAdConfigId: Constants.AdConfigId]</code></pre>
   	</li>
-  	<li>Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
-  <pre class="line-numbers"><code class="language-swift">playbackService.findVideo(withVideoID: Constants.VideoId, parameters: queryParameters) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+  	<li>
+      <p>
+        Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
+      </p>
+      <pre class="line-numbers"><code class="language-swift">playbackService.findVideo(withVideoID: Constants.VideoId, parameters: queryParameters) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-    guard let _video = video else {
-        print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-        return
-    }
+  guard let _video = video else {
+    print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
+    return
+  }
 
-    self?.playbackController?.setVideos([_video] as NSFastEnumeration)
+  self?.playbackController?.setVideos([_video] as NSFastEnumeration)
 }</code></pre>
   	</li>
   </ol>
