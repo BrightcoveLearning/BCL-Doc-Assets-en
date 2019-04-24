@@ -67,7 +67,7 @@ var BCLS_style_fixes = ( function (window, document) {
     iMax = code.length;
     for (i; i < iMax; i++) {
       currentStyle = code[i].getAttribute('style');
-      code[i].setAttribute('style', currentStyle + ';color:#dd712e;font-size:1.5rem;background-color:inherit;');
+      code[i].setAttribute('style', currentStyle + ';color:#dd712e;font-size:inherit;background-color:inherit;');
     }
   }
   // if (linkedCode) {
