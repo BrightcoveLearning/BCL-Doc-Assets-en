@@ -97,7 +97,7 @@ SSAIComponent plugin = new SSAIComponent(appContext, getBrightcoveVideoView());
 </code></pre>
   	</li>
     <li>
-      Set the adConfigId as a URL parameters
+      Set the adConfigId as a URL parameter.
       <pre class="line-numbers"><code class="language-java">HttpRequestConfig httpRequestConfig = new HttpRequestConfig.Builder()
   .addQueryParameter(&quot;ad_config_id&quot;, myAdConfig)
   .build();</code></pre>
@@ -146,8 +146,7 @@ SSAIComponent plugin = new SSAIComponent(appContext, getBrightcoveVideoView());
     </li>
   	<li>Define constants for your account id, policy key, video id, and your ad configuration id.
   	<pre class="line-numbers">
-<code class="language-swift">
-struct Constants {
+<code class="language-swift">struct Constants {
   static let AccountID = &quot;<span class="bcls-input">your account id</span>&quot;
   static let PlaybackServicePolicyKey = &quot;<span class="bcls-input">your policy key</span>&quot;
   static let VideoId = &quot;<span class="bcls-input">your video id</span>&quot;
@@ -164,22 +163,25 @@ struct Constants {
     </li> -->
   	<li>Define the <code class="notranslate">BCOVPlaybackService</code> class, which provides asynchronous methods for retrieving data from the Playback API.
       <pre class="line-numbers"><code class="language-swift">private lazy var playbackService: BCOVPlaybackService = {
-    let factory = BCOVPlaybackServiceRequestFactory(accountId: Constants.AccountID, policyKey: Constants.PlaybackServicePolicyKey, baseURLStr: &quot;https://edge.api.brightcove.com/playback/v1&quot;)
-    return BCOVPlaybackService(requestFactory: factory)
+  let factory = BCOVPlaybackServiceRequestFactory(accountId: Constants.AccountID, policyKey: Constants.PlaybackServicePolicyKey, baseURLStr: &quot;https://edge.api.brightcove.com/playback/v1&quot;)
+  return BCOVPlaybackService(requestFactory: factory)
 }()</code></pre>
   	</li>
   	<li>Set the query parameter value to your ad configuration id.
       <pre><code class="language-swift">let queryParameters = [kBCOVPlaybackServiceParamaterKeyAdConfigId: Constants.AdConfigId]</code></pre>
   	</li>
-  	<li>Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
-  <pre class="line-numbers"><code class="language-swift">playbackService.findVideo(withVideoID: Constants.VideoId, parameters: queryParameters) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+  	<li>
+      <p>
+        Call the <code>playbackService</code> to retrieve your video along with your ad configuration from the Playback API. Start video playback with your specified ads.
+      </p>
+      <pre class="line-numbers"><code class="language-swift">playbackService.findVideo(withVideoID: Constants.VideoId, parameters: queryParameters) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
-    guard let _video = video else {
-        print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-        return
-    }
+  guard let _video = video else {
+    print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
+    return
+  }
 
-    self?.playbackController?.setVideos([_video] as NSFastEnumeration)
+  self?.playbackController?.setVideos([_video] as NSFastEnumeration)
 }</code></pre>
   	</li>
   </ol>
