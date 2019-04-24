@@ -11,7 +11,9 @@ var BCLS_style_fixes = ( function (window, document) {
     code = document.querySelectorAll('code'),
     bod = document.querySelector('body'),
     nav_menu_items = document.querySelectorAll('.region-navigation-collapsible .nav li a'),
-    linkedCode = document.querySelectorAll('a>code');
+    linkedCode = document.querySelectorAll('a>code'),
+    i,
+    iMax;
 
 
   if (header_block) {
@@ -28,42 +30,43 @@ var BCLS_style_fixes = ( function (window, document) {
     search_block.setAttribute('style', 'padding-top:10px; padding-bottom:15px;');
   }
   if (chevrons) {
-    var i = 0,
-      iMax = chevrons.length;
-      for (i; i < iMax; i++) {
-        chevrons[i].setAttribute('style', 'width:1rem;');
-      }
+    i = 0;
+    iMax = chevrons.length;
+    for (i; i < iMax; i++) {
+      chevrons[i].setAttribute('style', 'width:1rem;');
+    }
   }
   if (menu_headers) {
-    var i = 0,
-      iMax = menu_headers.length;
-      for (i; i < iMax; i++) {
-        menu_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108);font-weight:normal;');
-      }
+    i = 0;
+    iMax = menu_headers.length;
+    for (i; i < iMax; i++) {
+      menu_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108);font-weight:normal;');
+    }
   }
   if (training_headers) {
-    var i = 0,
-      iMax = training_headers.length;
-      for (i; i < iMax; i++) {
-        training_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108);font-weight:normal;');
-      }
+    i = 0;
+    iMax = training_headers.length;
+    for (i; i < iMax; i++) {
+      training_headers[i].setAttribute('style', 'font-size:1.6rem;color:RGB(45, 59, 108);font-weight:normal;');
+    }
   }
   if (menu_items) {
-    var i = 0,
-      iMax = menu_items.length;
-      for (i; i < iMax; i++) {
-        menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:0;clear:both;display:block;');
-      }
+    i = 0;
+    iMax = menu_items.length;
+    for (i; i < iMax; i++) {
+      menu_items[i].setAttribute('style', 'white-space:nowrap;padding-bottom:0;clear:both;display:block;');
+    }
   }
   if (nav_menu_items) {
+    i = 0;
     iMax = nav_menu_items.length;
     for (i; i < iMax; i++) {
       nav_menu_items[i].setAttribute('style', 'padding-bottom:1.2em;');
     }
   }
   if (code) {
-    var i = 0,
-    currentStyle,
+    var currentStyle;
+    i = 0;
     iMax = code.length;
     for (i; i < iMax; i++) {
       currentStyle = code[i].getAttribute('style');
