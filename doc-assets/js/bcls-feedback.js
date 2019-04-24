@@ -56,3 +56,4 @@ var BCLS_feedback = ( function (window, document) {
     // send message to surveyForm window
     surveyWin.postMessage(feedbackParams, 'https://learning-services-media.brightcove.com');
   });
+  })(window, document);
