@@ -111,6 +111,7 @@ var BCLS = (function(window, document) {
       currentIndex,
       videoItem,
       parsedData,
+      item,
       i;
     options.account_id = account_id;
     options.proxyURL = proxyURL;
@@ -206,10 +207,14 @@ var BCLS = (function(window, document) {
             while (i > 0) {
               i--;
               if (analyticsData[i].video_view > minViews) {
+                item = analyticsData[i];
+                currentIndex = findObjectInArray(videoData, "id", item.video);
+                videoData.splice(currentIndex, 1);
                 analyticsData.splice(i, 1);
               }
             }
             // update analytics properties in the video data
+
             analyticsData.forEach(function(item, index, analyticsData) {
               currentIndex = findObjectInArray(videoData, "id", item.video);
               videoItem = videoData[currentIndex];
@@ -349,11 +354,11 @@ var BCLS = (function(window, document) {
     from = now.valueOf() - $fromMonths.value * mMonth;
     oldestPubDate = now.valueOf() - $excludeMonths.value * mMonth;
     lastPublishedDate = new Date(oldestPubDate).toISOString();
-    minViews = $includeVideos.value;
+    minViews = parseInt($includeVideos.value, 10);
     // generate initial request
     // if total videos not defined, get count
     if ($totalVideos.value !== "all") {
-      totalVideos = $totalVideos.value;
+      totalVideos = parseInt($totalVideos.value, 10);
       buildRequest("getVideos");
     } else {
       buildRequest("getCount");
@@ -363,7 +368,7 @@ var BCLS = (function(window, document) {
   $csvButton.addEventListener("click", jsonToCSV);
   // select all the data
   $selectData.addEventListener("click", function() {
-    document.getElementById("responseFrame").select();
+    $responseFrame.select();
   });
   // set initial value of from
   from = now.valueOf() - mMonth;
