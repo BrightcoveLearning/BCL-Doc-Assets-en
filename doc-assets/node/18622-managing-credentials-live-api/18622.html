@@ -1,345 +1,347 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="introduction">Introduction</h2>
-
-<p>There are several kinds of credentials that can be used in conjunction with your Live API jobs:</p>
-
-<ul>
-	<li>FTP, S3, Video Cloud, or Zencoder credentials that the Live system needs to push clips to your chosen destination</li>
-	<li>RTMP credentials that prevent someone who gets the RTMP address of your live steam from playing it back</li>
-	<li>OAuth2 or basic authoritization credentials that the Live System needs to send notifications to your notication handler</li>
-</ul>
-
-<p>The credentials endpoints for the Live API allow to create and manage these credentials, which you can then reference by their labels when you create Live or VOD clip jobs.</p>
-
-<p>For full details of the API operations for credentials, see the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Credentials">API Reference</a>.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="credentisl_types">Credential types</h2>
-
-<p>The table below shows the credential types currently supported and their uses.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Credential Types</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th><code>credential_type</code> value</th>
-			<th>Description/Use Case</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>ftp</code></td>
-			<td>Credentials for FTP site where clips should be sent</td>
-		</tr>
-		<tr>
-			<td><code>http</code></td>
-			<td>Basic authorization credentials for an http address to send notifications to</td>
-		</tr>
-		<tr>
-			<td><code>oauth</code></td>
-			<td>Credentials for OAuth2 authentication required for the address where notifications are to be sent</td>
-		</tr>
-		<tr>
-			<td><code>rtmp</code></td>
-			<td>Add authentication to the endpoint your encoder connects to, so that anyone who has the RTMP URL can't just connect</td>
-		</tr>
-		<tr>
-			<td><code>s3</code></td>
-			<td>Credentials for an S3 bucket to send clips to</td>
-		</tr>
-		<tr>
-			<td><code>videocloud</code></td>
-			<td>OAuth credentials for your Video Cloud account to send clips to (must include the permissions necessary for Dynamic Ingest)</td>
-		</tr>
-		<tr>
-			<td><code>zencoder</code></td>
-			<td>Authentication for your Zencoder account to send clips to</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="credentials_operations">Credentials operations</h2>
-
-<p>The table below shows the endpoints for managing credentials.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Credentials Endpoints</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Endpoint</th>
-			<th>Method</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>/v1/credentials</code></td>
-			<td><code>GET</code></td>
-			<td>List all credentials for the account</td>
-		</tr>
-		<tr>
-			<td><code>/v1/credentials</code></td>
-			<td><code>POST</code></td>
-			<td>Create a new credential for the account</td>
-		</tr>
-		<tr>
-			<td><code>/v1/credentials/{credential_id}</code></td>
-			<td><code>PUT</code></td>
-			<td>Update a credential for the account</td>
-		</tr>
-		<tr>
-			<td><code>/v1/credentials/{credential_id}</code></td>
-			<td><code>DELETE</code></td>
-			<td>Delete a credential for the account</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Credentials fields">&nbsp;</h2>
-
-<p>The table below shows the fields for credentials.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Credential Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Required</th>
-			<th>Allowed Values</th>
-			<th>Default</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>credential_default_for_type</code></td>
-			<td>boolean</td>
-			<td>no</td>
-			<td><code>true | false</code></td>
-			<td>false</td>
-			<td>Want this credential to be default for the user for this type of credentials?</td>
-		</tr>
-		<tr>
-			<td><code>credential_label</code></td>
-			<td>string</td>
-			<td>yes</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>User identifiable name for the credentials</td>
-		</tr>
-		<tr>
-			<td><code>credential_type</code></td>
-			<td>enum</td>
-			<td>yes</td>
-			<td><code>ftp | http | oauth | rtmp | s3 | videocloud | zencoder</code></td>
-			<td>&nbsp;</td>
-			<td>The type of credential</td>
-		</tr>
-		<tr>
-			<td><code>credential_public</code></td>
-			<td>string</td>
-			<td>yes</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>The username, public key, or client id, depending on the credential type</td>
-		</tr>
-		<tr>
-			<td><code><article class="bcls-article">
-<section class="bcls-section">
-<h2 id="introduction">Introduction</h2>
-
-<p>There are several kinds of credentials that can be used in conjunction with your Live API jobs:</p>
-
-<ul>
-	<li>FTP, S3, Video Cloud, or Zencoder credentials that the Live system needs to push clips to your chosen destination</li>
-	<li>RTMP credentials that prevent someone who gets the RTMP address of your live steam from playing it back</li>
-	<li>OAuth2 or basic authoritization credentials that the Live System needs to send notifications to your notication handler</li>
-</ul>
-
-<p>The credentials endpoints for the Live API allow to create and manage these credentials, which you can then reference by their labels when you create Live or VOD clip jobs.</p>
-
-<p>For full details of the API operations for credentials, see the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Credentials">API Reference</a>.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="credentisl_types">Credential types</h2>
-
-<p>The table below shows the credential types currently supported and their uses.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Credential Types</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th><code>credential_type</code> value</th>
-			<th>Description/Use Case</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>ftp</code></td>
-			<td>Credentials for FTP site where clips should be sent</td>
-		</tr>
-		<tr>
-			<td><code>http</code></td>
-			<td>Basic authorization credentials for an http address to send notifications to</td>
-		</tr>
-		<tr>
-			<td><code>oauth</code></td>
-			<td>Credentials for OAuth2 authentication required for the address where notifications are to be sent</td>
-		</tr>
-		<tr>
-			<td><code>rtmp</code></td>
-			<td>Add authentication to the endpoint your encoder connects to, so that anyone who has the RTMP URL can't just connect</td>
-		</tr>
-		<tr>
-			<td><code>s3</code></td>
-			<td>Credentials for an S3 bucket to send clips to</td>
-		</tr>
-		<tr>
-			<td><code>videocloud</code></td>
-			<td>OAuth credentials for your Video Cloud account to send clips to (must include the permissions necessary for Dynamic Ingest)</td>
-		</tr>
-		<tr>
-			<td><code>zencoder</code></td>
-			<td>Authentication for your Zencoder account to send clips to</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="credentials_operations">Credentials operations</h2>
-
-<p>The table below shows the endpoints for managing credentials.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Credentials Endpoints</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Endpoint</th>
-			<th>Method</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>/v1/credentials</code></td>
-			<td><code>GET</code></td>
-			<td>List all credentials for the account</td>
-		</tr>
-		<tr>
-			<td><code>/v1/credentials</code></td>
-			<td><code>POST</code></td>
-			<td>Create a new credential for the account</td>
-		</tr>
-		<tr>
-			<td><code>/v1/credentials/{credential_id}</code></td>
-			<td><code>PUT</code></td>
-			<td>Update a credential for the account</td>
-		</tr>
-		<tr>
-			<td><code>/v1/credentials/{credential_id}</code></td>
-			<td><code>DELETE</code></td>
-			<td>Delete a credential for the account</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Credentials fields">&nbsp;</h2>
-
-<p>The table below shows the fields for credentials.</p>
-
-<table class="bcls-table">
-	<caption class="bcls-caption--table">Credential Fields</caption>
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Type</th>
-			<th>Required</th>
-			<th>Allowed Values</th>
-			<th>Default</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>credential_default_for_type</code></td>
-			<td>boolean</td>
-			<td>no</td>
-			<td><code>true | false</code></td>
-			<td>false</td>
-			<td>Want this credential to be default for the user for this type of credentials?</td>
-		</tr>
-		<tr>
-			<td><code>credential_label</code></td>
-			<td>string</td>
-			<td>yes</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>User identifiable name for the credentials</td>
-		</tr>
-		<tr>
-			<td><code>credential_type</code></td>
-			<td>enum</td>
-			<td>yes</td>
-			<td><code>ftp | http | oauth | rtmp | s3 | videocloud | zencoder</code></td>
-			<td>&nbsp;</td>
-			<td>The type of credential</td>
-		</tr>
-		<tr>
-			<td><code>credential_public</code></td>
-			<td>string</td>
-			<td>yes</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>The username, public key, or client id, depending on the credential type</td>
-		</tr>
-		<tr>
-			<td><code>credential_private</code></td>
-			<td>string</td>
-			<td>yes</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>The password, private key, or client secret, depending on the credential type</td>
-		</tr>
-		<tr>
-			<td><code>user_id</code></td>
-			<td>string</td>
-			<td>no</td>
-			<td>&nbsp;</td>
-			<td>(credentials are available for all account users)</td>
-			<td>user_id (GUID) for which the credentials are being created</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-</article>
-
-</code></td>
-			<td>string</td>
-			<td>yes</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>The password, private key, or client secret, depending on the credential type</td>
-		</tr>
-		<tr>
-			<td><code>user_id</code></td>
-			<td>string</td>
-			<td>no</td>
-			<td>&nbsp;</td>
-			<td>(credentials are available for all account users)</td>
-			<td>user_id (GUID) for which the credentials are being created</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-</article>
+	<section class="bcls-section">
+	<h2 id="introduction">Introduction</h2>
+	
+	<p>There are several kinds of credentials that can be used in conjunction with your Live API jobs:</p>
+	
+	<ul>
+		<li>FTP, S3, Video Cloud, or Zencoder credentials that the Live system needs to push clips to your chosen destination</li>
+		<li>RTMP credentials that prevent someone who gets the RTMP address of your live steam from playing it back</li>
+		<li>OAuth2 or basic authoritization credentials that the Live System needs to send notifications to your notication handler</li>
+	</ul>
+	
+	<p>The credentials endpoints for the Live API allow to create and manage these credentials, which you can then reference by their labels when you create Live or VOD clip jobs.</p>
+	
+	<p>For full details of the API operations for credentials, see the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Credentials">API Reference</a>.</p>
+	</section>
+	
+	<section class="bcls-section">
+	<h2 id="credentisl_types">Credential types</h2>
+	
+	<p>The table below shows the credential types currently supported and their uses.</p>
+	
+	<table class="bcls-table">
+		<caption class="bcls-caption--table">Credential Types</caption>
+		<thead class="bcls-table__head">
+			<tr>
+				<th><code>credential_type</code> value</th>
+				<th>Description/Use Case</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td><code>ftp</code></td>
+				<td>Credentials for FTP site where clips should be sent</td>
+			</tr>
+			<tr>
+				<td><code>http</code></td>
+				<td>Basic authorization credentials for an http address to send notifications to</td>
+			</tr>
+			<tr>
+				<td><code>oauth</code></td>
+				<td>Credentials for OAuth2 authentication required for the address where notifications are to be sent</td>
+			</tr>
+			<tr>
+				<td><code>rtmp</code></td>
+				<td>Add authentication to the endpoint your encoder connects to, so that anyone who has the RTMP URL can't just connect</td>
+			</tr>
+			<tr>
+				<td><code>s3</code></td>
+				<td>Credentials for an S3 bucket to send clips to</td>
+			</tr>
+			<tr>
+				<td><code>videocloud</code></td>
+				<td>OAuth credentials for your Video Cloud account to send clips to (must include the permissions necessary for Dynamic Ingest)</td>
+			</tr>
+			<tr>
+				<td><code>zencoder</code></td>
+				<td>Authentication for your Zencoder account to send clips to</td>
+			</tr>
+		</tbody>
+	</table>
+	</section>
+	
+	<section class="bcls-section">
+	<h2 id="credentials_operations">Credentials operations</h2>
+	
+	<p>The table below shows the endpoints for managing credentials.</p>
+	
+	<table class="bcls-table">
+		<caption class="bcls-caption--table">Credentials Endpoints</caption>
+		<thead class="bcls-table__head">
+			<tr>
+				<th>Endpoint</th>
+				<th>Method</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td><code>/v1/credentials</code></td>
+				<td><code>GET</code></td>
+				<td>List all credentials for the account</td>
+			</tr>
+			<tr>
+				<td><code>/v1/credentials</code></td>
+				<td><code>POST</code></td>
+				<td>Create a new credential for the account</td>
+			</tr>
+			<tr>
+				<td><code>/v1/credentials/{credential_id}</code></td>
+				<td><code>PUT</code></td>
+				<td>Update a credential for the account</td>
+			</tr>
+			<tr>
+				<td><code>/v1/credentials/{credential_id}</code></td>
+				<td><code>DELETE</code></td>
+				<td>Delete a credential for the account</td>
+			</tr>
+		</tbody>
+	</table>
+	</section>
+	
+	<section class="bcls-section">
+	<h2 id="Credentials fields">&nbsp;</h2>
+	
+	<p>The table below shows the fields for credentials.</p>
+	
+	<table class="bcls-table">
+		<caption class="bcls-caption--table">Credential Fields</caption>
+		<thead class="bcls-table__head">
+			<tr>
+				<th>Field</th>
+				<th>Type</th>
+				<th>Required</th>
+				<th>Allowed Values</th>
+				<th>Default</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td><code>credential_default_for_type</code></td>
+				<td>boolean</td>
+				<td>no</td>
+				<td><code>true | false</code></td>
+				<td>false</td>
+				<td>Want this credential to be default for the user for this type of credentials?</td>
+			</tr>
+			<tr>
+				<td><code>credential_label</code></td>
+				<td>string</td>
+				<td>yes</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>User identifiable name for the credentials</td>
+			</tr>
+			<tr>
+				<td><code>credential_type</code></td>
+				<td>enum</td>
+				<td>yes</td>
+				<td><code>ftp | http | oauth | rtmp | s3 | videocloud | zencoder</code></td>
+				<td>&nbsp;</td>
+				<td>The type of credential</td>
+			</tr>
+			<tr>
+				<td><code>credential_public</code></td>
+				<td>string</td>
+				<td>yes</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>The username, public key, or client id, depending on the credential type</td>
+			</tr>
+			<tr>
+				<td>
+				<article class="bcls-article">
+				<section class="bcls-section">
+				<h2 id="introduction"><code>Introduction</code></h2>
+	
+				<p><code>There are several kinds of credentials that can be used in conjunction with your Live API jobs:</code></p>
+	
+				<ul>
+					<li><code>FTP, S3, Video Cloud, or Zencoder credentials that the Live system needs to push clips to your chosen destination</code></li>
+					<li><code>RTMP credentials that prevent someone who gets the RTMP address of your live steam from playing it back</code></li>
+					<li><code>OAuth2 or basic authoritization credentials that the Live System needs to send notifications to your notication handler</code></li>
+				</ul>
+	
+				<p><code>The credentials endpoints for the Live API allow to create and manage these credentials, which you can then reference by their labels when you create Live or VOD clip jobs.</code></p>
+	
+				<p><code>For full details of the API operations for credentials, see the <a href="http://docs.brightcove.com/live-api/v1/doc/index.html#/Credentials">API Reference</a>.</code></p>
+				</section>
+	
+				<section class="bcls-section">
+				<h2 id="credentisl_types"><code>Credential types</code></h2>
+	
+				<p><code>The table below shows the credential types currently supported and their uses.</code></p>
+	
+				<table class="bcls-table">
+					<caption class="bcls-caption--table"><code>Credential Types</code></caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th><code><code>credential_type</code> value</code></th>
+							<th><code>Description/Use Case</code></th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code><code>ftp</code></code></td>
+							<td><code>Credentials for FTP site where clips should be sent</code></td>
+						</tr>
+						<tr>
+							<td><code><code>http</code></code></td>
+							<td><code>Basic authorization credentials for an http address to send notifications to</code></td>
+						</tr>
+						<tr>
+							<td><code><code>oauth</code></code></td>
+							<td><code>Credentials for OAuth2 authentication required for the address where notifications are to be sent</code></td>
+						</tr>
+						<tr>
+							<td><code><code>rtmp</code></code></td>
+							<td><code>Add authentication to the endpoint your encoder connects to, so that anyone who has the RTMP URL can't just connect</code></td>
+						</tr>
+						<tr>
+							<td><code><code>s3</code></code></td>
+							<td><code>Credentials for an S3 bucket to send clips to</code></td>
+						</tr>
+						<tr>
+							<td><code><code>videocloud</code></code></td>
+							<td><code>OAuth credentials for your Video Cloud account to send clips to (must include the permissions necessary for Dynamic Ingest)</code></td>
+						</tr>
+						<tr>
+							<td><code><code>zencoder</code></code></td>
+							<td><code>Authentication for your Zencoder account to send clips to</code></td>
+						</tr>
+					</tbody>
+				</table>
+				</section>
+	
+				<section class="bcls-section">
+				<h2 id="credentials_operations"><code>Credentials operations</code></h2>
+	
+				<p><code>The table below shows the endpoints for managing credentials.</code></p>
+	
+				<table class="bcls-table">
+					<caption class="bcls-caption--table"><code>Credentials Endpoints</code></caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th><code>Endpoint</code></th>
+							<th><code>Method</code></th>
+							<th><code>Description</code></th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code><code>/v1/credentials</code></code></td>
+							<td><code><code>GET</code></code></td>
+							<td><code>List all credentials for the account</code></td>
+						</tr>
+						<tr>
+							<td><code><code>/v1/credentials</code></code></td>
+							<td><code><code>POST</code></code></td>
+							<td><code>Create a new credential for the account</code></td>
+						</tr>
+						<tr>
+							<td><code><code>/v1/credentials/{credential_id}</code></code></td>
+							<td><code><code>PUT</code></code></td>
+							<td><code>Update a credential for the account</code></td>
+						</tr>
+						<tr>
+							<td><code><code>/v1/credentials/{credential_id}</code></code></td>
+							<td><code><code>DELETE</code></code></td>
+							<td><code>Delete a credential for the account</code></td>
+						</tr>
+					</tbody>
+				</table>
+				</section>
+	
+				<section class="bcls-section">
+				<h2 id="Credentials fields"><code>&nbsp;</code></h2>
+	
+				<p><code>The table below shows the fields for credentials.</code></p>
+	
+				<table class="bcls-table">
+					<caption class="bcls-caption--table"><code>Credential Fields</code></caption>
+					<thead class="bcls-table__head">
+						<tr>
+							<th><code>Field</code></th>
+							<th><code>Type</code></th>
+							<th><code>Required</code></th>
+							<th><code>Allowed Values</code></th>
+							<th><code>Default</code></th>
+							<th><code>Description</code></th>
+						</tr>
+					</thead>
+					<tbody class="bcls-table__body">
+						<tr>
+							<td><code><code>credential_default_for_type</code></code></td>
+							<td><code>boolean</code></td>
+							<td><code>no</code></td>
+							<td><code><code>true | false</code></code></td>
+							<td><code>false</code></td>
+							<td><code>Want this credential to be default for the user for this type of credentials?</code></td>
+						</tr>
+						<tr>
+							<td><code><code>credential_label</code></code></td>
+							<td><code>string</code></td>
+							<td><code>yes</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>User identifiable name for the credentials</code></td>
+						</tr>
+						<tr>
+							<td><code><code>credential_type</code></code></td>
+							<td><code>enum</code></td>
+							<td><code>yes</code></td>
+							<td><code><code>ftp | http | oauth | rtmp | s3 | videocloud | zencoder</code></code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>The type of credential</code></td>
+						</tr>
+						<tr>
+							<td><code><code>credential_public</code></code></td>
+							<td><code>string</code></td>
+							<td><code>yes</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>The username, public key, or client id, depending on the credential type</code></td>
+						</tr>
+						<tr>
+							<td><code><code>credential_private</code></code></td>
+							<td><code>string</code></td>
+							<td><code>yes</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>The password, private key, or client secret, depending on the credential type</code></td>
+						</tr>
+						<tr>
+							<td><code><code>user_id</code></code></td>
+							<td><code>string</code></td>
+							<td><code>no</code></td>
+							<td><code>&nbsp;</code></td>
+							<td><code>(credentials are available for all account users)</code></td>
+							<td><code>user_id (GUID) for which the credentials are being created</code></td>
+						</tr>
+					</tbody>
+				</table>
+				</section>
+				</article>
+				</td>
+				<td>string</td>
+				<td>yes</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>The password, private key, or client secret, depending on the credential type</td>
+			</tr>
+			<tr>
+				<td><code>user_id</code></td>
+				<td>string</td>
+				<td>no</td>
+				<td>&nbsp;</td>
+				<td>(credentials are available for all account users)</td>
+				<td>user_id (GUID) for which the credentials are being created</td>
+			</tr>
+		</tbody>
+	</table>
+	</section>
+	</article>
+	
+	
