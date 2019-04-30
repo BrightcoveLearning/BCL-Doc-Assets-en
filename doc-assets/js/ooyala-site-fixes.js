@@ -4,6 +4,6 @@ var BCLS = (function (window, document) {
   i,
   iMax;
 
-  media_logistics.setAttribute('style', 'display:none !important;')
-  video_advertising.setAttribute('style', 'display:none !important;')
+  media_logistics.setAttribute('style', 'display:none !important;');
+  video_advertising.setAttribute('style', 'display:none !important;');
 })(window, document);
