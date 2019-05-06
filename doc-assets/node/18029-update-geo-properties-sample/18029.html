@@ -1,85 +1,72 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="limitations">Limitations of this app</h2>
+		<section class="bcls-section">
+		<h2 id="limitations">Limitations of this app</h2>
+		<aside class="bcls-aside bcls-aside--information language-editable">This sample and associated code is provided as a guide for your production development. The code is not certified for production use nor officially supported.</aside>
 
-<ul>
-	<li>The app updates all videos in the account with the same geo settings - it would be fairly simple to add options to select only a portion of the videos by requesting them by folder or some search criteria.</li>
-	<li>There is no exception-handling - for a small account like the one used here, it doesn't matter much - if an API request times out, the app will fail at that point, and you can simply rerun it; for a large account, you would want to add some exception handling - at least keep track of <code>offset</code> variable, which keeps track of how many videos have been processed, so that you could restart the app at that point.</li>
-	<li>For a large account, this would take some time to complete processing; any videos added after the app begins processing will be missed. The app tells you how many videos it processed, however, so you could get another count of videos afterwards to see if any were missed. The result are sorted by creation date ascending, so the missed videos will be the last ones added to account.</li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
-
-<div class="bcls-expander-content">
-<p>To use the CMS API you will need proper credentials.</p>
-
-<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
-<figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
-</figure>
-
-<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
-
-<pre class="line-numbers">
-<code class="language-json">"operations": [
-  "video-cloud/video/all",
-  "video-cloud/playlist/all",
-  "video-cloud/sharing-relationships/all",
-  "video-cloud/notifications/all"
-]</code></pre>
-
-<ul>
-	<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
-	<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
-</ul>
-</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="codepen">Codepen</h2>
-
-<p>The Codepen below contains the working app - you can look at the <strong>Result</strong> tab it to see what it does, and then look at the HTML, CSS, and JavaScript code it uses.</p>
-Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.
-
-<p data-height="800" data-theme-id="34967" data-slug-hash="mpeNNO" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="CMS API: Update Geo Properties" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/mpeNNO/">CMS API: Update Geo Properties</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></section>
-
-<section class="bcls-section">
-<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
-
-<div class="bcls-expander-content">
-<p>Here are some tips to effectively use the above CodePen:</p>
-
-<ul>
-	<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
-	<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
-	<li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
-	<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.</li>
-</ul>
-</div>
-</section>
-
-<section class="bcls-section">
-<h2 id="proxy">Proxy code</h2>
-
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
-</aside>
-
-<p>Below is the code for the proxy used with this sample. You can use it as is if you insert your <code>client_id</code> and <code>client_secret</code> values on lines 22-23, and deploy the file to a server where PHP is running. Or you can use this as a model for building a proxy in whatever language you like. If you are creating a server-side app, you can simply build the logic to get <a href="/node/17925">access tokens</a> into your app.</p>
-
-<aside class="bcls-aside bcls-aside--information">In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) You can download two versions of our proxy code:
-<ul>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/bcls-proxy-for-distribution.php.zip">This is a general version that expects client credentials to be passed with the request</a></li>
-	<li><a href="//learning-services-media.brightcove.com/doc-assets/proxy/doc-samples-proxy.php.zip">This version allows you to save your client credentials in the proxy itself on lines 25-26 (recommended)</a></li>
-</ul>
-</aside>
-</section>
-</article>
-<script src="//learning-services-media.brightcove.com/doc-assets/node/18029-update-geo-properties-sample/update-geo-properties.js"></script>
+		<ul>
+			<li>The app updates all videos in the account with the same geo settings - it would be fairly simple to add options to select only a portion of the videos by requesting them by folder or some search criteria.</li>
+			<li>There is no exception-handling - for a small account like the one used here, it doesn't matter much - if an API request times out, the app will fail at that point, and you can simply rerun it; for a large account, you would want to add some exception handling - at least keep track of <code>offset</code> variable, which keeps track of how many videos have been processed, so that you could restart the app at that point.</li>
+			<li>For a large account, this would take some time to complete processing; any videos added after the app begins processing will be missed. The app tells you how many videos it processed, however, so you could get another count of videos afterwards to see if any were missed. The result are sorted by creation date ascending, so the missed videos will be the last ones added to account.</li>
+		</ul>
+		</section>
+		
+		<section class="bcls-section">
+		<h2 id="getCredentials" class="bcls-expander-head">Get credentials</h2>
+		
+		<div class="bcls-expander-content">
+		<p>To use the CMS API you will need proper credentials.</p>
+		
+		<p>The easiest way to get credentials in most cases is through the Studio Admin API Authentication section (requires admin permissions on your account). See <a href="/node/14056">Managing API Authentication Credentials</a> for details. In most cases, you probably just want to get permissions for all CMS API operation:</p>
+		
+		<figure class="bcls-figure"><img class="bcls-image" alt="CMS API Permissions" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/cms-api/cms-permissions.png" />
+		<figcaption class="bcls-caption--image">CMS API Permissions</figcaption>
+		</figure>
+		
+		<p>If the permissions you need are not available in Studio, or if you prefer to get them directly from the OAuth API, use your choice of the <strong>Get Client Credentials</strong> documents listed below. Whichever option you choose, you will need to ask for the correct operation permissions. The following can be used with cURL or Postman to get all permissions for the CMS API:</p>
+		
+		<pre class="line-numbers">
+		<code class="language-json">"operations": [
+			"video-cloud/video/all",
+			"video-cloud/playlist/all",
+			"video-cloud/sharing-relationships/all",
+			"video-cloud/notifications/all"
+		]</code></pre>
+		
+		<ul>
+			<li><a href="/node/17924">OAuth: Get Client Credentials Using cURL</a></li>
+			<li><a href="/node/17923">OAuth: Get Client Credentials Using Postman</a></li>
+		</ul>
+		</div>
+		</section>
+		
+		<section class="bcls-section">
+		<h2 id="codepen">Codepen</h2>
+		
+		<p>The Codepen below contains the working app - you can look at the <strong>Result</strong> tab it to see what it does, and then look at the HTML, CSS, and JavaScript code it uses.</p>
+		Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.
+		
+		<p data-height="900" data-theme-id="34967" data-slug-hash="mpeNNO" data-default-tab="result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="CMS API: Update Geo Properties" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/mpeNNO/">CMS API: Update Geo Properties</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+		<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></section>
+		
+		<section class="bcls-section">
+		<h2 id="Using_the_CodePen" class="bcls-expander-head">Using the CodePen</h2>
+		
+		<div class="bcls-expander-content">
+		<p>Here are some tips to effectively use the above CodePen:</p>
+		
+		<ul>
+			<li>Toggle the actual display of the player by clicking the <strong>Result</strong> button.</li>
+			<li>Click the <strong>HTML/CSS/JS</strong> buttons to display ONE of the code types.</li>
+			<li>Click <strong>Edit on CodePen</strong> in the upper right corner to fork this CodePen into your own account.</li>
+			<li>Find all the code associated with this sample in this <a href="https://github.com/BrightcoveLearning/18029-update-geo-properties-sample">GitHub repository</a>.</li>
+		</ul>
+		</div>
+		</section>
+		<section class="bcls-section">
+				<h2 id="proxy">Proxy code</h2>
+				
+				<p>In order to build your own version the sample app on this page, you must create and host your own proxy. (The proxies used by Brightcove Learning Services only accept requests from Brightcove domains.) A sample proxy, very similar to the one we use, but without the checks that block requests from non-Brightcove domains, can be found in <a href="https://github.com/BrightcoveLearning/sample-proxy-apps">this GitHub repository</a>. You will also find basic instructions for using it there, and a more elaborate guide to building apps around the proxy in <a href="/node/18132">Using the REST APIs</a>.</p>
+				
+				</section>
+				
+		</article>
