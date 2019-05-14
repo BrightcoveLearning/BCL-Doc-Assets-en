@@ -1,10 +1,8 @@
-function BCLS_player_samples(group_names) {
+function BCLS_landing_page( {
   var samples_wrapper = document.getElementById('samples_wrapper'),
-    buttons_wrapper = document.getElementById('buttons_wrapper'),
     samples = samples_wrapper.querySelectorAll('section.samples-section'),
     sample_groups = {},
     buttons;
-console.log('group_names', group_names);
   /**
    * converts string to title case (all words)
    * @param {string} str string to convert
