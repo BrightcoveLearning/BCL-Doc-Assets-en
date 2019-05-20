@@ -291,43 +291,39 @@
 
 <p><strong>Valid Values:</strong> A URL for an audio file.</p>
 
+<p><strong>Example:</strong></p>
+<pre><code class="language-http">"url": "s3://bucket/destination_media/english_audio.aac"</code></pre>
+
 <p><strong>Compatible Job Types:</strong> All</p>
 
 <p><strong>Description:</strong></p>
 
-<p>Use this along with the <a href="#input_audio_channels">input_audio_channels</a> option to define a custom output audio channel layout or mixdown.</p>
+<p><code>alternate_audio_url</code> allows you to provide alternate audio tracks for a video.</p>
 
-<p>This option has two modes, one for specifying a custom audio channel layout, and another for specifying either a mono or stereo mixdown.</p>
+<p>To use this option, use an input file .</p>
 
-<p>This option can either be an array of valid channel identifiers or an integer. To create a stereo mixdown, set this parameter to <code class="notranslate">2</code>. To create a mono mixdown, set this parameter to <code class="notranslate">1</code>.</p>
-
-<p>Valid audio channel identifiers: "<code class="notranslate">FL</code>", "<code class="notranslate">FR</code>", "<code class="notranslate">FC</code>", "<code class="notranslate">LFE</code>", "<code class="notranslate">BL</code>", "<code class="notranslate">BR</code>", "<code class="notranslate">DL</code>", "<code class="notranslate">DR</code>".</p>
-
-<p>By setting this option to an array of valid channel identifiers, it is possible to create a custom audio channel layout.</p>
-
-<p><strong>Note:</strong> this option takes precedence over <a href="#audio_channels">audio_channels</a>.</p>
 
 <pre class="line-numbers">
 <code class="language-json notranslate">{
-  "input": "s3://zencodertesting/test.mov",
+  "input": "s3://bucket/source_media/video_with_english_audio.mp4",
   "outputs": [
     {
-      "input_audio_channels": {
-        "FL": 1,
-        "FR": 2,
-        "FC": 3,
-        "LFE": 4,
-        "BL": 5,
-        "BR": 6
-      },
-      "output_audio_channels": [
-        "FL",
-        "FR",
-        "FC",
-        "BR",
-        "BL",
-        "LFE"
-      ]
+      "label": "video",
+      "skip_audio": true,
+      "url": "s3://bucket/video.mp4"
+    },
+    {
+      "label": "english_audio",
+      "skip_video": true,
+      "format": "aac",
+      "url": "s3://bucket/destination_media/english_audio.aac"
+    },
+    {
+      "label": "spanish_audio",
+      "alternate_audio_url": "s3://bucket/source_media/spanish_audio.mp4"
+      "skip_video": true,
+      "format": "aac",
+      "url": "s3://bucket/destination_media/spanish_audio.aac"
     }
   ]
 }</code></pre>
