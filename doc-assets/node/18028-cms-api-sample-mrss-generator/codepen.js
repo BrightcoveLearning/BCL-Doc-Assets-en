@@ -259,8 +259,10 @@ var BCLS = ( function (window, document) {
                     var source = processSources(sources);
                     videosArray[callNumber].source = source;
                 } else {
-                    // video has no sources
-                    videosArray[callNumber].source = null;
+                    // video has no sources - remove it
+                    videosArray.splice(callNumber, 1);
+                    // to get next video, call getVideoSources without incrementing callNumber
+                    createRequest('getVideoSources');
                 }
                 callNumber++;
                 if (callNumber < iMax) {
