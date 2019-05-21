@@ -281,4 +281,50 @@
   ]
 }</code></pre>
 </section>
+<section class="bcls-section">
+<h2 id="alternate_audio_url" class="notranslate">alternate_audio_url</h2>
+<code class="notranslate">alternate_audio_url:String</code>
+
+<p><strong>API Versions:</strong> V2</p>
+
+<p><strong>Parent:</strong> <a href="/node/17878#outputs"><code class="notranslate">outputs</code></a></p>
+
+<p><strong>Valid Values:</strong> A URL for an audio file.</p>
+
+<p><strong>Example:</strong></p>
+<pre><code class="language-http">"url": "s3://bucket/destination_media/english_audio.aac"</code></pre>
+
+<p><strong>Compatible Job Types:</strong> All</p>
+
+<p><strong>Description:</strong></p>
+
+<p><code>alternate_audio_url</code> allows you to provide alternate audio tracks for a video.</p>
+
+<p>To use this option, use an input file that contains the primary audio track. Create a video output with <code>skip_audio</code> set to <code>true</code>. Create a second audio output with <code>skip_video</code> set to <code>true</code>. Then create additional audio outputs for the alternate audio tracks, using the <code>alternate_audio_url</code> field to specify the audio file for the track. See the sample code below for a full example.</p>
+
+<pre class="line-numbers">
+<code class="language-json notranslate">{
+  "input": "s3://bucket/source_media/video_with_english_audio.mp4",
+  "outputs": [
+    {
+      "label": "video",
+      "skip_audio": true,
+      "url": "s3://bucket/video.mp4"
+    },
+    {
+      "label": "english_audio",
+      "skip_video": true,
+      "format": "aac",
+      "url": "s3://bucket/destination_media/english_audio.aac"
+    },
+    {
+      "label": "spanish_audio",
+      "alternate_audio_url": "s3://bucket/source_media/spanish_audio.mp4",
+      "skip_video": true,
+      "format": "aac",
+      "url": "s3://bucket/destination_media/spanish_audio.aac"
+    }
+  ]
+}</code></pre>
+</section>
 </article>
