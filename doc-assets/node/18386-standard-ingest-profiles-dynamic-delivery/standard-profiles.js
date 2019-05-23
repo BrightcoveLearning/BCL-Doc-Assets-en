@@ -217,6 +217,7 @@ var BCLSprofiles = (function(window, document, bclsProfiles_cached) {
 
     // build table body
     // audio renditions
+    console.log('audioRenditions', audioRenditions);
     iMax = audioRenditions.length;
     for (i = 0; i < iMax; i++) {
       tr = document.createElement('tr');
