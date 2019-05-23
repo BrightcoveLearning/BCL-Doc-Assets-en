@@ -12,7 +12,7 @@ var BCLS = (function(window, document, renditions) {
     iMax,
     currentId = '',
     newId = '';
-
+console.log('rendition_data', rendition_data);
   /**
    * sort an array of objects based on an object property
    * @param {array} targetArray - array to be sorted
