@@ -45,7 +45,6 @@ var BCLS = (function(window, document) {
   iMax = rendition_data.length;
   for (i = 0; i < iMax; i++) {
     var rendition = rendition_data[i];
-    console.log('rendition', rendition);
     if (rendition.id.indexOf('audio') >= 0) {
       audioRenditions.push(rendition);
     } else if (rendition.id.indexOf('video') >= 0) {
@@ -57,15 +56,13 @@ var BCLS = (function(window, document) {
     }
   }
 
-  iMax = audioRenditions.length;
-for (i = 0; i < iMax; i++) {
-  var rendition = audioRenditions[i];
-  newId = rendition.id;
-  if (!audioFiltered.hasOwnProperty(newId)){
+  sortArray(audioRenditions, 'id');
+  sortArray(videoRenditions, 'id');
+  sortArray(progressiveRenditions, 'id');
 
-  }
-
-}
+  console.log('audioRenditions', audioRenditions);
+  console.log('videoRenditions', videoRenditions);
+  console.log('progressiveRenditions', progressiveRenditions);
 
   audio_renditions.textContent = JSON.stringify(audioRenditions);
   video_renditions.textContent = JSON.stringify(videoRenditions);
