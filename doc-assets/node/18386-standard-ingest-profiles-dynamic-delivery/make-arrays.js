@@ -1,4 +1,5 @@
-var BCLS = (function(window, document, renditions) {
+var BCLS = (function(window, document) {
+  console.log('in make Arrays');
   var audio_renditions = document.getElementById('audio_renditions'),
     video_renditions = document.getElementById('video_renditions'),
     progressive_renditions = document.getElementById('progressive_renditions'),
