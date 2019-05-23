@@ -13,7 +13,6 @@ var BCLS = (function(window, document) {
     iMax,
     currentId = '',
     newId = '';
-console.log('rendition_data', rendition_data);
   /**
    * sort an array of objects based on an object property
    * @param {array} targetArray - array to be sorted
@@ -46,6 +45,7 @@ console.log('rendition_data', rendition_data);
   iMax = rendition_data.length;
   for (i = 0; i < iMax; i++) {
     var rendition = rendition_data[i];
+    console.log('rendition', rendition);
     if (rendition.id.indexOf('audio') >= 0) {
       audioRenditions.push(rendition);
     } else if (rendition.id.indexOf('video') >= 0) {
