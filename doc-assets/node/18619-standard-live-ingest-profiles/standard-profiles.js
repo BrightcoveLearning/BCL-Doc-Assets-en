@@ -452,9 +452,9 @@ var BCLS = (function(window, document, profiles_array_cached) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
             // try {
             //   bclslog('response', httpRequest.responseText);
-            console.log('response', httpRequest.responseText);
+            // console.log('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
-            console.log('tmpArr', tmpArr);
+            // console.log('tmpArr', tmpArr);
             if (tmpArr.hasOwnProperty('error_code')) {
               data.profiles_array = profiles_array_cached;
               console.log('data', data.profiles_array);
@@ -467,6 +467,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
                 }
               }
             }
+            console.log('profiles_array',data.profiles_array )
             buildSummaryTable();
             buildDetailTables();
 
