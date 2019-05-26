@@ -188,57 +188,6 @@
 	</tbody>
 </table>
 
-<h3>Notes</h3>
-
-	<li class="bcls-footnote" id="note1-3"><sup class="once-red"><strong>[1-3]</strong></sup> You shouldn't have to go below 16; 16 is nearly lossless for most files. Around 24 usually looks pretty good. Around 35 looks pretty compressed</li>
-	<li class="bcls-footnote" id="note1-4"><sup class="once-red"><strong>[1-4]</strong></sup> More reference frames result in slightly higher compression quality, but increased decoding complexity. In practice, going above 5 rarely has much benefit. We default to 3 as a good compromise of compression and decoding complexity. Set to "auto" to allow our speed setting to naturally choose this number</li>
-	<li class="bcls-footnote" id="note1-5"><sup class="once-red"><strong>[1-5]</strong></sup> Lower levels are easier to decode, but higher levels offer better compression. For example, the iPhone 3gs only supports the Baseline profile. The Main and High profiles are a definite step up in compression, and work fine for web playback, though be careful with HD High profile video in Flash Player</li>
-	<li class="bcls-footnote" id="note1-6"><sup class="once-red"><strong>[1-6]</strong></sup> Primarily used for device compatibility. For example, the iPhone supports H.264 Level 3, which means that a video’s decoder_bitrate_cap can’t exceed 10,000 kbps. Typically, you should only change this setting if you’re targeting a specific device that requires it.</li>
-	<li class="bcls-footnote" id="note1-7"><sup class="once-red"><strong>[1-7]</strong></sup> B-frames are only supported by H.264 Main or High profile, not Baseline. Using B-frames can increase quality at the same bitrate, but is more demanding on CPUs. This may be problematic on old computers or devices, but generally plays smoothly on modern hardware.Video Cloud defaults to 0 for widest compatibility. We recommend a value of 3 for compression/quality improvements. Values higher than 5 or 6 rarely provide much benefit, and greatly increase encoding time</li>
-	<li class="bcls-footnote" id="note1-8"><sup class="once-red"><strong>[1-8]</strong></sup> For 'dash' outputs, the currently supported profiles are:
-	<ul>
-		<li><code>live</code> - Will set the DASH profile to "<code>urn:mpeg:dash:profile:isoff-live:2011</code>" and use a single <code>SegmentTemplate</code> for each <code>AdaptationSet</code>. For DRM, it will use an 8-byte IV, and for <code>PlayReady</code> will use version 1.1, including a <code>PSSH</code> atom in the media</li>
-		<li><code>hbbtv_1.5</code> - Will set the DASH profile to "<code>urn:hbbtv:dash:profile:isoff-live:2012</code>" and include required attributes for audio and video representations. For DRM, it will use a 16-byte IV, and for <code>PlayReady</code> will use version 1.0, excluding <code>PSSH</code> atoms</li>
-	</ul>
-	</li>
-	<li id="note1-9"><sup><strong>[1-9]</strong></sup> Watermarks must be added at the rendition level - to each rendition that you want watermarked</li>
-</ul>
 </section>
-
-<section class="bcls-section">
-<h2 id="digital_master_fields">Digital master fields</h2>
-
-<p>The <code>digital_master</code> object defines if and how to store a digital master that you can use for retranscoding later. See <a href="/node/18035">Archiving Masters</a> for details.</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Property</th>
-			<th>Type</th>
-			<th>Description</th>
-			<th>Default</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td><code>rendition</code></td>
-			<td>string</td>
-			<td>The rendition to archive - either <code>passthrough</code> to archive the original source video or the <code>reference_id</code> for one of the <a href="#rendition_fields">renditions</a> defined in the profile or <code>none</code> if you do not want to archive a master</td>
-			<td><code>passthrough</code></td>
-		</tr>
-		<tr>
-			<td><code>distribute</code></td>
-			<td>boolean</td>
-			<td>Whether the <code>digital_master</code> should be pushed to the CDN to available for playback</td>
-			<td><code>false</code></td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-
-
-
-
 
 </article>
