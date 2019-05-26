@@ -161,60 +161,6 @@
 			<td><code>video</code> or <code>audio</code></td>
 			<td>none</td>
 		</tr>
-		<tr id="segment_seconds">
-			<td><code>segment_seconds</code></td>
-			<td>integer</td>
-			<td>number of seconds of content to include in segments</td>
-			<td><code>10</code> for HLS, <code>2</code> for DASH</td>
-		</tr>
-		<tr id="skip">
-			<td><code>skip</code></td>
-			<td>object</td>
-			<td>a set of conditions for skipping creation of the rendition see <a href="/node/18040">Conditional Output</a> for details</td>
-			<td><code>null</code></td>
-		</tr>
-		<tr id="skip_video">
-			<td><code>skip_video</code></td>
-			<td>boolean</td>
-			<td>do not include the video stream - use for audio-only renditions</td>
-			<td><code>false</code></td>
-		</tr>
-		<tr id="speed">
-			<td><code>speed</code></td>
-			<td>integer</td>
-			<td>1-5 - a target transcoding speed. Slower transcoding allows for more advanced file compression, while faster transcoding is possible by skipping some advanced compression features</td>
-			<td><code>3</code></td>
-		</tr>
-		<tr id="streaming_delivery_format">
-			<td><code>streaming_delivery_format</code></td>
-			<td>string</td>
-			<td>Sets the format/protocol for an output that will be delivered using a specific streaming configuration, including necessary manifests, directory structures, or other packaging</td>
-			<td>none</td>
-		</tr>
-		<tr id="streaming_delivery_profile">
-			<td><code>streaming_delivery_profile</code></td>
-			<td>string</td>
-			<td>Sets the profile of the streaming delivery format, ensuring options are selected for compatibility with the profile. Typically used for MPEG-DASH renditions. Valid options depend on the selected <code>streaming_delivery_format</code><sup class="once-red"><strong><a href="#note1-8">[1-8]</a></strong></sup></td>
-			<td><code>live</code></td>
-		</tr>
-		<tr id="tuning">
-			<td><code>tuning</code></td>
-			<td>string</td>
-			<td>H264Tuning: <code>film</code>, <code>animation</code>, <code>grain</code>, <code>psnr</code>, <code>ssim</code>, <code>fastdecode</code>, <code>zerolatency</code></td>
-			<td>none</td>
-		</tr>
-		<tr id="type">
-			<td><code>type</code></td>
-			<td>string</td>
-			<td>The only value supported currently is <code>segmented</code> (for HLS)</td>
-			<td>none</td>
-		</tr>
-		<tr id="upscale">
-			<td><code>upscale</code></td>
-			<td>boolean</td>
-			<td>increase the frame size if the source is smaller than the target</td>
-			<td><code>false</code></td>
-		</tr>
 		<tr id="video_bitrate">
 			<td><code>video_bitrate</code></td>
 			<td>integer</td>
@@ -226,12 +172,6 @@
 			<td>string</td>
 			<td>e.g. h264, ts</td>
 			<td>Determined by the format or profile</td>
-		</tr>
-		<tr id="watermarks">
-			<td><code>watermarks</code><sup><strong><a href="#note1-9">[1-9]</a></strong></sup></td>
-			<td>array</td>
-			<td>array of <a href="#watermarkFields"><code>watermark</code></a> objects</td>
-			<td>&nbsp;</td>
 		</tr>
 		<tr id="width">
 			<td><code>width</code></td>
@@ -250,17 +190,6 @@
 
 <h3>Notes</h3>
 
-<ul class="list-none">
-	<li class="bcls-footnote" id="note1-1"><sup class="once-red"><strong>[1-1]</strong></sup> to reproduce the behavior of the old <span class="notranslate">Video Cloud</span> ingest system use a value of 10 - see <a href="/node/18038#hlse">Content Security (DRM and HLSe)</a> for more details</li>
-	<li class="bcls-footnote" id="note1-2"><sup class="once-red"><strong>[1-2]</strong></sup> Higher quality means higher bitrate and vice versa. Possible values:
-	<ol class="integer">
-		<li>Highly compressed. Mediocre visual quality, but small files</li>
-		<li>Acceptable quality</li>
-		<li>Good quality. Better than most web video</li>
-		<li>Great quality. Looks excellent</li>
-		<li>Nearly lossless. Large files. Not recommended unless you plan to encode this output again</li>
-	</ol>
-	</li>
 	<li class="bcls-footnote" id="note1-3"><sup class="once-red"><strong>[1-3]</strong></sup> You shouldn't have to go below 16; 16 is nearly lossless for most files. Around 24 usually looks pretty good. Around 35 looks pretty compressed</li>
 	<li class="bcls-footnote" id="note1-4"><sup class="once-red"><strong>[1-4]</strong></sup> More reference frames result in slightly higher compression quality, but increased decoding complexity. In practice, going above 5 rarely has much benefit. We default to 3 as a good compromise of compression and decoding complexity. Set to "auto" to allow our speed setting to naturally choose this number</li>
 	<li class="bcls-footnote" id="note1-5"><sup class="once-red"><strong>[1-5]</strong></sup> Lower levels are easier to decode, but higher levels offer better compression. For example, the iPhone 3gs only supports the Baseline profile. The Main and High profiles are a definite step up in compression, and work fine for web playback, though be careful with HD High profile video in Flash Player</li>
