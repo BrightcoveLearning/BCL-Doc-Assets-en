@@ -453,7 +453,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
             // try {
             //   bclslog('response', httpRequest.responseText);
             // console.log('response', httpRequest.responseText);
-            tmpArr = JSON.parse(JSON.stringify(httpRequest.responseText));
+            tmpArr = JSON.parse(httpRequest.responseText);
             // console.log('tmpArr', tmpArr);
             if (tmpArr.hasOwnProperty('error_code')) {
               data.profiles_array = profiles_array_cached;
