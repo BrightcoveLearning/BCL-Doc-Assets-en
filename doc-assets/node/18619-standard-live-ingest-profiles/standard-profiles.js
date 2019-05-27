@@ -459,15 +459,13 @@ var BCLS = (function(window, document, profiles_array_cached) {
               data.profiles_array = profiles_array_cached;
               console.log('data', data.profiles_array);
             } else {
-              i = tmpArr.length;
+              iMax = tmpArr.length;
               data.profiles_array = [];
-              while (i > 0) {
-                i--;
-                if (!tmpArr[i].renditions || tmpArr[i].renditions.length === 0 || !tmpArr[i].renditions[0].live_stream || tmpArr[i].renditions[0].live_stream === false) {
-                  tmpArr.splice(i, 1);
+              for (i = 0; i < iMax; i++) {
+                if (tmpArr[i].renditions && tmpArr[i].renditions.length && 0 && tmpArr[i].renditions[0].live_stream && tmpArr[i].renditions[0].live_stream === true) {
+                  data.profiles_array.push(tmpArr[i]);
                 }
               }
-              data.profiles_array = tmpArr;
             }
             console.log('profiles_array',data.profiles_array );
             buildSummaryTable();
