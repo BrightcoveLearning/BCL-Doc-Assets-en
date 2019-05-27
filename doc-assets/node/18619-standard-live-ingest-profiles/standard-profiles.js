@@ -3,6 +3,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
   var mainSection = document.querySelector('.bcls-article'),
   data = {},
     navLabel = [];
+
   /**
    * determines whether specified item is in an array
    *
@@ -490,10 +491,10 @@ var BCLS = (function(window, document, profiles_array_cached) {
     // open and send request
     httpRequest.send(JSON.stringify(options));
   }
-  getProfileData();
-  // data.profiles_array = profiles_array_cached;
-  // buildSummaryTable();
-  // buildDetailTables();
+  // getProfileData();
+  data.profiles_array = profiles_array_cached;
+  buildSummaryTable();
+  buildDetailTables();
 
   // BCLSmain.createInPageNav();
 })(window, document, profiles_array_cached);
