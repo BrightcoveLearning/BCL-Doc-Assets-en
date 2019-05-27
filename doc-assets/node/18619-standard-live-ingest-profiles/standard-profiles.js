@@ -454,19 +454,20 @@ var BCLS = (function(window, document, profiles_array_cached) {
             //   bclslog('response', httpRequest.responseText);
             // console.log('response', httpRequest.responseText);
             tmpArr = httpRequest.responseText;
-            console.log('response', httpRequest.responseText);
             // console.log('tmpArr', tmpArr);
             if (tmpArr.hasOwnProperty('error_code')) {
               data.profiles_array = profiles_array_cached;
               console.log('data', data.profiles_array);
             } else {
-              iMax = tmpArr.length;
+              i = tmpArr.length;
               data.profiles_array = [];
-              for (i = 0; i < iMax; i += 1) {
-                if (tmpArr.renditions.length > 0 && tmpArr[i].renditions[0].live_stream && tmpArr[i].renditions[0].live_stream === true) {
-                  data.profiles_array.push(tmpArr[i]);
+              while (i > 0) {
+                i--;
+                if (!tmpArr[i].renditions || tmpArr[i].renditions.length === 0 || !tmpArr[i].renditions[0].live_stream || tmpArr[i].renditions[0].live_stream === false) {
+                  tmpArr.splice(i, 1);
                 }
               }
+              data.profiles_array = tmpArr;
             }
             console.log('profiles_array',data.profiles_array );
             buildSummaryTable();
