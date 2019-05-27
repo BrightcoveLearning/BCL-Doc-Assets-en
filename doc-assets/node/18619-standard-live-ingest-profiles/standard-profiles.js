@@ -469,7 +469,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
                 }
               }
             }
-            console.log('profiles_array',data.profiles_array )
+            console.log('profiles_array',data.profiles_array );
             buildSummaryTable();
             buildDetailTables();
 
