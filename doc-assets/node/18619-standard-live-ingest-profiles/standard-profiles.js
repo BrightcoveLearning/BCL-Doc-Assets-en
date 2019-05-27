@@ -442,7 +442,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
       proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
       i,
       iMax,
-      tmpArr;
+      tmpArr = [];
 
     options.url = 'https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles';
     function getResponse() {
