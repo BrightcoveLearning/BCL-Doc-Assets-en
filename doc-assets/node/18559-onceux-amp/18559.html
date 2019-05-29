@@ -1,0 +1,182 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<section class="bcls-section">
+<aside class="bcls-aside bcls-aside--warning">This document details a special case of using AMP with Brightcove Player and Once UX. For an introduction to using AMP see either:
+<ul>
+	<li><a href="/node/18160">AMP Using a Video Cloud Video</a></li>
+	<li><a href="/node/18555">AMP Using an External (non-Video Cloud) Video</a></li>
+</ul>
+</aside>
+
+<h2 id="Overview">Overview</h2>
+
+<p>This document details the steps needed to use Once UX technology (server-side ad insertion) with AMP and Brightcove Player (non-Video Cloud customer version, although if you are a Video Cloud customer the steps are the same). The broad steps are listed here, then detailed in the rest of the document:</p>
+
+<ol>
+	<li>Configure your Once UX implementation. You will need at least a <code>metadataUri</code>. For details on Once UX see the <a href="/node/17776">Brightcove Once UX Implementation Guide</a>.</li>
+	<li>Create the JavaScript needed to correctly play the Once UX asset using a custom Brightcove Player plugin.</li>
+	<li>Add the Once UX plugin and the custom plugin to the player configuration using Studio.</li>
+	<li>Use the configured player in an AMP page.</li>
+</ol>
+</section>
+
+<h2 id="Sample">Sample</h2>
+
+<p>The following is a sample AMP HTML page that uses Brightcove Player to display a Once UX asset. The player functions normally, so the HTML is the interesting part of this sample. The code is examined later in this document.</p>
+
+<p data-height="412" data-theme-id="dark" data-slug-hash="oEVVNx" data-default-tab="html,result" data-user="rcrooks1969" data-embed-version="2" data-pen-title="AMP-Brightcove Player-OnceUX" class="codepen">See the Pen <a href="https://codepen.io/team/rcrooks1969/pen/oEVVNx/">AMP-Brightcove Player-OnceUX</a> by Brightcove Learning Services (<a href="https://codepen.io/rcrooks1969">@rcrooks1969</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<aside class="bcls-aside bcls-aside--warning">Note that because of the way AMP works, you must carefully consider its limitations before use. For example:
+<ul>
+	<li>AMP has very strict rules on what HTML can and cannot be used on a page. Details on this can be viewed in the <a href="https://www.ampproject.org/docs/reference/spec">AMP HTML Specification</a>.</li>
+	<li>Brightcove Analytics will not correctly report the referring page for AMP pages - instead the <code>referrer_domain</code> will be blank, and <code>source_type</code> will be recorded as <code>direct</code>.</li>
+	<li>Not all attributes used with Brightcove Player's advanced page implementation are valid with <code>amp-brightcove</code>.</li>
+</ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Plugin_code_examination">Plugin code examination</h2>
+
+<p>The way AMP functions is that the <code>amp-brightcove</code> component creates an iframe implementation of the Brightcove Player. In the <code>amp-brightcove</code> component you can pass a custom attribute which will contain the value for the Once UX asset. The plugin reads and uses the value with the Once UX plugin. In the URL for the iframe will be the custom attribute, as shown here (the URL shown is NOT a Once UX metadataUri, for brevity's sake):</p>
+
+<pre class="line-numbers">
+      <code class="language-html">&lt;iframe frameborder="0" allowfullscreen="true" src="https://players.brightcove.net/3676484087001/ByrhJWAPf_default/index.html?<span class="bcls-highlight">videoUrl=%2F%2Fsolutions.brightcove.com%2Fbcls%2Fvideos%2Fcalm-day-oregon-coast.mp4"</span>; class="i-amphtml-fill-content" kwframeid="1"&gt;&lt;/iframe&gt;</code></pre>
+
+<p>If you scroll over in the iframe code, you will see the query string shown here:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="AMP iframe source" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/AMP/amp-url.png" /></figure>
+
+<p>Notice that the query string name is <code>videoUrl</code>. Also note that the URL has been URL encoded. Both of these issues will reflected in the plugin code, shown here:</p>
+
+<ul>
+	<li>Lines 24-35: A helper function that finds the value associated with a query string, passed to the function as a parameter.</li>
+	<li>Line 7: Retrieve the value of the <code>videoUrl</code> query string using the helper function.</li>
+	<li>Line 9: Use JavaScript's <code>decodeURIComponent()</code> method to get a valid URL for the video.</li>
+	<li>Lines 11-13: Creates an object for use when calling the Once UX plugin.</li>
+	<li>Line 15: Calls the Once UX plugin using the <code>options</code> object.</li>
+</ul>
+
+<pre class="line-numbers">
+<code class="language-javascript">videojs.registerPlugin('lift', function () {
+  var myPlayer = this,
+    options = {},
+    encodedVideoQueryParam,
+    decodedVideoQueryParam;
+  // Retrieve the query string from Brightcove Player src attribute in the iframe
+  encodedVideoQueryParam = getQuerystring('videoUrl');
+  // Remove the URLenceded formatting
+  decodedVideoQueryParam = decodeURIComponent(encodedVideoQueryParam);
+  // Create an options object to pass to the Once UX plugin
+  options = {
+    "metadataUri": decodedVideoQueryParam
+  };
+  // Call the Once UX plugin passing the options object
+  myPlayer.onceux(options);
+
+  // Helper function to get value from specified query parameter
+  /*
+   * usage: foo = getQuerystring("bctid", null);
+   * foo will be equal to value of query param bctid
+   * note that the default_ parameter is what you will get back
+   * if the key isnâ€™t found
+   */
+  function getQuerystring(key, default_) {
+    var regex, qs;
+    if (default_ == null) default_ = "";
+    key = key.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    regex = new RegExp("[\\?&amp;]" + key + "=([^&amp;#]*)");
+    qs = regex.exec(window.location.href);
+    if (qs === null) {
+      return default_;
+    } else {
+      return qs[1];
+    }
+  }
+});</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Configure_the_player">Configure the player</h2>
+
+<p>You need to add the Once UX plugin and the custom plugin described in the previous section to the player. Note that for the Once UX plugin you will just add the URLs to the JavaScript and CSS and NOT specify the plugin name, as you do that in the plugin. For the custom plugin, you will specify the JavaScript URL (no CSS needed), and the name defined in the plugin code, in this instance <code>lift</code>.</p>
+
+<p>The following screenshot shows the configuration done in Studio:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="AMP iframe source" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/AMP/onceux-configuration.png" /></figure>
+
+<p>The <code>lift</code> plugin was added as a plugin, of course. The JavaScript file containing the custom plugin was added using the <strong>Add a File</strong> button.</p>
+
+<p>This screenshot shows the player configuration as displayed by looking at the <strong>config.json</strong> of the player:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="AMP iframe source" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/AMP/onceux-config-json.png" /></figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="HTML_page_code_examination">HTML page code examination</h2>
+
+<p>The HTML page code from the CodePen sample above is shown below (plugin code is detailed in the next section). A complete explanation of the code is provided by AMP in the documents linked to above. In the following list are a few tricks/traps to be aware of:</p>
+
+<ul>
+	<li>Line 14: You can add a single <code>style</code> tag, but it must include the <code>amp-custom</code> attribute.</li>
+	<li>Line 26: DO NOT beautify the code. The boilerplate CSS is needed as supplied by AMP.</li>
+	<li>Line 42: The URL for the Once UX <code>metadataUri</code>. Remember that since the name will be retrieved from an iframe's <code>src</code> URL, the name will be <code>videoUrl</code>.</li>
+	<li>Line 44: The <code>width</code> and <code>height</code> attributes determine the aspect ratio of the player embedded in responsive layouts.</li>
+</ul>
+
+<pre class="line-numbers" data-start="1">
+<code class="language-html">&lt;!--
+  ## Introduction
+
+  The `amp-brightcove` component allows embedding a Brightcove
+  [Video Cloud](https://www.brightcove.com/en/online-video-platform) or
+  [Perform](https://www.brightcove.com/en/perform) player.
+--&gt;
+&lt;!-- --&gt;
+&lt;!doctype html&gt;
+&lt;html ⚡&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;amp-brightcove&lt;/title&gt;
+  &lt;style amp-custom&gt;
+    .player-container {
+      width: 640px;
+      height: 360px;
+    }
+  &lt;/style&gt;
+  &lt;script async src="https://cdn.ampproject.org/v0.js"&gt;&lt;/script&gt;
+  &lt;!-- ## Setup --&gt;
+  &lt;!-- Import the Brightcove component in the header. --&gt;
+  &lt;script async custom-element="amp-brightcove" src="https://cdn.ampproject.org/v0/amp-brightcove-0.1.js"&gt;&lt;/script&gt;
+  &lt;meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"&gt;
+  &lt;link rel="canonical" href="https://ampbyexample.com/components/amp-brightcove/"&gt;
+  &lt;style amp-boilerplate&gt;body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}&lt;/style&gt;&lt;noscript&gt;&lt;style amp-boilerplate&gt;body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}&lt;/style&gt;&lt;/noscript&gt;
+
+
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ## Basic Usage --&gt;
+  &lt;!--
+    A responsive brightcove video. The required data is `data-account` and `data-video-id`. Other
+    supported parameters are `data-player-id`, `data-embed` and `data-playlist-id`.
+  --&gt;
+  &lt;div class="player-container"&gt;
+    &lt;amp-brightcove
+      data-account="3676484087001"
+      data-player-id="S1VV8j3Zdf"
+      layout="responsive"
+      data-param-video-url="https://onceux.unicornmedia.com/now/ads/vmap/od/auto/c8860df3-6695-44f7-a405-ed3634148b85/2a501e22-792f-4348-ad6c-3e48020b199a/725cba9b-a821-47af-ba5b-677d115c4dcf/content.once"
+      data-video-id
+      width="16" height="9"&gt;
+    &lt;/amp-brightcove&gt;
+  &lt;/div&gt;
+
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>You have completed the steps necessary to use the Once UX plugin with AMP and Brightcove Player.</p>
+</section>
+</article>
