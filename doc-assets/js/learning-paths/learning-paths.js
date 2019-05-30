@@ -3,7 +3,8 @@ var BCLS_learning_paths = (function (window, document) {
     learning_path_wrapper document.createElement('nav'),
     learning_path_item,
     learning_path_hr,
-    thisPath = window.location.pathname;
+    thisPath = window.location.pathname,
+    body = document.querySelector('body');
 
   learning_path_wrapper.classList.add('learning-path-wrapper');
     
@@ -16,7 +17,21 @@ var BCLS_learning_paths = (function (window, document) {
       item = learning_path[i];
       learning_path_item = document.createElement('div');
       learning_path_item.classList.add('learning-path-item');
+      learning_path_wrapper.appendChild(learning_path_item);
+      if (thisPath === item.path) {
+        learning_path_item.classList.add('selected');
+      }
+      a = document.createElement('a');
+      a.setAttribute('href', '/node/' + item.node )
+      a.textContent = item.title;
+      learning_path_item.appendChild(a);
+      if (i < (iMax - 1)) {
+        learning_path_hr = document.createElement('hr');
+        hr.classList.add('learning-path');
+        learning_path_item.appendChild(hr);
+      }
     }
+    body.appendChild(learning_path_wrapper);
   }
 
   thisWindow.addEventListener('resize', function () {
