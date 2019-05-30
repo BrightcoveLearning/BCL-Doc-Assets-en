@@ -1,6 +1,6 @@
 var BCLS_learning_paths = (function (window, document) {
   var thisWindow = window,
-    learning_path_wrapper document.createElement('nav'),
+    learning_path_wrapper = document.createElement('nav'),
     learning_path_item,
     learning_path_hr,
     thisPath = window.location.pathname,
@@ -10,10 +10,10 @@ var BCLS_learning_paths = (function (window, document) {
     
   if (learning_path) {
     var i,
-      Imax = learning_path.length,
+      iMax = learning_path.length,
       item,
       a;
-    for (i = 0; i < Imax; i++) {
+    for (i = 0; i < iMax; i++) {
       item = learning_path[i];
       learning_path_item = document.createElement('div');
       learning_path_item.classList.add('learning-path-item');
@@ -22,7 +22,7 @@ var BCLS_learning_paths = (function (window, document) {
         learning_path_item.classList.add('selected');
       }
       a = document.createElement('a');
-      a.setAttribute('href', '/node/' + item.node )
+      a.setAttribute('href', '/node/' + item.node );
       a.textContent = item.title;
       learning_path_item.appendChild(a);
       if (i < (iMax - 1)) {
@@ -38,7 +38,7 @@ var BCLS_learning_paths = (function (window, document) {
     if (window.innerWidth < 1200) {
       learning_path_wrapper.setAttribute('style', 'visibility:hidden');
     } else {
-      learning_path_wrapper.removeAttribute('style')
+      learning_path_wrapper.removeAttribute('style');
     }
   });
 })(window, document);
