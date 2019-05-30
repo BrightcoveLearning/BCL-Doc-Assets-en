@@ -9,6 +9,7 @@ var BCLS_learning_paths = (function (window, document) {
   if (learning_path) {
     var i,
       Imax = learning_path.length;
+    learning_path_item = document.createElement('div')
   }
 
   thisWindow.addEventListener('resize', function () {
