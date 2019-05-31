@@ -27,7 +27,7 @@ var BCLS_feedback = ( function (window, document) {
 
   iframe.setAttribute('id', 'CSAT');
   iframe.setAttribute('src', 'https://learning-services-media.brightcove.com/doc-assets/general/surveylink.html');
-  iframe.setAttribute('style', 'border:none; position:fixed; bottom: 0;left: 20px;height:110px;');
+  iframe.setAttribute('style', 'border:none; position:fixed; bottom: 0;right: 20px;height:110px;');
   surveyDiv.setAttribute('id', 'surveyDiv');
   surveyDiv.setAttribute('style', 'text-align:left; position:relative;');
   surveyDiv.appendChild(iframe);
@@ -69,7 +69,6 @@ if (thirdRowItems) {
   });
 
   window.addEventListener('resize', function() {
-    console.log('window size', window.innerWidth);
     if (window.innerWidth < 1200) {
       surveyDiv.setAttribute('style', 'visibility:hidden');
     } else {
