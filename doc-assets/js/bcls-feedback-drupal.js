@@ -2,6 +2,7 @@ var BCLS_feedback = ( function (window, document) {
   var cookiesArray = document.cookie.split(";"),
     iframe = document.createElement('iframe'),
     surveyDiv = document.createElement('div'),
+    body = document.querySelector('body'),
     feedbackParams = {},
     i,
     tmpArray = [],
@@ -31,7 +32,7 @@ var BCLS_feedback = ( function (window, document) {
   surveyDiv.setAttribute('id', 'surveyDiv');
   surveyDiv.setAttribute('style', 'text-align:left; position:relative;');
   surveyDiv.appendChild(iframe);
-  contentBlock.appendChild(surveyDiv);
+  body.appendChild(surveyDiv);
   iframeEl = document.querySelector('#CSAT');
   surveyWin = iframeEl.contentWindow;
 
