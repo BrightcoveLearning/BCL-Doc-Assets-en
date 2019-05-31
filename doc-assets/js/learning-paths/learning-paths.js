@@ -18,6 +18,8 @@ var BCLS_learning_paths = (function (window, document) {
       learning_path_item = document.createElement('div');
       learning_path_item.classList.add('learning-path-item');
       learning_path_wrapper.appendChild(learning_path_item);
+      console.log('thisPath', thisPath);
+      console.log('item path', item.path);
       if (thisPath === item.path) {
         learning_path_item.classList.add('selected');
       }
