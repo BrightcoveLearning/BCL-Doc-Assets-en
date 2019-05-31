@@ -28,7 +28,7 @@ var BCLS_learning_paths = (function (window, document) {
       if (i < (iMax - 1)) {
         learning_path_hr = document.createElement('hr');
         learning_path_hr.classList.add('learning-path');
-        learning_path_item.appendChild(learning_path_hr);
+        learning_path_wrapper.appendChild(learning_path_hr);
       }
     }
     body.appendChild(learning_path_wrapper);
