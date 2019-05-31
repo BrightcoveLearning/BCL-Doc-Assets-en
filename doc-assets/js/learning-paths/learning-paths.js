@@ -13,7 +13,11 @@ var BCLS_learning_paths = (function (window, document) {
     var i,
       iMax = learning_path.length,
       item,
+      h5,
       a;
+      h5 = document.createElement('h5');
+      h5.textContent = 'Learning Path';
+      learning_path_wrapper.appendChild('h5');
     for (i = 0; i < iMax; i++) {
       item = learning_path[i];
       learning_path_item = document.createElement('div');
