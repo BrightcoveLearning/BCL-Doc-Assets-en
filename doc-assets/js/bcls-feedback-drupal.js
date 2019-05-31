@@ -81,6 +81,6 @@ if (thirdRowItems) {
     if (window.innerWidth < 1200) {
       surveyDiv.setAttribute('style', 'visibility:hidden');
     }
-  })
+  });
 
 })(window, document);

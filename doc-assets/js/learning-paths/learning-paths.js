@@ -38,7 +38,7 @@ var BCLS_learning_paths = (function (window, document) {
   }
 
   thisWindow.addEventListener('resize', function () {
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1300) {
       learning_path_wrapper.setAttribute('style', 'visibility:hidden');
     } else {
       learning_path_wrapper.removeAttribute('style');
