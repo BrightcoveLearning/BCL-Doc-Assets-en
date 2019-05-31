@@ -3,7 +3,9 @@ var BCLS_learning_paths = (function (window, document) {
     learning_path_wrapper = document.createElement('nav'),
     learning_path_item,
     span,
-    thisPath = window.location.pathname,
+    shortLink = document.querySelector('link[rel="shortlink"]'),
+    nodePath = shortLink.getAttribute('href'),
+    thisNode = nodePath.substring(b.lastIndexOf('/') + 1),
     body = document.querySelector('body'),
     surveyDiv = document.getElementById('surveyDiv');
 
@@ -25,13 +27,15 @@ var BCLS_learning_paths = (function (window, document) {
       learning_path_wrapper.appendChild(learning_path_item);
       console.log('thisPath', thisPath);
       console.log('item path', item.path);
-      if (thisPath === item.path) {
+      if (thisNode === item.node) {
         learning_path_item.classList.add('selected');
+        learning_path_item.textContent = item.title;
+      } else {
+        a = document.createElement('a');
+        a.setAttribute('href', '/node/' + item.node );
+        a.textContent = item.title;
+        learning_path_item.appendChild(a);
       }
-      a = document.createElement('a');
-      a.setAttribute('href', '/node/' + item.node );
-      a.textContent = item.title;
-      learning_path_item.appendChild(a);
       if (i < (iMax - 1)) {
         span = document.createElement('span');
         span.classList.add('learning-path');
