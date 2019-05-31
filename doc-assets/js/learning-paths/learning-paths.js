@@ -5,7 +5,7 @@ var BCLS_learning_paths = (function (window, document) {
     span,
     thisPath = window.location.pathname,
     body = document.querySelector('body'),
-    surveyDiv - document.getElementById('surveyDiv');
+    surveyDiv = document.getElementById('surveyDiv');
 
   learning_path_wrapper.classList.add('learning-path-wrapper');
     
