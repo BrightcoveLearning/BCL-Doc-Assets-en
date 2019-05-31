@@ -70,12 +70,12 @@ if (thirdRowItems) {
   });
 
   window.addEventListener('resize', function() {
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1300) {
       surveyDiv.setAttribute('style', 'visibility:hidden');
     } else {
-      surveyDiv.removeAttribute('style')
+      surveyDiv.removeAttribute('style');
     }
-  })
+  });
 
   window.addEventListener('load', function() {
     console.log('window size', window.innerWidth);
