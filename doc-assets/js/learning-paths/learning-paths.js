@@ -5,7 +5,7 @@ var BCLS_learning_paths = (function (window, document) {
     span,
     shortLink = document.querySelector('link[rel="shortlink"]'),
     nodePath = shortLink.getAttribute('href'),
-    thisNode = nodePath.substring(b.lastIndexOf('/') + 1),
+    thisNode = nodePath.substring(nodePath.lastIndexOf('/') + 1),
     body = document.querySelector('body'),
     surveyDiv = document.getElementById('surveyDiv');
 
