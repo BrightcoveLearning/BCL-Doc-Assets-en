@@ -42,6 +42,7 @@ var BCLS_learning_paths = (function (window, document) {
       learning_path_wrapper.setAttribute('style', 'visibility:hidden');
     } else {
       learning_path_wrapper.removeAttribute('style');
+      surveyDiv.setAttribute('style', 'visibility:hidden');
     }
   });
 })(window, document);
