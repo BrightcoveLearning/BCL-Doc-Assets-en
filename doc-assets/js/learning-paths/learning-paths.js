@@ -17,7 +17,7 @@ var BCLS_learning_paths = (function (window, document) {
       learning_path_wrapper.classList.add('learning-path-wrapper');
       h5 = document.createElement('h5');
       h5.textContent = 'Learning Path';
-      learning_path_wrapper.appendChild('h5');
+      learning_path_wrapper.appendChild(h5);
     for (i = 0; i < iMax; i++) {
       item = learning_path[i];
       learning_path_item = document.createElement('div');
