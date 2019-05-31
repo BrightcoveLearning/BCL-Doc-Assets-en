@@ -78,7 +78,7 @@ if (thirdRowItems) {
 
   window.addEventListener('load', function() {
     console.log('window size', window.innerWidth);
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1300) {
       surveyDiv.setAttribute('style', 'visibility:hidden');
     }
   });
