@@ -2,7 +2,7 @@ var BCLS_learning_paths = (function (window, document) {
   var thisWindow = window,
     learning_path_wrapper = document.createElement('nav'),
     learning_path_item,
-    learning_path_hr,
+    span,
     thisPath = window.location.pathname,
     body = document.querySelector('body');
 
@@ -26,9 +26,9 @@ var BCLS_learning_paths = (function (window, document) {
       a.textContent = item.title;
       learning_path_item.appendChild(a);
       if (i < (iMax - 1)) {
-        learning_path_hr = document.createElement('hr');
-        learning_path_hr.classList.add('learning-path');
-        learning_path_wrapper.appendChild(learning_path_hr);
+        span = document.createElement('span');
+        span.classList.add('learning-path');
+        learning_path_wrapper.appendChild(span);
       }
     }
     body.appendChild(learning_path_wrapper);
