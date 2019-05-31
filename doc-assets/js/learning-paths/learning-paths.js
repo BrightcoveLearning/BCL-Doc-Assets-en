@@ -4,7 +4,8 @@ var BCLS_learning_paths = (function (window, document) {
     learning_path_item,
     span,
     thisPath = window.location.pathname,
-    body = document.querySelector('body');
+    body = document.querySelector('body'),
+    surveyDiv - document.getElementById('surveyDiv');
 
   learning_path_wrapper.classList.add('learning-path-wrapper');
     
@@ -42,7 +43,9 @@ var BCLS_learning_paths = (function (window, document) {
       learning_path_wrapper.setAttribute('style', 'visibility:hidden');
     } else {
       learning_path_wrapper.removeAttribute('style');
-      surveyDiv.setAttribute('style', 'visibility:hidden');
+      if (surveyDiv) {
+        surveyDiv.setAttribute('style', 'visibility:hidden');
+      }
     }
   });
 })(window, document);
