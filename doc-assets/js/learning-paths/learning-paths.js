@@ -30,6 +30,7 @@ var BCLS_learning_paths = (function (window, document) {
       if (i < (iMax - 1)) {
         span = document.createElement('span');
         span.classList.add('learning-path');
+        span.textContent = '|'
         learning_path_wrapper.appendChild(span);
       }
     }
