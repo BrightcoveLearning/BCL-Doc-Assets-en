@@ -1,5 +1,73 @@
 <article class="bcls-article">
 <section id="Current_release" class="section">
+<h2>Version 6.8.1</h2>
+
+<h3>31 May 2019</h3>
+
+<p>ExoPlayer2 Changes:</p>
+
+<ul>
+	<li>
+	<p>ExoPlayer2 has been downgraded to version 2.9.3 due to an issue with HLS Multiple Audio Tracks in version 2.9.6.</p>
+	</li>
+</ul>
+
+<p>Offline Playback Changes:</p>
+
+<ul>
+	<li>
+	  <p>Add Playback Authentication Service (PAS) support.</p>
+	</li>
+	<li>
+	  <p>The following methods are added to the <code>com.brightcove.player.edge.AbstractOfflineCatalog</code>:</p>
+		<ul>
+			<li>
+				<code>findOfflineVideoById(String, @NonNull HttpRequestConfig): Video</code>
+			</li>
+			<li>
+				<code>findOfflineVideoById(String, @NonNull HttpRequestConfig, @NonNull OfflineCallback&lt;Video&gt;): void</code>
+			</li>
+			<li>
+				<code>requestPurchaseLicense(@NonNull Video, @NonNull EventListener, @NonNull HttpRequestConfig): void</code>
+			</li>
+			<li>
+				<code>requestRentalLicense(@NonNull Video, @NonNull Date, long, @NonNull EventListener, @NonNull HttpRequestConfig): void</code>
+			</li>
+		</ul>
+	</li>
+	<li>
+	  <p>The following method is removed from the <code>com.brightcove.player.edge.AbstractOfflineCatalog</code></p>
+		<ul>
+			<li>
+				<code>renewLicense(@NonNull Video, @NonNull EventListener): void</code>
+			</li>
+		</ul>
+	</li>
+	<li>
+	  <p>Fixes an issue loading poster images for downloaded videos. When available, a local image will be loaded.</p>
+	</li>
+</ul>
+
+<p>FreeWheel Plugin Changes:</p>
+
+<ul>
+	<li>
+	<p>Adds support for live content with pre-roll client-side ads</p>
+	</li>
+</ul>
+
+<p>SSAI Plugin Changes:</p>
+
+<ul>
+	<li>
+	<p>Fixes an issue where a content source could be loaded directly from the <code>src</code> attribute in the Playback API response, instead of from the <code>contenturi</code> attribute in the VMAP.</p>
+	</li>
+</ul>
+</section>
+
+<section class="section">
+<h2 id="Previous_releases"><strong>Previous releases</strong></h2>
+
 <h2>Version 6.8.0</h2>
 
 <h3>1 May 2019</h3>
@@ -8,15 +76,13 @@
 
 <ul>
 	<li>
-	<p>The Android Minimum SDK Version supported by the Brightcove Native SDK
-for Android is now 19.</p>
+	<p>The Android Minimum SDK Version supported by the Brightcove Native SDK for Android is now 19.</p>
 	</li>
-  <li>
-	  <p>The Brightcove Native SDK for Android is now Java 8 compliant. Please
-note that Android apps developed using this version of the Android SDK may
-require the following directive added to the build.gradle file to ensure
-bytecode compatibility:</p>
-<pre class="line-numbers"><code class="language-java">compileOptions{
+	<li>
+	<p>The Brightcove Native SDK for Android is now Java 8 compliant. Please note that Android apps developed using this version of the Android SDK may require the following directive added to the build.gradle file to ensure bytecode compatibility:</p>
+
+	<pre class="line-numbers">
+<code class="language-java">compileOptions{
 targetCompatibility JavaVersion.VERSION_1_8
 sourceCompatibility JavaVersion.VERSION_1_8
 }</code></pre>
@@ -26,91 +92,71 @@ sourceCompatibility JavaVersion.VERSION_1_8
 <p>ExoPlayer2 Changes:</p>
 
 <ul>
-  <li>
-	  <p>ExoPlayer2 has been upgraded to version 2.9.6</p>
+	<li>
+	<p>ExoPlayer2 has been upgraded to version 2.9.6</p>
 	</li>
-  <li>
-	  <p>Please note that this upgrade has the following API changes:</p>
+	<li>
+	<p>Please note that this upgrade has the following API changes:</p>
 	</li>
-  <li>
-	  <p><strong>Breaking Change</strong> Removed:<code>constructor TrackSelectorHelper(@NonNull
-ExoPlayer player, @NonNull MappingTrackSelector trackSelector)</code></p>
-  <p>
-    Use <code>constructor TrackSelectorHelper(@NonNull ExoPlayer player, @NonNull
-    DefaultTrackSelector trackSelector)</code>
-  </p>
+	<li>
+	<p><strong>Breaking Change</strong> Removed:<code>constructor TrackSelectorHelper(@NonNull ExoPlayer player, @NonNull MappingTrackSelector trackSelector)</code></p>
+
+	<p>Use <code>constructor TrackSelectorHelper(@NonNull ExoPlayer player, @NonNull DefaultTrackSelector trackSelector)</code></p>
 	</li>
-  <li>
-	  <p><strong>Breaking Change</strong> Removed: <code>setTrackSelector(@NonNull
-MappingTrackSelector trackSelector)</code></p>
-  <p>
-    Use <code>setTrackSelector(@NonNull
-    DefaultTrackSelector trackSelector)</code>
-  </p>
+	<li>
+	<p><strong>Breaking Change</strong> Removed: <code>setTrackSelector(@NonNull MappingTrackSelector trackSelector)</code></p>
+
+	<p>Use <code>setTrackSelector(@NonNull DefaultTrackSelector trackSelector)</code></p>
 	</li>
-  <li>
-	  <p>Removed <code>getTrackSelector(): MappingTrackSelector</code>
-</p>
-    <p>
-    Use <code>getTrackSelector(): DefaultTrackSelector</code>
-    </p>
+	<li>
+	<p>Removed <code>getTrackSelector(): MappingTrackSelector</code></p>
+
+	<p>Use <code>getTrackSelector(): DefaultTrackSelector</code></p>
 	</li>
 </ul>
 
 <p>FreeWheel Plugin Changes:</p>
 
 <ul>
-  <li>
-	  <p>The FreeWheel plugin has been updated to support FreeWheel AdManager
-version 6.28.0.</p>
+	<li>
+	<p>The FreeWheel plugin has been updated to support FreeWheel AdManager version 6.28.0.</p>
 	</li>
-  <li>
-	  <p>Please note that FreeWheel now packages the AdManager library as an
-Android Archive (AAR).</p>
+	<li>
+	<p>Please note that FreeWheel now packages the AdManager library as an Android Archive (AAR).</p>
 	</li>
 </ul>
 
 <p>IMA Plugin Changes:</p>
 
 <ul>
-  <li>
-	  <p>The IMA Plugin has been updated to support Google IMA SDK version
-3.11.2.</p>
+	<li>
+	<p>The IMA Plugin has been updated to support Google IMA SDK version 3.11.2.</p>
 	</li>
-  <li>
-	  <p>This version of the Google IMA SDK supports Open Measurement
-standards.</p>
+	<li>
+	<p>This version of the Google IMA SDK supports Open Measurement standards.</p>
 	</li>
-  <li>
-	  <p>Please refer to the <a href="/node/18367/">Brightcove Android SDK documentation</a> for more information.</p>
+	<li>
+	<p>Please refer to the <a href="/node/18367/">Brightcove Android SDK documentation</a> for more information.</p>
 	</li>
-  <li>
-	  <p>Fixed an issue where midroll ads called after long periods of content
-playback would not play.</p>
+	<li>
+	<p>Fixed an issue where midroll ads called after long periods of content playback would not play.</p>
 	</li>
 </ul>
 
 <p>SSAI Plugin Changes:</p>
 
 <ul>
-  <li>
-	  <p>The SSAI Plugin now supports content delivery through the Brightcove
-Playback Authorization Service (PAS).</p>
-<!-- <p>
+	<li>
+	<p>The SSAI Plugin now supports content delivery through the Brightcove Playback Authorization Service (PAS).</p>
+	<!-- <p>
   Please refer to the Brightcove
   Android SDK documentation at https://support.brightcove.com for more
   information on using PAS with the SSAI Plugin.
-  </p> -->
-	</li>
-  <li>
-	  <p>Please note that PAS works only with the SSAI Plugin. PAS with the
-deprecated OnceUx Plugin is not supported.</p>
+  </p> --></li>
+	<li>
+	<p>Please note that PAS works only with the SSAI Plugin. PAS with the deprecated OnceUx Plugin is not supported.</p>
 	</li>
 </ul>
-</section>
-
-<section class="section">
-<h2 id="Previous_releases"><strong>Previous releases</strong></h2>
 
 <h2>Version 6.7.0</h2>
 
