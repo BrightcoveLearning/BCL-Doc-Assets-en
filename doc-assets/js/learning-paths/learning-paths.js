@@ -47,10 +47,13 @@ var BCLS_learning_paths = (function (window, document) {
   thisWindow.addEventListener('resize', function () {
     if (window.innerWidth < 1300) {
       learning_path_wrapper.setAttribute('style', 'visibility:hidden');
+      if (surveyDiv) {
+        surveyDiv.setAttribute('style', 'visibility:hidden');
+      }
     } else {
       learning_path_wrapper.removeAttribute('style');
       if (surveyDiv) {
-        surveyDiv.setAttribute('style', 'visibility:hidden');
+        surveyDiv.removeAttribute('style');
       }
     }
   });
