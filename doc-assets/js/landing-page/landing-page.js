@@ -26,20 +26,6 @@ function BCLS_landing_page( {
     return (elem.classList.contains(class_name));
   }
 
-  function highlight_selected_button(group) {
-    var i, iMax;
-    iMax = buttons.length;
-    for (i = 0; i < iMax; i++) {
-      buttons[i].setAttribute('class', 'group-button');
-    }
-    for (i = 0; i < iMax; i++) {
-      if (buttons[i].id === group) {
-        buttons[i].setAttribute('class', 'selected-button');
-      }
-    }
-  }
-
-
 
 
   function init() {
