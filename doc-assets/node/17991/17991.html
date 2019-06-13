@@ -86,36 +86,36 @@
 var BCLS = (function (window, document, Pikaday) {
   'use strict';
   var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/analyitcs-by-player-day-proxy.php',
-  callNumber = 0,
-  callType = '',
-  // call limit will be reset once we know how many countries have data for the period
-  callLimit = 200,
-  useMyAccount = document.getElementById('useMyAccount'),
-  basicInfo = document.getElementById('basicInfo'),
-  accountID = document.getElementById('accountID'),
-  client_id = document.getElementById('client_id'),
-  client_secret = document.getElementById('client_secret'),
-  dateSelector = document.getElementById('dateSelector'),
-  reportTableBody = document.getElementById('reportTableBody'),
-  account_id = '1752604059001',
-  currentDayIndex = 0,
-  currentDay,
-  dayMax,
-  daysObj = {},
-  daysArray = [],
-  dateToMS,
-  dateFromMS,
-  fromPicker,
-  toPicker,
-  analyticsData = {},
-  dayMS,
-  fromDate = document.getElementById('fromDatePicker'),
-  toDate = document.getElementById('toDatePicker'),
-  countrySelector = document.getElementById('countrySelector'),
-  getData = document.getElementById('getData'),
-  gettingDataDisplay = document.getElementById('gettingDataDisplay'),
-  today = new Date(),
-  weekAgo = new Date(today.valueOf() - 604800000);
+    callNumber = 0,
+    callType = '',
+    // call limit will be reset once we know how many countries have data for the period
+    callLimit = 200,
+    useMyAccount = document.getElementById('useMyAccount'),
+    basicInfo = document.getElementById('basicInfo'),
+    accountID = document.getElementById('accountID'),
+    client_id = document.getElementById('client_id'),
+    client_secret = document.getElementById('client_secret'),
+    dateSelector = document.getElementById('dateSelector'),
+    reportTableBody = document.getElementById('reportTableBody'),
+    account_id = '1752604059001',
+    currentDayIndex = 0,
+    currentDay,
+    dayMax,
+    daysObj = {},
+    daysArray = [],
+    dateToMS,
+    dateFromMS,
+    fromPicker,
+    toPicker,
+    analyticsData = {},
+    dayMS,
+    fromDate = document.getElementById('fromDatePicker'),
+    toDate = document.getElementById('toDatePicker'),
+    countrySelector = document.getElementById('countrySelector'),
+    getData = document.getElementById('getData'),
+    gettingDataDisplay = document.getElementById('gettingDataDisplay'),
+    today = new Date(),
+    weekAgo = new Date(today.valueOf() - 604800000);
   /**
   * Logging function - safe for IE
   * @param {string} context description of the data
@@ -123,17 +123,17 @@ var BCLS = (function (window, document, Pikaday) {
   * @return {}
   */
   function bclslog(context, message) {
-  if (window['console'] && console['log']) {
-  console.log(context, message);
-  }
-  return;
+    if (window['console'] && console['log']) {
+      console.log(context, message);
+    }
+    return;
   }
   // more robust test for strings 'not defined'
   function isDefined (v) {
-  if (v === '' || v === null || v === undefined || v === NaN) {
-  return false;
-  }
-  return true;
+    if (v === '' || v === null || v === undefined || v === NaN) {
+      return false;
+    }
+    return true;
   }
   /**
   * function that returns iso date for JS date object
@@ -141,24 +141,24 @@ var BCLS = (function (window, document, Pikaday) {
   * @return {string} iso date string
   */
   function dateToISO(date) {
-  var y = date.getFullYear(),
-  m = date.getMonth(),
-  d = date.getDate(),
-  isoDate;
-  y = y.toString();
-  m = m + 1;
-  if (m &lt; 10) {
-  m = '0' + m.toString();
-  } else {
-  m = m.toString();
-  }
-  if (d &lt; 10) {
-  d = '0' + d.toString();
-  } else {
-  d = d.toString();
-  }
-  isoDate = y + '-' + m + '-' + d;
-  return isoDate;
+    var y = date.getFullYear(),
+    m = date.getMonth(),
+    d = date.getDate(),
+    isoDate;
+    y = y.toString();
+    m = m + 1;
+    if (m &lt; 10) {
+      m = '0' + m.toString();
+    } else {
+      m = m.toString();
+    }
+    if (d &lt; 10) {
+      d = '0' + d.toString();
+    } else {
+      d = d.toString();
+    }
+    isoDate = y + '-' + m + '-' + d;
+    return isoDate;
   }
   /**
   * get value for selected item
@@ -166,7 +166,7 @@ var BCLS = (function (window, document, Pikaday) {
   * @return {String} the value of the selected option
   */
   function getSelectValue(e) {
-  return e.options[e.selectedIndex].value;
+    return e.options[e.selectedIndex].value;
   }
   /**
   * Get the English name for a month
@@ -174,46 +174,46 @@ var BCLS = (function (window, document, Pikaday) {
   * @return {String} the month name
   */
   function getMonthName(month) {
-  var name;
-  switch (month) {
-  case 1:
-  name = 'Jan';
-  break;
-  case 2:
-  name = 'Feb';
-  break;
-  case 3:
-  name = 'Mar';
-  break;
-  case 4:
-  name = 'Apr';
-  break;
-  case 5:
-  name = 'May';
-  break;
-  case 6:
-  name = 'Jun';
-  break;
-  case 7:
-  name = 'Jul';
-  break;
-  case 8:
-  name = 'Aug';
-  break;
-  case 9:
-  name = 'Sep';
-  break;
-  case 10:
-  name = 'Oct';
-  break;
-  case 11:
-  name = 'Nov';
-  break;
-  case 12:
-  name = 'Dec';
-  break;
-  }
-  return name;
+    var name;
+    switch (month) {
+      case 1:
+      name = 'Jan';
+      break;
+      case 2:
+      name = 'Feb';
+      break;
+      case 3:
+      name = 'Mar';
+      break;
+      case 4:
+      name = 'Apr';
+      break;
+      case 5:
+      name = 'May';
+      break;
+      case 6:
+      name = 'Jun';
+      break;
+      case 7:
+      name = 'Jul';
+      break;
+      case 8:
+      name = 'Aug';
+      break;
+      case 9:
+      name = 'Sep';
+      break;
+      case 10:
+      name = 'Oct';
+      break;
+      case 11:
+      name = 'Nov';
+      break;
+      case 12:
+      name = 'Dec';
+      break;
+    }
+    return name;
   }
   /**
   * populate the display table
@@ -249,41 +249,41 @@ var BCLS = (function (window, document, Pikaday) {
           displayStr += '&lt;tr&gt;&lt;th colspan="2"&gt;' + analyticsData[day].date + '&lt;/th&gt;&lt;/tr&gt;';
           iMax = analyticsData[day].items.length;
           for (i = 0; i &lt; iMax; i++) {
-          item = analyticsData[day].items[i];
-          if (item.country === selectedCountry) {
+            item = analyticsData[day].items[i];
+            if (item.country === selectedCountry) {
+              displayStr += '&lt;tr&gt;&lt;td&gt;' + item.country_name + '&lt;/td&gt;&lt;td&gt;' + item.video_view + '&lt;/td&gt;&lt;/tr&gt;';
+            }
+          }
+        }
+        reportTableBody.innerHTML = displayStr;
+      }
+    } else if (getSelectValue(countrySelector) === 'all') {
+      // a specific data is selected - display all countries for that data
+      displayStr = '';
+      selectedDate = getSelectValue(dateSelector);
+      day = analyticsData[selectedDate];
+      displayStr += '&lt;tr&gt;&lt;th colspan="2"&gt;' + day.date + '&lt;/th&gt;&lt;/tr&gt;';
+      iMax = day.items.length;
+      for (i = 0; i &lt; iMax; i++) {
+        item = day.items[i];
+        displayStr += '&lt;tr&gt;&lt;td&gt;' + item.country_name + '&lt;/td&gt;&lt;td&gt;' + item.video_view + '&lt;/td&gt;&lt;/tr&gt;';
+      }
+      reportTableBody.innerHTML += displayStr;
+    } else {
+      // a specific date and country are selected - display country views for that date
+      displayStr = '';
+      selectedDate = getSelectValue(dateSelector);
+      selectedCountry = getSelectValue(countrySelector);
+      day = analyticsData[selectedDate];
+      displayStr += '&lt;tr&gt;&lt;th colspan="2"&gt;' + day.date + '&lt;/th&gt;&lt;/tr&gt;';
+      iMax = day.items.length;
+      for (i = 0; i &lt; iMax; i++) {
+        item = day.items[i];
+        if (item.country === selectedCountry) {
           displayStr += '&lt;tr&gt;&lt;td&gt;' + item.country_name + '&lt;/td&gt;&lt;td&gt;' + item.video_view + '&lt;/td&gt;&lt;/tr&gt;';
         }
       }
-    }
-    reportTableBody.innerHTML = displayStr;
-    }
-    } else if (getSelectValue(countrySelector) === 'all') {
-    // a specific data is selected - display all countries for that data
-    displayStr = '';
-    selectedDate = getSelectValue(dateSelector);
-    day = analyticsData[selectedDate];
-    displayStr += '&lt;tr&gt;&lt;th colspan="2"&gt;' + day.date + '&lt;/th&gt;&lt;/tr&gt;';
-    iMax = day.items.length;
-    for (i = 0; i &lt; iMax; i++) {
-    item = day.items[i];
-    displayStr += '&lt;tr&gt;&lt;td&gt;' + item.country_name + '&lt;/td&gt;&lt;td&gt;' + item.video_view + '&lt;/td&gt;&lt;/tr&gt;';
-    }
-    reportTableBody.innerHTML += displayStr;
-    } else {
-    // a specific date and country are selected - display country views for that date
-    displayStr = '';
-    selectedDate = getSelectValue(dateSelector);
-    selectedCountry = getSelectValue(countrySelector);
-    day = analyticsData[selectedDate];
-    displayStr += '&lt;tr&gt;&lt;th colspan="2"&gt;' + day.date + '&lt;/th&gt;&lt;/tr&gt;';
-    iMax = day.items.length;
-    for (i = 0; i &lt; iMax; i++) {
-    item = day.items[i];
-    if (item.country === selectedCountry) {
-    displayStr += '&lt;tr&gt;&lt;td&gt;' + item.country_name + '&lt;/td&gt;&lt;td&gt;' + item.video_view + '&lt;/td&gt;&lt;/tr&gt;';
-    }
-    }
-    reportTableBody.innerHTML += displayStr;
+      reportTableBody.innerHTML += displayStr;
     }
   }
   /**
