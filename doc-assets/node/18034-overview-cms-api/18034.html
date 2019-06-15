@@ -13,21 +13,21 @@
 	<p>The base URL for the <span class="”notranslate”">CMS API</span> is:</p>
 	
 	<pre class="line-numbers">
-		<code class="language-http notranslate">https://cms.api.brightcove.com/v1</code></pre>
+			<code class="language-http notranslate">https://cms.api.brightcove.com/v1</code></pre>
 	
 	<h4>Account path</h4>
 	
 	<p>In all cases, requests will be made for a specific <span class="”notranslate”">Video Cloud</span> Account. So, you will always add the term <code class="notranslate">accounts</code> followed by your account id to the base URL:</p>
 	
 	<pre class="line-numbers">
-		<code class="language-http notranslate">https://cms.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
+			<code class="language-http notranslate">https://cms.api.brightcove.com/v1<strong>/accounts/{account_id}</strong></code></pre>
 	
 	<h3>Authentication</h3>
 	
 	<p>Authentication for requests requires an <span class="”notranslate”">Authorization header</span> :</p>
 	
 	<pre class="line-numbers">
-		<code class="language-http notranslate">Authorization: Bearer {access_token}</code></pre>
+			<code class="language-http notranslate">Authorization: Bearer {access_token}</code></pre>
 	
 	<p>The <code class="notranslate">access_token</code> is a temporary OAuth2 access token that must be obtained from the <span class="”notranslate”">Brightcove OAuth</span> service. For details on how to obtain client credentials and use them to retrieve access tokens, see the <a href="/node/17928">Brightcove OAuth Overview</a>.</p>
 	
@@ -159,7 +159,7 @@
 	<p>To perform basic and complex searches on your video data, you will use the <code class="notranslate">q</code> parameter:</p>
 	
 	<pre class="line-numbers">
-		<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?<strong>q={search terms}</strong></code></pre>
+			<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/921483702001/videos?<strong>q={search terms}</strong></code></pre>
 	
 	<p>For details on how to search for videos, see the <a href="/node/18005">Search Videos</a> document.</p>
 	
@@ -178,7 +178,7 @@
 	<aside class="bcls-aside bcls-aside--information">Note the search term <code class="notranslate">playable:true/false</code> that you can use to return only videos that are playable (or not):
 	
 	<pre class="line-numbers">
-		<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/:account_id/videos?q=%2Bplayable:true</code></pre>
+			<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/:account_id/videos?q=%2Bplayable:true</code></pre>
 	
 	<p>This query requires that returned videos be playable (not deactivated, not scheduled, and not lacking playable renditions).</p>
 	
@@ -192,7 +192,7 @@
 	<p>For example, the following search returns videos 51-75 of the total result set, assuming the total result set has at least 75 videos:</p>
 	
 	<pre class="line-numbers">
-		<code class="language-http notranslate">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
+			<code class="language-http notranslate">/videos?q=updated_at:2014-01-01..2014-06-30&amp;limit=25&amp;offset=50</code></pre>
 	
 	<p>The <code class="notranslate">limit</code> and <code class="notranslate">offset</code> parameters can be used for both videos and playlists.</p>
 	
@@ -206,11 +206,11 @@
 		<li>Make a <code class="notranslate"> <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Get_Video_Count">count</a> </code> request to get the total number of videos in your result set.
 	
 		<pre class="line-numbers">
-	<code class="language-http notranslate">/accounts/578380111111/counts/videos?q=tags:nature</code></pre>
+		<code class="language-http notranslate">/accounts/578380111111/counts/videos?q=tags:nature</code></pre>
 		</li>
 		<li>Use the <code class="notranslate"> <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">limit</a> </code> and <code class="notranslate"> <a href="https://docs.brightcove.com/cms-api/v1/doc/index.html#api-videoGroup-Get_Videos">offset</a> </code> parameters to return groups of data from your result set.
 		<pre class="line-numbers">
-	<code class="language-http notranslate">/accounts/578380111111/videos?q=tags:nature&amp;limit=20&amp;offset=50</code></pre>
+		<code class="language-http notranslate">/accounts/578380111111/videos?q=tags:nature&amp;limit=20&amp;offset=50</code></pre>
 		</li>
 		<li>Note that some pages may have fewer than 20 videos. You will know you have reached the end of the result set when you have asked for as many videos as in the first <code class="notranslate">count</code> request.</li>
 	</ol>
@@ -218,7 +218,7 @@
 	<p>To summarize, keep retrieving pages until you get a video count equal the original <code class="notranslate">count</code> request, since this number should err on the side of overestimation. Ask for:</p>
 	
 	<pre class="line-numbers">
-	<code class="language-http notranslate">count / page-size + 1 page</code></pre>
+		<code class="language-http notranslate">count / page-size + 1 page</code></pre>
 	
 	<h3>Sorting video results</h3>
 	
@@ -264,7 +264,7 @@
 	<p>If you are retrieving all the videos in your account, or a large number of videos, there are some things you must be aware of:</p>
 	
 	<ol>
-		<li>You may be tempted to use the largest allowed <code class="notranslate">page_size</code> (100), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
+		<li>You may be tempted to use the largest allowed <code class="notranslate">limit</code> (100), but it's better to retrieve videos in batches of 25 or less to minimize the possibility of API requests timing out</li>
 		<li>As you are paging through large data sets, it is possible that the video data may be updated during the operation, which could cause items to shift in responses:
 		<ul>
 			<li>You might see an item repeated on successive pages</li>
