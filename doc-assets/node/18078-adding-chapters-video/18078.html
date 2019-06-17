@@ -1,110 +1,117 @@
 <article class="bcls-article">
-<section id="Video_overview" class="bcls-section">
-<h2>Video overview</h2>
-<iframe src="//players.brightcove.net/20318290001/E16-WGGOe_default/index.html?videoId=5167166949001" width="640" height="360" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></section>
-
-<section id="workingSample" class="bcls-section">
-<h2>Working sample</h2>
-
-<p>Let's start by looking at a working sample of chaptered video - start the video below and mouse over the <img alt="chapter menu" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/chapter-menu.png" /> icon to display the chapter menu:</p>
-
-<div style="display: block; position: relative; max-width: 32em;">
-<div style="padding-top: 56.25%;"><iframe src="//players.brightcove.net/1752604059001/7a8a2bf7-6696-4dda-b31d-876a9cb1792a_default/index.html?videoId=2026618970001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;"></iframe></div>
-</div>
-</section>
-
-<section id="code" class="bcls-section">
-<h2>How it works</h2>
-
-<p>Chaptered video requires:</p>
-
-<ul>
-	<li>A Brightcove player - no special properties, styling, or plugins required</li>
-	<li>A WebVTT file describing the chapters of the video - for example:
-	<pre class="line-numbers">
-      <code class="language-html">WEBVTT
-
-      00:00:00.000 --&gt; 00:00:30.000
-      Lionfish
-
-      00:00:30.000 --&gt; 00:00:54.000
-      Anemone
-
-      00:00:54.000 --&gt; 00:01:25.000
-      Clownfish
-
-      00:01:25.000 --&gt; 00:01:54.000
-      Sea Horse
-
-      00:01:54.000 --&gt; 00:02:23.000
-      Crab
-
-      00:02:23.000 --&gt; 00:02:35.000
-      Dolphins</code></pre>
-	</li>
-</ul>
-
-<p>In the sample above, note that each chapter entry consists of two lines:</p>
-
-<ol>
-	<li>The start and end time for the chapter, in the format: <code>hours:minutes:seconds:milliseconds</code> (for example: 00:02:23.000) and is strictly parsed; numbers must be zero padded if necessary</li>
-	<li>The chapter title that will appear in the player chapter menu - note that only plain text is supported, and the title must not contain the substring <code>--&gt;</code></li>
-</ol>
-
-<aside class="bcls-aside bcls-aside--tip">Note: You can validate your WebVTT format with this <a href="//quuz.org/webvtt/">validator</a>.</aside>
-
-<div class="video-cloud-only">
-<p>The WebVTT file can be associated with a video in any of three ways:</p>
-
-<ol>
-	<li>Upload the WebVTT file using the <a href="/node/17938">Ingesting WebVTT Files</a> document in the Dynamic Ingest API information.</li>
-	<li>Add the URL for the WebVTT file in the <a href="/node/15481">Text Track properties for the video in Studio</a> - be sure the access the Advanced Settings and set the <code>Kind</code> to <code>Chapters</code>:
-	<figure class="bcls-figure"><img class="bcls-image" alt="studio text track settings" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/text-tracks-studio.png" /></figure>
-  <aside class="bcls-aside bcls-aside--information">Note that the <code>default</code> value is not per track, but set to <code>true</code> for all tracks of the same language (<code>srclang</code>)</aside>
-	</li>
-	<li>Reference the WebVTT file URL in a <code>&lt;track&gt;</code> tag to the in-page embed code:
-	<pre class="line-numbers">
-      <code class="language-html">&lt;video-js
-        data-video-id="4426931680001"
-        data-account="1752604059001"
-        data-player="default"
-        data-embed="default"
-        class="video-js" controls&gt;
-            <span class="bcls-highlight">&lt;track src="https://learning-services-media.brightcove.com/chaptered-video/vtt/sea-marvels-chapters.vtt" kind="chapters" label="Chapters" srclang="en"&gt;</span>
-      &lt;/video-js&gt;
-      &lt;script src="https://players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
-	</li>
-</ol>
-</div>
-
-<div class="player-only">
-<p>Add the WebVTT file for the chapters using the <code>&lt;track&gt;</code> tag to the in-page embed code:</p>
-
-<pre class="line-numbers">
-      <code class="language-html">&lt;video-js
-        data-account="3676484086001"
-        data-player="df134dc9-c997-4464-a69c-e36acf59aef7"
-        data-embed="default"
-        class="video-js" controls&gt;
-            <span class="bcls-highlight">&lt;track src="https://learning-services-media.brightcove.com/chaptered-video/vtt/sea-marvels-chapters.vtt" kind="chapters" label="Chapters" srclang="en"&gt;</span>
-        &lt;/video-js&gt;
-      &lt;script src="https://players.brightcove.net/3676484086001/df134dc9-c997-4464-a69c-e36acf59aef7_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
-</div>
-
-<aside class="bcls-aside bcls-aside--information">Note: If you are hosting captions files on your own server, make sure the file is located at a URL that can be accessed by the Brightcove player. The server hosting the captions file should also have Cross-Origin Resource Sharing (CORS) enabled. You can read more about CORS <a href="/node/17916">here</a>.</aside>
-
-<p>The following graphic shows how the chapters menu in the player is generated from the webVTT file:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="player-vtt-interaction" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/chaptered-video-player-vc.png" /></figure>
-<!-- <figure class="bcls-figure"><img class="bcls-image" alt="player-vtt-interaction" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/chapters-with-lowercase.png" /></figure> --></section>
-
-<section id="publishing" class="bcls-section">
-<h2>Publishing the player</h2>
-
-<p class="video-cloud-only">You can use either the iframe or in-page embed - chapters will work the same in both.</p>
-
-<p class="player-only">Since you will need to add a <code>track</code> tag to the <code>video</code> for the .vtt file, you will need to use the in-page embed for chaptered video.</p>
-
-<p>No additional plugins, CSS, or JavaScript code is required.</p>
-</section>
-</article>
+      <section id="Video_overview" class="bcls-section">
+      <h2>Video overview</h2>
+      <iframe src="//players.brightcove.net/20318290001/E16-WGGOe_default/index.html?videoId=5167166949001" width="640" height="360" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></section>
+      
+      <section id="workingSample" class="bcls-section">
+      <h2>Working sample</h2>
+      
+      <p>Let's start by looking at a working sample of chaptered video - start the video below and mouse over the <img alt="chapter menu" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/chapter-menu.png" /> icon to display the chapter menu:</p>
+      
+      <div style="display: block; position: relative; max-width: 32em;">
+      <div style="padding-top: 56.25%;"><iframe src="//players.brightcove.net/1752604059001/7a8a2bf7-6696-4dda-b31d-876a9cb1792a_default/index.html?videoId=2026618970001" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="width: 100%; height: 100%; position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;"></iframe></div>
+      </div>
+      </section>
+      
+      <section id="code" class="bcls-section">
+      <h2>How it works</h2>
+      
+      <p>Chaptered video requires:</p>
+      
+      <ul>
+            <li>A Brightcove player - no special properties, styling, or plugins required</li>
+            <li>A WebVTT file describing the chapters of the video - for example:
+            <pre class="line-numbers">
+            <code class="language-html">WEBVTT
+      
+            00:00:00.000 --&gt; 00:00:30.000
+            Lionfish
+      
+            00:00:30.000 --&gt; 00:00:54.000
+            Anemone
+      
+            00:00:54.000 --&gt; 00:01:25.000
+            Clownfish
+      
+            00:01:25.000 --&gt; 00:01:54.000
+            Sea Horse
+      
+            00:01:54.000 --&gt; 00:02:23.000
+            Crab
+      
+            00:02:23.000 --&gt; 00:02:35.000
+            Dolphins</code></pre>
+            </li>
+      </ul>
+      
+      <p>In the sample above, note that each chapter entry consists of two lines:</p>
+      
+      <ol>
+            <li>The start and end time for the chapter, in the format: <code>hours:minutes:seconds:milliseconds</code> (for example: 00:02:23.000) and is strictly parsed; numbers must be zero padded if necessary</li>
+            <li>The chapter title that will appear in the player chapter menu - note that only plain text is supported, and the title must not contain the substring <code>--&gt;</code></li>
+      </ol>
+      
+      <aside class="bcls-aside bcls-aside--tip">Notes: 
+            <ul>
+                  <li>You can validate your WebVTT format with this <a href="//quuz.org/webvtt/">validator</a>.</li>
+                  <li>The text of the captions must be encoded UTF-8 to diplay properly for double-byte languages such as Japanese and Korean.</li>
+            </ul>
+            </aside>
+      
+      <div class="video-cloud-only">
+      <p>The WebVTT file can be associated with a video in any of three ways:</p>
+      
+      <ol>
+            <li>Upload the WebVTT file using the <a href="/node/17938">Ingesting WebVTT Files</a> document in the Dynamic Ingest API information.</li>
+            <li>Add the URL for the WebVTT file in the <a href="/node/15481">Text Track properties for the video in Studio</a> - be sure the access the Advanced Settings and set the <code>Kind</code> to <code>Chapters</code>:
+            <figure class="bcls-figure"><img class="bcls-image" alt="studio text track settings" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/text-tracks-studio.png" /></figure>
+      
+            <aside class="bcls-aside bcls-aside--information">Note that the <code>default</code> value is not per track, but set to <code>true</code> for all tracks of the same language (<code>srclang</code>)</aside>
+            </li>
+            <li>Reference the WebVTT file URL in a <code>&lt;track&gt;</code> tag to the in-page embed code:
+            <pre class="line-numbers">
+            <code class="language-html">&lt;video-js
+              data-video-id="4426931680001"
+              data-account="1752604059001"
+              data-player="default"
+              data-embed="default"
+              class="video-js" controls&gt;
+                  <span class="bcls-highlight">&lt;track src="https://learning-services-media.brightcove.com/chaptered-video/vtt/sea-marvels-chapters.vtt" kind="chapters" label="Chapters" srclang="en"&gt;</span>
+            &lt;/video-js&gt;
+            &lt;script src="https://players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+            </li>
+      </ol>
+      </div>
+      
+      <div class="player-only">
+      <p>Add the WebVTT file for the chapters using the <code>&lt;track&gt;</code> tag to the in-page embed code:</p>
+      
+      <pre class="line-numbers">
+            <code class="language-html">&lt;video-js
+              data-account="3676484086001"
+              data-player="df134dc9-c997-4464-a69c-e36acf59aef7"
+              data-embed="default"
+              class="video-js" controls&gt;
+                  <span class="bcls-highlight">&lt;track src="https://learning-services-media.brightcove.com/chaptered-video/vtt/sea-marvels-chapters.vtt" kind="chapters" label="Chapters" srclang="en"&gt;</span>
+              &lt;/video-js&gt;
+            &lt;script src="https://players.brightcove.net/3676484086001/df134dc9-c997-4464-a69c-e36acf59aef7_default/index.min.js"&gt;&lt;/script&gt;</code></pre>
+      </div>
+      
+      <aside class="bcls-aside bcls-aside--information">Note: If you are hosting captions files on your own server, make sure the file is located at a URL that can be accessed by the Brightcove player. The server hosting the captions file should also have Cross-Origin Resource Sharing (CORS) enabled. You can read more about CORS <a href="/node/17916">here</a>.</aside>
+      
+      <p>The following graphic shows how the chapters menu in the player is generated from the webVTT file:</p>
+      
+      <figure class="bcls-figure"><img class="bcls-image" alt="player-vtt-interaction" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/chaptered-video-player-vc.png" /></figure>
+      <!-- <figure class="bcls-figure"><img class="bcls-image" alt="player-vtt-interaction" src="//learning-services-media.brightcove.com/doc-assets/player-development/player-customization/chaptered-video/chapters-with-lowercase.png" /></figure> --></section>
+      
+      <section id="publishing" class="bcls-section">
+      <h2>Publishing the player</h2>
+      
+      <p class="video-cloud-only">You can use either the iframe or in-page embed - chapters will work the same in both.</p>
+      
+      <p class="player-only">Since you will need to add a <code>track</code> tag to the <code>video</code> for the .vtt file, you will need to use the in-page embed for chaptered video.</p>
+      
+      <p>No additional plugins, CSS, or JavaScript code is required.</p>
+      </section>
+      </article>
+      
