@@ -588,15 +588,25 @@
       </div>
       <script>
         jQuery(document).ready(function () {
+          var h = window.location.hash;
+          console.log('h', h);
+          
+          if (h > 0) {
+            showHideTabs(h);
+          }
           jQuery('.tabs .tab-links a').on('click', function (e) {
             var currentAttrValue = jQuery(this).attr('href');
             // Show/Hide Tabs
-            // Show/Hide Tabs
+            showHideTabs(currentAttrValue);
+            e.preventDefault();
+          });
+
+          function showHideTabs(currentAttrValue) {
+            console.log('currentAttrValue', currentAttrValue);
             jQuery('.tabs ' + currentAttrValue).slideDown(400).siblings().slideUp(400);
             // Change/remove current tab to active
             jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
-            e.preventDefault();
-          });
+          }
         });
       </script>
     </div>
