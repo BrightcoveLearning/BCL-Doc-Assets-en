@@ -595,11 +595,19 @@
             e.preventDefault();
           });
 
-          var h = window.location.hash;
+          var h = window.location.hash,
+          tabLinks = document.querySelectorAll('a.tab');
           console.log('h', h);
           
           if (h.length > 0) {
-            showHideTabs(h);
+            var iMax = tabLinks.length,
+              i;
+            for (i = 0; i < iMax; i++) {
+              console.log('href', tabLinks[i].getAttribute('href'));
+              if (tabLinks[i].getAttribute('href') === h) {
+                tabLinks[i].click();
+              }
+            }
           }
 
           function showHideTabs(currentAttrValue) {
