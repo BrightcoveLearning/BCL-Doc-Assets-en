@@ -11,6 +11,7 @@ jQuery(document).ready(function () {
     window.location.hash = currentAttrValue;
   });
 
+  // check to see if the URL has a hash and if so, open that tab
   var h = window.location.hash,
   tabLinks = document.querySelectorAll('.tabs .tab-links a');
   
