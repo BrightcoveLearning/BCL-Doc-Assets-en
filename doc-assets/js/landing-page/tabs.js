@@ -7,6 +7,8 @@ jQuery(document).ready(function () {
     jQuery('.tabs ' + currentAttrValue).slideDown(400).siblings().slideUp(400);
     // Change/remove current tab to active
     jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+    // add hash to url
+    window.location.hash = currentAttrValue;
   });
 
   var h = window.location.hash,
