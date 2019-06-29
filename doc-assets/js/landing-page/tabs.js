@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
       var s = history.state,
         l = location.host + location.pathname,
         t = document.title;
-      history.replaceState(s, t, l + currentAttrValue);
+      history.replaceState(s, t, currentAttrValue);
   } else {
       location.hash = currentAttrValue;
   }
