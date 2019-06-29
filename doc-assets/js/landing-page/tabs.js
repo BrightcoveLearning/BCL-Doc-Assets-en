@@ -1,6 +1,6 @@
 jQuery(document).ready(function () {
   jQuery('.tabs .tab-links a').on('click', function (e) {
-    var currentAttrValue = jQuery(this).attr('href');
+    var currentAttrValue = {h} ? h : jQuery(this).attr('href');
     // prevent default click action for links
     e.preventDefault();
     // Show/Hide Tabs
@@ -8,7 +8,14 @@ jQuery(document).ready(function () {
     // Change/remove current tab to active
     jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
     // add hash to url
-    window.location.hash = currentAttrValue;
+    if(history.replaceState) {
+      var s = history.state,
+        l = location.host + location.pathname,
+        t = document.title;
+      history.replaceState(s, t, l + currentAttrValue);
+  } else {
+      location.hash = currentAttrValue;
+  }
   });
 
   // check to see if the URL has a hash and if so, open that tab
