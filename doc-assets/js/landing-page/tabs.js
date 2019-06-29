@@ -1,6 +1,8 @@
 jQuery(document).ready(function () {
   jQuery('.tabs .tab-links a').on('click', function (e) {
     var currentAttrValue = {h} ? h : jQuery(this).attr('href');
+    console.log('h', currentAttrValue);
+    
     // prevent default click action for links
     e.preventDefault();
     // Show/Hide Tabs
