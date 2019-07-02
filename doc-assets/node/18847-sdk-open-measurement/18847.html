@@ -1,0 +1,110 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+    <h2 id="Overview">Overview</h2>
+    <p>The Brightcove Native SDKs now support using the <a href="https://iabtechlab.com/standards/open-measurement-sdk/">Open Measurement SDK</a> (OM SDK). The OM SDK, integrated with the Google IMA, allows you to use third-party tools for ad measurement and verification.</p>
+    <p>
+      The Open Measurement SDK considers all views overlaying the ad media element to be obstructions and reduces ad viewability. Video controls may be considered "friendly" obstructions, but must be registered with the OM SDK to be excluded from ad viewability measurement.
+    </p>
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="iOS">iOS</h2>
+    <p>The Brightcove Native SDK for iOS supports using the OM SDK. For more information about implementing third-party ad measurement, see the <a href="https://developers.google.com/interactive-media-ads/docs/sdks/ios/omsdk">Open Measurement in the IMA SDK for iOS</a> document.</p>
+    <h3>UI overlays</h3>
+    <p>
+      If you are using UI control elements which overlay the IMA ad view, then you'll want to register these with the OM SDK. For details, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima#registering-ad-overlays">Registering Ad Overlays</a> section of the Native SDK for iOS reference.
+    </p>
+
+    <h3>IMA settings</h3>
+    <p>
+      By default, the Brightcove Native SDK for iOS sets the <code>playerType</code> and <code>playerVersion</code> properties with the following values:
+    </p>
+    <pre class="line-numbers"><code class="language-objectivec">imaSettings.playerType = @&quot;bcov/ios-sdk-player&quot;;
+imaSettings.playerVersion = [BCOVIMAComponent versionIdentifier];</code></pre>
+    <p>
+      You may want to override these values. One example would be to get advertising metrics reported directly from Google IMA. To use your own values, set the following on the <code>imaSettings</code> object:
+    </p>
+    <pre class="line-numbers"><code class="language-objectivec">imaSettings.playerType = @&quot;<span class="bcls-input">your-player-type</span>&quot;;
+imaSettings.playerVersion = @&quot;<span class="bcls-input">your-player-version</span>&quot;</code></pre>
+    <aside class="bcls-aside bcls-aside--information">The maximum length for each property is 20 characters.</aside>
+    <p>
+      For code details about using IMA ads with the Native SDK for iOS, see the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/IMA/BasicIMAPlayer">BasicIMAPlayer sample</a>.
+    </p>
+
+  </section>
+
+  <section class="bcls-section">
+    <h2 id="Android">Android</h2>
+    <p>The Brightcove Native SDK for Android supports using the OM SDK. For more information about implementing third-party ad measurement, see the <a href="https://developers.google.com/interactive-media-ads/docs/sdks/android/omsdk">Open Measurement in the IMA SDK for Android</a> document.</p>
+
+    <h3>UI overlays</h3>
+    <p>
+      If you are using UI control elements which overlay the IMA ad view, then you'll want to register these with the OM SDK. To do this, your code would look something like this:
+    </p>
+    <pre class="line-numbers"><code class="language-java">public class MainActivity extends BrightcovePlayer {
+ // ...
+ private AdDisplayContainer adDisplayContainer;
+ private View adOverlayView;
+ // ...
+
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+   // ...
+   adOverlayView = findViewById(R.id.ad_overlay);
+   setupGoogleIMA();
+   // ...
+ }
+
+ private void setupGoogleIMA() {
+   // Show adOverlayView
+   eventEmitter.on(EventType.AD_BREAK_STARTED, (event) -&gt;  {
+       adOverlayView.setVisibility(View.VISIBLE);
+   });
+
+   // Hide adOverlayView
+   eventEmitter.on(EventType.AD_BREAK_COMPLETED, (event) -&gt;  {
+       adOverlayView.setVisibility(View.GONE);
+   });
+
+   // Create ImaSdkFactory
+   final ImaSdkFactory sdkFactory = ImaSdkFactory.getInstance();
+   eventEmitter.on(GoogleIMAEventType.ADS_REQUEST_FOR_VIDEO, new EventListener() {
+     @Override
+     public void processEvent(Event event) {
+       // Create a container object to register the friendly obstructions.
+       adDisplayContainer = sdkFactory.createAdDisplayContainer();
+       adDisplayContainer.registerVideoControlsOverlay(adOverlayView);
+       // ...
+     }
+   });
+
+   eventEmitter.on(EventType.COMPLETED, (event) -&gt; {
+     if (adDisplayContainer != null) {
+       // Unregister the friendly obstructions
+       adDisplayContainer.unregisterAllVideoControlsOverlays();
+     }
+   });
+ }
+}</code></pre>
+
+    <h3>IMA settings</h3>
+    <p>
+      By default, the Brightcove Native SDK for iOS sets the <code>playerType</code> and <code>playerVersion</code> properties with the following values:
+    </p>
+    <pre class="line-numbers"><code class="language-java">imaSdkSettings.setPlayerType(&quot;bcov/and-sdk-player&quot;);
+imaSdkSettings.setPlayerVersion(&quot;&lt;replaced with current sdk version&gt;&quot;);</code></pre>
+    <p>
+      You may want to override these values. One example would be to get advertising metrics reported directly from Google IMA. To use your own values, set the following on the <code>imaSdkSettings</code> object:
+    </p>
+    <pre class="line-numbers"><code class="language-java">ImaSdkSettings imaSdkSettings = imaSdkFactory.createImaSdkSettings();
+imaSdkSettings.setPlayerType(&quot;<span class="bcls-input">your-player-type</span>&quot;);
+imaSdkSettings.setPlayerVersion(&quot;<span class="bcls-input">your-player-version</span>&quot;);
+GoogleIMAComponent googleIMAComponent = new GoogleIMAComponent(brightcoveVideoView, eventEmitter, imaSdkSettings);</code></pre>
+    <aside class="bcls-aside bcls-aside--information">The maximum length for each property is 20 characters.</aside>
+    <p>
+      For code details about using IMA ads with the Native SDK for Android, see the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/AdRulesIMASampleApp">AdRulesIMASampleApp sample</a>.
+    </p>
+
+  </section>
+
+</article>

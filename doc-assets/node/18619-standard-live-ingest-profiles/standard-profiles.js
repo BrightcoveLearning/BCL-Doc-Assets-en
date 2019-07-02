@@ -3,6 +3,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
   var mainSection = document.querySelector('.bcls-article'),
   data = {},
     navLabel = [];
+
   /**
    * determines whether specified item is in an array
    *
@@ -442,7 +443,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
       proxyURL = "https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php",
       i,
       iMax,
-      tmpArr;
+      tmpArr = [];
 
     options.url = 'https://ingestion.api.brightcove.com/v1/accounts/3921507403001/profiles';
     function getResponse() {
@@ -452,33 +453,26 @@ var BCLS = (function(window, document, profiles_array_cached) {
           if (httpRequest.status >= 200 && httpRequest.status < 300) {
             // try {
             //   bclslog('response', httpRequest.responseText);
-            console.log('response', httpRequest.responseText);
+            // console.log('response', httpRequest.responseText);
             tmpArr = JSON.parse(httpRequest.responseText);
-            console.log('tmpArr', tmpArr);
+            // console.log('tmpArr', tmpArr);
             if (tmpArr.hasOwnProperty('error_code')) {
               data.profiles_array = profiles_array_cached;
               console.log('data', data.profiles_array);
             } else {
               iMax = tmpArr.length;
               data.profiles_array = [];
-              for (i = 0; i < iMax; i += 1) {
-                if (tmpArr[i].hasOwnProperty('model_version')) {
+              for (i = 0; i < iMax; i++) {
+                console.log('i', tmpArr[i]);
+                if (tmpArr[i].renditions && tmpArr[i].renditions.length && 0 && tmpArr[i].renditions[0].live_stream && tmpArr[i].renditions[0].live_stream === true) {
                   data.profiles_array.push(tmpArr[i]);
                 }
               }
             }
+            console.log('profiles_array',data.profiles_array );
             buildSummaryTable();
             buildDetailTables();
 
-
-            // }
-            // catch (e) {
-            //   bclslog('invalid json', e);
-            //   // just use cached data and build the tables
-            //     data.profiles_array = profiles_array_cached;
-            //     buildSummaryTable();
-            //     buildDetailTables();
-            // }
           } else {
             bclslog("There was a problem with the request. Request returned: ", httpRequest.status);
             // just use cached data and build the tables
@@ -497,10 +491,10 @@ var BCLS = (function(window, document, profiles_array_cached) {
     // open and send request
     httpRequest.send(JSON.stringify(options));
   }
-  getProfileData();
-  // data.profiles_array = profiles_array_cached;
-  // buildSummaryTable();
-  // buildDetailTables();
+  // getProfileData();
+  data.profiles_array = profiles_array_cached;
+  buildSummaryTable();
+  buildDetailTables();
 
   // BCLSmain.createInPageNav();
 })(window, document, profiles_array_cached);

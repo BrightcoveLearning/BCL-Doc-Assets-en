@@ -1,6 +1,6 @@
 <article class="bcls-article">
 <section class="bcls-section" id="top">
-<p>When you retrieve videos from the Brightcove catalog, the SDK has to decide which source to play. This is implemented in the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> components.</p>
+<p>When you retrieve videos from the Brightcove catalog, the SDK has to decide which source to play. This is implemented in the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> components.</p>
 </section>
 
 <section class="bcls-section">
@@ -8,16 +8,17 @@
 
 <p>The Brightcove Player SDK for Android uses a default source selection process. To simplify, we will focus on the SDK’s support for the Brightcove Playback API and Google’s ExoPlayer.</p>
 
-<aside class="bcls-aside bcls-aside--tip">
-<p>With the Brightcove Native SDK for Android 6.4+, HTTPS delivery for all source types is selected if available.</p>
-
-<p>Both the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> attempt to select the HTTPS version of the <code class="notranslate">deliveryType</code> selected. If no HTTPS source exists, the selection controller will select the first available.</p>
-</aside>
-
 <p>The default selection process is defined as follows:</p>
 
 <ol class="bcls-tasklist">
-	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> looks for the first source that has a <code class="notranslate">deliveryType</code> of <strong>MPEG-DASH</strong>, and a profile that is neither <strong>urn:hbbtv</strong> nor <strong>urn:dvb</strong>. The SDK does not support playback with either of these DASH profiles, and so they will be filtered out of the sources.</li>
+	<li>
+		<p>
+			With the Brightcove Native SDK for Android 6.4+, HTTPS delivery for all source types is selected if available.
+		</p>
+		<p>Both the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/DefaultSourceSelectionController.html">DefaultSourceSelectionController</a> and <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/ExoPlayerSourceSelectionController.html">ExoPlayerSourceSelectionController</a> attempt to select the HTTPS version of the <code class="notranslate">deliveryType</code> selected. If no HTTPS source exists, the selection controller will select the first available.</p>
+    <aside class="bcls-aside bcls-aside--information">If your video has both HTTP and HTTPS sources for WebVTT captions/subtitles, then the Native SDK for Android may not return the HTTPS version. Brightcove is aware of this situation and will have a fix in a future release.</aside>
+	</li>
+	<li>The <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/view/BrightcoveExoPlayerVideoView.html">BrightcoveExoPlayerVideoView</a> looks for the first source that has a <code class="notranslate">deliveryType</code> of <strong>MPEG-DASH</strong>, and a profile that is neither <strong>urn:hbbtv</strong> nor <strong>urn:dvb</strong>. The SDK does not support playback with either of these DASH profiles, and so they will be filtered out of the sources.</li>
 	<li>If the above is not found, source selection falls back to the first source with a <code class="notranslate">deliveryType</code> of <strong>HLS</strong>.</li>
 	<li>If no such source is found, it falls back to the source with a <code class="notranslate">deliveryType</code> of <strong>MP4</strong> and a bitrate closest to 256 kBps.</li>
 </ol>
@@ -26,8 +27,8 @@
 
 <ol class="bcls-tasklist">
 	<li>If found, the selected source will be emitted with a response to the <strong>SELECT_SOURCE</strong> event.</li>
-	<li>By default, the <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/controller/VideoPlaybackController.html">VideoPlaybackController</a> handles the <strong>SELECT_SOURCE</strong> response, by emitting a <strong>SET_SOURCE</strong> event.</li>
-	<li>The <a href="https://brightcovelearning.github.io/Brightcove-API-References/android-sdk/javadoc/com/brightcove/player/display/VideoDisplayComponent.html">VideoDisplayComponent</a> or a subclass handles the <strong>SET_SOURCE</strong> event by loading the URL into the underlying player (ExoPlayer or MediaPlayer).</li>
+	<li>By default, the <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/controller/VideoPlaybackController.html">VideoPlaybackController</a> handles the <strong>SELECT_SOURCE</strong> response, by emitting a <strong>SET_SOURCE</strong> event.</li>
+	<li>The <a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/display/VideoDisplayComponent.html">VideoDisplayComponent</a> or a subclass handles the <strong>SET_SOURCE</strong> event by loading the URL into the underlying player (ExoPlayer or MediaPlayer).</li>
 	<li>When playback begins, the underlying player is responsible for adapting the bitrate with HLS and DASH content. With HLS, the underlying player starts with the first bitrate listed in the master manifest.</li>
 </ol>
 

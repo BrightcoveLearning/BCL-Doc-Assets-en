@@ -1,59 +1,92 @@
-<div class="BCL-concept">
-<h2 id="HLS_or_MP4">HLS or MP4?</h2>
-
-<p>When using the new Brightcove Player, we recommend you choose or create an ingest profile that has both HLS and MP4 renditions in order to reach the greatest number of devices and browsers. This table shows how the player determines, at run-time, which rendition will play on a particular browser.</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Browser Type</th>
-			<th>Playback Technology Used By Default</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>Desktop Chrome 34+, Desktop Firefox 42+, Edge and Chrome 34+ on Android 5.0+</td>
-			<td>HTML-based HLS (using MSE)</td>
-		</tr>
-		<tr>
-			<td>Desktop (macOS) Safari, Mobile (iOS) Safari</td>
-			<td>Native HLS (implemented by browser)</td>
-		</tr>
-		<tr>
-			<td>Older Firefox and Chrome</td>
-			<td>Flash based HLS; requires Flash 10.3+ (will fall back to MP4 if Flash disabled)</td>
-		</tr>
-		<tr>
-			<td>IE 11 on Windows 8.1+</td>
-			<td>HTML-based HLS (using MSE)</td>
-		</tr>
-		<tr>
-			<td>IE 11 on Windows 7</td>
-			<td>Flash based HLS (will fall back to MP4 if Flash disabled)</td>
-		</tr>
-	</tbody>
-</table>
-</div>
-
-<div class="BCL-concept">
-<h2 id="HLS_Rendition_Selection">HLS Rendition Selection</h2>
-
-<p>HLS video is broken into segments. These are typically about 10 seconds in duration but can be longer or shorter. If the bandwidth and resolution are known, the player will pick the rendition based on these criteria. If the resolution or bandwidth is unknown (for example, when creating a player with <code>display:none</code>), the player will start with the rendition closest to .5 MB/s (equivalent to 4000 kbs).</p>
-
-<p>During playback, the player will switch to a higher or lower rendition based on the following algorithm. Inputs to this algorithm are 1. available bandwidth and 2. player dimensions.</p>
-
-<ol>
-	<li>Remove all renditions that have a bitrate higher than the measured bandwidth.</li>
-	<li>Sort the remaining renditions by resolution (horizontal line count) high to low.</li>
-	<li>Point to the one that is closest to the player dimensions.</li>
-	<li>Choose the one that’s one higher than that one.</li>
-</ol>
-
-<p>For more information, see the <a href="/node/18087#adaptiveswitching">Adaptive Switching</a> section of the <strong>HLS Plugin</strong> document.</p>
-</div>
-
-<div class="BCL-concept">
-<h2 id="MP4_Rendition_Selection">MP4 Rendition Selection</h2>
-
-<p>If running on a mobile device and playing an MP4 (based on the rules listed above), the player will choose the MP4 that has a bitrate closest to .5 MB/s. If on a desktop or laptop device it will choose one that is closest to 3 MB/s.</p>
-</div>
+<article class="bcls-article">
+	<section class="bcls-section">
+	<h2 id="HLS_or_MP4">HLS or MP4?</h2>
+	
+	<p>When using the new Brightcove Player, we recommend you choose or create an ingest profile that has both HLS and MP4 renditions in order to reach the greatest number of devices and browsers. This table shows how the player determines, at run-time, which rendition will play on a particular browser.</p>
+	
+	<table class="bcls-table">
+		<thead class="bcls-table__head">
+			<tr>
+				<th>Browser Type</th>
+				<th>Playback Technology Used By Default</th>
+			</tr>
+		</thead>
+		<tbody class="bcls-table__body">
+			<tr>
+				<td>Desktop Chrome 34+, Desktop Firefox 42+, Edge and Chrome 34+ on Android 5.0+</td>
+				<td>HTML-based HLS (using MSE)</td>
+			</tr>
+			<tr>
+				<td>Desktop (macOS) Safari, Mobile (iOS) Safari</td>
+				<td>Native HLS (implemented by browser)</td>
+			</tr>
+			<tr>
+				<td>Older Firefox and Chrome</td>
+				<td>Flash based HLS; requires Flash 10.3+ (will fall back to MP4 if Flash disabled)</td>
+			</tr>
+			<tr>
+				<td>IE 11 on Windows 8.1+</td>
+				<td>HTML-based HLS (using MSE)</td>
+			</tr>
+			<tr>
+				<td>IE 11 on Windows 7</td>
+				<td>Flash based HLS (will fall back to MP4 if Flash disabled)</td>
+			</tr>
+		</tbody>
+	</table>
+	</section>
+	
+	<section class="bcls-section">
+	<h2 id="HLS_DASH_Rendition_Selection">HLS &amp; DASH Rendition Selection</h2>
+	
+	<p><a href="/node/18087">HLS</a> and <a href="/node/18036">DASH</a> video is broken into segments. These are typically about 10 seconds in duration but can be longer or shorter. If the bandwidth and resolution are known, the player will pick the rendition based on these criteria. If the resolution or bandwidth is unknown (for example, when creating a player with <code>display:none</code>), the player will start with the rendition closest to .5 MB/s (equivalent to 4000 kbs). On segment boundaries it will switch to a higher or lower rendition described in the text and images below.</p>
+	
+	<p>Both HLS and DASH try to ensure the highest-quality viewing experience possible, given the available bandwidth and encodings, and at the same time considering player size. This doesn't always mean using the highest-bitrate rendition available. For instance, if the player is 300px by 150px, it would be a waste of bandwidth to download a 4k stream.</p>
+	
+	<p>By default, the player attempts to load the highest-bitrate variant that is less than the most recently detected segment bandwidth, with one condition: if there are multiple variants with dimensions greater than the current player size, it will only switch up one size greater than the current player size.</p>
+	
+	<p>During playback, the player will switch to a higher or lower rendition based on the following algorithm. Inputs to this algorithm are:</p>
+	
+	<ul>
+		<li>Available bandwidth</li>
+		<li>Player dimensions</li>
+	</ul>
+	
+	<h3>High-level algorithm overview</h3>
+	
+	<ol>
+		<li>Remove all renditions that have a bitrate higher than the measured bandwidth.</li>
+		<li>Sort the remaining renditions by resolution (horizontal line count) high to low.</li>
+		<li>Point to the one that is closest to the player dimensions.</li>
+		<li>Choose the one that’s one higher than that one.</li>
+	</ol>
+	
+	<p>The process is illustrated below:</p>
+	
+	<ol>
+		<li>Whenever a new segment is downloaded, the download bitrate is calculated based on the size of the segment and the time it took to download:
+		<figure class="bcls-figure"><img class="bcls-image" alt="HLS rendition1" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/HLS-plugin/HLS-rendition-1.png" /></figure>
+		</li>
+		<li>All the renditions that have a higher bitrate than the new measurement are filtered out:
+		<figure class="bcls-figure"><img class="bcls-image" alt="HLS rendition2" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/HLS-plugin/HLS-rendition-2.png" /></figure>
+		</li>
+		<li>Any renditions that are bigger than the current player's dimensions are filtered out:
+		<figure class="bcls-figure"><img class="bcls-image" alt="HLS rendition3" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/HLS-plugin/HLS-rendition-3.png" /></figure>
+		</li>
+		<li>A significant quality drop is not wanted just because your player is one pixel too small, so we add back in the next highest resolution. The highest bitrate rendition that remains is the one that gets used:
+		<figure class="bcls-figure"><img class="bcls-image" alt="HLS rendition4" src="//learning-services-media.brightcove.com/doc-assets/player-development/playback/HLS-plugin/HLS-rendition-4.png" /></figure>
+		</li>
+	</ol>
+	
+	<p>If it turns out no rendition is acceptable based on the filtering described above, the first encoding listed in the master playlist will be used.</p>
+	
+	<p>If you'd like your player to use a different set of priorities, it's possible to completely replace the rendition selection logic. For instance, you could always choose the most appropriate rendition by resolution, even though this might mean more stalls during playback. See the documentation on <a href="#selectplaylist">player.hls.selectPlaylist</a> for more details.</p>
+	</section>
+	
+	<section class="bcls-section">
+	<h2 id="MP4_Rendition_Selection">MP4 Rendition Selection</h2>
+	
+	<p>If running on a mobile device and playing an MP4 (based on the rules listed above), the player will choose the MP4 that has a bitrate closest to .5 MB/s. If on a desktop or laptop device it will choose one that is closest to 3 MB/s.</p>
+	</section>
+	</article>
+	

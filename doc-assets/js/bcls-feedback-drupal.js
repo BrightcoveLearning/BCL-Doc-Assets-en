@@ -2,6 +2,7 @@ var BCLS_feedback = ( function (window, document) {
   var cookiesArray = document.cookie.split(";"),
     iframe = document.createElement('iframe'),
     surveyDiv = document.createElement('div'),
+    body = document.querySelector('body'),
     feedbackParams = {},
     i,
     tmpArray = [],
@@ -28,9 +29,10 @@ var BCLS_feedback = ( function (window, document) {
   iframe.setAttribute('id', 'CSAT');
   iframe.setAttribute('src', 'https://learning-services-media.brightcove.com/doc-assets/general/surveylink.html');
   iframe.setAttribute('style', 'border:none; position:fixed; bottom: 0;left: 20px;height:110px;');
+  surveyDiv.setAttribute('id', 'surveyDiv');
   surveyDiv.setAttribute('style', 'text-align:left; position:relative;');
   surveyDiv.appendChild(iframe);
-  contentBlock.appendChild(surveyDiv);
+  body.appendChild(surveyDiv);
   iframeEl = document.querySelector('#CSAT');
   surveyWin = iframeEl.contentWindow;
 
@@ -68,19 +70,18 @@ if (thirdRowItems) {
   });
 
   window.addEventListener('resize', function() {
-    console.log('window size', window.innerWidth);
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1300) {
       surveyDiv.setAttribute('style', 'visibility:hidden');
     } else {
-      surveyDiv.removeAttribute('style')
+      surveyDiv.removeAttribute('style');
     }
-  })
+  });
 
   window.addEventListener('load', function() {
     console.log('window size', window.innerWidth);
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1300) {
       surveyDiv.setAttribute('style', 'visibility:hidden');
     }
-  })
+  });
 
 })(window, document);

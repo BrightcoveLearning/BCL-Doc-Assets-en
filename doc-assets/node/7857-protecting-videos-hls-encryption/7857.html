@@ -1,10 +1,6 @@
 <h2 id="what">What is Video Cloud HLS encryption?</h2>
 
-<p>HTTP Live Streaming Encryption (HLSe) lets you send encrypted video over HTTP for playback on desktop and mobile devices. It utilizes the Advanced Encryption Standard (AES) as well as other technologies to seamlessly protect content from non-authorized streaming, piracy, and redistribution by others, with no detectable difference to video playback. Video Cloud supports HLS encryption in Brightcove players. For more information on Brightcove Player support, see <a href="/node/14526">Brightcove Player System Requirements</a>.</p>
-
-<h2 id="add">Adding Encryption to HLS renditions in Ingest Profiles</h2>
-
-<p>Encryption for HLS renditions is added during the ingestion process. For information on how to add encryption settings to the HLS renditions for your custom ingest profiles, see the <a href="/node/18038#hlse">HLS encryption (HLSe)</a> developer document.</p>
+<p>When using HTTP Live Streaming Encryption (HLSe) the content is encrypted with the AES 128 standard, and the manifest contains a link to a key that allows the decryption of the HLS content. This alone is not providing complete security, since once the key is obtained, the content can be easily decrypted and redistributed. There are few mechanisms in place that allow protection of the key, such as serving it over HTTPs, or different token authentication models. HLSe does secure the content against most standard users trying to get the content, but is not considered DRM level content protection. Video Cloud supports HLS encryption in Brightcove players. For more information on Brightcove Player support, see <a href="/node/14526">Brightcove Player System Requirements</a>. Also check out the <a href="#limitations">limitations</a> section below.</p>
 
 <h2 id="how">How does Video Cloud protect your content using HLS encryption?</h2>
 
@@ -57,7 +53,7 @@
 
 <ul>
 	<li>HLS encryption applies to all non-DRM HLS renditions in your account. If you have promotional or other videos you want to deliver without encryption, you can upload them to a different Video Cloud account without HLS encryption enabled.</li>
-	<li>For videos ingested using the legacy ingest system,Video Cloud does not support encrypting HLS renditions uploaded to Video Cloud before the implementation of HLS encryption. Previously uploaded HLS content remains unencrypted. You must <a href="/node/15921">retranscode videos</a> uploaded before HLS encryption to protect them. This does <strong>not</strong> apply to videos ingested using the Dynamic Delivery system.</li>
+	<li>For videos ingested using the legacy ingest system, Video Cloud does not support encrypting HLS renditions uploaded to Video Cloud before the implementation of HLS encryption. Previously uploaded HLS content remains unencrypted. You must <a href="/node/15921">retranscode videos</a> uploaded before HLS encryption to protect them. This does <strong>not</strong> apply to videos ingested using the Dynamic Delivery system.</li>
 	<li>Video Cloud does not show an indicator to identify HLS encrypted videos in the Media module.</li>
 	<li>If a user plays an HLS encrypted video on an Apple device and then attempts to replay it after the TTL has expired, playback will fail to start, and will not provide an alert message to the user.</li>
 	<li>When using the Brightcove Player, HLS playback is not supported on IE8 or IE9. These devices will fall back to MP4.</li>
@@ -66,3 +62,4 @@
 	<li>If you elect to terminate Video Cloud HLS encryption, newly uploaded videos will not be protected; however, previously encrypted HLS renditions will fail to play, and will require retranscoding to play.</li>
 	<li>Currently, HLSe content is not supported with offline playback using the Brightcove Native SDK for Android, iOS or tvOS.</li>
 </ul>
+

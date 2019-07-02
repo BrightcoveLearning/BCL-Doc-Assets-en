@@ -5,6 +5,7 @@
 <h5 class="bcls-question">Advertising</h5>
 
 <ul class="bcls-answer">
+  <li><a href="#Preload IMA ads">Preload IMA ads</a></li>
 	<li><a href="#Seek_without_ads">Seek without ads</a></li>
 </ul>
 
@@ -48,6 +49,7 @@
 	<li><a href="#Playing_local_videos">Playing local videos</a></li>
 	<li><a href="#Setting_the_buffer_size">Setting the buffer size</a></li>
 	<li><a href="#Setting_the_peak_bitrate">Setting the peak bitrate</a></li>
+	<li><a href="#Setting_the_playback_rate">Setting the playback rate</a></li>
 	<li><a href="#Setting_VR_Goggles_mode_for_360_videos">Setting VR Goggles mode for 360° videos</a></li>
 	<li><a href="#Starting_playback_in_the_middle_of_a_video">Starting playback in the middle of a video</a></li>
 	<li><a href="#Swapping_videos">Swapping videos</a></li>
@@ -58,8 +60,9 @@
 <ul class="bcls-answer">
 	<li><a href="#Customizing_controls_for_Android_TV">Customizing controls for Android TV</a></li>
 	<li><a href="#Fullscreen_mode">Fullscreen mode</a></li>
+  <li><a href="#Mute_unmute_the_player">Mute/unmute the player</a></li>
+  <li><a href="#Positioning_player_controls_on_the_bottom">Positioning player controls on the bottom</a></li>
 	<li><a href="#Showing_player_controls">Showing player controls</a></li>
-	<li><a href="#Mute_unmute_the_player">Mute/unmute the player</a></li>
 	<!--				  <li><a href="#singleline">Showing single line controls</a></li>-->
 </ul>
 
@@ -476,6 +479,96 @@ brightcoveVideoView.start();</a></code></pre>
 </section>
 
 <section class="bcls-section">
+<h2 id="Positioning_player_controls_on_the_bottom">Positioning player controls on the bottom</h2>
+
+<p>By default, the player control bar is positioned directly below the video, as shown here:</p>
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Player controls under video" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/snippets/player-controls-video.png" />
+<figcaption class="bcls-caption--image">Player controls under video</figcaption>
+</figure>
+<p>
+  You can also position the player control bar so that it is on the bottom of the video view. Because the controls are part of the <code>BrightcoveVideoView</code>, by setting the height to <code>match_parent</code>, the view will cover the whole screen. When the controls appear in the bottom of the view, the video will remain in the middle of the view.
+</p>
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Player controls bottom" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/android/snippets/player-controls-bottom.png" />
+<figcaption class="bcls-caption--image">Player controls bottom of video view</figcaption>
+</figure>
+<p>
+  There are two ways you can do this. The first approach follows:
+</p>
+<ol class="bcls-tasklist__restart">
+  <li>
+    Open the <strong>main/res/values/style.xml</strong> file for your project.
+  </li>
+  <li>
+    <p>
+      Add the following XML code:
+    </p>
+    <pre class="line-numbers"><code class="notranslate language-java">&lt;style name=&quot;BrightcoveControlBar&quot; parent=&quot;BrightcoveControlBarDefault&quot;&gt;
+  &lt;item name=&quot;brightcove_align&quot;&gt;false&lt;/item&gt;
+&lt;/style&gt;</code></pre>
+  </li>
+</ol>
+<p>
+  Or, you can use code within the <strong>MainActivity.java</strong> file as follows:
+</p>
+<ol class="bcls-tasklist__restart">
+  <li>
+    Open the <strong>MainActivity.java</strong> file for your project.
+  </li>
+  <li>
+    <p>
+      After you get the event emitter, as shown here:
+    </p>
+    <pre><code class="notranslate language-java">EventEmitter eventEmitter = brightcoveVideoView.getEventEmitter();</code></pre>
+    <p>
+      Add the following event listener and code. We are waiting until after the <code>DID_SET_VIDEO</code> event to ensure the control bar has been created.
+    </p>
+    <pre class="line-numbers"><code class="notranslate language-java">eventEmitter.on(EventType.DID_SET_VIDEO, new EventListener() {
+  @Override
+  public void processEvent(Event event) {
+    BrightcoveControlBar brightcoveControlBar = brightcoveVideoView.getBrightcoveMediaController().getBrightcoveControlBar();
+    brightcoveControlBar.setAlign(false);
+    }
+});</code></pre>
+  </li>
+</ol>
+
+</section>
+
+<section class="bcls-section">
+
+    <h2 id="Preload IMA ads">Preload IMA ads</h2>
+    
+    <p>To preload ads using hte Native SDK for Android and the IMA plugin, use the  <code class="notranslate">setEnablePreloading(true)</code> property .</p>
+
+    <aside class="bcls-aside bcls-aside--information">Please note that this only works with single VAST prerolls.</aside>
+
+    <p>To use this property, follow these steps:</p>
+    
+    <ol class="bcls-tasklist__restart">
+        <li>   
+        <p>The starting point is the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/AdRulesIMASampleApp">IMA sample app</a>.</p>
+
+        </li>
+        <li>
+        <p>Locate the <code class="notranslate">private void setupGoogleIMA()</code> function.</p>
+
+        </li>
+        <li><p>Add the snippet code block before the last code line of the function.</p>
+<pre class="line-numbers" data-start="1">
+<code class="notranslate language-java">ImaSdkSettings imaSdkSettings = sdkFactory.createImaSdkSettings();
+AdsRenderingSettings adsRenderingSettings =
+ImaSdkFactory.getInstance().createAdsRenderingSettings();
+adsRenderingSettings.setEnablePreloading(true);</code></pre>
+        </li>
+
+        <li>
+        <p>Add the <code class="notranslate">adsRenderingSettings</code> parameter to the last code line.</p>
+    
+<pre>
+<code class="notranslate language-java">googleIMAComponent = new GoogleIMAComponent(brightcoveVideoView, eventEmitter, true, adsRenderingSettings);</code></pre>
+        </li>
+    </ol>
+      
 <h2 id="Seek_without_ads">Seek without ads</h2>
 
 <p>You can use the <code class="notranslate">adsDisabled</code> property for the <code class="notranslate">VideoPlaybackController</code> to disable ad playback while you are seeking through a video.</p>
@@ -636,6 +729,29 @@ android:theme="@style/MyCustomCaptionSettingsTheme"/&gt;</a></code></pre>
 
 <pre class="line-numbers">
 <code class="notranslate language-java"><a href="https://docs.brightcove.com/android-sdk/javadoc/com/brightcove/player/display/ExoPlayerVideoDisplayComponent.html#setPeakBitrate-int-">((ExoPlayerVideoDisplayComponent) videoView.getVideoDisplay()).setPeakBitrate(bitRate);</a></code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Setting_the_playback_rate">Setting the playback rate</h2>
+
+<p>The ExoPlayer supports playback speed adjustment for videos playing on Android devices. For details, see Google's <a href="https://medium.com/google-exoplayer/variable-speed-playback-with-exoplayer-e6e6a71e0343">Variable speed playback with ExoPlayer</a> document.</p>
+
+<p>You can control the playback speed with the following code:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-java">eventEmitter.on(EventType.DID_PLAY, new EventListener() {
+  @Override
+  public void processEvent(Event event) {
+
+    //Get instance of ExoPlayer2
+    ExoPlayerVideoDisplayComponent displayComponent = (ExoPlayerVideoDisplayComponent) brightcoveVideoView.getVideoDisplay();
+    ExoPlayer exoPlayer = displayComponent.getExoPlayer();
+
+    //Set playback speed
+    PlaybackParameters param = new PlaybackParameters(1.6f, 1.0f);
+    exoPlayer.setPlaybackParameters(param);
+  }
+});</code></pre>
 </section>
 
 <section class="bcls-section">
@@ -835,5 +951,4 @@ nextVideoButton.setOnClickListener(new View.OnClickListener() {
 }
 }</a></code></pre>
 </section>
-
 </article>

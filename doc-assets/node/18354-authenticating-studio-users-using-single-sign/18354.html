@@ -1,0 +1,104 @@
+<!-- beginning of Drupal content --><!--break-->
+<div class="BCL-concept">
+<p>First posted: 24 July 2017</p>
+<p>Last updated: 14 February 2018</p>
+
+<p>Single sign-on (SSO) is a session and user authentication service that permits a user to use one set of login credentials (e.g., username and password) to access multiple applications. The service authenticates the end user for all the applications the user has been given rights to and eliminates further prompts when the user switches applications during the same session.</p>
+
+<p>SAML-based single sign-on support is available for Video Cloud Studio which gives publishers access to the Studio via SSO through an Identity Provider (IdP) of your choice. Some of the features include:</p>
+
+<ul>
+	<li>Video Cloud Studio supports the SAML 2.0 SSO protocol</li>
+	<li>Identity mapping is based on the username (full email address) rather than just a single email domain. This provides more flexibility for publishers who want some users enabled for SSO and others to go through the regular Video Cloud Studio login.</li>
+	<li>Once an account and it’s existing users are configured for SSO, new users who are added to the account through the Video Cloud Studio UI will inherit the SSO setup of the user who is adding them</li>
+	<li>Video Cloud Studio supports Service Provider initiated login for SSO. We do not support direct IdP initiated at this time but can provide a URL to bypass the Video Cloud Studio login screen that can be linked to from your Identity Provider portal.</li>
+</ul>
+
+<p>For more information on having your account enabled for SSO, contact your Account Manager.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="benefits">Benefits</h2>
+
+<p>Some of the benefits of adding SSO for Video Cloud Studio login include:</p>
+
+<ul>
+	<li><strong>Single Login for all Applications</strong> - Remembering multiple usernames and passwords becomes difficult to manage and a headache for IT teams (or account admins of the tools) to deal with. By enabling SSO and adding a Video Cloud Studio login to it, Brightcove account admins no longer have to deal with these issues and users of the tool don’t have to remember a separate username/password for Video Cloud Studio.</li>
+	<li><strong>Security &amp; Password Requirements</strong> - Enterprises have varying user password requirements, i.e. length, duration and complexity. Using SSO allows Brightcove to support to these requirements without having to change Video Cloud Studio's built-in security management to accommodate each individual set of requirements.</li>
+	<li><strong>Disable User Access Quickly &amp; Easily</strong> - Single sign-on enables IT to centrally manage users and remove user access as soon as an employee leaves the company. SSO prevents any disgruntled users from modifying or deleting Brightcove media, players, tokens, etc.</li>
+</ul>
+</div>
+
+<div class="BCL-concept">
+<h2 id="limitations">Limitations</h2>
+
+<p>Just-in-time user provisioning for SAML isn't currently supported. Users will still need to be added to accounts through the Studio, and permissions/module access control will be configured through the Studio User Administration UI. When new users are added to an account, they will inherit the SSO setup of the user who is adding them.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="faq">FAQ</h2>
+
+<h5 class="bcls-question">I know that SAML based SSO is supported but what about two factor (2FA) or multi-factor auth? Is that supported?</h5>
+
+<div class="bcls-answer">
+<p>No, we don’t have any plans to support 2FA on regular Studio logins at this time. You can enable login for SAML based SSO and add 2FA to your IdP setup, but that would be configured by your IT team on your own IdP.</p>
+</div>
+
+<h5 class="bcls-question">Are there plans to support other SSO protocols like CAS, Kerberos, GSuite/Google Apps authentication (OAuth 2.0)?</h5>
+
+<div class="bcls-answer">
+<p>Not at this time.</p>
+</div>
+
+<h5 class="bcls-question">We have some users on our account that should not go through SSO and others who need to go through SSO. Is this supported?</h5>
+
+<div class="bcls-answer">
+<p>Yes. SSO is enabled on a per user basis so some users can be enabled for SSO login and others can be enabled for regular Studio login. One thing to note is that there is no way in the Studio user management UI to select which authentication path a user should go through when a new user is being added to the account. Currently the user will inherit whatever auth path that the admin who is adding them is configured for. We do plan to expose an option for selecting this in the Studio at a later date. The workaround for now for mixed authentication flows is to have one admin configured for SSO and one configured for regular Studio login. The admin should log into the appropriate user account when adding new users based on what authentication method they should be setup for.</p>
+
+<p>While we support the flexibility of having different users configured for different identity providers, we also have customers who want one single IdP and every user to always be configured for that single IdP. That configuration is also available.</p>
+</div>
+
+<h5 class="bcls-question">Is the ability to setup multiple identity providers for users on a single account supported?</h5>
+
+<div class="bcls-answer">
+<p>Yes. We can set up multiple identity providers for a given org (customer) and we can assign users to either IdP. See the question above regarding the inheritance of auth paths when adding a new user to an account.</p>
+</div>
+
+<h5 class="bcls-question">Is local login (Studio auth username/password) directly to Brightcove allowed when SAML SSO is turned on for a user?</h5>
+
+<div class="bcls-answer">
+<p>No. Once a user is enabled for SSO, that is the only way they can authenticate into their account.</p>
+</div>
+
+<h5 class="bcls-question">Does Brightcove support SAML v2.0 with both browser post based IDP-initiated SSO and SP-initiated SSO?</h5>
+
+<div class="bcls-answer">
+<p>Yes</p>
+
+<ul>
+	<li>IdP initiated login means you can add a signin button/link to your SSO IdP portal and login directly from there.</li>
+	<li>SP initiated login means you can type in your username/password into the signin.brightcove.com page and they you be redirected to your IdP to login (if you are not already signed in). Note the password field gets ignored on the VC login page - we only inspect the email address to see if the user is enabled for SSO.</li>
+	<li>Brightcove will also provide customers with a special direct domain login URL that will look like this:<br />
+	<code>https://signin.brightcove.com/login/ext/saml?behavior=xxxxxxxxx</code></li>
+</ul>
+</div>
+
+<h5 class="bcls-question">Does Brightcove support the use of RelayState parameter in SAMLRequest/SAMLResponse for direct access to video after SSO?</h5>
+
+<div class="bcls-answer">
+<p>No. After login via SSO, users will always be taken to the Studio Home dashboard.</p>
+</div>
+
+<h5 class="bcls-question">Does the SSO integration support Single Sign-Out?</h5>
+
+<div class="bcls-answer">
+<p>No.</p>
+</div>
+
+<h5 class="bcls-question">What identity providers are supported?</h5>
+
+<div class="bcls-answer">
+<p>While Brightcove hasn’t tested with all SSO Identity Providers, we are confident that as long as your IdP supports SAML 2.0, there shouldn't be any problems. Some of the common ones we’ve talked to customers about include: Okta, Ping Federated, Ping Identity, Microsoft Active Directory, OneLogin, and Auth0.</p>
+</div>
+</div>
+<!-- End of Drupal content -->

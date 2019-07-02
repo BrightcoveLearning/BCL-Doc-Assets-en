@@ -5,7 +5,6 @@
 <p>Media sharing is a feature of Video Cloud that lets publishers share videos with other publishers, enabling you to more easily manage videos across multiple accounts. For example, publishers can keep a Master account of video content and then share videos out to other divisions or subsidiaries of the organization.</p>
 
 <p>Note that all media sharing operation can be performed in Studio as well. See <a href="/node/18459">Managing Media Sharing Settings</a>.</p>
-<!-- <p>Media sharing with the CMS API is a new version that makes some changes to how sharing works. To migrate your account to the new media sharing, first see <a href="/node/18452">Media Sharing Migration</a> to be sure you are ready, and then submit a request to Support.</p> -->
 
 <aside class="bcls-aside bcls-aside--information"><strong>Media sharing is available only for Video Cloud Enterprise and Pro customers with multiple accounts.</strong> If you are interested in upgrading your Video Cloud account, please contact Brightcove for more information.</aside>
 
@@ -41,6 +40,12 @@
 	<li>Pub B using BYO CDN</li>
 	<li>Pub A shares to Pub B</li>
 	<li>Pub B pays Brightcove for streams and bandwidth assuming that the billing parameters are being passed.</li>
+</ul>
+
+<p>Scenario 4 - Content must be fetched from Origin</p>
+
+<ul>
+	<li>We pass along the account ID&nbsp;in every request&nbsp;so that each account is billed for its own origin access. So if the <strong>Sharer</strong> account frequently misses its CDN cache and has to go back to origin for content, then the <strong>Sharer</strong> will be billed for that. If the <strong>Sharee</strong> account frequently misses its CDN cache and has to go back to origin for content, then the <strong>Sharee</strong> account is billed for that. Charges for Origin access stay seperate regardless of the CDN config scenario.</li>
 </ul>
 </section>
 
@@ -358,12 +363,12 @@ video-cloud/sharing-relationships/delete</code></pre>
 		<tr>
 			<td><a href="#List_shares">List existing shares</a></td>
 			<td><code>GET</code> <code>/accounts/ <span class="bcls-input">master_account_id</span>/videos/ <span class="bcls-input">video_id</span>/shares</code></td>
-			<td>Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="Resharing_videos">re-sharing a video</a> when it has already be shared</td>
+			<td>Get a list of existing shares for a video - this is <strong>important</strong> because of the consequences of <a href="#Share_video">re-sharing a video</a> when it has already be shared</td>
 		</tr>
 		<tr>
 			<td><a href="#Share_video">Share a video</a></td>
 			<td><code>POST</code> <code>/accounts/ <span class="bcls-input">master_account_id</span>/videos/ <span class="bcls-input">video_id</span>/shares</code></td>
-			<td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="Resharing_videos">re-share it</a> - that is probably <strong>not</strong> what you want to do</td>
+			<td>Share a video to one or more affiliates - note that if the video has already been shared, this operation will <a href="#Share_video">re-share it</a> - that is probably <strong>not</strong> what you want to do</td>
 		</tr>
 		<tr>
 			<td><a href="#Unshare_video_affiliate">Un-share a video for an Affiliate</a></td>
@@ -1177,55 +1182,7 @@ video-cloud/sharing-relationships/delete</code></pre>
 <p>Currently, media sharing has the following limitations:</p>
 
 <ul>
-	<li>DRM: media sharing via the CMS API is currently not supported for DRM-enabled accounts. <!-- <table class="bcls-table">
-		<caption class="bcls-caption--table">DRM and Media Sharing</caption>
-		<thead class="bcls-table__head">
-			<tr>
-				<th>Master Account Type</th>
-				<th>Affiliate Account Type</th>
-				<th>Ingestion/Delivery System</th>
-				<th>Result</th>
-			</tr>
-		</thead>
-		<tbody class="bcls-table__body">
-			<tr>
-				<td>DRM enabled</td>
-				<td>Non-DRM</td>
-				<td>Dynamic Delivery</td>
-				<td>Video is shared, but will not play in the Affiliate account; depending on the browser, an error may be shown, or the video will just fail to play.</td>
-			</tr>
-			<tr>
-				<td>DRM enabled</td>
-				<td>DRM enabled</td>
-				<td>Dynamic Delivery</td>
-				<td>Video is shared and is DRM protected in Master and Affiliate accounts.</td>
-			</tr>
-			<tr>
-				<td>DRM enabled</td>
-				<td>Non-DRM</td>
-				<td>Legacy</td>
-				<td>Video is shared, but will not play in the Affiliate account. No error is shown in the player.</td>
-			</tr>
-			<tr>
-				<td>DRM enabled</td>
-				<td>DRM enabled</td>
-				<td>Legacy</td>
-				<td>Video is shared and is DRM protected in Master and Affiliate accounts.</td>
-			</tr>
-			<tr>
-				<td>Non-DRM</td>
-				<td>DRM enabled</td>
-				<td>Dynamic Delivery</td>
-				<td>Video is shared and playable in the Affiliate account, with DRM.</td>
-			</tr>
-			<tr>
-				<td>Non-DRM</td>
-				<td>DRM enabled</td>
-				<td>Legacy</td>
-				<td>Video is shared and playable in the Affiliate account, but without DRM.</td>
-			</tr>
-		</tbody>
-	</table> --></li>
+	<li>DRM: media sharing via the CMS API is currently not supported for DRM-enabled accounts. Sharing videos from an account that is not DRM-enabled to an account that is DRM-enabled is supported, but the shared videos will <strong>not</strong> be packaged for DRM.</li>
 	<li>
 	<p>If the channel defined by the master account has set <code>enforce_custom_fields</code> to <code>true</code>, and then shares a video that has a custom field with a value that is not allowed by the affiliate account, that share attempt will fail. The share status will be updated with an error message something like this:</p>
 
