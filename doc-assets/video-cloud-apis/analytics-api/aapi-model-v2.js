@@ -154,19 +154,19 @@ var aapi_model = {
     bucket_limit: {
       name: 'bucket_limit',
       required: 'false',
-      description: 'Used for Get Live Analytics time-series requests to specify the maximum number of points to be returned for a time-series.'
+      description: 'Used for Get Live Analytics time-series requests to specify the maximum number of points to be returned for a time-series.',
       default: 'none'
     },
     bucket_duration: {
       name: 'bucket_duration',
       required: 'false',
-      description: 'Used for Get Live Analytics time-series requests to specify the intervals duration in the form of an integer plus m (minutes), h (hours), or d (days).'
+      description: 'Used for Get Live Analytics time-series requests to specify the intervals duration in the form of an integer plus m (minutes), h (hours), or d (days).',
       default: 'none'
     },
     metrics: {
       name: 'metrics',
       required: 'true',
-      description: 'Used for Get Live Analytics time-series and Get Live Events requests to specify the metrics to return. Possible values are: "video_impression", "video_view", "video_seconds_viewed", "alive_ss_ad_start", "fingerprint_count", "ccu" (comma-delimited list).'
+      description: 'Used for Get Live Analytics time-series and Get Live Events requests to specify the metrics to return. Possible values are: "video_impression", "video_view", "video_seconds_viewed", "alive_ss_ad_start", "fingerprint_count", "ccu" (comma-delimited list).',
       default: 'none'
     }
   },
