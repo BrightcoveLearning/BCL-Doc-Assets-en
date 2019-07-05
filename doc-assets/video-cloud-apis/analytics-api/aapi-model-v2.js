@@ -150,6 +150,24 @@ var aapi_model = {
       description: 'The end of the date range for the request',
       values: 'An ISO 8601 date (YYYY-MM-DD), epoch time in milliseconds, the string now, or relative data (+7d); only dates within the past 32 days are allowed for engagement endpoints or if reconciled=false.',
       default: 'now'
+    },
+    bucket_limit: {
+      name: 'bucket_limit',
+      required: 'false',
+      description: 'Used for Get Live Analytics time-series requests to specify the maximum number of points to be returned for a time-series.'
+      default: 'none'
+    },
+    bucket_duration: {
+      name: 'bucket_duration',
+      required: 'false',
+      description: 'Used for Get Live Analytics time-series requests to specify the intervals duration in the form of an integer plus m (minutes), h (hours), or d (days).'
+      default: 'none'
+    },
+    metrics: {
+      name: 'metrics',
+      required: 'true',
+      description: 'Used for Get Live Analytics time-series and Get Live Events requests to specify the metrics to return. Possible values are: "video_impression", "video_view", "video_seconds_viewed", "alive_ss_ad_start", "fingerprint_count", "ccu" (comma-delimited list).'
+      default: 'none'
     }
   },
   dimensions: {
