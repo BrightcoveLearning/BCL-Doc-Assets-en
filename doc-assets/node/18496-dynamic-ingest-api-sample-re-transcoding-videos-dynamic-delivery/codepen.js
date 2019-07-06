@@ -8,6 +8,7 @@ var BCLS = (function(window, document) {
     client_secret,
     ingest_profile_display = document.getElementById("ingest_profile_display"),
     ingest_profile,
+    keep_images = document.getElementById('get_images'),
     videoDataDisplay = document.getElementById("videoData"),
     current_profiles = [],
     live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
@@ -186,6 +187,11 @@ var BCLS = (function(window, document) {
       reqBody.master = {};
       reqBody.master.use_archived_master = true;
       reqBody.profile = ingest_profile;
+      if (capture_image.checked) {
+        reqBody[capture-images] = false;
+      } else {
+        reqBody[capture-images] = true;
+      }
       reqBody.callbacks = callbacks;
       options.requestBody = JSON.stringify(reqBody);
       options.requestType = "POST";
