@@ -8,7 +8,7 @@ var BCLS = (function(window, document) {
     client_secret,
     ingest_profile_display = document.getElementById("ingest_profile_display"),
     ingest_profile,
-    keep_images = document.getElementById('get_images'),
+    keep_images = document.getElementById('keep_images'),
     videoDataDisplay = document.getElementById("videoData"),
     current_profiles = [],
     live_profiles = ['Live - Standard', 'Live - HD', 'Live - Premium HD'],
@@ -187,12 +187,14 @@ var BCLS = (function(window, document) {
       reqBody.master = {};
       reqBody.master.use_archived_master = true;
       reqBody.profile = ingest_profile;
-      if (capture_image.checked) {
-        reqBody[capture-images] = false;
+      if (keep_images.checked) {
+        reqBody['capture-images'] = false;
       } else {
-        reqBody[capture-images] = true;
+        reqBody['capture-images'] = true;
       }
       reqBody.callbacks = callbacks;
+      console.log('request body', reqBody);
+      
       options.requestBody = JSON.stringify(reqBody);
       options.requestType = "POST";
       options.url = 'https://ingest.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + videoData[videoNumber] + '/ingest-requests';
@@ -254,7 +256,7 @@ var BCLS = (function(window, document) {
                 response = null;
               }
               // return the response
-              console.log(response);
+              // console.log(response);
               callback(response);
             } else {
               alert(
