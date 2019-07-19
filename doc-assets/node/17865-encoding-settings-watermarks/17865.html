@@ -1,325 +1,326 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="watermarks">watermarks</h2>
-<code>watermarks:Array or Hash</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a></p>
-
-<p><strong>Valid Values:</strong> An array or hash of watermark settings</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Description:</strong></p>
-
-<p>You can add one or more watermarks to an output video using our watermarking API. Zencoder supports up to 4 watermark files per output in GIF, JPEG, BMP, or PNG format.</p>
-
-<aside class="bcls-aside bcls-aside--warning">32 bit RGB+alpha and 64-bit RGB+alpha watermark images are not supported.</aside>
-
-<p>Watermarks that extend beyond the edges of the video will not be applied. A warning will be raised on the output if this occurs.</p>
-
-<p><em>Note: When using the VP6 codec there are some additional limitations. You may only apply one watermark to the video (if passed multiple watermarks only the first will be used). Additionally, watermark scaling is not supported and the watermark image must be a PNG file.</em></p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": [
-        {
-          "url": "s3://bucket/watermark_file.png",
-          "x": "20",
-          "y": "-10%",
-          "width": 32,
-          "height": 24
+  <section class="bcls-section">
+  <h2 id="watermarks">watermarks</h2>
+  <code>watermarks:Array or Hash</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> <strong>OR</strong> <a href="/node/17878#dynamic_profile_options">dynamic_profile_options</a></p>
+  
+  <p><strong>Valid Values:</strong> An array or hash of watermark settings</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>You can add one or more watermarks to an output video using our watermarking API. Zencoder supports up to 4 watermark files per output in GIF, JPEG, BMP, or PNG format.</p>
+  
+  <aside class="bcls-aside bcls-aside--warning">32 bit RGB+alpha and 64-bit RGB+alpha watermark images are not supported.</aside>
+  
+  <p>Watermarks that extend beyond the edges of the video will not be applied. A warning will be raised on the output if this occurs.</p>
+  
+  <p><em>Note: When using the VP6 codec there are some additional limitations. You may only apply one watermark to the video (if passed multiple watermarks only the first will be used). Additionally, watermark scaling is not supported and the watermark image must be a PNG file.</em></p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": [
+          {
+            "url": "s3://bucket/watermark_file.png",
+            "x": "20",
+            "y": "-10%",
+            "width": 32,
+            "height": 24
+          }
+        ]
+      }
+    ]
+  }</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="url">url</h2>
+  <code>url:String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Valid Values:</strong> A valid URL to an image file.</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Example:</strong></p>
+  
+  <ul>
+    <li>https://s3.amazonaws.com/bucket/img.png</li>
+    <li>ftp://user:pass@example.com/path/to/watermark.jpg</li>
+  </ul>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>The URL of a remote image file to use as a watermark. Use the <a href="/node/17878#input">input</a> URL syntax. Supports S3, GCS, Cloud Files, HTTP/S, FTP, and SFTP, with or without authentication.</p>
+  
+  <p>Zencoder supports watermark files in GIF, JPEG, BMP, or PNG format.</p>
+  
+  <p>For transparent watermarks, use PNGs with alpha or index transparency.</p>
+  
+  <h3>Supported PNG Formats</h3>
+  
+  <ul>
+    <li>8-bit RGB</li>
+    <li>8-bit RGB+Alpha</li>
+    <li>8-bit Grayscale</li>
+    <li>8-bit Indexed</li>
+    <li>8-bit Indexed+Transparency</li>
+    <li>16-bit RGB</li>
+    <li>16-bit Grayscale</li>
+  </ul>
+  
+  <h3>Unsupported PNG Formats</h3>
+  
+  <ul>
+    <li>8-bit Grayscale+Alpha</li>
+    <li>16-bit Grayscale+Alpha</li>
+    <li>16-bit RGB+Alpha</li>
+  </ul>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "url": "https://s3.amazonaws.com/bucket/img.png"
         }
-      ]
-    }
-  ]
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="url">url</h2>
-<code>url:String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Valid Values:</strong> A valid URL to an image file.</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Example:</strong></p>
-
-<ul>
-	<li>https://s3.amazonaws.com/bucket/img.png</li>
-	<li>ftp://user:pass@example.com/path/to/watermark.jpg</li>
-</ul>
-
-<p><strong>Description:</strong></p>
-
-<p>The URL of a remote image file to use as a watermark. Use the <a href="/node/17878#input">input</a> URL syntax. Supports S3, GCS, Cloud Files, HTTP/S, FTP, and SFTP, with or without authentication.</p>
-
-<p>Zencoder supports watermark files in GIF, JPEG, BMP, or PNG format.</p>
-
-<p>For transparent watermarks, use PNGs with alpha or index transparency.</p>
-
-<h3>Supported PNG Formats</h3>
-
-<ul>
-	<li>8-bit RGB</li>
-	<li>8-bit RGB+Alpha</li>
-	<li>8-bit Grayscale</li>
-	<li>8-bit Indexed</li>
-	<li>8-bit Indexed+Transparency</li>
-	<li>16-bit RGB</li>
-	<li>16-bit Grayscale</li>
-</ul>
-
-<h3>Unsupported PNG Formats</h3>
-
-<ul>
-	<li>8-bit Grayscale+Alpha</li>
-	<li>16-bit Grayscale+Alpha</li>
-	<li>16-bit RGB+Alpha</li>
-</ul>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "url": "https://s3.amazonaws.com/bucket/img.png"
       }
-    }
-  ]
-}</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="x">x</h2>
-<code>x:String or Integer</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Default:</strong> -10</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Example:</strong></p>
-
-<ul>
-	<li>-0</li>
-	<li>320</li>
-	<li>centered</li>
-</ul>
-
-<p><strong>Description:</strong></p>
-
-<p>Where to place the watermark within the video, on the x axis (left/right). Can be a number of pixels (e.g. 100 or -20), a percent of the video width (e.g. 25% or -5%), or 'centered' to align the watermark to the center of the video. Use a positive number to place relative to the left side of the video, and a negative number to place relative to the right side of the video. Use "-0" (as a string) to lock to the right side.</p>
-
-<p>By default, position is based on the visible content area, not including any padding. Use <a href="#watermark-origin">origin</a> to set watermark position based on the full output.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "x": 320
+    ]
+  }</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="x">x</h2>
+  <code>x:String or Number</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Default:</strong> -10</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Example:</strong></p>
+  
+  <ul>
+    <li>-0</li>
+    <li>320</li>
+    <li>centered</li>
+  </ul>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>Where to place the watermark within the video, on the x axis (left/right). Can be a number of pixels (e.g. 100 or -20), a percent of the video width (e.g. 25% or -5%), or 'centered' to align the watermark to the center of the video. Use a positive number to place relative to the left side of the video, and a negative number to place relative to the right side of the video. Use "-0" (as a string) to lock to the right side.</p>
+  
+  <p>By default, position is based on the visible content area, not including any padding. Use <a href="#watermark-origin">origin</a> to set watermark position based on the full output.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "x": 320
+        }
       }
-    }
-  ]
-}</code></pre>
-
-<p><strong>See Also:</strong> <a href="#y">y</a> and <a href="#watermark-origin">origin</a></p>
-</section>
-
-<section class="bcls-section">
-<h2 id="y">y</h2>
-<code>y:String or Integer</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Default:</strong> -10</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Example:</strong></p>
-
-<ul>
-	<li>-0</li>
-	<li>320</li>
-	<li>centered</li>
-</ul>
-
-<p><strong>Description:</strong></p>
-
-<p>Where to place the watermark within the video, on the y axis (top/bottom). Can be a number of pixels (e.g. 100 or -20), a percent of the video width (e.g. 25% or -5%), or 'centered' to align the watermark to the center of the video. Use a positive number to place relative to the top side of the video, and a negative number to place relative to the bottom side of the video. Use "-0" (as a string) to lock to the bottom.</p>
-
-<p>By default, position is based on the visible content area, not including any padding. Use <a href="#watermark-origin">origin</a> to set watermark position based on the full output.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "y": 320
+    ]
+  }</code></pre>
+  
+  <p><strong>See Also:</strong> <a href="#y">y</a> and <a href="#watermark-origin">origin</a></p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="y">y</h2>
+  <code>y:String or Number</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Default:</strong> -10</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Example:</strong></p>
+  
+  <ul>
+    <li>-0</li>
+    <li>320</li>
+    <li>centered</li>
+  </ul>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>Where to place the watermark within the video, on the y axis (top/bottom). Can be a number of pixels (e.g. 100 or -20), a percent of the video width (e.g. 25% or -5%), or 'centered' to align the watermark to the center of the video. Use a positive number to place relative to the top side of the video, and a negative number to place relative to the bottom side of the video. Use "-0" (as a string) to lock to the bottom.</p>
+  
+  <p>By default, position is based on the visible content area, not including any padding. Use <a href="#watermark-origin">origin</a> to set watermark position based on the full output.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "y": 320
+        }
       }
-    }
-  ]
-}</code></pre>
-
-<p><strong>See Also:</strong> <a href="#x">x</a> and <a href="#watermark-origin">origin</a></p>
-</section>
-
-<section class="bcls-section">
-<h2 id="width">width</h2>
-<code>width:Number or String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Default:</strong> Scale to <a href="#watermark-height">height</a>, or original image width.</p>
-
-<p><strong>Valid Values:</strong> A positive number or a percentage</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Description:</strong></p>
-
-<p>The width of the watermark, expressed as a number of pixels (e.g. 64) or as a percent of the video width (e.g. 10%). If <a href="/node/17854#height">height</a> is provided, but not width, the watermark image will be scaled proportionately.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "width": 100
+    ]
+  }</code></pre>
+  
+  <p><strong>See Also:</strong> <a href="#x">x</a> and <a href="#watermark-origin">origin</a></p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="width">width</h2>
+  <code>width:Number or String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Default:</strong> Scale to <a href="#watermark-height">height</a>, or original image width.</p>
+  
+  <p><strong>Valid Values:</strong> A positive number or a percentage</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>The width of the watermark, expressed as a number of pixels (e.g. 64) or as a percent of the video width (e.g. 10%). If <a href="/node/17854#height">height</a> is provided, but not width, the watermark image will be scaled proportionately.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "width": 100
+        }
       }
-    }
-  ]
-}</code></pre>
-
-<p><strong>See Also:</strong> <a href="/node/17854#height">height</a></p>
-</section>
-
-<section class="bcls-section">
-<h2 id="height">height</h2>
-<code>height:Number or String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Default:</strong> Scale to <a href="#watermark-width">width</a>, or original image height.</p>
-
-<p><strong>Valid Values:</strong> A positive number or a percentage</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Description:</strong></p>
-
-<p>The height of the watermark, expressed as a number of pixels (e.g. 64) or as a percent of the video height (e.g. 10%). If <a href="/node/17854#width">width</a> is provided, but not height, the watermark image will be scaled proportionately.</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "height": 100
+    ]
+  }</code></pre>
+  
+  <p><strong>See Also:</strong> <a href="/node/17854#height">height</a></p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="height">height</h2>
+  <code>height:Number or String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Default:</strong> Scale to <a href="#watermark-width">width</a>, or original image height.</p>
+  
+  <p><strong>Valid Values:</strong> A positive number or a percentage</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>The height of the watermark, expressed as a number of pixels (e.g. 64) or as a percent of the video height (e.g. 10%). If <a href="/node/17854#width">width</a> is provided, but not height, the watermark image will be scaled proportionately.</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "height": 100
+        }
       }
-    }
-  ]
-}</code></pre>
-
-<p><strong>See Also:</strong> <a href="/node/17854#width">width</a></p>
-</section>
-
-<section class="bcls-section">
-<h2 id="origin">origin</h2>
-<code>origin:String</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Default:</strong> content</p>
-
-<p><strong>Valid Values:</strong> content or frame</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Example:</strong> frame</p>
-
-<p><strong>Description:</strong></p>
-
-<p>The part of the video to base the watermark's positioning on. This only affects jobs where aspect_mode is 'pad'.</p>
-
-<ul>
-	<li>'frame' bases the placement on the full resolution of the output, including any padding.</li>
-	<li>'content' bases the placement on the visible content area, not including padding.</li>
-</ul>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "origin": "content"
+    ]
+  }</code></pre>
+  
+  <p><strong>See Also:</strong> <a href="/node/17854#width">width</a></p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="origin">origin</h2>
+  <code>origin:String</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Default:</strong> content</p>
+  
+  <p><strong>Valid Values:</strong> content or frame</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Example:</strong> frame</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>The part of the video to base the watermark's positioning on. This only affects jobs where aspect_mode is 'pad'.</p>
+  
+  <ul>
+    <li>'frame' bases the placement on the full resolution of the output, including any padding.</li>
+    <li>'content' bases the placement on the visible content area, not including padding.</li>
+  </ul>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "origin": "content"
+        }
       }
-    }
-  ]
-}</code></pre>
-
-<p><strong>See Also:</strong> <a href="#x">x</a>, <a href="#y">y</a>, and <a href="/node/17854#aspect-mode">aspect_mode</a></p>
-</section>
-
-<section class="bcls-section">
-<h2 id="opacity">opacity</h2>
-<code>opacity:Float</code>
-
-<p><strong>API Versions:</strong> V1, V2</p>
-
-<p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
-
-<p><strong>Default:</strong> 1.0</p>
-
-<p><strong>Valid Values:</strong> 0.0 to 1.0</p>
-
-<p><strong>Compatible Job Types:</strong> All</p>
-
-<p><strong>Example:</strong> 0.5</p>
-
-<p><strong>Description:</strong></p>
-
-<p>Make the watermark transparent by setting an opacity value between 0.0 (transparent) and 1.0 (opaque).</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-  "input": "s3://zencodertesting/test.mov",
-  "outputs": [
-    {
-      "watermarks": {
-        "opacity": 0.5
+    ]
+  }</code></pre>
+  
+  <p><strong>See Also:</strong> <a href="#x">x</a>, <a href="#y">y</a>, and <a href="/node/17854#aspect-mode">aspect_mode</a></p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="opacity">opacity</h2>
+  <code>opacity:Float</code>
+  
+  <p><strong>API Versions:</strong> V1, V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#outputs">outputs</a> / <a href="#watermarks">watermarks</a></p>
+  
+  <p><strong>Default:</strong> 1.0</p>
+  
+  <p><strong>Valid Values:</strong> 0.0 to 1.0</p>
+  
+  <p><strong>Compatible Job Types:</strong> All</p>
+  
+  <p><strong>Example:</strong> 0.5</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>Make the watermark transparent by setting an opacity value between 0.0 (transparent) and 1.0 (opaque).</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "outputs": [
+      {
+        "watermarks": {
+          "opacity": 0.5
+        }
       }
-    }
-  ]
-}</code></pre>
-
-<p><strong>See Also:</strong> <a href="/node/17852#url">url</a></p>
-</section>
-</article>
+    ]
+  }</code></pre>
+  
+  <p><strong>See Also:</strong> <a href="/node/17852#url">url</a></p>
+  </section>
+  </article>
+  

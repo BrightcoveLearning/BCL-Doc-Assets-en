@@ -670,6 +670,85 @@
   </section>
   
   <section class="bcls-section">
+  <h2 id="watermarks" class="notranslate">watermarks</h2>
+  <code>watermarks:Array</code>
+  
+  <p><strong>API Versions:</strong> V2</p>
+  
+  <p><strong>Parent:</strong> <a href="/node/17878#dynamic_profile_options"><code>dynamic_profile_options</code></a></p>
+  
+  <p><strong>Default:</strong> Profile generator uses lists of standard resolutions for all known aspect ratios. Whenever possible, aspect ratio, sample aspect ratio and framerate of the source is preserved in output configurations.</p>
+  
+  <p><strong>Compatible Job Types:</strong> VOD</p>
+  
+  <p><strong>Example:</strong> see below</p>
+  
+  <p><strong>Description:</strong></p>
+  
+  <p>An array of hashes describing <a href="/node/17865">watermarks</a>.</p>
+
+  <pre class="line-numbers"><code class="language-json">{
+    "input": "s3://zencodertesting/test.mov",
+    "generate_dynamic_profile": true,
+    "dynamic_profile_options" : {
+      "min_rendition": 2,
+      "max_rendition": 6,
+      "watermarks":[
+       {
+          "url": "<url_to_watermark>",
+         "width": "10%",
+         "height": "10%"
+       }
+      ]
+    }
+  }</code></pre>
+
+  <p>Watermarks can also be part of <code>video_configurations</code>:</p>
+  
+  <pre class="line-numbers">
+    <code class="language-json">{
+      "input": "s3://zencodertesting/test.mov",
+      "generate_dynamic_profile": true,
+      "dynamic_profile_options" : {
+        "video_configurations": [  
+          {
+           "width": 640,
+           "height": 360,
+            "watermarks":[
+              {
+                "url": "<url_to_watermark>",
+                "x": "-10",
+                "y": 10"
+              }
+            ]
+          },
+          {
+           "width": 960,
+           "height": 540,
+            "watermarks":[
+              {
+                "url": "<url_to_watermark>",
+                "x": "-15",
+                "y": "15"
+             }
+            ]
+          },
+          {
+            "width": 1280,
+            "height": 720,
+            "watermarks":[
+              {
+                "url": "<url_to_watermark>",
+                "x": "-20",
+                "y": "20"
+             }
+            ]
+          }
+        ]
+      }</code></pre>
+  </section>
+  
+  <section class="bcls-section">
   <h2 id="additional_settings" class="notranslate">Additional settings</h2>
   
   <p>Below are additional general encoding settings that can be used for CAE.</p>
