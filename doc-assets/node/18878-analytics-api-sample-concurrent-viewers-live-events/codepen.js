@@ -8,7 +8,7 @@ var BCLS = (function(window, document) {
     account_id = '1752604059001',
     clientId = document.getElementById('client_id'),
     clientSecret = document.getElementById('client_secret'),
-    videoId = document.getElementById('video_id')
+    videoId = document.getElementById('video_id'),
     client_id = null,
     client_secret = null,
     video_id = null,
@@ -17,17 +17,9 @@ var BCLS = (function(window, document) {
     ccu5m = document.getElementById('ccu5m');
     ccu15m = document.getElementById('ccu15m');
     ccu30m = document.getElementById('ccu30m');
-    destinationReportTableBody = document.getElementById('destinationReportTableBody'),
-    destinationCSV = document.getElementById('destinationCSV'),
-    playerReportTableBody = document.getElementById('playerReportTableBody'),
-    playerDomainCSV = document.getElementById('playerDomainCSV'),
-    getDataButton = document.getElementById('getData'),
     gettingDataDisplay = document.getElementById('gettingDataDisplay'),
     requestURL = document.getElementById('requestURL'),
-    currentVideo,
-    currentVideoObj,
     analyticsData = {},
-    chartData = [],
     callType;
 
   // more robust test for strings 'not defined'
@@ -83,7 +75,7 @@ var BCLS = (function(window, document) {
    * Builds the API requests and handles responses
    * @param {String} interval the interval for the time series
    */
-  function setoptions(interval) {
+  function createRequest(interval) {
     var endPoint = '',
       options = {};
 
@@ -176,6 +168,10 @@ var BCLS = (function(window, document) {
     httpRequest.send(JSON.stringify(options));
   }
 
+  function getAccountInfo() {
+    
+  }
+
   // set event listeners
   useMyAccount.addEventListener('click', function() {
     if (basicInfo.getAttribute('style') === 'display:none') {
@@ -185,7 +181,18 @@ var BCLS = (function(window, document) {
       basicInfo.setAttribute('style', 'display:none');
       useMyAccount.textContent = 'Use My Account Instead';
     }
-
+  });
+  ccu1m.addEventListener('click', function() {
+    createRequest('ccu1m');
+  });
+  ccu5m.addEventListener('click', function() {
+    createRequest('ccu5m');
+  });
+  ccu15m.addEventListener('click', function() {
+    createRequest('ccu15m');
+  });
+  ccu30m.addEventListener('click', function() {
+    createRequest('ccu30m');
   });
 
   return {};
