@@ -72,7 +72,7 @@ var BCLS = (function(window, document) {
 console.log('response', parsedData.ccu.data[0]);
       iMax = parsedData.ccu.data[0].points.length;
       for (i = 0; i < iMax; i++) {
-        item = parsedData.ccu.data.points[i];
+        item = parsedData.ccu.data[0].points[i];
         item.timestamp = new Date(item.timestamp).toISOString();
       }
       responseData.textContent = JSON.stringify(parsedData, null, 2);
