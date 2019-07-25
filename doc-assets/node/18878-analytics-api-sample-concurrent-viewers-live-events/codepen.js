@@ -14,11 +14,11 @@ var BCLS = (function(window, document) {
     client_id = null,
     client_secret = null,
     video_id = null,
-    allButtons = document.getElementsByTagName('button'),
-    ccu1m = document.getElementById('ccu1m');
-    ccu5m = document.getElementById('ccu5m');
-    ccu15m = document.getElementById('ccu15m');
-    ccu30m = document.getElementById('ccu30m');
+    allButtons = document.querySelectorAll('button[data-type="getData"]'),
+    ccu1m = document.getElementById('ccu1m'),
+    ccu5m = document.getElementById('ccu5m'),
+    ccu15m = document.getElementById('ccu15m'),
+    ccu30m = document.getElementById('ccu30m'),
     gettingDataDisplay = document.getElementById('gettingDataDisplay'),
     requestURL = document.getElementById('requestURL'),
     analyticsData = {},
@@ -210,5 +210,3 @@ var BCLS = (function(window, document) {
 
   return {};
 })(window, document);
-
-Rerun
