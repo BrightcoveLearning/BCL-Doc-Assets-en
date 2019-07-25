@@ -6,11 +6,11 @@ var BCLS = (function(window, document) {
     default_video_id = '6057232440001',
     useMyAccount = document.getElementById('useMyAccount'),
     basicInfo = document.getElementById('basicInfo'),
-    accountId = document.getElementById('accountId'),
+    accountId = document.querySelector('account_id'),
     account_id = '1752604059001',
-    clientId = document.getElementById('client_id'),
-    clientSecret = document.getElementById('client_secret'),
-    videoId = document.getElementById('video_id'),
+    clientId = document.querySelector('client_id'),
+    clientSecret = document.querySelector('client_secret'),
+    videoId = document.querySelector('video_id'),
     client_id = null,
     client_secret = null,
     video_id = null,
@@ -91,39 +91,39 @@ var BCLS = (function(window, document) {
 
     disableButtons();
     options.proxyURL = proxyURL;
-    options.video_id = '6057232440001';
+    options.video_id = video_id;
     switch (interval) {
       case 'ccu1m':
-        endPoint = '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu';
+        endPoint = account_id + '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu';
         options.url = reportURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
+        
         makeRequest(options, apiCallback);
         break;
      case 'ccu5m':
-        endPoint = '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu&bucket_duration=5m';
+        endPoint = account_id + '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu&bucket_duration=5m';
         options.url = reportURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
+        
         makeRequest(options, apiCallback);
         break;
         
      case 'ccu15m':
-        endPoint = '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu&bucket_duration=15m';
+        endPoint = account_id + '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu&bucket_duration=15m';
         options.url = reportURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
+        
         makeRequest(options, apiCallback);
         break;
      case 'ccu30m':
-        endPoint = '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu&bucket_duration=30m';
+        endPoint = account_id + '?dimensions=video&where=video==' + options.video_id +  '&metrics=ccu&bucket_duration=30m';
         options.url = reportURL + endPoint;
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
-        apiMethod.textContent = options.requestType;
+        
         makeRequest(options, apiCallback);
         break;         
     }
@@ -196,15 +196,19 @@ var BCLS = (function(window, document) {
     }
   });
   ccu1m.addEventListener('click', function() {
+    getAccountInfo();
     createRequest('ccu1m');
   });
   ccu5m.addEventListener('click', function() {
+    getAccountInfo();
     createRequest('ccu5m');
   });
   ccu15m.addEventListener('click', function() {
+    getAccountInfo();
     createRequest('ccu15m');
   });
   ccu30m.addEventListener('click', function() {
+    getAccountInfo();
     createRequest('ccu30m');
   });
 
