@@ -2,9 +2,10 @@ var BCLS = (function(window, document) {
   var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     reportURL = 'https://analytics.api.brightcove.com/v1/timeseries/accounts/',
     default_account_id = '3737230870001',
+    default_video_id = '',
     useMyAccount = document.getElementById('useMyAccount'),
     basicInfo = document.getElementById('basicInfo'),
-    accountID = document.getElementById('accountID'),
+    accountId = document.getElementById('accountId'),
     account_id = '1752604059001',
     clientId = document.getElementById('client_id'),
     clientSecret = document.getElementById('client_secret'),
@@ -61,10 +62,18 @@ var BCLS = (function(window, document) {
   }
 
   function apiCallback(response) {
-    var parsedData;
+    var parsedData,
+      i,
+      iMax,
+      item;
     if (isJson(response)) {
       parsedData = JSON.parse(response);
-      responseData.textContent = JSON.stringify(parsedData, null, '  ');
+      iMax = parsedData.ccu.data.points.length;
+      for (i = 0; i < iMax; i++) {
+        item = parsedData.ccu.data.points[i];
+        item.timestamp = new Date(item.timestamp).toISOString();
+      }
+      responseData.textContent = JSON.stringify(parsedData, null, 2);
     } else {
       responseData.textContent = response;
     }
@@ -169,7 +178,10 @@ var BCLS = (function(window, document) {
   }
 
   function getAccountInfo() {
-    
+    account_id = (isDefined(accountId.value)) ? accountId.value : default_account_id;
+    client_id = (isDefined(clientId.value)) ? clientId.value : null;
+    client_secret = (isDefined(clientSecret.value)) ? clientSecret.value : null;
+    video_id = (isDefined(videoId.value)) ? videoId.value : default_video_id;
   }
 
   // set event listeners
