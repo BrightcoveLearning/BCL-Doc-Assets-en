@@ -154,6 +154,8 @@ var BCLS = (function(window, document) {
               if (response === '{null}') {
                 response = null;
               }
+console.log('response', response);
+
               // return the response
               callback(response);
             } else {
