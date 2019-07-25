@@ -1,9 +1,8 @@
 var BCLS = (function(window, document) {
-  // var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
-  var proxyURL = 'https://cs1.brightcodes.net/hturkel/bc_proxy.php',
+  var proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
     reportURL = 'https://analytics.api.brightcove.com/v1/timeseries/accounts/',
-    default_account_id = '3737230870001',
-    default_video_id = '6057232440001',
+    default_account_id = '57838016001',
+    default_video_id = '6063969160001',
     useMyAccount = document.getElementById('useMyAccount'),
     basicInfo = document.getElementById('basicInfo'),
     accountId = document.querySelector('#account_id'),
@@ -69,7 +68,6 @@ var BCLS = (function(window, document) {
       item;
     if (isJson(response)) {
       parsedData = JSON.parse(response);
-console.log('response', parsedData.ccu.data[0]);
       iMax = parsedData.ccu.data[0].points.length;
       for (i = 0; i < iMax; i++) {
         item = parsedData.ccu.data[0].points[i];
