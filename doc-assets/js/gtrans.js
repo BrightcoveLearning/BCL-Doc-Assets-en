@@ -10,7 +10,7 @@ function keepLanguage() {
     iMax;
     console.log('plang', plang);
     
-    if (plang === 'ja') {
+    if (plang.length === 2) {
       newPath = domain + '/' + plang;
       console.log('newpath', newPath);
       iMax = all_links.length;
