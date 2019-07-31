@@ -8,8 +8,11 @@ function keepLanguage() {
     all_links = document.querySelectorAll('a[href]'),
     i,
     iMax;
+    console.log('plang', plang);
+    
     if (plang === 'ja') {
       newPath = domain + '/' + plang;
+      console.log('newpath', newPath);
       iMax = all_links.length;
       for (i = 0; i < iMax; i++) {
         var href = absolute(all_links[i].getAttribute('href'));
