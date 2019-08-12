@@ -464,7 +464,7 @@ var BCLS = (function(window, document, profiles_array_cached) {
               data.profiles_array = [];
               for (i = 0; i < iMax; i++) {
                 console.log('i', tmpArr[i]);
-                if (tmpArr[i].renditions && tmpArr[i].renditions.length && 0 && tmpArr[i].renditions[0].live_stream && tmpArr[i].renditions[0].live_stream === true && tmpArr[i].model_version === 1) {
+                if (tmpArr[i].renditions && tmpArr[i].renditions.length && 0 && tmpArr[i].renditions[0].live_stream && tmpArr[i].renditions[0].live_stream === true && tmpArr[i].model_version && tmpArr[i].model_version === 1) {
                   data.profiles_array.push(tmpArr[i]);
                 }
               }
