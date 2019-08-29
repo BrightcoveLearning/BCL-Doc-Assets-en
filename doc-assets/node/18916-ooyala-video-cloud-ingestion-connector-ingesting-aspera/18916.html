@@ -1,0 +1,81 @@
+<article class="bcls-article">
+<p><a href="../index.html">See other Ooyala to Brightcove Migration Guides</a>.</p>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Note: this topic applies <strong>only</strong> to Ooyala customers migrated to Video Cloud.</aside>
+
+<section class="bcls-section">
+<h2 id="Overview_of_Aspera_Ingest">Overview of Aspera Ingest</h2>
+
+<div class="fig fignone"><img class="image" height="183" width="625" src="../images/ingest_aspera.png" /></div>
+</section>
+
+<section class="bcls-section">
+<h2 id="About_Aspera">About Aspera</h2>
+
+<p><a href="http://asperasoft.com/">Aspera</a> provides a high-performance file transfer client for uploading videos to Backlot. Aspera uses encryption while transferring data.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Account_Policy">Account Policy</h2>
+
+<p>Your account is limited to a maximum of 100GB on the ingestion server at any time. If you expect to upload more content, you can request a temporary increase from your Account Manager or Technical Support.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Getting_Ingest_Credentials">Getting Ingest Credentials</h2>
+
+<p>You need to obtain ingest credentials in order to upload files to Video Cloud via Aspera.</p>
+
+<p>Current users (both regular and upload-only) users on your Backlot account should have been created on your Video Cloud account, and <a href="../brightcove-api-authentication.html">client credentials</a> created for them. If you questions or problems with this, please <a href="/node/18632">contact Brightcove Support</a></p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Downloading_the_Aspera_Client">Downloading the Aspera Client</h2>
+
+<p>Aspera is available as a free browser plug-in or as a licensed desktop client. The Aspera browser plugin will be offered for download the first time a user connects to the ingest endpoint and logs in successfully. You can also download the software separately.</p>
+
+<ul>
+	<li>To download the free browser plugin, go to <a href="http://downloads.asperasoft.com/">Aspera downloads page</a> and download the Aspera Connect plugin.</li>
+	<li>To download the desktop client, go to <a href="http://asperasoft.com/software/client-options/desktop-client/">aspera client</a>.</li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Setting_VR_360_File_Metadata">Setting VR 360 File Metadata</h2>
+
+<p>If you are uploading a VR 360 video file, first label the file as VR 360 and tell which type of VR 360 it is, monoscopic or stereoscopic. Use file metadata to transmit this information.</p>
+
+<p>You can set VR 360 file metadata in the manifest file (see <a href="ingestion_fileformats.html">Manifest File Formats</a>).</p>
+
+<p>If you are not using a manifest file, indicate the file type by setting file metadata with the <samp>ffmpeg</samp> command-line utility. For example, suppose you are going to upload a Matroska (.mkv) file. With this type of file, you can create a custom metadata tag named <samp>vr360type</samp> and assign it one of the following values: <samp>mono</samp> or <samp>stereo_lr</samp>. For example:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">ffmpeg -i inputFile.mkv -c copy -metadata "vr360type=mono" outputFile.mkv</code></pre>
+
+<p>Some file formats do not support custom metadata. For example, with MP4 files, <samp>ffmpeg</samp> allows only predefined metadata tags. As a workaround, use the general-purpose <samp>description</samp> field with predefined values to indicate the VR 360 file type. The value of <samp>description</samp> must include the text <samp>VR 360</samp> and one of the following: <samp>mono</samp> or <samp>stereo_lr</samp>. For example:</p>
+
+<pre class="line-numbers">
+<code class="language-bash">ffmpeg -i inputFile.mp4 -c copy -metadata "description"="VR 360 Type is mono ..."  outputFile.mp4</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Ingesting_with_the_Aspera_Client">Ingesting with the Aspera Client</h2>
+
+<p>You can upload a video via the Aspera client either with or without a manifest.</p>
+
+<div class="note note"><span class="notetitle">Note:</span> All upload files must comply with the ingest requirements described in <a title="Before uploading content to Backlot, make sure you are using a supported file format and following the best practices for source files." href="../input_formats.html">Supported Ingest Formats</a></div>
+
+<h3>Uploading Your File(s) via the Aspera Client (OIS v2.5)</h3>
+
+<ol class="bcls_tasklist">
+	<li>Prepare the file(s) you want to upload.</li>
+	<li>In a browser, enter the endpoint transfer.ooyala.com. This endpoint will work from all locations. You can also use a specific endpoint for your region. See <a href="alternative_ftp_aspera_servers.html">Ooyala Ingest Server Endpoints</a>.</li>
+	<li>Log into the ingest endpoint using the credentials (email and password) of your Backlot user account.</li>
+	<li>If prompted, open the Aspera app. (If no prompt appears, the Aspera app is already open.)</li>
+	<li>Upload the file(s) you want to ingest (videos, thumbnails, closed caption files, and so on). If you are using a manifest file, be sure to upload all of the files that are referenced in the manifest file.</li>
+	<li>Ooyala suggests that you upload the manifest file last.</li>
+</ol>
+
+<p>Files are deleted immediately after they are all processed. Submitted files that do not go through the entire ingestion workflow (for example, awaiting the upload of the manifest file) are deleted from the server after 7 days.</p>
+</section>
+</article>
