@@ -23,11 +23,7 @@
           "AWS": "arn:aws:iam::395540211253:root"
         },
         "Action": [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:GetObjectAcl",
-          "s3:PutObjectAcl",
-          "s3:ListMultipartUploadParts"
+          "s3:GetObject"
         ],
         "Resource": [
           "arn:aws:s3:::<span class="bcls-input">MY-BUCKETNAME</span>/*"
@@ -40,8 +36,8 @@
           "AWS": "arn:aws:iam::749779118921:user/videocloud-ingestion"
         },
         "Action": [
-        "s3:ListBucketMultipartUploads",
-        "s3:GetBucketLocation"
+          "s3:GetObjectAcl",
+          "s3:GetObject"
         ],
         "Resource": "arn:aws:s3:::<span class="bcls-input">MY-BUCKETNAME</span>/*"
       }
@@ -54,16 +50,16 @@
 
 <ol class="bcls-tasklist">
 	<li>
-    <p>
-      Replace <code>MY-BUCKETNAME</code> with the name of your bucket. Leave the <code>/*</code> at the end of the <code>Resource</code> line, as that will apply the policy to every file within the bucket.
-    </p>
-    <aside class="bcls-aside bcls-aside--tip">Because you are providing Video Cloud access to your S3 bucket, you do not have to change the account id or user id values.</aside>
-  </li>
+	<p>Replace <code>MY-BUCKETNAME</code> with the name of your bucket. Leave the <code>/*</code> at the end of the <code>Resource</code> line, as that will apply the policy to every file within the bucket.</p>
+
+	<aside class="bcls-aside bcls-aside--tip">Because you are providing Video Cloud access to your S3 bucket, you do not have to change the account id or user id values.</aside>
+	</li>
 	<li>Optionally, replace the Action array with the actions you want to allow. Valid actions that Video Cloud may need are:
 	<h4>Object Permissions - first action array in the example above</h4>
-  <ul>
+
+	<ul>
 		<li><code class="notranslate">s3:GetObject</code> - allow Video Cloud to download files from the bucket</li>
-    <li><code class="notranslate">s3:PutObject</code> - allow Video Cloud to upload files to the bucket</li>
+		<li><code class="notranslate">s3:PutObject</code> - allow Video Cloud to upload files to the bucket</li>
 		<li><code class="notranslate">s3:GetObjectAcl</code> - allow Video Cloud to get ACL permissions for files</li>
 		<li><code class="notranslate">s3:PutObjectAcl</code> - allow Video Cloud to set ACL permissions for other users on files</li>
 		<li><code class="notranslate">s3:ListMultipartUploadParts</code> - allow Video Cloud to list which parts of a multipart file have been uploaded to the bucket</li>
@@ -79,6 +75,7 @@
 	<p>Video Cloud does not need any write permissions.</p>
 	</li>
 </ol>
+
 <p>Note that there are two statements in the policy. The first statement affects keys within the bucket, while the second part affects the bucket itself.</p>
 
 <p>The rest of the policy can be left alone and it will work fine. Amazon's documentation contains more information about the <a href="http://docs.amazonwebservices.com/AmazonS3/latest/dev/index.html?UsingBucketPolicies.html">elements of a Bucket Policy.</a></p>
