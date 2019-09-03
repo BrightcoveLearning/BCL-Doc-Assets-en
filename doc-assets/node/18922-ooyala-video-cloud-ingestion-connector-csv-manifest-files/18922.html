@@ -1,0 +1,166 @@
+<article class="bcls-article">
+<p><a href="/node/18904">See other Ooyala to Brightcove Migration Guides</a>.</p>
+
+<section class="bcls-section">
+<h2 id="introduction">Introduction</h2>
+
+<p>When ingesting videos, you can use CSV manifest files to specify extra metadata (including the video title, description, flight times, labels, and custom metadata), as well as thumbnail and closed caption files. You can use CSV manifest files when you ingest content with FTP or Aspera.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+
+<div class="note note"><span class="notetitle">Note:</span> This topic applies to OIS v2.5.</div>
+
+<p>The CSV format of the metadata file supports fewer features than does the XML format. The CSV format allows you to specify thumbnails (preview images) and custom metadata to associate with a video. The XML format supports these features as well as the association of the names of existing defined of ad sets.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="CSV_Manifest_Column_Headings">CSV Manifest Column Headings</h2>
+
+<p>The following fields are the first line (column headings) of your CSV file, with actual data fields following on subsequent rows (one row per video).</p>
+
+<div class="note note"><span class="notetitle">Note:</span> You can specify these columns in any order, and you can omit columns that you do not need, as long as the data in the data rows match the headings exactly.</div>
+
+<table class="bcls-table">
+	<caption class="bcls-caption--table">CSV Manifest Column Headings</caption>
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Column Heading</th>
+			<th>Description</th>
+			<th>Required/Optional</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><samp>video</samp></td>
+			<td>Filename of the video or the URL where the video is located. The URL can include <samp>http://</samp> or <samp>https://</samp>.</td>
+			<td>required</td>
+		</tr>
+		<tr>
+			<td><samp>title</samp></td>
+			<td>Name or title of the video.</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>thumbnail</samp></td>
+			<td>Filename of the thumbnail or the URL where the thumbnail is located.</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>content_type</samp></td>
+			<td>Content type (video or remote asset). If the filename specified in the video column is a URL where the video is located, and if you want to define a remote asset, change the value of the content_type column (from <samp>video</samp>, the default) to <samp>content_type=remoteasset</samp>.</td>
+			<td>required (remote assets only)</td>
+		</tr>
+		<tr>
+			<td><samp>description</samp></td>
+			<td>Description of the video.</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>hosted_at</samp></td>
+			<td>Permanent URL where you embed the video. Maps to the value of the <samp>hosted_at</samp> property for a remote asset.
+			<div class="note note"><span class="notetitle">Note:</span> After a remote asset has been created, its propagation to the various CDNs might be delayed 60 seconds or more. If you request a remote asset too soon after its creation, the results will be cached by the CDNs, which might take several minutes to clear. Best practice: after creation, wait 30 or 60 seconds, query with the <span class="ph">Backlot API</span> <samp>[GET] /v2/assets/<var class="keyword varname">asset_id</var></samp> route, and after retrieving the remote asset's embed code (content ID or asset ID), then proceed to embed the asset.</div>
+			</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>flight_start_time</samp></td>
+			<td>The start time when the asset can be played, in UTC. Example: <samp>2011-06-01T00:00:00Z</samp></td>
+			<td>required (only if <samp>flight_end_time</samp>is specified)</td>
+		</tr>
+		<tr>
+			<td><samp>flight_end_time</samp></td>
+			<td>The end time when the asset can be played, in UTC. Example: <samp>2011-07-01T00:00:00Z</samp></td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>durationInMs</samp></td>
+			<td>(OS v2.5 only) The duration representing the length of the video (in milliseconds). Required when <samp>content_type=remoteasset</samp>.</td>
+			<td>required (for remote assets only)</td>
+		</tr>
+		<tr>
+			<td><samp>labels</samp></td>
+			<td>One or more labels, separated by commas. For example: <samp>/sports,/sports/jogging</samp>.</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>metadata</samp></td>
+			<td>Custom metadata for the video. You can have a column for each type of metadata.
+			</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>embed_code</samp></td>
+			<td>(Reserved). Content ID in Backlot of the video asset.</td>
+			<td>reserved</td>
+		</tr>
+		<tr>
+			<td><samp>id</samp></td>
+			<td>Maps to the created asset's external ID property: a custom identifier you define that you can use instead of the content ID.</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>subTitle</samp></td>
+			<td class="entry" id="ingestion_ftp_csv__subtitle" valign="top" width="71.42857142857143%" headers="d1039925e42 ">Specifies a closed caption file (supported for DFXP files only). One of the following:
+			<ul>
+				<li class="language-editable">Filename of the closed caption file you uploaded. Example: <samp>&lt;media:subTitle href="caption-1.dfxp"/&gt;</samp></li>
+				<li class="language-editable">URL where the closed caption file is located. The URL can include <samp>http://</samp> or <samp>https://</samp>.</li>
+			</ul>
+
+			<p>See <a title="You can ingest closed caption files via Backlot or the Ooyala Ingestion Service (OIS)." href="/node/18910">Ingesting Closed Caption Files</a>.</p>
+			</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>subTitle:lang</samp></td>
+			<td>(optional) - Language of the closed caption file. Two-letter language code./td&gt;</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>subTitle:frameRate</samp></td>
+			<td>(optional) - Frame rate of the closed caption file. Units are in Frames Per Second (FPS). Default is 30. Older closed caption files might be 24.</td>
+			<td>optional</td>
+		</tr>
+		<tr>
+			<td><samp>profileguid</samp></td>
+			<td>ID of the processing profile, which is a group of encodes that define the formats a master video must be converted into during transcoding. Contact your Ooyala support representative for details.</td>
+			<td>optional</td>
+		</tr>
+	</tbody>
+</table>
+
+<p class="p"><strong class="ph b">Example CSV Manifest File (OIS v2.5)</strong></p>
+
+
+<pre class="line-numbers">
+<code class="language-bash">
+video,title,description,labels,hosted_at,id,thumbnail,subTitle,flight_start_time,flight_end_time,profileguid
+test.mp4,Test CSV,This is an example,"test,example,csv",http://www.ooyala.com,my_test_guid_csv,my_thumbnail.jpg,my_caption.dfxp,2016-01-01T15:15:00-07:00,2022-01-01T16:00:00-07:00,57d5a5a10f654fe79ef954dc8d29a108
+</code></pre>
+
+<div class="fig fignone"><img class="image" id="ingestion_ftp_csv__ingest_ftpvideo_csv" height="91" width="1135" src="../images/ingest_ftp_video_csv.png" /></div>
+
+<p class="p"><strong class="ph b">Creating a CSV Manifest File</strong></p>
+
+<p class="p">Keep the following in mind when generating a CSV metadata file:</p>
+
+<ul>
+	<li class="language-editable">If a text value in a data field has a comma (,), you must enclose the field in double quotes (").</li>
+	<li class="language-editable">If a text value in a data field has a double quote (") in it, you must enclose the field in double quotes and escape the double quote character in the text field with a second quote (e.g., "She said, ""Have a nice day.""" )</li>
+</ul>
+
+<p class="p">If you are creating your CSV metadata file from Excel, it automatically handles escaping.</p>
+
+<p class="p">To create a CSV metadata file:</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Upload one or more videos.</li>
+	<li class="language-editable">Open a spreadsheet program, such as Microsoft Excel.</li>
+	<li class="language-editable">Add the column headings to the first row.</li>
+	<li class="language-editable">Add a row for each video.</li>
+	<li class="language-editable">Save the file as a CSV. For example, you might select <strong>Save as</strong> from the <strong>File</strong> menu. When prompted, select the comma-separated value file type.</li>
+	<li class="language-editable"><span>With your upload method of choice, upload the CSV file as you uploaded the video(s). See either <a title="You can use FTPS (recommended) or FTP (deprecated) to upload videos, thumbnails, closed captions, and manifest files to Backlot." href="/node/18918">FTP</a> or <a title="You can use Aspera file transfer software to upload videos, thumbnails, closed captions and manifest files to Backlot." href="/node/18916">Aspera</a>.</span></li>
+</ol>
+</section>
+</article>
