@@ -25,10 +25,7 @@
      },
      "Action": [
      "s3:GetObjectAcl",
-     "s3:GetObject",
-     "s3:PutObjectAcl",
-     "s3:PutObject",
-     "s3:ListMultipartUploadParts"
+     "s3:GetObject"
      ],
      "Resource": "arn:aws:s3:::MY-BUCKET/*"
    },
@@ -39,7 +36,6 @@
          "AWS": "arn:aws:iam::395540211253:root"
      },
      "Action": [
-     "s3:ListBucketMultipartUploads",
      "s3:GetBucketLocation"
      ],
      "Resource": "arn:aws:s3:::MY-BUCKET"
@@ -47,13 +43,14 @@
  ]
  }</code></pre>
 
-<aside class="bcls-aside bcls-aside--information">The first entry in the <code>Statement</code> array is for the ingestion of videos, while the second is for ingestion of <a href="/node/17940">images</a> and <a href="/node/17938">WebVTT</a> files.</aside>
 
 <p>There is only <strong>one change you must make</strong> to this bucket policy before it's ready to go:</p>
 
 <ol class="bcls-tasklist">
 	<li>
-	<p>Replace <code>MY-BUCKET</code> with the name of your bucket. Leave the <code>/*</code> at the end of the <code>Resource</code> line, as that will apply the policy to every file within the bucket.</p>
+    <p>
+      Replace <code>MY-BUCKET</code> with the name of your bucket on both <code>Resource</code> lines. Leave the <code>/*</code> at the end of the first one, as that statement applies to every file within the bucket.
+    </p>
 
 	<aside class="bcls-aside bcls-aside--tip">Because you are providing Video Cloud access to your S3 bucket, you do not have to change the account id or user id values.</aside>
 	</li>
@@ -62,17 +59,13 @@
 
 	<ul>
 		<li><code class="notranslate">s3:GetObject</code> - allow Video Cloud to download files from the bucket</li>
-		<li><code class="notranslate">s3:PutObject</code> - allow Video Cloud to upload files to the bucket</li>
 		<li><code class="notranslate">s3:GetObjectAcl</code> - allow Video Cloud to get ACL permissions for files</li>
-		<li><code class="notranslate">s3:PutObjectAcl</code> - allow Video Cloud to set ACL permissions for other users on files</li>
-		<li><code class="notranslate">s3:ListMultipartUploadParts</code> - allow Video Cloud to list which parts of a multipart file have been uploaded to the bucket</li>
 	</ul>
 
 	<h4>Bucket Permissions - second action array in the example above</h4>
 
 	<ul>
 		<li>s3:GetBucketLocation - allow Video Cloud to get the location of the bucket (US, EU, Asia, etc.)</li>
-		<li>s3:ListBucketMultipartUploads - allow Video Cloud to view any multipart uploads currently happening on the bucket</li>
 	</ul>
 
 	<p>Video Cloud does not need any write permissions.</p>
