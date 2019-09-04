@@ -13,36 +13,39 @@
 <p>To set up your policy to allow Dynamic Ingest to access your videos, go to the <a href="http://aws.amazon.com/console/">AWS Console</a>. Select your bucket, then select the "Permissions" tab, then click the "Bucket Policy" button. On the last row click <strong>Add bucket policy</strong>. Below is our recommended policy:</p>
 
 <pre class="line-numbers">
-  <code class="language-json">{
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Sid": "AddPerm",
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": "arn:aws:iam::395540211253:root"
-        },
-        "Action": [
-          "s3:GetObject"
-        ],
-        "Resource": [
-          "arn:aws:s3:::<span class="bcls-input">MY-BUCKETNAME</span>/*"
-        ]
-      },
-      {
-        "Sid": "Stmt1295042087538",
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": "arn:aws:iam::749779118921:user/videocloud-ingestion"
-        },
-        "Action": [
-          "s3:GetObjectAcl",
-          "s3:GetObject"
-        ],
-        "Resource": "arn:aws:s3:::<span class="bcls-input">MY-BUCKETNAME</span>/*"
-      }
-    ]
-  }</code></pre>
+<code class="language-json notranslate">{
+ "Version": "2012-10-17",
+ "Id": "VideoCloudBucketPolicy",
+ "Statement": [
+   {
+     "Sid": "Stmt1295042087538",
+     "Effect": "Allow",
+     "Principal": {
+         "AWS": "arn:aws:iam::395540211253:root"
+     },
+     "Action": [
+     "s3:GetObjectAcl",
+     "s3:GetObject",
+     "s3:PutObjectAcl",
+     "s3:PutObject",
+     "s3:ListMultipartUploadParts"
+     ],
+     "Resource": "arn:aws:s3:::MY-BUCKET/*"
+   },
+   {
+     "Sid": "Stmt1295042087538",
+     "Effect": "Allow",
+     "Principal": {
+         "AWS": "arn:aws:iam::395540211253:root"
+     },
+     "Action": [
+     "s3:ListBucketMultipartUploads",
+     "s3:GetBucketLocation"
+     ],
+     "Resource": "arn:aws:s3:::MY-BUCKET"
+   }
+ ]
+ }</code></pre>
 
 <aside class="bcls-aside bcls-aside--information">The first entry in the <code>Statement</code> array is for the ingestion of videos, while the second is for ingestion of <a href="/node/17940">images</a> and <a href="/node/17938">WebVTT</a> files.</aside>
 
@@ -50,7 +53,7 @@
 
 <ol class="bcls-tasklist">
 	<li>
-	<p>Replace <code>MY-BUCKETNAME</code> with the name of your bucket. Leave the <code>/*</code> at the end of the <code>Resource</code> line, as that will apply the policy to every file within the bucket.</p>
+	<p>Replace <code>MY-BUCKET</code> with the name of your bucket. Leave the <code>/*</code> at the end of the <code>Resource</code> line, as that will apply the policy to every file within the bucket.</p>
 
 	<aside class="bcls-aside bcls-aside--tip">Because you are providing Video Cloud access to your S3 bucket, you do not have to change the account id or user id values.</aside>
 	</li>
