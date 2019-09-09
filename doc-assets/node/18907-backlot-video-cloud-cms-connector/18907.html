@@ -117,8 +117,8 @@
 			<ul>
 				<li><code>ad</code> type videos will be regular videos in Video Cloud with the tag <code>ooyala_my_ads</code></li>
 				<li><code>youtube</code> type videos will not be migrated to Video Cloud</li>
-				<li><code>external_id</code> is not being migrated to Video Cloud</li>
-				<li>Recurring time restrictions not being migrated to Video Cloud</li>
+				<li><code>external_id</code> is being migrated to Video Cloud, but will be a read-only field available to the Playback API (for Ooyala players delivering Video Cloud content)</li>
+				<li>Recurring time restrictions and IP restrictions are not being migrated to Video Cloud</li>
 			</ul>
 			</td>
 		</tr>
@@ -129,7 +129,7 @@
 			<ul>
 				<li>See <a href="/node/18929">Ingestion Using the Backlot API</a> for more details</li>
 				<li>Video Cloud ingestion requires that the <code>chunk_size</code> be 5MB or greater (except for the last chunk) - an error will be returned if the <code>chunk_size</code> is set to lower value</li>
-				<li>Since <code>ad</code> and <code>youtube</code> type videos are not supported in Video Cloud, attempting to create videos of these types will return an error</li>
+				<li>Since <code>youtube</code> type videos are not supported in Video Cloud, attempting to create videos of these types will return an error. <code>ad</code> type videos can be created as regular videos having the tag <code>ooyala_my_ads</code>.</li>
 				<li><code>youtube</code> type videos will not be migrated to Video Cloud</li>
 			</ul>
 			</td>
@@ -184,7 +184,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li>This request will return the default WebVTT content</li>
+				<li>This request will return an HTTP 302 response with the location set to the captions content</li>
 			</ul>
 			</td>
 		</tr>
@@ -193,7 +193,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li>Replace the existing WebVTT text tracks; note that you can upload WebVTT or DFXP captions - DFXP will be converted to WebVTT</li>
+				<li>Replace the existing WebVTT text track; note that you can upload WebVTT or DFXP captions - DFXP will be converted to WebVTT</li>
 			</ul>
 			</td>
 		</tr>
@@ -246,26 +246,26 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li>All <code>labels</code> will be migrated to <code>tags</code>, so this request will add a video tag</li>
+				<li>All <code>labels</code> will be migrated to <code>tags</code>, so this request will add a video tag. Note that updating labels directly in Video Cloud is <strong>not</strong> supported.</li>
 			</ul>
 			</td>
 		</tr>
 		<tr>
 			<td rowspan="2"><code>/v2/assets/{asset_id}/labels/{label_id}</code></td>
 			<td><code>PUT</code></td>
-			<td style="text-align:center;"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center;"><img src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" alt="Yes">/td>
 			<td>
 			<ul>
-				<li>Video Cloud does not have the concept of a label id</li>
+				<li>This will replace the label (a <code>tag</code>) in Video Cloud. Note that updating labels directly in Video Cloud is <strong>not</strong> supported.</li>
 			</ul>
 			</td>
 		</tr>
 		<tr>
 			<td><code>DELETE</code></td>
-			<td style="text-align:center;"><img alt="No" src="//learning-services-media.brightcove.com/doc-assets/general/images/x16.png" /></td>
+			<td style="text-align:center;"><img src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" alt="Yes"></td>
 			<td>
 			<ul>
-				<li>Video Cloud does not have the concept of a label id</li>
+				<li>This will delete the label (a <code>tag</code>) in Video Cloud. Note that updating labels directly in Video Cloud is <strong>not</strong> supported.</li>
 			</ul>
 			</td>
 		</tr>
@@ -275,7 +275,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li><code>metadata</code> items will be migrated to <code>tags</code> in the form <code>meta:;:{key}:;:{value}</code></li>
+				<li><code>metadata</code> items will be migrated to <code>tags</code> in the form <code>meta:;:{key}:;:{value}</code>. Note that overall length of each tag is limited to 128 single-byte characters.</li>
 			</ul>
 			</td>
 		</tr>
@@ -284,7 +284,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li><code>metadata</code> items will be migrated to <code>tags</code> in the form <code>meta:;:{key}:;:{value}</code> - this request will add or replace tags in that format</li>
+				<li><code>metadata</code> items will be migrated to <code>tags</code> in the form <code>meta:;:{key}:;:{value}</code> - this request will add or replace tags in that format.  Note that overall length of each tag is limited to 128 single-byte characters.</li>
 			</ul>
 			</td>
 		</tr>
@@ -491,7 +491,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li>Supported through the <a href="/node/18910">Ingestion Adapter</a></li>
+				<li>Supported through the Backlot API and the <a href="/node/18910">Ingestion Adapter</a></li>
 			</ul>
 			</td>
 		</tr>
@@ -501,7 +501,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li>Supported through the <a href="/node/18910">Ingestion Adapter</a></li>
+				<li>Supported through the Backlot API and the <a href="/node/18910">Ingestion Adapter</a></li>
 			</ul>
 			</td>
 		</tr>
@@ -561,7 +561,7 @@
 			<td style="text-align:center;"><img alt="Yes" src="//learning-services-media.brightcove.com/doc-assets/general/images/check16.png" /></td>
 			<td>
 			<ul>
-				<li>Will return the default <code>text_track</code> for the video</li>
+				<li>Will return the default <code>text_track</code> for the video. Migrated videos will have only one <code>text_track</code> - additional ones can be added through Video Cloud. If you add more text tracks, set the default one to have it returned for this request.</li>
 			</ul>
 			</td>
 		</tr>
@@ -602,7 +602,12 @@
 <section class="bcls-section">
 <h2 id="labels_endpoints">Labels endpoints</h2>
 
-<p>Labels will be migrated to Video Cloud as <code>tags</code>. Unlike labels, tags are set on individual videos - there is no account-level "tag set", and tags are not hierarchical. Apart from those difference, tags can be used in many of the ways that labels are, for example:</p>
+<p>Labels will be migrated to Video Cloud as <code>tags</code>. Unlike labels, tags are set on individual videos - there is no account-level "tag set", and tags are not hierarchical. Label hierarchies will be preserved in Video Cloud tags like this:</p>
+<figure class="bcls-figure">
+  <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18907-backlot-video-cloud-cms-connector/labels2tags.png" alt="Labels to Tags">
+  <figcaption class="bcls-caption--image">Labels to Tags</figcaption>
+</figure>
+<p>Apart from those difference, tags can be used in many of the ways that labels are, for example:</p>
 
 <ul>
 	<li>searching for videos that have some, all, or none of a set of tags</li>
