@@ -1,40 +1,47 @@
 <article class="bcls-article">
-<p><a href="/node/18904">See other Ooyala to Brightcove Migration Guides</a>.</p>
+  <p><a href="/node/18904">See other Ooyala to Brightcove Migration Guides</a>.</p>
+  
+  <section class="bcls-section">
+  <h2 id="new_video_cloud_options">New Video Cloud options</h2>
+  
+  <p>Video Cloud has three standard options for ingesting videos:</p>
+  
+  <ul>
+    <li><a href="/node/14456">The Upload module in Studio</a></li>
+    <li><a href="/node/18373">Pull-based ingestion using the Dynamic Ingest API</a></li>
+    <li><a href="/node/18288">Source file upload using the Dynamic Ingest API</a></li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="use_ooyala_ingestion_methods">Or use Ooyala ingestion methods</h2>
+  
+  <p>As a Video Cloud customer, you can use any of the options listed above, but Brightcove has also built adaptors for Ooyala ingest systems to direct the videos to the Video Cloud ingest system, so you can continue to use the <a href="/node/18911">Ooyala Ingestion Service (OIS)</a> to send your videos to Video Cloud using:</p>
+  
+  <ul>
+    <li><a href="/node/18918">FTPS</a></li>
+    <li><a href="/node/18916">Aspera</a></li>
+    <li><a href="/node/18926">Remotely host MRSS feeds</a></li>
+    <li><a href="/node/18907">The Backlot API</a></li>
+  </ul>
 
-<section class="bcls-section">
-<h2 id="new_video_cloud_options">New Video Cloud options</h2>
-
-<p>Video Cloud has three standard options for ingesting videos:</p>
-
-<ul>
-	<li><a href="/node/14456">The Upload module in Studio</a></li>
-	<li><a href="/node/18373">Pull-based ingestion using the Dynamic Ingest API</a></li>
-	<li><a href="/node/18288">Source file upload using the Dynamic Ingest API</a></li>
-</ul>
-</section>
-
-<section class="bcls-section">
-<h2 id="use_ooyala_ingestion_methods">Or use Ooyala ingestion methods</h2>
-
-<p>As a Video Cloud customer, you can use any of the options listed above, but Brightcove has also built adaptors for Ooyala ingest systems to direct the videos to the Video Cloud ingest system, so you can continue to use the <a href="/node/18911">Ooyala Ingestion Service (OIS)</a> to send your videos to Video Cloud using:</p>
-
-<ul>
-	<li><a href="/node/18918">FTPS</a></li>
-	<li><a href="/node/18916">Aspera</a></li>
-	<li><a href="/node/18926">Remotely host MRSS feeds</a></li>
-</ul>
-
-<p>All existing manifest options will continue to work. Continue to use your authentication credentials for Ooyala, and the adapter will automatically translate these into credentials for the necessary Video Cloud APIs:</p>
-
-<dl>
-  <dt>API based ingestion</dt>
-  <dd>If your ingestion workflow includes ingesting new content directly via the Ingestion API:  when your client traffic is directed to Video Cloud, you will use the existing Ooyala API key and secret to make the API calls to the current Ooyala API endpoints.</dd>
-  <dt>FTP/Aspera based ingestion</dt>
-  <dd><strong>Make sure to reset the Video Could "upload only" user account password to something different than you had in Backlot.</strong>  If your "upload only" account in Backlot supported both video and metadata, then the Video Cloud "upload only" account will also do that. You can continue to connect to the same FTP/Aspera endpoints and use your new Video Cloud "upload only" user account credentials to upload files. Once files have been uploaded and have disappeared from the upload folder, log into Video Cloud and ensure your video has been added. If you are uploading XML or CSV metadata files along with video and want to target a specific ingestion profile, you will need to specify the Video Cloud profile name in the XML or CSV field under profileguid element. See <a href="/node/15628">Managing Ingest Profiles</a>.</dd>
-  <dt>MRSS based ingestion</dt>
-  <dd>Please share your MRSS feed with your account team and they can enable it. Because we will not be able to validate which videos from the MRSS feed were previously ingested into Backlot, ensure only new videos are available in the MRSS feed. If old videos are available in the feed, they will be ingested as well resulting in duplicate content in Video Cloud. Once the MRSS feed is in place, you can log into Video Cloud to validate that content is being ingested.</dd>
-  <dt>Ingestion via Brightcove Video Cloud Studio</dt>
-  <dd>One important difference with Backlot is the ingestion profile you will select to ingest your content, be sure to choose an ingest profile in Video Cloud which best meets your requirements, you can find helpful information on Video Cloud ingest profiles in <a href="/node/15628">Managing Ingest Profiles</a>.</dd>
-</dl>
-</section>
-</article>
+  <figure class="bcls-figure">
+    <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18910-migrating-video-cloud-ingestion-adaptor/ingestion-options.svg" alt="Ingestion Options">
+    <figcaption class="bcls-caption--image">Ingestion Options</figcaption>
+  </figure>
+  
+  <p>All existing manifest options will continue to work. Continue to use your authentication credentials for Ooyala, and the adapter will automatically translate these into credentials for the necessary Video Cloud APIs:</p>
+  
+  <dl>
+    <dt>API based ingestion</dt>
+    <dd>If your ingestion workflow includes ingesting new content directly via the Ingestion API: when your client traffic is directed to Video Cloud, you will use the existing Ooyala API key and secret to make the API calls to the current Ooyala API endpoints.</dd>
+    <dt>FTP/Aspera based ingestion</dt>
+    <dd><strong>Make sure to reset the Video Could "upload only" user account password to something different than you had in Backlot.</strong> If your "upload only" account in Backlot supported both video and metadata, then the Video Cloud "upload only" account will also do that. You can continue to connect to the same FTP/Aspera endpoints and use your new Video Cloud "upload only" user account credentials to upload files. Once files have been uploaded and have disappeared from the upload folder, log into Video Cloud and ensure your video has been added. If you are uploading XML or CSV metadata files along with video and want to target a specific ingestion profile, you will need to specify the Video Cloud profile name in the XML or CSV field under profileguid element. See <a href="/node/15628">Managing Ingest Profiles</a>.</dd>
+    <dt>MRSS based ingestion</dt>
+    <dd>Please share your MRSS feed with your account team and they can enable it. Because we will not be able to validate which videos from the MRSS feed were previously ingested into Backlot, ensure only new videos are available in the MRSS feed. If old videos are available in the feed, they will be ingested as well resulting in duplicate content in Video Cloud. Once the MRSS feed is in place, you can log into Video Cloud to validate that content is being ingested.</dd>
+    <dt>Ingestion via Brightcove Video Cloud Studio</dt>
+    <dd>One important difference with Backlot is the ingestion profile you will select to ingest your content, be sure to choose an ingest profile in Video Cloud which best meets your requirements, you can find helpful information on Video Cloud ingest profiles in <a href="/node/15628">Managing Ingest Profiles</a>.</dd>
+  </dl>
+  </section>
+  </article>
+  
