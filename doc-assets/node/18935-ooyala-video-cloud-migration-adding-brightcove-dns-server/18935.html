@@ -5,7 +5,7 @@
     <h2 id="Introduction">Introduction</h2>
     <p>In order to use the <a href="/node/18905">Playback Adapter</a> that will allow your Ooyala players to deliver content from Video Cloud, and/or to use the <a href="/node/18907">CMS Connector</a> that allows you to use some operations of the Backlot API to manage your media in Video Cloud, two things must happen:</p>
     <ol>
-      <li><strong>First:</strong> contact your Account Manager to initiate the process. Your Account Manager will need to get IP addresses from you and will help you find them if you don't know how to do it. Your Account Manager can also help you with the steps explained in the rest of this document that you must perform.</li>
+      <li><strong>First:</strong> contact your CXM to initiate the process. Your CXM will need to get IP addresses from you and will help you find them if you don't know how to do it. Your CXM can also help you with the steps explained in the rest of this document that you must perform.</li>
       <li>What you need to do for each computer and device that will be using the Playback Adapter or CMS Connector is to add a Brightcove DNS server that will redirect requests sent to ooyala.com resources to the appropriate Brightcove APIs. The steps for doing this are detailed in the sections that follow.</li>
     </ol>
   </section>
@@ -69,15 +69,33 @@
       <li class="notranslate">Click on Network and Sharing Center.</li>
       <li class="notranslate">Click the Change adapter settings option in the left pane.
         <figure class="bcls-figure">
-          <img class="bcls-image" src="" alt="Change Adapter Settings">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18935-ooyala-video-cloud-migration-adding-brightcove-dns-server/win-1.png" alt="Change Adapter Settings">
           <figcaption class="bcls-caption--image">Change Adapter Settings</figcaption>
         </figure>
       </li>
-      <li class="notranslate"></li>
-      <li class="notranslate"></li>
-      <li class="notranslate"></li>
-      <li class="notranslate"></li>
-      <li class="notranslate"></li>
+      <li class="notranslate">Right-click the network interface connected to the internet, and select the Properties option:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18935-ooyala-video-cloud-migration-adding-brightcove-dns-server/win-2.png" alt="Network Interface Properties">
+          <figcaption class="bcls-caption--image">Network Interface Properties</figcaption>
+        </figure>
+      </li>
+      <li class="notranslate">Select and check the Internet Protocol Version 4 (TCP/IPv4) option.</li>
+      <li class="notranslate">Click the Properties button.
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18935-ooyala-video-cloud-migration-adding-brightcove-dns-server/win-3.png" alt="Network Connection Properties">
+          <figcaption class="bcls-caption--image">Network Connection Properties</figcaption>
+        </figure>
+      </li>
+      <li class="notranslate">Click the Use the following DNS server addresses option.</li>
+      <li class="notranslate">For you Preferred on Alternate DNS server address, enter <code>35.170.73.174</code>
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18935-ooyala-video-cloud-migration-adding-brightcove-dns-server/win-4.png" alt="Enter DNS Server Address">
+          <figcaption class="bcls-caption--image">Enter DNS Server Address</figcaption>
+        </figure>
+      </li>
+      <li class="notranslate">Click <strong>OK</strong>.</li>
+      <li class="notranslate">Click <strong>Close</strong></li>
+      <li class="notranslate">Restart the computer to clear the DNS cache.</li>
     </ol>
 
   </section>
@@ -131,10 +149,16 @@
       <li class="notranslate">Save your settings.</li>
       <li class="notranslate">Restart the device to clear the DNS cache.</li>
     </ol>
-
+  </section>
+  <section class="bcls-section">
+    <h2 id="Andriod_steps">Android steps</h2>
+    <p>Because of the different versions of Android, and the different ways of changing the DNS server depending on whether you have root access to the device, and if you are using system settings or a third party app, we recommend that you contact your CXM for help with making this change on Android. If you would rather try it yourself first, you can try the instructions <a href="https://www.techuntold.com/how-change-dns-settings-android/">here</a>.</p>
   </section>
   <section class="bcls-section">
     <h2 id="special_case_vpn">Special case: VPN</h2>
-    <p>The above steps may not work if your computer/device is on VPN, because the VPN server may override your DNS server settings with its own. If this happens or you have other issues with setting up the Brightcove DNS server, <a href="/node/18632">contact Brightcove Support</a>.</p>
+    <p>The above steps may not work if your computer/device is on VPN, because the VPN server may override your DNS server settings with its own. If this happens,  you will need to add the Brightcove DNS server to you VPN. Exactly what commands you will need will depend on the platform and VPN, but a sample for MacOS is shown below to give you an idea:</p>
+<pre class="line-numbers"><code class="language-bash">get State:/Network/Service/net.pulsesecure.pulse.nc.main/DNS
+d.add ServerAddresses * 35.170.73.174
+set State:/Network/Service/net.pulsesecure.pulse.nc.main/DNS</code></pre>
   </section>
 </article>
