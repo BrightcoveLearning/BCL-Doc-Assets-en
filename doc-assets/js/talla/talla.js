@@ -1,18 +1,15 @@
-var BCLS_talla = ( function (window, document) {
-  var token = "​[ Customer Generated Token ]​"
-   Talla.widget = Talla.init(
-'00c26be3-4421-41e6-bb00-1dee68740f67, 
-Talla.OptionQuickLoadBeacon, 
-Talla.OptionBotName(" Talla.OptionThemeColor(" Talla.OptionBotIcon(
-"​{ image url for Bot profile }​" ),
-Talla.OptionOpenIcon(
-"​{ image url for beacon }​"
-), Talla.OptionAnonymous(
-"​{true or false}​" )
-)
-"),
-"),
- ​{Bot Name}​
- ​{ Color in Hex }​
-Talla.widget.display(Talla.OptionJWTCredentials(token))
-})(window, document);
+var appID = 'e14ff9ed-2f8f-49f4-8bfa-f551757d55bb';
+var talla_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1Njg4MzA5NjR9.42xk8cnXFZll1kpm_M56A7prEgsNzldJGfXe45k0gpM';
+var talla_parent = document.getElementById('talla_widget');
+
+if (Talla) {
+  Talla.widget = Talla.init(
+    appID,
+    Talla.OptionLoadExternalKB, 
+    Talla.OptionBotName('Questions?')
+  );
+  function talla_start() {
+    Talla.widget.display(Talla.OptionJWTCredentials(talla_token), Talla.OptionParent(talla_parent));
+  }
+  talla_start();
+}
