@@ -1,102 +1,106 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-  <aside class="bcls-aside bcls-aside--information">Note: <strong class="notranslate">Promises</strong> do not work in IE11. Use the polyfill of the <a class="notranslate" href="https://www.npmjs.com/package/es6-promise">ES6-Promise</a> to add this functionality to IE11.</aside>
-  
-  <h2 id="section-name2">Simple Promise</h2>
-  
-  <p>Although it is NOT the purpose of this document to teach you how to write a JavaScript <code>Promise</code>, to understand how to use them it is instructive to see how a simple <code>Promise</code> is coded.</p>
-  
-  <p>In the following, a <code">Promise</code"> is created that returns a string that states whether a task was completed or not. The key point is that either the <code>Promise.resolve()</code> or <code>Promise.reject()</code> method is called. In this case a simple string is passed by both methods, but this could be an object.</p>
-  
-  <aside class="bcls-aside bcls-aside--information">Note: Although NOT demonstrated in this simple example, the <code>Promise</code> object represents the <strong>eventual completion</strong> (or failure) of an <strong>asynchronous operation</strong>, and its resulting value. In this way a <code>Promise</code> is similar in concept to a callback function.</aside>
-  
-  <pre class="line-numbers">
-  <code class="language-javascript">let promiseToFinishTask = new Promise(function(resolve, reject) {
-  
-    //Business logic to set taskComplete boolean
-    let taskComplete = true;
-  
-    if (taskComplete) {
-      resolve('Yea, I am done');
-    } else {
-      reject('Not quite done');
-    }
-  });</code></pre>
-  
-  <p>Now you will see how to deal with the returned <code>Promise</code> information, which is what you will do with some Brightcove Player API method calls. The basic handling of a  <code>  <p>Now you will see how to deal with the returned <code>Promise</code> information, which is what you will do with some Brightcove Player API method calls. The basic handling of a   follows:</p>
-</code> follows:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-javascript">promiseName.then(
-    // Function call for promise resolved
-  ).catch(
-    // Function call for promise rejected
-  )</code></pre>
-  
-  <p>Handling the simple example above would appear as shown here:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-javascript">promiseToFinishTask.then(function(fromResolve) {
-    console.log(fromResolve);
-  }).catch(function(fromReject) {
-    console.log(fromReject);
-  });</code></pre>
-  
-  <p>If the <code>Promise</code> is resolved the <code>then</code> code is executed, and if the <code>Promise</code> is rejected the <code>catch</code> code is executed. For the example, one of the strings <strong>Yea, I am done</strong> or <strong>Not quite done</strong> would appear based on the business logic that set the <code>taskComplete</code> variable's value.</p>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="section-name3">Brightcove example</h2>
-  
-  <p>The Brightcove Player's <code>play()</code> method may return a Promise that can be used to check if the player could autoplay the video currently in the player. The code that deals with the <code>Promise</code> is highlighted:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-javascript">var myPlayer = videojs.getPlayer('myPlayerID');
-  myPlayer.on('loadedmetadata',function() {
-    var promise = myPlayer.play();
-    if (promise !== undefined) {
-      <span class="bcls-highlight">promise.then(function() {
-        // Autoplay started!
-      }).catch(function(error) {
-        // Autoplay was prevented.
-      });</span>
-    }
-  });</code></pre>
-  
-  <p>Based on this you can then code behaviors if the video autoplayed or not. For a specific use case playing the video, with audio when possible, see the <a href="/node/18602#Specific_use_case">Specific use case</a> section of the <strong>Autoplay Considerations</strong> document.</p>
-  
-  <p>For complete information on JavaScript Promises see the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">MDN Promise</a> document.</p>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="Promise_versus_callback"><code>Promise</code> versus callback</h2>
-  
-  <p>In this section the Catalog's <code>get()</code> method is used to demonstrate the syntax difference between using a <code>Promise</code> versus a callback function. The <code>get()</code> method can be used with either approach.</p>
-  
-  <h3>Promise syntax</h3>
-  
-  <p>The following is a snippet of code showing the call to the <code>get()</code> method, handling the response as a <code>Promise</code>:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-javascript">myPlayer.catalog.get(catalogParams).then(function(videosReturned){
-    console.log('videosReturned',videosReturned);
-    myPlayer.playlist(videosReturned);
-  }).catch(function(errorObj){
-    console.log('errorObj',errorObj);
-  })</code></pre>
-  
-  <h3>Callback function syntax</h3>
-  
-  <p>The following is a snippet of code showing the call to the <code>get()</code> method, handling the response with a callback function:</p>
-  
-  <pre class="line-numbers">
-    <code class="language-javascript">myPlayer.catalog.get(catalogParams,function(errorObj,videosReturned){
-    console.log('errorObj',errorObj);
-    console.log('videosReturned',videosReturned);
-    myPlayer.playlist(videosReturned);
-  });
-  </code></pre>
-  </section>
-  </article>
-  
-  
+    <section class="bcls-section">
+    <aside class="bcls-aside bcls-aside--information">Note: <strong class="notranslate">Promises</strong> do not work in IE11. Use the polyfill of the <a class="notranslate" href="https://www.npmjs.com/package/es6-promise">ES6-Promise</a> to add this functionality to IE11.</aside>
+    
+    <h2 id="section-name2">Simple Promise</h2>
+    
+    <p>Although it is NOT the purpose of this document to teach you how to write a JavaScript <code>Promise</code>, to understand how to use them it is instructive to see how a simple <code>Promise</code> is coded.</p>
+    
+    <p>In the following, a <code">Promise</code"> is created that returns a string that states whether a task was completed or not. The key point is that either the <code>Promise.resolve()</code> or <code>Promise.reject()</code> method is called. In this case a simple string is passed by both methods, but this could be an object.</p>
+    
+    <aside class="bcls-aside bcls-aside--information">Note: Although NOT demonstrated in this simple example, the <code>Promise</code> object represents the <strong>eventual completion</strong> (or failure) of an <strong>asynchronous operation</strong>, and its resulting value. In this way a <code>Promise</code> is similar in concept to a callback function.</aside>
+    
+    <pre class="line-numbers">
+      <code class="language-javascript">let promiseToFinishTask = new Promise(function(resolve, reject) {
+      
+        //Business logic to set taskComplete boolean
+        let taskComplete = true;
+      
+        if (taskComplete) {
+          resolve('Yea, I am done');
+        } else {
+          reject('Not quite done');
+        }
+      });</code></pre>
+    
+    <p>Now you will see how to deal with the returned <code>Promise</code> information, which is what you will do with some Brightcove Player API method calls. The basic handling of a <code> </code></p>
+    
+    <p><code>Now you will see how to deal with the returned <code>Promise</code> information, which is what you will do with some Brightcove Player API method calls. The basic handling of a follows:</code></p>
+    follows:
+    
+    <p>&nbsp;</p>
+    
+    <pre class="line-numbers">
+      <code class="language-javascript">promiseName.then(
+        // Function call for promise resolved
+      ).catch(
+        // Function call for promise rejected
+      )</code></pre>
+    
+    <p>Handling the simple example above would appear as shown here:</p>
+    
+    <pre class="line-numbers">
+      <code class="language-javascript">promiseToFinishTask.then(function(fromResolve) {
+        console.log(fromResolve);
+      }).catch(function(fromReject) {
+        console.log(fromReject);
+      });</code></pre>
+    
+    <p>If the <code>Promise</code> is resolved the <code>then</code> code is executed, and if the <code>Promise</code> is rejected the <code>catch</code> code is executed. For the example, one of the strings <strong class="notranslate">Yea, I am done</strong> or <strong class="notranslate">Not quite done</strong> would appear based on the business logic that set the <code>taskComplete</code> variable's value.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="section-name3">Brightcove example</h2>
+    
+    <p>The Brightcove Player's <code>play()</code> method may return a Promise that can be used to check if the player could autoplay the video currently in the player. The code that deals with the <code>Promise</code> is highlighted:</p>
+    
+    <pre class="line-numbers">
+      <code class="language-javascript">var myPlayer = videojs.getPlayer('myPlayerID');
+      myPlayer.on('loadedmetadata',function() {
+        var promise = myPlayer.play();
+        if (promise !== undefined) {
+          <span class="bcls-highlight">promise.then(function() {
+            // Autoplay started!
+          }).catch(function(error) {
+            // Autoplay was prevented.
+          });</span>
+        }
+      });</code></pre>
+    
+    <p>Based on this you can then code behaviors if the video autoplayed or not. For a specific use case playing the video, with audio when possible, see the <a href="/node/18602#Specific_use_case">Specific use case</a> section of the <strong>Autoplay Considerations</strong> document.</p>
+    
+    <p>For complete information on JavaScript Promises see the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">MDN Promise</a> document.</p>
+    </section>
+    
+    <section class="bcls-section">
+    <h2 id="Promise_versus_callback"><code>Promise</code> versus callback</h2>
+    
+    <p>In this section the Catalog's <code>get()</code> method is used to demonstrate the syntax difference between using a <code>Promise</code> versus a callback function. The <code>get()</code> method can be used with either approach.</p>
+    
+    <h3>Promise syntax</h3>
+    
+    <p>The following is a snippet of code showing the call to the <code>get()</code> method, handling the response as a <code>Promise</code>:</p>
+    
+    <pre class="line-numbers">
+      <code class="language-javascript">myPlayer.catalog.get(catalogParams).then(function(videosReturned){
+        console.log('videosReturned',videosReturned);
+        myPlayer.playlist(videosReturned);
+      }).catch(function(errorObj){
+        console.log('errorObj',errorObj);
+      })</code></pre>
+    
+    <h3>Callback function syntax</h3>
+    
+    <p>The following is a snippet of code showing the call to the <code>get()</code> method, handling the response with a callback function:</p>
+    
+    <pre class="line-numbers">
+        <code class="language-javascript">myPlayer.catalog.get(catalogParams,function(errorObj,videosReturned){
+        console.log('errorObj',errorObj);
+        console.log('videosReturned',videosReturned);
+        myPlayer.playlist(videosReturned);
+      });
+      </code></pre>
+    </section>
+    </article>
+    
+    
