@@ -1,5 +1,6 @@
 <article class="bcls-article">
 <section id="top" class="bcls-section">
+  <p>The Brightcove Native Player SDKs for iOS and Android make it easy to integrate analytics collection into your video solution.</p>
 <p>Analytics solutions:</p>
 
 <ul>
@@ -88,10 +89,62 @@
 
 <p>The Omniture plugin is available to both Brightcove Video Cloud and Brightcove Player customers. In addition, the Omniture plugin can be used in combination with the Brightcove built-in Analytics for Brightcove Video Cloud customers.</p>
 
-<p>For more information about using Adobe Analytics, please visit <a href="https://www.adobe.com/solutions/digital-analytics.html">Adobe Analytics</a>.</p>
+<h3>iOS</h3>
 <p>
-	To learn about using Adobe Analytics with the web-based Brightcove Player, see the <a href="node/18852">Configuring Adobe Analytics Event Tracking</a> document.
+  For details about adding the Omniture plugin to your app, see the following:
 </p>
+<ul>
+  <li>
+    <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Omniture">Basic Omniture Player for iOS</a>
+  </li>
+</ul>
+
+<h3>Android</h3>
+<p>
+  For details about adding the Omniture plugin to your app, follow these steps:
+</p>
+<ol class="bcls-tasklist__restart">
+  <li>
+    Start with the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-mediaplayer/BasicOmnitureSampleApp">Basic Omniture Sample App</a>.
+  </li>
+  <li>
+    <p>
+      In the <strong>app/res/layout/omniture_activity_main.xml</strong> file, replace the following
+    </p>
+    <pre><code class="language-java">&lt;com.brightcove.player.view.BrightcoveVideoView</code></pre>
+    <p>
+      with this
+    </p>
+     <pre><code class="language-java">&lt;com.brightcove.player.view.BrightcoveExoPlayerVideoView</code></pre>
+  </li>
+  <li>
+    <p>
+      In the <strong>build.gradle</strong>, locate the Omniture code block and replace it with this:
+    </p>
+    <pre class="line-numbers"><code class="language-java">if (project.name.contains('Omniture')) {
+  dependencies {
+    implementation &quot;com.brightcove.player:android-omniture-plugin:${anpVersion}&quot;
+    implementation files(libraryDirectory + &quot;adobeMobileLibrary.jar&quot;)
+    implementation &quot;com.brightcove.player:exoplayer2:${anpVersion}&quot;
+  }
+}</code></pre>
+  </li>
+  <li>
+    <p>
+      In the <strong>MainActivity.java</strong> file, locate the <code>onCreate()</code> function. Where the <code>BrightcoveVideoView</code> is created, replace it with this:
+    </p>
+    <pre><code class="language-java">brightcoveVideoView = (BrightcoveExoPlayerVideoView) findViewById(R.id.brightcove_video_view);</code></pre>
+  </li>
+  <li>
+    You are ready to run the sample app with the ExoPlayer framework.
+  </li>
+</ol>
+
+
+
+<!-- <p>For more information about using Adobe Analytics, please visit <a href="https://www.adobe.com/solutions/digital-analytics.html">Adobe Analytics</a>.</p>
+
+<p>To learn about using Adobe Analytics with the web-based Brightcove Player, see the <a href="node/18852">Configuring Adobe Analytics Event Tracking</a> document.</p> -->
 
 <aside class="bcls-aside bcls-aside--tip">
 <p>Looking for developer docs? Below are links to the Brightcove Player SDK documentation:</p>
