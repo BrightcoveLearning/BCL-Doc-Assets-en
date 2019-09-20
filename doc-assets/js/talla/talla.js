@@ -10,6 +10,8 @@ if (Talla) {
     Talla.OptionBotName('Questions?')
   );
   talla_button.addEventListener('click', function() {
+    console.log('starting talla');
+    
     Talla.widget.display(Talla.OptionJWTCredentials(talla_token), Talla.OptionParent(talla_parent));
   });
 }
