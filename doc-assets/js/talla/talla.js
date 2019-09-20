@@ -9,9 +9,7 @@ if (Talla) {
     Talla.OptionLoadExternalKB, 
     Talla.OptionBotName('Questions?')
   );
-  function talla_start() {
-    
+  talla_button.addEventListener('click', function() {
     Talla.widget.display(Talla.OptionJWTCredentials(talla_token), Talla.OptionParent(talla_parent));
-  }
-  talla_button.addEventListener('click', talla_start)
+  });
 }
