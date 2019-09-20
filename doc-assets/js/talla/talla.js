@@ -10,6 +10,7 @@ if (Talla) {
     Talla.OptionBotName('Questions?')
   );
   function talla_start() {
+    
     Talla.widget.display(Talla.OptionJWTCredentials(talla_token), Talla.OptionParent(talla_parent));
   }
   talla_button.addEventListener('click', talla_start)
