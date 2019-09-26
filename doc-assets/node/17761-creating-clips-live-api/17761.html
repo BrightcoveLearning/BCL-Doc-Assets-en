@@ -19,6 +19,7 @@
 <h3>Notes</h3>
 
 <ol>
+  <li>Live Clipping uses default <em>Dynamic Delivery</em> renditions. If you’re still using previous versions of Brightcove ingestion, the renditions for the live clips may vary from your default. We recommend updating to Dynamic Delivery and setting a default Dynamic Delivery profile. Please see the <a href="/node/18476"></a> for more information.</li>
 	<li>If you specify <code class="notranslate">duration</code>, the resulting clip will be as follows:
 
 	<ul>
@@ -32,10 +33,10 @@
 		<li>If the job is finished: as long as the Epoch time window falls entirely within <code class="notranslate">created_at</code> and <code class="notranslate">finished_at</code>, the clip will be made</li>
 	</ul>
 	</li>
-  <li>Clips of live streams using <a href="/node/17763">SSAI</a> will not include ads.</li>
-	<li>Clips can be created up to 24 hours after an event. For <a class="notranslate" href="/node/18443">SEP</a>, they can be created up until the next activation or 24 hours (whichever is shorter).</li>
+	<li>Clips of live streams using <a href="/node/17763">SSAI</a> will not include ads.</li>
+	<li>Clips can be created up to 7 days after an event. For <a class="notranslate" href="/node/18443">SEP</a>, they can be created up until the next activation or 7 days (whichever is shorter).</li>
 	<li>The VOD API will not add any content outside of what is present in the stream. If you specify 350 on a 300 seconds long live stream, the output will be 300 seconds long.</li>
-	<li>You do not have to use a DVR-enabled live stream for clipping to work, because the live stream is stored as it is broadcast and is available immediately and for 24 hours after the event is over.</li>
+	<li>You do not have to use a DVR-enabled live stream for clipping to work, because the live stream is stored as it is broadcast and is available immediately and for 7 days after the event is over.</li>
 	<li>Brightcove Live clipping will only produce a clip that is the same resolution as the highest resolution output. It will not match the source input resolution (unless that is the same as the highest resolution output).</li>
 </ol>
 
@@ -53,14 +54,18 @@
 </section>
 
 <section class="bcls-section">
-  <h2 id="fast_vod">Fast VOD option</h2>
-  <p class="language-editable">Fast VOD clipping uses the segments from the live stream itself, and so eliminates the need and time for transcoding. Be aware, though, that Fast VOD clips will be segment-accurate, <strong>not</strong> frame-accurate.</p>
-  <p>The the <code>output</code> fields for fast VOD clipping are:</p>
-  <ul>
-    <li><code>mode</code> (required for fast VOD) - for fast VOD, the value will be <code>instant</code></li>
-    <li><code>playlist_label</code> (optional) - Only applicable for instant mode VODs. Indicates which playlist to use to create a VOD output (from the live job). Only necessary if custom playlists were defined at live job creation.</li>
-  </ul>
-  <p>An example of Fast VOD clipping is included in the samples below.</p>
+<h2 id="fast_vod">Fast VOD option</h2>
+
+<p class="language-editable">Fast VOD clipping uses the segments from the live stream itself, and so eliminates the need and time for transcoding. Be aware, though, that Fast VOD clips will be segment-accurate, <strong>not</strong> frame-accurate.</p>
+
+<p>The the <code>output</code> fields for fast VOD clipping are:</p>
+
+<ul>
+	<li><code>mode</code> (required for fast VOD) - for fast VOD, the value will be <code>instant</code></li>
+	<li><code>playlist_label</code> (optional) - Only applicable for instant mode VODs. Indicates which playlist to use to create a VOD output (from the live job). Only necessary if custom playlists were defined at live job creation.</li>
+</ul>
+
+<p>An example of Fast VOD clipping is included in the samples below.</p>
 </section>
 
 <section class="bcls-section">
