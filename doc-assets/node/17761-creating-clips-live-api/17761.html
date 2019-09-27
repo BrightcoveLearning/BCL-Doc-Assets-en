@@ -20,6 +20,7 @@
 
 <ol>
   <li>Live Clipping uses default <em>Dynamic Delivery</em> renditions. If you’re still using previous versions of Brightcove ingestion, the renditions for the live clips may vary from your default. We recommend updating to Dynamic Delivery and setting a default Dynamic Delivery profile. Please see the <a href="/node/18476"></a> for more information.</li>
+  <li>To make clips available as quickly as possible, a segment-accurate clip is first created, and then replaced by a frame-accurate clip as soon as it is available.</li>
 	<li>If you specify <code class="notranslate">duration</code>, the resulting clip will be as follows:
 
 	<ul>
@@ -53,25 +54,13 @@
 <p>Note: clips <strong>can be created while the live stream is running</strong>. To do this, you will need to define the start and end times of the clip in Epoch time or relative to <strong>start</strong> time of the live stream.</p>
 </section>
 
-<section class="bcls-section">
-<h2 id="fast_vod">Fast VOD option</h2>
-
-<p class="language-editable">Fast VOD clipping uses the segments from the live stream itself, and so eliminates the need and time for transcoding. Be aware, though, that Fast VOD clips will be segment-accurate, <strong>not</strong> frame-accurate.</p>
-
-<p>The the <code>output</code> fields for fast VOD clipping are:</p>
-
-<ul>
-	<li><code>mode</code> (required for fast VOD) - for fast VOD, the value will be <code>instant</code></li>
-	<li><code>playlist_label</code> (optional) - Only applicable for instant mode VODs. Indicates which playlist to use to create a VOD output (from the live job). Only necessary if custom playlists were defined at live job creation.</li>
-</ul>
-
-<p>An example of Fast VOD clipping is included in the samples below.</p>
-</section>
 
 <section class="bcls-section">
 <h2 id="credentials">Credentials</h2>
 
 <p>If the destination you are sending the clip to requires credentials to access, you can create these using the credentials operations of the Live API. See <a href="/node/18622">Managing Credentials for the Live API</a> for more details.</p>
+
+<aside class="bcls-aside bcls-aside--information language-editable">Note that if you are sending the clip to a Video Cloud account that is associated with the Live account, you should <strong>not</strong> include the credentials in clipping job.</aside>
 </section>
 
 <section class="bcls-section">
@@ -239,35 +228,6 @@
 </code>
 </pre>
 
-<h3>Example 6: Fast VOD clip using <code class="notranslate">stream_start_timecode</code> and <code class="notranslate">stream_end_timecode</code></h3>
-
-<p>The request body includes start and end times/frames in HH:MM:SS:FF timecodes, and details about where to send the clip. Note that to use timecodes, the encoder must be sending timecodes. The <code>mode:instant</code> field is included to specify fast VOD clipping. Here is a sample request body that creates a clip of the 50 minutes of a stream and sends it to a <span class="notranslate">Video Cloud</span> account:</p>
-
-<pre class="line-numbers">
-<code class="language-json notranslate">{
-  "live_job_id":"<span class="bcls-input">PUT-LIVE-JOB-ID-HERE</span>",
-  "outputs":[
-    {
-      "label": "Clipping using Timecode from-01:10:18:15 to-01:11:08:15",
-      <span class="bcls-highlight">"mode": "instant"</span>,
-      "stream_start_timecode": "01:10:18:15",
-      "stream_end_timecode": "01:11:08:15",
-      "credentials": "<span class="bcls-input">USER_VIDEOCLOUD_CREDENTIAL_LABEL</span>",
-      "videocloud": {
-        "video": {
-          "name": "Fifty Minute Clip",
-          "tags": ["live", "clip"]
-        },
-        "ingest": {
-        "capture-images": true
-        }
-      }
-    },
-    "notifications": ["<span class="bcls-input">http://myserver.com/api/notification_listener?type=jvod</span>"]
-  ]
-}
-</code>
-</pre>
 
 <h3>General information about sending clips to <span class="notranslate">Video Cloud</span></h3>
 
