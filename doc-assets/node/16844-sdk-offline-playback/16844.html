@@ -6,7 +6,7 @@
 
 <p>Using offline playback, users can download both DRM-protected and clear (non-encrypted) video content to their devices and watch it when they are not connected.</p>
 
-<aside class="bcls-aside bcls-aside--information">To use this feature, you need to be a Video Cloud customer using Dynamic Delivery.</aside>
+<aside class="bcls-aside bcls-aside--tip">To use this feature, you need to be a Video Cloud customer using Dynamic Delivery.</aside>
 </section>
 
 <section class="bcls-section">
@@ -88,6 +88,7 @@
 </ul>
 
 <h3>Functionality</h3>
+
 <p>The following functionality can be added to your apps to support download management:</p>
 
 <ul>
@@ -310,16 +311,11 @@ catalog.addDownloadEventListener(downloadEventListener);</code></pre>
 <p><strong>HLSe</strong>: Currently, HLSe content is not supported with offline playback using the Brightcove Native SDK for Android, iOS or tvOS.</p>
 
 <p><strong>Low power mode</strong>: Low power mode on devices may affect certain features, including downloading. For more information, see the following:</p>
+
 <ul>
-  <li>
-    <a href="https://developer.android.com/about/versions/pie/power">Power management Android 9 (API level 28)</a>
-  </li>
-  <li>
-    <a href="https://support.apple.com/en-us/HT205234">Low power mode on your iPhone</a>
-  </li>
-  <li>
-    <a href="https://developer.apple.com/library/archive/documentation/Performance/Conceptual/EnergyGuide-iOS/LowPowerMode.html">React to Low Power Mode on iPhones</a>
-  </li>
+	<li><a href="https://developer.android.com/about/versions/pie/power">Power management Android 9 (API level 28)</a></li>
+	<li><a href="https://support.apple.com/en-us/HT205234">Low power mode on your iPhone</a></li>
+	<li><a href="https://developer.apple.com/library/archive/documentation/Performance/Conceptual/EnergyGuide-iOS/LowPowerMode.html">React to Low Power Mode on iPhones</a></li>
 </ul>
 
 <h3>Android</h3>
@@ -388,6 +384,35 @@ catalog.addDownloadEventListener(downloadEventListener);</code></pre>
 <h2 id="Enabling_the_feature">Enabling the feature</h2>
 
 <p>Contact your account manager to learn about pricing and to enable the Offline Playback feature for your account.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Troubleshooting">Troubleshooting</h2>
+
+<p>The following tips may help you to investigate issues when downloading videos.</p>
+<p>
+  An error may occur when a user tries to download an asset at a higher bitrate than the device can handle due to a slow network.
+</p>
+<p>
+  To avoid this, you could add code to check device capabilities and prevent devices on slow connections from attempting to download high bitrate assets. You can test with a real device while throttling the connection, and view the network traffic with the <a href="https://www.charlesproxy.com/">Charles proxy</a> tool.
+</p>
+<h3>Android</h3>
+<p>
+  For details about handling errors, see the <a href="/node/18236">Error Messages from the Native SDK for Android</a> document. This includes error messages related to offline playback.
+</p>
+
+<h3>iOS</h3>
+<p>
+  For details about handling errors, see the <a href="/node/18671/">Error Handling with the Native SDK for iOS</a> document.
+</p>
+<p>
+  When the offline playback code receives an error, we catch it and throw an NSError. To get the underlying error, you can try this:
+</p>
+<pre class="line-numbers"><code class="language-objectivec">NSError *underlyingError = initialError.userInfo[NSUnderlyingErrorKey];</code></pre>
+<p>
+  For more information, see the <a href="https://github.com/brightcove/brightcove-player-sdk-ios/blob/master/OfflinePlayback.md">iOS App Developers Guide for Offline Playback</a>.
+</p>
+
 </section>
 
 <section class="bcls-section">
