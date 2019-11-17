@@ -72,7 +72,7 @@ function removeClass(el, name)
     var in_page_nav = document.getElementById('in_page_nav'),
       in_page_els = in_page_nav.querySelectorAll('li>a'),
       in_view_els = document.getElementsByClassName('inView'),
-      active_class = 'inpage-highlight';
+      active_class = 'inpage-highlight',
       el,
       in_page_el,
       j,
