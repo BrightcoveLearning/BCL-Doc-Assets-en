@@ -66,4 +66,40 @@ function removeClass(el, name)
       }
     }
   }
+
+  // highlight current section in inpage nav
+  if (href.indexOf('.html') < 0 || href.indexOf('index.html' < 0)) {
+    var in_page_nav = document.getElementById('in_page_nav'),
+      in_page_els = in_page_nav.querySelectorAll('li>a'),
+      in_view_els = document.getElementsByClassName('inView'),
+      active_class = 'inpage-highlight';
+      el,
+      in_page_el,
+      j,
+      jMax;
+    iMax = in_view_els.length;
+    for (i = 0; i < iMax; i++) {
+      el = in_view_els[i]
+      el.onInView(function() {
+        jMax = in_page_els.length;
+        for (j = 0; j < jMax; j++) {
+          in_page_el = in_page_els[j];
+          removeClass(in_page_el.parent, active_class);
+          if (in_page_el.textContent === el.firstChild.textContent) {
+            addClass(in_page_el.parent, active_class);
+          }
+        }
+      });
+      el.onOutView(function() {
+        jMax = in_page_els.length;
+        for (j = 0; j < jMax; j++) {
+          in_page_el = in_page_els[j];
+          if (in_page_el.textContent === el.firstChild.textContent) {
+            removeClass(in_page_el.parent, active_class);
+          }
+        }
+      });
+        
+    }
+  }
 })(window, document);
