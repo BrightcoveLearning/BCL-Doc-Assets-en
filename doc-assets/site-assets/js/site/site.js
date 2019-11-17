@@ -1,4 +1,4 @@
-var BCLS_site = (function(window, document) {
+var BCLS_site = (function(window, document, inView) {
   var all_sidenav_links = document.querySelectorAll(".sidenav a"),
     href = window.location.pathname,
     i,
@@ -79,7 +79,7 @@ function removeClass(el, name)
       jMax;
     iMax = in_view_els.length;
     for (i = 0; i < iMax; i++) {
-      el = in_view_els[i]
+      el = new inView(in_view_els[i]);
       el.onInView(function() {
         jMax = in_page_els.length;
         for (j = 0; j < jMax; j++) {
@@ -102,4 +102,4 @@ function removeClass(el, name)
         
     }
   }
-})(window, document);
+})(window, document, inView);
