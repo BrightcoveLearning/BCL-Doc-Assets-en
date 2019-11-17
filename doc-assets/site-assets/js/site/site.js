@@ -85,7 +85,7 @@ function removeClass(el, name)
         for (j = 0; j < jMax; j++) {
           in_page_el = in_page_els[j];
           removeClass(in_page_el.parent, active_class);
-          if (in_page_el.textContent === el.firstChild.textContent) {
+          if (in_page_el.textContent === in_view_els[i].firstChild.textContent) {
             addClass(in_page_el.parent, active_class);
           }
         }
@@ -94,7 +94,7 @@ function removeClass(el, name)
         jMax = in_page_els.length;
         for (j = 0; j < jMax; j++) {
           in_page_el = in_page_els[j];
-          if (in_page_el.textContent === el.firstChild.textContent) {
+          if (in_page_el.textContent === in_view_els[i].firstChild.textContent) {
             removeClass(in_page_el.parent, active_class);
           }
         }
