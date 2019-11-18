@@ -26,6 +26,7 @@ var BCLS_toc = ( function (window, document) {
       
       if (frag.firstChild) {
         in_page_nav.appendChild(frag);
+        implementHighlighting();
       } else {
         parent = in_page_nav.parentNode;
         grandparent = parent.parentNode;
