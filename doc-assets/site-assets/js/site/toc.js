@@ -47,9 +47,9 @@ var BCLS_toc = ( function (window, document) {
           linkTarget = linkEl.firstChild.getAttribute('href');
           // Scroll to a certain element
           linkEl.addEventListener('click', function() {
-            document.querySelector(linkTarget.substring(1)).scrollIntoView({ 
-              behavior: 'smooth' 
-            });
+            // document.querySelector(linkTarget.substring(1)).scrollIntoView({ 
+            //   behavior: 'smooth' 
+            // });
             jMax = navItems.length;
             for (j = 0; j < jMax; j++) {
               navItems[j].removeAttribute('style');
