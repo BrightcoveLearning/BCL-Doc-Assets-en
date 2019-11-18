@@ -15,6 +15,7 @@ var BCLS_toc = ( function (window, document) {
         h2 = h2s[i];
         if (h2.id) {
           li = document.createElement('li');
+          li.setAttribute('class', 'toc-item');
           link = document.createElement('a');
           link.setAttribute('href', '#' + h2.id);
           link.textContent = h2.textContent;
@@ -33,8 +34,7 @@ var BCLS_toc = ( function (window, document) {
 
       // implement highlighting
       function implementHighlighting() {
-        var navLinks = document.querySelectorAll('#in_page_nav>li>a'),
-          navItems = document.querySelectorAll('#in_page_nav>li'),
+        var navItems = document.getElementsByClassName('toc-item'),
           linkEl,
           j,
           jMax;
