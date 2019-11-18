@@ -38,11 +38,13 @@ var BCLS_toc = ( function (window, document) {
         var navItems = document.getElementsByClassName('toc-item'),
           linkEl,
           j,
-          jMax;
+          jMax,
+          linkTarget;
 
         iMax = navItems.length;
         for (i = 0; i < iMax; i++) {
           linkEl = navItems[i];
+          linkTarget = linkEl.firstChild.getAttribute('href');
           linkEl.addEventListener('click', function() {
             jMax = navItems.length;
             for (j = 0; j < jMax; j++) {
