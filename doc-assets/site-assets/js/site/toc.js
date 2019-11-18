@@ -47,6 +47,8 @@ var BCLS_toc = ( function (window, document) {
             for (j = 0; j < jMax; j++) {
               navItems[j].removeAttribute('style');
             }
+            console.log('this', this);
+            
             this.parent.setAttribute('style', 'color:rgb(220, 243, 251);background-color:rgb(21, 160, 183);')
           });
         }
