@@ -39,9 +39,9 @@ var BCLS_toc = ( function (window, document) {
           j,
           jMax;
 
-        iMax = navLinks.length;
+        iMax = navItems.length;
         for (i = 0; i < iMax; i++) {
-          linkEl = navLinks[i];
+          linkEl = navItems[i];
           linkEl.addEventListener('click', function() {
             jMax = navItems.length;
             for (j = 0; j < jMax; j++) {
@@ -49,7 +49,7 @@ var BCLS_toc = ( function (window, document) {
             }
             console.log('this', this);
             
-            this.parent.setAttribute('style', 'color:rgb(220, 243, 251);background-color:rgb(21, 160, 183);')
+            this.setAttribute('style', 'color:rgb(220, 243, 251);background-color:rgb(21, 160, 183);')
           });
         }
       }
