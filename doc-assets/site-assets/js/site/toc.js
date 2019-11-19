@@ -35,7 +35,7 @@ var BCLS_toc = ( function (window, document) {
 
       // implement highlighting
       // smooth scrolling for Safari
-\ 
+ 
       function implementHighlighting() {
         var navItems = document.getElementsByClassName('toc-item'),
           linkEl,
