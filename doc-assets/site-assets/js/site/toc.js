@@ -48,7 +48,7 @@ var BCLS_toc = ( function (window, document) {
           linkEl = navItems[i];
           linkTarget = linkEl.firstElementChild.getAttribute('href');
 
-          linkEl.addEventListener('click', function() {
+          linkEl.addEventListener('click', function(e) {
             document.querySelector(linkTarget).scrollIntoView({ 
               behavior: 'smooth' 
             });
