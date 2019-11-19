@@ -1,387 +1,527 @@
 <article class="bcls-article">
-	<section class="bcls-section">
-	<h2 id="Introduction">Introduction</h2>
-	
-	<p>For ingest via source file upload, Brightcove provides an S3 bucket that you can upload your videos and asset files to, and Dynamic Ingest then pulls the video from S3 bucket in same way it would from your own S3 bucket or URL. The diagram below shows the difference between the workflows for basic dynamic ingest and ingest with source file upload.</p>
-	
-	<figure class="bcls-figure"><img class="bcls-image" alt="Workflow Differences" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/guides/push-based-ingest/source-file-upload.png" />
-	<figcaption class="bcls-caption--image">Workflow Differences</figcaption>
-	</figure>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="FAQ">FAQ</h2>
-	
-	<dl>
-		<dt class="bcls-question">How long are videos temporarily stored, and when do the URLs for them become invalid?</dt>
-		<dd class="bcls-answer">Videos are removed from temporary storage after 24 hours after they are uploaded, and the URLs for them are no longer valid after that.</dd>
-		<dt class="bcls-question">How long are the S3 credentials returned by the Dynamic Ingest API valid?</dt>
-		<dd class="bcls-answer">The S3 credentials are also valid for 24 hours after the API sends them.</dd>
-		<dt class="bcls-question">Are video files physically deleted from the S3 bucket after 24 hours?</dt>
-		<dd class="bcls-answer">Yes</dd>
-		<dt class="bcls-question">Are videos deleted from the S3 bucket after they are successfully ingested?</dt>
-		<dd class="bcls-answer">All videos are deleted from temporary storage after 24 hours, whether they have been successfully ingested or not.</dd>
-		<dt class="bcls-question">Can the videos in temporary storage be accessed publically by someone who has the URL?</dt>
-		<dd class="bcls-answer">No</dd>
-		<dt class="bcls-question">Is there any way to download or view the video in temporary storage without security credentials?</dt>
-		<dd class="bcls-answer">No</dd>
-		<dt class="bcls-question">Are the security credentials to access the temporary storage shared with other Brightcove customers?</dt>
-		<dd class="bcls-answer">No, any customer using the temporary storage is given unique security credentials.</dd>
-		<dt class="bcls-question">Is there a way other Brightcove customers could access my videos in temporary storage using their own security credentials?</dt>
-		<dd class="bcls-answer">No, security credentials only provide access to the videos you pushed to temporary storage.</dd>
-		<dt class="bcls-question">What region does the S3 bucket for file uploads reside it?</dt>
-		<dd class="bcls-answer">US-EAST-1 (this is fixed).</dd>
-	</dl>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="Source_file_names">Source file names</h2>
-	
-	<p>To avoid issues in accessing videos and assets in the Brightcove Player, you should avoid using any special characters in source file names, whether videos, images, or text tracks (WebVTT files). This also applies to remote assets. File names should only include the following:</p>
-	
-	<ul>
-		<li><strong>Single-byte</strong> letters (upper or lower case)</li>
-		<li>Numbers</li>
-		<li>Dashes (-) and underscores (_)</li>
-		<li>Spaces <strong>if they are URL-encoded</strong></li>
-	</ul>
-	</section>
-	
-	<section id="Authentication" class="bcls-section">
-	<h2>Authentication</h2>
-	
-	<p>The easiest way to get client credentials for Dynamic Ingest is through <a href="/node/14056">the Studio Admin page for API Authentication</a>. For the API permissions, you need at least:</p>
-	
-	<ul>
-		<li>CMS &gt; Video Read</li>
-		<li>Dynamic Ingest &gt; Create</li>
-		<li>Dynamic Ingest &gt; Push Files (this is the new Source File Upload API)</li>
-	</ul>
-	
-	<figure class="bcls-figure"><img class="bcls-image" alt="API Authetication" src="//learning-services-media.brightcove.com/doc-assets/video-cloud-apis/di-api/guides/push-based-ingest/api-credentials-studio.png" />
-	<figcaption class="bcls-caption--image">API Authetication</figcaption>
-	</figure>
-	
-	<p>Authentication for Brightcove API requests for push-based ingestion require one additional permission over those for <a href="/node/17949#operations">other Dynamic Ingest requests</a>:</p>
-	
+<section class="bcls-section" id="top">
+<h3>Table of contents</h3>
+<!-- <h5 class="bcls-question">Accessibility</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#VoiceOver_support">VoiceOver support</a></li>
+</ul> -->
+
+<h5 class="bcls-question">Advertising</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Media_progress_values">Media progress values</a></li>
+</ul>
+
+<h5 class="bcls-question">Analytics</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Google_Analytics">Google Analytics</a></li>
+</ul>
+
+<h5 class="bcls-question">Captions</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Customizing_the_closed_captions_button">Customizing the closed captions button</a></li>
+</ul>
+<!--
+		<h3 class="bcls-question">Concepts</h3>
+		<ul class="bcls-answer">
+		</ul>
+		-->
+
+<h5 class="bcls-question">Content security (DRM)</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Displaying_FairPlay_content_on_an_external_screen">Displaying FairPlay content on an external screen</a></li>
+</ul>
+
+<h5 class="bcls-question">Cue points</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Programmatically_adding_cue_points">Programmatically adding cue points</a></li>
+</ul>
+<!--
+		<h3 class="bcls-question">Live streams</h3>
+		<ul class="bcls-answer">
+		</ul>
+		-->
+
+<h5 class="bcls-question">Playback</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Custom_controls_for_AirPlay">Custom controls for AirPlay</a></li>
+	<li><a href="#Limiting_the_bitrate">Limiting the bitrate</a></li>
+	<li><a href="#Looping_a_video">Looping a video</a></li>
+	<li><a href="#Media_progress_values">Media progress values</a></li>
+	<!-- <li><a href="#Setting_the_buffer_size">Setting the buffer size</a></li> -->
+	<li><a href="#Paging_with_the_Playback_API">Paging with the Playback API</a></li>
+	<li><a href="#Setting_the_playback_rate">Setting the playback rate</a></li>
+	<li><a href="#Setting_VR_Goggles_mode_for_360_videos">Setting VR Goggles mode for 360° videos</a></li>
+</ul>
+<!--
+		<h3 class="bcls-question">Player controls</h3>
+		<ul class="bcls-answer">
+		</ul>
+		-->
+
+<h5 class="bcls-question">Playlists</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Managing_videos_in_a_playlist">Managing videos in a playlist</a></li>
+</ul>
+
+<h5 class="bcls-question">Styling</h5>
+
+<ul class="bcls-answer">
+	<li><a href="#Changing_the_background_color">Changing the background color</a></li>
+</ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Custom_controls_for_AirPlay">Custom controls for AirPlay</h2>
+
+<p>If you use the <a href="https://docs.brightcove.com/ios-sdk/index.html#PlayerUI">Brightcove PlayerUI controls</a>, you are all set. AirPlay functionality works out-of-the-box, allowing users to stream video to high-definition displays with Apple TV.</p>
+
+<p>If you are using custom controls, you can follow these steps:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>
+	<p>Learn about AirPlay in <a href="">Apple's developer documentation for AirPlay</a>.</p>
+	</li>
+	<li>
+	<p>Use the playback controller’s <code class="notranslate">allowsExternalPlayback </code> property to set the AVPlayer’s <code class="notranslate">allowsExternalPlayback </code> property:</p>
+
+	<pre>
+<code class="notranslate language-swift"><a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVPlaybackController.html#//api/name/allowsExternalPlayback">_playbackController.allowsExternalPlayback = YES;</a></code></pre>
+	</li>
+	<li>
+	<p>Set up an AirPlay router control and handle its selection. For details, see <a href="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AirPlayGuide/Introduction/Introduction.html">Apple's AirPlay Overview</a> document.</p>
+	</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="Customizing_the_closed_captions_button">Customizing the closed captions button</h2>
+
+<p>The <a href="https://docs.brightcove.com/ios-sdk/index.html#PlayerUI">BCOVPlayerUI sample code</a> shows you how to customize the Brightcove player when using the Native SDK for iOS. For more details, see the <a href="https://docs.brightcove.com/ios-sdk/index.html#PlayerUI">Customizing PlayerUI controls</a> section of the Native SDK reference document.</p>
+
+<p>To customize the closed captions button using the PlayerUI, follow these steps:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>
+	<p>Start with the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Player/VideoCloudBasicPlayer">Basic Video Playback App</a>.</p>
+	</li>
+	<li>
+	<p>Replace your values for the Policy Key, Account Id and Video Id. Select a video from your account that has text tracks.</p>
+	</li>
+	<li>
+	<p>Set up the player view with a standard VOD layout:</p>
+
 	<pre class="line-numbers">
-	<code class="language-bash">video-cloud/upload-urls/read</code></pre>
-	
-	<p>The full set of permissions needed for source file upload is:</p>
-	
-	<ul>
-		<li>video-cloud/video/create</li>
-		<li>video-cloud/video/read</li>
-		<li>video-cloud/video/update</li>
-		<li><span class="bcls-highlight">video-cloud/upload-urls/read</span></li>
-	</ul>
-	
-	<p>These permissions are available in <a href="/node/17956">Studio</a>. Alternatively, you can obtain client credentials to use the source file upload API directly from the OAuth API by making a POST request as follows:</p>
-	
-	<h3>Request URL</h3>
-	
+<code class="notranslate language-objectivec">// Set up our player view. Create with a standard VOD layout.
+BCOVPUIPlayerView *playerView = [[BCOVPUIPlayerView alloc] initWithPlaybackController:self.playbackController options:nil controlsView:
+[BCOVPUIBasicControlView basicControlViewWithVODLayout] ];</code></pre>
+	</li>
+	<li>
+	<p>The <code class="notranslate">closedCaptionButton</code> is declared as a <code class="notranslate">BCOVPUIButton</code>, which is a subclass of <code class="notranslate">UIButton</code> and adds three additional methods for customization. Whenever you customize BCOVPlayerUI controls, you should use the Native Player APIs wherever they are available. Your customized code should look similar to this:</p>
+
 	<pre class="line-numbers">
-	<code class="language-http notranslate">https://oauth.brightcove.com/v4/client_credentials</code></pre>
-	
-	<h3>Headers</h3>
-	
-	<ul>
-		<li><code class="notranslate">Authorization: BC_TOKEN <span class="bcls-highlight">{YOUR_BC_TOKEN}</span> </code></li>
-		<li>
-		<div>Content-Type: application/json</div>
-		</li>
-	</ul>
-	
-	<h3>Request body</h3>
-	
+<code class="notranslate language-objectivec">// Customize the CC button.
+BCOVPUIButton *ccButton = playerView.controlsView.closedCaptionButton;
+ccButton.titleLabel.font = [UIFont systemFontOfSize:14.];
+ccButton.primaryTitle = @"CC";
+[ccButton showPrimaryTitle:YES];</code></pre>
+	</li>
+</ol>
+</section>
+
+<section class="bcls-section">
+<h2 id="Displaying_FairPlay_content_on_an_external_screen">Displaying FairPlay content on an external screen</h2>
+
+<p>When an external display is connected to an iOS device using an AV adapter and HDMI cable, the default behavior is to mirror the iOS screen. The exception to this is when you use FairPlay-protected video, which Apple prevents from mirroring (<a href="https://developer.apple.com/videos/play/wwdc2015/502/">WWDC 2015, Session 502</a>).</p>
+
+<p>To display FairPlay-protected videos, set the AVPlayer properties exposed through the Brightcove Playback Controller to allow FairPlay video to play on an external display. The video plays in full screen mode. Here is an example of setting these properties:</p>
+
+<pre>
+<code class="notranslate language-swift"><a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVPlaybackController.html#//api/name/usesExternalPlaybackWhileExternalScreenIsActive">playbackController.allowsExternalPlayback = YES;
+playbackController.usesExternalPlaybackWhileExternalScreenIsActive = YES;</a></code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Google_Analytics">Google Analytics</h2>
+
+<p>If you use the Brightcove player and the catalog class, video analytics will be automatically collected and will appear in your Video Cloud Analytics module. For additional metrics, you can add Google Analytics to your app.</p>
+
+<p>To integrate Google Analytics with your app, follow these steps:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>Review Google's document to <a href="https://developers.google.com/analytics/devguides/collection/ios/v3/#get-config">Add Analytics to Your iOS App</a>.</li>
+	<li>
+	<p>Here is one way you could use Google Analytics to track video playback using Google's Firebase SDK:</p>
+
+	<pre class="line-numbers" data-start="1">
+<code class="notranslate language-swift">// This snippet shows one way to track video playback
+// using the Firebase SDK from Google Analytics with
+// the lifecycle event playback controller delegate method.
+- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent
+{
+// Common parameters
+NSString *video_name = session.video.properties[kBCOVVideoPropertyKeyName];
+NSString *video_ID = session.video.properties[kBCOVVideoPropertyKeyId];
+
+// Session is ready to play
+if ([kBCOVPlaybackSessionLifecycleEventReady isEqualToString:lifecycleEvent.eventType])
+{
+	[FIRAnalytics logEventWithName:@"bcov_video_ready"
+    parameters:@{
+        @"bcov_video_name": video_name,
+        @"bcov_video_id": video_ID
+    }];
+}
+
+// Session encountered an error
+if ([kBCOVPlaybackSessionLifecycleEventError isEqualToString:lifecycleEvent.eventType])
+{
+	NSError *error = lifecycleEvent.properties[kBCOVPlaybackSessionEventKeyError];
+	int error_code = error.code;
+	[FIRAnalytics logEventWithName:@"bcov_video_playback_error"
+    parameters:@{
+        @"bcov_video_name": video_name,
+        @"bcov_video_id": video_ID,
+        @"bcov_video_error_code": @(error_code)
+    }];
+}
+
+// Session has completed
+if ([kBCOVPlaybackSessionLifecycleEventTerminate isEqualToString:lifecycleEvent.eventType])
+{
+	[FIRAnalytics logEventWithName:@"bcov_video_terminate"
+    parameters:@{
+        @"bcov_video_name": video_name,
+        @"bcov_video_id": video_ID
+     }];
+}
+}</code></pre>
+	</li>
+</ol>
+
+<p>&nbsp;</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limiting_the_bitrate">Limiting the bitrate</h2>
+
+<p>You can't control which source (rendition) in the HLS manifest gets selected by the <code class="notranslate">AVPlayer </code>, but you can put a bitrate cap on playback. This prevents the player from using sources (renditions) with a bitrate over the specified bitrate.</p>
+
+<p>Set the <code class="notranslate">preferredPeakBitRate </code> to the desired limit, in bits per second, of the network bandwidth consumption for the given <code class="notranslate">AVPlayerItem </code>.</p>
+
+<p>Use one of the following declarations:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-swift">// Swift
+var preferredPeakBitRate: Double
+// Obj-C
+@property(nonatomic) double preferredPeakBitRate</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Looping_a_video">Looping a video</h2>
+
+<p>In some cases, you may want a video to automatically replay. To do this, you can get the "end of video" lifecycle event, seek to the beginning and play again.</p>
+
+<p>This code assumes that you have set the delegate of the playbackController to the object with this method:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-swift">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent
+{
+  if ([kBCOVPlaybackSessionLifecycleEventEnd isEqualToString:lifecycleEvent.eventType])
+  {
+    [controller seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
+    if (finished)
+    	{
+        [controller play];
+    	}
+    }];
+  }
+}</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Managing_videos_in_a_playlist">Managing videos in a playlist</h2>
+
+<p>One way to manage a playlist of videos is to store the video objects in a table. When the user selects a video from the table, the table row will contain the video object.</p>
+
+<p>Here's an overview of how it works:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>
+	<p>Retrieve a playlist from your account.</p>
+
 	<pre class="line-numbers">
-	<code class="language-json notranslate">{
-	"type": "credential",
-	"maximum_scope": [
-	{
-		"identity": {
-			"type": "video-cloud-account",
-			"account-id": <span class="bcls-highlight">{YOUR_ACCOUNT_ID}</span>
-		},
-		"operations": [
-			"video-cloud/upload-urls/read",
-			"video-cloud/video/create",
-			"video-cloud/video/read",
-			"video-cloud/video/update",
-			"video-cloud/ingest-profiles/profile/write",
-			"video-cloud/ingest-profiles/account/write",
-			"video-cloud/ingest-profiles/profile/read",
-			"video-cloud/ingest-profiles/account/read"
-		]
-	}
-	],
-	"name": "Source File Upload Credentials"
-	}</code></pre>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="API_requests">API requests</h2>
-	
-	<p>There are four API requests involved in push-based ingestion:</p>
-	
-	<ol>
-		<li>CMS API POST request to create the video object in Video Cloud (same as for pull-based ingestion)</li>
-		<li>Dynamic Ingest GET request to get the Brightcove S3 bucket URLs</li>
-		<li>PUT request to upload the source file to the Brightcove S3 bucket</li>
-		<li>Dynamic Ingest POST request to ingest the source file (same as for pull-based ingestion)</li>
-	</ol>
-	
-	<aside class="bcls-aside bcls-aside--information">
-	<p>The CMS API and Dynamic Ingest API requests must be made from a server-side app or <a href="/node/18132">proxy</a>. The PUT requests to upload the files to the S3 bucket can be made directly from a client app or from server app.</p>
-	
-	<p>If you're uploading videos from a website (client side), this library simplifies the steps you need for a smooth user experience: <a href="https://github.com/BrightcoveOS/evaporate-brightcove">https://github.com/BrightcoveOS/evaporate-brightcove</a>. Note that this library is Open Source and not officially supported by Brightcove.</p>
-	</aside>
-	
-	<p>These requests are detailed in the sections that follow.</p>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="CMS_API_request">CMS API request</h2>
-	
-	<p>The CMS API request is the same as for any Dynamic Ingest operation to add a new video. This request is required to ingest a new video. If are replacing or adding assets to an existing video, you will not need this step - instead, you will use the existing video id in the other requests.</p>
-	
-	<h3>Request syntax</h3>
-	
-	<p>This is a <code class="notranslate">POST</code> request to:</p>
-	
+<code class="notranslate language-objectivec">- (void)retrievePlaylist
+{
+[self.refreshControl beginRefreshing];
+
+// Retrieve a playlist through the BCOVPlaybackService
+BCOVPlaybackServiceRequestFactory *playbackServiceRequestFactory = [[BCOVPlaybackServiceRequestFactory alloc]         initWithAccountId:kDynamicDeliveryAccountID
+		policyKey:kDynamicDeliveryPolicyKey];
+BCOVPlaybackService *playbackService = [[BCOVPlaybackService alloc] initWithRequestFactory:playbackServiceRequestFactory];
+
+[playbackService findPlaylistWithReferenceID:kDynamicDeliveryPlaylistRefID
+		parameters:nil
+		completion:^(BCOVPlaylist *playlist, NSDictionary *jsonResponse, NSError *error)
+{
+	 [self.refreshControl endRefreshing];
+
+	 NSLog(@"JSON Response:\n%@", jsonResponse);
+
+	 if (playlist)
+	 {
+      self.currentVideos = playlist.videos.mutableCopy;
+      self.currentPlaylistTitle = playlist.properties[@"name"];
+      self.currentPlaylistDescription = playlist.properties[@"description"];
+
+      NSLog(@"Retrieved playlist containing %d videos", (int)self.currentVideos.count);
+
+      [self usePlaylist:self.currentVideos];
+	 }
+	 else
+	 {
+      NSLog(@"No playlist for ID %@ was found.", kDynamicDeliveryPlaylistRefID);
+	 }
+
+}];
+}</code></pre>
+	</li>
+	<li>
+	<p>Re-initialize the containers that store information related to the videos in the current playlist.</p>
+	</li>
+	<li>
+	<p>When the table view is selected, the row's index is used to create a new <code class="notranslate">videoDictionary</code>. Next, ask the dictionary for the video. If the video is not null, then load the video in the <code class="notranslate">playbackController</code>.</p>
+
 	<pre class="line-numbers">
-	<code class="language-http notranslate">https://cms.api.brightcove.com/v1/accounts/<span class="bcls-highlight">{ACCOUNT_ID}</span>/videos</code></pre>
-	
-	<h4>Parameters</h4>
-	
-	<p>URL parameters for the request:</p>
-	
-	<ul>
-		<li><code class="notranslate">{ACCOUNT_ID}</code> - your account id</li>
-	</ul>
-	
-	<h4>Request body</h4>
-	
-	<p>The request body consists of a JSON object containing the <code class="notranslate">name</code> (required) and other metadata for the video (optional):</p>
-	
-	<pre class="line-numbers">
-	<code class="language-json notranslate">{
-	"name": "My Video"
-	}</code></pre>
-	
-	<p>See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Video-Create_Video_Object">API Reference</a> for details.</p>
-	
-	<h4>Headers</h4>
-	
-	<p>The HTTP headers you need to include with the request are:</p>
-	
-	<ul>
-		<li><code class="notranslate">Authorization: Bearer {ACCESS_TOKEN}</code></li>
-		<li><code class="notranslate">Content-Type: application/json</code></li>
-	</ul>
-	
-	<h4>Response</h4>
-	
-	<p>The response will be a JSON object containing the video metadata. The important item for the rest of the Dynamic Ingest operations is the <code class="notranslate">id</code>, which you will substitute for the <code class="notranslate">{VIDEO_ID}</code> in the requests to the Ingest API.</p>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="Request_for_S3_URLs">Request for S3 URLs</h2>
-	
-	<p>The first request to the Ingest API will retrieve the information you need to PUT your source file(s) to the Brightcove S3 bucket and then ingest from there into Video Cloud.</p>
-	
-	<h3>Request syntax</h3>
-	
-	<p>This is a <code class="notranslate">GET</code> request to:</p>
-	
-	<pre class="line-numbers">
-	<code class="language-http notranslate">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-highlight">{ACCOUNT_ID}</span>/videos/<span class="bcls-highlight">{VIDEO_ID}</span>/upload-urls/<span class="bcls-highlight">{SOURCE_NAME}</span></code></pre>
-	
-	<h4>Parameters</h4>
-	
-	<p>URL parameters for the request:</p>
-	
-	<ul>
-		<li><code class="notranslate">{ACCOUNT_ID}</code> - your account id</li>
-		<li><code class="notranslate">{VIDEO_ID}</code> - the video id returned from CMS API request</li>
-		<li><code class="notranslate">{SOURCE_NAME}</code> - the video source filename - <strong>the name should not contain any URL-reserved characters such as <code class="notranslate">?</code>, <code class="notranslate">&amp;</code>, <code class="notranslate">#</code> or spaces</strong></li>
-	</ul>
-	
-	<h4>Headers</h4>
-	
-	<p>The HTTP headers you need to include with the request are:</p>
-	
-	<ul>
-		<li><code class="notranslate">Authorization: Bearer {ACCESS_TOKEN}</code></li>
-	</ul>
-	
-	<h4>Response</h4>
-	
-	<p>The response will be a JSON object similar to the following:</p>
-	
-	<pre class="line-numbers">
-	<code class="language-json notranslate">{
-	"bucket": "ingestion-upload-production",
-	"object_key": "57838016001/4752143002001/ed5a5ba0-1d97-4f95-a8ec-cbb786b04a37/greatblueheron.mp4",
-	"access_key_id": "ASIAIF7SEBHDCYV7ICRA",
-	"secret_access_key": "HkBQXEqMb8r+CQZatYNXc/JWPRt21v1C+pa84uN1",
-	"session_token": "FQoDYXdzEKf//////////wEaDKR0wDgquq/qvkZgbyKOA7URC/9io6cmRBDkhbvxoHIKkPZlK/9YNvdWcESPkm75/2PvU6FV1Mc+/XENPzY8KgvP86MBJNxYLPdkuP1phgHs2Yh2p1KIDcQS66sIA1ovmYEp2bJDH5GOR9Bx2hi6yoChF9HSQc5FnGA3MEnJwucdb3mmr8Un/TW3TAgxepj9kWyprgHkm2gBZDhjlutP6G0pqVS1G5ZNdWDVX9p3X+X3RjE6VRzi/smy+tF8kUtJUugZVc1eM1v1K+Zj97OssmXGeRCCViBliu44sr4toNAkk+U54lAAwoJONu0awujeF8lHXeU8mbKPM6LT9oc42fSjQsOsoECZJ3i6i9m4S14ewjWIugYLYDQi6CG+3fiFwfzbKT5jes1kh24m9BQQIuvVOiM1GLTldyDzlrdDopJkdYd4IEU7FU36CUT7RL/aeMwR2Usk56nwqyqkkQHPmvqmGyiLdrD3OrIbUU+6+ZP4usS9dbV3eAqOWDIk3HCN+Kuc9f/eUWhY21ftNDXWgasqQqXwPRs3T1i/hoiIKODbzr8F",
-	<span class="bcls-highlight">"signed_url": "https://ingestion-upload-production.s3.amazonaws.com/57838016001/4752143002001/ed5a5ba0-1d97-4f95-a8ec-cbb786b04a37/greatblueheron.mp4?AWSAccessKeyId=AKIAJZKRHWB4FUFMCPPA&amp;Expires=1475673952&amp;Signature=%2Fsr5cV%2FVOfGCBkodol9xQIKlbu4%3D"</span>,
-	<span class="bcls-highlight">"api_request_url": "https://ingestion-upload-production.s3.amazonaws.com/57838016001/4752143002001/ed5a5ba0-1d97-4f95-a8ec-cbb786b04a37/greatblueheron.mp4"</span>
-	}</code></pre>
-	
-	<p>The items in the response are:</p>
-	
-	<ul>
-		<li><code class="notranslate">bucket</code> - the S3 bucket name</li>
-		<li><code class="notranslate">object_key</code> - the object key for the file upload (used in constructing the destination URL for multipart uploads)</li>
-		<li><code class="notranslate">access_key_id</code> - the access key used for authenticating the upload request (used for multipart uploads)</li>
-		<li><code class="notranslate">secret_access_key</code> - the secret access key used for authenticating the upload request (used for multipart uploads)</li>
-		<li><code class="notranslate">session_token</code> - a short-lived AWS token that provides the capability to write to the target objec</li>
-		<li><code class="notranslate">signed_url</code> - this is a shorthand S3 url that you can PUT your source file(s) to if you have relatively small videos and are not implementing multipart upload</li>
-		<li><code class="notranslate">api_request_url</code> - this is the URL you will include in your Dynamic Ingest POST request for the Master url or url for the image/text_tracks assets</li>
-	</ul>
-	
-	<p>It is recommended that you use multipart upload using the AWS SDK for the language you are using. SDKs are available for many languages, including Java, .NET, Ruby, PHP, Python, JavaScript, Go, and C++. See the <a href="https://aws.amazon.com/blogs/developer/">AWS Developer Blog</a> for more information.</p>
-	
-	<p>If you are implementing multipart upload, the following documents and sample code will be useful:</p>
-	
-	<ul>
-		<li><a href="//docs.aws.amazon.com/AmazonS3/latest/dev/llJavaUploadFile.html">Upload a File</a></li>
-		<li><a href="//github.com/BrightcoveLearning/dynamic-ingest-code-samples/blob/master/dynamic-ingest/java/src/main/java/com/brightcove/ingest/App.java">Java sample</a></li>
-		<li><a href="//github.com/BrightcoveLearning/dynamic-ingest-code-samples/blob/master/dynamic-ingest/python/di-example-source-file-multipart-upload.py">Python sample</a></li>
-	</ul>
-	
-	<p>Here is simple example in PHP:</p>
-	
-	<pre class="line-numbers">
-	<code class="language-php">&lt;?php
-	// AWS SDK (for push ingests)
-	require 'vendor/aws-autoloader.php';
-	
-	use Aws\S3\S3Client;
-	use Aws\S3\MultipartUploader;
-	use Aws\Exception\MultipartUploadException;
-	
-	/**
-	 * get S3 information as described above in this doc
-	 * the code below assumes it has been decoded as $s3response
-	 * and that $filePath is the local path to the asset file
-	 */
-	
-	s3 = new S3Client([
-			'version' =&gt; 'latest',
-			'region'  =&gt; 'us-east-1',
-			'credentials' =&gt; array(
-					'key'    =&gt; $s3response-&gt;access_key_id,
-					'secret' =&gt; $s3response-&gt;secret_access_key,
-					'token'	 =&gt; $s3response-&gt;session_token
-			)
-	]);
-	$params = array(
-			'bucket' =&gt; $s3response-&gt;s3-&gt;bucket,
-			'key' =&gt; $s3response-&gt;s3-&gt;object_key
-	);
-	$uploader = new MultipartUploader($this-&gt;s3, $filePath, $params);
-	try {
-			$uploadResponse = $uploader-&gt;upload();
-	} catch (MultipartUploadException $e) {
-			echo $e-&gt;getMessage() . "\n";
-	}
-	?&gt;</code></pre>
-	
-	<aside class="bcls-aside bcls-aside--information">
-	<ul>
-		<li>Note that the URLs are valid for <strong>24 hours</strong> - if you do not complete the Dynamic Ingest operations within 24 hours, you will have to make a new request for new URLs.</li>
-		<li>Dynamic Ingest allows no more than 100 jobs running concurrently per account</li>
-	</ul>
-	</aside>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="PUT_source_files_to_S3">PUT source file(s) to S3</h2>
-	
-	<p>After getting the S3 URLs, you make a PUT request to upload your video file, using the <code class="notranslate">signed_url</code> as the destination.</p>
-	
-	<p>You can use the following <a href="/node/17908">curl</a> command to test the PUT operation:</p>
-	
-	<pre class="line-numbers">
-	<code class="language-bash">curl -X PUT "<span class="bcls-input">SIGNED_URL_GOES_HERE</span>" --upload-file <span class="bcls-input">FILE_PATH_FOR_LOCAL_ASSET_GOES_HERE</span> </code></pre>
-	
-	<h3>Single vs. multipart upload</h3>
-	
-	<p>AWS allows single-part uploads for files up to 5 GB in size (there are no other limits on file size). For larger files, you must use multipart uploads. Although single-part upload is somewhat easier to set up, we recommend using multipart uploading whenever possible. Here are the differences between the two:</p>
-	
-	<ul>
-		<li>Single part upload uploads the video all as one file. Single part upload is limited to file sizes of 5 GB or less. If the upload is interrupted for some reason, you must start over.</li>
-		<li>Multipart upload pushes the file in chunks. This is more efficient because the upload can take advantage of multiple connections. Also, if the upload is interrupted, it can resume where it left off with the remaining chunks.</li>
-	</ul>
-	
-	<aside class="bcls-aside bcls-aside--information">Note that this step in the process is outside the scope of Brightcove support. The PUT request to add files needs to follow AWS S3 conventions. The links below may be helpful:
-	<ul>
-		<li><a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/UploadInSingleOp.html">AWS S3 Single Operation Upload</a></li>
-		<li><a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/uploadobjusingmpu.html">AWS S3 Multipart Upload</a></li>
-		<li><a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/Presigned_urlUploadObject.html">AWS S3 Upload Using Pre-Signed URLs</a></li>
-	</ul>
-	</aside>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="Dynamic_Ingest_request">Dynamic Ingest request</h2>
-	
-	<p>After your file has uploaded to the Brightcove S3 bucket, you make an ordinary Dynamic Ingest request to ingest the file from its S3 location.</p>
-	
-	<h3>Request syntax</h3>
-	
-	<p>This is a <code class="notranslate">POST</code> request to:</p>
-	
-	<pre class="line-numbers">
-	<code class="language-http notranslate">https://ingest.api.brightcove.com/v1/accounts/<span class="bcls-highlight">{ACCOUNT_ID}</span>/videos/<span class="bcls-highlight">{VIDEO_ID}</span>/ingest-requests</code></pre>
-	
-	<h4>Parameters</h4>
-	
-	<p>URL parameters for the request:</p>
-	
-	<ul>
-		<li><code class="notranslate">{ACCOUNT_ID}</code> - your account id</li>
-		<li><code class="notranslate">{VIDEO_ID}</code> - the video id returned from CMS API request</li>
-	</ul>
-	
-	<h4>Request body</h4>
-	
-	<p>The request body consists of a JSON object containing the <code class="notranslate">master</code> (required) details for the ingest job. The <code class="notranslate">url</code> for the <code class="notranslate">master</code> will be the <code class="notranslate">api_request_url</code> returned by the request for the S3 bucket information</p>
-	
-	<pre class="line-numbers">
-	<code class="language-json notranslate">{
-	"master": {
-			"url": "<span class="bcls-highlight">https://ingestion-upload-prod.s3.amazonaws.com/12345/5678/3712cd37504911ab06a77a26a387ce/source.mp4</span>"
-	},
-	"profile": "multi-platform-standard-static",
-	"capture-images": true
-	}</code></pre>
-	
-	<p>See the <a href="https://docs.brightcove.com/dynamic-ingest-api/v1/doc/index.html#api-Ingest-Ingest_Media_Asset">API Reference</a> for details.</p>
-	
-	<h4>Headers</h4>
-	
-	<p>The HTTP headers you need to include with the request are:</p>
-	
-	<ul>
-		<li><code class="notranslate">Authorization: Bearer {ACCESS_TOKEN}</code></li>
-		<li><code class="notranslate">Content-Type: application/json</code></li>
-	</ul>
-	
-	<h4>Response</h4>
-	
-	<p>The response will contain the <code class="notranslate">job_id</code> for the ingest request, which allows you to track the status via <a href="/node/17939">Notifications</a>.</p>
-	</section>
-	
-	<section class="bcls-section">
-	<h2 id="Sample_code">Sample code</h2>
-	
-	<p>To help you get started with push-based Dynamic Ingest, we have created some sample apps in Java and Python. You can find them on our <a href="//github.com/BrightcoveLearning/dynamic-ingest-code-samples">Github site</a>.</p>
-	
-	<aside class="bcls-aside bcls-aside--information">Sample code is offered as is, and is not supported by Brightcove.</aside>
-	</section>
-	</article>
-	
+<code class="notranslate language-objectivec">// Play the video in this row when selected
+- (IBAction)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+NSDictionary *videoDictionary = self.videosTableViewData[ (int)indexPath.row ];
+BCOVVideo *video = videoDictionary[@"video"];
+
+  if (video != nil)
+  {
+  	[self.playbackController setVideos:@[ video ]];
+  }
+}</code></pre>
+	</li>
+</ol>
+
+<p>To work with playlists, you can store the playlist in another object such as a table. Based on user interaction, you can navigate the object's indices and select the appropriate video.</p>
+
+<aside class="bcls-aside bcls-aside--tip">For a complete code example, see the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/Offline">Offline Player</a> sample.</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Media_progress_values">Media progress values</h2>
+
+<p>During media playback, the values reported to the Player SDK progress delegate method may include an initial value of negative infinity and a final value of positive infinity. These values are used when processing pre-roll and post-roll ads.</p>
+
+<p>If these values are not important to you or interfere with your own progress tracking, they can be easily ignored with a conditional statement like this:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-swift"><a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVPlaybackControllerBasicDelegate.html#//api/name/playbackController:playbackSession:didProgressTo:">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didProgressTo:(NSTimeInterval)progress
+{
+if (progress &lt; 0.0 || progress &gt;= INFINITY)
+return;
+// Your code here
+}</a></code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Paging_with_the_Playback_API">Paging with the Playback API</h2>
+
+<p>When retrieving your Video Cloud content from the Playback API, you can implement paging for a playlist.</p>
+
+<p>To page through a set of videos in a playlist, use the following request URL parameters:</p>
+
+<ul>
+	<li><code class="notranslate"><a href="/node/17906#playlistRequests">limit</a> </code> - defines the number of videos to return from the Playback API</li>
+	<li><code class="notranslate"><a href="/node/17906#playlistRequests">offset</a> </code> - sets the number of videos to skip in a playlist from the Playback API</li>
+</ul>
+
+<p>This example returns 6 videos starting with the 10th video in the playlist:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-objectivec">NSDictionary *params =
+@{
+@"limit": @6,
+@"offset": @9
+};
+[playbackService findPlaylistWithReferenceID:playlistRefID
+parameters:params
+completion:^(BCOVPlaylist *playlist, NSDictionary *jsonResponse, NSError *error)
+{ ...</code></pre>
+</section>
+
+<section class="bcls-section">
+<h2 id="Programmatically_adding_cue_points">Programmatically adding cue points</h2>
+
+<p>Video Cloud customers can add cue points to a video using Video Cloud Studio as shown in the <a href="/node/15151">Adding Cue Points to Videos</a> document.</p>
+
+<p>You can also add cue points to your video programmatically. The code below adds quarterly interval cue points to the video returned from the Playback API:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-swift"><a href="https://docs.brightcove.com/ios-sdk//Protocols/BCOVVideo.html#//api/name/update:">// programmatically add cue points to a video
+- (void)requestContentFromPlaybackService
+{
+[self.service findVideoWithVideoID:kViewControllerVideoID parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+if (video)
+{
+<span class="bcls-highlight">// Get the video duration from the properties dictionary
+NSNumber *durationNumber = video.properties[@"duration"]; // milliseconds
+float duration = durationNumber.floatValue / 1000.0; // convert to seconds
+video = [video update:^(id&lt;BCOVMutableVideo&gt; mutableVideo)
+{
+// Add quarterly interval cue points of your own type
+BCOVCuePoint *cp1 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 250, 1000)];
+BCOVCuePoint *cp2 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 500, 1000)];
+BCOVCuePoint *cp3 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 750, 1000)];
+BCOVCuePoint *cp4 = [[BCOVCuePoint alloc] initWithType:@"<span class="bcls-input">your cue point type</span>" position:CMTimeMake(duration * 1000, 1000)];
+// Create new cue point collection using existing cue points and new cue points
+NSMutableArray *newCuePoints = [[NSMutableArray alloc] initWithArray:mutableVideo.cuePoints.array];
+[newCuePoints addObject:cp1];
+[newCuePoints addObject:cp2];
+[newCuePoints addObject:cp3];
+[newCuePoints addObject:cp4];
+mutableVideo.cuePoints = [[BCOVCuePointCollection alloc] initWithArray:newCuePoints];
+}];</span>
+[self.playbackController setVideos:@[ video ]];
+}
+else
+{
+NSLog(@"ViewController Debug - Error retrieving video: `%@`", error);
+}
+}];
+}</a></code></pre>
+
+<p>Note that the value of <code class="notranslate">your cue point type </code> can be any string value that you want, as long as you are not using any of the <a href="https://support.brightcove.com/node/18227#Integrations">iOS plugins</a>. For details, see the <a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVCuePoint.html#//api/name/type">BCOVCuePoint Protocol Reference</a> document.</p>
+
+<p>If you are using cue points with the IMA plugin, learn more about it in the <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima#vast-and-vmapserver-side-ad-rules">VAST and VMAP/Server Side Ad Rules</a> section of the IMA Plugin for the Native SDK for iOS notes. The <a href="https://github.com/brightcove/brightcove-player-sdk-ios-ima/blob/06bb6f8dff6075340737017a966ad19b20bf6adb/ios/BrightcoveIMA.framework/Headers/BCOVIMAComponent.h#L39-L42">IMA sample app</a> shows you the value required for IMA ad cue points.</p>
+
+<p>The code below listens for your cue points and displays a message:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-swift"><a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVCuePoint.html">// listen for cue points and display them
+-(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didPassCuePoints:(NSDictionary *)cuePointInfo {
+BCOVCuePointCollection *cpc = cuePointInfo[@"kBCOVPlaybackSessionEventKeyCuePoints"];
+for (BCOVCuePoint *cp in cpc) {
+  if ([cp.type isEqualToString:@"<span class="bcls-input">your cue point type</span>"])
+    {
+    NSLog(@"Found your cue point at %f", CMTimeGetSeconds(cp.position));
+    }
+  }
+}</a></code></pre>
+</section>
+<!-- <section class="bcls-section" id="Setting_the_buffer_size">
+		<h2>Setting the buffer size</h2>
+		<p>You may consider increasing the buffer length to eliminate buffering in the player if the delivery of the next segment is delayed from the CDN. But, you may not be able to do anything better manually that HLS already does.</p>
+		<p>The <code class="notranslate">AVPlayer</code> contains the <code class="notranslate">AVPlayerItem</code>, essentially the video being played, that contains the <code class="notranslate">loadedTimeRanges</code> property. This tells you how much is buffered.</p>
+		<p>HLS is designed to play right away and drop quality if it can't keep up. This way, it does not need to preload a buffer. If it can't keep up, it will load as much of the video as it can at the best quality to prevent interruption.</p>
+		</section> -->
+
+<section class="bcls-section">
+<h2 id="Setting_the_playback_rate">Setting the playback rate</h2>
+
+<p>To control the playback rate, you can set the <code class="notranslate">rate </code> property on the <code class="notranslate">AVPlayer </code> class exposed on the session.</p>
+
+<p>By default, the play rate can only be set on regular intervals (0.50, 0.67, 1.0, 1.25, 1.50 and 2.0). By setting the <code>audioTimePitchAlgorithm</code>, you can use more granular rate values (like 1.7). For more details, see this <a href="https://stackoverflow.com/questions/6630356/avplayer-rate-property-does-not-work">stackoverflow discussion</a>.</p>
+
+<pre>
+<code class="notranslate language-objectivec">avPlayerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;</code></pre>
+&nbsp;
+
+<p>For a <code class="notranslate">BCOVPlaybackSession </code>, your code would look similar to this:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-objectivec">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller
+  playbackSession:(id&lt;BCOVPlaybackSession&gt;)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent {
+
+  if ( [lifecycleEvent.eventType isEqualToString:kBCOVPlaybackSessionLifecycleEventReady] ) {
+    NSLog(@"%@ at time %f", kBCOVPlaybackSessionLifecycleEventReady, CMTimeGetSeconds([session.player currentTime]));
+    AVPlayerItem * avPlayerItem = [session.player currentItem];
+    avPlayerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
+    session.player.rate = 1.7;
+  }
+}</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">
+<p>Notes</p>
+
+<ul><!-- <li>For iOS6, a stream can only play at 2X if <code class="notranslate">session.player.currentItem.canPlayFastForward </code> returns <strong>YES</strong>.</li>
+	<li>For iOS7, you can play up to 2X always, but it won't go higher unless <code class="notranslate">session.player.currentItem.canPlayFastForward </code> returns <strong>Yes</strong>.</li> -->
+	<li>The Native SDK for iOS does not support negative values for the playback rate (ie. we do not support playing videos in reverse.).</li>
+	<li>For more information about managing playback, see Apple's <a href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVPlayer_Class/index.html#//apple_ref/occ/instp/AVPlayer/rate">AVPlayer Class Reference</a>.</li>
+</ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="Setting_VR_Goggles_mode_for_360_videos">Setting VR Goggles mode for 360° videos</h2>
+
+<p>When playing a 360° video, users can select the Video 360 button on the control bar to switch to VR Goggles mode. You may also want to do this programmatically, before playback starts. You can do this by updating the <code class="notranslate">BCOVPlaybackController </code> protocol's <code class="notranslate">viewProjection </code> property as follows:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-objectivec"><a href="https://docs.brightcove.com/ios-sdk/Protocols/BCOVPlaybackController.html">- (void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
+{
+BCOVVideo360ViewProjection *viewProjection = [self.playbackController.viewProjection copy];
+[viewProjection setProjectionStyle:BCOVVideo360ProjectionStyleVRGoggles];
+[self.playbackController setViewProjection:viewProjection];
+}</a></code></pre>
+
+<aside class="bcls-aside bcls-aside--information">Note that you need to set the controller's projection style in the <code class="notranslate">didAdvanceToPlaybackSession </code> delegate method.</aside>
+</section>
+<!-- <section class="bcls-section">
+<h2 id="VoiceOver_support">VoiceOver support</h2>
+
+<p>Apple's <a href="https://www.apple.com/accessibility/iphone/vision/">VoiceOver app</a>, which is integrated in iOS, allows visually impaired users to hear a description of everything that is on the screen.</p>
+
+<p>The built-in playback controls for Brightcove Native SDK for iOS come with accessibility labels which have no default text values. If you want to take advantage of VoiceOver, you can add your own custom text values. The UIControl objects can be found in the following:</p>
+
+<ul>
+	<li>All the normal playback controls are found in the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVPUIPlayerView.html#//api/name/controlsView">BCOVPUIBasicControlView *controlsView</a> property of the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVPUIPlayerView.html">BCOVPUIPlayerView</a>.</li>
+	<li>All of the ad controls are found in the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVPUIPlayerView.html#//api/name/adControlsView">BCOVPUIAdControlView *adControlsView</a> property of the <a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVPUIPlayerView.html">BCOVPUIPlayerView</a>.</li>
+</ul>
+
+<p>This example shows how to customize the accessibility values for the play button:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-objectivec"><a href="https://docs.brightcove.com/ios-sdk/Classes/BCOVPUIPlayerView.html#//api/name/controlsView">// After creating the BCOVPUIPlayerView, store it in a playerView property
+// Then set the accessibilityLabel and accessibilityHint properties
+self.playerView.controlsView.playbackButton.accessibilityLabel = @"Playback Button";
+self.playerView.controlsView.playbackButton.accessibilityHint = @"Play or pause the video";</a>
+</code></pre>
+
+<aside class="bcls-aside bcls-aside--information">If you are using your own playback controls, then you have to add VoiceOver support yourself.</aside>
+</section> -->
+
+<section class="bcls-section">
+<h2 id="Changing_the_background_color">Changing the background color</h2>
+
+<p>When playing a video in portrait mode, you may notice a black border on top and below the player. The player view is the size of the screen, but the video only takes up a small part of the center of the player view. The visible portions around the video is the background of the player layer.</p>
+
+<p>This is normal <code class="notranslate">AVPlayer </code> behavior. It shrinks your video to fit inside the player layer, and the rest is the player layer background.</p>
+
+<p>You can change the player layer background with the following code:</p>
+
+<pre class="line-numbers">
+<code class="notranslate language-objectivec">(void)playbackController:(id&lt;BCOVPlaybackController&gt;)controller didAdvanceToPlaybackSession:(id&lt;BCOVPlaybackSession&gt;)session
+{
+session.playerLayer.backgroundColor = UIColor.whiteColor.CGColor;
+}</code></pre>
+
+<p>Setting the background color to white should look like this:</p>
+
+<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Background color" src="//learning-services-media.brightcove.com/doc-assets/device-sdks/ios/snippets/ios-bkgd-color.png" />
+<figcaption class="bcls-caption--image">Custom background color</figcaption>
+</figure>
+</section>
+</article>
