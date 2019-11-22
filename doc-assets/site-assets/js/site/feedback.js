@@ -1,5 +1,5 @@
 var fby = fby || [];
-fby.push(['showTab', {id: '14941', position: 'right', color: '#069BB3'}]);
+fby.push(['showTab', {id: '14941', position: 'right', color: '#F3951D'}]);
 (function () {
     var f = document.createElement('script'); f.type = 'text/javascript'; f.async = true;
     f.src = '//cdn.feedbackify.com/f.js';
