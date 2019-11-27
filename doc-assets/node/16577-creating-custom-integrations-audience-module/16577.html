@@ -1,0 +1,154 @@
+<p class="BCL-objective">The Audience module allows Video Cloud to synchronize viewing data from Audience-enabled&nbsp;Brightcove Players to popular marketing automation platforms. The Audience module can also be configured with a custom integration. With a custom integration, viewing data is saved locally in Video Cloud and the Audience API is used to programmatically extract the data.</p>
+
+<p>The Audience module integration consists of two main components:</p>
+
+<ul>
+	<li class="language-editable">A Brightcove Player plug-in to enable tracking of video views data</li>
+	<li class="language-editable">Custom development that uses the Audience API to retrieve the viewing data</li>
+</ul>
+
+<div class="section">
+<h2 id="requirements">Requirements</h2>
+
+<p>To use the Audience module you must:</p>
+
+<ul>
+	<li class="language-editable">Have a Professional or Enterprise Video Cloud account</li>
+	<li class="language-editable">Have the Audience module enabled for your account by submitting the required information in the initial splash screen that appears when you open the Audience module</li>
+	<li class="language-editable">Click through the service agreement the first time you use the module</li>
+	<li class="language-editable">In order for leads to be collected, a <a href="/node/15860">lead form has to be configured</a> and assigned to a player</li>
+	<li class="language-editable">Use the Advanced (in-page) embed code when publishing your player; Standard (iframe) embed code will not work as the plugin will be running inside of an iframe and therefore will be unable to access the parent page URL parameters</li>
+</ul>
+</div>
+
+<div class="section">
+<h2 id="setupconnection">Setting up the connection</h2>
+
+<p>Follow these steps to configure a custom integration.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Open the Audience module and click <strong>Data Connections</strong> in the left navigation.</li>
+	<li class="language-editable">Click <strong>Add New Connection</strong>.</li>
+	<li class="language-editable">Select <strong>Custom</strong> as the integration.
+	<p class="BCL-aside">Note: The integrations that are available are based upon your Video Cloud subscription.</p>
+	</li>
+	<li class="language-editable">(Optional) Enter a <strong>Connection Name</strong>.
+	<div><img class="bcls-image--no-border" alt="select custom" src="https://img.brightcove.com/node16577-select-custom.png" /></div>
+	</li>
+	<li class="language-editable">Click <strong>Connect</strong>.</li>
+</ol>
+
+<p>The custom connection is now set up and ready to use.</p>
+</div>
+
+<div class="section">
+<h2 id="configure">Configuring the integration</h2>
+
+<p>Once the connection has been made, you can configure the integration.</p>
+
+<div><img class="bcls-image--no-border" alt="connected options" src="https://img.brightcove.com/node16577-configure.png" /></div>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">By default, the <strong>Connection Status</strong> will be <strong>Enabled</strong>. The <strong>Connection Status</strong> determines if Video Cloud video engagement data is saved.
+
+	<ul>
+		<li class="language-editable"><strong>Enabled</strong> - Data is collected and will be saved</li>
+		<li class="language-editable"><strong>Disabled</strong> - No data is collected (integration is disabled)</li>
+	</ul>
+	</li>
+	<li class="language-editable">Select a data retention policy. The data retention policy determines how long the viewing data and lead form data (if using an Audience lead form) will be retained in your Video Cloud account.
+	<p class="BCL-aside language-editable">Note: If you select <strong>No retention</strong>, NO data will be saved. When you use the API to download data, there won’t be any.</p>
+
+	<div><img class="bcls-image--no-border" alt="data retention options" src="https://img.brightcove.com/node16577-data-retention-options.png" /></div>
+	</li>
+</ol>
+</div>
+
+<div class="section">
+<h2 id="player">Creating an Audience-enabled player</h2>
+
+<p>Video engagement data will only be saved when&nbsp;you are using an Audience-enabled video player. For information on creating an Audience-enabled Brightcove Player, see <a href="/node/16419">Creating an Audience-enabled Player</a>.</p>
+</div>
+
+<div class="section">
+<h2 id="trackingid">Passing a tracking ID</h2>
+
+<p>The Audience module supports the ability to pass a tracking ID. The tracking ID might be used to track a campaign ID for example. The tracking ID can be appended to the URL that displays the Audience-enabled player or added to the player embed code.</p>
+
+<ul>
+	<li class="language-editable">Example: Appended to URL</li>
+</ul>
+
+<pre>
+  http://www.myurl.com/video.html?<strong>bctrackingid=12345</strong></pre>
+
+<ul>
+	<li class="language-editable">Example: Added to player embed code</li>
+</ul>
+
+<pre><code language="html">&lt;video data-video-id="6033402539001" 
+        data-account="1486906377" 
+        data-player="default" 
+        data-embed="default" 
+        data-application-id 
+        class="video-js"
+        <strong>data-bc-trackingid="12345"</strong> 
+        controls&gt;&lt;/video&gt;
+&lt;script src="//players.brightcove.net/1486906377/default_default/index.min.js"&gt;&lt;/script&gt;
+  </code></pre>
+</div>
+
+<div class="section">
+<h2 id="identify">Identifying viewers</h2>
+
+<p>When using a custom integration, you are responsible for identifying viewers. The Audience plugin needs two key pieces of information:</p>
+
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Description</th>
+			<th>URL Parameter</th>
+			<th>Embed Parameter</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td>Is the viewer known (needed for lead form)</td>
+			<td><code>bcknownuser</code></td>
+			<td><code>data-bc-known-user</code></td>
+			<td><code>0</code> or <code>1</code></td>
+		</tr>
+		<tr>
+			<td>What’s the GUID (needed for view event tracking)</td>
+			<td><code>bccustomguid</code></td>
+			<td><code>data-bc-custom-guid</code></td>
+			<td><code>string</code></td>
+		</tr>
+	</tbody>
+</table>
+&nbsp;
+
+<p>These values can be passed in via URL parameters or through the player embed code. For viewer tracking to occur, the user id should be passed as a URL parameter on the page that is displaying the video. The known user parameter is required for lead forms (if you'd like the lead form to conditionally display for unknown viewers).</p>
+
+<p class="BCL-aside language-editable">Note: In order for the player/plugin to read the URL parameters, the Advanced (in-page) embed code should be used. The Standard (iframe) embed code will not work as the plugin will be running inside of an iframe and therefore is unable to access the parent page URL which has the parameter.</p>
+
+<p>It’s also possible to pass the GUID to the Audience player using a JavaScript value that’s available in the page. Using the player config, it’s possible to tell Audience what the name of the JavaScript variable is and Audience will then attempt to read that variable using it as the custom GUID. To do this, edit the Audience player and configure the plugin options for the Audience plugin.</p>
+
+<div><img class="bcls-image--no-border" alt="select custom" src="https://img.brightcove.com/node16577-plugin-params.png" /></div>
+
+<p>In the above example, the player config is telling Audience that there’s a JavaScript object in the page called <code>samlAttributes</code> and it has a property called <code>nameID</code>. Audience will attempt to read that and use its value for the custom GUID.</p>
+</div>
+
+<div class="section">
+<h2 id="viewdata">Viewing video data</h2>
+
+<p>There are several options available for viewing video data when using a custom integration:</p>
+
+<ul>
+	<li class="language-editable"><strong>Viewer Activities (Events)</strong> - Provided as part of the Audience module, this option can be used to view video data inside the Audience module. For information, see <a href="/node/15863">Viewing Player Events in the Audience Module</a>.</li>
+	<li class="language-editable"><strong>Export Data</strong> - Provided as part of the Audience module, this option can be used to export video view and lead data. For information, see <a href="/node/15862">Exporting Data from the Audience Module</a>.</li>
+	<li class="language-editable"><strong>Audience API</strong> - The Audience API can be used to programmatically retrieve video view and lead data. For information, see <a href="/node/18047">Overview: Audience API</a>.</li>
+</ul>
+</div>
+<!-- End of Drupal content -->
