@@ -1,0 +1,180 @@
+<p>The Audience module provides the ability to create lead forms which allow you to capture viewer information as videos are played inside of Brightcove players. This gives you the ability to include whatever fields you need (visible or hidden) and also give you the ability to take advantage of features like progressive profiling (if available). The lead data is sent to, and processed by, Eloqua.</p>
+
+<p>To create a custom lead form, the following steps must be performed.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable"><a href="#form">Create a form in Eloqua</a>.</li>
+	<li class="language-editable"><a href="#edit">Copy the form HTML</a>.</li>
+	<li class="language-editable"><a href="#styleform">Style the form</a>.</li>
+	<li class="language-editable"><a href="#leadform">Create a custom lead form in the Audience module</a>.</li>
+	<li class="language-editable"><a href="#player">Assign the lead form to a player.</a></li>
+	<li class="language-editable"><a href="#formdata">Validate the form data in Eloqua.</a></li>
+</ol>
+
+<p class="BCL-aside language-editable">Note: For information on standard lead forms which capture viewer information and save the data in Video Cloud, see <a href="/node/15860">Creating an Audience Lead Form</a>.</p>
+
+<div class="BCL-concept">
+<h2 id="form">Creating a form in Eloqua</h2>
+
+<p>Eloqua provides the ability to create forms to capture viewer information. These forms can be displayed inside of Brightcove Players. The data that is captured can then be used in customizing future communications. The steps below will create a simple form to capture first name, last name and email address. For complete details on Eloqua Forms, see the <a href="https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAA/Help/Forms/Forms.htm">Eloqua documentation</a>.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Sign in to your Eloqua account.</li>
+	<li class="language-editable">Navigate to <strong>Assets</strong> &gt; <strong>Forms</strong> and then click <strong>Create a Form</strong>. The form Template Chooser opens.</li>
+	<li class="language-editable">Click <strong>Blank Form</strong> and then click <strong>Choose</strong>.</li>
+	<li class="language-editable">In the left navigation, click <strong>Field Groups</strong>.</li>
+	<li class="language-editable">In the <strong>Field Groups</strong> panel, click <strong>Basic Contact Info</strong> and drag it to the form template.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-add-fields.png" /></div>
+	</li>
+	<li class="language-editable">Confirm that the fields have been added to the form.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-fields-on-form.png" /></div>
+	</li>
+	<li class="language-editable">By default, the fields are added using a field merge. This will cause strange text to appear in the fields when used in Audience. To remove the field merge, select the <strong>First Name</strong> field by clicking on it.</li>
+	<li class="language-editable">On the right side of the page, click the <strong>Pre-Population</strong> button and then click <strong>None</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-pre-pop.png" /></div>
+	</li>
+	<li class="language-editable">Repeat the process for the <strong>Last Name</strong> and <strong>Email Address</strong> fields.</li>
+	<li class="language-editable">Click <strong>Save</strong>.</li>
+	<li class="language-editable">Give the form a name and then click <strong>Save</strong>.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-save-form.png" /></div>
+	</li>
+</ol>
+</div>
+
+<div class="BCL-concept">
+<h2 id="edit">Copying the form HTML</h2>
+
+<p>To use the form inside of the Audience module, you will need to copy the form HTML. Follow these steps to copy the form HTML.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Click <strong>Actions &gt; View Form HTML...</strong> The form HTML will be displayed.
+
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-form-details.png" /></div>
+	</li>
+	<li class="language-editable">Copy the entire HTML to the clipboard. Click <strong>Close</strong>.</li>
+	<li class="language-editable">Paste the form HTML into your HTML editor of choice. You may want to use the code formatting feature of your editor to format the code so that it is easier to read.</li>
+</ol>
+</div>
+
+<div class="BCL-concept">
+<h2 id="styleform">Styling the form</h2>
+
+<p>By default, when the form is displayed inside of a Brightcove Player, the form will display on a transparent background over the player. You will probably want to do some basic styling to the form using CSS. The sections below provide two examples of how the form can be styled. The associated CSS is also provided. You may need to adapt the CSS to conform to your standard colors or to handle styling of additional fields.</p>
+
+<div class="BCL-subsection">
+<h3>Simple form styling example</h3>
+
+<p>This example uses CSS to change the background color of the form to grey and the form will appear as follows:</p>
+
+<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-simple-styling.png" /></div>
+
+<p>For this styling, add the following CSS to the top of the form HTML <code>&lt;style&gt;</code> tag.</p>
+
+<pre>
+body {
+      background-color: rgba(204,204,204,0.9);
+      margin: 0;
+      padding: 20px;
+      height: 100%;
+}
+  </pre>
+</div>
+
+<div class="BCL-subsection">
+<h3>Advanced form styling example</h3>
+
+<p>This example uses JavaScript to change the background color of the form to black and does some basic field formatting. The form will appear as follows:</p>
+
+<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node16109-adv-styling.png" /></div>
+
+<p>For this styling, add the following JavaScript to the bottom of the form HTML.</p>
+
+<pre>
+
+&lt;script&gt;
+  var _50fields = document.getElementsByClassName('_50 field-style'),
+      _50leftFields = document.getElementsByClassName('_50_left field-style'),
+      labels = document.getElementsByClassName('label-position top'),
+      eForm = document.querySelector('form.elq-form'),
+      submitButton = document.getElementsByClassName('submit-button')[0],
+      titleLable = document.querySelector('label.label'),
+      firstName = document.getElementsByName('firstName')[0],
+      lastName = document.getElementsByName('lastName')[0],
+      emailAddress = document.getElementsByName('emailAddress')[0],
+      i;
+
+  for (i = 0; i &lt; _50fields.length; i++)
+     {_50fields[i].className = '_100 field-style'; }
+
+  for (i = 0; i &lt; _50leftFields.length; i++)
+     { _50leftFields[i].className = '_100 field-style'; }
+
+  for (i = 0; i &lt; labels.length; i++)
+     { labels[i].setAttribute('style', 'display:none;'); }
+
+  eForm.parentNode.setAttribute('style', 'background-color:#333;height:12em;text-align:center;padding:0% 20%;');
+  titleLable.setAttribute('style', 'display:none;');
+  submitButton.setAttribute('style', 'height:2em;background-color:#337d87;color:#fff;border:none;border-radius:.3em;padding:.3em .5em;font-size:1em;');
+  firstName.setAttribute('style', 'margin:.5em;height:2em;width:80%;padding-left:.5em;font-size:1em;border:none;border-radius:.3em;');
+  firstName.setAttribute('placeholder', 'First Name');
+  lastName.setAttribute('style', 'margin:.5em;height:2em;width:80%;padding-left:.5em;font-size:1em;border:none;border-radius:.3em;');
+  lastName.setAttribute('placeholder', 'Last Name');
+  emailAddress.setAttribute('style', 'margin:.5em;height:2em;width:80%;padding-left:.5em;font-size:1em;border:none;border-radius:.3em;');
+  emailAddress.setAttribute('placeholder', 'Email');
+&lt;/script&gt;</pre>
+</div>
+</div>
+
+<div id="leadform" class="BCL-concept">
+<h2>Creating a custom lead form in the Audience module</h2>
+
+<p>Once the form HTML has been created in Eloqua and styled as needed, create a custom lead form in the Audience module and associate the lead form with an Audience-enabled player.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Open the Audience module.</li>
+	<li class="language-editable">Click <strong>Lead Forms</strong> in the left navigation. If any lead forms have been created, they will be displayed.</li>
+	<li class="language-editable">Click <strong>Create Lead Form</strong>.</li>
+	<li class="language-editable">Give the lead form a descriptive <strong>Name</strong>.</li>
+	<li class="language-editable">Select a <strong>Form Language</strong>.</li>
+	<li class="language-editable">Select the <strong>Form Timing</strong>. The form timing determines when the lead form will be displayed.
+	<div><img class="bcls-image--no-border" alt="lead form settings" src="https://img.brightcove.com/node16109-edit-lead-form-1.png" /></div>
+	</li>
+	<li class="language-editable">Set the form type to <strong>Custom Lead Form</strong>.</li>
+	<li class="language-editable">Paste in the <strong>Form HTML</strong>.
+	<div><img class="bcls-image--no-border" alt="lead form html" src="https://img.brightcove.com/node16109-edit-lead-form-2.png" /></div>
+	</li>
+	<li class="language-editable">(Optional) Paste in the <strong>Confirmation HTML</strong>. The confirmation view will be display for 5 seconds and then the video will resume playing. If no confirmation HTML is included, the video will resume playing after the form submission.</li>
+	<li class="language-editable"><strong>(Optional)</strong> Click <strong>Preview Form</strong> to open a preview of the form.</li>
+	<li class="language-editable">Click <strong>Save</strong> to save the lead form.</li>
+</ol>
+</div>
+
+<div class="BCL-concept">
+<h2 id="player">Assigning a lead form to a player</h2>
+
+<p>Once the lead form has been created, it needs to be assigned to a player. Follow these steps to assign a lead form to a player.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Click <strong>Audience Players</strong> in the left navigation.</li>
+	<li class="language-editable">Locate your player and use the <strong>Lead Form</strong> dropdown list to select the lead form.</li>
+</ol>
+
+<p>The setup is now complete and you are ready to capture lead information. When a video is published using an Audience-enabled player, the lead form will appear according to the form timing settings.</p>
+</div>
+
+<div class="BCL-concept">
+<h2 id="formdata2">Validating the form data in Eloqua</h2>
+
+<p>There are several ways to validate that the form data has been passed to Eloqua. Follow these steps to view the form data in Eloqua.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Sign in to your Eloqua account.</li>
+	<li class="language-editable">Navigate to <strong>Assets</strong> &gt; <strong>Forms</strong>.</li>
+	<li class="language-editable">In the left navigation, click the <strong>All Files</strong> link to display all the forms.</li>
+	<li class="language-editable">Double-click the form name to open it.</li>
+	<li class="language-editable">Click <strong>Actions &gt; View Submission Data...</strong> The form data will be displayed.
+	<div><img class="bcls-image--no-border" alt="lead form data" src="https://img.brightcove.com/node16109-form-data.png" /></div>
+	</li>
+</ol>
+</div>
+<!-- End of Drupal content -->
