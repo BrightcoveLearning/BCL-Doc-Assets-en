@@ -13,23 +13,23 @@
   <p>You can specify up to 10 endpoints to receive notifications by making a <code>POST</code> request to <code class="notranslate language-http">https://cms.api.brightcove.com/v1/accounts/{account_id}/subscriptions</code> and including JSON in the request body like this:</p>
   
   <pre class="line-numbers">
-    <code class="notranslate language-json">{
-    "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
-    "events":["video-change"]
-    }
-    </code>
-    </pre>
+      <code class="notranslate language-json">{
+      "endpoint":"http://solutions.brightcove.com/bcls/di-api/di-callbacks.php",
+      "events":["video-change"]
+      }
+      </code>
+      </pre>
   
   <p>Notifications are sent in JSON format. Here's an example:</p>
   
   <pre class="line-numbers">
-    <code class="notranslate language-json">{"timestamp":1423840514446,
-    "account_id":"775205503001",
-    "event":"video-change",
-    "video":"4020894387001",
-    "version":26}
-    </code>
-    </pre>
+      <code class="notranslate language-json">{"timestamp":1423840514446,
+      "account_id":"775205503001",
+      "event":"video-change",
+      "video":"4020894387001",
+      "version":26}
+      </code>
+      </pre>
   
   <aside class="bcls-aside bcls-aside--information language-editable">&gt;There is currently no other way to subscribe to notifications except through the API.</aside>
   
@@ -44,24 +44,24 @@
     </thead>
     <tbody class="bcls-table__body">
       <tr>
-        <td><code>timestamp</code></td>
-        <td>time when the event occurred in <span class="”notranslate”">Epoch</span> milliseconds</td>
+        <td class="language-editable"><code>timestamp</code></td>
+        <td class="language-editable">time when the event occurred in <span class="”notranslate”">Epoch</span> milliseconds</td>
       </tr>
       <tr>
-        <td><code>account_id</code></td>
-        <td>the <span class="”notranslate”">Video Cloud</span> account id</td>
+        <td class="language-editable"><code>account_id</code></td>
+        <td class="language-editable">the <span class="”notranslate”">Video Cloud</span> account id</td>
       </tr>
       <tr>
-        <td><code>event</code></td>
-        <td>the type of event - currently this will always be <code>video-change</code></td>
+        <td class="language-editable"><code>event</code></td>
+        <td class="language-editable">the type of event - currently this will always be <code>video-change</code></td>
       </tr>
       <tr>
-        <td><code>video</code></td>
-        <td>the video ID</td>
+        <td class="language-editable"><code>video</code></td>
+        <td class="language-editable">the video ID</td>
       </tr>
       <tr>
-        <td><code>version</code></td>
-        <td>the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
+        <td class="language-editable"><code>version</code></td>
+        <td class="language-editable">the version of the video - each set of change events increments the video version - for example, creation of a new set of renditions would constitute a set of change events</td>
       </tr>
     </tbody>
   </table>
@@ -93,18 +93,18 @@
   <h3>Endpoint for notification subscriptions</h3>
   
   <pre class="line-numbers">
-    <code class="notranslate language-http">/accounts/{account_id}/subscriptions
-    </code>
-    </pre>
+      <code class="notranslate language-http">/accounts/{account_id}/subscriptions
+      </code>
+      </pre>
   
   <h3 id="createSubscription">Create a new subscription</h3>
   
   <p>To create a new subscription, submit a <code>POST</code> request with a request body including the endpoint that you want notifications delivered to and <code>video-change</code> as the single item in an <code>events</code> array:</p>
   
   <pre class="line-numbers">
-    <code class="notranslate language-json">{ "endpoint": "http://solutions.brightcove.com:9002", "events": [ "video-change" ] }
-    </code>
-    </pre>
+      <code class="notranslate language-json">{ "endpoint": "http://solutions.brightcove.com:9002", "events": [ "video-change" ] }
+      </code>
+      </pre>
   
   <h3 id="getSubscriptions">Get a list of your subscriptions</h3>
   
@@ -117,9 +117,9 @@
   <h4>Endpoint</h4>
   
   <pre class="line-numbers">
-    <code class="notranslate language-http">/accounts/{account_id}/subscriptions/{subscription_id}
-    </code>
-    </pre>
+      <code class="notranslate language-http">/accounts/{account_id}/subscriptions/{subscription_id}
+      </code>
+      </pre>
   
   <p>A <code>GET</code> request will retrieve the subscription. A <code>DELETE</code> request will delete the subscription. You cannot update a subscription at this time. If you want to modify a subscription, you will need to delete it and create a new one.</p>
   </section>
@@ -141,8 +141,11 @@
     <li class="language-editable">A video is deleted</li>
     <li class="language-editable">Video metadata is changed (by the system or a user)</li>
   </ul>
+  
   <h3>Notes</h3>
+  
   <p>Retranscoding a video will not trigger a <code>video-change</code> event unless the resulting rendition set is different.</p>
+  
   <p>There are system events that occur after a video is deleted, so you will receive notifications about a video after deleting it.</p>
   
   <p>What will <strong>not</strong> trigger a <code>video-change</code> event is a change to a video asset that does not change the video metadata. For example, if you replace a remote text track file or image, but the URL recorded in the video metadata remains the same, no <code>video-change</code> event will occur, and no notification will be sent.</p>
