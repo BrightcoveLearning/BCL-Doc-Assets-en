@@ -3,15 +3,10 @@ var BCLS = (function(window, document) {
     client_id,
     client_secret,
     // api stuff
-    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/bcls-proxy-v2.php',
+    proxyURL = 'https://solutions.brightcove.com/bcls/bcls-proxy/doc-samples-proxy-v2.php',
     baseURL = 'https://cms.api.brightcove.com/v1/accounts/',
-    initialOffset = 0,
-    retryNumber = 0,
-    doRenditions = true,
-    includeHeaders = true,
     limit = 25,
     totalVideos = 0,
-    grandTotalVideos = 0,
     totalCalls = 0,
     callNumber = 0,
     videosCompleted = 0,
@@ -24,9 +19,6 @@ var BCLS = (function(window, document) {
     account_id_element = document.getElementById('account_id'),
     client_id_element = document.getElementById('client_id'),
     client_secret_element = document.getElementById('client_secret'),
-    initial_offset = document.getElementById('initial_offset'),
-    get_renditions = document.getElementById('get_renditions'),
-    include_headers = document.getElementById('include_headers'),
     tag = document.getElementById('tag'),
     videoCount = document.getElementById('videoCount'),
     makeReport = document.getElementById('makeReport'),
@@ -182,11 +174,7 @@ var BCLS = (function(window, document) {
   function startCSVStrings() {
     var i = 0,
       iMax;
-    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","State","Filename","Resolution","Duration(sec)"';
-    if (doRenditions) {
-      csvStr += ',"HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)"';
-    }
-    csvStr += ',\r\n';
+    csvStr = '"ID","Name","Reference ID","Description","Date Added","Date Last Modified","Filename","Resolution","Duration(sec)","HLS Renditions (bitrate range KBPS)","MP4 Renditions (bitrate range KBPS)","FLV Renditions (bitrate range KBPS)","Total Rendition Size (MB)",\r\n';
   }
 
   function writeReport() {
@@ -212,29 +200,27 @@ var BCLS = (function(window, document) {
         if (video.description) {
           video.description = video.description.replace(/(?:\r\n|\r|\n)/g, ' ');
         }
-        if (doRenditions) {
-          // generate the video detail row
-          hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
-          hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
-          mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
-          mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
-          flvLowRate = (video.flvRenditions.length > 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
-          flvHighRate = (video.flvRenditions.length > 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
-          if (video.flvRenditions.length > 0) {
-            rendition = video.flvRenditions[video.flvRenditions.length - 1];
-          } else if (video.mp4Renditions.length > 0) {
-            rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
-          } else if (video.hlsRenditions.length > 0) {
-            rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
-          } else {
-            rendition.frame_width = "unknown";
-            rendition.frame_height = "unknown";
-          }
-          resWidth = rendition.frame_width;
-          resHeight = rendition.frame_height;
+        // generate the video detail row
+        hlsLowRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[0].encoding_rate / 1000 : 0;
+        hlsHighRate = (video.hlsRenditions.length > 0) ? video.hlsRenditions[video.hlsRenditions.length - 1].encoding_rate / 1000 : 0;
+        mp4LowRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[0].encoding_rate / 1000 : 0;
+        mp4HighRate = (video.mp4Renditions.length > 0) ? video.mp4Renditions[video.mp4Renditions.length - 1].encoding_rate / 1000 : 0;
+        flvLowRate = (video.flvRenditions.length > 0) ? video.flvRenditions[0].encoding_rate / 1000 : 0;
+        flvHighRate = (video.flvRenditions.length > 0) ? video.flvRenditions[video.flvRenditions.length - 1].encoding_rate / 1000 : 0;
+        if (video.flvRenditions.length > 0) {
+          rendition = video.flvRenditions[video.flvRenditions.length - 1];
+        } else if (video.mp4Renditions.length > 0) {
+          rendition = video.mp4Renditions[video.mp4Renditions.length - 1];
+        } else if (video.hlsRenditions.length > 0) {
+          rendition = video.hlsRenditions[video.hlsRenditions.length - 1];
+        } else {
+          rendition.frame_width = "unknown";
+          rendition.frame_height = "unknown";
         }
+        resWidth = rendition.frame_width;
+        resHeight = rendition.frame_height;
         // add csv row
-        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.state + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",\r\n';
+        csvStr += '"' + video.id + '","' + video.name + '","' + video.reference_id + '","' + video.description + '","' + video.created_at + '","' + video.updated_at + '","' + video.original_filename + '","' + resWidth + 'x' + resHeight + '","' + video.duration / 1000 + '","' + video.hlsRenditions.length + ' (' + hlsLowRate + '-' + hlsHighRate + ')","' + video.mp4Renditions.length + ' (' + mp4LowRate + '-' + mp4HighRate + ')","' + video.flvRenditions.length + ' (' + flvLowRate + '-' + flvHighRate + ')",' + '"' + (video.totalSize / 1000000) + '",\r\n';
       }
       csvData.textContent += csvStr;
       // content = document.createTextNode('Finished! See the results or get the CSV data below.');
@@ -272,11 +258,11 @@ var BCLS = (function(window, document) {
         makeRequest(options, function(response) {
           parsedData = JSON.parse(response);
           // set total videos
-          video_count = parsedData.count;
+          videoCount = parsedData.count;
           if (totalVideos === "All") {
-            totalVideos = video_count;
+            totalVideos = videoCount;
           } else {
-            totalVideos = (totalVideos < video_count) ? totalVideos : video_count;
+            totalVideos = (totalVideos < videoCount) ? totalVideos : videoCount;
           }
           totalCalls = Math.ceil(totalVideos / limit);
           logText.textContent = totalVideos + ' videos found; getting account custom fields';
@@ -284,7 +270,7 @@ var BCLS = (function(window, document) {
         });
         break;
       case 'getVideos':
-        var offset = initialOffset + (limit * callNumber);
+        var offset = (limit * callNumber);
         endPoint = account_id + '/videos?sort=created_at&limit=' + limit + '&offset=' + offset;
         if (isDefined(tag.value)) {
           endPoint += '&q=%2Btags:' + tag.value;
@@ -302,22 +288,7 @@ var BCLS = (function(window, document) {
             callNumber = 0;
             spanRenditionsCountEl.textContent = callNumber + 1;
             spanRenditionsTotalEl.textContent = totalVideos;
-            if (doRenditions) {
-              createRequest('getDigitalMaster');
-            } else {
-              videosCompleted++;
-              logText.textContent = totalVideos + ' videos found; videos retrieved: ' + videosCompleted;
-              callNumber++;
-              if (callNumber < totalVideos) {
-                createRequest('getDigitalMaster');
-              } else {
-                // create csv headings
-                startCSVStrings();
-                // write the report
-                writeReport();
-              }
-               
-            }
+            createRequest('getDigitalMaster');
           }
         });
         break;
@@ -328,18 +299,14 @@ var BCLS = (function(window, document) {
         options.requestType = 'GET';
         apiRequest.textContent = options.url;
         makeRequest(options, function(response) {
-          if (isDefined(response)){
             responseDecoded = JSON.parse(response);
             if (isDefined(responseDecoded) && !isDefined(responseDecoded.length)) {
-              videosArray[callNumber].totalSize += responseDecoded.size;
-              createRequest('getVideoRenditions');
-            } else {
-              createRequest('getVideoRenditions');
-            }
+            videosArray[callNumber].totalSize += responseDecoded.size;
+            createRequest('getVideoRenditions');
           } else {
             createRequest('getVideoRenditions');
           }
-        });
+        })
         break;
       case 'getVideoRenditions':
         var i,
@@ -421,7 +388,7 @@ var BCLS = (function(window, document) {
                       if (httpRequest.status >= 200 && httpRequest.status < 300) {
                           response = httpRequest.responseText;
                           // some API requests return '{null}' for empty responses - breaks JSON.parse
-                          if (response === '') {
+                          if (response === '{null}') {
                               response = null;
                           }
                           // return the response
@@ -473,16 +440,11 @@ var BCLS = (function(window, document) {
 
   // button event handlers
   makeReport.addEventListener('click', function() {
-    // in case of re-run, cleal the results
-    csvData.textContent = '';
     // get the inputs
     client_id = client_id_element.value;
     client_secret = client_secret_element.value;
-    account_id = account_id_element.value;
+    account_id = account_id_element.value
     totalVideos = getSelectedValue(videoCount);
-    initialOffset = (initial_offset.value >= 0) ? parseInt((initial_offset.value), 10) : 0;
-    includeHeaders = (include_headers.checked) ? true : false;
-    doRenditions = (get_renditions.checked) ? true : false;
     // only use entered account id if client id and secret are entered also
     if (!isDefined(client_id) || !isDefined(client_secret) || !isDefined(account_id)) {
       logger.appendChild(document.createTextNode('To use your own account, you must specify an account id, and client id, and a client secret - since at least one of these is missing, a sample account will be used'));
