@@ -289,6 +289,20 @@
     <p>As a side note, the <code>probability</code> associated with the processing region will at this point always be <code>1</code>, but is included in the data model for future enhancements that will allow multiple processing regions with probabilities between 0 and 1, representing the approximate percentage of playback traffic that will use that region.</p>
   </section>
   <section class="bcls-section">
+    <h2 id="add_cuepoints">Manually adding cuepoints</h2>
+    <p>Manually adding cuepoints to a live stream with redundancy is very similar to adding cuepoints to an ordinary live stream. To do this for a redundant group, make a <code>POST</code> request to:</p>
+    <pre><code class="language-http">https://api.bcovlive.io/v1/redundantgroups/{redundant_group_id}/cuepoint</code></pre>
+    <p>Include a request body like the following:</p>
+<pre class="line-numbers"><code class="language-json">{
+  "ad_server_data": {
+    "subject": "wildlife"
+  },
+  "duration": 30,
+  "timecode": "09:23:18:05"
+}</code></pre>
+    <p>If you omit the <code>timecode</code> field, the cuepoint will be inserted immediately.</p>
+  </section>
+  <section class="bcls-section">
     <h2 id="Force_a_Job_failover">Force a job failover</h2>
     <p>Failover will be managed automatically by the Brightcove Live system, and should require no intervention on your part. If for some reason you want to force failover to another job, however, the simplest way to do it is to simply stop the encoder of the <code>on_air</code> job.</p>
     <p>You can also force failover using the API by making a <code>PUT</code> request to:</p>
