@@ -1,0 +1,158 @@
+<article class="bcls-article">
+  <section class="bcls-section">
+  <h2 id="Introduction">Introduction</h2>
+  
+  <p>A basic requirement when doing development with Brightcove Player is obtaining a reference to the player. The best practice for performing this has changed over the life of Brightcove Player 6.x. Here are best practices you should follow (details for each bullet are later in this document):</p>
+  
+  <ul>
+    <li class="language-editable">To get a reference to the player when using a version of the <code>&lt;video&gt;</code> tag, do one the following:
+  
+    <ul>
+      <li class="language-editable"><strong>v6.16.0+</strong> use the <code>videojs.getPlayer()</code> method.</li>
+      <li class="language-editable"><strong>Before v6.16.0</strong> use the <code>videojs()</code> method.</li>
+    </ul>
+    </li>
+    <li class="language-editable">When using the <strong>Advanced (in-page embed)</strong> player implementation, the best practice is:
+    <ul>
+      <li class="language-editable"><strong>v6.11.0+</strong> use the <code>&lt;video-js&gt;</code> tag.</li>
+      <li class="language-editable"><strong>Before v6.11.0</strong> use the <code>&lt;video&gt;</code> tag.</li>
+    </ul>
+    </li>
+    <li class="language-editable">If you are manually instantiating the player on the page, use the <code>bc()</code> method, which will generate a reference to the player.</li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="reference"><code>getPlayer()</code> versus <code>videojs()</code></h2>
+  
+  <p>If you have been doing development with Brightcove Player for any length of time, you almost assuredly have seen code similar to the following used to get a reference to the player and store it in the <code>myPlayer</code> variable:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-javascript">videojs('myPlayerID').ready(function(){
+    var myPlayer = this;
+  });</code></pre>
+  
+  <p>If you are using <strong>v6.16.0+</strong> it is a cleaner use of the API, and a recommended best practice, to use <code>player.getPlayer()</code> <strong>instead</strong>, as shown here:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-javascript">videojs.getPlayer('myPlayerID').ready(function() {
+    var myPlayer = this;
+  });
+  </code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="versus"><code>video-js</code> tag versus <code>video</code> tag</h2>
+  
+  <p>For Brightcove Player <strong>v6.11.0+</strong> it is a best practice to use <code>&lt;video-js&gt;</code> over <code>&lt;video&gt;</code>. The reasons for this are:</p>
+  
+  <ul>
+    <li class="language-editable">Using <code>&lt;video-js&gt;</code> will prevent the flash of native controls problem you can get with a <code>&lt;video&gt;</code> element. An example of this is in Chrome versions 67+. Chrome will display a broken video icon momentarily until the <code>&lt;video&gt;</code> tag gets converted into a Brightcove Player. The icon appears as follows:
+  
+    <figure class="bcls-figure"><img class="bcls-image" width="200" height="109" alt="chrome broken video icon" src="//learning-services-media.brightcove.com/doc-assets/general/chrome-broken-video-icon.png" /></figure>
+    </li>
+    <li class="language-editable">In some cases, such as when using non-Video Cloud media, using <code>&lt;video-js&gt;</code> will give the player more control over the initialization process. This prevents any automatic browser behaviors that may be associated with the <code>&lt;video&gt;</code> element.</li>
+  </ul>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="bc_method_details"><code>bc()</code> method details</h2>
+  
+  <p>The <code>bc()</code> method is used to instantiate a player at a time of your choosing. The <a href="/node/18051">Delaying Player Instantiation</a> document discusses use cases and implementations. The <a href="/node/18608">Brightcove Player Sample: Vertical Volume Control</a> shows another use of the <code>bc()</code> method where you want to change the direction of the volume control to vertical, which must occur before the player is instantiated.</p>
+  
+  <p>The syntax of the method is:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-javascript">bc(id,options)</code></pre>
+  
+  <p>where:</p>
+  
+  <ul>
+    <li class="language-editable"><code>id</code>:
+  
+    <ul>
+      <li class="language-editable">Description: Video element or video element ID</li>
+      <li class="language-editable">Datatype: string|Element</li>
+      <li class="language-editable">Required: true</li>
+    </ul>
+    </li>
+    <li class="language-editable"><code>options</code>:
+    <ul>
+      <li class="language-editable">Description: Options object for providing settings</li>
+      <li class="language-editable">Datatype: Object</li>
+      <li class="language-editable">Required: false</li>
+    </ul>
+    </li>
+    <li class="language-editable">The method returns a Brightcove Player instance</li>
+  </ul>
+  
+  <p>For example, you could have the following <code>video-js</code> tag and then JavaScript to configure the player:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-html">&lt;video-js id="myPlayerID"
+     data-embed="default"
+     data-application-id
+     class="video-js"
+     width="640" height="360"
+     controls&gt;&lt;/video-js&gt;
+  &lt;script src="https://players.brightcove.net/1752604059001/default_default/index.min.js"&gt;&lt;/script&gt;
+  
+  &lt;script type="text/javascript"&gt;
+    // +++ Define the player options +++
+    var <span class="bcls-highlight">options</span> = {
+      controlBar: {
+        volumePanel: {
+          inline: false,
+          vertical: true
+        }
+      }
+    };
+  
+    // +++ Add the player attributes +++
+    var myPlayerEl = document.getElementById("myPlayerID");
+    myPlayerEl.setAttribute('data-account', 1752604059001);
+    myPlayerEl.setAttribute('data-player', 'default');
+    myPlayerEl.setAttribute('data-video-id', 5557662144001);
+  
+    // +++ Create the player +++
+    <span class="bcls-highlight">bc(myPlayerEl, options);</span>
+  &lt;/script&gt;</code></pre>
+  
+  <p>Of the normal player configuration options (detailed in the <a href="/node/18262">Player Configuration Guide</a>), the following can be used with the <code>bc()</code> method:</p>
+  
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Valid Configuration Options</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td><span class="”notranslate”">autoplay</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">language</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">languages</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">loop</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">muted</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">playsinline</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">preload</span></td>
+      </tr>
+      <tr>
+        <td><span class="”notranslate”">techOrder</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  </article>
+  
