@@ -6,7 +6,8 @@ var BCLS = ( function (window, document) {
     i,
     iMax,
     href;
-
+  console.log('p', p);
+  
   if (window.location.protocol === 'http:' && p === 80) {
     h = h.replace('http:', 'https:');
     window.location.href = h;
