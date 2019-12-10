@@ -1,6 +1,6 @@
 var BCLS = ( function (window, document) {
   var h = window.location.href,
-    p = parseInt(window.location.port),
+    p = window.location.port,
     language,
     aTags = document.getElementsByTagName('a'),
     i,
@@ -8,7 +8,7 @@ var BCLS = ( function (window, document) {
     href;
   console.log('p', p);
   
-  if (window.location.protocol === 'http:' && p === 80) {
+  if (window.location.protocol === 'http:' && p === '') {
     h = h.replace('http:', 'https:');
     window.location.href = h;
   }
