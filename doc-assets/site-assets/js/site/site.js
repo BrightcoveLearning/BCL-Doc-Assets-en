@@ -33,16 +33,17 @@ function removeClass(el, name)
   iMax = all_sidenav_links.length;
   for (i = 0; i < iMax; i++) {
     currentLink = all_sidenav_links[i];
+    currentLinkNextSib = currentLink.nextElementSibling;
     if (currentLink.getAttribute("href") === href) {
       addClass(currentLink.parentElement, 'bcls-active');
       if (currentLink.getAttribute("href") !== "/") {
-        currentLinkNextSib = currentLink.nextElementSibling;
         p1 = currentLink.parentElement;
         p1NextSib = p1.nextElementSibling;
         p1NextSibList = p1NextSib.firstElementChild.nextElementSibling;
         p2 = p1.parentElement;
         p3 = p2.parentElement;
         p4 = p3.parentElement;
+        console.log('currentLink', currentLink);
         console.log('p1', p1);
         console.log('p2', p2);
         console.log('p3', p3);
