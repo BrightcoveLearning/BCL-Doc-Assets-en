@@ -64,6 +64,9 @@ function removeClass(el, name)
           p4.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p1NextSib === 'LI') {
           p2.removeAttribute('style');
+        } else if (p1.nodeName === 'LI' && p2.nodeName === 'UL' && p4.nodeName === 'UL') {
+          p2.removeAttribute('style');
+          p4.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p1NextSibList.nodeName === 'UL') {
             console.log('p1NextSib nodename', p1NextSib.nodeName);
             p2.removeAttribute('style');
