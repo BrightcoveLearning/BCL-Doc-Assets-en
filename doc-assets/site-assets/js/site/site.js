@@ -55,14 +55,11 @@ function removeClass(el, name)
         if (p1.nodeName === 'H5') {
           pNextSib = p1.nextElementSibling;
           pNextSib.removeAttribute('style');
-        } else if (p1.nodeName === 'LI' && p1NextSib === null && p3.nodeName == 'LI') {
+        } else if (p2.nodeName === 'UL' && p3.nodeName === 'NAV') {
           p2.removeAttribute('style');
-          p4.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p4.nodeName === 'UL') {
           p2.removeAttribute('style');
           p4.removeAttribute('style');
-        } else if (p2.nodeName === 'UL' && p3.nodeName === 'NAV') {
-          p2.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p2.nodeName === 'UL' && p4.nodeName === 'UL') {
           p2.removeAttribute('style');
           p4.removeAttribute('style');
