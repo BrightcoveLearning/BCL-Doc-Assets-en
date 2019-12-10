@@ -55,9 +55,9 @@ function removeClass(el, name)
         if (p1.nodeName === 'H5') {
           pNextSib = p1.nextElementSibling;
           pNextSib.removeAttribute('style');
-        } else if (p2.nodeName === 'UL' && p3.nodeName === 'NAV' && p1NextSibList.nodeName == "UL") {
+        } else if (p2.nodeName === 'UL' && p3.nodeName === 'NAV' && currentLinkNextSib.nodeName == "UL") {
           p2.removeAttribute('style');
-          p1NextSibList.removeAttribute('style');
+          currentLinkNextSib.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p4.nodeName === 'UL') {
           p2.removeAttribute('style');
           p4.removeAttribute('style');
