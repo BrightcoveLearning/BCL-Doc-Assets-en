@@ -48,6 +48,8 @@ function removeClass(el, name)
         console.log('p3', p3);
         console.log('p4', p4);
         console.log('p1NextSib', p1NextSib);
+        console.log('p1NextSibList', p1NextSibList);
+        
         parentNodeName = p1.nodeName;
         pSib = p1.firstChild;
         if (p1.nodeName === 'H5') {
@@ -61,13 +63,15 @@ function removeClass(el, name)
           p4.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p1NextSib === 'LI') {
           p2.removeAttribute('style');
+        } else if (p2.nodeName === 'UL' && p3.nodeName === 'NAV') {
+          p2.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p2.nodeName === 'UL' && p4.nodeName === 'UL') {
           p2.removeAttribute('style');
           p4.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p1NextSibList.nodeName === 'UL') {
             console.log('p1NextSib nodename', p1NextSib.nodeName);
             p2.removeAttribute('style');
-            console.log('p1NextSib', p1NextSib);
+            p1NextSibList.removeAttribute('style');
         } else if (p2.nodeName === 'UL' && p3.nodeName === 'UL') {
           p2.removeAttribute('style');
           p3.removeAttribute('style');
