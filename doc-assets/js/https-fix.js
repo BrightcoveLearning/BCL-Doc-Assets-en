@@ -1,12 +1,13 @@
 var BCLS = ( function (window, document) {
   var h = window.location.href,
+    p = parseInt(window.location.port),
     language,
     aTags = document.getElementsByTagName('a'),
     i,
     iMax,
     href;
 
-  if (window.location.protocol === 'http:') {
+  if (window.location.protocol === 'http:' && p === 80) {
     h = h.replace('http:', 'https:');
     window.location.href = h;
   }
