@@ -49,7 +49,7 @@ function removeClass(el, name)
         console.log('p4', p4);
         console.log('p1NextSib', p1NextSib);
         console.log('p1NextSibList', p1NextSibList);
-        
+        console.log('currentLinkNextSib', currentLinkNextSib);
         parentNodeName = p1.nodeName;
         pSib = p1.firstChild;
         if (p1.nodeName === 'H5') {
