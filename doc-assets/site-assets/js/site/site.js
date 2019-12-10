@@ -11,7 +11,8 @@ var BCLS_site = (function(window, document) {
     pSib,
     pChild,
     pNextSib,
-    p1NextSib;
+    p1NextSib,
+    p1NextSibList;
 
 // utilities for adding/removing classes
 function hasClass(el, name) {
@@ -36,6 +37,7 @@ function removeClass(el, name)
       if (currentLink.getAttribute("href") !== "/") {
         p1 = currentLink.parentElement;
         p1NextSib = p1.nextElementSibling;
+        p1NextSibList = p1NextSib.firstElementChild.nextElementSibling;
         p2 = p1.parentElement;
         p3 = p2.parentElement;
         p4 = p3.parentElement;
@@ -57,10 +59,11 @@ function removeClass(el, name)
           p4.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p1NextSib === 'LI' {
           p2.removeAttribute('style');
-        } else if (p1.nodeName === 'LI' && p1NextSib.nodeName === 'UL') {
+          p1NextSibList.removeAttribute('style');
+        } else if (p1.nodeName === 'LI' && p1NextSibList.nodeName === 'UL') {
             console.log('p1NextSib nodename', p1NextSib.nodeName);
             p2.removeAttribute('style');
-            p1NextSib.removeAttribute('style');
+            p1NextSibList.removeAttribute('style');
             console.log('p1NextSib', p1NextSib);
         } else if (p2.nodeName === 'UL' && p3.nodeName === 'UL') {
           p2.removeAttribute('style');
