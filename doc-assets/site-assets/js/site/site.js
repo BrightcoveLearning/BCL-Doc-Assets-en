@@ -38,19 +38,24 @@ function removeClass(el, name)
         p1NextSib = p1.nextElementSibling;
         p2 = p1.parentElement;
         p3 = p2.parentElement;
+        p4 = p3.parentElement;
         console.log('p1', p1);
         console.log('p2', p2);
         console.log('p3', p3);
+        console.log('p4', p4);
         console.log('p1NextSib', p1NextSib);
         parentNodeName = p1.nodeName;
         pSib = p1.firstChild;
         if (p1.nodeName === 'H5') {
           pNextSib = p1.nextElementSibling;
           pNextSib.removeAttribute('style');
-        } else if (p1.nodeName === 'LI' && p1NextSib === null && p3.nodeName == 'UL') {
+        } else if (p1.nodeName === 'LI' && p1NextSib === null && p3.nodeName == 'LI') {
           p2.removeAttribute('style');
-          p3.removeAttribute('style');
-        } else if (p1.nodeName === 'LI' && p1NextSib === 'LI') {
+          p4.removeAttribute('style');
+        } else if (p1.nodeName === 'LI' && p1NextSib === 'LI' && p3.nodeName == 'LI') {
+          p2.removeAttribute('style');
+          p4.removeAttribute('style');
+        } else if (p1.nodeName === 'LI' && p1NextSib === 'LI' {
           p2.removeAttribute('style');
         } else if (p1.nodeName === 'LI' && p1NextSib.nodeName === 'UL') {
             console.log('p1NextSib nodename', p1NextSib.nodeName);
