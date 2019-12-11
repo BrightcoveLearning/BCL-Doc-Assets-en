@@ -39,7 +39,7 @@ function removeClass(el, name)
       if (currentLink.getAttribute("href") !== "/") {
         p1 = currentLink.parentElement;
         p1NextSib = p1.nextElementSibling;
-        if (p1NextSib.firstElementChild) {
+        if (p1NextSib && p1NextSib.firstElementChild) {
           p1NextSibList = p1NextSib.firstElementChild.nextElementSibling;
         }
         p2 = p1.parentElement;
