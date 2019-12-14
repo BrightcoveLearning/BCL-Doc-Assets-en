@@ -14,7 +14,7 @@ var BCLS_oldfeedback = ( function (window, document) {
       surveyForm.setAttribute('style', 'display:none;')
     } else {
       retry++;
-      if (retru < 5) {
+      if (retry < 5) {
         t = window.setTimeout(removeOldFeedback, 2000);
       }
     }
