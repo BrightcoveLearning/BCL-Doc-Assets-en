@@ -1,4 +1,4 @@
-var BCLS = ( function (window, document) {
+var BCLS_oldfeedback = ( function (window, document) {
   var oldFeedback = document.getElementById('surveyDiv');
   
   if (oldFeedback) {
