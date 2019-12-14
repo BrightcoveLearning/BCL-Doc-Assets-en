@@ -1,5 +1,7 @@
 var BCLS = ( function (window, document) {
   var oldFeedback = document.getElementById('surveyDiv');
-
-  oldFeedback.setAttribute('style', 'display:none');
+  
+  if (oldFeedback) {
+    oldFeedback.setAttribute('style', 'display:none');
+  }
 })(window, document);
