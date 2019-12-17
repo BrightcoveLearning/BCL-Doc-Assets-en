@@ -11,7 +11,7 @@ var BCLS_oldfeedback = ( function (window, document) {
       console.log('old feedback present');
       oldFeedback.setAttribute('style', 'display:none;');
     } else if (CSAT) {
-      CSAT.setAttribute('style', 'display:none;')
+      CSAT.setAttribute('style', 'display:none;');
     } else {
       retry++;
       if (retry < 5) {

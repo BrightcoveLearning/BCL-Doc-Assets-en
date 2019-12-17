@@ -11,12 +11,15 @@ function keepLanguage() {
     console.log('plang', plang);
     
     if (plang.length === 2) {
+      var hrefValue;
       newPath = domain + '/' + plang;
       console.log('newpath', newPath);
       iMax = all_links.length;
       for (i = 0; i < iMax; i++) {
-        var href = absolute(all_links[i].getAttribute('href'));
-        all_links[i].setAttribute('href', href.replace(domain, newPath));
+        hrefValue = all_links[i].getAttribute('href');
+        if (hrefValue.charAt(0) !== '#' && hrefValue.lastIndexOf('support.brightcove') > -1) {
+          all_links[i].setAttribute('href', hrefValue.replace(domain, newPath));
+        }
       }
     }
 }
