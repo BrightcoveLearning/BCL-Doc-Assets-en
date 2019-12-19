@@ -1,16 +1,11 @@
 var BCLS_oldfeedback = ( function (window, document) {
-  var oldFeedback = document.getElementById('surveyDiv'),
-  t = window.setTimeout(removeOldFeedback, 2000),
-  CSAT = document.getElementById('CSAT'),
+  var t = window.setTimeout(removeOldFeedback, 2000),
   retry = 0;
   function removeOldFeedback() {
     console.log('try remove old feedback');
-    oldFeedback = document.getElementById('surveyDiv');
-    CSAT = document.getElementById('CSAT');
-    if (oldFeedback) {
-      console.log('old feedback present');
-      oldFeedback.setAttribute('style', 'display:none;');
-    } else if (CSAT) {
+    var CSAT = document.getElementById('CSAT');
+    if (CSAT) {
+      console.log('old feedback detected');
       CSAT.setAttribute('style', 'display:none;');
     } else {
       retry++;
