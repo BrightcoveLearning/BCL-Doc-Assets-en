@@ -1,9 +1,8 @@
 <article class="bcls-article">
 <section class="bcls-section">
 <h2 id="Overview">Overview</h2>
-<p>
-	Server-Side Ad Insertion (<span class="”notranslate”">SSAI</span>) allows you to stitch ads into your video content stream to provide a TV-like viewing experience. To play a live stream with the Native SDKs, you need to pass the playback token with your video request.
-</p>
+
+<p>Server-Side Ad Insertion (<span class="”notranslate”">SSAI</span>) allows you to stitch ads into your video content stream to provide a TV-like viewing experience. To play a live stream with the Native SDKs, you need to pass the playback token with your video request.</p>
 
 <p>Live <span class="”notranslate”">SSAI</span> allows you to:</p>
 
@@ -16,233 +15,186 @@
 
 <section class="bcls-section">
 <h2 id="Steps">Steps</h2>
-<p>
-	To play a live stream with <span class="”notranslate”">SSAI</span>, follow these steps:
-</p>
+
+<p>To play a live stream with <span class="”notranslate”">SSAI</span>, follow these steps:</p>
 
 <ol class="bcls-tasklist__restart">
 	<li><a href="https://support.brightcove.com/node/18748#Creating_a_Live_ad_configuration">Create a live ad configuration</a> using Video Cloud Studio</li>
 	<li>Optional: <a href="https://support.brightcove.com/node/18753#fill_slate">Create slate assets</a>, and/or <a href="https://support.brightcove.com/node/18835">Insert cue points and ad beacons</a></li>
-	<li>
-		<a href="#Create_a_live_event">Create a live event</a>
-	</li>
-	<li>
-		<a href="#Get_the_playback_token">Get the playback token</a>
-	</li>
+	<li><a href="#Create_a_live_event">Create a live event</a></li>
+	<li><a href="#Get_the_playback_token">Get the playback token</a></li>
 	<li>
 	<p>Build your app:</p>
 
-	<ul><li><a href="#Android_implementation">Android implementation</a></li>
+	<ul>
+		<li><a href="#Android_implementation">Android implementation</a></li>
 		<li><a href="#iOS_implementation">iOS implementation</a></li>
 		<!-- <li><a href="#tvOS_implementation">tvOS implementation</a></li> -->
 	</ul>
-</li>
-<li><a href="https://support.brightcove.com/node/18753#request_ad">Request an ad break</a></li>
+	</li>
+	<li><a href="https://support.brightcove.com/node/18753#request_ad">Request an ad break</a></li>
 </ol>
+
 <aside class="bcls-aside bcls-aside--tip">If you prefer, you can use the Live API to create your stream and configure your ad breaks. For details, see the <a href="/node/17763">Live API: Server-Side Ad Insertion (SSAI)</a> document.</aside>
 </section>
 
 <section class="bcls-section">
 <h2 id="Create_a_live_event">Create a live event</h2>
 <p>
-	To create a live event, follow these steps:
+	By default, your live stream will use a Brightcove CDN. If you prefer, you can use your own choice of CDN (BYO CDN or "bring your own bandwidth"). To use your own CDN, include the optional step in this section and in the <a href="#Get_the_playback_token">Get the playback token</a> section.
 </p>
+<p>To create a live event, follow these steps:</p>
+
 <ol class="bcls-tasklist__restart">
+	<li>Refer to the <a href="https://support.brightcove.com/node/18753#create_event">Implementing Server-Side Ads in the Live Module</a> document.</li>
+	<li>In the <strong>Advanced Options</strong>, make sure you select <strong>Enable Server-Side Ad Insertion (SSAI)</strong>.</li>
 	<li>
-		Refer to the <a href="https://support.brightcove.com/node/18753#create_event">Implementing Server-Side Ads in the Live Module</a> document.
-	</li>
-	<li>
-		In the <strong>Advanced Options</strong>, make sure you select <strong>Enable Server-Side Ad Insertion (SSAI)</strong>.
-	</li>
-	<li>
-		<p>
-			<strong>Optional</strong>: By default, your live stream will use a Brightcove CDN. If you prefer, you can use your own choice of CDN (BYO CDN or "bring your own bandwidth").
-		</p>
-		<ul>
-			<li>
-				<p>
-					In the <strong>Advanced Options</strong> section, select the <strong>Add multi CDN configuration</strong> option.
-				</p>
-				<figure class="bcls-figure">
-					<img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/node/18943-live-ssai-sdks/multiple-cdn.png" alt="Multi CDN Configuration">
-					<figcaption class="bcls-caption--image">Multi CDN Configuration</figcaption>
-				</figure>
-			</li>
-			<li>
-				Enter a label and URL for your own CDN. For more information about CDNs, see the <a href="node/549/">Content Delivery Options</a> document.
-			</li>
-		</ul>
+	<p><strong>Optional</strong>: To use your own CDN, include these additional steps:</p>
+
+	<ul>
+		<li>
+		<p>In the <strong>Advanced Options</strong> section, select the <strong>Add multi CDN configuration</strong> option.</p>
+
+		<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Multi CDN Configuration" src="//learning-services-media.brightcove.com/doc-assets/node/18943-live-ssai-sdks/multiple-cdn.png" />
+		<figcaption class="bcls-caption--image">Multi CDN Configuration</figcaption>
+		</figure>
+		</li>
+		<li>Enter a label and URL for your own CDN. For more information about CDNs, see the <a href="node/549/">Content Delivery Options</a> document.</li>
+	</ul>
 	</li>
 </ol>
 </section>
 
 <section class="bcls-section">
-	<h2 id="Get_the_playback_token">Get the playback token</h2>
-	<p>
-		When you enable SSAI with your live stream, the player embed code will contain an <code>adConfigId</code> parameter. This value is the playback token, which you will use when requesting video content in your app.
-	</p>
-	<p>
-		To get the playback token, follow these steps:
-	</p>
-	<ol class="bcls-tasklist__restart">
-		<li>
-			In Video Cloud Studio, open the <strong>Live</strong> module.
-		</li>
-		<li>
-			In the left side navigation, select <strong>Player Configuration</strong>.
-		</li>
-		<li>
-			<p>
-				<strong>Optional</strong>: In the <strong>Live Player Options</strong> section, expand the <strong>Select Content Delivery Network (CDN)</strong> dropdown menu and select your preferred CDN.
-			</p>
-			<figure class="bcls-figure">
-				<img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/node/18943-live-ssai-sdks/select-cdn.png" alt="Select your CDN">
-				<figcaption class="bcls-caption--image">Select your CDN</figcaption>
-			</figure>
-		</li>
-		<li>
-			<p>
-				Copy the <a href="">Standard Embed Code</a> to your clipboard.
-			</p>
-			<figure class="bcls-figure">
-				<img class="bcls-image--no-border" src="//learning-services-media.brightcove.com/doc-assets/node/18943-live-ssai-sdks/embed-code.png" alt="Embed code">
-				<figcaption class="bcls-caption--image">Embed code</figcaption>
-			</figure>
-		</li>
-		<li>
-			<p>
-				From the embed code, copy the <code>VideoId</code> and the <code>adConfigId</code> parameter value. You will use these values in a later step. The <code>adConfigId</code> value is the playback token passed when requesting content from your Video Cloud library. It should look similar to this:
-			</p>
-			<pre><code class="language-html">live.abcdefghijkl_-Bn1234567890abcde</code></pre>
-		</li>
-		<li>
-			You will also need the Account Id and Policy Key for your account.
-		</li>
-	</ol>
+<h2 id="Get_the_playback_token">Get the playback token</h2>
+
+<p>When you enable SSAI with your live stream, the player embed code will contain an <code>adConfigId</code> parameter. This value is the playback token, which you will use when requesting video content in your app.</p>
+
+<p>To get the playback token, follow these steps:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>In Video Cloud Studio, open the <strong>Live</strong> module.</li>
+	<li>In the left side navigation, select <strong>Player Configuration</strong>.</li>
+	<li>
+	<p><strong>Optional</strong>: To use your own CDN, include this additional step. In the <strong>Live Player Options</strong> section, expand the <strong>Select Content Delivery Network (CDN)</strong> dropdown menu and select your preferred CDN.</p>
+
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Select your CDN" src="//learning-services-media.brightcove.com/doc-assets/node/18943-live-ssai-sdks/select-cdn.png" />
+	<figcaption class="bcls-caption--image">Select your CDN</figcaption>
+	</figure>
+	</li>
+	<li>
+	<p>Copy the <a href="">Standard Embed Code</a> to your clipboard.</p>
+
+	<figure class="bcls-figure"><img class="bcls-image--no-border" alt="Embed code" src="//learning-services-media.brightcove.com/doc-assets/node/18943-live-ssai-sdks/embed-code.png" />
+	<figcaption class="bcls-caption--image">Embed code</figcaption>
+	</figure>
+	</li>
+	<li>
+	<p>From the embed code, copy the <code>VideoId</code> and the <code>adConfigId</code> parameter value. You will use these values in a later step. The <code>adConfigId</code> value is the playback token passed when requesting content from your Video Cloud library. It should look similar to this:</p>
+
+	<pre>
+<code class="language-html">live.abcdefghijkl_-Bn1234567890abcde</code></pre>
+	</li>
+	<li>You will also need the Account Id and Policy Key for your account.</li>
+</ol>
 </section>
 
 <section class="bcls-section">
-	<h2 id="Android_implementation">Android implementation</h2>
-	<p>
-		To play a live stream, you will include the <code>adConfigId</code> parameter and the value of your playback token to your video request.
-	</p>
-	<p>
-		Follow these steps to build your app:
-	</p>
-	<ol class="bcls-tasklist__restart">
-	<li>
-		Use the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicSsaiSampleApp">Basic SSAI Sample App</a> as a starting point for your code.
+<h2 id="Android_implementation">Android implementation</h2>
+
+<p>To play a live stream, you will include the <code>adConfigId</code> parameter and the value of your playback token to your video request.</p>
+
+<p>Follow these steps to build your app:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>Use the <a href="https://github.com/BrightcoveOS/android-player-samples/tree/master/brightcove-exoplayer/BasicSsaiSampleApp">Basic SSAI Sample App</a> as a starting point for your code.</li>
+	<li>In the <strong>res/values/strings.xml</strong> file, replace the following with your own values
+	<ul>
+		<li>Account Id</li>
+		<li>Video Id</li>
+		<li>Policy Key</li>
+	</ul>
 	</li>
 	<li>
-		In the <strong>res/values/strings.xml</strong> file, replace the following with your own values
-		<ul>
-			<li>
-				Account Id
-			</li>
-			<li>
-				Video Id
-			</li>
-			<li>
-				Policy Key
-			</li>
-		</ul>
+	<p>In the <strong>MainActivity.java</strong> file, replace the <code>ad_config_id</code> value with your playback token (live URL) that you you copied from the Live module in the previous section.</p>
+
+	<pre>
+<code class="language-java">private final String AD_CONFIG_ID_QUERY_PARAM_VALUE = "live.abcdefghijkl_-Bn1234567890abcde";</code></pre>
 	</li>
 	<li>
-		<p>
-			In the <strong>MainActivity.java</strong> file, replace the <code>ad_config_id</code> value with your playback token (live URL) that you you copied from the Live module in the previous section.
-		</p>
-		<pre><code class="language-java">private final String AD_CONFIG_ID_QUERY_PARAM_VALUE = &quot;live.abcdefghijkl_-Bn1234567890abcde&quot;;</code></pre>
-	</li>
-	<li>
-		<p>
-			The <code>ad_config_id</code> with your playback token value is added to the HTTP request as a query parameter.
-		</p>
-		<pre class="line-numbers"><code class="language-java">HttpRequestConfig httpRequestConfig = new HttpRequestConfig.Builder()
-.addQueryParameter(AD_CONFIG_ID_QUERY_PARAM_KEY, AD_CONFIG_ID_QUERY_PARAM_VALUE)
-.build();
+	<p>The <code>ad_config_id</code> with your playback token value is added to the HTTP request as a query parameter.</p>
+
+	<pre class="line-numbers">
+<code class="language-java">HttpRequestConfig httpRequestConfig = new HttpRequestConfig.Builder()
+  .addQueryParameter(AD_CONFIG_ID_QUERY_PARAM_KEY, AD_CONFIG_ID_QUERY_PARAM_VALUE)
+  .build();
 </code></pre>
 	</li>
 	<li>
-		<p>
-			Make the catalog call to the Playback API with your live stream video id and the updated HTTP request.
-		</p>
-		<pre class="line-numbers"><code class="language-java">catalog.findVideoByID(getString(R.string.video_id), httpRequestConfig, new VideoListener() {
- @Override
- public void onVideo(Video video) {
-		 plugin.processVideo(video);
- }
-});
+	<p>Make the catalog call to the Playback API with your live stream video id and the updated HTTP request.</p>
+
+	<pre class="line-numbers">
+<code class="language-java">catalog.findVideoByID(getString(R.string.video_id), httpRequestConfig, new VideoListener() {
+   @Override
+   public void onVideo(Video video) {
+       plugin.processVideo(video);
+   }
+ });
 </code></pre>
 	</li>
 	<li>
-		<p>
-			Your app is ready to play the live stream.
-		</p>
-		<p>
-			For more details about using live streams enabled for SSAI with the Native SDK for Android, see the <a href="https://www.brightcove.com/en/blog/2019/12/ssai-plugin-changes-690">SSAI Plugin changes in 6.9.0</a> blog post.
-		</p>
+	<p>Your app is ready to play the live stream.</p>
+
+	<p>For more details about using live streams enabled for SSAI with the Native SDK for Android, see the <a href="https://www.brightcove.com/en/blog/2019/12/ssai-plugin-changes-690">SSAI Plugin changes in 6.9.0</a> blog post.</p>
 	</li>
 </ol>
 </section>
 
 <section class="bcls-section">
-	<h2 id="iOS_implementation">iOS implementation</h2>
-	<p>
-		To play a live stream, you will include the <code>adConfigId</code> parameter and the value of your playback token to your video request.
-	</p>
-	<p>
-		Follow these steps to build your app:
-	</p>
-	<ol class="bcls-tasklist__restart">
-	<li>
-		Use the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/SSAI/BasicSSAIPlayer">Basic SSAI Sample App</a> as a starting point for your code.
+<h2 id="iOS_implementation">iOS implementation</h2>
+
+<p>To play a live stream, you will include the <code>adConfigId</code> parameter and the value of your playback token to your video request.</p>
+
+<p>Follow these steps to build your app:</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>Use the <a href="https://github.com/BrightcoveOS/ios-player-samples/tree/master/SSAI/BasicSSAIPlayer">Basic SSAI Sample App</a> as a starting point for your code.</li>
+	<li>In the <strong>ViewController.swift</strong> file, replace the following with your own values
+	<ul>
+		<li>Account Id</li>
+		<li>Video Id</li>
+		<li>Policy Key</li>
+	</ul>
 	</li>
 	<li>
-		In the <strong>ViewController.swift</strong> file, replace the following with your own values
-		<ul>
-			<li>
-				Account Id
-			</li>
-			<li>
-				Video Id
-			</li>
-			<li>
-				Policy Key
-			</li>
-		</ul>
+	<p>In the <strong>ViewController.swift</strong> file, replace the <code>AdConfigId</code> value with your playback token (live URL) that you you copied from the Live module in the previous section.</p>
+
+	<pre>
+<code class="language-swift">static let AdConfigId = "live.abcdefghijkl_-Bn1234567890abcde";</code></pre>
 	</li>
 	<li>
-		<p>
-			In the <strong>ViewController.swift</strong> file, replace the <code>AdConfigId</code> value with your playback token (live URL) that you you copied from the Live module in the previous section.
-		</p>
-		<pre><code class="language-swift">static let AdConfigId = &quot;live.abcdefghijkl_-Bn1234567890abcde&quot;;</code></pre>
-	</li>
-	<li>
-		<p>
-			The <code>AdConfigId</code> with your playback token value is added to the HTTP request as a query parameter.
-		</p>
-		<pre class="line-numbers"><code class="language-swift">let queryParameters = [kBCOVPlaybackServiceParamaterKeyAdConfigId: Constants.AdConfigId]
+	<p>The <code>AdConfigId</code> with your playback token value is added to the HTTP request as a query parameter.</p>
+
+	<pre class="line-numbers">
+<code class="language-swift">let queryParameters = [kBCOVPlaybackServiceParamaterKeyAdConfigId: Constants.AdConfigId]
 </code></pre>
 	</li>
 	<li>
-		<p>
-			Make the catalog call to the Playback API with your live stream video id and the updated HTTP request.
-		</p>
-		<pre class="line-numbers"><code class="language-swift">playbackService.findVideo(withVideoID: Constants.VideoId, parameters: queryParameters) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
+	<p>Make the catalog call to the Playback API with your live stream video id and the updated HTTP request.</p>
 
- guard let _video = video else {
-	 print(&quot;ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? &quot;unknown error&quot;)&quot;)
-	 return
- }
+	<pre class="line-numbers">
+<code class="language-swift">playbackService.findVideo(withVideoID: Constants.VideoId, parameters: queryParameters) { [weak self] (video: BCOVVideo?, jsonResponse: [AnyHashable: Any]?, error: Error?) -&gt; Void in
 
- self?.playbackController?.setVideos([_video] as NSFastEnumeration)
+   guard let _video = video else {
+     print("ViewController Debug - Error retrieving video: \(error?.localizedDescription ?? "unknown error")")
+     return
+   }
+
+   self?.playbackController?.setVideos([_video] as NSFastEnumeration)
 }
 </code></pre>
 	</li>
-	<li>
-		Your app is ready to play the live stream.
-	</li>
+	<li>Your app is ready to play the live stream.</li>
 </ol>
 </section>
-
 </article>
