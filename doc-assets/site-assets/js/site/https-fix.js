@@ -10,6 +10,8 @@ var BCLS = ( function (window, document) {
   
   if (window.location.protocol === 'http:' && p === '') {
     h = h.replace('http:', 'https:');
+    console.log('h', h);
+    
     window.location.href = h;
   }
 
