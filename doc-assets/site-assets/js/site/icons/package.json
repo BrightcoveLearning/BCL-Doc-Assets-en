@@ -1,0 +1,53 @@
+{
+  "name": "@brightcove/studio-icons",
+  "version": "7.2.1",
+  "description": "The standard icon library for Brightcove Studio",
+  "repository": {
+    "type": "git",
+    "url": "https://bithub.brightcove.com/studio-ui-kit/studio-icons.git"
+  },
+  "keywords": [
+    "icon",
+    "svg",
+    "studio"
+  ],
+  "author": "amanning",
+  "scripts": {
+    "dist": "rm -rf ./components/dist && mkdir -p ./components/dist && cp ./README.md ./components/dist && node scripts/create-dist-pkg && node ./scripts/parse.js ./icons/icomoon/icomoon.json && babel -D -d components/dist/ ./components/src",
+    "lint": "eslint ./components/src && kacl lint",
+    "jest": "jest",
+    "precommit-msg": "echo 'Running pre-commit build of dist/' && exit 0",
+    "precommit-dist-include": "git add ./components/dist/*",
+    "ncu": "ncu --error-level 2",
+    "ncu:update": "ncu -u; npm install",
+    "preversion": "kacl prerelease",
+    "version": "kacl release && git add CHANGELOG.md",
+    "postversion": "git push && gh-release -e https://bithub.brightcove.com/api/v3 && npm publish ./components/dist --access restricted"
+  },
+  "main": "./index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@brightcove/kacl": "0.1.5",
+    "@brightcove/eslint-config-applications": "0.2.0",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
+    "babel-eslint": "10.0.1",
+    "babel-loader": "8.0.4",
+    "babel-preset-env": "1.7.0",
+    "eslint": "5.8.0",
+    "gh-release": "3.4.0",
+    "jest": "24.8.0",
+    "npm-check-updates": "2.14.2",
+    "pre-commit": "1.2.2",
+    "studio-coding-standards": "git+ssh://git@bithub.brightcove.com:studio/studio-coding-standards.git#v3.1.1",
+    "studio-colors": "git+ssh://git@bithub.brightcove.com:studio-ui-kit/studio-colors.git#v2.0.0",
+    "webpack": "4.23.1"
+  },
+  "pre-commit": [
+    "precommit-msg",
+    "lint",
+    "dist",
+    "jest",
+    "precommit-dist-include"
+  ]
+}
