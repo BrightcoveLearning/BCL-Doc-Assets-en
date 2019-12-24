@@ -1,5 +1,6 @@
 var BCLS = ( function (window, document) {
   var h = window.location.href,
+    prot = window.location.protocol,
     p = window.location.port,
     language,
     aTags = document.getElementsByTagName('a'),
@@ -7,8 +8,10 @@ var BCLS = ( function (window, document) {
     iMax,
     href;
   console.log('p', p);
+  console.log('prot', prot);
   
-  if (window.location.protocol === 'http:' && p === '') {
+  
+  if (prot === 'http:' && p === '') {
     h = h.replace('http:', 'https:');
     console.log('h', h);
     
@@ -16,15 +19,15 @@ var BCLS = ( function (window, document) {
   }
 
   if (h.indexOf('/ja/') > 0) {
-    language = 'ja/'
+    language = 'ja/';
   } else if (h.indexOf('/ko/') > 0) {
-    language = 'ko/'
+    language = 'ko/';
   } else if (h.indexOf('/es/') > 0) {
-    language = 'es/'
+    language = 'es/';
   } else if (h.indexOf('/fr/') > 0) {
-    language = 'fr/'
+    language = 'fr/';
   } else if (h.indexOf('/de/') > 0) {
-    language = 'de/'
+    language = 'de/';
   }
 
   if (isDefined(language)) {
