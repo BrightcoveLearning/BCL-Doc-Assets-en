@@ -1,224 +1,224 @@
 <div class="BCL_concept">
-<p>When you upload your video, Video Cloud automatically transcodes your single video into a collection of renditions, each suitable for the typical range of your viewers’ bandwidth and resolution. Then, Video Cloud dynamically detects the screen size and connection speed from the environment where your video plays, and serves the right rendition of your video to maximize quality given the speed and power available to each individual viewer. This article offers best practices for recording, exporting, uploading and publishing your Video Cloud videos that assures optimum playback of your content everywhere it plays.</p>
-
-<p>The tables below summarize the settings that you can use when creating video content:</p>
-
-<h3 class="BCL_subsectionTitle">Video</h3>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<td style="width:25%"><strong>Format</strong></td>
-			<td style="width:75%">MP4</td>
-		</tr>
-		<tr>
-			<td><strong>Codec</strong></td>
-			<td>H.264</td>
-		</tr>
-		<tr>
-			<td><strong>Bitrate</strong></td>
-			<td>2x the bitrate of the highest rendition</td>
-		</tr>
-		<tr>
-			<td><strong>Frame rate</strong></td>
-			<td>Constant, usually between 15 - 60 frames per second</td>
-		</tr>
-		<tr>
-			<td><strong>Aspect ratio</strong></td>
-			<td>Your video aspect ratio will be preserved. An aspect ratio of 16:9 is common.</td>
-		</tr>
-	</tbody>
-</table>
-
-<h3 class="BCL_subsectionTitle">Audio</h3>
-
-<table class="bcls-table">
-	<tbody class="bcls-table__body">
-		<tr>
-			<td style="width:25%"><strong>Codec</strong></td>
-			<td style="width:75%">AAC (Advanced Audio Codec)</td>
-		</tr>
-		<tr>
-			<td><strong>Bit rate</strong></td>
-			<td>Constant, 128 kbps</td>
-		</tr>
-		<tr>
-			<td><strong>Channels</strong></td>
-			<td>Stereo</td>
-		</tr>
-	</tbody>
-</table>
-&nbsp;
-
-<p>Now, you are ready to look further into the details of these settings:</p>
-
-<p>The Video Cloud publication workflow includes the following processes:</p>
-
-<ul>
-	<li><a href="#beforerecord">Step 1: Before you Record</a></li>
-	<li><a href="#recording">Step 2: Recording</a></li>
-	<li><a href="#exporting">Step 3: Exporting</a></li>
-	<li><a href="#transcoding">Step 4: Transcoding</a></li>
-	<li><a href="#uploading">Step 5: Uploading</a></li>
-</ul>
-</div>
-
-<div class="BCL_concept">
-<h2 id="beforerecord">Step 1: Before you Record</h2>
-
-<div class="BCL_subsection">
-<h3 class="BCL_subsectionTitle">Source Encoding</h3>
-
-<p>There are many factors that impact the overall results of transcoded media. It is not realistic to provide a one-size-fits-all recommendation, so this step will list some of the more important considerations and how they affect the output.</p>
-
-<div class="BCL_subsection">
-<h4 class="BCL_subsectionTitle">General</h4>
-
-<ul>
-	<li>Try to start with the highest possible source media if possible. Successive transcode passes reduce the overall quality exponentially. If possible, start with the uncompressed source. Because of increased file transfer and ingestion times, it may not always make sense to send a raw source. In these cases, it is best to upload a source with 2-3x the bitrate of the highest rendition you expect to generate. So if you intend to have a top rendition with a video bitrate of 3 Mbps, the you would want to upload a source video with a bitrate of 6-9 Mbps.</li>
-	<li>If the raw source must be compressed before uploading, H.264 and AAC are the preferred video and audio codecs.</li>
-	<li>Do not use multiple video or audio streams. Occasionally we see source media that may have more than one audio or video stream. This is often the case with media copied directly from a DVD. While we make a best guess as to which stream to use, there is no way for us to know what stream was preferred.</li>
-	<li>Avoid stream delays. For example, some video editing tools will inject a start time for the audio stream such that the audio starts playing at some time after the video. We have found that some tools introduce audio sync issues during this process.</li>
-</ul>
-</div>
-
-<div class="BCL_subsection">
-<h4 class="BCL_subsectionTitle">Video</h4>
-
-<ul>
-	<li>The frame size should be at least as large as the largest anticipated rendition. However, do not scale media to a frame size larger than the original.</li>
-	<li>H.264 requires that frame sizes are multiples of 4 and is optimized for multiples of 16. We will scale transcodes to meet this requirement, but for best results source media should already be encoded in multiples of 16. Multiples of 8 or 4 will also work though with a slight performance decrease.</li>
-	<li>Avoid interlacing. Most web and mobile video players do not handle interlaced content well. While we will detect and remove interlacing, there can be a quality loss during the conversion.</li>
-	<li>Avoid anamorphic video. Anamorphic video, or video with a non-square Pixel Aspect Ratio, does not play correctly in some mobile and Web players. We attempt to detect anamorphic video and convert it, but occasionally the original source metadata is incorrect. This can prevent us from converting the material correctly.</li>
-	<li>If you are creating a screencast with a tool such as Camtasia, see <a href="/node/10594">Creating and Publishing High Quality Screencasts</a> for some best practices and tips when exporting your screencast and uploading it to Video Cloud.</li>
-</ul>
-</div>
-
-<div class="BCL_subsection">
-<h4 class="BCL_subsectionTitle">Audio</h4>
-
-<ul>
-	<li>For maximum compatibility, use stereo or mono audio and avoid 5.1.</li>
-	<li>Normalize the audio tracks to standard levels such that you avoid "clipping" while also avoiding a low volume.</li>
-	<li>Make sure that audio levels are consistent across media that might be viewed together.</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div class="BCL_concept">
-<h2 id="recording">Step 2: Recording</h2>
-
-<div class="BCL_subsection">
-<h3 class="BCL_subsectionTitle">What is my content and where will it play?</h3>
-
-<p>In most cases, when you publish your videos to Video Cloud, they look great across all distribution targets, whether they are playing amid other content within a browser, in full-screen mode, in the confines of small mobile device screens, or spread out across large monitors. Still, it's best when recording your video to make a practice of considering both the nature of your content and the viewing conditions of your audience. You can take some measures when recording tricky content to show under challenging conditions, such as an instructional screen cast with small text you would like to make crisp and legible from both a player included with other browser content and as a full screen video, or an HD news cast shown to countries with populations having low bandwidth Internet access.</p>
-
-<p>Here are some recommendations for recording practices to avoid issues with content and playback:</p>
-
-<ul>
-	<li><strong>De-interlace at record-time</strong>. For the best quality playback, Video Cloud de-interlaces all content. When recording with a camcorder, set the record setting to progressive not interlace. If you are working with an already recorded interlaced video as a source file, opt to check the de-interlace setting within your video editing software at compression time in preparation for uploading to Video Cloud. If you do not transcode your video with Video Cloud, and you shot an interlaced video, de-interlace the video file before uploading it.</li>
-	<li><strong>Capture at a constant frame rate.</strong> To best avoid stuttering during playback, record video at a constant frame rate and avoid a variable frame rate when creating your source files. Also, shoot progressive and use the same frame-rate you will publish to - 30 fps is a good place to start.</li>
-	<li><strong>Adopt a strategy for screencasts.</strong> Creating recordings with clear, crisp, and legible text is especially challenging when creating software tutorial videos you intend to play both from a player within a browser and in a full-screen mode. See <a href="/node/10594">Creating and Publishing High Quality Screencasts</a> for some best practices and tips when exporting your screencast and uploading it to Video Cloud.</li>
-	<li><strong>Avoid camera shake.</strong> While this may seem obvious for viewing, shaking actually impacts the encoder's ability to compress material using motion estimation algorithms. In other words, lower compression and lower quality.</li>
-	<li><strong>Avoid noisy backgrounds.</strong> This applies to video as well as audio. In the case of video, things like background movement (e.g. traffic) and complex background images (e.g. noisy wallpaper) all impact compression negatively. Similarly, background noise during an interview reduces audio compression.</li>
-	<li><strong>Use proper lighting.</strong> Darker scenes can be more difficult to encode without quality loss.</li>
-</ul>
-</div>
-</div>
-
-<div class="BCL_concept">
-<h2 id="exporting">Step 3: Exporting</h2>
-
-<div class="BCL_subsection">
-<h3 class="BCL_subsectionTitle">What compression format do I upload to Video Cloud?</h3>
-
-<p>Brightcove recommends uploading a video source file encoded as an H.264 format to leverage optimum quality for the widest range of delivery targets. The H.264 codec offers the maximum opportunity for Video Cloud's transcoding engine to create the highest quality renditions for the range of resolutions and bandwidths where your video plays. See <a href="/node/3287">Supported Video Codecs and Containers</a> for more on the distinction between codecs, containers, and file types. For detailed specifics on the best format for your Video Cloud video uploads, see <a href="/node/583">Video Source File Specifications and Recommendations</a>.</p>
-
-<h3 class="BCL_subsectionTitle"><a name="quicktime" href=""></a>Checking your video's codec</h3>
-
-<p>To be sure your video source file is encoded in a H.264 format, you can verify the format in the QuickTime player's movie inspector:</p>
-
-<ol>
-	<li>Open QuickTime Player. You can get QuickTime for free at <a href="https://www.apple.com/quicktime/download/">https://www.apple.com/quicktime/download/</a>.</li>
-	<li>Select <strong>File</strong> &gt; <strong>Open File... </strong>and choose your exported video file.</li>
-	<li>From your opened video in the QuickTime player, select <strong>Window </strong>&gt; <strong>Show Movie Inspector</strong>.</li>
-</ol>
-
-<div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node_6187_1_h264_2.png" /></div>
-
-<ol start="4">
-	<li>In the movie inspector window for your video, check that the <strong>Format</strong> is H.264/MPEG-4 AVC (Advanced Video Coding).</li>
-</ol>
-
-<p>The QuickTime movie inspector is a handy tool for reporting the format, resolution, frame rate, and other properties of your compressed video source file.</p>
-
-<h3 id="principles" class="BCL_subsectionTitle">Guiding principles when exporting from video editing software</h3>
-
-<p>When compressing and exporting videos from your favorite video editors, we recommend compressing your videos in using an H.264 codec and letting Video Cloud automatically create renditions best for multiple resolutions and bit rates. In addition, we recommend:</p>
-
-<ul type="square">
-	<li><strong>Opt out of Flash</strong>. When rendering your videos from video production software, select an H.264 codec option, that is a codec, or container<em> other than</em> Flash or SWF.</li>
-	<li><strong>Avoid single-target formatting</strong>. Avoid the streamlined encoding options that come with your editing software offering a one-click solution to encode your video for a specific target such as the web, iPhone, YouTube, DVD, or BlueRay. To let Video Cloud take care of distribution for you, format your video using QuickTime conversion settings that creates the most flexible native H.264 codec, and let Video Cloud create multiple renditions from your single H.264 upload to serve to multiple distribution targets including the web, iPhone, and YouTube, as well as multiple resolutions and connection speeds.</li>
-	<li><strong>Multi-pass, if you have the time</strong>. Best practices advise uploading the highest quality video possible, and multi-pass processing is one of the best practices for creating a quality source file. Under some conditions, the marginally improved quality of your video might not justify the time it takes to encode using a two-pass process. Two-pass encoding can reduce the incidence of video artifacts and provides the most benefit to videos that have areas of high motion.</li>
-	<li><strong>Don't be stingy with file size.</strong> Video Cloud is built to handle large file uploads, and does not charge for large files. If you're used to compressing files for the sake of successful uploads or for cutting costs, don't. Be sure to upload a high quality source file.</li>
-	<li><strong>Get us a high quality file. </strong>We recommend a source with 2-3x the bitrate of the highest rendition you expect to generate. So if you intend to have a top rendition with a video bitrate of 3 Mbps, the you would want to upload a source video with a bitrate of 6-9 Mbps. Also remember, sometimes videos that have too much data do not stream via HTTP smoothly. Excessively high quality video can cause buffering.<br />
-	<!-- <p>
-    Video Cloud Express customers have access to fixed renditions and need not exceed the bit rate for their fastest rendition when considering data compression rates. Video Cloud Pro and Enterprise customers should consider the bit rate of their current fastest rendition as well as any rendition they might opt to create in the future when re-encoding existing videos with new transcoding settings.
-  </p> --></li>
-	<li><strong>Stay consistent with the frame rate</strong>. Export at the frame rate you shot at to avoid stuttering. Also, if the export frame rate setting is not the same as the source, you risk asynchronous video and audio tracks.</li>
-	<li><strong>Keep a copy of your native file</strong>: It's a great practice to save your native video files in case you want to edit them, compress them anew, or re-encode them. Use a profile from the <a href="/node/18041">list of Standard Ingest Profiles</a> that matches your target audience, or create your own ingest profile. <!-- <p>
-      <a href="node/3412">Re-encoding existing videos</a> is available only to Video Cloud Pro and Enterprise publishers. You may find after publication that your video would benefit by making changes to the exporting settings. Video Cloud does provide a way to <a href="node/3412#newsource">re-encode your video from a higher quality source</a> file, which allows you to keep all the metadata assigned to a title but to upload a video in the latest most flexible encoding format.
+  <p>When you upload your video, Video Cloud automatically transcodes your single video into a collection of renditions, each suitable for the typical range of your viewers’ bandwidth and resolution. Then, Video Cloud dynamically detects the screen size and connection speed from the environment where your video plays, and serves the right rendition of your video to maximize quality given the speed and power available to each individual viewer. This article offers best practices for recording, exporting, uploading and publishing your Video Cloud videos that assures optimum playback of your content everywhere it plays.</p>
+  
+  <p>The tables below summarize the settings that you can use when creating video content:</p>
+  
+  <h3 class="BCL_subsectionTitle">Video</h3>
+  
+  <table class="bcls-table">
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable" style="width:25%"><strong>Format</strong></td>
+        <td class="language-editable" style="width:75%">MP4</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><strong>Codec</strong></td>
+        <td class="language-editable">H.264</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><strong>Bitrate</strong></td>
+        <td class="language-editable">2x the bitrate of the highest rendition</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><strong>Frame rate</strong></td>
+        <td class="language-editable">Constant, usually between 15 - 60 frames per second</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><strong>Aspect ratio</strong></td>
+        <td class="language-editable">Your video aspect ratio will be preserved. An aspect ratio of 16:9 is common.</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <h3 class="BCL_subsectionTitle">Audio</h3>
+  
+  <table class="bcls-table">
+    <tbody class="bcls-table__body">
+      <tr>
+        <td class="language-editable" style="width:25%"><strong>Codec</strong></td>
+        <td class="language-editable" style="width:75%">AAC (Advanced Audio Codec)</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><strong>Bit rate</strong></td>
+        <td class="language-editable">Constant, 128 kbps</td>
+      </tr>
+      <tr>
+        <td class="language-editable"><strong>Channels</strong></td>
+        <td class="language-editable">Stereo</td>
+      </tr>
+    </tbody>
+  </table>
+  &nbsp;
+  
+  <p>Now, you are ready to look further into the details of these settings:</p>
+  
+  <p>The Video Cloud publication workflow includes the following processes:</p>
+  
+  <ul>
+    <li class="language-editable"><a href="#beforerecord">Step 1: Before you Record</a></li>
+    <li class="language-editable"><a href="#recording">Step 2: Recording</a></li>
+    <li class="language-editable"><a href="#exporting">Step 3: Exporting</a></li>
+    <li class="language-editable"><a href="#transcoding">Step 4: Transcoding</a></li>
+    <li class="language-editable"><a href="#uploading">Step 5: Uploading</a></li>
+  </ul>
+  </div>
+  
+  <div class="BCL_concept">
+  <h2 id="beforerecord">Step 1: Before you Record</h2>
+  
+  <div class="BCL_subsection">
+  <h3 class="BCL_subsectionTitle">Source Encoding</h3>
+  
+  <p>There are many factors that impact the overall results of transcoded media. It is not realistic to provide a one-size-fits-all recommendation, so this step will list some of the more important considerations and how they affect the output.</p>
+  
+  <div class="BCL_subsection">
+  <h4 class="BCL_subsectionTitle">General</h4>
+  
+  <ul>
+    <li class="language-editable">Try to start with the highest possible source media if possible. Successive transcode passes reduce the overall quality exponentially. If possible, start with the uncompressed source. Because of increased file transfer and ingestion times, it may not always make sense to send a raw source. In these cases, it is best to upload a source with 2-3x the bitrate of the highest rendition you expect to generate. So if you intend to have a top rendition with a video bitrate of 3 Mbps, the you would want to upload a source video with a bitrate of 6-9 Mbps.</li>
+    <li class="language-editable">If the raw source must be compressed before uploading, H.264 and AAC are the preferred video and audio codecs.</li>
+    <li class="language-editable">Do not use multiple video or audio streams. Occasionally we see source media that may have more than one audio or video stream. This is often the case with media copied directly from a DVD. While we make a best guess as to which stream to use, there is no way for us to know what stream was preferred.</li>
+    <li class="language-editable">Avoid stream delays. For example, some video editing tools will inject a start time for the audio stream such that the audio starts playing at some time after the video. We have found that some tools introduce audio sync issues during this process.</li>
+  </ul>
+  </div>
+  
+  <div class="BCL_subsection">
+  <h4 class="BCL_subsectionTitle">Video</h4>
+  
+  <ul>
+    <li class="language-editable">The frame size should be at least as large as the largest anticipated rendition. However, do not scale media to a frame size larger than the original.</li>
+    <li class="language-editable">H.264 requires that frame sizes are multiples of 4 and is optimized for multiples of 16. We will scale transcodes to meet this requirement, but for best results source media should already be encoded in multiples of 16. Multiples of 8 or 4 will also work though with a slight performance decrease.</li>
+    <li class="language-editable">Avoid interlacing. Most web and mobile video players do not handle interlaced content well. While we will detect and remove interlacing, there can be a quality loss during the conversion.</li>
+    <li class="language-editable">Avoid anamorphic video. Anamorphic video, or video with a non-square Pixel Aspect Ratio, does not play correctly in some mobile and Web players. We attempt to detect anamorphic video and convert it, but occasionally the original source metadata is incorrect. This can prevent us from converting the material correctly.</li>
+    <li class="language-editable">If you are creating a screencast with a tool such as Camtasia, see <a href="/node/10594">Creating and Publishing High Quality Screencasts</a> for some best practices and tips when exporting your screencast and uploading it to Video Cloud.</li>
+  </ul>
+  </div>
+  
+  <div class="BCL_subsection">
+  <h4 class="BCL_subsectionTitle">Audio</h4>
+  
+  <ul>
+    <li class="language-editable">For maximum compatibility, use stereo or mono audio and avoid 5.1.</li>
+    <li class="language-editable">Normalize the audio tracks to standard levels such that you avoid "clipping" while also avoiding a low volume.</li>
+    <li class="language-editable">Make sure that audio levels are consistent across media that might be viewed together.</li>
+  </ul>
+  </div>
+  </div>
+  </div>
+  
+  <div class="BCL_concept">
+  <h2 id="recording">Step 2: Recording</h2>
+  
+  <div class="BCL_subsection">
+  <h3 class="BCL_subsectionTitle">What is my content and where will it play?</h3>
+  
+  <p>In most cases, when you publish your videos to Video Cloud, they look great across all distribution targets, whether they are playing amid other content within a browser, in full-screen mode, in the confines of small mobile device screens, or spread out across large monitors. Still, it's best when recording your video to make a practice of considering both the nature of your content and the viewing conditions of your audience. You can take some measures when recording tricky content to show under challenging conditions, such as an instructional screen cast with small text you would like to make crisp and legible from both a player included with other browser content and as a full screen video, or an HD news cast shown to countries with populations having low bandwidth Internet access.</p>
+  
+  <p>Here are some recommendations for recording practices to avoid issues with content and playback:</p>
+  
+  <ul>
+    <li class="language-editable"><strong>De-interlace at record-time</strong>. For the best quality playback, Video Cloud de-interlaces all content. When recording with a camcorder, set the record setting to progressive not interlace. If you are working with an already recorded interlaced video as a source file, opt to check the de-interlace setting within your video editing software at compression time in preparation for uploading to Video Cloud. If you do not transcode your video with Video Cloud, and you shot an interlaced video, de-interlace the video file before uploading it.</li>
+    <li class="language-editable"><strong>Capture at a constant frame rate.</strong> To best avoid stuttering during playback, record video at a constant frame rate and avoid a variable frame rate when creating your source files. Also, shoot progressive and use the same frame-rate you will publish to - 30 fps is a good place to start.</li>
+    <li class="language-editable"><strong>Adopt a strategy for screencasts.</strong> Creating recordings with clear, crisp, and legible text is especially challenging when creating software tutorial videos you intend to play both from a player within a browser and in a full-screen mode. See <a href="/node/10594">Creating and Publishing High Quality Screencasts</a> for some best practices and tips when exporting your screencast and uploading it to Video Cloud.</li>
+    <li class="language-editable"><strong>Avoid camera shake.</strong> While this may seem obvious for viewing, shaking actually impacts the encoder's ability to compress material using motion estimation algorithms. In other words, lower compression and lower quality.</li>
+    <li class="language-editable"><strong>Avoid noisy backgrounds.</strong> This applies to video as well as audio. In the case of video, things like background movement (e.g. traffic) and complex background images (e.g. noisy wallpaper) all impact compression negatively. Similarly, background noise during an interview reduces audio compression.</li>
+    <li class="language-editable"><strong>Use proper lighting.</strong> Darker scenes can be more difficult to encode without quality loss.</li>
+  </ul>
+  </div>
+  </div>
+  
+  <div class="BCL_concept">
+  <h2 id="exporting">Step 3: Exporting</h2>
+  
+  <div class="BCL_subsection">
+  <h3 class="BCL_subsectionTitle">What compression format do I upload to Video Cloud?</h3>
+  
+  <p>Brightcove recommends uploading a video source file encoded as an H.264 format to leverage optimum quality for the widest range of delivery targets. The H.264 codec offers the maximum opportunity for Video Cloud's transcoding engine to create the highest quality renditions for the range of resolutions and bandwidths where your video plays. See <a href="/node/3287">Supported Video Codecs and Containers</a> for more on the distinction between codecs, containers, and file types. For detailed specifics on the best format for your Video Cloud video uploads, see <a href="/node/583">Video Source File Specifications and Recommendations</a>.</p>
+  
+  <h3 class="BCL_subsectionTitle"><a name="quicktime" href=""></a>Checking your video's codec</h3>
+  
+  <p>To be sure your video source file is encoded in a H.264 format, you can verify the format in the QuickTime player's movie inspector:</p>
+  
+  <ol>
+    <li class="language-editable">Open QuickTime Player. You can get QuickTime for free at <a href="https://www.apple.com/quicktime/download/">https://www.apple.com/quicktime/download/</a>.</li>
+    <li class="language-editable">Select <strong>File</strong> &gt; <strong>Open File... </strong>and choose your exported video file.</li>
+    <li class="language-editable">From your opened video in the QuickTime player, select <strong>Window </strong>&gt; <strong>Show Movie Inspector</strong>.</li>
+  </ol>
+  
+  <div><img class="bcls-image--no-border" alt="" src="//img.brightcove.com/node_6187_1_h264_2.png" /></div>
+  
+  <ol start="4">
+    <li class="language-editable">In the movie inspector window for your video, check that the <strong>Format</strong> is H.264/MPEG-4 AVC (Advanced Video Coding).</li>
+  </ol>
+  
+  <p>The QuickTime movie inspector is a handy tool for reporting the format, resolution, frame rate, and other properties of your compressed video source file.</p>
+  
+  <h3 id="principles" class="BCL_subsectionTitle">Guiding principles when exporting from video editing software</h3>
+  
+  <p>When compressing and exporting videos from your favorite video editors, we recommend compressing your videos in using an H.264 codec and letting Video Cloud automatically create renditions best for multiple resolutions and bit rates. In addition, we recommend:</p>
+  
+  <ul type="square">
+    <li class="language-editable"><strong>Opt out of Flash</strong>. When rendering your videos from video production software, select an H.264 codec option, that is a codec, or container<em> other than</em> Flash or SWF.</li>
+    <li class="language-editable"><strong>Avoid single-target formatting</strong>. Avoid the streamlined encoding options that come with your editing software offering a one-click solution to encode your video for a specific target such as the web, iPhone, YouTube, DVD, or BlueRay. To let Video Cloud take care of distribution for you, format your video using QuickTime conversion settings that creates the most flexible native H.264 codec, and let Video Cloud create multiple renditions from your single H.264 upload to serve to multiple distribution targets including the web, iPhone, and YouTube, as well as multiple resolutions and connection speeds.</li>
+    <li class="language-editable"><strong>Multi-pass, if you have the time</strong>. Best practices advise uploading the highest quality video possible, and multi-pass processing is one of the best practices for creating a quality source file. Under some conditions, the marginally improved quality of your video might not justify the time it takes to encode using a two-pass process. Two-pass encoding can reduce the incidence of video artifacts and provides the most benefit to videos that have areas of high motion.</li>
+    <li class="language-editable"><strong>Don't be stingy with file size.</strong> Video Cloud is built to handle large file uploads. If you're used to compressing files for the sake of successful uploads, don't. Be sure to upload a high quality source file.</li>
+    <li class="language-editable"><strong>Get us a high quality file. </strong>We recommend a source with 2-3x the bitrate of the highest rendition you expect to generate. So if you intend to have a top rendition with a video bitrate of 3 Mbps, the you would want to upload a source video with a bitrate of 6-9 Mbps. Also remember, sometimes videos that have too much data do not stream via HTTP smoothly. Excessively high quality video can cause buffering.<br />
+    <!-- <p>
+      Video Cloud Express customers have access to fixed renditions and need not exceed the bit rate for their fastest rendition when considering data compression rates. Video Cloud Pro and Enterprise customers should consider the bit rate of their current fastest rendition as well as any rendition they might opt to create in the future when re-encoding existing videos with new transcoding settings.
     </p> --></li>
-	<li><strong>Consider action and size when exporting for high resolution</strong>: High resolution videos especially benefit from using minimum bit rates while maintaining quality play. See <a href="node/583#highres">High resolution encoding recommendations</a> for bit rate minimums when considering video size, aspect ratio, and the amount of action in the content.</li>
-	<li><strong>Adopt a mobile strategy</strong>. If you want to show your videos on mobile devices in addition to desktop monitors, you must encode your videos to the flexible H.264 format and consider other encoding options. <!-- <p>
-      See the <a href="node/4390#flexibility">Encoding recommendations for maximum flexibility</a> table of settings in the <em>Encoding for Mobile Delivery</em> article.
-    </p> --></li>
-</ul>
-
-<h3 class="BCL_subsectionTitle">Step-by-Step export instructions</h3>
-
-<p>For recommended specific instructions for exporting videos from tools like Apple Final Cut Pro X, Telestream ScreenFlow, Adobe Premiere Pro or Techsmith Camtasia Studio, refer to the detailed instructions provided by these software packages.</p>
-<!-- <p>For recommended specific instructions to export videos from Final Cut Pro 7 for MAC, and Camtasia Studio 7 for PC, see <a href="node/6297">Exporting High Quality Video Source Files with Popular Video Editing Programs</a>. If you're exporting from iMovie, and Snapz, consider the guiding principles listed above, as well as the Final Cut Pro 7 processes; the Final Cut Pro video and audio compression settings are identical to those for iMovie and Snapz.</p> --></div>
-</div>
-
-<div class="BCL_concept">
-<h2 id="transcoding">Step 4: Transcoding</h2>
-
-<div class="BCL_subsection">
-<h3 class="BCL_subsectionTitle">What is my content, where is my audience watching it, and what is my audience watching it on?</h3>
-
-<p>If you want your videos to play beautifully across a range of screen sizes such as in the three screen strategy of publishing to desktop, mobile device, and wide monitor TVs, and if you want your videos to play smoothly across a range of connection speeds from dial-up, to cellular, to high speed cable, you must start with a video file that plays as optimally as possible in each of those environments. To assure that your video shows as beautifully as possible across the variety of the size and speed conditions of your viewers, Video Cloud creates a collection of video files, called multi-bitrate renditions, each of various sizes and qualities. When Video Cloud detects the resolution, bandwidth, and other conditions of the device requesting to play your video, it serves the best rendition of your video for that environment, be it a smaller and slower version to fit the constraints of a mobile device screen or low bandwidth connection, or be it a full-quality version that takes advantage of wide screen monitors with high speed, and high definition capabilities.</p>
-
-<p>You have fine grain control of the speed, size, and encoding quality of these rendition files. If you know the connection rates, devices and screen resolutions of your audience, you can tailor each rendition file of your videos to create a collection of renditions that targets size and speed conditions of those viewers.</p>
-
-<h3 class="BCL_subsectionTitle">Further reading on setting multi-bitrate renditions</h3>
-
-<ul>
-	<li>See <a href="/node/18041">Standard Ingest Profiles</a> <!-- <a href="node/1275">Using Multi-bitrate Streaming</a>  --> for detailed information on recommended transcode setting</li>
-	<!-- <li>See
-      <a href="node/3396"> Setting Your Transcoding Options</a>
-      for overall recommended settings for a range of target resolutions and bandwidths</li> -->
-	<li>See <a href="node/583#highres">High resolution encoding recommendations</a> for best practices for setting renditions for high resolution videos</li>
-	<li>See <a href="/node/15613">Determining Which Rendition Will Play</a> to learn how the Brightcove Player will determine which rendition will be played</li>
-	<!-- <li>See <a href="node/6701">Multi-Bitrate Rendition Switching Logic</a> for more samples of rendition switching behavior and troubleshooting scenarios that cause improper rendition selection</li> -->
-	<li>See <a href="/node/6592">Optimal Video Dimensions</a> for recommended video width and height for 16:9 and 4:3 aspect ratio sizing</li>
-	<li>See <a href="/node/18039">Rendition Settings and Video Quality</a> about optimizing video quality and performance.</li>
-</ul>
-</div>
-</div>
-
-<div class="BCL_concept">
-<h2 id="uploading">Step 5: Uploading</h2>
-
-<div class="BCL_subsection">
-<h3 class="BCL_subsectionTitle">How do I get the flexibility I need from my source file?</h3>
-
-<p>Upload your video or videos using the Video Cloud Studio's Media module according to the processes in <a href="/node/14456">Uploading Videos Using the Upload Module</a>. Alternatively, you can upload a batch of videos using the <a href="/node/17948">Dynamic Ingest API</a>.</p>
-
-<p>To leverage Video Cloud's ability to create multiple renditions of your video for varying resolutions including desktop browser, full-screen, wide screen, smartphone, and tablet as well as varying bandwidths, upload a H.264 source and select the Multiple Renditions option. <!-- See <a href="node/571">H.264 Videos</a> for specifications on uploading this format. --></p>
-
-<p>When you upload a video to the Video Cloud platform, Video Cloud stores it as a digital master. This digital master is the source for all renditions Video Cloud creates. The digital master is also the source if you should ever elect to re-encode your video in order to change your transcode settings. <!-- For more on re-encoding videos see <a href="node/8927">Re-encoding Existing Videos</a>. At upload time, you can optionally choose <strong>Add H.264 source as a rendition</strong> to have a copy of this digital master available as the highest quality version rendition in addition to other renditions created by Video Cloud's transcoding engine. --></p>
-</div>
-</div>
-<!-- End of Drupal content -->
+    <li class="language-editable"><strong>Stay consistent with the frame rate</strong>. Export at the frame rate you shot at to avoid stuttering. Also, if the export frame rate setting is not the same as the source, you risk asynchronous video and audio tracks.</li>
+    <li class="language-editable"><strong>Keep a copy of your native file</strong>: It's a great practice to save your native video files in case you want to edit them, compress them anew, or re-encode them. Use a profile from the <a href="/node/18041">list of Standard Ingest Profiles</a> that matches your target audience, or create your own ingest profile. <!-- <p>
+        <a href="node/3412">Re-encoding existing videos</a> is available only to Video Cloud Pro and Enterprise publishers. You may find after publication that your video would benefit by making changes to the exporting settings. Video Cloud does provide a way to <a href="node/3412#newsource">re-encode your video from a higher quality source</a> file, which allows you to keep all the metadata assigned to a title but to upload a video in the latest most flexible encoding format.
+      </p> --></li>
+    <li class="language-editable"><strong>Consider action and size when exporting for high resolution</strong>: High resolution videos especially benefit from using minimum bit rates while maintaining quality play. See <a href="node/583#highres">High resolution encoding recommendations</a> for bit rate minimums when considering video size, aspect ratio, and the amount of action in the content.</li>
+    <li class="language-editable"><strong>Adopt a mobile strategy</strong>. If you want to show your videos on mobile devices in addition to desktop monitors, you must encode your videos to the flexible H.264 format and consider other encoding options. <!-- <p>
+        See the <a href="node/4390#flexibility">Encoding recommendations for maximum flexibility</a> table of settings in the <em>Encoding for Mobile Delivery</em> article.
+      </p> --></li>
+  </ul>
+  
+  <h3 class="BCL_subsectionTitle">Step-by-Step export instructions</h3>
+  
+  <p>For recommended specific instructions for exporting videos from tools like Apple Final Cut Pro X, Telestream ScreenFlow, Adobe Premiere Pro or Techsmith Camtasia Studio, refer to the detailed instructions provided by these software packages.</p>
+  <!-- <p>For recommended specific instructions to export videos from Final Cut Pro 7 for MAC, and Camtasia Studio 7 for PC, see <a href="node/6297">Exporting High Quality Video Source Files with Popular Video Editing Programs</a>. If you're exporting from iMovie, and Snapz, consider the guiding principles listed above, as well as the Final Cut Pro 7 processes; the Final Cut Pro video and audio compression settings are identical to those for iMovie and Snapz.</p> --></div>
+  </div>
+  
+  <div class="BCL_concept">
+  <h2 id="transcoding">Step 4: Transcoding</h2>
+  
+  <div class="BCL_subsection">
+  <h3 class="BCL_subsectionTitle">What is my content, where is my audience watching it, and what is my audience watching it on?</h3>
+  
+  <p>If you want your videos to play beautifully across a range of screen sizes such as in the three screen strategy of publishing to desktop, mobile device, and wide monitor TVs, and if you want your videos to play smoothly across a range of connection speeds from dial-up, to cellular, to high speed cable, you must start with a video file that plays as optimally as possible in each of those environments. To assure that your video shows as beautifully as possible across the variety of the size and speed conditions of your viewers, Video Cloud creates a collection of video files, called multi-bitrate renditions, each of various sizes and qualities. When Video Cloud detects the resolution, bandwidth, and other conditions of the device requesting to play your video, it serves the best rendition of your video for that environment, be it a smaller and slower version to fit the constraints of a mobile device screen or low bandwidth connection, or be it a full-quality version that takes advantage of wide screen monitors with high speed, and high definition capabilities.</p>
+  
+  <p>You have fine grain control of the speed, size, and encoding quality of these rendition files. If you know the connection rates, devices and screen resolutions of your audience, you can tailor each rendition file of your videos to create a collection of renditions that targets size and speed conditions of those viewers.</p>
+  
+  <h3 class="BCL_subsectionTitle">Further reading on setting multi-bitrate renditions</h3>
+  
+  <ul>
+    <li class="language-editable">See <a href="/node/18476">Overview of Dynamic Delivery</a> for an overview of Dynamic Delivery transcoding</li>
+    <li class="language-editable">See <a href="/node/18041">Standard Ingest Profiles</a> for detailed information on recommended transcode setting</li>
+    <!-- <li class="language-editable">See
+        <a href="node/3396"> Setting Your Transcoding Options</a>
+        for overall recommended settings for a range of target resolutions and bandwidths</li> -->
+    <li class="language-editable">See <a href="node/583#highres">High resolution encoding recommendations</a> for best practices for setting renditions for high resolution videos</li>
+    <li class="language-editable">See <a href="/node/15613">Determining Which Rendition Will Play</a> to learn how the Brightcove Player will determine which rendition will be played</li>
+    <!-- <li class="language-editable">See <a href="node/6701">Multi-Bitrate Rendition Switching Logic</a> for more samples of rendition switching behavior and troubleshooting scenarios that cause improper rendition selection</li> -->
+    <li class="language-editable">See <a href="/node/6592">Optimal Video Dimensions</a> for recommended video width and height for 16:9 and 4:3 aspect ratio sizing</li>
+    <li class="language-editable">See <a href="/node/18039">Rendition Settings and Video Quality</a> about optimizing video quality and performance.</li>
+  </ul>
+  </div>
+  </div>
+  
+  <div class="BCL_concept">
+  <h2 id="uploading">Step 5: Uploading</h2>
+  
+  <div class="BCL_subsection">
+  <h3 class="BCL_subsectionTitle">How do I get the flexibility I need from my source file?</h3>
+  
+  <p>Upload your video or videos using the Upload module in Video Cloud Studio. &nbsp;See&nbsp;<a href="/node/14456">Uploading Videos Using the Upload Module</a>&nbsp;for more information.&nbsp;Alternatively, you can upload a batch of videos using the <a href="/node/17948">Dynamic Ingest API</a>.<br />
+  <!-- See <a href="node/571">H.264 Videos</a> for specifications on uploading this format. --></p>
+  
+  <p>When you upload a video to the Video Cloud platform, Video Cloud stores it as a digital master. This digital master is the source for all renditions Video Cloud creates. The digital master is also the source if you should ever elect to re-encode your video in order to change your transcode settings. <!-- For more on re-encoding videos see <a href="node/8927">Re-encoding Existing Videos</a>. At upload time, you can optionally choose <strong>Add H.264 source as a rendition</strong> to have a copy of this digital master available as the highest quality version rendition in addition to other renditions created by Video Cloud's transcoding engine. --></p>
+  </div>
+  </div>
+  <!-- End of Drupal content -->
