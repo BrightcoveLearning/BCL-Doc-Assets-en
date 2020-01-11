@@ -35,7 +35,7 @@ function removeClass(el, name)
     currentLink = all_sidenav_links[i];
     currentLinkNextSib = currentLink.nextElementSibling;
     if (currentLink.getAttribute("href") === href) {
-      addClass(currentLink.parentElement, 'bcls-active');
+      addClass(currentLink, 'bcls-active');
       if (currentLink.getAttribute("href") !== "/") {
         p1 = currentLink.parentElement;
         p1NextSib = p1.nextElementSibling;
