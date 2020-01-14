@@ -1,0 +1,95 @@
+<p>When setting up a new Marketo REST-based integration, it can be challenging to test and confirm that video viewing data is indeed being delivered to Marketo. In this topic, you will learn how to systematically test and confirm that the integration works and that viewing data and leads are being sent to Marketo.</p>
+
+<p class="BCL-aside language-editable">For information on how to configure the Audience module for use with Marketo using the REST APIs, see&nbsp;<a href="/node/16341">Integrating Video Cloud with Marketo Using the REST APIs</a>.</p>
+
+<div class="section">
+<h2 id="start">Before you get started</h2>
+
+<p>Before validating the integration it is assumed you have:</p>
+
+<ul>
+	<li class="language-editable">Successfully completed the <a href="/node/16341">Brightcove Audience REST integration</a> with Marketo</li>
+	<li class="language-editable">Created at least one <a href="/node/16419">Audience-enabled player</a> and configured it to use the Marketo connection</li>
+</ul>
+</div>
+
+<div class="section">
+<h2 id="lead_form">Configuring a test lead form and publishing a video</h2>
+
+<p>For testing purposes, you will need to create and configure a custom lead form in Audience. This is a Marketo form whose embed code you have pasted into Audience. Even if you will not be using lead forms in your production environment, this lead form is used to be sure that you are known in your database and on the page. To create a Marketo form and configure Audience to use it, follow these steps.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Login to your Marketo account.</li>
+	<li class="language-editable">Create and style a Marketo form. For information on creating a Marketo form, see <a href="/node/16110">Creating Custom Lead Forms for Marketo</a>.</li>
+	<li class="language-editable">Right-click the form in the left navigation and click <strong>Embed Code</strong>.</li>
+	<li class="language-editable">Copy the form embed code to the clipboard.</li>
+	<li class="language-editable">Return to the Audience module.</li>
+	<li class="language-editable">Create a new lead form using the Marketo form embed code.</li>
+	<li class="language-editable">Set your custom form to display the form at the 5 second mark. This way you will know exactly when it should appear.</li>
+	<li class="language-editable">Check the box to <strong>Always show the lead form even if the lead is already known</strong>. This will ensure the form continues to display after filling it out during testing.</li>
+	<li class="language-editable"><strong>Save</strong> the form.</li>
+	<li class="language-editable">Configure the Brightcove Player with the Marketo connection to use the Marketo lead form that was just created.</li>
+</ol>
+</div>
+
+<div class="section">
+<h2 id="preview_video">Generating a preview link to view the video</h2>
+
+<p>To generate a preview link to the video, follow these steps.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Open the Media module.</li>
+	<li class="language-editable">Select a video and publish it to a web player. Make sure to select the Audience-enabled player with the lead form.</li>
+	<li class="language-editable">Click the preview link to open the video in a new browser window. Testing this way eliminates any potential variables that could be introduced by players embedded on a HTML pages.</li>
+	<li class="language-editable">Confirm that the video plays and that the lead form displays at the 5 second mark.</li>
+	<li class="language-editable">Fill out the lead form using unique contact info and email address (i.e. a celebrity name or a name containing the words “bctest”) so that it can be easily found later in Marketo. This eliminates any browser, player or database level variables. By filling out the form as a new user, we can be sure you are now a known user in Marketo.</li>
+</ol>
+</div>
+
+<div class="section">
+<h2 id="confirm_data">Confirming that Audience is successfully capturing the data</h2>
+
+<p>Before looking for video viewing data in Marketo, first confirm that Audience has indeed captured the video view. Note that viewing data may take up to 3 hours to display in the Audience UI. To confirm that Audience is successfully capturing the data, follow these steps.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Open the Audience module.</li>
+	<li class="language-editable">Click <strong>All Recent Activity</strong> in the left navigation.</li>
+	<li class="language-editable">Confirm that there is an event with a recent timestamp showing the name of the video that was just watched. The event status should be <strong>unprocessed</strong>. This indicates that Audience has captured the view but has not yet attempted to sync it to Marketo.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18740-unprocessed.png" /></div>
+	</li>
+	<li class="language-editable">To manually trigger a sync between Audience and Marketo, click <strong>Synchronization Activity</strong> in the left navigation.</li>
+	<li class="language-editable">From the <strong>Select Connection</strong> dropdown list, select your Marketo integration. A <strong>Test Sync</strong> button should appear.</li>
+	<li class="language-editable">Click<strong> Test Sync</strong> to trigger a manual sync. Note that you are limited to how often you can trigger a manual sync. By default, Audience will sync views to Marketo once an hour.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18740-test-sync.png" /></div>
+	</li>
+	<li class="language-editable">Click <strong>All Recent Activity</strong> in the left navigation.</li>
+	<li class="language-editable">The status of your view event will be <strong>queued</strong>. It may take 15 minutes or so for the data to actually sync to Marketo. Once the data does sync, the status will change to one of two statuses:
+	<ul>
+		<li class="language-editable"><strong>synced</strong> - Indicates the user was a known user and data was successfully delivered to their activity log. The data should also be viewable in Marketo within a few minutes.</li>
+		<li class="language-editable"><strong>unknown_contact</strong> - Indicates the user was considered unknown and Marketo was unable to accept the data. If you get an <strong>unknown_contact</strong> status, check that you published the video using the correct player, have a Marketo form in place and are testing using the preview link, not embedded in a page.
+		<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18740-synced.png" /></div>
+		</li>
+	</ul>
+	</li>
+</ol>
+</div>
+
+<div class="section">
+<h2 id="confirm_marketo">Confirming that the video view data is in Marketo</h2>
+
+<p>Once Audience has displayed a <strong>synced</strong> status, follow these steps to verify that the data is in Marketo.</p>
+
+<p class="BCL-aside language-editable">Note: It make take 5-10 minutes for the Marketo UI to update with the new data it has received from Audience.</p>
+
+<ol class="bcls-tasklist">
+	<li class="language-editable">Login to your Marketo account.</li>
+	<li class="language-editable">Navigate to the lead database and search for the new lead. Search using the unique name or email address you used when filling out the lead form.</li>
+	<li class="language-editable">Double-click the new lead to open the Lead Info.</li>
+	<li class="language-editable">Click the <strong>Activity Log</strong> tab.</li>
+	<li class="language-editable">Using <strong>Quick Find...</strong> at the bottom of the page, search for <strong>Brightcove Video View</strong>.</li>
+	<li class="language-editable">Double-click a row to display the fields Audience has populated.. The popup will display the video viewing data delivered from Audience to Marketo such as Player ID, Video ID, Video Name, Percentage Watched and other fields.
+	<div><img class="bcls-image--no-border" alt="" src="https://img.brightcove.com/node18740-marketo-info.png" /></div>
+	</li>
+</ol>
+</div>
+
