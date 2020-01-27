@@ -25,15 +25,18 @@
 	<p>Append the URL query parameters to the VMAP URL before calling the IMA plugin. This can be done before the following methods:</p>
 
 	<p><strong>Android</strong></p>
-
 	<pre>
 <code class="notranslate language-java">adsRequest.setAdTagUrl(adRulesURL);</code></pre>
 
 	<p>&nbsp;</p>
 	<strong>iOS</strong>
-
 	<pre>
-<code class="notranslate language-objectivec">updatedVideos.append(_video.updateVideo(withVMAPTag: IMAConfig.VMAPResponseAdTag))</code></pre>
+<code class="notranslate language-objectivec">for video in mutablePlaylist.videos {
+  if let _video = video as? BCOVMutableVideo {
+     _video.properties[kBCOVIMAAdTag] = IMAConfig.VMAPResponseAdTag
+    updatedVideos.append(_video)
+  }
+}</code></pre>
 	</li>
 </ol>
 </section>
@@ -46,9 +49,8 @@
 <ol class="bcls-tasklist__restart">
 	<li>
 	<p>With an SSAI ad configuration id, retrieve a video object from the Brightcove catalog (Playback API). Learn how to create an ad configuration with the <a href="/node/18364#Create_an_ad_configuration">Implementing Server-Side Ads with the Native Player SDKs</a> document.</p>
-  <p>
-    A sample ad configuration looks like this:
-  </p>
+
+	<p>A sample ad configuration looks like this:</p>
 
 	<pre class="line-numbers">
 <code class="notranslate language-java">{
@@ -198,11 +200,8 @@ for (NSDictionary *source in videoPropertiesDictionary[@"sources"])
 BCOVVideo *video = [BCOVPlaybackService videoFromJSONDictionary:videoPropertiesDictionary];
 // Setting this video object to the BCOVPlaybackController will call the new vmap URL (with the URL parameters appended) when playback starts.
 [self.controller setVideos:@[video]];</code></pre>
-
-	<!-- <p>For a complete code example, expand the <strong>iOS ViewController using Objective-C</strong> section below.</p> -->
-	</li>
+	<!-- <p>For a complete code example, expand the <strong>iOS ViewController using Objective-C</strong> section below.</p> --></li>
 </ol>
-
 <!-- <h3 id="iOS_ViewController_using_Objective-C" class="bcls-expander-head">iOS ViewController using Objective-C</h3>
 
 <div class="bcls-expander-content">
@@ -339,7 +338,5 @@ NSString *adConfigId = @"<span class="bcls-input">your ad configuration Id</span
 }
 
 @end</code></pre>
-</div> -->
-</section>
-
+</div> --></section>
 </article>
