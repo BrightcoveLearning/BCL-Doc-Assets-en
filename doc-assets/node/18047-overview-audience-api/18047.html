@@ -1,414 +1,416 @@
 <article class="bcls-article">
-<section class="bcls-section">
-<h2 id="api-reference">API reference</h2>
-
-<p>Also see the <a href="https://docs.brightcove.com/audience-api/v1/doc/index.html">API Reference</a>.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="Base_URL">Base URL</h2>
-
-<p>The base URL for the Audience API is:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://audience.api.brightcove.com/v1</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Account_path">Account path</h2>
-
-<p>In all cases, requests will be made for a specific Video Cloud Account. You will always need to add the term “accounts” followed by your account ID to the base URL:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://audience.api.brightcove.com/v1/accounts/{account_id} </code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Authentication">Authentication</h2>
-
-<p>The Audience API uses the Brightcove <a href="/node/17928">OAuth Service</a> to authenticate calls.</p>
-
-<p>You will first need to obtain client credentials (a <code>client_id</code> and <code>client_secret</code>). This is a one-time operation that can be performed using the <a href="/node/14056">OAuth Credentials UI</a>. You will need permissions for Audience/Read operations:</p>
-
-<figure class="bcls-figure"><img class="bcls-image" alt="Required Permissions" src="https://learning-services-media.brightcove.com/doc-assets/node/18047-overview-audience-api/operations.png" />
-<figcaption class="bcls-caption--image">Required Permissions</figcaption>
-</figure>
-
-<p>You can get client credentials directly from the Brightcove OAuth Service using <a href="/node/17924">cURL</a> or <a href="/node/17923">Postman</a>.</p>
-
-<p>You will also need an <code>access_token</code>, which is obtained using the <code>client_id</code> and <code>client_secret</code> and passed in an Authorization header with your API request:</p>
-
-<pre class="line-numbers">
-<code class="language-http">Authorization: Bearer <em>{access_token}</em></code></pre>
-
-<p>The <code>access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/node/17925">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
-</section>
-
-<section class="bcls-section">
-<h2 id="Error_handling">Error handling</h2>
-
-<p>If an error occurs, the API will respond with one of the following status codes and a corresponding error code in the response body:</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Status Code</th>
-			<th>Error Code</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>400</td>
-			<td>BAD_REQUEST_ERROR</td>
-			<td>Query parameters are invalid</td>
-		</tr>
-		<tr>
-			<td>401</td>
-			<td>UNAUTHORIZED_ERROR</td>
-			<td>The access token is either absent, has expired, or is invalid</td>
-		</tr>
-		<tr>
-			<td>404</td>
-			<td>RESOURCE_NOT_FOUND</td>
-			<td>The URL does not exist</td>
-		</tr>
-		<tr>
-			<td>429</td>
-			<td>REQUEST_THROTTLED_ERROR</td>
-			<td>The user has exceeded the rate limiting policy</td>
-		</tr>
-		<tr>
-			<td>500</td>
-			<td>INTERNAL_ERROR</td>
-			<td>An internal error has occurred</td>
-		</tr>
-		<tr>
-			<td>504</td>
-			<td>GATEWAY_TIMEOUT_ERROR</td>
-			<td>The server timed out while fulfilling your request</td>
-		</tr>
-	</tbody>
-</table>
-
-<p>Below is a sample response body for an error:</p>
-
-<pre class="line-numbers">
-<code class="language-json">[
-   {
-    "error_code": "UNAUTHORIZED_ERROR",
-    "message": "Permission denied"
-   }
-]</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Parameters">Parameters</h2>
-
-<p>There are several parameters you can add to requests to limit and filter the data retrieved. These apply to all the request types described in the sections that follow.</p>
-
-<h3 id="Filtering_results">Filtering results</h3>
-
-<p>You can filter the results using the <code>where</code> parameter. The syntax for filters is:</p>
-
-<pre class="line-numbers">
-<code class="language-http">where=field1==value1;field2==value2</code></pre>
-
-<p>For example:</p>
-
-<pre class="line-numbers">
-<code class="language-http">where=video_id==123456789;video_name==test</code></pre>
-
-<p>Commas are treated as logical ORs and semicolons as logical ANDs. For example, <code>where=video_id==1234,5678;video_name=test</code> is interpreted as "where video_id = 1234 OR 5678, AND video_name = test".</p>
-
-<h3>Selecting fields to return</h3>
-
-<p>A list of fields may be specified in the request to limit the results to that subset of fields. The syntax for fields is:</p>
-
-<pre class="line-numbers">
-<code class="language-http">fields=field1,field4</code></pre>
-
-<p>For example:</p>
-
-<pre class="line-numbers">
-<code class="language-http">fields=video_id,video_name</code></pre>
-
-<p>The fields that you can filter and sort on are detailed for each request type in the sections that follow.</p>
-
-<h3 id="Date_ranges">Date ranges</h3>
-
-<p>Date ranges can be specified in <code>from</code> and <code>to</code> parameters and are applied to the date that the view event was last updated (the updated_at field). Date ranges can be indicated in the following formats:</p>
-
-<ul>
-	<li>The text value <code>now</code> which represents the current time</li>
-	<li>Epoch time values in milliseconds, such as <code>1377047323000</code></li>
-	<li>Dates expressed in ISO 8601 standard international date format: <code>YYYY-MM-DD</code> format, such as <code>2013-09-12</code>. For dates expressed in this format:
-	<ul>
-		<li>Any date range specified will be interpreted in UTC</li>
-		<li>The time for the date give will be interpreted as midnight ( <code>00:00:00</code>) on the date specified</li>
-	</ul>
-	</li>
-	<li>Relative dates: you can express either of the <code>to</code> and <code>from</code> values relative to the other one in <code>d</code> (days), <code>h</code> (hours), <code>m</code> (minutes), or <code>s</code> (sec). For example:
-	<ul>
-		<li><code class="language-http">from=2015-01-01&amp;to=31d</code></li>
-		<li><code class="language-http">from=-48h&amp;to=now</code></li>
-		<li><code class="language-http">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
-		<li><code class="language-http">from=-365d&amp;to=2015-12-31</code></li>
-		<li><code class="language-http">from=-10m&amp;to=now</code></li>
-	</ul>
-	</li>
-</ul>
-
-<h3 id="Paging_results">Paging results</h3>
-
-<p>The <code>limit</code> is the number of items to return (default: 25; maximum: 100). <code>offset</code> is the number of items to skip (default: 0). You can use <code>limit</code> and <code>offset</code> together to create an app that pages through the results. Each includes the <code>limit</code>, <code>offset</code>, and <code>count.</code>, which you can use to set up iteration over total results. For example, in JavaScript, you could get the total iterations required like this:</p>
-
-<pre class="line-numbers">
-<code class="language-javascript">// response is the JSON-parsed response from the first request
-var totalRequests = Math.ceil(response.count / response.limit)</code></pre>
-</section>
-
-<section class="bcls-section">
-<h2 id="Retrieving_view_events">Retrieving view events</h2>
-
-<p>To retrieve view events in an account, perform a <code>GET</code> request to the view_events resource:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events</code></pre>
-
-<aside class="bcls-aside bcls-aside--warning">Only view events that have been <em>processed</em> will appear in the response.</aside>
-
-<p>Here is sample request in cURL</p>
-
-<pre class="line-numbers">
-<code class="language-bash">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
-  -H "Authorization: Bearer {token}"</code></pre>
-
-<p>The response will look like this:</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    "count": 27,
-    "limit": 25,
-    "offset": 0,
-    "result": [
-        {
-            "created_at": "2016-04-25T18:30:21.651Z",
-            "page_url": "http://players.brightcove.net/1486906377/V1s6NOwRx_default/index.html?videoId=4842718056001",
-            "player_id": "V1s6NOwRx",
-            "time_watched": 2,
-            "updated_at": "2016-04-25T18:30:21.651Z",
-            "video_id": "4842718056001",
-            "video_name": "Horses Heading to the Track",
-            "watched": 19
-        },
-        {
-            "created_at": "2016-04-25T18:31:55.071Z",
-            "page_url": "http://players.brightcove.net/1486906377/BkgFuzyhg_default/index.html?videoId=4842718056001",
-            "player_id": "BkgFuzyhg",
-            "time_watched": 15,
-            "updated_at": "2016-04-25T18:32:00.879Z",
-            "video_id": "4842718056001",
-            "video_name": "Horses Heading to the Track",
-            "watched": 99
-        }, ...
-    }
-]</code></pre>
-
-<h3 id="fieldsForViewEvents">Fields for filtering and selection</h3>
-
-<p>All the <a href="#Parameters">parameters</a> can be used with <code>view_event</code> requests.</p>
-
-<p>Here is sample request in cURL using the parameters:</p>
-
-<pre class="line-numbers">
-<code class="language-bash">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
-  -H "Authorization: Bearer {token}"</code></pre>
-
-<p>The following fields are supported for <code>view_event</code> requests when filtering with a <code>where</code> clause or when selecting during a <code>fields</code> clause:</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>video_id</td>
-			<td>Brightcove video ID</td>
-		</tr>
-		<tr>
-			<td>video_name</td>
-			<td>Brightcove video name</td>
-		</tr>
-		<tr>
-			<td>tracking_id</td>
-			<td>Custom tracking ID</td>
-		</tr>
-		<tr>
-			<td>external_id</td>
-			<td>The Marketo, Eloqua or custom GUID</td>
-		</tr>
-		<tr>
-			<td>player_id</td>
-			<td>The ID of the Brightcove player that created the view event</td>
-		</tr>
-		<tr>
-			<td>page_url</td>
-			<td>The URL of the page where the view event was created</td>
-		</tr>
-		<tr>
-			<td>watched</td>
-			<td>Percent watched</td>
-		</tr>
-		<tr>
-			<td>time_watched</td>
-			<td>Seconds of the video watched</td>
-		</tr>
-		<tr>
-			<td>created_at</td>
-			<td>Creation date</td>
-		</tr>
-		<tr>
-			<td>updated_at</td>
-			<td>Last updated date</td>
-		</tr>
-		<tr>
-			<td>is_synced</td>
-			<td>A boolean denoting whether or not the view event has been synchronized</td>
-		</tr>
-		<tr>
-			<td>event_1</td>
-			<td rowspan="3">Custom events</td>
-		</tr>
-		<tr>
-			<td>event_2</td>
-		</tr>
-		<tr>
-			<td>event_3</td>
-		</tr>
-		<tr>
-			<td>metric_1</td>
-			<td rowspan="3">Custom metrics</td>
-		</tr>
-		<tr>
-			<td>metric_2</td>
-		</tr>
-		<tr>
-			<td>metric_3</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-
-<section class="bcls-section">
-<h2 id="Retrieving_Leads">Retrieving leads</h2>
-
-<p>To retrieve view events in an account, perform a <code>GET</code> request to the <code>view_events</code> resource:</p>
-
-<pre class="line-numbers">
-<code class="language-http">https://audience.api.brightcove.com/v1/accounts/{account_id}/leads</code></pre>
-
-<p>Sample response:</p>
-
-<pre class="line-numbers">
-<code class="language-json">{
-    "count": 2,
-    "limit": 25,
-    "offset": 0,
-    "result": [
-        {
-            "created_at": "2016-06-30T12:57:11.283Z",
-            "email_address": "bbailey@brightcove.com",
-            "first_name": "Bob",
-            "last_name": "Bailey",
-            "page_url": "http://players.brightcove.net/1486906377/Hk4TBqzL_default/index.html?videoId=4997275041001",
-            "player_id": "Hk4TBqzL",
-            "video_id": "4997275041001"
-        },
-        {
-            "created_at": "2016-06-30T12:57:33.301Z",
-            "email_address": "rcrooks@brightcove.com",
-            "first_name": "Robert",
-            "last_name": "Crooks",
-            "page_url": "http://players.brightcove.net/1486906377/Hk4TBqzL_default/index.html?videoId=4997275041001",
-            "player_id": "Hk4TBqzL",
-            "video_id": "4997275041001"
-        }
-    ]
-}</code></pre>
-
-<h3 id="fieldsForLeads">Fields for filtering and selection</h3>
-
-<p>All the <a href="#Parameters">parameters</a> can be used with <code>leads</code> requests.</p>
-
-<p>Here is sample request in cURL using the parameters:</p>
-
-<pre class="line-numbers">
-<code class="language-bash">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/leads?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
-  -H "Authorization: Bearer {token}"</code></pre>
-
-<p>The following fields are supported for <code>leads</code> requests when filtering with a <code>where</code> clause or when selecting during a <code>fields</code> clause:</p>
-
-<table class="bcls-table">
-	<thead class="bcls-table__head">
-		<tr>
-			<th>Field</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody class="bcls-table__body">
-		<tr>
-			<td>video_id</td>
-			<td>Brightcove video ID</td>
-		</tr>
-		<tr>
-			<td>external_id</td>
-			<td>The Marketo, Eloqua or custom GUID</td>
-		</tr>
-		<tr>
-			<td>player_id</td>
-			<td>The ID of the Brightcove player that created the view event</td>
-		</tr>
-		<tr>
-			<td>page_url</td>
-			<td>The URL of the page where the view event was created</td>
-		</tr>
-		<tr>
-			<td>created_at</td>
-			<td>Creation date</td>
-		</tr>
-		<tr>
-			<td>email_address</td>
-			<td>The email address of the lead</td>
-		</tr>
-		<tr>
-			<td>first_name</td>
-			<td>The first name of the lead if provided</td>
-		</tr>
-		<tr>
-			<td>last_name</td>
-			<td>The last name of the lead if provided</td>
-		</tr>
-		<tr>
-			<td>business_phone</td>
-			<td>The phone number of the lead if provided</td>
-		</tr>
-		<tr>
-			<td>country</td>
-			<td>The country of the lead if provided</td>
-		</tr>
-		<tr>
-			<td>company_name</td>
-			<td>The company of the lead if provided</td>
-		</tr>
-		<tr>
-			<td>industry</td>
-			<td>The industry that the lead belongs to if provided</td>
-		</tr>
-	</tbody>
-</table>
-</section>
-</article>
+  <section class="bcls-section">
+  <h2 id="api-reference">API reference</h2>
+  
+  <p>Also see the <a href="https://docs.brightcove.com/audience-api/v1/doc/index.html">API Reference</a>.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Base_URL">Base URL</h2>
+  
+  <p>The base URL for the Audience API is:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">https://audience.api.brightcove.com/v1</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Account_path">Account path</h2>
+  
+  <p>In all cases, requests will be made for a specific Video Cloud Account. You will always need to add the term “accounts” followed by your account ID to the base URL:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">https://audience.api.brightcove.com/v1/accounts/{account_id} </code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Authentication">Authentication</h2>
+  
+  <p>The Audience API uses the Brightcove <a href="/node/17928">OAuth Service</a> to authenticate calls.</p>
+  
+  <p>You will first need to obtain client credentials (a <code>client_id</code> and <code>client_secret</code>). This is a one-time operation that can be performed using the <a href="/node/14056">OAuth Credentials UI</a>. You will need permissions for Audience/Read operations:</p>
+  
+  <figure class="bcls-figure"><img class="bcls-image" alt="Required Permissions" src="https://learning-services-media.brightcove.com/doc-assets/node/18047-overview-audience-api/operations.png" />
+  <figcaption class="bcls-caption--image">Required Permissions</figcaption>
+  </figure>
+  
+  <p>You can get client credentials directly from the Brightcove OAuth Service using <a href="/node/17924">cURL</a> or <a href="/node/17923">Postman</a>.</p>
+  
+  <p>You will also need an <code>access_token</code>, which is obtained using the <code>client_id</code> and <code>client_secret</code> and passed in an Authorization header with your API request:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">Authorization: Bearer <em>{access_token}</em></code></pre>
+  
+  <p>The <code>access_token</code> expires after five minutes, so you must obtain one for each request, or check to make sure that your token is still valid. See <a href="/node/17925">Getting Access Tokens</a> for a detailed explanation of how to get access tokens, including code samples.</p>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Error_handling">Error handling</h2>
+  
+  <p>If an error occurs, the API will respond with one of the following status codes and a corresponding error code in the response body:</p>
+  
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Status Code</th>
+        <th>Error Code</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td>400</td>
+        <td><code>BAD_REQUEST_ERROR</code></td>
+        <td>Query parameters are invalid</td>
+      </tr>
+      <tr>
+        <td>401</td>
+        <td><code>UNAUTHORIZED_ERROR</code></td>
+        <td>The access token is either absent, has expired, or is invalid</td>
+      </tr>
+      <tr>
+        <td>404</td>
+        <td><code>RESOURCE_NOT_FOUND</code></td>
+        <td>The URL does not exist</td>
+      </tr>
+      <tr>
+        <td>429</td>
+        <td><code>REQUEST_THROTTLED_ERROR</code></td>
+        <td>The user has exceeded the rate limiting policy</td>
+      </tr>
+      <tr>
+        <td>500</td>
+        <td><code>INTERNAL_ERROR</code></td>
+        <td>An internal error has occurred</td>
+      </tr>
+      <tr>
+        <td>504</td>
+        <td><code>GATEWAY_TIMEOUT_ERROR</code></td>
+        <td>The server timed out while fulfilling your request</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <p>Below is a sample response body for an error:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">[
+     {
+      "error_code": "UNAUTHORIZED_ERROR",
+      "message": "Permission denied"
+     }
+  ]</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Parameters">Parameters</h2>
+  
+  <p>There are several parameters you can add to requests to limit and filter the data retrieved. These apply to all the request types described in the sections that follow.</p>
+  
+  <h3 id="Filtering_results">Filtering results</h3>
+  
+  <p>You can filter the results using the <code>where</code> parameter. The syntax for filters is:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">where=field1==value1;field2==value2</code></pre>
+  
+  <p>For example:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">where=video_id==123456789;video_name==test</code></pre>
+  
+  <p>Commas are treated as logical ORs and semicolons as logical ANDs. For example, <code>where=video_id==1234,5678;video_name=test</code> is interpreted as "where video_id = 1234 OR 5678, AND video_name = test".</p>
+  
+  <h3>Selecting fields to return</h3>
+  
+  <p>A list of fields may be specified in the request to limit the results to that subset of fields. The syntax for fields is:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">fields=field1,field4</code></pre>
+  
+  <p>For example:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">fields=video_id,video_name</code></pre>
+  
+  <p>The fields that you can filter and sort on are detailed for each request type in the sections that follow.</p>
+  
+  <h3 id="Date_ranges">Date ranges</h3>
+  
+  <p>Date ranges can be specified in <code>from</code> and <code>to</code> parameters and are applied to the date that the view event was last updated (the updated_at field). Date ranges can be indicated in the following formats:</p>
+  
+  <ul>
+    <li class="language-editable">The text value <code>now</code> which represents the current time</li>
+    <li class="language-editable">Epoch time values in milliseconds, such as <code>1377047323000</code></li>
+    <li class="language-editable">Dates expressed in ISO 8601 standard international date format: <code>YYYY-MM-DD</code> format, such as <code>2013-09-12</code>. For dates expressed in this format:
+    <ul>
+      <li class="language-editable">Any date range specified will be interpreted in UTC</li>
+      <li class="language-editable">The time for the date give will be interpreted as midnight ( <code>00:00:00</code>) on the date specified</li>
+    </ul>
+    </li>
+    <li class="language-editable">Relative dates: you can express either of the <code>to</code> and <code>from</code> values relative to the other one in <code>d</code> (days), <code>h</code> (hours), <code>m</code> (minutes), or <code>s</code> (sec). For example:
+    <ul>
+      <li class="language-editable"><code class="language-http">from=2015-01-01&amp;to=31d</code></li>
+      <li class="language-editable"><code class="language-http">from=-48h&amp;to=now</code></li>
+      <li class="language-editable"><code class="language-http">from=-2d&amp;to=now</code> (will give the same results as the previous example)</li>
+      <li class="language-editable"><code class="language-http">from=-365d&amp;to=2015-12-31</code></li>
+      <li class="language-editable"><code class="language-http">from=-10m&amp;to=now</code></li>
+    </ul>
+    </li>
+  </ul>
+  
+  <h3 id="Paging_results">Paging results</h3>
+  
+  <p>The <code>limit</code> is the number of items to return (default: 25; maximum: 100). <code>offset</code> is the number of items to skip (default: 0). You can use <code>limit</code> and <code>offset</code> together to create an app that pages through the results. Each includes the <code>limit</code>, <code>offset</code>, and <code>count.</code>, which you can use to set up iteration over total results. For example, in JavaScript, you could get the total iterations required like this:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-javascript">// response is the JSON-parsed response from the first request
+  var totalRequests = Math.ceil(response.count / response.limit)</code></pre>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Retrieving_view_events">Retrieving view events</h2>
+  
+  <p>To retrieve view events in an account, perform a <code>GET</code> request to the view_events resource:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events</code></pre>
+  
+  <aside class="bcls-aside bcls-aside--warning">Only view events that have been <em>processed</em> will appear in the response.</aside>
+  
+  <p>Here is sample request in cURL</p>
+  
+  <pre class="line-numbers">
+  <code class="language-bash">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
+    -H "Authorization: Bearer {token}"</code></pre>
+  
+  <p>The response will look like this:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+      "count": 27,
+      "limit": 25,
+      "offset": 0,
+      "result": [
+          {
+              "created_at": "2016-04-25T18:30:21.651Z",
+              "page_url": "http://players.brightcove.net/1486906377/V1s6NOwRx_default/index.html?videoId=4842718056001",
+              "player_id": "V1s6NOwRx",
+              "time_watched": 2,
+              "updated_at": "2016-04-25T18:30:21.651Z",
+              "video_id": "4842718056001",
+              "video_name": "Horses Heading to the Track",
+              "watched": 19
+          },
+          {
+              "created_at": "2016-04-25T18:31:55.071Z",
+              "page_url": "http://players.brightcove.net/1486906377/BkgFuzyhg_default/index.html?videoId=4842718056001",
+              "player_id": "BkgFuzyhg",
+              "time_watched": 15,
+              "updated_at": "2016-04-25T18:32:00.879Z",
+              "video_id": "4842718056001",
+              "video_name": "Horses Heading to the Track",
+              "watched": 99
+          }, ...
+      }
+  ]</code></pre>
+  
+  <h3 id="fieldsForViewEvents">Fields for filtering and selection</h3>
+  
+  <p>All the <a href="#Parameters">parameters</a> can be used with <code>view_event</code> requests.</p>
+  
+  <p>Here is sample request in cURL using the parameters:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-bash">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/view_events?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
+    -H "Authorization: Bearer {token}"</code></pre>
+  
+  <p>The following fields are supported for <code>view_event</code> requests when filtering with a <code>where</code> clause or when selecting during a <code>fields</code> clause:</p>
+  
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Field</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td><code>video_id</code></td>
+        <td>Brightcove video ID</td>
+      </tr>
+      <tr>
+        <td><code>video_name</code></td>
+        <td>Brightcove video name</td>
+      </tr>
+      <tr>
+        <td><code>tracking_id</code></td>
+        <td>Custom tracking ID</td>
+      </tr>
+      <tr>
+        <td><code>external_id</code></td>
+        <td>The Marketo, Eloqua or custom GUID</td>
+      </tr>
+      <tr>
+        <td><code>player_id</code></td>
+        <td>The ID of the Brightcove player that created the view event</td>
+      </tr>
+      <tr>
+        <td>page_url</td>
+        <td>The URL of the page where the view event was created</td>
+      </tr>
+      <tr>
+        <td><code>watched</code></td>
+        <td>Percent watched</td>
+      </tr>
+      <tr>
+        <td><code>time_watched</code></td>
+        <td>Seconds of the video watched</td>
+      </tr>
+      <tr>
+        <td><code>created_at</code></td>
+        <td>Creation date</td>
+      </tr>
+      <tr>
+        <td><code>updated_at</code></td>
+        <td>Last updated date</td>
+      </tr>
+      <tr>
+        <td><code>is_synced</code></td>
+        <td>A boolean denoting whether or not the view event has been synchronized</td>
+      </tr>
+      <tr>
+        <td><code>event_1</code></td>
+        <td rowspan="3">Custom events</td>
+      </tr>
+      <tr>
+        <td><code>event_2</code></td>
+      </tr>
+      <tr>
+        <td><code>event_3</code></td>
+      </tr>
+      <tr>
+        <td><code>metric_1</code></td>
+        <td rowspan="3">Custom metrics</td>
+      </tr>
+      <tr>
+        <td><code>metric_2</code></td>
+      </tr>
+      <tr>
+        <td><code>metric_3</code></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  
+  <section class="bcls-section">
+  <h2 id="Retrieving_Leads">Retrieving leads</h2>
+  
+  <p>To retrieve view events in an account, perform a <code>GET</code> request to the <code>view_events</code> resource:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-http">https://audience.api.brightcove.com/v1/accounts/{account_id}/leads</code></pre>
+  
+  <p>Sample response:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-json">{
+      "count": 2,
+      "limit": 25,
+      "offset": 0,
+      "result": [
+          {
+              "created_at": "2016-06-30T12:57:11.283Z",
+              "email_address": "bbailey@brightcove.com",
+              "first_name": "Bob",
+              "last_name": "Bailey",
+              "page_url": "http://players.brightcove.net/1486906377/Hk4TBqzL_default/index.html?videoId=4997275041001",
+              "player_id": "Hk4TBqzL",
+              "video_id": "4997275041001"
+          },
+          {
+              "created_at": "2016-06-30T12:57:33.301Z",
+              "email_address": "rcrooks@brightcove.com",
+              "first_name": "Robert",
+              "last_name": "Crooks",
+              "page_url": "http://players.brightcove.net/1486906377/Hk4TBqzL_default/index.html?videoId=4997275041001",
+              "player_id": "Hk4TBqzL",
+              "video_id": "4997275041001"
+          }
+      ]
+  }</code></pre>
+  
+  <h3 id="fieldsForLeads">Fields for filtering and selection</h3>
+  
+  <p>All the <a href="#Parameters">parameters</a> can be used with <code>leads</code> requests.</p>
+  
+  <p>Here is sample request in cURL using the parameters:</p>
+  
+  <pre class="line-numbers">
+  <code class="language-bash">curl -i https://audience.api.brightcove.com/v1/accounts/{account_id}/leads?where=video_id==123&amp;from=-5d&amp;to=now&amp;sort=-created_at \
+    -H "Authorization: Bearer {token}"</code></pre>
+  
+  <p>The following fields are supported for <code>leads</code> requests when filtering with a <code>where</code> clause or when selecting during a <code>fields</code> clause:</p>
+  
+  <table class="bcls-table">
+    <thead class="bcls-table__head">
+      <tr>
+        <th>Field</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody class="bcls-table__body">
+      <tr>
+        <td><code>video_id</code></td>
+        <td>Brightcove video ID</td>
+      </tr>
+      <tr>
+        <td><code>external_id</code></td>
+        <td>The Marketo, Eloqua or custom GUID</td>
+      </tr>
+      <tr>
+        <td><code>player_id</code></td>
+        <td>The ID of the Brightcove player that created the view event</td>
+      </tr>
+      <tr>
+        <td><code>page_url</code></td>
+        <td>The URL of the page where the view event was created</td>
+      </tr>
+      <tr>
+        <td><code>created_at</code></td>
+        <td>Creation date</td>
+      </tr>
+      <tr>
+        <td><code>email_address</code></td>
+        <td>The email address of the lead</td>
+      </tr>
+      <tr>
+        <td><code>first_name</code></td>
+        <td>The first name of the lead if provided</td>
+      </tr>
+      <tr>
+        <td>last_name</td>
+        <td>The last name of the lead if provided</td>
+      </tr>
+      <tr>
+        <td><code>business_phone</code></td>
+        <td>The phone number of the lead if provided</td>
+      </tr>
+      <tr>
+        <td><code>country</code></td>
+        <td>The country of the lead if provided</td>
+      </tr>
+      <tr>
+        <td><code>company_name</code></td>
+        <td>The company of the lead if provided</td>
+      </tr>
+      <tr>
+        <td><code>industry</code></td>
+        <td>The industry that the lead belongs to if provided</td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+  </article>
+  
+  
