@@ -118,7 +118,7 @@
           <figcaption class="bcls-caption--image">Assign Video Page</figcaption>
         </figure>
       </li>
-      <li>\To assign a video to a product, click the <strong>Assign Video</strong> link:
+      <li>To assign a video to a product, click the <strong>Assign Video</strong> link:
         <figure class="bcls-figure">
           <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/assign-video-link.png" alt="Assign Video Link">
           <figcaption class="bcls-caption--image">Assign Video Link</figcaption>
@@ -174,5 +174,111 @@
         </figure>
       </li>
     </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="Embed_a_video_in_a_content_slot">Embed a video in a content slot</h2>
+    <p>The <strong>Embed Video</strong> functionality enables an SFCC business user with embedding iFrame or Java script code for any video or media file residing on the Brightcove server, in any of the content slots, to render that video on any of the store pages. Here are the steps:</p>
+    <ol class="bcls-tasklist">
+      <li>Login to the SFCC Business Manager with your valid credentials.</li>
+      <li>Select <strong>Merchant Tools</strong> from the top-level BM menu and then  <strong>Brightcove &gt; Embed Video</strong>:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/brightcove-embed-video.png" alt="Brightcove &gt; Embed Video">
+          <figcaption class="bcls-caption--image">Brightcove &gt; Embed Video</figcaption>
+        </figure>
+      </li>
+      <li>
+        On the <strong>Embed Video</strong> page, search for videos using <strong>tags</strong> or the <strong>Video ID</strong>:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/search-videos.png" alt="Search for Videos">
+          <figcaption class="bcls-caption--image">Search for Videos</figcaption>
+        </figure>
+      </li>
+      <li>
+        When you have found the video you want to publish, select a player from the dropdown menu (or use the default player), and click the <strong>Get Code</strong> button to get the player publishing code:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/select-player-get-code.png" alt="Select Player and Get Publishing Code">
+          <figcaption class="bcls-caption--image">Select Player and Get Publishing Code</figcaption>
+        </figure>
+      </li>
+      <li>The Standard and Advanced publishing codes are displayed, with the option to make the player responsive (automatically resize according to the size of the browser window) or fixed. Brightcove recommends that in most cases, you should use the responsive Standard publishing code, unless you know the Advanced code is required for some reason.</li>
+      <li>Copy the code you want and paste it into your page HTML code where needed.</li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="PDP_Rendering">PDP Rendering</h2>
+    <p>The <strong>PDP Rendering</strong> Module provides the functionality to render video corresponding to the product on the PDP page. This requires mapping of a product with video id existing in the local SFCC catalog database. Here are the steps.</p>
+    <aside class="bcls-aside bcls-aside--information language-editable">Note: you may need help from an SFCC expert or administrator for PDP Rendering.</aside>
+    <ol class="bcls-tasklist">
+      <li>Follow the steps in the <a href="#Add_a_video_to_the_Brightcove_server">Assign a video to a product in SFCC</a> section to assign a video to the product, if you have not already done so.</li>
+      <li>
+        <p>
+          Add the following line in <code>app/cartridge/templates/default/product/productDetails.isml</code>:
+        </p>
+        <p><code><isinclude template="slots/html/htmlBrightcoveVideo" /></code></p>
+        <p>The code should then look like this:</p>
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/BCL-Doc-Assets/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/isml-code-with-brightcove.png" alt="isml Code with Brightcove Line">
+          <figcaption class="bcls-caption--image">isml Code with Brightcove Line</figcaption>
+        </figure>
+      </li>
+      <li>
+        Go to storefront and search for the assigned product. You should see the video included in the page:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/product-page-video.png" alt="Product Page with Video">
+          <figcaption class="bcls-caption--image">Product Page with Video</figcaption>
+        </figure>
+      </li>
+      <li>If you want to change the position of the above video template on PDP, you can do that by editing the file <code>app/cartridge/templates/default/product/productDetails.isml</code> and moving the line that includes the Brightcove Video (see above) to a different location.</li>
+    </ol>
+  </section>
+  <section class="bcls-section">
+    <h2 id="bulk_upload">Bulk Upload</h2>
+    <p>The <strong>Bulk Upload</strong> Module provides the functionality to upload multiple files to the Brightcove server as once. Business users can use a csv file containing details of files to be uploaded (name of file, location of the file etc.) during this process. Here are the steps.</p>
+    <ol class="bcls-tasklist">
+      <li>Login to the SFCC Business Manager with your valid credentials.</li>
+      <li>Login to the SFCC Business Manager with your valid credentials.</li>
+      <li>
+        Select <strong>Merchant Tools</strong> from the top-level BM menu and then  <strong>Brightcove &gt; Bulk Upload</strong>:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/bulk-upload-menu-item.png" alt="Bulk Upload Menu Item">
+          <figcaption class="bcls-caption--image">Bulk Upload Menu Item</figcaption>
+        </figure>
+      </li>
+      <li>
+        Select CSV file (that contains files to be uploaded details) and process it by clicking the <strong>Submit</strong> button:
+        <figure class="bcls-figure">
+          <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/process-csv-file.png" alt="Process CSV File">
+          <figcaption class="bcls-caption--image">Process CSV File</figcaption>
+        </figure>
+      </li>
+      <li>If you want to check on the progress of adding the videos you can look for them in the Media Module in Brightcove Studio.</li>
+    </ol>
+    <h3>Details of the CSV file</h3>
+    <p>The table below shows the headers you should have in the CSV file, along with a description of the contents for the items under each header/**
+     * @deprecated description
+     */</p>
+    <table class="bcls-table">
+      <caption class="bcls-caption--table">CSV Headers/Fields</caption>
+      <thead class="bcls-table__head">
+          <tr>
+              <th>Table Header</th>
+              <th>Table Header</th>
+          </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr><td><code>videoname</code></td><td>A title for the video - REQUIRED</td></tr>
+        <tr><td><code>videoreferenceid</code></td><td>A unique reference id for the video - optional</td></tr>
+        <tr><td><code>videotags</code></td><td>A comma-delimited list of tags for the video - optional</td></tr>
+        <tr><td><code>videodescription</code></td><td>A short description for the video - optional</td></tr>
+        <tr><td><code>videofile</code></td><td>A public URL where the video resides - REQUIRED</td></tr>
+        <tr><td><code>videothumbnail</code></td><td>A public URL where the thumbnail image file resides - optional</td></tr>
+        <tr><td><code>videoposter</code></td><td>A public URL where the poster image file resides - optional</td></tr>
+      </tbody>
+  </table>
+  <h4>Sample</h4>
+  <figure class="bcls-figure">
+    <img class="bcls-image" src="https://learning-services-media.brightcove.com/doc-assets/node/18959-brightcove-custom-cartridge-salesforce-commerce-cloud-user-guide/bulk-upload.png" alt="Sample CSV">
+    <figcaption class="bcls-caption--image">Sample CSV</figcaption>
+  </figure>
   </section>
 </article>
