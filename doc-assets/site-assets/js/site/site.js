@@ -1,6 +1,6 @@
 var BCLS_site = (function(window, document) {
   var all_sidenav_links = document.querySelectorAll(".sidenav a"),
-    href = window.location.domain + '/' + window.location.pathname,
+    href = window.location.pathname,
     i,
     iMax,
     currentLink,
