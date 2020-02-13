@@ -38,8 +38,8 @@ var BCLS_expander = (function(window, document) {
 var BCLS_player_fix = ( function (window, document) {
     var vc,
         bp,
-        sideNav = document.getElementsByClassName('side-nav')[0],
-        sideNavList = document.getElementById('sideNavList'),
+        sideNav = document.getElementsByClassName('right-side-bar')[0],
+        sideNavList = document.getElementById('right-side-nav'),
         vcContent = document.getElementsByClassName('video-cloud-only'),
         bpContent = document.getElementsByClassName('player-only'),
         toggleStr = '<li><button id="vc" class="bcls-button__version" style="background-color:rgb(239, 108, 42);">Video Cloud Version</button> <button id="bp" class="bcls-button__version" style="background-color:rgb(44, 131, 224)">Brightcove Player Version</button> <a style="font-size:smaller;" href="//docs.brightcove.com/en/player/brightcove-player/versions.html">(What\'s the difference?)</a><hr></li>',
