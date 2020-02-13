@@ -39,7 +39,7 @@ var BCLS_player_fix = ( function (window, document) {
     var vc,
         bp,
         sideNav = document.getElementsByClassName('right-side-bar')[0],
-        sideNavList = document.getElementById('right-side-nav'),
+        sideNavList = document.getElementsByClassName('right-side-nav')[0],
         vcContent = document.getElementsByClassName('video-cloud-only'),
         bpContent = document.getElementsByClassName('player-only'),
         toggleStr = '<li><button id="vc" class="bcls-button__version" style="background-color:rgb(239, 108, 42);">Video Cloud Version</button> <button id="bp" class="bcls-button__version" style="background-color:rgb(44, 131, 224)">Brightcove Player Version</button> <a style="font-size:smaller;" href="//docs.brightcove.com/en/player/brightcove-player/versions.html">(What\'s the difference?)</a><hr></li>',
@@ -85,8 +85,8 @@ var BCLS_player_fix = ( function (window, document) {
         window.location.search = '';
         showElements(vcContent);
         hideElements(bpContent);
-        addStyle(vc);
-        removeStyle(bp);
+        // addStyle(vc);
+        // removeStyle(bp);
     }
 
     function bpClickHandler() {
@@ -94,8 +94,8 @@ var BCLS_player_fix = ( function (window, document) {
         window.location.search = 'bp';
         showElements(bpContent);
         hideElements(vcContent);
-        addStyle(bp);
-        removeStyle(vc);
+        // addStyle(bp);
+        // removeStyle(vc);
     }
 
     if (vcContent.length !== 0 || bpContent.length !== 0) {
@@ -106,18 +106,12 @@ var BCLS_player_fix = ( function (window, document) {
             showElements(vcContent);
             hideElements(bpContent);
         }
-        if (BCLSmain.createInPageNavMenu) {
-            sideNavList.outerHTML = '';
-            BCLSmain.createInPageNavMenu();
-            sideNavList = document.getElementById('sideNavList');
-            console.log('foo', sideNavList);
-        }
         sideNav.insertAdjacentHTML('afterBegin', toggleStr);
         vc = document.getElementById('vc');
         bp = document.getElementById('bp');
         if (location.search.indexOf('bp') >- 0) {
-            addStyle(bp);
-            removeStyle(vc);
+            // addStyle(bp);
+            // removeStyle(vc);
         }
 
         vc.addEventListener('click', vcClickHandler);
