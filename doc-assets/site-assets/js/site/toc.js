@@ -64,9 +64,9 @@ var BCLS_toc = ( function (window, document) {
           }
         }
   }
-  implementHighlighting();
+  create_inpage_nav();
 
   return {
-    implementHighlighting: implementHighlighting
+    create_inpage_nav: create_inpage_nav
   };
 })(window, document);
