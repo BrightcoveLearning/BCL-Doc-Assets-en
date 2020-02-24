@@ -10,7 +10,10 @@ var BCLS_toc = ( function (window, document) {
       frag = document.createDocumentFragment(),
       parent,
       grandparent;
-  
+
+        // in case this gets run multiple times by mistake, clear existing items
+        in_page_nav.innerHTML = '';
+        // add new items
         iMax = h2s.length;
         for (i = 0; i < iMax; i++) {
           h2 = h2s[i];
@@ -64,8 +67,9 @@ var BCLS_toc = ( function (window, document) {
           }
         }
   }
+  // run the function
   create_inpage_nav();
-
+  // this creates a public method, allow it to be run again (imported content for example)
   return {
     create_inpage_nav: create_inpage_nav
   };
