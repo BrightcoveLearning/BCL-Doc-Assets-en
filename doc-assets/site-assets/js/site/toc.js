@@ -12,7 +12,7 @@ var BCLS_toc = ( function (window, document) {
       grandparent;
 
         // in case this gets run multiple times by mistake, clear existing items
-        in_page_nav.innerHTML = '';
+        // in_page_nav.innerHTML = '';
         // add new items
         iMax = h2s.length;
         for (i = 0; i < iMax; i++) {
