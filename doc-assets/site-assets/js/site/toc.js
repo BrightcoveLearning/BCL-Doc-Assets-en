@@ -9,7 +9,7 @@ var BCLS_toc = ( function (window, document) {
       iMax,
       frag = document.createDocumentFragment(),
       parent,
-      side_nav_created = false;
+      side_nav_created = false,
       grandparent;
 
         // in case this gets run multiple times by mistake, clear existing items
