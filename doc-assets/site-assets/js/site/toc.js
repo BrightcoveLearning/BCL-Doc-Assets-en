@@ -9,6 +9,7 @@ var BCLS_toc = ( function (window, document) {
       iMax,
       frag = document.createDocumentFragment(),
       parent,
+      side_nav_created = false;
       grandparent;
 
         // in case this gets run multiple times by mistake, clear existing items
@@ -69,7 +70,7 @@ var BCLS_toc = ( function (window, document) {
   }
   // run the function
   create_inpage_nav();
-  var side_nav_created = true;
+  side_nav_created = true;
   // this creates a public method, allow it to be run again (imported content for example)
   return {
     create_inpage_nav: create_inpage_nav,
