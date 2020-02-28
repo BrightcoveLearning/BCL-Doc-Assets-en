@@ -32,6 +32,8 @@ var BCLS_toc = ( function (window, document) {
         if (frag.firstChild) {
           in_page_nav.appendChild(frag);
           implementHighlighting();
+          // side nav is being generated; set the flag
+          side_nav_created = true;
         } else {
           parent = in_page_nav.parentNode;
           grandparent = parent.parentNode;
@@ -70,7 +72,6 @@ var BCLS_toc = ( function (window, document) {
   }
   // run the function
   create_inpage_nav();
-  side_nav_created = true;
   // this creates a public method, allow it to be run again (imported content for example)
   return {
     create_inpage_nav: create_inpage_nav,
