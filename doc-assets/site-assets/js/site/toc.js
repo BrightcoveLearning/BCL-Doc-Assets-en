@@ -68,7 +68,7 @@ var BCLS_toc = ( function (window, document) {
         }
   }
   // run the function
-  create_inpage_nav();
+  // create_inpage_nav();
   // this creates a public method, allow it to be run again (imported content for example)
   return {
     create_inpage_nav: create_inpage_nav
