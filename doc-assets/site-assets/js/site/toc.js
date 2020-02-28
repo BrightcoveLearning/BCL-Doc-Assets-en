@@ -1,4 +1,5 @@
 var BCLS_toc = ( function (window, document) {
+  var side_nav_created = false,
   function create_inpage_nav() {
     var h2s = document.getElementsByTagName('h2'),
       in_page_nav = document.getElementById('in_page_nav'),
@@ -9,7 +10,6 @@ var BCLS_toc = ( function (window, document) {
       iMax,
       frag = document.createDocumentFragment(),
       parent,
-      side_nav_created = false,
       grandparent;
 
         // in case this gets run multiple times by mistake, clear existing items
