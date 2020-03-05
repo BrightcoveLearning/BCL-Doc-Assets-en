@@ -57,6 +57,7 @@
 	</li>
 	<li>Set the <strong class="notranslate">Timeout</strong> value. This is the maximum amount of time to wait, in milliseconds, for an ad to initialize before playback.</li>
 	<li>Make a choice for <strong>Hard timeouts</strong>. Unchecking this option could result in a slow loading advertisement interrupting video playback.</li>
+	<li>Set the <strong>Maximum Number of Redirects</strong>. This specifies the maximum number of redirects before the subsequent redirects will be denied, and the ad load aborted. The number of redirects directly affects latency and thus user experience.</li>
 	<li>For the <strong>Plugin Version</strong>, it is strongly recommended you use the latest version.</li>
 	<li>View an example, completed form:
 	<figure class="bcls-figure"><img class="bcls-image" alt="IMA3 properties in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ima3-plugin/studio-ima-plugin-props.png" /></figure>
@@ -84,26 +85,27 @@
 	<li>Open the <strong>PLAYERS</strong> module and either create a new player or locate the player to which you wish to add the plugin.</li>
 	<li>Click the link for the player to open the player's properties.</li>
 	<li>Click <strong>Plugins</strong> in the left navigation menu.</li>
-	<li>Next, click <strong>Add a Plugin</strong>.</li>
+	<li>Next click <strong>Plugins</strong> from the three options.
+	<figure class="bcls-figure"><img class="bcls-image" alt="Select Plugin" src="//learning-services-media.brightcove.com/doc-assets/general/players-plugin-options.png" /></figure>
+	</li>
+	<li>From the <strong>Add a Plugin</strong> select <strong>Custom Plugin</strong>.</li>
 	<li>For the <strong>Plugin Name</strong> enter <code>ima3</code>.</li>
 	<li>For the <strong>JavaScript</strong> URL, enter:
 	<pre>
-  <code class="notranslate language-json">https://players.brightcove.net/videojs-ima3/3/videojs.ima3.min.js</code></pre>
+<code class="language-json">https://players.brightcove.net/videojs-ima3/3/videojs.ima3.min.js</code></pre>
 	</li>
 	<li>For the <strong>CSS</strong> URL, enter:
 	<pre>
-  <code class="notranslate language-json">https://players.brightcove.net/videojs-ima3/3/videojs.ima3.min.css</code></pre>
+<code class="language-json">https://players.brightcove.net/videojs-ima3/3/videojs.ima3.min.css</code></pre>
 	</li>
-	<li>Enter the configuration options in the <strong>Options(JSON)</strong> text box. An example set of options are shown here:
+	<!-- ** choose one of the following two steps, delete the other ** -->
+	<li>Enter the configuration options in the <strong>Options(JSON)</strong> text box.
 	<pre class="line-numbers">
-<code class="language-json notranslate">{
+<code class="language-json">{
   "serverUrl": "//pubads.g.doubleclick.net/gampad/ads?sz=400x300&amp;iu=%2F6062...",
   "timeout": 5000,
   "debug": true
 }</code></pre>
-	</li>
-	<li>View an example, completed form:
-	<figure class="bcls-figure"><img class="bcls-image" alt="IMA3 properties in Studio" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ima3-plugin/plugins-section.png" /></figure>
 	</li>
 	<li>Click <strong>Save</strong>.</li>
 	<li>To publish the player, click <strong>Publish &amp; Embed &gt; Publish Changes</strong>.</li>
@@ -144,7 +146,7 @@
 
 <p>Type: <code class="notranslate">HTMLElement</code> Default Value: undefined</p>
 
-<p>If the HTML ad tech is being used in <a href="//developers.google.com/interactive-media-ads/docs/sdks/html5/v3/guides/custom_playback">custom ad playback</a> mode, this specifies an alternative HTML element to be used to track advertisement taps on devices that don't support input events over the video element. More details are available in the parameter documentation for the <a href="//developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdDisplayContainer">IMA AdDisplayContainer</a>. If you provide a click tracking element, it is your responsibility to show and hide it at the appropriate times on the appropriate platforms. In most cases, it's best to leave this setting undefined and allow the plugin and IMA to manage ad interaction.</p>
+<p>If the HTML ad tech is being used in <a href="https://developers.google.com/web/fundamentals/design-and-ux/input/touch">custom ad playback</a> mode, this specifies an alternative HTML element to be used to track advertisement taps on devices that don't support input events over the video element. More details are available in the parameter documentation for the <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/reference/js/ima.AdDisplayContainer">IMA AdDisplayContainer</a>. If you provide a click tracking element, it is your responsibility to show and hide it at the appropriate times on the appropriate platforms. In most cases, it's best to leave this setting undefined and allow the plugin and IMA to manage ad interaction.</p>
 
 <h3 id="debugOption">debug</h3>
 
@@ -335,6 +337,8 @@ myPlayer.ima3({
 	<li><code class="notranslate">serverUrl</code>: Must point to a valid VAST ad</li>
 </ul>
 
+<p>If you are using Studio to setup advertising, when you select <strong>On cue point</strong> the <code>useMediaCuePoints</code> and <code>requestMode</code> options will be set correctly for you.</p>
+
 <h3 id="vpaidMode">vpaidMode</h3>
 
 <p>Type: <code class="notranslate">string</code> Default Value: <code class="notranslate">ENABLED</code></p>
@@ -401,7 +405,7 @@ myPlayer.ima3({
 			<td>Tags (metadata) associated with the video</td>
 		</tr>
 		<tr>
-			<td>{mediainfo.referenceID}</td>
+			<td>{mediainfo.reference_id}</td>
 			<td>Reference ID</td>
 		</tr>
 		<tr>
@@ -552,6 +556,10 @@ myPlayer.ima3({
 <section class="bcls-section">
 <h2 id="Methods">Methods</h2>
 
+<p>When you need to interact with the IMA SDK you need to wait for the <code>ima3-ready</code> event to be dispatched before successful use of the SDK can take place. This includes the following two methods.</p>
+
+<p>&nbsp;</p>
+
 <h3>player.ima3.adrequest( )</h3>
 
 <p>Calling this method will create an on-demand adrequest immediately upon receiving an ad response. Invoking this method creates a new IMA adManager which means that any previous ad response information (for instance, a postroll ad returned in a previous VAST response) will be lost. Brightcove recommends that you only use this method in cases where up-front knowledge of ad timings isn't known or you will be making all ad calls on-demand. In all other cases, it makes sense to put all ad data in the initial VAST call on plugin initialization.</p>
@@ -635,25 +643,25 @@ player.ima3.setAdsRenderingSettings(adsRenderingSettings);</code></pre>
 
 <p>Type: <code class="notranslate">google.ima.AdsLoader</code></p>
 
-<p>The object used to create ads requests. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdsLoader">ima.AdsLoader</a>. The Ads Loader may not be available until <code class="notranslate">adsready</code> has been fired by the plugin.</p>
+<p>The object used to create ads requests. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/reference/js#ima.AdsManager">ima.AdsLoader</a>. The Ads Loader may not be available until <code class="notranslate">adsready</code> has been fired by the plugin.</p>
 
 <h3>adsManager</h3>
 
 <p>Type: <code class="notranslate">google.ima.AdsManager</code></p>
 
-<p>The object responsible for playing ads. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdsManager">ima.AdsManager</a>. The Ads Manager is not available until <code class="notranslate">adsready</code> has been fired by the plugin.</p>
+<p>The object responsible for playing ads. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/reference/js#ima.AdsManager">ima.AdsManager</a>. The Ads Manager is not available until <code class="notranslate">adsready</code> has been fired by the plugin.</p>
 
 <h3>adDisplayContainer</h3>
 
 <p>Type: <code class="notranslate">google.ima.AdDisplayContainer</code></p>
 
-<p>The object responsible for managing the display elements for ads. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdDisplayContainer">ima.AdDisplayContainer</a>. The Ads Display container may not be available until <code class="notranslate">adsready</code> has been fired by the plugin.</p>
+<p>The object responsible for managing the display elements for ads. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/reference/js#ima.AdDisplayContainer">ima.AdDisplayContainer</a>. The Ads Display container may not be available until <code class="notranslate">adsready</code> has been fired by the plugin.</p>
 
 <h3>currentAd</h3>
 
 <p>Type: <code class="notranslate">google.ima.Ad</code></p>
 
-<p>When an ad is playing, an object that encapsulates information about the current ad. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.Ad">ima.Ad</a>.</p>
+<p>When an ad is playing, an object that encapsulates information about the current ad. See <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/reference/js#ima.Ad">ima.Ad</a>.</p>
 </section>
 
 <section class="bcls-section">
@@ -815,7 +823,7 @@ player.ima3.setAdsRenderingSettings(adsRenderingSettings);</code></pre>
 <section class="bcls-section">
 <h2 id="Live_video_and_IMA3">Live video and IMA3</h2>
 
-<p>If you are using version 3.1.0+ of the IMA3 plugin, you can use pre-rolls with a live event. The pre-roll will play when each viewer begins to watch the live event, not the one time the live event begins. When configuring your event in the Live module, as shown in the <a href="/node/18470">Creating and Managing Live Events using the Live Module</a> document, you are prompted to select a player. You will want to configure advertising for the player you select, as shown in the <a href="/node/18069">Quick Start: Implementing Advertising</a> document.</p>
+<p>If you are using version 3.1.0+ of the IMA3 plugin, you can use pre-rolls with a live event. The pre-roll will play when each viewer begins to watch the live event, not the one time the live event begins. When configuring your event in the Live module, as shown in the <a href="/node/18470">Creating and Managing Live Events using the Live Module</a> document, you are prompted to select a player. You will want to configure advertising for the player you select, as shown in the <a href="/node/18069">Step-by-Step: Implementing Advertising</a> document.</p>
 
 <p>Note the following details of the implementation:</p>
 
@@ -1056,6 +1064,26 @@ player.ready(function () {
       </section> -->
 
 <section class="bcls-section">
+<h2 id="Hybrid_implementation">Hybrid implementation</h2>
+
+<p>So far in this document you have seen the IMA plugin implemented in Studio, then in code. Some customers like to perform a hybrid implementation where the basic plugin is added in Studio, but then configuration done in the page's JavaScript. This hybrid implementation is discussed in this section.</p>
+
+<p>As you have just seen in the previous section, when implementing the IMA3 plugin purely in code you manipulate the plugin in function format. When you install the plugin in Studio, then configure in the page, you must treat the plugin as an object. For instance, assume you have installed the IMA3 plugin using Studio as shown here, noting that no <strong>Ad Tag</strong> is supplied:</p>
+
+<figure class="bcls-figure"><img class="bcls-image" alt="Partial Studio Install" src="//learning-services-media.brightcove.com/doc-assets/player-development/advertising/ima3-plugin/partial-studio-install.png" /></figure>
+
+<p>Now, in the JavaScript in the page you can assign property values (remember, treat the plugin as an object now) as shown here:</p>
+
+<pre class="line-numbers">
+<code class="language-javascript">videojs.getPlayer('myPlayerID').ready(function() {
+  var myPlayer = this;
+  myPlayer.ima3.settings.serverUrl = 'http://solutions.brightcove.com/bcls/brightcove-player/vmap/simple-vmap.xml';
+});</code></pre>
+
+<p>Of course, other properties can be assigned values in this manner.</p>
+</section>
+
+<section class="bcls-section">
 <h2 id="Debugging_assistance">Debugging assistance</h2>
 
 <p>There are two options for assistance when debugging ad playback issues. If you do nothing, in the console you will see only information on when ads started and finished:</p>
@@ -1091,6 +1119,10 @@ myPlayer.ready(function() {
 <section class="bcls-section">
 <h2 id="Known_issues">Known issues</h2>
 
+<h3>Setting autoplay in Studio</h3>
+
+<p>Do NOT set autoplay in Studio if you are using the IMA3 plugin to display advertisements. Setting autoplay in Studio could cause ad plaback failure. See the <a href="/node/18602">Autoplay Considerations</a> document for further information.</p>
+
 <h3>Chrome on Android: Unmute pre-roll, video will not autoplay</h3>
 
 <p>When using Chrome (latest version) on Android and unmute the player while pre-roll is playing, player does not start playing a video automatically after pre-roll ends. If you unmute the ad, the volume persistence feature of Brightcove Player will also unmute the content since the intention of the viewer is to hear the audio. However, on newer versions of Chrome Android, unmuted content cannot be auto-played and the user-gesture requirement to begin playback has been added. This is an OS/Device-level setting and not something Brightcove can override.</p>
@@ -1102,10 +1134,6 @@ myPlayer.ready(function() {
 <h3>Unmuted midrolls may not play on Safari 11 Desktop</h3>
 
 <p>Unmuted midrolls may not play on Safari 11 Desktop due to a change in Google's IMA SDK. A new behavior was introduced to trigger an error and cancel an ad when autoplay is rejected by Safari 11 (Desktop and possibly iOS). Midrolls impacted in this way will trigger an ad error 400, with error code 1205 indicating autoplay was prevented.</p>
-
-<h3>Pre-rolls not supported for live streaming</h3>
-
-<p>IMA3 pre-roll ads with <a href="/node/11397">live streaming</a>, including <a href="/node/17764">Brightcove Live</a>, are only supported when using cue points and <strong class="notranslate">oncue</strong> request mode.</p>
 
 <h3>Supported environments</h3>
 
@@ -1177,6 +1205,10 @@ myPlayer.ready(function() {
 	<li><strong class="notranslate">iPad</strong> - Ads are played inline but skip is not available in fullscreen mode</li>
 </ul>
 
+<h3>iOS 10 iPad and iPhone: Preroll ads not working when using <code>playsinline</code> and going fulscreen</h3>
+
+<p>If using <code>playsinline</code> on iOS 10 iPad and iPhone to allow viewing a video not fullscreen, then a preroll ad starts, and the fullscreen button is clicked, the ad will NOT continue to play. This is a limitation of the Google's IMA implementation, and Google does not have plans to correct the issue.</p>
+
 <h3>Conflict with gpt_proxy.js</h3>
 
 <p>If using the GPT proxy script with IMA3, and the <strong class="notranslate">adTechOder</strong> is <strong class="notranslate">HTML5</strong> first, playback issues can occur. The IMA3 plugin will be affected when using any script that uses <strong class="notranslate">window.google</strong> or <strong class="notranslate">window.google.ima</strong>. It is suggested that you check if you're using Brightcove Player, and if so, don't load the proxy on those occasions.</p>
@@ -1197,853 +1229,7 @@ myPlayer.ready(function() {
 <section class="bcls-section">
 <h2 id="Changelog">Changelog</h2>
 
-<h4>24 Oct 2018</h4>
-
-<p>v3.2.2</p>
-
-<ul>
-	<li>Fixed bug to call <code>adMacroReplacement</code> when <code>serverUrl</code> is empty string</li>
-	<li>Fixed issue to allow IE/Edge control bar visibility on hover with overlay ads</li>
-</ul>
-
-<h4>18 Oct 2018</h4>
-
-<p>v3.2.1</p>
-
-<ul>
-	<li>Fixed issue where content didn't resume immediately following empty VAST response in a VMAP</li>
-	<li>Fixed an issue where analytics didn't send <code>video_view</code> events after ad errors and timeouts</li>
-</ul>
-
-<h4>13 Sep 2018</h4>
-
-<p>v3.2.0</p>
-
-<ul>
-	<li>New Video Cloud cuepoints implementation that addresses a variety of known bugs</li>
-	<li>Added support for content source change during ads</li>
-	<li>Bugfixes to handling reinstantiation of player after dispose</li>
-	<li>Destroy ads manager on player dispose</li>
-	<li>Fix issue related to volume persistence on iOS</li>
-	<li>Fix IE/Edge ad control bar visibility on hover</li>
-	<li>Fix case with <code class="notranslate">playonselect:false</code> where you are before preroll and you change source to an <code class="notranslate">economics:ad_supported</code> video and ad/content automatically plays</li>
-	<li>Remove dead Flash code</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 6.6.1
-	<ul>
-		<li>Improved support for stitched ad scenarios</li>
-		<li>Avoid multiple-registration warning messages by accepting only the first <strong class="notranslate">contrib-ads</strong> per context</li>
-		<li>Fix play event <code class="notranslate">redispatch</code> issue on IE</li>
-		<li>Improved player dispose handling</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>15 Aug 2018</h4>
-
-<p>v3.1.0</p>
-
-<ul>
-	<li>Fixed a bug where the progress bar wasn't updated and <code class="notranslate">player.ima3.adPlayer.currentTime()</code> returned 0 instead of current time of the ad</li>
-	<li>Added <code class="notranslate">isVpaid</code> convenience method to IMA plugin</li>
-	<li>Added IMA Live preroll support</li>
-	<li>Updated <strong class="notranslate">videojs-contrib-ads</strong> to 6.5.0 which includes 6.4.3 changes as well
-	<ul>
-		<li>Added <code class="notranslate">liveCuePoints</code> option</li>
-		<li>Restore all sources instead of single source on snapshot restore</li>
-		<li>Send <code class="notranslate">pause</code> event when autoplay blocked on Chrome to be consistent with Safari</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>6 Aug 2018</h4>
-
-<p>v3.0.3</p>
-
-<ul>
-	<li>Fixed a bug that results from plugin init order. Specifically, the value for the <code class="notranslate">{player.url}</code> macro has changed to remove a dependency on the Analytics plugin. This macro could be used to uniquely identify the player, but we recommend using the <code class="notranslate">{player.id}</code> macro instead.</li>
-	<li>Improved dispose handling</li>
-	<li>Code organization improvements</li>
-	<li>Updated videojs-contrib-ads to 6.4.2
-	<ul>
-		<li>Cleanup snapshot object after ads done</li>
-		<li>Improved dispose handling</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>11 Jun 2018</h4>
-
-<p>v3.0.2</p>
-
-<ul>
-	<li>Fixed a poster flash when restoring after preroll</li>
-	<li><code class="notranslate">player.ads.ad.currentTime</code> used to be the time offset: now it is the current time</li>
-	<li>Added <code class="notranslate">player.ads.ad.timeOffset</code></li>
-	<li>Bug fix to economics <code class="notranslate">mediainfo</code> handling related to initialization</li>
-	<li>Removed <code class="notranslate">loadingSpinner</code> option because it did not do anything</li>
-	<li>Updated <strong class="notranslate">videojs-contrib-ads</strong> to 6.4.1
-	<ul>
-		<li>Updated documentation link in initialization error message</li>
-		<li>Added <code class="notranslate">contentIsLive</code> setting, which can be used for live streams that do not report their duration as infinity</li>
-		<li>Fixed a bug where a loading spinner could appear at the end of the video if there was no postroll</li>
-		<li>Allow default values for macros</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>4 May 2018</h4>
-
-<p>v3.0.1</p>
-
-<ul>
-	<li>Fixed a bug where ad doesn't play when <code class="notranslate">mediainfo.economics</code> is set to <code class="notranslate">undefined</code></li>
-</ul>
-
-<h4>1 May 2018</h4>
-
-<p>v3.0.0</p>
-
-<ul>
-	<li>Updated <strong class="notranslate">videojs-contrib-ads</strong> from 5.1.6 to 6.2.1</li>
-	<li>Initialization now uses middleware to reduce risk of content flash</li>
-	<li>The plugin's handling of source changes has been reworked, resulting in far greater reliability when used with playlists</li>
-	<li>The <code class="notranslate">serverUrl</code> option can now be a function, facilitating asynchronous workflows such as header bidding</li>
-	<li>Fixed a bug that could have led to a longer timeout than expected</li>
-	<li>Various other bug fixes and reliability improvements; see the <a href="https://github.com/videojs/videojs-contrib-ads/blob/master/CHANGELOG.md">videojs-contrib-ads</a> changelog for more information</li>
-</ul>
-
-<h4>13 Apr 2018</h4>
-
-<p>v2.22.3</p>
-
-<ul>
-	<li>Fixed autoplay issue on iOS and adds support on iOS for IMA SDK <code class="notranslate">setAdWillPlayMuted()</code> and <code class="notranslate">setAdWillAutoPlay()</code></li>
-</ul>
-
-<h4>28 Mar 2018</h4>
-
-<p>v2.22.2</p>
-
-<ul>
-	<li>Fixed a bug with a specific IMA3 configuration of <code class="notranslate">autoplay</code> and requestMode <code class="notranslate">onplay</code></li>
-</ul>
-
-<h4>21 Mar 2018</h4>
-
-<p>v2.22.1</p>
-
-<ul>
-	<li>Fixed a bug with Internet Explorer 11 support that was introduced in 2.22.0</li>
-</ul>
-
-<h4>14 Mar 2018</h4>
-
-<p>v2.22.0</p>
-
-<ul>
-	<li>Added support to detect <strong class="notranslate">can autoplay</strong> and <strong class="notranslate">can autoplay muted</strong></li>
-	<li>Implemented IMA SDK <code class="notranslate">setAdWillPlayMuted</code> and <code class="notranslate">setAdWillAutoPlay</code></li>
-</ul>
-
-<h4>30 Jan 2018</h4>
-
-<p>v2.21.0</p>
-
-<ul>
-	<li>Added <code class="notranslate">showVpaidControls</code> option</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 5.1.6</li>
-</ul>
-
-<h4>27 Nov 2017</h4>
-
-<p>v2.20.3</p>
-
-<ul>
-	<li>Fixed bugs with subsequent content videos not being allowed to play</li>
-	<li>Fixed a bug with midrolls on iOS causing content to restart from the beginning</li>
-	<li>Fixed a bug where content is not seen but audio is heard on iOS</li>
-</ul>
-
-<h4>2 Nov 2017</h4>
-
-<p>v2.20.2</p>
-
-<ul>
-	<li>Compatibility with latest IMA SDK</li>
-	<li>Improved Safari 11 support</li>
-	<li>Hide custom controls for VPAID ads</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads 5.1.1</strong></li>
-</ul>
-
-<h4>10 Oct 2017</h4>
-
-<p>v2.20.1</p>
-
-<ul>
-	<li>Added compatibility with Video.js 6.3 and greater</li>
-</ul>
-
-<h4>4 Oct 2017</h4>
-
-<p>v2.20.0</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 5.1.0</li>
-</ul>
-
-<h4>16 Aug 2017</h4>
-
-<p>v2.19.4</p>
-
-<ul>
-	<li>Fix a bug that timed out on postrolls when an empty vast ad is seen</li>
-	<li>Remove redundant <code class="notranslate">ads-request</code> event trigger</li>
-	<li>Added logic to check the version of Chrome independently from the player version</li>
-	<li>Fixed a bug where the <code class="notranslate">adtimeupdate</code> event would fire during content</li>
-	<li>Fixed a bug with <code class="notranslate">autoplay</code> on Android devices</li>
-	<li>Fixed a bug with waiting for postroll ads after an ad error</li>
-</ul>
-
-<h4>28 Jul 2017</h4>
-
-<p>v2.19.3</p>
-
-<ul>
-	<li>Bugfixes for <strong class="notranslate">oncue</strong> mode and ID3 ad cancellation</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 5.0.3</li>
-</ul>
-
-<h4>21 Jul 2017</h4>
-
-<p>v2.19.2</p>
-
-<ul>
-	<li>Mobile autoplay support</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 5.0.2
-	<ul>
-		<li>Fixed dispatching of <code class="notranslate">loadeddata</code> and <code class="notranslate">loadedmetadata</code> events</li>
-		<li>Fixed bug with empty ad response when using <code class="notranslate">ondemand</code> mode</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>7 Jul 2017</h4>
-
-<p>v2.19.1</p>
-
-<p>Note: This version includes fixes to support autoplay of HMTL5 ads on iOS 10 and Android devices.</p>
-
-<ul>
-	<li>Autoplay HTML5 ads in players that are not muted and/or do not include <code class="notranslate">playsinline</code> will correctly play when the user initiates playback via a tap or click on iOS 10 and Android devices</li>
-	<li>Autoplay HTML5 ads in players that include <code class="notranslate">muted</code> AND <code class="notranslate">playsinline</code> will correctly autoplay on iOS 10 and Android devices</li>
-	<li>Fixes the Mute button on iOS 10 and Android HTML5 ads
-	<ul>
-		<li>When the <code class="notranslate">muted</code> attribute is present, the mute button will display allowing the user to un-mute the ad</li>
-		<li>The mute button will no longer display on devices that do not support controlling the volume programmatically</li>
-		<li>The mute button will correctly mute/un-mute the ad when tapped or clicked</li>
-		<li>The mute/unmute setting will persist from the ad to main content</li>
-	</ul>
-	</li>
-</ul>
-
-<p>Additionally, the IMA HTML5 SDK released a feature to disable custom playback on iOS 10+ devices. This feature determines whether inline playback or native playback of ads is used, including adding support for TrueView skippable ads. More information on this setting can be found in the <a href="https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.ImaSdkSettings.setDisableCustomPlaybackForIOS10Plus">IMA HTML5 SDK documentation</a>.</p>
-
-<p>Information on how to apply this setting using the Brightcove IMA SDK plugin can be found in our <a href="/node/18080#disableCustomPlaybackForIOS10Plus">Advertising with the IMA3 Plugin</a> documentation under ima3SdkSettings.</p>
-
-<h4>28 Jun 2017</h4>
-
-<p>v2.19.0</p>
-
-<aside class="bcls-aside bcls-aside--warning">Release 2.19.0 could cause some programmatic implementations of the IMA3 plugin to fail. Please see the <a href="#Implement_using_code">Implement using code</a> section in this document to be sure your code follows recommended best practices. The following error will indicate when you need to update your current code:
-
-<p><em>VIDEOJS: ERROR: videojs-contrib-ads has not seen a loadstart event 5 seconds after being initialized, but a source is present. This indicates that videojs-contrib-ads was initialized too late. It must be initialized immediately after video.js in the same tick. As a result, some ads will not play and some media events will be incorrect.</em></p>
-</aside>
-
-<p>For information see <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bcplayerdev/xSeMmAC94Zw/U3eiHL4sCwAJ">this post in the Brightcove Web Player Developer Forum</a>. For general information testing players and plugins together, see the <a href="https://support.brightcove.com/node/18126">Player/Plugin Version Testing</a></p>
-
-<p>Features in this release are:</p>
-
-<ul>
-	<li>Volume settings persist when skipping ads</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 5.0.1
-	<ul>
-		<li>Cross-compatibility between Video.js 5 and 6</li>
-		<li>Bug fix regarding Flash of content on iOS</li>
-		<li>Better cleanup when player is disposed</li>
-		<li>An error message is displayed in the Console when the plugin is initialized too late</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>4 Apr 2017</h4>
-
-<p>v2.18.0</p>
-
-<ul>
-	<li>Added <code class="notranslate">player.ima3.setAdsRenderingSettings</code>, which allows users to set ads rendering settings for the IMA SDK for HTML5</li>
-	<li>Updated for Video.js 5 and 6 cross-compatibility</li>
-</ul>
-
-<h4>23 Mar 2017</h4>
-
-<p>v2.17.0</p>
-
-<ul>
-	<li>Exposed <code class="notranslate">adsLoader.contentComplete</code> in Flash to allow resetting the IMA correlator</li>
-</ul>
-
-<h4>9 Mar 2017</h4>
-
-<p>v2.16.4</p>
-
-<ul>
-	<li>Adding back ES3 support</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.2.5
-	<ul>
-		<li>Added a way to estimate <code class="notranslate">adType</code></li>
-		<li>Reverted "No longer take postroll snapshot when there will be no postroll" to fix a bug with missing <code class="notranslate">ended</code> events</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>3 Mar 2017</h4>
-
-<p>v2.16.3</p>
-
-<ul>
-	<li>Roll back to <strong class="notranslate">videojs-contrib-ads</strong> 4.2.3 to fix a bug with missing <code class="notranslate">ended</code> events</li>
-</ul>
-
-<h4>1 Mar 2017</h4>
-
-<p>v2.16.2</p>
-
-<ul>
-	<li>Don't allow cues without IDs to be used in <code class="notranslate">oncue</code> request mode</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.2.4
-	<ul>
-		<li>No longer take postroll snapshot when there will be no postroll</li>
-		<li>Video.js 5/6 cross-compatibility</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>2 Feb 2017</h4>
-
-<p>v2.16.1</p>
-
-<p>This is a bugfix update.</p>
-
-<ul>
-	<li>Make HTML5 ads in iframes responsive when possible</li>
-	<li>Prevent erroneous <code class="notranslate">admuted</code> tracking in DFP</li>
-	<li>Localize ad control bar for both HTML5 and Flash</li>
-	<li>Allow right-clicking to enable Flash in Chrome</li>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.2.2</li>
-	<li>Re-fixes iOS content flash</li>
-</ul>
-
-<h4>27 Jan 2017</h4>
-
-<p>v2.16.0</p>
-
-<ul>
-	<li>Added support for <strong class="notranslate">cueTextTracks</strong> feature in <strong class="notranslate">videojs-contrib-ads</strong> so Video Cloud cue points can be used to trigger ads.</li>
-</ul>
-
-<h4>19 Jan 2017</h4>
-
-<p>v2.15.6</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.2.1
-
-	<ul>
-		<li>The update reverted the change that prevented ad clickthrough when clicking progress bar during ad. This fix will now be in single-video-template instead.</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>20 Dec 2016</h4>
-
-<p>v2.15.5</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.1.6
-
-	<ul>
-		<li>Fixed placeholder <code class="notranslate">div</code> on iOS 10 <code class="notranslate">playsinline</code></li>
-		<li>No longer sends an undocumented <code class="notranslate">adcontentplaying</code> event, which was only sent to cancel an extra <code class="notranslate">adplaying</code> event; code has been refactored to not need this extra event</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>8 Dec 2016</h4>
-
-<p>v2.15.4</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.1.5
-
-	<ul>
-		<li>Hide captions and audio track buttons during ads (they were already hidden in IMA, so this update does not impact this project)</li>
-		<li>Plugin now prevents ad clickthrough when clicking progress bar during ad</li>
-		<li>Ended event now triggers correctly after the content ends additional times having ended once already</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>21 Nov 2016</h4>
-
-<p>v2.15.3</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads 4.1.4</strong>
-
-	<ul>
-		<li>Fixed issue where blank div to prevent content flash covers ad on iPad</li>
-		<li>Fixed to snapshot test to avoid relying on track src</li>
-	</ul>
-	</li>
-	<li>Fixed to show ad duration in Video.js 6</li>
-	<li>Fixed to initialize <code class="notranslate">adDisplayContainer</code> on <code class="notranslate">touchend</code> instead of <code class="notranslate">touchstart</code></li>
-</ul>
-
-<h4>10 Nov 2016</h4>
-
-<p>v2.15.2</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.1.3
-
-	<ul>
-		<li>Added missing import of videojs</li>
-		<li>Fixed for content playing behind ad on Android</li>
-	</ul>
-	</li>
-	<li>Fixed volume persistence bug when playing LIVE content</li>
-</ul>
-
-<h4>10 Nov 2016</h4>
-
-<p>v2.15.1</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.1.2
-
-	<ul>
-		<li>Fix bug with snapshot and text tracks</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>2 Nov 2016</h4>
-
-<p>v2.15.0</p>
-
-<ul>
-	<li>New page variable feature in ad macros
-	<ul>
-		<li>In IMA, ad macros are supported in the ad server URL</li>
-		<li>A URL with a page variable macro might look like this: <code class="notranslate">http://example.com?foo={pageVariable.foo}</code> (that macro would be replaced with the value of the variable <code class="notranslate">foo</code> in the browser's JavaScript context when the ad request is made)</li>
-		<li>When your ad request is made if the page variable isn't yet available, your macro will not work</li>
-		<li>You can learn technical details on the new ad macro feature here: <a href="https://github.com/videojs/videojs-contrib-ads#macros">https://github.com/videojs/videojs-contrib-ads#macros</a></li>
-	</ul>
-	</li>
-	<li>Now use <code class="notranslate">try/catch</code> when destroying ads manager in case it isn't created yet
-	<ul>
-		<li>This is for extra safety in edge cases, you shouldn't expect to see any difference</li>
-	</ul>
-	</li>
-	<li>Temporarily re-added <code class="notranslate">contentplayback</code> event
-	<ul>
-		<li>This event was part of the integration between the Brightcove IMA plugin and the open source <strong class="notranslate">videojs-contrib-ads</strong> project; Brightcove plans to remove it in the future</li>
-		<li>The <code class="notranslate">playing</code> event is probably what you would want to use instead</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>26 Oct 1016</h4>
-
-<p>v2.14.0</p>
-
-<ul>
-	<li>Updated to use <strong class="notranslate">videojs-contrib-ads</strong> 4.0.0
-
-	<ul>
-		<li><code class="notranslate">playing</code> event no longer sent before preroll</li>
-		<li><code class="notranslate">contentplayback</code> event removed</li>
-		<li>Fixed a flash of content introduced in Chrome 53 where ads-loading class was being removed too soon</li>
-		<li>Added <code class="notranslate">player.ads.VERSION</code></li>
-		<li>Updated to use conventions put forward by <strong class="notranslate">generator-videojs-plugin</strong></li>
-		<li>Created separate files for feature modules</li>
-	</ul>
-	</li>
-	<li>Volume and Muted states now persist across ad breaks</li>
-</ul>
-
-<h4>18 Oct 2016</h4>
-
-<p>v2.13.0</p>
-
-<ul>
-	<li>Custom fields in ad macros</li>
-	<li>Avoid timeout-length delay before content if there is no preroll in flash ad tech
-	<ul>
-		<li>This can resolve additional issues that resulted from an unexpected delay, such as the player throwing an error on empty post-roll call</li>
-	</ul>
-	</li>
-	<li>More accurate progress bar in Flash</li>
-</ul>
-
-<h4>3 Oct 2016</h4>
-
-<p>v2.12.0</p>
-
-<ul>
-	<li>Prevent extra <code class="notranslate">playing</code> event after a hard timeout</li>
-	<li><code class="notranslate">{player.id}</code> macro now refers to the correct value</li>
-	<li>Smooth progress bar movement</li>
-</ul>
-
-<h4>23 Sep 2016</h4>
-
-<p>v2.11.6</p>
-
-<ul>
-	<li>Updated to videojs-contrib-ads 3.3.13
-	<ul>
-		<li>Fix check to reset snapshot on contentupdate</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>19 Sep 2016</h4>
-
-<p>v2.11.5</p>
-
-<ul>
-	<li>Set hardTimeouts setting default to true</li>
-	<li>Set timeout setting default to 4000 milliseconds</li>
-	<li>Fix bug where video would pause during overlay ads</li>
-	<li>Fix bug with display of flash tech control bar during overlay ads</li>
-	<li>Fix bug when playing an ad-supported video after a free one</li>
-</ul>
-
-<h4>6 Sep 2016</h4>
-
-<p>v2.11.4</p>
-
-<ul>
-	<li>Unified timeout settings</li>
-</ul>
-
-<h4>24 Aug 2016</h4>
-
-<p>v2.11.3</p>
-
-<ul>
-	<li>Updated to videojs-contrib-ads 3.3.12
-	<ul>
-		<li>Fix for metrics on empty ad</li>
-	</ul>
-	</li>
-	<li>Make sure player is in started state on adstart</li>
-	<li>Ondemand adrequests no longer succeed with economics set to free</li>
-</ul>
-
-<h4>3 Aug 2016</h4>
-
-<p>v2.11.2</p>
-
-<ul>
-	<li>Fix for iOS in which a flash of video content is seen before a preroll</li>
-	<li>Fix a bug in which the ended event does not trigger after video content source is changed</li>
-</ul>
-
-<h4>27 Jul 2016</h4>
-
-<p>v2.11.1</p>
-
-<ul>
-	<li>Updated to videojs-contrib-ads 3.3.10
-	<ul>
-		<li>Fix a bug in which content would replay after postrolls under certain circumstances</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>22 Jul 2016</h4>
-
-<p>v2.11.0</p>
-
-<ul>
-	<li>Added player.ima3.adTech</li>
-</ul>
-
-<h4>18 Jul 2016</h4>
-
-<p>v2.10.3</p>
-
-<ul>
-	<li>Updated to videojs-contrib-ads 3.3.9
-	<ul>
-		<li>Fix a bug in which contentupdate is missed in postroll</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>14 Jul 2016</h4>
-
-<p>v2.10.2</p>
-
-<ul>
-	<li>Fix to account for adrequests made when requestmode is onplay and content is already playing</li>
-	<li>Fixed bug where <code class="notranslate">ImaSdkSettings</code> did not reflect locale setting</li>
-	<li>Fixed bug where IMA3 Plugin did not respect the <code class="notranslate">setNumRedirects</code> setting</li>
-	<li>Updated to videojs-contrib-ads 3.3.9
-	<ul>
-		<li>Fix a bug in which contentupdate is missed in postroll</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>21 Jun 2016</h4>
-
-<p>v2.10.1</p>
-
-<ul>
-	<li>Workaround for Chrome bug when removing poster</li>
-	<li>Updated to videojs-contrib-ads 3.3.8
-	<ul>
-		<li>Fix for issue resuming after ads on Android</li>
-		<li>Fix for issue requesting ads for subsequent videos</li>
-	</ul>
-	</li>
-</ul>
-
-<h4>16 Jun 2016</h4>
-
-<p>v2.10.0</p>
-
-<ul>
-	<li>Hide poster and tech before preroll</li>
-</ul>
-
-<h4>13 Jun 2016</h4>
-
-<p>v2.9.1</p>
-
-<ul>
-	<li>Fixed a bug where content would replay after a postroll completed</li>
-</ul>
-
-<h4>6 Jun 2016</h4>
-
-<p>v2.9.0</p>
-
-<ul>
-	<li>Hard timeouts now work for VAST ads that do not use VMAP as well as with the Flash ad tech</li>
-	<li>&nbsp;</li>
-	<li>Fixed bug that could cause a flash of content on source change</li>
-	<li>Fixed bug where first adrequest would fail with requestMode:ondemand + autoplay + preload:none + html5 ad tech</li>
-</ul>
-
-<h4>26 May 2016</h4>
-
-<p>v2.8.0</p>
-
-<ul>
-	<li>Add default <code class="notranslate">postrollTimeout</code> of 1000 milliseconds</li>
-	<li>Add missing logic for flash ad tech to destroy ads manager on <code class="notranslate">adserror</code></li>
-	<li>No longer send nopreroll for VAST ads</li>
-	<li>No longer send adrequest for empty string content source</li>
-	<li>Cancel multiple ad requests for the same content source</li>
-	<li>No longer allow autoplay with onplay; it changes it to onload</li>
-</ul>
-
-<h4>10 May 2016</h4>
-
-<p>v2.7.1</p>
-
-<ul>
-	<li>Fix to live ads that was introduced in 2.7.0</li>
-	<li>Fix in live ads code that introduced intermittant errors on iOS8 (even in non-live scenarios)</li>
-</ul>
-
-<h4>28 Apr 2016</h4>
-
-<p>v2.7.0</p>
-
-<ul>
-	<li>Added <code class="notranslate">ad_keys</code> to ad macros</li>
-	<li>Code maintenance to enable <code class="notranslate">vjsstandard</code></li>
-	<li>No longer plays ads when Economics flag is set to <code class="notranslate">FREE</code></li>
-</ul>
-
-<h4>20 Apr 2016</h4>
-
-<p>v2.6.0</p>
-
-<ul>
-	<li>Ability to play and cancel ads in live streams based on ID3 metadata</li>
-	<li>Quicker load time when <code class="notranslate">requestmode</code> is set to <code class="notranslate">ondemand</code> or <code class="notranslate">oncue</code></li>
-	<li>Fixed and restored <code class="notranslate">nopostroll</code> feature</li>
-</ul>
-
-<h4>31 Mar 2016</h4>
-
-<p>v2.5.2</p>
-
-<ul>
-	<li>Rollback nopostroll feature as it was preventing <code class="notranslate">ended</code> events</li>
-</ul>
-
-<h4>31 Mar 2016</h4>
-
-<p>v2.5.1</p>
-
-<ul>
-	<li>Minor bugfix to contrib-ads</li>
-</ul>
-
-<h4 id="toc_3">28 Mar 2016</h4>
-
-<p>v2.5.0</p>
-
-<h5 id="toc_4">Features</h5>
-
-<ul>
-	<li>HTML5 <code class="notranslate">hardTimeouts</code> option. Will prevent "flash of content" when using VMAP for HTML5 ads by discarding overdue ads. Disabled by default; planned to be enabled by default in a later major version update.</li>
-	<li>Quicker load time when using IMA3 plugin with no preroll ads.</li>
-	<li>Expose <code class="notranslate">player.ima3.currentAd.wrapperAdIds</code> and <code class="notranslate">player.ima3.currentAd.wrapperAdSystems</code> when using Flash ad tech.</li>
-</ul>
-
-<h5 id="toc_5">Bugfixes</h5>
-
-<ul>
-	<li>Fix display of volume slider in graphite skin</li>
-	<li>Fix bug where progress slider would continue when paused in Flash</li>
-	<li>Fix bug where play/pause icon would not update correctly in Flash</li>
-	<li>Fix several situations where invalid <code class="notranslate">adtimeout</code> events would be sent</li>
-</ul>
-
-<h4 id="toc_6">28 Mar 2016</h4>
-
-<p>v2.4.0</p>
-
-<ul>
-	<li>Added VPAID 2 support</li>
-</ul>
-
-<h4 id="toc_7">28 Mar 2016</h4>
-
-<p>v2.3.0</p>
-
-<ul>
-	<li>Hide dock during ad playback</li>
-	<li>Fix bug where iPad overlay ads would not click-through</li>
-	<li>Use versioned URL for default <code class="notranslate">adSwf</code> value</li>
-	<li>Fix clickthroughs for HTML5 ads in IE10</li>
-</ul>
-
-<h4 id="toc_9">20 Jan 2016</h4>
-
-<p>v1.14.x</p>
-
-<ul>
-	<li>Support multiple players</li>
-</ul>
-
-<h4 id="toc_10">30 Mar 2015</h4>
-
-<p>v1.13.0</p>
-
-<ul>
-	<li>Update contrib-ads to pick up playlist support</li>
-</ul>
-
-<h4 id="toc_11">27 Mar 2015</h4>
-
-<p>v1.12.0</p>
-
-<ul>
-	<li>Add adrequest method</li>
-	<li>Add ready method</li>
-	<li>Add loadingSpinner option</li>
-	<li>Fix timings in HTML controlbar</li>
-	<li>Add black background div to prevent content flashing issues with prerolls and midrolls (on desktop)</li>
-</ul>
-
-<h4 id="toc_12">27 Jan 2015</h4>
-
-<p>v1.11.0</p>
-
-<ul>
-	<li>Add error handling</li>
-	<li>Bump videojs-contrib-ads to 1.0.0</li>
-	<li>Fix race condition where contentupdate can trigger twice</li>
-</ul>
-
-<h4 id="toc_13">8 Jan 2015</h4>
-
-<p>v1.10.0</p>
-
-<ul>
-	<li>Bump videojs-contrib-ads to 0.6.0</li>
-	<li>Add no-op function stubs for text track API methods</li>
-</ul>
-
-<h4 id="toc_14">21 Oct 2014</h4>
-
-<p>v1.8.0</p>
-
-<ul>
-	<li>Bump default preroll timeout to 1000ms</li>
-	<li>Always use a separate control bar for ad playback. Previously, ads on platforms that did not support Flash would re-use the content control bar for ad playback.</li>
-	<li>Move ad container offscreen during content playback because IMA steals touch events on Android Chrome.</li>
-</ul>
-
-<h4 id="toc_15">16 Oct 2014</h4>
-
-<p>v1.7.0</p>
-
-<ul>
-	<li>VPAID 2.0 support for the Flash ad tech</li>
-</ul>
-
-<h4 id="toc_16">1 Oct 2014</h4>
-
-<p>v1.6.0</p>
-
-<ul>
-	<li>Update videojs-ads</li>
-	<li>Pass updated plugin settings to the ad SWF</li>
-</ul>
-
-<h4 id="toc_17">1 Oct 2014</h4>
-
-<p>v1.5.0</p>
-
-<ul>
-	<li>Set the default ad tech order to flash, html5</li>
-</ul>
-
-<h4 id="toc_18">28 Aug 2014</h4>
-
-<p>v1.4.0</p>
-
-<ul>
-	<li>Post-roll support</li>
-	<li>Added the ability to use custom click tracking elements with IMA3/HTML5</li>
-</ul>
-
-<h4 id="toc_19">20 Mar 2014</h4>
-
-<p>v1.3.0</p>
-
-<ul>
-	<li>Upgrade to video.js 4.4.3</li>
-</ul>
+<p>See the <a href="/node/18787">changelog here</a>.</p>
 </section>
 </article>
+
