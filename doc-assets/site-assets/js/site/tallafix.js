@@ -17,4 +17,6 @@ var BCLS_tallafix = ( function (window, document) {
       }
     }
   }
+
+  fix_talla();
 })(window, document);
