@@ -20,5 +20,5 @@ var BCLS_tallafix = ( function (window, document) {
     }
   }
 
-  fix_talla();
+  // fix_talla();
 })(window, document);
