@@ -11,7 +11,9 @@ var BCLS_tallafix = ( function (window, document) {
     } else {
       n++;
       if (n < 5) {
-        t = window.setTimeout(fix_talla, 1000);
+        console.log('n', n);
+        
+        t = window.setTimeout(fix_talla, 2000);
       }
     }
   }
