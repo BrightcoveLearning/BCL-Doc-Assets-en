@@ -11,7 +11,7 @@ var BCLS_tallafix = ( function (window, document) {
         talla_frame.setAttribute('style', talla_style + 'bottom:unset;top:9rem;');
       } else {
         n++;
-        if (n < 10) {
+        if (n < 5) {
           console.log('n', n);
           
           t = window.setTimeout(fix_talla, 2000);
