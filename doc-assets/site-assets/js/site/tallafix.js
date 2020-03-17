@@ -8,7 +8,7 @@ var BCLS_tallafix = ( function (window, document) {
       var talla_frame = talla_parent.firstElementChild;
       if (talla_frame) {
         talla_style = talla_frame.getAttribute('style');
-        talla_frame.setAttribute('style', talla_style + 'bottom:unset;top:9rem;');
+        talla_frame.setAttribute('style', talla_style + 'bottom:unset;top:9rem;height:90vh;');
       } else {
         n++;
         if (n < 5) {
@@ -20,5 +20,5 @@ var BCLS_tallafix = ( function (window, document) {
     }
   }
 
-  // fix_talla();
+  fix_talla();
 })(window, document);
