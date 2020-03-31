@@ -1,272 +1,346 @@
 <article class="bcls-article">
-  <section class="bcls-section">
-  <h2 id="introduction">Introduction</h2>
-  
-  <p>DRM can be added to Live jobs by including the <code>DRM</code> object in the request body when you create the job. The <code>DRM</code> object has two properties:</p>
-  
-  <ul>
-    <li><code>modes</code> set to an array or one or more of the following: "all", "fairplay", "playready", "widevine", "widevine:dash", or "widevine:hls"</li>
-    <li><code>token_expires_in</code> set to a number between 43200 (default) and 31622400 (the number of seconds before the token expires)</li>
-  </ul>
-  
-  <p>Setting <code>mode</code> to all will result in all available DRM types being applied to outputs. By default DRM is applied to outputs as follows:</p>
-  
-  <ul>
-    <li>FairPlay: applied to HLS outputs</li>
-    <li>Playready: applied to DASH outputs</li>
-    <li>Widevine: applied to DASH outputs</li>
-  </ul>
-  
-  <p>Widevine can be applied to HLS outputs instead of DASH. To make Widevine with HLS the default requires an account-level override. Contact Support if you want this override applied to your account. In the next section you will see how you can specify <code>widevine:hls</code> or <code>widevine:dash</code> for particular jobs, regardless of the default for your account.</p>
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
 
-  <aside class="bcls-aside bcls-aside--information language-editable">Note that there are concurrency limits for PlayReady defined in your service agreement with Microsoft. See <a href="https://docs.microsoft.com/en-us/playready/features/concurrency-limiting">this Microsoft document</a> for information on managing concurrency. If the concurrency limit is exceeded for a video, it will fail to play for viewers beyond the maximum number.</aside>
+<p>Brightcove provides static URLs to video manifest files for assets in your Video Cloud library. This gives you the flexibility to manage your content in your own CMS, and deliver it using a custom security schema. </p>
 
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="create_live_job_example">Create Live job examples</h2>
-  
-  <h3 id="all_modes">All DRM modes</h3>
-  
-  <p>Here is a sample request body to package outputs with all available DRM types:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-json">{
-    "live_stream": true,
-    "region": "us-west-2",
-    "reconnect_time": 300,
-    "ad_insertion": false,
-    "static": false,
-    <span class="bcls-highlight">"drm":{"modes":["all"]},</span>
-    "outputs": [{
-        "label": "hls720p",
-        "live_stream": true,
-        "height": 720,
-        "video_bitrate": 2000,
-        "segment_seconds": 6,
-        "_keyframe_interval": 60
-      },
-      {
-        "label": "hls480p",
-        "live_stream": true,
-        "height": 480,
-        "video_bitrate": 1000,
-        "segment_seconds": 6,
-        "_keyframe_interval": 60
-      }]
-  }</code></pre>
-  
-  <p>The response to the request will look like this:</p>
-  
-  <pre class="line-numbers">
-  <code class="language-json">{
-    "id": "123e883dee784282b9d1e8994e6f1e1d",
-    "outputs": [
-        {
-            "id": "0-123e883dee784282b9d1e8994e6f1e1d",
-            "label": "hls720p"
-        },
-        {
-            "id": "1-123e883dee784282b9d1e8994e6f1e1d",
-            "label": "hls480p"
-        },
-        {
-            "id": "2-123e883dee784282b9d1e8994e6f1e1d",
-            "playlist_type": "defaultS3",
-            "type": "playlist",
-            <span class="bcls-highlight">
-              "drm": {
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                  "modes": [
-                      {
-                          "type": "fairplay",
-                          "key_system": "com.apple.fps.1_0",
-                          "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                          "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-            </span>
-                        "filename": "playlist_fp.m3u8",
-                        "dvr_filename": "playlist_fp_dvr.m3u8",
-                        "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp.m3u8",
-                        "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp_dvr.m3u8",
-                        "playback_added_cdns": []
-                    },
-                    {
-                        <span class="bcls-highlight">
-                          "type": "widevine",
-                          "key_system": "com.widevine.alpha",
-                          "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                        </span>
-                        "filename": "playlist.mpd",
-                        "dvr_filename": "playlist_dvr.mpd",
-                        "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
-                        "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
-                        "playback_added_cdns": []
-                    },
-                    {
-                        <span class="bcls-highlight">
-                          "type": "playready",
-                          "key_system": "com.microsoft.playready",
-                          "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                        </span>
-                        "filename": "playlist.mpd",
-                        "dvr_filename": "playlist_dvr.mpd",
-                        "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
-                        "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
-                        "playback_added_cdns": []
-                    }
-                ],
-                "token_expires_in": 43200,
-                "require_playback_token": false
-            }
-        }
-    ],
-    "stream_url": "rtmp://ec2-35-167-157-201.us-west-2.compute.amazonaws.com:1935/123e883dee784282b9d1e8994e6f1e1d",
-    "stream_name": "alive",
-    "static": false,
-    "event_length": 93600,
-    "encryption": {},
-    "drm_enabled": true,
-    <span class="bcls-highlight">
-      "drm": {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-          "modes": [
-              {
-                  "type": "fairplay",
-                  "key_system": "com.apple.fps.1_0",
-                  "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                  "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",</span>
-                "filename": "playlist_fp.m3u8",
-                "dvr_filename": "playlist_fp_dvr.m3u8",
-                "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp.m3u8",
-                "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_fp_dvr.m3u8",
-                "playback_added_cdns": []
-            },
-            {
-                <span class="bcls-highlight">
-                  "type": "widevine",
-                  "key_system": "com.widevine.alpha",
-                  "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                </span>
-                "filename": "playlist.mpd",
-                "dvr_filename": "playlist_dvr.mpd",
-                "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
-                "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
-                "playback_added_cdns": []
-            },
-            {
-                <span class="bcls-highlight">
-                  "type": "playready",
-                  "key_system": "com.microsoft.playready",
-                  "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODg3MjQsImV4cCI6MTU4MDgzMTkyNCwiaXNzIjoiYWxpdmUiLCJzdWIiOiIxMjNlODgzZGVlNzg0MjgyYjlkMWU4OTk0ZTZmMWUxZCIsImp0aSI6IjFmYmM2ZGMxZjZjNzJlOGVmZGIzMzU1N2I4MjBjMmJlIn0.IpH2AQglCZAU8ECYZ3Uq_p-0QXNx7-cbmFFI7tsQfik",
-                </span>
-                "filename": "playlist.mpd",
-                "dvr_filename": "playlist_dvr.mpd",
-                "playback_url": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist.mpd",
-                "playback_url_dvr": "https://playback-qa.a-live.io/123e883dee784282b9d1e8994e6f1e1d/us-west-2/NA/playlist_dvr.mpd",
-                "playback_added_cdns": []
-            }
-        ],
-        "token_expires_in": 43200,
-        "require_playback_token": false
+<p>This is important for customers who have existing architecture that does not allow a Playback API call before needing the manifest url(s). The player can also use this feature, reducing playback start time by eliminating one call.</p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Requirements">Requirements</h2>
+  <p>
+    The following requirements are needed for static URLs:
+  </p>
+  <h3>Account setup</h3>
+  <p>
+    To sign the JSON Web Token (JWT), your Brightcove account needs to be enabled for Playback Authorization Service. Contact your account manager to have this done.
+  </p>
+  <h3>Analytics registration </h3>
+  <p>With static URLs, you are integrating with the Playback API without using the Brightcove Player. While the Brightcove Player automatically sends analytics data to Brightcove, you will use the Data Collection API to do this.</p>
+  <p>
+    If you are not familiar with the Data Collection API, review the <a href="https://apis.support.brightcove.com/data-collection/overview-data-collection-api-v2.html">Overview: Data Collection API</a> document.
+  </p>
+  <p>
+    For details about sending information to the Data Collector, see the <a href="https://apis.support.brightcove.com/data-collection/data-collection-api-sample.html">Data Collection API Sample</a>.
+  </p>
+</section>
+
+<section class="bcls-section">
+<h2 id="Video_Cloud">Video Cloud</h2>
+<p>
+  Today, every playback through VideoCloud requires 2 API calls to start video playback. With the use of static URLs, you can reduce the number of API calls to just one.
+</p>
+
+<p>The following diagram shows the API calls for video playback, without static URLs.</p>
+<figure class="bcls-figure">
+  <img class="bcls-image--no-border" width="800" src="//learning-services-media.brightcove.com/doc-assets/node/18961-static-url-delivery/current-playback-calls.png" alt="Video Cloud playback">
+  <figcaption class="bcls-caption--image">Video Cloud playback</figcaption>
+</figure>
+</section>
+
+<section class="bcls-section">
+<h2 id="Static_URLs">Static URLs</h2>
+<p>
+  With Brightcove's Playback API v2, static URLs are now avaiable.
+</p>
+
+<h3>Features</h3>
+<p>
+  Here are the features associated with static URLs:
+</p>
+<table class="bcls-table">
+  <thead class="bcls-table__head">
+    <tr>
+      <th>Feature</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody class="bcls-table__body">
+    <tr>
+      <td>Static URL support for VOD</td>
+      <td>Supported video formats via Dynamic Delivery only:
+        <ul>
+          <li>
+            HLS
+          </li>
+          <li>
+            DASH
+          </li>
+          <li>
+            HLS VMAP
+          </li>
+          <li>
+            DASH VMAP
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Authorization</td>
+      <td>JSON Web Token (JWT)</td>
+    </tr>
+    <tr>
+      <td>DRM</td>
+      <td>VOD only </td>
+    </tr>
+    <tr>
+      <td>Server-Side Ad Insertion (SSAI)</td>
+      <td>VOD only </td>
+    </tr>
+    <tr>
+      <td>BYO CDN</td>
+      <td>Brightcove’s CDN will continue to deliver the manifest and sub-manifests.
+<br/><br/>
+Customer's CDN will deliver only the video segments.
+</td>
+    </tr>
+    <tr>
+      <td>Closed Captions</td>
+      <td>Only in-manifest captions are currently supported.</td>
+    </tr>
+
+  </tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="Implementing_Static_URLs">Implementing Static URLs</h2>
+
+<p>Static URLs include the following:</p>
+<ul>
+  <li>
+    Account ID
+  </li>
+  <li>
+    Video ID (or reference)
+  </li>
+  <li>
+    Delivery Type (HLS,Dash)
+  </li>
+  <li>
+    Configuration options (SSAI, DRM, CDN, etc.)
+  </li>
+</ul>
+<p>
+  These URLs are secured using a customer generated and signed JSON Web Token (JWT). With this token, you can configure and enforce aspects of delivery. For details, see the <a href="#Creating_a_JSON_Web_Token">Creating a JSON Web Token</a> section.
+</p>
+<!-- <p>
+  For manifests & VMAPs, the response will be returned directly. For MP4s it will 302 to the right CDN URL. DRM is not necessary to include here. This is controlled by flags on the account & video themselves. You  can use a claim in the JWT, if necessary, to switch between DRM types on the fly.
+</p> -->
+<h3>Domain</h3>
+<p>
+  The domain used for Static URLs is the Playback API v2 (PAPIv2) URL:
+</p>
+<pre><code class="language-html">https://playback.brightcovecdn.com/playback/v1/</code></pre>
+<h3>Endpoints</h3>
+<p>
+  Static URL examples for each Delivery Type:
+</p>
+<table class="bcls-table">
+      <thead class="bcls-table__head">
+        <tr>
+          <th>Delivery Type</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody class="bcls-table__body">
+        <tr>
+          <td>HLS Master Manifest</td>
+          <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/master.m3u8?bcov_auth={jwt}</code></pre></td>
+        </tr>
+        <tr>
+          <td>DASH Manifest</td>
+          <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/manifest.mpd?bcov_auth={jwt}</code></pre></td>
+        </tr>
+        <tr>
+          <td>HLS VMAP</td>
+          <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/hls.vmap?bcov_auth={jwt}</code></pre></td>
+        </tr>
+        <tr>
+          <td>DASH VMAP</td>
+          <td><pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/dash.vmap?bcov_auth={jwt}</code></pre></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Creating_a_JSON_Web_Token">Creating a JSON Web Token</h2>
+  <p>To create a token to use when communicating with Brightcove's Playback API, see the <a href="node/18974">Creating a JSON Web Token (JWT)</a> document.</p>
+
+  <h3>Claims for Static URL Delivery</h3>
+  <p>
+    The following claims can be used with Brightcove's Static URL Delivery.
+  </p>
+  <aside class="bcls-aside bcls-aside--tip">Notice that none of the claims are required for Static URL Delivery.</aside>
+
+  <table class="bcls-table">
+        <thead class="bcls-table__head">
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody class="bcls-table__body">
+          <tr>
+            <td><code>accid</code></td>
+            <td>String</td>
+            <td></td>
+            <td>The account id that owns the content being played</td>
+          </tr>
+          <tr>
+            <td><code>exp</code></td>
+            <td>Integer</td>
+            <td></td>
+            <td>Time this token will no longer be valid, in seconds since the Epoch. Must be no more than 30 days from <code>iat</code></td>
+          </tr>
+          <tr>
+            <td><code>iat</code></td>
+            <td>Integer</td>
+            <td></td>
+            <td>Time this token was issued, in seconds since the Epoch</td>
+          </tr>
+          <tr>
+            <td><code>conid</code></td>
+            <td>String</td>
+            <td></td>
+            <td>If present, this token will only authorize license fetching for a specific Video Cloud video id.
+              <br /><br />
+              Must be a valid video id.
+            </td>
+          </tr>
+          <tr>
+            <td><code>pro</code></td>
+            <td>String</td>
+            <td></td>
+            <td>Specifies a protection type in the case where multiple are available for a single video.
+              <br /><br />
+              Values:
+              <ul>
+                <li>
+                  "" (default for clear content)
+                </li>
+                <li>
+                  "aes128"
+                </li>
+                <li>
+                  "widevine"
+                </li>
+                <li>
+                  "playready"
+                </li>
+                <li>
+                  "fairplay"
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><code>vod</code></td>
+            <td>Object</td>
+            <td></td>
+            <td>Contains specific configuration options for Video-On-Demand.</td>
+          </tr>
+          <tr>
+            <td><code>ssai</code></td>
+            <td>String</td>
+            <td></td>
+            <td>Your Server-Side Ad Insertion (SSAI) configuration id.</td>
+          </tr>
+        </tbody>
+      </table>
+
+  <p>
+    Here is an example of the JSON Web Token (JWT) claims that you might use:
+  </p>
+  <pre class="line-numbers"><code class="language-json">{
+    // account id: JWT is only valid for this accounts
+    &quot;accid&quot;:&quot;4590388311111&quot;,
+    // expires: timestamp when JWT expires
+    &quot;exp&quot;:1577989732,
+    // issued at: timestamp when the JWT was created
+    &quot;iat&quot;:1575484132,
+    // content id: JWT is only valid for video id or reference id
+    &quot;conid&quot;:&quot;5805807122222&quot;,
+    // protection: specify a protection type in the case where multiple are available for a single video
+    &quot;pro&quot;:&quot;aes128&quot;,
+    // VOD specific configuration options
+    &quot;vod&quot;:{
+      // SSAI configuration to apply
+      &quot;ssai&quot;:&quot;efcc566-b44b-5a77-a0e2-d33333333333&quot;
     }
   }</code></pre>
-  
-  <h3 id="widevine_hls">Job with Widevine-HLS</h3>
-  
-  <p>To create Widevine-packaged HLS outputs (without getting an account override to make this the default), specify <code>widevine:hls</code> in the <code>modes</code> as shown in the example below. Similarly, if you have had your account default set to use Widevine with HLS, you can get Widevine-DASH outputs for a particular job by specifying <code>widevine:dash</code> in the <code>modes</code>.</p>
-  
-  <h4>Sample request</h4>
-  
-  <pre class="line-numbers">
-  <code class="language-json">{
-    "live_stream": true,
-    "region": "us-west-2",
-    "reconnect_time": 300,
-    "ad_insertion": false,
-    "static": false,
-    "drm":{"modes":["fairplay",<span class="bcls-highlight">"widevine:hls"</span>]},
-    "outputs": [{
-        "label": "hls720p",
-        "live_stream": true,
-        "height": 720,
-        "video_bitrate": 2000,
-        "segment_seconds": 6,
-        "_keyframe_interval": 60
-   },
-   {
-        "label": "hls480p",
-        "live_stream": true,
-        "height": 480,
-        "video_bitrate": 1000,
-        "segment_seconds": 6,
-        "_keyframe_interval": 60
-   }]
-  }
-  </code></pre>
-  </section>
-  
-  <section class="bcls-section">
-  <h2 id="get_job_info">Get Job info</h2>
-  
-  <p>When you GET a list of live jobs or details of a job, DRM information will be included as shown in the sample below.</p>
-  
-  <pre class="line-numbers">
-  <code class="language-json">{
-    "id": "6a0689a1ccb04fea8cf4d2cffccf5032",
-    "outputs": [
-        {
-            "id": "0-6a0689a1ccb04fea8cf4d2cffccf5032",
-            "label": "hls720p"
-        },
-        {
-            "id": "1-6a0689a1ccb04fea8cf4d2cffccf5032",
-            "label": "hls480p"
-        },
-        {
-            "id": "2-6a0689a1ccb04fea8cf4d2cffccf5032",
-            "playlist_type": "defaultS3",
-            "type": "playlist",
-            <span class="bcls-highlight">"drm"</span>: {
-                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
-                <span class="bcls-highlight">"modes":</span> [
-                    {
-                        <span class="bcls-highlight">"type": "fairplay",</span>
-                        "key_system": "com.apple.fps.1_0",
-                        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
-                        "certificate_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/cert/fp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
-                        "filename": "playlist_fp.m3u8",
-                        "dvr_filename": "playlist_fp_dvr.m3u8",
-                        "playback_url": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_fp.m3u8",
-                        "playback_url_dvr": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_fp_dvr.m3u8",
-                        "playback_added_cdns": []
-                    },
-                    {
-                        <span class="bcls-highlight">"type": "playready",</span>
-                        "key_system": "com.microsoft.playready",
-                        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/pr?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
-                        "filename": "playlist.mpd",
-                        "dvr_filename": "playlist_dvr.mpd",
-                        "playback_url": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist.mpd",
-                        "playback_url_dvr": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_dvr.mpd",
-                        "playback_added_cdns": []
-                    },
-                    {
-                        <span class="bcls-highlight">"type": "widevine",</span>
-                        "key_system": "com.widevine.alpha",
-                        "license_url": "https://license-proxy-qa.alive.us-west-2.qa.deploys.brightcove.com/lic/wv?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiYnJpZ2h0Y292ZV9hbGl2ZS1xYS1uYS01ZmZlYWRlYjhlNWQ0ODM4OTEwOTEzMTQyOWRiMDM1NCIsInBsYXlsaXN0IjoiZGVmYXVsdCIsIm9wdGlvbnMiOltdLCJjcnQiOm51bGwsImFjY2lkIjoiMzAzMTI2NDE1NjQyMDIiLCJpYXQiOjE1ODA3ODc4OTcsImV4cCI6MTU4MDgzMTA5NywiaXNzIjoiYWxpdmUiLCJzdWIiOiI2YTA2ODlhMWNjYjA0ZmVhOGNmNGQyY2ZmY2NmNTAzMiIsImp0aSI6IjNjNTcyMDMyOGRjMDRhZjM1MzY2ZDM2MzRkMzgwMWNjIn0.9dUb7hBCmQyjsIw1uYvHxQKorA2RhE2z475w89BNPqI",
-                        "filename": "playlist.mpd",
-                        "dvr_filename": "playlist_dvr.mpd",
-                        "playback_url": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist.mpd",
-                        "playback_url_dvr": "https://playback-qa.a-live.io/6a0689a1ccb04fea8cf4d2cffccf5032/us-west-2/NA/playlist_dvr.mpd",
-                        "playback_added_cdns": []
-                    }
-                ],
-                "token_expires_in": 43200,
-                "require_playback_token": false
-            }
-        }
-    ]
-  }</code></pre>
-  </section>
-  </article>
-  
+</section>
+
+<section class="bcls-section">
+<h2 id="Using_Content_protection_DRM">Using Content protection (DRM)</h2>
+  <p>You can include the <code>pro</code> claim, as defined above, to specify a protection type.</p>
+
+  <p>
+    For license requests, the JWT does not need any payload, but it has to be signed using the same RSA key as the manifest request JWT.
+  </p>
+  <h3>License request</h3>
+  <p>
+    You can use the following endpoint to get the DRM license:
+  </p>
+  <pre><code class="language-html">/accounts/{account_id}/videos/{video_id}/licenses/{scheme}?bcov_auth={JWT}</code></pre>
+  <p>
+    Valid values for <code>scheme</code>:
+  </p>
+  <ul>
+    <li>
+      "widevine"
+    </li>
+    <li>
+      "playready"
+    </li>
+    <li>
+      "fairplay"
+    </li>
+  </ul>
+  <h3>FairPlay app cert</h3>
+  <p>
+    For FairPlay app certificates, the endpoint is:
+  </p>
+  <pre><code class="language-html">/accounts/{account_id}/fairplay_app_cert</code></pre>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Notes">Notes</h2>
+  <p>The following notes apply to Static URL Delivery.</p>
+  <ul>
+    <li>
+    In-Manifest captions are supported. Out-of-band sidecar captions will be supported in a future release.
+    </li>
+    <li>
+      The customer's BYO CDN will deliver the video segments, while Brightcove's CDN will continue to deliver manifest and sub-manifests.
+    </li>
+    <li>
+      Brightcove does support using a JWT that does not expire. To do this, do not include the <code>exp</code> claim when creating your token.
+    </li>
+  </ul>
+</section>
+
+<section class="bcls-section">
+<h2 id="Limitations">Limitations</h2>
+  <p>The following limitations apply to Static URL Delivery.</p>
+  <ul>
+    <li>
+      Live streams will be supported in a later release.
+    </li>
+    <li>
+      MP4s will be supported in a later release.
+    </li>
+    <li>
+      Delivery Rules will be supported in a later release.
+    </li>
+  </ul>
+</section>
+
+</article>
