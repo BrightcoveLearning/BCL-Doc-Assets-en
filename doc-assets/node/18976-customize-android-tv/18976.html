@@ -1,0 +1,105 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Introduction">Introduction</h2>
+
+<p>The Brightcove Media Controller for TV has a rewind button and a fast-forward button. When you click either of these buttons, the default is to seek 3 seconds backward or forward.</p>
+<p>
+  When you press and hold either button, the seek position will update at a rate of 3 seconds of content every 40 milliseconds. This means that holding either the rewind or fast-forward button each second advances the cotent 75 seconds.
+</p>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="Configuring_seek_buttons">Configuring seek buttons</h2>
+
+<p>The rewind and fast-forward buttons can be configured through the <code>EventType.SEEK_CONTROLLER_CONFIGURATION</code> event.</p>
+<p>
+  For simplicity, we’ll refer to either of these buttons as the seek button since the following properties apply to both.
+</p>
+<table class="bcls-table">
+	<thead class="bcls-table__head">
+		<tr>
+			<th>Event property</th>
+			<th>Default value</th>
+      <th>Description</th>
+		</tr>
+	</thead>
+	<tbody class="bcls-table__body">
+		<tr>
+			<td><code>Event.SEEK_DEFAULT</code></td>
+			<td>3000 ms</td>
+      <td>The default seek value in milliseconds the seek button will seek to.</td>
+		</tr>
+    <tr>
+			<td><code>Event.SEEK_RELATIVE_ENABLED</code></td>
+			<td>false</td>
+      <td>If enabled, allows the seek value to be relative to the video duration set by the <code>EventType.VIDEO_DURATION_CHANGED</code> event. The percentage is set by <code>Event.SEEK_PERCENTAGE</code>.</td>
+		</tr>
+    <tr>
+			<td><code>Event.SEEK_PERCENTAGE</code></td>
+			<td>1%</td>
+      <td>The percentage relative to the video duration used to calculate the default seek value.</td>
+		</tr>
+    <tr>
+			<td><code>Event.SEEK_ON_HOLD_WAIT_TIME</code></td>
+			<td>500 ms</td>
+      <td>The time in milliseconds to be waited for the key event to be considered a long press instead of a regular press.</td>
+		</tr>
+    <tr>
+			<td><code>Event.SEEK_ON_HOLD_UPDATE_FREQ</code></td>
+			<td>40 ms</td>
+      <td>The time in milliseconds used to send the <code>EventType.SEEKBAR_DRAGGING_PROGRESS</code> event to update the Media Controller seek bar.</td>
+		</tr>
+	</tbody>
+</table>
+</section>
+
+<section class="bcls-section">
+<h2 id="Customizing_event_properties">Customizing event properties</h2>
+<p>You may want additional event properties from those listed in the table above. You can do that by defining the expected values and emitting the <code>EventType.SEEK_CONTROLLER_CONFIGURATION</code> event.</p>
+
+<p>
+  To add custom properties to the event, follow these steps:
+</p>
+
+<ol class="bcls-tasklist__restart">
+	<li>
+    <p>
+      Define your custom values.
+    </p>
+    <pre class="line-numbers">
+<code class="language-java">private static final int DEFAULT_TV_SEEK_TIME = (int) TimeUnit.SECONDS.toMillis(3);
+private static final int DEFAULT_TV_ON_HOLD_WAIT_TIME = (int) TimeUnit.SECONDS.toMillis(1);
+private static final int DEFAULT_TV_SEEK_PERCENTAGE = 1;
+private static final int DEFAULT_TV_ON_HOLD_UPDATE_FREQUENCY_TIME = 500;
+</code></pre>
+  </li>
+  <li>
+    <p>
+      Include a method to create the properties map, add the desired values and emit the <code>EventType.SEEK_CONTROLLER_CONFIGURATION</code> event.
+    </p>
+    <pre class="line-numbers">
+<code class="language-java">private void setupTelevisionMode() {
+   Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;();
+   properties.put(Event.SEEK_DEFAULT, DEFAULT_TV_SEEK_TIME);
+   properties.put(Event.SEEK_RELATIVE_ENABLED, true);
+   properties.put(Event.SEEK_PERCENTAGE, DEFAULT_TV_SEEK_PERCENTAGE);
+   properties.put(Event.SEEK_ON_HOLD_WAIT_TIME, DEFAULT_TV_ON_HOLD_WAIT_TIME);
+   properties.put(Event.SEEK_ON_HOLD_UPDATE_FREQ, DEFAULT_TV_ON_HOLD_UPDATE_FREQUENCY_TIME);
+
+   eventEmitter.emit(EventType.SEEK_CONTROLLER_CONFIGURATION, properties);
+}</code></pre>
+  </li>
+  <li>
+    <p>
+      Check if your app is in TV mode to setup the seek controller configuration.
+    </p>
+    <pre class="line-numbers">
+<code class="language-java">if (BrightcoveMediaController.checkTvMode(mBaseVideoView.getContext())) {
+   setupTelevisionMode();
+}</code></pre>
+  </li>
+</ol>
+</section>
+
+</article>
