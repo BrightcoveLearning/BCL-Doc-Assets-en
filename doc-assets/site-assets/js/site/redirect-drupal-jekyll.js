@@ -5,10 +5,6 @@
       i,
       iMax = navArray.length,
       path = window.location.pathname;
-      aside.setAttribute('class', 'bcls-warn');
-      aside.appendChild(p);
-      aside.appendChild(p2);
-      p2.appendChild(a);
       for (i = 0; i < iMax; i++) {
         item = navArray[i];
         if (path === item.oldURL) {
