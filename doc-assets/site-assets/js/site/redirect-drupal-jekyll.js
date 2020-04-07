@@ -19,13 +19,13 @@
           new_location = item.newURL;
           a.setAttribute('href', new_location);
           a.textContent = new_location;
-          cdiv.insertAdjacentElement(aside);
+          cdiv.insertAdjacentElement('afterend',aside);
           redirect();
           break;
         } else {
           new_location = 'https://support.brightcove.com';
           p.textContent = 'This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.'
-          cdiv.insertAdjacentElement(aside);
+          cdiv.insertAdjacentElement('afterend',aside);
           redirect();
           break;
         }
