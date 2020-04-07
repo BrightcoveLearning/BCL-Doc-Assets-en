@@ -15,20 +15,24 @@
         
         if (path === item.oldURL) {
           new_location = item.newURL;
-          message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the new location: ' + new_location + 'page you are looking for.</aside>';
+          message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 10 seconds, you will be redirected to the home page, where you can try to search for or navigate to the new location: <a href="' + new_location + '">' + new_location +  '</a>.</aside>';
           cdiv.insertAdjacentHTML('afterbegin', message);
           redirect();
           break;
         }
       }
       // no match, go home
-      new_location = 'https://support.brightcove.com';
-      message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.</aside>'
-      cdiv.insertAdjacentHTML('afterbegin', message);
-      redirect();
+      console.log('i', i);
+      
+      if (i === iMax - 1) {
+        new_location = 'https://support.brightcove.com';
+        message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.</aside>'
+        cdiv.insertAdjacentHTML('afterbegin', message);
+        redirect();
+      }
 
       function redirect() {
-        var t = window.setTimeout(go_to_new_location, 5000);
+        var t = window.setTimeout(go_to_new_location, 10000);
       }
 
       function go_to_new_location() {
