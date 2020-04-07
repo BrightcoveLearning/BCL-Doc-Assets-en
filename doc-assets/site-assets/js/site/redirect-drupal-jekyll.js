@@ -5,7 +5,6 @@
       i,
       iMax = navArray.length,
       path = window.location.pathname;
-      p.textContent = 'This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new location: ';
       aside.setAttribute('class', 'bcls-warn');
       aside.appendChild(p);
       aside.appendChild(p2);
@@ -21,7 +20,6 @@
         } else {
           new_location = 'https://support.brightcove.com';
           message = '<aside class="bcls-aside bcls-aside--warning">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.</aside>'
-          p.textContent = ''
           cdiv.insertAdjacentHTML('afterbegin', message);
           redirect();
           break;
