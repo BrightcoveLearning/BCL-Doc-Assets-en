@@ -4,11 +4,37 @@
       p = document.createElement('p'),
       p2 = document.createElement('p'),
       a = document.createElement('a'),
+      new_location,
       i,
       iMax = navArray.length,
       path = window.location.pathname;
-      p.textContent = ''
+      p.textContent = 'This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new location: ';
+      aside.setAttribute('class', 'bcls-warn');
+      aside.appendChild(p);
+      aside.appendChild(p2);
+      p2.appendChild(a);
       for (i = 0; i < iMax; i++) {
         item = navArray[i];
-        if (path === item.oldURL)
+        if (path === item.oldURL) {
+          new_location = item.newURL;
+          a.setAttribute('href', new_location);
+          a.textContent = new_location;
+          cdiv.insertAdjacentElement(aside);
+          redirect();
+          break;
+        } else {
+          new_location = 'https://support.brightcove.com';
+          p.textContent = 'This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.'
+          cdiv.insertAdjacentElement(aside);
+          redirect();
+          break;
+        }
+      }
+
+      function redirect() {
+        var t = window.setTimeout(go_to_new_location, 5000);
+      }
+
+      function go_to_new_location() {
+        window.location.href = new_location;
       }
