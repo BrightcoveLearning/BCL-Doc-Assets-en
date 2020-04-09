@@ -19,6 +19,9 @@
       } else if (path.indexOf('ko/') > -1) {
         language = 'ko.';
       }
+
+      path = path.replace(language, '');
+      console.log('path fixed', path)
       
       for (i = 0; i < iMax; i++) {
         item = navArray[i];
