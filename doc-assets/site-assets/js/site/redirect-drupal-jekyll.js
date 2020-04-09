@@ -12,13 +12,10 @@
         language = 'ja.';
       } else if (path.indexOf('es/') > -1) {
         language = 'es.';
-      }
       } else if (path.indexOf('fr/') > -1) {
         language = 'fr.';
-      }
       } else if (path.indexOf('de/') > -1) {
         language = 'de.';
-      }
       } else if (path.indexOf('ko/') > -1) {
         language = 'ko.';
       }
