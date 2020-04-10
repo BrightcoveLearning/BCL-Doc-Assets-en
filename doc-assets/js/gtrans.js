@@ -17,7 +17,7 @@ function keepLanguage() {
       iMax = all_links.length;
       for (i = 0; i < iMax; i++) {
         hrefValue = all_links[i].getAttribute('href');
-        if (hrefValue.charAt(0) !== '#' && hrefValue.indexOf('.support.brightcove.') < 0 && hrefValue.lastIndexOf('support.brightcove') > -1) {
+        if (hrefValue.charAt(0) !== '#' && hrefValue.indexOf('studio.support.brightcove.') < 0 && hrefValue.indexOf('player.support.brightcove.') < 0 && hrefValue.indexOf('sdks.support.brightcove.') < 0 && hrefValue.indexOf('live.support.brightcove.') < 0 && hrefValue.indexOf('apis.support.brightcove.') < 0 && hrefValue.indexOf('audience.support.brightcove.') < 0 && hrefValue.indexOf('social.support.brightcove.') < 0 && hrefValue.indexOf('gallery.support.brightcove.') < 0 && hrefValue.indexOf('zencoder.support.brightcove.') < 0 && hrefValue.indexOf('beacon.support.brightcove.') < 0 && hrefValue.indexOf('campaign.support.brightcove.') < 0 && hrefValue.indexOf('engage.support.brightcove.') < 0 && hrefValue.indexOf('general.support.brightcove.') < 0 && hrefValue.indexOf('integrations.support.brightcove.') < 0 && hrefValue.indexOf('ssai.support.brightcove.') < 0 && hrefValue.lastIndexOf('support.brightcove') > -1) {
           all_links[i].setAttribute('href', hrefValue.replace(domain, newPath));
         }
       }
