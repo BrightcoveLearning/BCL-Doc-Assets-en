@@ -2,7 +2,7 @@
       cdiv = document.querySelector('.region.region-content'),
       new_location,
       message,
-      language = '',
+      language,
       i,
       iMax = navArray.length,
       path = window.location.pathname;
@@ -19,9 +19,10 @@
       } else if (path.indexOf('ko/') > -1) {
         language = 'ko.';
       }
-
-      path = path.replace(language, '');
-      console.log('path fixed', path)
+      if (language) {
+        path = path.replace(language, '');
+        console.log('path fixed', path)
+      }
       
       for (i = 0; i < iMax; i++) {
         item = navArray[i];

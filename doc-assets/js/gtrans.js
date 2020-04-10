@@ -17,7 +17,7 @@ function keepLanguage() {
       iMax = all_links.length;
       for (i = 0; i < iMax; i++) {
         hrefValue = all_links[i].getAttribute('href');
-        if (hrefValue.charAt(0) !== '#' && hrefValue.lastIndexOf('support.brightcove') > -1) {
+        if (hrefValue.charAt(0) !== '#' && hrefValue.indexOf('.support.brightcove.') < 0 && hrefValue.lastIndexOf('support.brightcove') > -1) {
           all_links[i].setAttribute('href', hrefValue.replace(domain, newPath));
         }
       }
