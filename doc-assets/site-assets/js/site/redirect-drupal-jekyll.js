@@ -36,9 +36,9 @@
               new_location = 'https://' + item.newURL;
             }
             console.log('newURL', new_location);
-            message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="' + new_location +  '</a></aside>';
+            message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="' + new_location +  '</a>' + new_location + '</aside>';
             cdiv.insertAdjacentHTML('afterbegin', message);
-            // redirect();
+            redirect();
             break;
           }
         }
@@ -51,7 +51,7 @@
         new_location = 'https://' + language + 'support.brightcove.com';
         message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.</aside>'
         cdiv.insertAdjacentHTML('afterbegin', message);
-        // redirect();
+        redirect();
       }
 
       function redirect() {
