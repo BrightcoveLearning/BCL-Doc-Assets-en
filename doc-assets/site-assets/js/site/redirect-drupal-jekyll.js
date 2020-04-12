@@ -21,7 +21,7 @@
       }
 
       if (language) {
-        path = path.replace(language = '/', '');
+        path = path.replace(language + '/', '');
         console.log('path fixed', path)
       }
 
