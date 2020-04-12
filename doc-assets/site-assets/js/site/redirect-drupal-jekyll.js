@@ -9,18 +9,19 @@
       console.log('path', path);
       console.log('pathname', window.location.pathname);
       if (path.indexOf('ja/') > -1) {
-        language = 'ja.';
+        language = 'ja';
       } else if (path.indexOf('es/') > -1) {
-        language = 'es.';
+        language = 'es';
       } else if (path.indexOf('fr/') > -1) {
-        language = 'fr.';
+        language = 'fr';
       } else if (path.indexOf('de/') > -1) {
-        language = 'de.';
+        language = 'de';
       } else if (path.indexOf('ko/') > -1) {
-        language = 'ko.';
+        language = 'ko';
       }
+
       if (language) {
-        path = path.replace(language, '');
+        path = path.replace(language = '/', '');
         console.log('path fixed', path)
       }
 
@@ -29,9 +30,13 @@
           // console.log('item', item);
           
           if (path === item.oldURL) {
-            new_location = item.newURL;
-            console.log('newURL', 'https://' + language + new_location + '">' + new_location);
-            message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="https://' + language + new_location + '">' + new_location +  '</a></aside>';
+            if (language) {
+              new_location = 'https://' + language + '.' + item.newURL;
+            } else {
+              new_location = 'https://' + item.newURL;
+            }
+            console.log('newURL', new_location);
+            message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="' + new_location +  '</a></aside>';
             cdiv.insertAdjacentHTML('afterbegin', message);
             // redirect();
             break;
