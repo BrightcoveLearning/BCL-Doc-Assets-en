@@ -30,7 +30,7 @@
         
         if (path === item.oldURL) {
           new_location = item.newURL;
-          console.log('newURL', 'https://' + language + new_location + '">' + new_location');
+          console.log('newURL', 'https://' + language + new_location + '">' + new_location);
           message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="https://' + language + new_location + '">' + new_location +  '</a></aside>';
           cdiv.insertAdjacentHTML('afterbegin', message);
           // redirect();
