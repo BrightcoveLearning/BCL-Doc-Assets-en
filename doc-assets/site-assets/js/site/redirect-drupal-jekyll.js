@@ -23,22 +23,24 @@
         path = path.replace(language, '');
         console.log('path fixed', path)
       }
-      
-      for (i = 0; i < iMax; i++) {
-        item = navArray[i];
-        // console.log('item', item);
-        
-        if (path === item.oldURL) {
-          new_location = item.newURL;
-          console.log('newURL', 'https://' + language + new_location + '">' + new_location);
-          message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="https://' + language + new_location + '">' + new_location +  '</a></aside>';
-          cdiv.insertAdjacentHTML('afterbegin', message);
-          // redirect();
-          break;
+
+        for (i = 0; i < iMax; i++) {
+          item = navArray[i];
+          // console.log('item', item);
+          
+          if (path === item.oldURL) {
+            new_location = item.newURL;
+            console.log('newURL', 'https://' + language + new_location + '">' + new_location);
+            message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the new page, and please update your bookmark: <a href="https://' + language + new_location + '">' + new_location +  '</a></aside>';
+            cdiv.insertAdjacentHTML('afterbegin', message);
+            // redirect();
+            break;
+          }
         }
-      }
-      // no match, go home
-      console.log('i', i);
+        // no match, go home
+        console.log('i', i);
+        console.log('iMax', iMax);
+      
       
       if (i === iMax - 1) {
         new_location = 'https://' + language + 'support.brightcove.com';
