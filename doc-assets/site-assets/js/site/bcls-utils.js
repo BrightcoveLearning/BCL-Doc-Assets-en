@@ -42,7 +42,7 @@ var BCLS_player_fix = ( function (window, document) {
         sideNavList = document.getElementsByClassName('right-side-nav')[0],
         vcContent = document.getElementsByClassName('video-cloud-only'),
         bpContent = document.getElementsByClassName('player-only'),
-        toggleStr = '<button id="vc" class="bcls-button__version" style="background-color:rgb(239, 108, 42);">Video Cloud Version</button><br><button id="bp" class="bcls-button__version" style="background-color:rgb(44, 131, 224)">Brightcove Player Version</button><br><a style="font-size:smaller;" href="//docs.brightcove.com/en/player/brightcove-player/versions.html">(What\'s the difference?)</a><hr><',
+        toggleStr = '<button id="vc" class="bcls-button__version" style="background-color:rgb(239, 108, 42);">Video Cloud Version</button><br><button id="bp" class="bcls-button__version" style="background-color:rgb(44, 131, 224)">Brightcove Player Version</button><br><a style="font-size:smaller;" href="https://player.support.brightcove.com/general/versions-brightcove-player-documentation.html">(What\'s the difference?)</a>',
         iMax, i;
 
 
