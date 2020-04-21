@@ -1,0 +1,201 @@
+<article class="bcls-article">
+<section class="bcls-section">
+<h2 id="Overview">Overview</h2>
+<p>
+  High-Efficiency Video Coding (HEVC), also known as H.265, is a video compression standard that reduces video file sizes allowing for higher quality playback.
+</p>
+<p>
+  The Brightcove Native SDK for Android uses the following HEVC selection process:
+</p>
+<ol>
+	<li><a href="#HEVC_source_selection">HEVC source selection</a></li>
+  <li>
+    <a href="#HEVC_rendition_selection">HEVC rendition selection</a>
+  </li>
+</ol>
+<aside class="bcls-aside bcls-aside--information">
+  <p>
+    Notes:
+  </p>
+  <ul>
+    <li>
+      Supported with the Brightcove Native SDK for Android 6.13.1+
+    </li>
+    <li>
+      Works with Android devices using API level 21 (Lollipop version 5.0) and higher
+    </li>
+  </ul>
+</aside>
+</section>
+
+<section class="bcls-section">
+<h2 id="HEVC_source_selection">HEVC source selection</h2>
+<p>The HEVC source selection process starts after you make a request for a video using the Brightcove <code>Catalog</code>.</p>
+<p>
+  Depending on your account configuration, the <code>Catalog</code> response may contain several sources, with or without HEVC renditions. Here is an example:
+</p>
+<pre class="line-numbers"><code class="language-json"> &quot;sources&quot;: [
+  {
+    &quot;type&quot;: &quot;application/dash+xml&quot;,
+    &quot;src&quot;: &quot;http://manifest.prod.boltdns.net/manifest/v1/dash/live-baseurl/clear/4800266849001/11023209-08e4-40d4-9a8b-25aa659421e2/2s/manifest.mpd?fastly_token=ZYZ&quot;,
+    &quot;profiles&quot;: &quot;urn:mpeg:dash:profile:isoff-live:2011&quot;
+  },
+  {
+    &quot;type&quot;: &quot;application/dash+xml&quot;,
+    &quot;src&quot;: &quot;https://manifest.prod.boltdns.net/manifest/v1/dash/live-baseurl/clear/4800266849001/11023209-08e4-40d4-9a8b-25aa659421e2/2s/manifest.mpd?fastly_token=XYZ&quot;,
+    &quot;profiles&quot;: &quot;urn:mpeg:dash:profile:isoff-live:2011&quot;
+  },
+  {
+    &quot;type&quot;: &quot;application/dash+xml&quot;,
+    &quot;src&quot;: &quot;http://manifest.prod.boltdns.net/manifest/v2/dash/live-baseurl/clear/avc1_<span class="bcls-highlight">hvc1</span>_mp4a/4800266849001/11023209-08e4-40d4-9a8b-25aa659421e2/2s/manifest.mpd?fastly_token=XYZ&quot;,
+    &quot;profiles&quot;: &quot;urn:mpeg:dash:profile:isoff-live:2011&quot;
+  },
+  {
+    &quot;type&quot;: &quot;application/dash+xml&quot;,
+    &quot;src&quot;: &quot;https://manifest.prod.boltdns.net/manifest/v2/dash/live-baseurl/clear/avc1_<span class="bcls-highlight">hvc1</span>_mp4a/4800266849001/11023209-08e4-40d4-9a8b-25aa659421e2/2s/manifest.mpd?fastly_token=XYZ&quot;,
+    &quot;profiles&quot;: &quot;urn:mpeg:dash:profile:isoff-live:2011&quot;
+  }
+]</code></pre>
+<p>
+  In this example, there are four DASH sources:
+</p>
+<ul>
+  <li>
+    One non-HEVC HTTP source
+  </li>
+  <li>
+    One non-HEVC HTTPS source
+  </li>
+  <li>
+    One HEVC HTTP source
+  </li>
+  <li>
+    One HEVC HTTPS source
+  </li>
+</ul>
+<p>
+  Notice that HEVC sources contain the string <code>hvc</code> in the URL.
+</p>
+<p>
+  The Native SDK for Android source selector prefers HEVC sources. In the example above, it will select the HEVC HTTPS source.
+</p>
+<p>
+  The Native SDK continues with the default selection process as defined in the <a href="https://support.brightcove.com/android-source-selection">Android: Source Selection</a> document:
+</p>
+<ol>
+  <li>
+    Prefer HTTPS over HTTP
+  </li>
+  <li>
+    Prefer DASH over HLS
+  </li>
+  <li>
+    If selecting HLS for playback, prefer the highest version of HLS available
+  </li>
+</ol>
+
+</section>
+
+<section class="bcls-section">
+<h2 id="HEVC_rendition_selection">HEVC rendition selection</h2>
+<p>Depending on your ingestion configurations, the HEVC source might be contained in different renditions. You may have the following:</p>
+<ul>
+  <li>
+    <a href="#Only_HEVC_renditions">Only HEVC renditions</a>
+  </li>
+  <li>
+    <a href="#A_mix_of_HEVC_and_other_codecs">A mix of HEVC and other codecs</a>
+  </li>
+</ul>
+<aside class="bcls-aside bcls-aside--information">This kind of selection only applies when using ExoPlayer.</aside>
+
+<h3 id="Only_HEVC_renditions">Only HEVC renditions</h3>
+<p>
+  When the video source’s renditions have only HEVC codecs, there is no rendition selection involved.  The ExoPlayer selects the appropriate rendition given the device capabilities and the available bandwidth.
+</p>
+
+<h3 id="A_mix_of_HEVC_and_other_codecs">A mix of HEVC and other codecs</h3>
+<p>
+  If the video source has renditions with a mix of HEVC and other codecs (like AVC), then a rendition selection process is invoked. When the Native SDK loads the source into the ExoPlayer, it performs a <a href="https://exoplayer.dev/doc/reference/com/google/android/exoplayer2/trackselection/DefaultTrackSelector.SelectionOverride.html">SelectionOverride</a> for the video rendition to prefer HEVC over other codecs.
+</p>
+<p>
+  Given a video whose rendition formats are supported by the device, here is the rendition process:
+</p>
+<ol>
+  <li>
+    The Native SDK selects all HEVC renditions.
+  </li>
+  <li>
+    It ignores non-HEVC renditions that duplicate an existing HEVC with the same resolution.
+  </li>
+</ol>
+
+<p>
+  This forces ExoPlayer to prefer HEVC in most cases. Here are two possible scenarios:
+</p>
+<ul>
+  <li>
+    <a href="#Codec_mix_duplication">Codec mix duplication</a>
+  </li>
+  <li>
+    <a href="#Half_and_half">Half and half</a>
+  </li>
+</ul>
+
+<h4 id="Codec_mix_duplication">Codec mix duplication</h4>
+<p>
+  In this scenario, most of the HEVC and AVC codec’s resolutions are duplicated. For example:
+</p>
+<pre class="line-numbers"><code class="language-html">AVC &lt;Representation bandwidth=&quot;453000&quot; height=&quot;270&quot; width=&quot;480&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;704000&quot; height=&quot;360&quot; width=&quot;640&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;903000&quot; height=&quot;360&quot; width=&quot;640&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;1202000&quot; height=&quot;540&quot; width=&quot;960&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;1989000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;2478000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;3458000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;3761000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;304000&quot; height=&quot;270&quot; width=&quot;480&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;548000&quot; height=&quot;360&quot; width=&quot;640&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;993000&quot; height=&quot;432&quot; width=&quot;768&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;1301000&quot; height=&quot;576&quot; width=&quot;1024&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;1605000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;2809000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+</code></pre>
+<p>
+  Given the above video renditions, the Brightcove Natvie SDK will select the following renditions:
+</p>
+<pre class="line-numbers"><code class="language-html">AVC &lt;Representation bandwidth=&quot;1202000&quot; height=&quot;540&quot; width=&quot;960&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;304000&quot; height=&quot;270&quot; width=&quot;480&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;548000&quot; height=&quot;360&quot; width=&quot;640&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;993000&quot; height=&quot;432&quot; width=&quot;768&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;1301000&quot; height=&quot;576&quot; width=&quot;1024&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;1605000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;2809000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+</code></pre>
+<p>
+  Note that only one AVC rendition was selected, because its resolution does not duplicate an existing HEVC rendition.
+</p>
+
+<h4 id="Half_and_half">Half and half</h4>
+<p>
+  In this scenario, there are lower-resolution renditions with the AVC codec, and higher-resolution renditions with the HVC codec. For example:
+</p>
+<pre class="line-numbers"><code class="language-html">AVC &lt;Representation bandwidth=&quot;453000&quot; height=&quot;270&quot; width=&quot;480&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;704000&quot; height=&quot;360&quot; width=&quot;640&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;903000&quot; height=&quot;360&quot; width=&quot;640&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;1202000&quot; height=&quot;540&quot; width=&quot;960&quot;&gt;
+AVC &lt;Representation bandwidth=&quot;3761000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;1301000&quot; height=&quot;576&quot; width=&quot;1024&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;1605000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+HVC &lt;Representation bandwidth=&quot;2809000&quot; height=&quot;720&quot; width=&quot;1280&quot;&gt;
+</code></pre>
+<p>
+  In this case, because there are no AVC codecs with resolutions duplicating HEVC renditions, the Native SDK selects all of the renditions, allowing ExoPlayer to select the renditions based on available bandwidth.
+</p>
+<p>
+  The Native SDK does not force HEVC selection in all cases in this scenario, to avoid capping the lowest rendition to a high-bitrate HEVC rendition. This would potentially cause a bad user experience with a poor network connection.
+</p>
+
+</section>
+
+</article>
