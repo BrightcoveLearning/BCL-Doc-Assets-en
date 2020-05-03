@@ -18,14 +18,11 @@ function keepLanguage() {
     for (i = 0; i < iMax; i++) {
       hrefValue = currentHref.split('//');
       if (hrefValue.charAt(0) !== '#') {
-        if (hrefValue.charAt(0) === '/') {
-          newHref = 'https://' + lang + '.' + hrefValue[0];
-          console.log('newHref local', newHref);
-        } else if (hrefValue.lastIndexOf('support.brightcove' > -1)) {
+        if (hrefValue.lastIndexOf('support.brightcove' > -1)) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           console.log('newHref remote', newHref);
+          all_links[i].setAttribute('href', newHref);
         }
-        all_links[i].setAttribute('href', newHref);
       }
     }
   }
