@@ -4,7 +4,7 @@
 // keep on same language site
 function keepLanguage() {
   var domain = location.hostname,
-    lang = domain.split('.')[1],
+    lang = domain.split('.')[0],
     all_links = document.querySelectorAll('a[href]'),
     i,
     iMax;
