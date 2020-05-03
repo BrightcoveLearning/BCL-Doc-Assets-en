@@ -12,6 +12,7 @@ function keepLanguage() {
     
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     var hrefValue, 
+      currentHref = window.location.href,
       newHref;
     iMax = all_links.length;
     for (i = 0; i < iMax; i++) {
