@@ -11,7 +11,8 @@ function keepLanguage() {
     console.log('lang', lang);
     
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
-    var hrefValue, newHref;
+    var hrefValue, 
+      newHref;
     iMax = all_links.length;
     for (i = 0; i < iMax; i++) {
       hrefValue = currentHref.split('//');
