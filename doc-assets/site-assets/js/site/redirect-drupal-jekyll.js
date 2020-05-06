@@ -25,6 +25,8 @@
         console.log('path fixed', path)
       }
 
+      // prevent redirect from home page
+      if (location.path !== '/' && path !== '/ja/ && path !== '/fr/ && path !== '/es/ && path !== '/de/ && path !== '/ko/) {
         for (i = 0; i < iMax; i++) {
           item = navArray[i];
           // console.log('item', item);
@@ -52,6 +54,7 @@
         message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.</aside>'
         cdiv.insertAdjacentHTML('afterbegin', message);
         redirect();
+      }
       }
 
       function redirect() {
