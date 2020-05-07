@@ -26,7 +26,7 @@
       }
 
       // prevent redirect from home page
-      if (location.path !== '/' && path !== '/ja/ && path !== '/fr/ && path !== '/es/ && path !== '/de/ && path !== '/ko/) {
+      if (location.path !== '/' && path !== '/ja/' && path !== '/fr/' && path !== '/es/' && path !== '/de/' && path !== '/ko/') {
         for (i = 0; i < iMax; i++) {
           item = navArray[i];
           // console.log('item', item);
