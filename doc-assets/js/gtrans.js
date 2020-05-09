@@ -47,4 +47,4 @@ function absolute(relative) {
   }
 }
 
-keepLanguage();
+// keepLanguage();
