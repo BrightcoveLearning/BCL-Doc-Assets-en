@@ -7,13 +7,17 @@ function keepLanguage() {
     lang = domain.split('.')[0],
     all_links = document.querySelectorAll('a[href]'),
     i,
-    iMax;
+    iMax,
+    talla_wrapper = document.getElementById('talla_wrapper');
     console.log('lang', lang);
     
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     var hrefValue, 
       currentHref = window.location.href,
       newHref;
+
+    // hide talla
+    talla_wrapper.innerHTML = '';
     iMax = all_links.length;
     for (i = 0; i < iMax; i++) {
       hrefValue = currentHref.split('//');
