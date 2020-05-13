@@ -49,7 +49,7 @@
         console.log('iMax', iMax);
       
       
-        if (i === iMax - 1 && location.path !== '/' && path !== '/ja/' && path !== '/fr/' && path !== '/es/' && path !== '/de/' && path !== '/ko/')) {
+        if (i === iMax - 1 && location.path !== '/' && path !== '/ja/' && path !== '/fr/' && path !== '/es/' && path !== '/de/' && path !== '/ko/') {
           new_location = 'https://' + qLang + 'support.brightcove.com';
           message = '<aside class="bcls-aside bcls-aside--warning" style="font-weight:bold;font-size:x-large">This page is obsolete and no longer updated. In 5 seconds, you will be redirected to the home page, where you can try to search for or navigate to the page you are looking for.</aside>'
           cdiv.insertAdjacentHTML('afterbegin', message);
