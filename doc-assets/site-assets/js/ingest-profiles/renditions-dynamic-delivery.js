@@ -102,7 +102,6 @@ var BCLSDDrenditions = (function(window, document) {
         buildTable(BCLSrenditionData.BCLSrenditionsVideoProgressive, progressiveFields, progressiveTableBody);
         buildTable(BCLSrenditionData.BCLSrenditionsVideoHEVC, hevcFields, hevcTableBody);
         return {
-          videoRenditions: videoRenditions,
           audioRenditions: audioRenditions,
           progressiveRenditions: progressiveRenditions
         }
