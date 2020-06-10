@@ -32,8 +32,7 @@ function keepLanguage() {
           all_links[i].setAttribute('href', newHref);
         }
       }
-    }
-    if  (lang !== '') {
+      // fix site navigator
       iMax = site_options.length;
       // note: starting iteration at 1 because first option isn't a link
       for (i = 1; i < iMax; i++) {
@@ -43,8 +42,9 @@ function keepLanguage() {
           console.log('site', site.getAttribute('value'));
           
       }
-    } 
+    }
   }
+}
 
 
 keepLanguage();
