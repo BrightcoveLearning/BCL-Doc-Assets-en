@@ -12,6 +12,9 @@ function keepLanguage() {
 
     // if old /en/ path, redirect
     if (href.indexOf('/en/') > 0) {
+      if (href.indexOf('/video-cloud/docs/') > 0) {
+        href = href.replace('/video-cloud/docs/', '/');
+      }
       location.href = href.replace('/en/', '/');
     }
 
