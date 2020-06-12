@@ -56,6 +56,8 @@ function keepLanguage() {
     for (i = 0; i < iMax; i++) {
       currentLink = all_links[i];
       currentLinkValue = currentLink.getAttribute('href');
+      console.log('link value', 'currentLinkValue');
+      
       hrefValue = currentLinkValue.split('//');
       console.log('hrefValue', hrefValue);
       if (hrefValue[0].charAt(0) !== '#') {
