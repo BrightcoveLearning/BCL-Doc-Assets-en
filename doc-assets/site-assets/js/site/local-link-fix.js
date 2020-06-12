@@ -44,6 +44,7 @@ function keepLanguage() {
   if (lang === 'ja' || lang === 'ko' || lang === 'es' || lang === 'fr' || lang === 'de' || lang === 'zh-tw') {
     var hrefValue, 
       currentHref = window.location.href,
+      currentLink,
       newHref;
 
     // hide talla
@@ -52,7 +53,8 @@ function keepLanguage() {
     console.log('imax', iMax);
     
     for (i = 0; i < iMax; i++) {
-      hrefValue = currentHref.split('//');
+      currentLink = all_links[i].getAttribute('href');
+      hrefValue = currentLink.split('//');
       console.log('hrefValue', hrefValue);
       if (hrefValue[0].charAt(0) !== '#') {
         if (hrefValue[1].indexOf('support.brightcove') > 0 && hrefValue[1].lastIndexOf(lang + '.') < 0) {
