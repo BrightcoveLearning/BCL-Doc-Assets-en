@@ -45,6 +45,7 @@ function keepLanguage() {
     var hrefValue, 
       currentHref = window.location.href,
       currentLink,
+      currentLinkValue,
       newHref;
 
     // hide talla
@@ -53,11 +54,12 @@ function keepLanguage() {
     console.log('imax', iMax);
     
     for (i = 0; i < iMax; i++) {
-      currentLink = all_links[i].getAttribute('href');
-      hrefValue = currentLink.split('//');
+      currentLink = all_links[i];
+      currentLinkValue = currentLink.getAttribute('href');
+      hrefValue = currentLinkValue.split('//');
       console.log('hrefValue', hrefValue);
       if (hrefValue[0].charAt(0) !== '#') {
-        if (hrefValue[1].indexOf('support.brightcove') > 0 && hrefValue[1].lastIndexOf(lang + '.') < 0) {
+        if (hrefValue[1].indexOf('support.brightcove') > -1 && hrefValue[1].lastIndexOf(lang + '.') < 0) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           // console.log('newHref remote', newHref);
           all_links[i].setAttribute('href', newHref);
