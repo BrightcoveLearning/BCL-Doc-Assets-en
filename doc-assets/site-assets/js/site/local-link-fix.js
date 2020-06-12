@@ -49,14 +49,18 @@ function keepLanguage() {
     // hide talla
     talla_wrapper.innerHTML = '';
     iMax = all_links.length;
+    console.log('imax', iMax);
+    
     for (i = 0; i < iMax; i++) {
       hrefValue = currentHref.split('//');
       console.log('hrefValue', hrefValue);
       if (hrefValue[0].charAt(0) !== '#') {
-        if (hrefValue[1].lastIndexOf('support.brightcove') > -1 && hrefValue[1].lastIndexOf(lang + '.') < 0) {
+        if (hrefValue[1].indexOf('support.brightcove') > 0 && hrefValue[1].lastIndexOf(lang + '.') < 0) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           // console.log('newHref remote', newHref);
           all_links[i].setAttribute('href', newHref);
+          console.log('new link', all_links[i].getAttribute('href'));
+          
         }
       }
       // fix site navigator
