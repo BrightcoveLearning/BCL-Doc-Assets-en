@@ -64,7 +64,7 @@ function keepLanguage() {
       
       hrefValue = currentLinkValue.split('//');
       console.log('hrefValue', hrefValue);
-      if (hrefValue[0].charAt(0) !== '#') {
+      if (hrefValue.length === 2) {
         if (hrefValue[1].indexOf('support.brightcove') > -1 && hrefValue[1].lastIndexOf(lang + '.') < 0) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           // console.log('newHref remote', newHref);
