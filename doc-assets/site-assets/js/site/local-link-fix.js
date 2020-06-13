@@ -55,6 +55,10 @@ function keepLanguage() {
     
     for (i = 0; i < iMax; i++) {
       currentLink = all_links[i];
+      console.log('i', i);
+      console.log('currentlink', currentLink);
+      
+      
       currentLinkValue = currentLink.getAttribute('href');
       console.log('link value', currentLinkValue);
       
