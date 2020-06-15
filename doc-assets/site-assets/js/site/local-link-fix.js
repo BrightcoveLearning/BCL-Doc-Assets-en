@@ -57,17 +57,14 @@ function keepLanguage() {
       
       
       currentLinkValue = currentLink.getAttribute('href');
-      console.log('link value', currentLinkValue);
       
       hrefValue = currentLinkValue.split('//');
-      console.log('hrefValue[1]', hrefValue[1]);
       
       if (hrefValue.length === 2) {
         if (hrefValue[1].indexOf('support.brightcove') > -1) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           // console.log('newHref remote', newHref);
           all_links[i].setAttribute('href', newHref);
-          console.log('new link', all_links[i].getAttribute('href'));
           
         }
       }
@@ -79,7 +76,6 @@ function keepLanguage() {
         var site = site_options[i],
           val = site.getAttribute('value');
           site.setAttribute('value', val.replace('https://', 'https://' + lang + '.'));
-          console.log('site', site.getAttribute('value'));
           
       }
   }
