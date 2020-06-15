@@ -3,7 +3,7 @@ function keepLanguage() {
   var href = location.href,
     domain = location.hostname,
     lang = domain.split('.')[0],
-    all_links = document.querySelectorAll('a[href]'),
+    all_links = document.getElementsByTagName('a'),
     i,
     iMax,
     talla_wrapper = document.getElementById('talla_wrapper'),
@@ -65,8 +65,11 @@ function keepLanguage() {
       
       hrefValue = currentLinkValue.split('//');
       console.log('hrefValue', hrefValue);
+      console.log(hrefValue[1].indexOf('support.brightcove'));
+      console.log(hrefValue[1].indexOf(lang + '.'));
+      
       if (hrefValue.length === 2) {
-        if (hrefValue[1].indexOf('support.brightcove') > -1 && hrefValue[1].indexOf(lang + '.') === -1) {
+        if (hrefValue[1].indexOf('support.brightcove') > -1 && hrefValue[1].indexOf(lang + '.') > -1) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           // console.log('newHref remote', newHref);
           all_links[i].setAttribute('href', newHref);
