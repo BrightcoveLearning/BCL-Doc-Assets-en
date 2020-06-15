@@ -54,23 +54,16 @@ function keepLanguage() {
     
     for (i = 0; i < iMax; i++) {
       currentLink = all_links[i];
-      console.log('i', i);
-      console.log('imax', iMax);
-
-      console.log('currentlink', currentLink);
       
       
       currentLinkValue = currentLink.getAttribute('href');
       console.log('link value', currentLinkValue);
-      console.log('all_links', all_links);
       
       hrefValue = currentLinkValue.split('//');
       console.log('hrefValue[1]', hrefValue[1]);
-      console.log(hrefValue[1].indexOf('support.brightcove'));
-      console.log(hrefValue[1].indexOf(lang + '.'));
       
       if (hrefValue.length === 2) {
-        if (hrefValue[1].indexOf('support.brightcove') > -1 && hrefValue[1].indexOf(lang + '.') > -1) {
+        if (hrefValue[1].indexOf('support.brightcove') > -1) {
           newHref = hrefValue[0] + '//' + lang + '.' + hrefValue[1];
           // console.log('newHref remote', newHref);
           all_links[i].setAttribute('href', newHref);
