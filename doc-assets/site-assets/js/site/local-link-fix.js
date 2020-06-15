@@ -51,11 +51,12 @@ function keepLanguage() {
     // hide talla
     talla_wrapper.innerHTML = '';
     iMax = all_links.length;
-    console.log('imax', iMax);
     
     for (i = 0; i < iMax; i++) {
       currentLink = all_links[i];
       console.log('i', i);
+      console.log('imax', iMax);
+
       console.log('currentlink', currentLink);
       
       
@@ -64,7 +65,7 @@ function keepLanguage() {
       console.log('all_links', all_links);
       
       hrefValue = currentLinkValue.split('//');
-      console.log('hrefValue[i]', hrefValue[i]);
+      console.log('hrefValue[1]', hrefValue[1]);
       console.log(hrefValue[1].indexOf('support.brightcove'));
       console.log(hrefValue[1].indexOf(lang + '.'));
       
