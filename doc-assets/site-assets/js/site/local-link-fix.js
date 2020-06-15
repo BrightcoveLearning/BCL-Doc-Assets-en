@@ -78,6 +78,7 @@ function keepLanguage() {
           
         }
       }
+    }
       // fix site navigator
       iMax = site_options.length;
       // note: starting iteration at 1 because first option isn't a link
@@ -88,7 +89,6 @@ function keepLanguage() {
           console.log('site', site.getAttribute('value'));
           
       }
-    }
   }
 }
 
