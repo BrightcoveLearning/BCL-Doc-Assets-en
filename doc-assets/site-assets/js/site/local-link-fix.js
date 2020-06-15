@@ -64,7 +64,7 @@ function keepLanguage() {
       console.log('all_links', all_links);
       
       hrefValue = currentLinkValue.split('//');
-      console.log('hrefValue[i]', hrefValue)[i];
+      console.log('hrefValue[i]', hrefValue[i]);
       console.log(hrefValue[1].indexOf('support.brightcove'));
       console.log(hrefValue[1].indexOf(lang + '.'));
       
