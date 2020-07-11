@@ -7,7 +7,7 @@
       iMax = navArray.length,
       href = window.location.href,
       path = window.location.pathname;
-      console.log('path', path);
+      console.log('href', href);
       console.log('pathname', window.location.pathname);
       if (href.indexOf('/ja/') > -1) {
         qLang = 'ja';
@@ -30,7 +30,7 @@
       if (path !== '/' && path !== '/ja/' && path !== '/fr/' && path !== '/es/' && path !== '/de/' && path !== '/ko/') {
         for (i = 0; i < iMax; i++) {
           item = navArray[i];
-          // console.log('item', item);
+          console.log('item.oldURL', item.oldURL);
           
           if (href === item.oldURL) {
             if (qLang) {
