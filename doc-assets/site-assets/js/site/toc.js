@@ -3,6 +3,11 @@ var BCLS_toc = ( function (window, document) {
   function create_inpage_nav() {
     var h2s = document.getElementsByTagName('h2'),
       in_page_nav = document.getElementById('in_page_nav'),
+      centered_in_page_toc = document.getElementById('centered_in_page_toc'),
+      right_side_nav = document.querySelector('.right-side-nav'),
+      centered_inpage_nav = document.getElementById('centered_inpage_nav'),
+      navEl = in_page_nav,
+      navWrapper = right_side_nav,
       h2,
       li,
       link,
@@ -10,8 +15,16 @@ var BCLS_toc = ( function (window, document) {
       iMax,
       frag = document.createDocumentFragment(),
       parent,
-      grandparent;
+      grandparent,
+      windowWidth = window.innerWidth;
 
+      // check window width to set the element to use
+      if (windowWidth < 1280) {
+        navEl = centered_in_page_toc;
+        navWrapper = centered_inpage_nav;
+      }
+      // display the nav block we're using
+      navWrapper.setAttribute('style', 'display:block');
         // in case this gets run multiple times by mistake, clear existing items
         // in_page_nav.innerHTML = '';
         // add new items
@@ -30,12 +43,12 @@ var BCLS_toc = ( function (window, document) {
         }
         
         if (frag.firstChild) {
-          in_page_nav.appendChild(frag);
+          navEl.appendChild(frag);
           implementHighlighting();
           // side nav is being generated; set the flag
           side_nav_created = true;
         } else {
-          parent = in_page_nav.parentNode;
+          parent = navEl.parentNode;
           grandparent = parent.parentNode;
           grandparent.removeChild(parent);
         }
