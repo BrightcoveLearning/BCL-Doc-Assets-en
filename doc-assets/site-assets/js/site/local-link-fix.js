@@ -11,7 +11,7 @@ function keepLanguage() {
     site_options = site_select.querySelectorAll('option');
 
     // if old /en/ path, redirect
-    if (href.indexOf('/en/') > 0) {
+    if (href.indexOf('/en/') > 0 && href != 'https://support.brightcove.com/en/contact') {
       if (href.indexOf('/video-cloud/docs/') > 0) {
         href = href.replace('/video-cloud/docs/', '/');
       }
