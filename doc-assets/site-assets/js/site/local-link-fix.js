@@ -10,8 +10,11 @@ function keepLanguage() {
     site_select = document.getElementById('site_select'),
     site_options = site_select.querySelectorAll('option');
 
+    if (href === 'https://support.brightcove.com/en/contact') {
+      location.href = 'https://supportportal.brightcove.com/';
+    }
     // if old /en/ path, redirect
-    if (href.indexOf('/en/') > 0 && href != 'https://support.brightcove.com/en/contact') {
+    if (href.indexOf('/en/') > 0 ) {
       if (href.indexOf('/video-cloud/docs/') > 0) {
         href = href.replace('/video-cloud/docs/', '/');
       }
